@@ -1,0 +1,154 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 240 14% 10%;
+    --foreground: 0 0% 100%;
+
+    --card: 240 14% 10%;
+    --card-foreground: 0 0% 100%;
+
+    --popover: 240 14% 10%;
+    --popover-foreground: 0 0% 100%;
+
+    --primary: 192 100% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 273 100% 60%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 240 5% 25%;
+    --muted-foreground: 240 5% 65%;
+
+    --accent: 273 100% 60%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 100% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 240 5% 20%;
+    --input: 240 5% 20%;
+    --ring: 240 5% 20%;
+
+    --radius: 0.5rem;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-snap-type: y proximity;
+    @apply overflow-x-hidden;
+  }
+
+  body {
+    @apply text-foreground font-inter;
+    background: linear-gradient(to bottom, #0a0a0f, #121320);
+  }
+
+  section {
+    scroll-snap-align: start;
+    scroll-margin-top: 0px;
+    @apply overflow-hidden;
+  }
+  
+  /* Estilos para Slick Carousel */
+  .slick-dots li button:before {
+    color: rgba(0, 204, 255, 0.5) !important;
+  }
+  
+  .slick-dots li.slick-active button:before {
+    color: rgba(153, 51, 255, 0.8) !important;
+  }
+  
+  /* Estilos para la barra de scroll */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: rgba(18, 18, 23, 0.7);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, #00CCFF, #9933FF);
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, #9933FF, #00CCFF);
+  }
+  
+  .bg-gradient-1 {
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.05) 0%, rgba(180, 0, 255, 0.1) 100%);
+  }
+  
+  .bg-gradient-2 {
+    background: linear-gradient(135deg, rgba(180, 0, 255, 0.05) 0%, rgba(0, 212, 255, 0.1) 100%);
+  }
+  
+  .bg-glass {
+    background: rgba(18, 18, 23, 0.7);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .font-rajdhani {
+    font-family: 'Rajdhani', sans-serif;
+  }
+
+  .font-inter {
+    font-family: 'Inter', sans-serif;
+  }
+
+  @keyframes morph {
+    0% {
+      border-radius: 32% 58% 69% 43% / 48% 32% 59% 55%;
+    }
+    100% {
+      border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    }
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+}
+
+@layer components {
+  .gradient-text {
+    @apply bg-gradient-to-r from-[#00CCFF] to-[#9933FF] text-transparent bg-clip-text;
+  }
+
+  .gradient-border {
+    position: relative;
+  }
+
+  .gradient-border::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    @apply bg-gradient-to-r from-[#00CCFF] to-[#9933FF];
+  }
+
+  .glow {
+    box-shadow: 0 0 15px rgba(0, 204, 255, 0.5);
+  }
+
+  .glow-purple {
+    box-shadow: 0 0 15px rgba(153, 51, 255, 0.5);
+  }
+}

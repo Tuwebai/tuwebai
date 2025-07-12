@@ -1,0 +1,147 @@
+modules = ["nodejs-20", "postgresql-16"]
+
+[nix]
+channel = "stable-24_05"
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "deploy_tuweb"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "TuwebApp"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "build"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "dev"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "db:setup"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "initialize-db"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "test-db"
+
+[[workflows.workflow]]
+name = "deploy_tuweb"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "packager.installForAll"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd attached_assets && cp Tuwebai.zip ../ && cd .. && npm install extract-zip && node unzip_helper.js && ls -la"
+
+[[workflows.workflow]]
+name = "TuwebApp"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "packager.installForAll"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "NODE_ENV=production node dist/index.js"
+waitForPort = 5000
+
+[[workflows.workflow]]
+name = "build"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "packager.installForAll"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm run build"
+
+[[workflows.workflow]]
+name = "dev"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "packager.installForAll"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "NODE_ENV=development tsx server/index.ts"
+waitForPort = 5000
+
+[[workflows.workflow]]
+name = "db:setup"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "packager.installForAll"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node db-setup.js"
+
+[[workflows.workflow]]
+name = "initialize-db"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "packager.installForAll"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "tsx initialize-database.js"
+
+[[workflows.workflow]]
+name = "test-db"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "packager.installForAll"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "tsx test-db-connection.js"
+
+[deployment]
+run = ["sh", "-c", "npm install extract-zip && node unzip_helper.js && npm install && npm start"]
+
+[[ports]]
+localPort = 5000
+externalPort = 80

@@ -1,0 +1,855 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import AnimatedShape from '../components/ui/animated-shape';
+import { useIsMobile } from '@/hooks/use-mobile';
+
+// Tipo para miembros del equipo
+interface TeamMember {
+  id: number;
+  name: string;
+  role: string;
+  bio: string;
+  skills: string[];
+  image: string;
+  linkedin?: string;
+  twitter?: string;
+  github?: string;
+  personalSite?: string;
+  longBio?: string;
+  achievements?: string[];
+}
+
+// Tipo para proyectos destacados
+interface FeaturedProject {
+  id: number;
+  title: string;
+  description: string;
+  image: string;
+  memberId: number;
+}
+
+// Tipo para testimonios
+interface Testimonial {
+  id: number;
+  name: string;
+  company: string;
+  role: string;
+  text: string;
+  image: string;
+  rating: number;
+}
+
+// Datos del equipo
+const teamMembers: TeamMember[] = [
+  {
+    id: 1,
+    name: "Carlos Martínez",
+    role: "CEO & Estratega Digital",
+    bio: "Con más de 10 años de experiencia en marketing digital y desarrollo de negocios, Carlos lidera nuestra visión estratégica. Ha trabajado con marcas internacionales optimizando su presencia digital y maximizando su ROI.",
+    skills: ["Estrategia Digital", "Marketing", "Análisis de Negocio", "Liderazgo"],
+    image: "https://randomuser.me/api/portraits/men/35.jpg",
+    linkedin: "https://linkedin.com/",
+    twitter: "https://twitter.com/",
+    longBio: "Carlos es un visionario del mundo digital, reconocido por su capacidad para identificar tendencias y desarrollar estrategias innovadoras. Antes de fundar TuWeb.ai, lideró departamentos de marketing en empresas Fortune 500, donde implementó campañas que aumentaron los ingresos en más de un 300%. Comprometido con el aprendizaje continuo, Carlos es conferencista habitual en eventos de marketing digital y tecnología.",
+    achievements: [
+      "Premio a 'Innovador Digital del Año' 2022",
+      "Docente en MBA Digital Business en Universidad de Buenos Aires",
+      "Autor del libro 'Transformación Digital para Negocios'"
+    ]
+  },
+  {
+    id: 2,
+    name: "Laura González",
+    role: "Directora de Diseño UX/UI",
+    bio: "Laura combina creatividad y análisis de usuario para crear experiencias digitales que no solo son visualmente atractivas, sino también altamente funcionales. Su enfoque centrado en el usuario ha redefinido la interacción digital para docenas de marcas.",
+    skills: ["Diseño UX/UI", "Investigación de Usuarios", "Prototipado", "Design Thinking"],
+    image: "https://randomuser.me/api/portraits/women/67.jpg",
+    linkedin: "https://linkedin.com/",
+    github: "https://github.com/",
+    personalSite: "https://example.com",
+    longBio: "Laura es una diseñadora multipremiada cuyo trabajo se caracteriza por la combinación perfecta de estética y funcionalidad. Con un máster en Diseño de Interacción de la Universidad de California, ha desarrollado interfaces que han transformado la experiencia de usuario en diversas industrias. Su metodología única integra psicología cognitiva, análisis de datos y las últimas tendencias de diseño.",
+    achievements: [
+      "Premio Awwwards a mejor diseño web 2023",
+      "Miembro del jurado en los Web Design Awards",
+      "Ponente regular en conferencias UX/UI"
+    ]
+  },
+  {
+    id: 3,
+    name: "Miguel Serrano",
+    role: "CTO & Líder de Desarrollo",
+    bio: "Ingeniero de software con especialización en arquitecturas web escalables. Miguel dirige nuestro equipo de desarrollo y asegura que cada proyecto cumpla con los más altos estándares técnicos y de rendimiento.",
+    skills: ["Desarrollo Full-Stack", "Arquitectura Cloud", "DevOps", "Performance"],
+    image: "https://randomuser.me/api/portraits/men/54.jpg",
+    linkedin: "https://linkedin.com/",
+    github: "https://github.com/",
+    longBio: "Miguel es un arquitecto de software con un enfoque único en crear soluciones tecnológicas robustas y escalables. Su experiencia abarca desde startups hasta grandes corporaciones, donde ha liderado equipos de desarrollo en la implementación de sistemas que procesan millones de transacciones diarias. Es un firme defensor de las metodologías ágiles y la cultura DevOps.",
+    achievements: [
+      "Contribuidor a proyectos open source de alto impacto",
+      "Desarrollador de arquitecturas cloud para sistemas de alta disponibilidad",
+      "Mentor de más de 50 desarrolladores junior"
+    ]
+  },
+  {
+    id: 4,
+    name: "Ana Torres",
+    role: "Especialista en SEO & SEM",
+    bio: "Experta en posicionamiento y marketing digital con experiencia específica en mercados latinoamericanos y europeos. Ana desarrolla estrategias que generan tráfico cualificado y maximizan las conversiones.",
+    skills: ["SEO Técnico", "Google Ads", "Analítica Web", "Content Marketing"],
+    image: "https://randomuser.me/api/portraits/women/32.jpg",
+    linkedin: "https://linkedin.com/",
+    twitter: "https://twitter.com/",
+    longBio: "Ana ha revolucionado el enfoque SEO para docenas de empresas, logrando incrementos de tráfico orgánico superiores al 200% en mercados altamente competitivos. Certificada por Google y HubSpot, combina un profundo conocimiento técnico con una visión estratégica para desarrollar campañas que no solo atraen visitantes, sino que los convierten en clientes leales.",
+    achievements: [
+      "Certificada como Google Partner Premier",
+      "Más de 100 proyectos SEO exitosos implementados",
+      "Incremento promedio de 180% en conversiones para clientes"
+    ]
+  },
+  {
+    id: 5,
+    name: "Javier Méndez",
+    role: "Desarrollador Senior",
+    bio: "Especialista en frontend con amplia experiencia en frameworks modernos y optimización de rendimiento. Javier transforma diseños complejos en código eficiente y mantenible.",
+    skills: ["React", "Next.js", "TypeScript", "Optimización Web"],
+    image: "https://randomuser.me/api/portraits/men/78.jpg",
+    github: "https://github.com/",
+    linkedin: "https://linkedin.com/",
+    longBio: "Javier es un desarrollador frontend obsesionado con la optimización de rendimiento y la creación de interfaces fluidas. Ha trabajado en proyectos de alta complejidad para sectores como fintech, ecommerce y entretenimiento. Su dominio de React y arquitecturas modernas de frontend ha permitido crear experiencias digitales que destacan en mercados saturados.",
+    achievements: [
+      "Creador de bibliotecas de componentes utilizadas por miles de desarrolladores",
+      "Optimización de rendimiento web con mejoras de velocidad de hasta un 300%",
+      "Speaker en conferencias de desarrollo frontend"
+    ]
+  },
+  {
+    id: 6,
+    name: "Sofía Ramírez",
+    role: "Especialista en Automatización",
+    bio: "Experta en implementación de soluciones CRM y automatización de marketing, Sofía ayuda a nuestros clientes a escalar sus procesos comerciales y optimizar sus flujos de trabajo.",
+    skills: ["HubSpot", "ActiveCampaign", "Email Marketing", "Data Analytics"],
+    image: "https://randomuser.me/api/portraits/women/45.jpg",
+    linkedin: "https://linkedin.com/",
+    personalSite: "https://example.com",
+    longBio: "Sofía es pionera en la implementación de soluciones de automatización que transforman la manera en que las empresas interactúan con sus clientes. Su enfoque sistemático para identificar oportunidades de optimización ha resultado en ahorros de tiempo y recursos de hasta un 70% para nuestros clientes, mientras mejora significativamente la experiencia del cliente final.",
+    achievements: [
+      "Certificada en las principales plataformas de automatización",
+      "Implementación de sistemas que han generado más de $10M en ingresos para clientes",
+      "Diseño de flujos de trabajo que reducen en 65% el tiempo de gestión comercial"
+    ]
+  }
+];
+
+// Proyectos destacados
+const featuredProjects: FeaturedProject[] = [
+  {
+    id: 1,
+    title: "Rediseño E-commerce Premium",
+    description: "Transformación completa de plataforma de moda de lujo con aumento de 150% en conversiones",
+    image: "https://images.unsplash.com/photo-1523381294911-8d3cead13475?q=80&w=600&auto=format&fit=crop",
+    memberId: 2 // Laura González
+  },
+  {
+    id: 2,
+    title: "App Móvil Sector Salud",
+    description: "Desarrollo de aplicación para gestión de citas médicas con más de 50,000 usuarios activos",
+    image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=600&auto=format&fit=crop",
+    memberId: 3 // Miguel Serrano
+  },
+  {
+    id: 3,
+    title: "Campaña SEO Inmobiliaria",
+    description: "Estrategia que incrementó el tráfico orgánico en 200% en un mercado altamente competitivo",
+    image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=600&auto=format&fit=crop",
+    memberId: 4 // Ana Torres
+  }
+];
+
+// Testimonios
+const testimonials: Testimonial[] = [
+  {
+    id: 1,
+    name: "Roberto Fernández",
+    company: "Global Retail S.A.",
+    role: "Director de Marketing",
+    text: "El equipo de TuWeb.ai transformó nuestra presencia digital por completo. Su enfoque estratégico y atención al detalle nos ha permitido duplicar nuestras conversiones en apenas tres meses. Son verdaderos socios de negocio, no simples proveedores.",
+    image: "https://randomuser.me/api/portraits/men/41.jpg",
+    rating: 5
+  },
+  {
+    id: 2,
+    name: "Marcela Díaz",
+    company: "HealthTech Innovations",
+    role: "CEO",
+    text: "Trabajar con este equipo ha sido una experiencia excepcional. Su capacidad para entender las complejidades de nuestro sector y traducirlas en soluciones digitales intuitivas y efectivas superó todas nuestras expectativas. Recomiendo TuWeb.ai sin ninguna duda.",
+    image: "https://randomuser.me/api/portraits/women/24.jpg",
+    rating: 5
+  },
+  {
+    id: 3,
+    name: "Gabriel Torres",
+    company: "Constructora Futuro",
+    role: "Director Comercial",
+    text: "Buscábamos un equipo que pudiera renovar nuestra imagen y mejorar nuestra presencia online. TuWeb.ai no solo cumplió estos objetivos, sino que implementó estrategias que nos han ayudado a alcanzar nuevos mercados y aumentar significativamente nuestras ventas.",
+    image: "https://randomuser.me/api/portraits/men/22.jpg",
+    rating: 4
+  }
+];
+
+export default function Equipo() {
+  const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
+  const [testimonialIndex, setTestimonialIndex] = useState(0);
+  const testimonialRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
+
+  // Scroll to top on page load
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  // Testimonial autoplay
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTestimonialIndex((prev) => (prev + 1) % testimonials.length);
+    }, 8000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Encontrar proyectos destacados por miembro
+  const getMemberProjects = (memberId: number) => {
+    return featuredProjects.filter(project => project.memberId === memberId);
+  };
+
+  return (
+    <main className="bg-[#0a0a0f] text-white min-h-screen">
+      {/* Hero Section */}
+      <section className="relative bg-gradient-1 pt-24 pb-16">
+        <AnimatedShape type={1} className="top-[10%] right-[-150px]" delay={1} />
+        <AnimatedShape type={2} className="bottom-[10%] left-[-100px]" delay={2} />
+        
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <Link to="/" className="inline-flex items-center text-gray-400 hover:text-white mb-8">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+                Volver al inicio
+              </Link>
+              
+              <h1 className="font-rajdhani font-bold text-4xl md:text-6xl mb-6">
+                <span className="gradient-text">Nuestro Equipo</span>
+              </h1>
+              
+              <p className="text-xl text-gray-300 mb-10 max-w-2xl mx-auto">
+                Conoce a los profesionales detrás de TuWeb.ai. Un equipo multidisciplinar 
+                apasionado por crear soluciones digitales que generan resultados.
+              </p>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Team Grid Section */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {teamMembers.map((member, index) => (
+              <motion.div
+                key={member.id}
+                className="bg-[#121217] rounded-xl overflow-hidden border border-gray-800 h-full flex flex-col cursor-pointer"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                onClick={() => setSelectedMember(member)}
+              >
+                <div className="h-64 bg-gradient-to-r from-[#00CCFF]/20 to-[#9933FF]/20 flex items-center justify-center relative">
+                  {member.image ? (
+                    <div className="h-40 w-40 rounded-full overflow-hidden border-4 border-[#121217]">
+                      <img 
+                        src={member.image} 
+                        alt={member.name} 
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ) : (
+                    <div className="h-40 w-40 rounded-full bg-[#1a1a23] border-4 border-[#121217] flex items-center justify-center">
+                      <span className="text-4xl font-bold gradient-text">{member.name.charAt(0)}{member.name.split(' ')[1].charAt(0)}</span>
+                    </div>
+                  )}
+                  
+                  {/* Indicador de "Ver más" */}
+                  <div className="absolute bottom-4 right-4 bg-[#00CCFF] rounded-full w-8 h-8 flex items-center justify-center text-white shadow-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                </div>
+                
+                <div className="p-6 flex-grow flex flex-col">
+                  <h3 className="font-rajdhani font-bold text-2xl mb-1 text-white">{member.name}</h3>
+                  <p className="text-[#00CCFF] font-medium mb-4">{member.role}</p>
+                  
+                  <p className="text-gray-300 mb-4 flex-grow">{member.bio}</p>
+                  
+                  <div className="mt-auto">
+                    {/* Social icons */}
+                    {(member.linkedin || member.twitter || member.github || member.personalSite) && (
+                      <div className="flex space-x-2 mb-4">
+                        {member.linkedin && (
+                          <a 
+                            href={member.linkedin} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="text-gray-400 hover:text-[#0077B5] transition-colors"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                            </svg>
+                          </a>
+                        )}
+                        
+                        {member.twitter && (
+                          <a 
+                            href={member.twitter} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="text-gray-400 hover:text-[#1DA1F2] transition-colors"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723 10.035 10.035 0 01-3.127 1.184 4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.937 4.937 0 004.604 3.417 9.868 9.868 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.054 0 13.999-7.496 13.999-13.986 0-.209 0-.42-.015-.63a9.936 9.936 0 002.46-2.548l-.047-.02z"></path>
+                            </svg>
+                          </a>
+                        )}
+                        
+                        {member.github && (
+                          <a 
+                            href={member.github} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="text-gray-400 hover:text-white transition-colors"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path>
+                            </svg>
+                          </a>
+                        )}
+                        
+                        {member.personalSite && (
+                          <a 
+                            href={member.personalSite} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="text-gray-400 hover:text-[#9933FF] transition-colors"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
+                            </svg>
+                          </a>
+                        )}
+                      </div>
+                    )}
+                    
+                    <h4 className="font-medium text-white mb-2">Especialidades:</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {member.skills.map((skill, i) => (
+                        <span 
+                          key={i} 
+                          className="text-xs px-2 py-1 bg-[#1a1a23] rounded text-gray-300"
+                        >
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+      
+      {/* Modal para detalles del miembro */}
+      <AnimatePresence>
+        {selectedMember && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedMember(null)}
+          >
+            <motion.div
+              className="bg-[#121217] rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="relative">
+                {/* Header con gradiente */}
+                <div className="h-40 md:h-60 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] relative">
+                  <button
+                    className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-white hover:bg-white/30 transition-colors z-10"
+                    onClick={() => setSelectedMember(null)}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+                
+                {/* Foto y datos básicos */}
+                <div className="px-6 md:px-12 pb-6 relative">
+                  <div className="flex flex-col md:flex-row md:items-end gap-6 -mt-20">
+                    <div className="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-[#121217] overflow-hidden flex-shrink-0 bg-[#1a1a23] flex items-center justify-center">
+                      {selectedMember.image ? (
+                        <img 
+                          src={selectedMember.image} 
+                          alt={selectedMember.name} 
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <span className="text-4xl font-bold gradient-text">
+                          {selectedMember.name.charAt(0)}{selectedMember.name.split(' ')[1].charAt(0)}
+                        </span>
+                      )}
+                    </div>
+                    
+                    <div className="md:pb-2">
+                      <h2 className="font-rajdhani font-bold text-3xl text-white">{selectedMember.name}</h2>
+                      <p className="text-[#00CCFF] font-medium text-xl">{selectedMember.role}</p>
+                      
+                      {/* Social links */}
+                      <div className="flex mt-3 space-x-3">
+                        {selectedMember.linkedin && (
+                          <a 
+                            href={selectedMember.linkedin} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="text-gray-400 hover:text-[#0077B5] transition-colors"
+                          >
+                            <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                            </svg>
+                          </a>
+                        )}
+                        
+                        {selectedMember.twitter && (
+                          <a 
+                            href={selectedMember.twitter} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="text-gray-400 hover:text-[#1DA1F2] transition-colors"
+                          >
+                            <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723 10.035 10.035 0 01-3.127 1.184 4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.937 4.937 0 004.604 3.417 9.868 9.868 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.054 0 13.999-7.496 13.999-13.986 0-.209 0-.42-.015-.63a9.936 9.936 0 002.46-2.548l-.047-.02z"></path>
+                            </svg>
+                          </a>
+                        )}
+                        
+                        {selectedMember.github && (
+                          <a 
+                            href={selectedMember.github} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="text-gray-400 hover:text-white transition-colors"
+                          >
+                            <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path>
+                            </svg>
+                          </a>
+                        )}
+                        
+                        {selectedMember.personalSite && (
+                          <a 
+                            href={selectedMember.personalSite} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="text-gray-400 hover:text-[#9933FF] transition-colors"
+                          >
+                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
+                            </svg>
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Contenido detallado */}
+                  <div className="mt-8 grid md:grid-cols-3 gap-6">
+                    <div className="md:col-span-2">
+                      <h3 className="font-rajdhani font-bold text-xl mb-4 text-white border-b border-gray-800 pb-2">
+                        Biografía
+                      </h3>
+                      <div className="text-gray-300 space-y-4">
+                        <p>{selectedMember.longBio || selectedMember.bio}</p>
+                      </div>
+                      
+                      {selectedMember.achievements && selectedMember.achievements.length > 0 && (
+                        <div className="mt-6">
+                          <h3 className="font-rajdhani font-bold text-xl mb-4 text-white border-b border-gray-800 pb-2">
+                            Logros destacados
+                          </h3>
+                          <ul className="space-y-2">
+                            {selectedMember.achievements.map((achievement, index) => (
+                              <li key={index} className="flex items-start text-gray-300">
+                                <svg className="w-5 h-5 text-[#00CCFF] mr-2 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                {achievement}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                    
+                    <div>
+                      <h3 className="font-rajdhani font-bold text-xl mb-4 text-white border-b border-gray-800 pb-2">
+                        Especialidades
+                      </h3>
+                      <div className="flex flex-wrap gap-2">
+                        {selectedMember.skills.map((skill, i) => (
+                          <span 
+                            key={i} 
+                            className="text-sm px-3 py-1 bg-[#1a1a23] rounded-full text-gray-300"
+                          >
+                            {skill}
+                          </span>
+                        ))}
+                      </div>
+                      
+                      {/* Proyectos destacados del miembro */}
+                      {getMemberProjects(selectedMember.id).length > 0 && (
+                        <div className="mt-6">
+                          <h3 className="font-rajdhani font-bold text-xl mb-4 text-white border-b border-gray-800 pb-2">
+                            Proyectos destacados
+                          </h3>
+                          <div className="space-y-4">
+                            {getMemberProjects(selectedMember.id).map((project) => (
+                              <div 
+                                key={project.id}
+                                className="rounded-lg overflow-hidden border border-gray-800 bg-[#1a1a23]"
+                              >
+                                <div className="h-40 overflow-hidden">
+                                  <img 
+                                    src={project.image} 
+                                    alt={project.title} 
+                                    className="w-full h-full object-cover"
+                                  />
+                                </div>
+                                <div className="p-4">
+                                  <h4 className="font-medium text-white mb-1">{project.title}</h4>
+                                  <p className="text-sm text-gray-400">{project.description}</p>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      
+      {/* Testimonial Section */}
+      <section className="py-16 bg-[#0c0c14]" id="testimonials">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="font-rajdhani font-bold text-3xl md:text-4xl mb-4 gradient-text">
+              Lo que dicen nuestros clientes
+            </h2>
+            <p className="text-gray-300 max-w-2xl mx-auto">
+              La mejor forma de conocernos es a través de los resultados que hemos logrado para quienes 
+              han confiado en nosotros.
+            </p>
+          </div>
+          
+          <div className="relative max-w-4xl mx-auto" ref={testimonialRef}>
+            <div className="relative overflow-hidden rounded-xl bg-[#121217] border border-gray-800 p-6 md:p-10">
+              <AnimatePresence mode="wait">
+                {testimonials.map((testimonial, index) => 
+                  testimonialIndex === index && (
+                    <motion.div
+                      key={testimonial.id}
+                      className="flex flex-col md:flex-row gap-8"
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -20 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <div className="flex-shrink-0 flex flex-col items-center">
+                        <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border-4 border-[#1a1a23]">
+                          <img 
+                            src={testimonial.image} 
+                            alt={testimonial.name} 
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        
+                        <div className="flex mt-3">
+                          {[...Array(5)].map((_, i) => (
+                            <svg 
+                              key={i} 
+                              className={`w-5 h-5 ${i < testimonial.rating ? 'text-[#00CCFF]' : 'text-gray-600'}`} 
+                              fill="currentColor" 
+                              viewBox="0 0 20 20"
+                            >
+                              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                            </svg>
+                          ))}
+                        </div>
+                      </div>
+                      
+                      <div className="flex-grow">
+                        <div className="mb-4 md:mb-6 relative">
+                          {/* Comillas */}
+                          <div className="absolute -top-4 -left-2 text-[#00CCFF]/20 text-7xl font-serif">
+                            "
+                          </div>
+                          
+                          <p className="text-gray-300 italic relative z-10">
+                            {testimonial.text}
+                          </p>
+                          
+                          <div className="absolute -bottom-4 -right-2 text-[#00CCFF]/20 text-7xl font-serif">
+                            "
+                          </div>
+                        </div>
+                        
+                        <div className="mt-auto">
+                          <h4 className="font-rajdhani font-bold text-xl text-white">
+                            {testimonial.name}
+                          </h4>
+                          <p className="text-[#00CCFF]">{testimonial.role}</p>
+                          <p className="text-gray-400 text-sm">{testimonial.company}</p>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )
+                )}
+              </AnimatePresence>
+              
+              {/* Indicadores */}
+              <div className="flex justify-center mt-8 space-x-2">
+                {testimonials.map((_, i) => (
+                  <button
+                    key={i}
+                    className={`w-2 h-2 rounded-full transition-all ${
+                      i === testimonialIndex ? 'bg-[#00CCFF] w-8' : 'bg-gray-600 hover:bg-gray-500'
+                    }`}
+                    onClick={() => setTestimonialIndex(i)}
+                  />
+                ))}
+              </div>
+              
+              {/* Botones de navegación */}
+              <div className="absolute left-4 right-4 top-1/2 -translate-y-1/2 flex justify-between items-center">
+                <button
+                  className="w-10 h-10 rounded-full bg-gray-800/50 text-white flex items-center justify-center hover:bg-gray-800 transition-colors"
+                  onClick={() => setTestimonialIndex((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1))}
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+                
+                <button
+                  className="w-10 h-10 rounded-full bg-gray-800/50 text-white flex items-center justify-center hover:bg-gray-800 transition-colors"
+                  onClick={() => setTestimonialIndex((prev) => (prev + 1) % testimonials.length)}
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      {/* Values Section */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="font-rajdhani font-bold text-3xl md:text-4xl mb-4 gradient-text">
+              Nuestros Valores
+            </h2>
+            <p className="text-gray-300 max-w-2xl mx-auto">
+              Estos son los principios que guían nuestro trabajo diario y la forma en que 
+              interactuamos con nuestros clientes y entre nosotros.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <motion.div
+              className="bg-[#121217] rounded-xl p-6 border border-gray-800"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
+              <div className="h-14 w-14 rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] flex items-center justify-center mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <h3 className="font-rajdhani font-bold text-xl mb-3 text-white">Innovación Constante</h3>
+              <p className="text-gray-300">
+                Nos mantenemos a la vanguardia de las tecnologías emergentes y tendencias digitales 
+                para ofrecer soluciones innovadoras que destaquen en el mercado.
+              </p>
+            </motion.div>
+            
+            <motion.div
+              className="bg-[#121217] rounded-xl p-6 border border-gray-800"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <div className="h-14 w-14 rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] flex items-center justify-center mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+              </div>
+              <h3 className="font-rajdhani font-bold text-xl mb-3 text-white">Transparencia Total</h3>
+              <p className="text-gray-300">
+                Creemos en la comunicación clara y honesta. Mantenemos a nuestros clientes informados 
+                en cada etapa del proceso y somos transparentes sobre costos, plazos y resultados.
+              </p>
+            </motion.div>
+            
+            <motion.div
+              className="bg-[#121217] rounded-xl p-6 border border-gray-800"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+            >
+              <div className="h-14 w-14 rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] flex items-center justify-center mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+              </div>
+              <h3 className="font-rajdhani font-bold text-xl mb-3 text-white">Orientación a Resultados</h3>
+              <p className="text-gray-300">
+                Nos enfocamos en crear soluciones que generen resultados medibles. Cada decisión 
+                que tomamos está orientada a maximizar el retorno de inversión para nuestros clientes.
+              </p>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+      
+      {/* Culture Section */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className="font-rajdhani font-bold text-3xl md:text-4xl mb-6 gradient-text">
+                Nuestra Cultura
+              </h2>
+              
+              <div className="space-y-6">
+                <div className="flex">
+                  <div className="flex-shrink-0 h-10 w-10 rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] flex items-center justify-center text-white font-bold">
+                    1
+                  </div>
+                  <div className="ml-4">
+                    <h3 className="font-rajdhani font-bold text-xl mb-2 text-white">Colaboración</h3>
+                    <p className="text-gray-300">
+                      Creemos en el poder del trabajo en equipo. Reunimos diferentes perspectivas 
+                      y habilidades para crear soluciones integrales que aborden todos los aspectos 
+                      de los desafíos digitales.
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="flex">
+                  <div className="flex-shrink-0 h-10 w-10 rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] flex items-center justify-center text-white font-bold">
+                    2
+                  </div>
+                  <div className="ml-4">
+                    <h3 className="font-rajdhani font-bold text-xl mb-2 text-white">Aprendizaje Continuo</h3>
+                    <p className="text-gray-300">
+                      El mundo digital evoluciona constantemente, y nosotros con él. Invertimos 
+                      continuamente en el desarrollo profesional de nuestro equipo para mantenernos 
+                      a la vanguardia.
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="flex">
+                  <div className="flex-shrink-0 h-10 w-10 rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] flex items-center justify-center text-white font-bold">
+                    3
+                  </div>
+                  <div className="ml-4">
+                    <h3 className="font-rajdhani font-bold text-xl mb-2 text-white">Equilibrio y Bienestar</h3>
+                    <p className="text-gray-300">
+                      Promovemos un ambiente de trabajo saludable que respeta el equilibrio entre 
+                      vida personal y profesional. Creemos que equipos felices crean mejores productos.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="relative h-96 bg-[#121217] rounded-xl overflow-hidden border border-gray-800">
+              <div className="absolute inset-0 bg-gradient-to-r from-[#00CCFF]/20 to-[#9933FF]/20 flex items-center justify-center">
+                <div className="text-center p-6">
+                  <span className="text-white font-medium">Imagen del equipo trabajando</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      {/* CTA Section */}
+      <section className="py-16 bg-gradient-1">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto bg-[#121217] rounded-xl p-8 border border-gray-800">
+            <div className="text-center mb-8">
+              <h2 className="font-rajdhani font-bold text-3xl mb-4 gradient-text">
+                ¿Quieres formar parte de nuestro equipo?
+              </h2>
+              <p className="text-gray-300 max-w-2xl mx-auto">
+                Estamos siempre buscando talentos que compartan nuestra pasión por la excelencia digital.
+                Revisa nuestras vacantes actuales o envíanos tu CV.
+              </p>
+            </div>
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <a
+                href="#"
+                className="px-6 py-3 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-lg text-white font-medium text-center shadow-lg shadow-[#00CCFF]/20 hover:shadow-[#9933FF]/30"
+              >
+                Ver vacantes
+              </a>
+              <a
+                href="mailto:careers@tuweb.ai"
+                className="px-6 py-3 bg-[#1a1a23] border border-gray-700 rounded-lg text-white font-medium text-center hover:bg-[#1f1f29] transition-colors"
+              >
+                Enviar CV
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  );
+}
