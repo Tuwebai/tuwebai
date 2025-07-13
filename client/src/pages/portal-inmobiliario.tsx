@@ -14,11 +14,11 @@ export default function PortalInmobiliario() {
   const [searchLocation, setSearchLocation] = useState('');
   const [priceRange, setPriceRange] = useState([0, 1000000]);
   const [propertyType, setPropertyType] = useState('all');
-  const [selectedProperty, setSelectedProperty] = useState(null);
+  const [selectedProperty, setSelectedProperty] = useState<any>(null);
   const [bedrooms, setBedrooms] = useState(0);
   const [bathrooms, setBathrooms] = useState(0);
   const [showFilters, setShowFilters] = useState(false);
-  const [savedProperties, setSavedProperties] = useState([]);
+  const [savedProperties, setSavedProperties] = useState<number[]>([]);
   const [showContactForm, setShowContactForm] = useState(false);
 
   // Efecto para simular carga
@@ -220,12 +220,12 @@ export default function PortalInmobiliario() {
   const filteredProperties = getFilteredProperties();
   
   // Función para formatear precio
-  const formatPrice = (price) => {
+  const formatPrice = (price: number) => {
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
   
   // Función para guardar propiedad
-  const toggleSaveProperty = (propertyId) => {
+  const toggleSaveProperty = (propertyId: number) => {
     if (savedProperties.includes(propertyId)) {
       setSavedProperties(savedProperties.filter(id => id !== propertyId));
     } else {
@@ -242,7 +242,7 @@ export default function PortalInmobiliario() {
     setBathrooms(0);
   };
   
-  const handleContactSubmit = (e) => {
+  const handleContactSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     alert('¡Formulario enviado! Un agente se pondrá en contacto con usted pronto.');
     setShowContactForm(false);
@@ -942,7 +942,7 @@ export default function PortalInmobiliario() {
                 className="w-full h-full object-cover"
               />
               <div className="absolute bottom-4 right-4 flex space-x-2">
-                {selectedProperty.images.slice(0, 3).map((image, index) => (
+                {selectedProperty.images.slice(0, 3).map((image: string, index: number) => (
                   <div 
                     key={index} 
                     className={`w-14 h-10 border-2 ${index === 0 ? 'border-[#2E5DB0]' : 'border-white/70'} overflow-hidden rounded-md cursor-pointer`}
@@ -1000,7 +1000,7 @@ export default function PortalInmobiliario() {
               <div className="mb-6">
                 <h3 className="text-xl font-bold text-gray-800 mb-2">Características</h3>
                 <div className="grid grid-cols-2 gap-3">
-                  {selectedProperty.features.map((feature, index) => (
+                  {selectedProperty.features.map((feature: string, index: number) => (
                     <div key={index} className="flex items-center">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#2E5DB0] mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />

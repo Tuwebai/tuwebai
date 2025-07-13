@@ -1,5 +1,6 @@
 import { useRef, useEffect } from 'react';
-import Slider from 'react-slick';
+// @ts-ignore
+const Slider = require('react-slick').default;
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { motion } from 'framer-motion';
@@ -10,7 +11,7 @@ interface CompanyLogoSliderProps {
 }
 
 export default function CompanyLogoSlider({ className = '' }: CompanyLogoSliderProps) {
-  const sliderRef = useRef<any>(null);
+  const sliderRef = useRef(null);
   const { ref, hasIntersected } = useIntersectionObserver();
 
   // Configuración del slider
@@ -129,8 +130,8 @@ export default function CompanyLogoSlider({ className = '' }: CompanyLogoSliderP
       variants={containerVariants}
     >
       <div className="max-w-6xl mx-auto px-4">
-        <Slider ref={sliderRef} {...settings} className="company-logo-slider">
-          {companyLogos.map((company, index) => (
+        <Slider {...settings} className="company-logo-slider">
+          {companyLogos.map((company, index: number) => (
             <div key={index} className="px-4">
               <div className="flex flex-col items-center justify-center h-20">
                 <div className="w-16 h-16 bg-gray-800 bg-opacity-50 rounded-lg flex items-center justify-center text-[#00CCFF] hover:text-[#9933FF] transition-colors duration-300 border border-gray-700">

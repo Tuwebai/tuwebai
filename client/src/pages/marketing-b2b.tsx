@@ -10,7 +10,7 @@ export default function MarketingB2B() {
   const isMobile = useIsMobile();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedCaseStudy, setSelectedCaseStudy] = useState(null);
+  const [selectedCaseStudy, setSelectedCaseStudy] = useState<any>(null);
   const [activeTab, setActiveTab] = useState('overview');
   const [showDemoForm, setShowDemoForm] = useState(false);
 
@@ -202,7 +202,7 @@ export default function MarketingB2B() {
   ];
   
   // Función para formatear porcentaje
-  const handleDemoSubmit = (e) => {
+  const handleDemoSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     alert('¡Solicitud enviada! Un experto se pondrá en contacto contigo pronto.');
     setShowDemoForm(false);
@@ -560,7 +560,7 @@ export default function MarketingB2B() {
                   <p className="text-gray-600 text-sm mb-4">{caseStudy.client}</p>
                   
                   <div className="grid grid-cols-2 gap-3 mb-4">
-                    {caseStudy.results.slice(0, 2).map((result, i) => (
+                    {caseStudy.results.slice(0, 2).map((result: any, i: number) => (
                       <div key={i} className="bg-gray-50 p-2 rounded text-center">
                         <div className="text-[#3B82F6] font-bold">{result.value}</div>
                         <div className="text-gray-600 text-xs">{result.label}</div>
@@ -955,7 +955,7 @@ export default function MarketingB2B() {
                 {activeTab === 'overview' && (
                   <div>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                      {selectedCaseStudy.results.map((result, index) => (
+                      {selectedCaseStudy.results.map((result: any, index: number) => (
                         <div key={index} className="bg-gray-50 p-4 rounded-lg text-center">
                           <div className="text-2xl font-bold text-[#3B82F6] mb-1">{result.value}</div>
                           <div className="text-gray-600 text-sm">{result.label}</div>
@@ -1045,7 +1045,7 @@ export default function MarketingB2B() {
                     <h3 className="text-xl font-bold text-gray-800 mb-4">Resultados</h3>
                     
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                      {selectedCaseStudy.results.map((result, index) => (
+                      {selectedCaseStudy.results.map((result: any, index: number) => (
                         <div key={index} className="bg-gray-50 p-4 rounded-lg text-center">
                           <div className="text-2xl font-bold text-[#3B82F6] mb-1">{result.value}</div>
                           <div className="text-gray-600 text-sm">{result.label}</div>

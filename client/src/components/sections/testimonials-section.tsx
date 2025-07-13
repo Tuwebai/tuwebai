@@ -3,7 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useIntersectionObserver } from '@/hooks/use-intersection-observer';
 import AnimatedShape from '../ui/animated-shape';
 import TestimonialForm from '../ui/testimonial-form';
-import Slider from 'react-slick';
+// @ts-ignore
+const Slider = require('react-slick').default;
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
@@ -104,7 +105,7 @@ interface TestimonialsSectionProps {
 export default function TestimonialsSection({ setRef }: TestimonialsSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const { ref: titleRef, hasIntersected: titleVisible } = useIntersectionObserver();
-  const [sliderRef, setSliderRef] = useState<any>(null);
+  const sliderRef = useRef<any>(null);
   
   // Lista de testimonios predefinidos
   const initialTestimonials: Testimonial[] = [
@@ -146,9 +147,10 @@ export default function TestimonialsSection({ setRef }: TestimonialsSectionProps
     setTestimonials(prevTestimonials => [testimonialWithFlag, ...prevTestimonials]);
     
     // Si hay un slider activo, moverse a la primera diapositiva para mostrar el nuevo testimonio
-    if (sliderRef) {
+    if (sliderRef.current) {
       setTimeout(() => {
-        sliderRef.slickGoTo(0);
+        // @ts-ignore
+        sliderRef.current.slickGoTo(0);
       }, 300);
     }
   }, [sliderRef]);
@@ -216,8 +218,8 @@ export default function TestimonialsSection({ setRef }: TestimonialsSectionProps
         
         {/* Versión móvil y tablet: Slider */}
         <div className="lg:hidden w-full px-2">
-          <Slider {...settings} ref={setSliderRef}>
-            {testimonials.map((testimonial, index) => (
+          <Slider {...settings} ref={sliderRef}>
+            {testimonials.map((testimonial, index: number) => (
               <div key={`mobile-${testimonial.name}-${index}`} className="px-2">
                 <TestimonialCard 
                   name={testimonial.name}
@@ -233,7 +235,8 @@ export default function TestimonialsSection({ setRef }: TestimonialsSectionProps
           {/* Controles del slider */}
           <div className="flex justify-center gap-4 mt-8">
             <motion.button
-              onClick={() => sliderRef?.slickPrev()}
+              // @ts-ignore
+              onClick={() => sliderRef.current?.slickPrev()}
               className="w-10 h-10 rounded-full border border-gray-700 flex items-center justify-center text-gray-400 hover:text-white hover:border-[#00CCFF] transition-colors"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
@@ -244,7 +247,8 @@ export default function TestimonialsSection({ setRef }: TestimonialsSectionProps
             </motion.button>
             
             <motion.button
-              onClick={() => sliderRef?.slickNext()}
+              // @ts-ignore
+              onClick={() => sliderRef.current?.slickNext()}
               className="w-10 h-10 rounded-full border border-gray-700 flex items-center justify-center text-gray-400 hover:text-white hover:border-[#9933FF] transition-colors"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}

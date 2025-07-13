@@ -1402,7 +1402,7 @@ export default function Viajes() {
                           </div>
                         </div>
                       ))}
-                      {getItinerary(selectedDestination.id)?.days.length > 3 && (
+                      {getItinerary(selectedDestination.id)?.days && getItinerary(selectedDestination.id)!.days.length > 3 && (
                         <div className="text-center">
                           <button className="text-blue-600 hover:text-blue-800 text-sm font-medium">
                             Ver itinerario completo
