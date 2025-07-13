@@ -64,7 +64,7 @@ declare module 'react-slick' {
     settings: "unslick" | Settings;
   }
   
-  export default class Slider extends React.Component<Settings> {
+  export default class Slider extends React.Component<Settings & { children?: React.ReactNode }> {
     slickGoTo(slideNumber: number, dontAnimate?: boolean): void;
     slickNext(): void;
     slickPause(): void;

@@ -3,8 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useIntersectionObserver } from '@/hooks/use-intersection-observer';
 import AnimatedShape from '../ui/animated-shape';
 import TestimonialForm from '../ui/testimonial-form';
-// @ts-ignore
-const Slider = require('react-slick').default;
+import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 

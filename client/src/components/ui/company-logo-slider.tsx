@@ -1,6 +1,5 @@
 import { useRef, useEffect } from 'react';
-// @ts-ignore
-const Slider = require('react-slick').default;
+import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { motion } from 'framer-motion';
