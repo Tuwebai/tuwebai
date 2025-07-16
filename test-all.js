@@ -35,8 +35,17 @@ async function runTest(name, testFn) {
   }
 }
 
-// Tests
+// Tests simplificados
 const tests = [
+  {
+    name: 'Health check del backend',
+    test: async () => {
+      const response = await axios.get(`${API_URL}/health`, { timeout: 10000 });
+      if (response.status !== 200) {
+        throw new Error(`Status ${response.status}`);
+      }
+    }
+  },
   {
     name: 'Conexión al backend',
     test: async () => {
@@ -47,15 +56,14 @@ const tests = [
     }
   },
   {
-    name: 'Ruta /crear-preferencia (sin token)',
+    name: 'Ruta /crear-preferencia',
     test: async () => {
       try {
         await axios.post(`${API_URL}/crear-preferencia`, { plan: 'Plan Básico' }, { timeout: 10000 });
-        throw new Error('Debería haber fallado sin token');
+        throw new Error('Debería haber fallado con plan inválido');
       } catch (error) {
-        // Ahora la ruta existe, pero debería fallar por plan inválido o falta de token
-        if (error.response?.status === 400 || error.response?.status === 500) {
-          // Esto es esperado
+        if (error.response?.status === 400) {
+          // Esto es esperado - plan inválido
           return;
         }
         throw error;
@@ -130,11 +138,6 @@ async function runAllTests() {
   } else {
     console.log('✅ Google OAuth configurado');
   }
-  
-  console.log('\n🔧 Para configurar lo que falta:');
-  console.log('1. Ejecuta: node setup-mercado-pago.js');
-  console.log('2. Configura las variables de entorno en tu archivo .env o config.env');
-  console.log('3. Reinicia el servidor después de los cambios');
 }
 
 // Ejecutar
