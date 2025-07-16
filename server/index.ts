@@ -11,34 +11,6 @@ import { fileURLToPath } from 'url';
 import cors from 'cors';
 import helmet from 'helmet';
 
-// Solo importar vite en desarrollo
-let setupVite: any, serveStatic: any, log: any;
-if (process.env.NODE_ENV !== 'production') {
-  const viteModule = await import("./vite");
-  setupVite = viteModule.setupVite;
-  serveStatic = viteModule.serveStatic;
-  log = viteModule.log;
-} else {
-  // En producción, usar funciones simples
-  log = (message: string, source = "express") => {
-    const formattedTime = new Date().toLocaleTimeString("en-US", {
-      hour: "numeric",
-      minute: "2-digit",
-      second: "2-digit",
-      hour12: true,
-    });
-    console.log(`${formattedTime} [${source}] ${message}`);
-  };
-  
-  serveStatic = (app: express.Express) => {
-    const distPath = path.resolve(import.meta.dirname, "../dist");
-    app.use(express.static(distPath));
-    app.use("*", (_req, res) => {
-      res.sendFile(path.resolve(distPath, "index.html"));
-    });
-  };
-}
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -49,6 +21,26 @@ declare module 'express-session' {
     userEmail: string;
   }
 }
+
+// Función de logging simple
+const log = (message: string, source = "express") => {
+  const formattedTime = new Date().toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true,
+  });
+  console.log(`${formattedTime} [${source}] ${message}`);
+};
+
+// Función para servir archivos estáticos en producción
+const serveStatic = (app: express.Express) => {
+  const distPath = path.resolve(__dirname, "../dist");
+  app.use(express.static(distPath));
+  app.use("*", (_req, res) => {
+    res.sendFile(path.resolve(distPath, "index.html"));
+  });
+};
 
 const app = express();
 
@@ -236,7 +228,7 @@ app.use(express.static(path.join(__dirname, '../public')));
   // setting up all the other routes so the catch-all route
   // doesn't interfere with the other routes
   if (app.get("env") === "development") {
-    await setupVite(app, server);
+    // No setupVite, ya que vite no se usa en producción
   } else {
     serveStatic(app);
   }
@@ -247,7 +239,7 @@ app.use(express.static(path.join(__dirname, '../public')));
   const port = process.env.PORT ? parseInt(process.env.PORT) : 5000;
   server.listen({
     port,
-    host: "127.0.0.1"
+    host: "0.0.0.0"
   }, () => {
     log(`serving on port ${port}`);
     console.log(`🌍 Orígenes permitidos CORS: ${allowedOrigins.join(', ')}`);

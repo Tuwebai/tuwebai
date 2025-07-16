@@ -1,148 +1,18 @@
 var __defProp = Object.defineProperty;
-var __getOwnPropNames = Object.getOwnPropertyNames;
 var __require = /* @__PURE__ */ ((x) => typeof require !== "undefined" ? require : typeof Proxy !== "undefined" ? new Proxy(x, {
   get: (a, b) => (typeof require !== "undefined" ? require : a)[b]
 }) : x)(function(x) {
   if (typeof require !== "undefined") return require.apply(this, arguments);
   throw Error('Dynamic require of "' + x + '" is not supported');
 });
-var __esm = (fn, res) => function __init() {
-  return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
-};
 var __export = (target, all) => {
   for (var name in all)
     __defProp(target, name, { get: all[name], enumerable: true });
 };
 
-// vite.config.ts
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import themePlugin from "@replit/vite-plugin-shadcn-theme-json";
-import path from "path";
-import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
-var vite_config_default;
-var init_vite_config = __esm({
-  async "vite.config.ts"() {
-    "use strict";
-    vite_config_default = defineConfig({
-      plugins: [
-        react(),
-        runtimeErrorOverlay(),
-        themePlugin(),
-        ...process.env.NODE_ENV !== "production" && process.env.REPL_ID !== void 0 ? [
-          await import("@replit/vite-plugin-cartographer").then(
-            (m) => m.cartographer()
-          )
-        ] : []
-      ],
-      server: {
-        proxy: {
-          "/api": "http://localhost:5000"
-        }
-      },
-      resolve: {
-        alias: {
-          "@": path.resolve(import.meta.dirname, "client", "src"),
-          "@shared": path.resolve(import.meta.dirname, "shared"),
-          "@assets": path.resolve(import.meta.dirname, "attached_assets")
-        }
-      },
-      root: path.resolve(import.meta.dirname, "client"),
-      build: {
-        outDir: path.resolve(import.meta.dirname, "dist"),
-        emptyOutDir: true
-      }
-    });
-  }
-});
-
-// server/vite.ts
-var vite_exports = {};
-__export(vite_exports, {
-  log: () => log,
-  serveStatic: () => serveStatic,
-  setupVite: () => setupVite
-});
-import express2 from "express";
-import fs from "fs";
-import path2 from "path";
-import { createServer as createViteServer, createLogger } from "vite";
-import { nanoid } from "nanoid";
-function log(message, source = "express") {
-  const formattedTime = (/* @__PURE__ */ new Date()).toLocaleTimeString("en-US", {
-    hour: "numeric",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: true
-  });
-  console.log(`${formattedTime} [${source}] ${message}`);
-}
-async function setupVite(app2, server) {
-  const serverOptions = {
-    middlewareMode: true,
-    hmr: { server },
-    allowedHosts: ["localhost", "127.0.0.1"]
-  };
-  const vite = await createViteServer({
-    ...vite_config_default,
-    configFile: false,
-    customLogger: {
-      ...viteLogger,
-      error: (msg, options) => {
-        viteLogger.error(msg, options);
-        process.exit(1);
-      }
-    },
-    server: serverOptions,
-    appType: "custom"
-  });
-  app2.use(vite.middlewares);
-  app2.use("*", async (req, res, next) => {
-    const url = req.originalUrl;
-    try {
-      const clientTemplate = path2.resolve(
-        import.meta.dirname,
-        "..",
-        "client",
-        "index.html"
-      );
-      let template = await fs.promises.readFile(clientTemplate, "utf-8");
-      template = template.replace(
-        `src="/src/main.tsx"`,
-        `src="/src/main.tsx?v=${nanoid()}"`
-      );
-      const page = await vite.transformIndexHtml(url, template);
-      res.status(200).set({ "Content-Type": "text/html" }).end(page);
-    } catch (e) {
-      vite.ssrFixStacktrace(e);
-      next(e);
-    }
-  });
-}
-function serveStatic(app2) {
-  const distPath = path2.resolve(import.meta.dirname, "public");
-  if (!fs.existsSync(distPath)) {
-    throw new Error(
-      `Could not find the build directory: ${distPath}, make sure to build the client first`
-    );
-  }
-  app2.use(express2.static(distPath));
-  app2.use("*", (_req, res) => {
-    res.sendFile(path2.resolve(distPath, "index.html"));
-  });
-}
-var viteLogger;
-var init_vite = __esm({
-  async "server/vite.ts"() {
-    "use strict";
-    await init_vite_config();
-    viteLogger = createLogger();
-  }
-});
-
 // server/index.ts
 import dotenv2 from "dotenv";
-import express3 from "express";
+import express2 from "express";
 
 // server/routes.ts
 import dotenv from "dotenv";
@@ -991,7 +861,7 @@ var trackActivity = (eventType, eventCategory) => {
       if (res.statusCode >= 200 && res.statusCode < 300) {
         const userId = req.session?.userId;
         const sessionId = req.sessionID;
-        const path4 = req.originalUrl;
+        const path2 = req.originalUrl;
         const referrer = req.get("Referer") || "";
         const userAgent = req.get("User-Agent") || "";
         const ipAddress = req.ip || req.socket.remoteAddress || "";
@@ -999,10 +869,10 @@ var trackActivity = (eventType, eventCategory) => {
           eventType,
           eventCategory,
           eventAction: req.method,
-          eventLabel: path4,
+          eventLabel: path2,
           userId,
           sessionId,
-          path: path4,
+          path: path2,
           referrer,
           userAgent,
           ipAddress
@@ -2215,41 +2085,31 @@ async function registerRoutes(app2) {
 // server/index.ts
 import session from "express-session";
 import MemoryStore from "memorystore";
-import path3 from "path";
+import path from "path";
 import passport2 from "passport";
 import { fileURLToPath } from "url";
 import cors from "cors";
 import helmet from "helmet";
 dotenv2.config();
-var setupVite2;
-var serveStatic2;
-var log2;
-if (process.env.NODE_ENV !== "production") {
-  const viteModule = await init_vite().then(() => vite_exports);
-  setupVite2 = viteModule.setupVite;
-  serveStatic2 = viteModule.serveStatic;
-  log2 = viteModule.log;
-} else {
-  log2 = (message, source = "express") => {
-    const formattedTime = (/* @__PURE__ */ new Date()).toLocaleTimeString("en-US", {
-      hour: "numeric",
-      minute: "2-digit",
-      second: "2-digit",
-      hour12: true
-    });
-    console.log(`${formattedTime} [${source}] ${message}`);
-  };
-  serveStatic2 = (app2) => {
-    const distPath = path3.resolve(import.meta.dirname, "../dist");
-    app2.use(express3.static(distPath));
-    app2.use("*", (_req, res) => {
-      res.sendFile(path3.resolve(distPath, "index.html"));
-    });
-  };
-}
 var __filename = fileURLToPath(import.meta.url);
-var __dirname = path3.dirname(__filename);
-var app = express3();
+var __dirname = path.dirname(__filename);
+var log = (message, source = "express") => {
+  const formattedTime = (/* @__PURE__ */ new Date()).toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true
+  });
+  console.log(`${formattedTime} [${source}] ${message}`);
+};
+var serveStatic = (app2) => {
+  const distPath = path.resolve(__dirname, "../dist");
+  app2.use(express2.static(distPath));
+  app2.use("*", (_req, res) => {
+    res.sendFile(path.resolve(distPath, "index.html"));
+  });
+};
+var app = express2();
 var allowedOrigins = ["https://tuweb-ai.com", "https://www.tuweb-ai.com"];
 app.use(cors({
   origin: function(origin, callback) {
@@ -2289,14 +2149,14 @@ app.use((req, res, next) => {
   res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
   next();
 });
-app.use(express3.json());
-app.use(express3.urlencoded({ extended: false }));
+app.use(express2.json());
+app.use(express2.urlencoded({ extended: false }));
 var Store = MemoryStore(session);
 var sessionStore = new Store({
   checkPeriod: 864e5
   // Limpiar sesiones expiradas cada 24 horas
 });
-log2("Usando MemoryStore para almacenar sesiones localmente");
+log("Usando MemoryStore para almacenar sesiones localmente");
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "tuwebai-super-secret-key",
@@ -2328,7 +2188,7 @@ app.use((req, res, next) => {
 });
 app.use((req, res, next) => {
   const start = Date.now();
-  const path4 = req.path;
+  const path2 = req.path;
   let capturedJsonResponse = void 0;
   const originalResJson = res.json;
   res.json = function(bodyJson, ...args) {
@@ -2337,23 +2197,23 @@ app.use((req, res, next) => {
   };
   res.on("finish", () => {
     const duration = Date.now() - start;
-    if (path4.startsWith("/api")) {
-      let logLine = `${req.method} ${path4} ${res.statusCode} in ${duration}ms`;
+    if (path2.startsWith("/api")) {
+      let logLine = `${req.method} ${path2} ${res.statusCode} in ${duration}ms`;
       if (capturedJsonResponse) {
         logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
       }
       if (logLine.length > 80) {
         logLine = logLine.slice(0, 79) + "\u2026";
       }
-      log2(logLine);
+      log(logLine);
     }
   });
   next();
 });
 app.get("/favicon.ico", (req, res) => {
-  res.sendFile(path3.join(__dirname, "../public/favicon.ico"));
+  res.sendFile(path.join(__dirname, "../public/favicon.ico"));
 });
-app.use(express3.static(path3.join(__dirname, "../public")));
+app.use(express2.static(path.join(__dirname, "../public")));
 (async () => {
   const server = await registerRoutes(app);
   app.use((err, req, res, _next) => {
@@ -2396,16 +2256,15 @@ app.use(express3.static(path3.join(__dirname, "../public")));
     }
   });
   if (app.get("env") === "development") {
-    await setupVite2(app, server);
   } else {
-    serveStatic2(app);
+    serveStatic(app);
   }
   const port = process.env.PORT ? parseInt(process.env.PORT) : 5e3;
   server.listen({
     port,
-    host: "127.0.0.1"
+    host: "0.0.0.0"
   }, () => {
-    log2(`serving on port ${port}`);
+    log(`serving on port ${port}`);
     console.log(`\u{1F30D} Or\xEDgenes permitidos CORS: ${allowedOrigins.join(", ")}`);
     console.log(`\u{1F527} NODE_ENV: ${process.env.NODE_ENV || "development"}`);
     console.log(`\u{1F511} SESSION_SECRET: ${process.env.SESSION_SECRET ? "Configurado" : "No configurado"}`);
