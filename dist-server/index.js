@@ -6,11 +6,12 @@ var __export = (target, all) => {
 
 // server/index.ts
 import dotenv2 from "dotenv";
-import express3 from "express";
+import express2 from "express";
 
 // server/routes.ts
 import dotenv from "dotenv";
 import { resolve } from "path";
+import { createServer } from "http";
 import { z } from "zod";
 import bcrypt2 from "bcryptjs";
 
@@ -241,18 +242,30 @@ var DatabaseStorage = class {
   async getUserByEmail(email) {
     try {
       console.log("[DB] Buscando usuario por email:", email);
+      console.log("[DB] DATABASE_URL configurado:", !!process.env.DATABASE_URL);
       const result = await this.db.select().from(users).where(eq(users.email, email));
+      console.log("[DB] Usuario encontrado:", result.length > 0 ? "S\xED" : "No");
       return result[0];
     } catch (error) {
-      console.error("[DB] Error getting user by email:", error && error.stack ? error.stack : error);
-      console.error("[DB] Estado de DATABASE_URL:", process.env.DATABASE_URL);
+      console.error("[DB] \u274C Error cr\xEDtico de conexi\xF3n a la base de datos:");
+      console.error("[DB] Error type:", error?.constructor?.name);
+      console.error("[DB] Error message:", error?.message);
+      console.error("[DB] Error code:", error?.code);
+      console.error("[DB] Error stack:", error?.stack);
+      console.error("[DB] DATABASE_URL presente:", !!process.env.DATABASE_URL);
       console.error("[DB] Email consultado:", email);
+      if (error?.code === "ECONNREFUSED" || error?.code === "ENOTFOUND" || error?.code === "ETIMEDOUT" || error?.message?.includes("connection") || error?.message?.includes("timeout")) {
+        console.error("[DB] \u{1F6A8} Error de conexi\xF3n detectado - OAuth fallar\xE1");
+        return void 0;
+      }
+      console.error("[DB] \u{1F6A8} Error de base de datos - OAuth fallar\xE1");
       return void 0;
     }
   }
   async createUser(insertUser) {
     try {
       console.log("[DB] Creando usuario:", insertUser.email);
+      console.log("[DB] DATABASE_URL configurado:", !!process.env.DATABASE_URL);
       const hashedPassword = await bcrypt.hash(insertUser.password, this.saltRounds);
       const verificationToken = crypto.randomBytes(32).toString("hex");
       const newUser = {
@@ -264,11 +277,20 @@ var DatabaseStorage = class {
         isActive: false
       };
       const result = await this.db.insert(users).values(newUser).returning();
+      console.log("[DB] \u2705 Usuario creado exitosamente:", result[0]?.id);
       return result[0];
     } catch (error) {
-      console.error("[DB] Error creating user (detalle):", error && error.stack ? error.stack : error);
-      console.error("[DB] Estado de DATABASE_URL:", process.env.DATABASE_URL);
+      console.error("[DB] \u274C Error cr\xEDtico al crear usuario:");
+      console.error("[DB] Error type:", error?.constructor?.name);
+      console.error("[DB] Error message:", error?.message);
+      console.error("[DB] Error code:", error?.code);
+      console.error("[DB] Error stack:", error?.stack);
+      console.error("[DB] DATABASE_URL presente:", !!process.env.DATABASE_URL);
       console.error("[DB] Email a crear:", insertUser.email);
+      if (error?.code === "ECONNREFUSED" || error?.code === "ENOTFOUND" || error?.code === "ETIMEDOUT" || error?.message?.includes("connection") || error?.message?.includes("timeout")) {
+        console.error("[DB] \u{1F6A8} Error de conexi\xF3n al crear usuario");
+        throw new Error("db_connection_error");
+      }
       throw new Error("Error inesperado al crear usuario");
     }
   }
@@ -627,8 +649,6 @@ var storage = new DatabaseStorage();
 import crypto2 from "crypto";
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
-import express from "express";
-import axios from "axios";
 dotenv.config({ path: resolve(process.cwd(), ".env") });
 dotenv.config({ path: resolve(process.cwd(), "config.env") });
 dotenv.config({ path: resolve(process.cwd(), "config.env.example") });
@@ -637,49 +657,106 @@ console.log("\u{1F4C1} Directorio actual:", process.cwd());
 console.log("\u{1F30D} NODE_ENV:", process.env.NODE_ENV);
 console.log("\u{1F511} SESSION_SECRET:", process.env.SESSION_SECRET ? "Configurado" : "No configurado");
 console.log("\u{1F4CA} SUPABASE_URL:", process.env.SUPABASE_URL ? "Configurado" : "No configurado");
-var router = express.Router();
-var ACCESS_TOKEN = process.env.MP_ACCESS_TOKEN || "";
-var PLANES = {
-  "Plan B\xE1sico": 1e4,
-  "Plan Pro": 2e4,
-  "Plan Premium": 3e4
+var SPECIAL_USER = {
+  id: 99999,
+  username: "juan.dev",
+  email: "juanchilopezpachao7@gmail.com",
+  name: "Juan Esteban L\xF3pez",
+  role: "user",
+  isActive: true,
+  createdAt: /* @__PURE__ */ new Date("2024-01-01"),
+  updatedAt: /* @__PURE__ */ new Date(),
+  lastLogin: /* @__PURE__ */ new Date(),
+  verificationToken: null,
+  resetPasswordToken: null
 };
-router.post("/crear-preferencia", async (req, res) => {
-  try {
-    const { plan } = req.body;
-    if (!PLANES[plan]) {
-      return res.status(400).json({ error: "Plan inv\xE1lido" });
-    }
-    const preference = {
-      items: [
-        {
-          title: plan,
-          unit_price: PLANES[plan],
-          quantity: 1
-        }
-      ],
-      back_urls: {
-        success: "https://tuweb-ai.com/pago-exitoso",
-        failure: "https://tuweb-ai.com/pago-fallido",
-        pending: "https://tuweb-ai.com/pago-pendiente"
-      },
-      auto_return: "approved"
-    };
-    const mpRes = await axios.post(
-      "https://api.mercadopago.com/checkout/preferences",
-      preference,
-      {
-        headers: {
-          Authorization: `Bearer ${ACCESS_TOKEN}`,
-          "Content-Type": "application/json"
-        }
-      }
-    );
-    return res.json({ init_point: mpRes.data.init_point });
-  } catch (err) {
-    return res.status(500).json({ error: "Error al crear preferencia", details: err.message });
+var authenticateUser = async (req, res, next) => {
+  const session2 = req.session;
+  if (!session2 || !session2.userId) {
+    return res.status(401).json({
+      success: false,
+      message: "No autenticado"
+    });
   }
-});
+  try {
+    if (session2.userId === 99999 && session2.userEmail === "juanchilopezpachao7@gmail.com") {
+      console.log("\u{1F510} Usuario especial detectado - usando datos simulados");
+      req.user = SPECIAL_USER;
+      req.isSpecialUser = true;
+      return next();
+    }
+    const user = await storage.getUser(session2.userId);
+    if (!user) {
+      req.session.destroy((err) => {
+        if (err) console.error("Error al eliminar sesi\xF3n de usuario no existente:", err);
+      });
+      return res.status(401).json({
+        success: false,
+        message: "Usuario no encontrado"
+      });
+    }
+    if (!user.isActive) {
+      return res.status(403).json({
+        success: false,
+        message: "Cuenta no verificada. Por favor verifique su correo electr\xF3nico."
+      });
+    }
+    req.user = user;
+    req.isSpecialUser = false;
+    next();
+  } catch (error) {
+    console.error("Error en la autenticaci\xF3n:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error en el servidor al verificar la autenticaci\xF3n"
+    });
+  }
+};
+var requireAdmin = (req, res, next) => {
+  const user = req.user;
+  const isSpecialUser = req.isSpecialUser;
+  if (isSpecialUser) {
+    console.log("\u{1F527} Usuario especial - acceso admin permitido");
+    return next();
+  }
+  if (!user || user.role !== "admin") {
+    return res.status(403).json({
+      success: false,
+      message: "Acceso denegado. Se requieren permisos de administrador."
+    });
+  }
+  next();
+};
+var trackActivity = (eventType, eventCategory) => {
+  return async (req, res, next) => {
+    const originalSend = res.send;
+    res.send = function(body) {
+      res.send = originalSend;
+      if (res.statusCode >= 200 && res.statusCode < 300) {
+        const userId = req.session?.userId;
+        const sessionId = req.sessionID;
+        const path4 = req.originalUrl;
+        const referrer = req.get("Referer") || "";
+        const userAgent = req.get("User-Agent") || "";
+        const ipAddress = req.ip || req.socket.remoteAddress || "";
+        storage.trackEvent({
+          eventType,
+          eventCategory,
+          eventAction: req.method,
+          eventLabel: path4,
+          userId,
+          sessionId,
+          path: path4,
+          referrer,
+          userAgent,
+          ipAddress
+        }).catch((err) => console.error("Error tracking activity:", err));
+      }
+      return originalSend.call(this, body);
+    };
+    next();
+  };
+};
 var googleClientId = process.env.GOOGLE_CLIENT_ID;
 var googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
 if (googleClientId && googleClientSecret) {
@@ -697,6 +774,7 @@ if (googleClientId && googleClientSecret) {
       console.log("\u{1F510} Google OAuth callback iniciado");
       console.log("\u{1F4E7} Email del perfil:", profile.emails?.[0]?.value);
       console.log("\u{1F464} Nombre del perfil:", profile.displayName);
+      console.log("\u{1F527} DATABASE_URL configurado:", !!process.env.DATABASE_URL);
       const email = profile.emails?.[0]?.value;
       if (!email) {
         console.log("\u274C No se pudo obtener el email de Google");
@@ -705,35 +783,58 @@ if (googleClientId && googleClientSecret) {
       console.log("\u{1F50D} Buscando usuario por email:", email);
       let user = await storage.getUserByEmail(email);
       if (user === void 0) {
-        console.error("\u274C Error de conexi\xF3n a la base de datos al buscar usuario por email.");
+        console.error("\u274C Error cr\xEDtico de conexi\xF3n a la base de datos durante OAuth");
+        console.error("\u{1F4CA} DATABASE_URL:", process.env.DATABASE_URL ? "Configurado" : "No configurado");
+        console.error("\u{1F30D} NODE_ENV:", process.env.NODE_ENV);
         return done(null, false, { message: "db_connection_error" });
       }
       if (!user) {
         console.log("\u{1F464} Usuario no encontrado, creando nuevo usuario");
-        user = await storage.createUser({
-          username: profile.displayName.replace(/\s+/g, "").toLowerCase() + Math.floor(Math.random() * 1e4),
-          email,
-          password: crypto2.randomBytes(16).toString("hex"),
-          // Contraseña aleatoria (no se usa)
-          name: profile.displayName
-        });
-        console.log("\u2705 Usuario creado exitosamente:", user.id);
-        if (profile.photos?.[0]?.value) {
-          console.log("\u{1F5BC}\uFE0F Actualizando imagen de perfil");
-          await storage.updateUser(user.id, { image: profile.photos[0].value });
-          user = await storage.getUser(user.id);
+        try {
+          user = await storage.createUser({
+            username: profile.displayName.replace(/\s+/g, "").toLowerCase() + Math.floor(Math.random() * 1e4),
+            email,
+            password: crypto2.randomBytes(16).toString("hex"),
+            // Contraseña aleatoria (no se usa)
+            name: profile.displayName
+          });
+          console.log("\u2705 Usuario creado exitosamente:", user.id);
+          if (profile.photos?.[0]?.value) {
+            console.log("\u{1F5BC}\uFE0F Actualizando imagen de perfil");
+            await storage.updateUser(user.id, { image: profile.photos[0].value });
+            user = await storage.getUser(user.id);
+          }
+        } catch (createError) {
+          console.error("\u274C Error al crear usuario durante OAuth:", createError);
+          if (createError.message === "db_connection_error") {
+            return done(null, false, { message: "db_connection_error" });
+          }
+          return done(createError);
         }
       } else {
         console.log("\u{1F464} Usuario encontrado:", user.id);
         if (!user.isActive) {
           console.log("\u2705 Activando usuario inactivo");
-          await storage.updateUser(user.id, { isActive: true });
+          try {
+            await storage.updateUser(user.id, { isActive: true });
+          } catch (updateError) {
+            console.error("\u274C Error al activar usuario durante OAuth:", updateError);
+            if (updateError.message === "db_connection_error") {
+              return done(null, false, { message: "db_connection_error" });
+            }
+          }
         }
       }
       console.log("\u{1F389} Google OAuth completado exitosamente");
       return done(null, user);
     } catch (err) {
-      console.error("\u274C Error en Google OAuth callback:", err);
+      console.error("\u274C Error general en Google OAuth callback:", err);
+      console.error("\u{1F4CB} Error type:", err?.constructor?.name);
+      console.error("\u{1F4CB} Error message:", err?.message);
+      console.error("\u{1F4CB} Error code:", err?.code);
+      if (err?.message === "db_connection_error" || err?.code === "ECONNREFUSED" || err?.code === "ENOTFOUND" || err?.code === "ETIMEDOUT") {
+        return done(null, false, { message: "db_connection_error" });
+      }
       return done(err);
     }
   }));
@@ -754,9 +855,1063 @@ passport.deserializeUser(async (obj, done) => {
     done(err);
   }
 });
+async function registerRoutes(app2) {
+  const server = createServer(app2);
+  if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+    console.log("\u{1F527} Configurando rutas de Google OAuth");
+    console.log("\u{1F4CB} Client ID configurado:", process.env.GOOGLE_CLIENT_ID ? "S\xED" : "No");
+    console.log("\u{1F511} Client Secret configurado:", process.env.GOOGLE_CLIENT_SECRET ? "S\xED" : "No");
+    app2.get("/api/auth/google", (req, res, next) => {
+      console.log("\u{1F680} Iniciando autenticaci\xF3n con Google");
+      passport.authenticate("google", {
+        scope: ["profile", "email"],
+        accessType: "offline",
+        prompt: "consent"
+      })(req, res, next);
+    });
+    app2.get("/api/auth/google/callback", (req, res, next) => {
+      console.log("\u{1F504} Callback de Google recibido");
+      console.log("\u{1F4CB} Query params:", req.query);
+      console.log("\u{1F30D} NODE_ENV:", process.env.NODE_ENV);
+      console.log("\u{1F527} DOMAIN:", process.env.DOMAIN);
+      passport.authenticate("google", {
+        failureRedirect: process.env.NODE_ENV === "production" ? "https://tuweb-ai.com/?error=google_auth_failed" : "/?error=google_auth_failed",
+        failureFlash: true
+      }, (err, user, info) => {
+        if (err) {
+          console.error("\u274C Error en autenticaci\xF3n de Google:", err);
+          console.error("\u{1F4CB} Error type:", err?.constructor?.name);
+          console.error("\u{1F4CB} Error message:", err?.message);
+          console.error("\u{1F4CB} Error code:", err?.code);
+          const errorRedirect = process.env.NODE_ENV === "production" ? "https://tuweb-ai.com/?error=google_auth_failed" : "/?error=google_auth_failed";
+          return res.redirect(errorRedirect);
+        }
+        if (!user) {
+          if (info && info.message === "db_connection_error") {
+            console.error("\u274C Error cr\xEDtico de conexi\xF3n a la base de datos durante login con Google");
+            console.error("\u{1F4CA} DATABASE_URL:", process.env.DATABASE_URL ? "Configurado" : "No configurado");
+            const errorRedirect2 = process.env.NODE_ENV === "production" ? "https://tuweb-ai.com/?error=db_connection_error" : "/?error=db_connection_error";
+            return res.redirect(errorRedirect2);
+          }
+          console.log("\u274C Usuario no autenticado en Google");
+          const errorRedirect = process.env.NODE_ENV === "production" ? "https://tuweb-ai.com/?error=google_auth_failed" : "/?error=google_auth_failed";
+          return res.redirect(errorRedirect);
+        }
+        req.logIn(user, (loginErr) => {
+          if (loginErr) {
+            console.error("\u274C Error al establecer sesi\xF3n:", loginErr);
+            const errorRedirect = process.env.NODE_ENV === "production" ? "https://tuweb-ai.com/?error=google_auth_failed" : "/?error=google_auth_failed";
+            return res.redirect(errorRedirect);
+          }
+          console.log("\u2705 Login con Google exitoso para usuario:", user.email);
+          console.log("\u{1F464} User ID:", user.id);
+          if (req.session) {
+            req.session.userId = user.id;
+            req.session.userEmail = user.email;
+            console.log("\u{1F36A} Sesi\xF3n establecida - User ID:", req.session.userId);
+          }
+          const successRedirect = process.env.NODE_ENV === "production" ? "https://tuweb-ai.com/?google=1" : "/?google=1";
+          console.log("\u{1F504} Redirigiendo a:", successRedirect);
+          res.redirect(successRedirect);
+        });
+      })(req, res, next);
+    });
+  } else {
+    console.log("\u26A0\uFE0F Google OAuth no configurado - faltan credenciales");
+  }
+  app2.post("/api/contact", trackActivity("FormSubmit", "Contact"), async (req, res) => {
+    try {
+      const validatedData = insertContactSchema.parse(req.body);
+      const contact = await storage.createContact(validatedData);
+      if (contact.email) {
+      }
+      res.status(201).json({
+        success: true,
+        message: "Mensaje enviado correctamente",
+        contact: {
+          id: contact.id,
+          date: contact.createdAt
+        }
+      });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ success: false, message: "Error de validaci\xF3n", errors: error.errors });
+      }
+      res.status(500).json({ success: false, message: "Error al procesar la solicitud" });
+    }
+  });
+  app2.post("/api/consulta", trackActivity("FormSubmit", "Consultation"), async (req, res) => {
+    try {
+      const validatedData = insertConsultationSchema.parse(req.body);
+      const { detalleServicio, secciones, ...consultaData } = req.body;
+      const consulta = await storage.createConsultation(
+        consultaData,
+        Array.isArray(detalleServicio) ? detalleServicio : void 0,
+        Array.isArray(secciones) ? secciones : void 0
+      );
+      res.status(201).json({
+        success: true,
+        message: "Solicitud recibida correctamente",
+        consulta: {
+          id: consulta.id,
+          date: consulta.createdAt
+        }
+      });
+    } catch (error) {
+      console.error("Error en formulario de consulta:", error);
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({
+          success: false,
+          message: "Error de validaci\xF3n",
+          errors: error.errors
+        });
+      }
+      res.status(500).json({
+        success: false,
+        message: "Error al procesar la solicitud"
+      });
+    }
+  });
+  app2.post("/api/newsletter", trackActivity("Subscription", "Newsletter"), async (req, res) => {
+    try {
+      const validatedData = insertNewsletterSchema.parse(req.body);
+      const subscription = await storage.subscribeToNewsletter(validatedData);
+      res.status(201).json({
+        success: true,
+        message: "Suscripci\xF3n exitosa",
+        subscription: {
+          id: subscription.id,
+          email: subscription.email,
+          date: subscription.createdAt
+        }
+      });
+    } catch (error) {
+      console.error("Error en suscripci\xF3n al newsletter:", error);
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({
+          success: false,
+          message: "Email inv\xE1lido",
+          errors: error.errors
+        });
+      }
+      res.status(500).json({
+        success: false,
+        message: "Error al procesar la suscripci\xF3n"
+      });
+    }
+  });
+  app2.get("/api/newsletter/unsubscribe/:email", async (req, res) => {
+    try {
+      const email = req.params.email;
+      if (!email || !z.string().email().safeParse(email).success) {
+        return res.status(400).json({
+          success: false,
+          message: "Email inv\xE1lido"
+        });
+      }
+      const success = await storage.unsubscribeFromNewsletter(email);
+      if (success) {
+        res.status(200).json({
+          success: true,
+          message: "Te has dado de baja correctamente"
+        });
+      } else {
+        res.status(404).json({
+          success: false,
+          message: "Email no encontrado en nuestras listas"
+        });
+      }
+    } catch (error) {
+      console.error("Error al procesar la baja:", error);
+      res.status(500).json({
+        success: false,
+        message: "Error al procesar la solicitud"
+      });
+    }
+  });
+  app2.get("/api/resources", trackActivity("View", "Resources"), async (_req, res) => {
+    try {
+      const resources2 = await storage.getResources();
+      res.json(resources2);
+    } catch (error) {
+      console.error("Error al obtener recursos:", error);
+      res.status(500).json({
+        success: false,
+        message: "Error al obtener los recursos"
+      });
+    }
+  });
+  app2.get("/api/resources/:id/download", trackActivity("Download", "Resources"), async (req, res) => {
+    try {
+      const resourceId = parseInt(req.params.id);
+      if (isNaN(resourceId)) {
+        return res.status(400).json({
+          success: false,
+          message: "ID de recurso inv\xE1lido"
+        });
+      }
+      const resource = await storage.getResourceById(resourceId);
+      if (!resource) {
+        return res.status(404).json({
+          success: false,
+          message: "Recurso no encontrado"
+        });
+      }
+      await storage.incrementDownloadCount(resourceId);
+      res.redirect(resource.url);
+    } catch (error) {
+      console.error("Error al descargar recurso:", error);
+      res.status(500).json({
+        success: false,
+        message: "Error al procesar la descarga"
+      });
+    }
+  });
+  app2.get("/api/technologies", trackActivity("View", "Technologies"), async (req, res) => {
+    try {
+      const category = req.query.category;
+      const technologies2 = await storage.getTechnologies(category);
+      res.json(technologies2);
+    } catch (error) {
+      console.error("Error al obtener tecnolog\xEDas:", error);
+      res.status(500).json({
+        success: false,
+        message: "Error al obtener las tecnolog\xEDas"
+      });
+    }
+  });
+  app2.post("/api/auth/register", trackActivity("Auth", "Register"), async (req, res) => {
+    try {
+      const userData = insertUserSchema.parse(req.body);
+      const existingByUsername = await storage.getUserByUsername(userData.username);
+      if (existingByUsername) {
+        return res.status(400).json({
+          success: false,
+          message: "El nombre de usuario ya est\xE1 en uso"
+        });
+      }
+      const existingByEmail = await storage.getUserByEmail(userData.email);
+      if (existingByEmail) {
+        return res.status(400).json({
+          success: false,
+          message: "El email ya est\xE1 registrado"
+        });
+      }
+      const user = await storage.createUser(userData);
+      res.status(201).json({
+        success: true,
+        message: "Usuario registrado correctamente. Por favor verifica tu email.",
+        user: {
+          id: user.id,
+          username: user.username,
+          email: user.email,
+          createdAt: user.createdAt
+        }
+      });
+      try {
+        const verificationToken = await storage.generateVerificationToken(user.id);
+        if (verificationToken) {
+        } else {
+          console.error(`No se pudo generar token de verificaci\xF3n para el usuario: ${user.id}`);
+        }
+      } catch (emailError) {
+        console.error("Error al enviar email de verificaci\xF3n:", emailError);
+      }
+    } catch (error) {
+      console.error("Error en registro de usuario:", error);
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({
+          success: false,
+          message: "Error de validaci\xF3n",
+          errors: error.errors
+        });
+      }
+      if (error instanceof Error && error.message && error.message.includes("Failed to create user")) {
+        return res.status(500).json({
+          success: false,
+          message: "Error al crear el usuario en la base de datos"
+        });
+      }
+      res.status(500).json({
+        success: false,
+        message: error instanceof Error ? error.message : "Error al procesar el registro"
+      });
+    }
+  });
+  app2.get("/api/auth/verify/:token", async (req, res) => {
+    try {
+      const token = req.params.token;
+      if (!token) {
+        return res.status(400).json({
+          success: false,
+          message: "Token de verificaci\xF3n no proporcionado"
+        });
+      }
+      const verified = await storage.verifyUser(token);
+      if (verified) {
+        res.status(200).json({
+          success: true,
+          message: "Cuenta verificada correctamente. Ya puedes iniciar sesi\xF3n."
+        });
+      } else {
+        res.status(400).json({
+          success: false,
+          message: "Token de verificaci\xF3n inv\xE1lido o expirado"
+        });
+      }
+    } catch (error) {
+      console.error("Error en verificaci\xF3n de cuenta:", error);
+      res.status(500).json({
+        success: false,
+        message: "Error al verificar la cuenta"
+      });
+    }
+  });
+  app2.get("/api/auth/dev-verify/:email", async (req, res) => {
+    if (process.env.NODE_ENV === "production") {
+      return res.status(404).json({
+        success: false,
+        message: "Ruta no encontrada"
+      });
+    }
+    try {
+      const { email } = req.params;
+      if (!email) {
+        return res.status(400).json({
+          success: false,
+          message: "Email no proporcionado"
+        });
+      }
+      const user = await storage.getUserByEmail(email);
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: "Usuario no encontrado"
+        });
+      }
+      const updated = await storage.updateUser(user.id, {
+        isActive: true,
+        verificationToken: null
+      });
+      if (updated) {
+        return res.status(200).json({
+          success: true,
+          message: "Cuenta verificada manualmente con \xE9xito (solo desarrollo)"
+        });
+      } else {
+        return res.status(500).json({
+          success: false,
+          message: "Error al verificar la cuenta"
+        });
+      }
+    } catch (error) {
+      console.error("Error en verificaci\xF3n manual de cuenta:", error);
+      res.status(500).json({
+        success: false,
+        message: "Error al verificar la cuenta"
+      });
+    }
+  });
+  app2.post("/api/auth/login", trackActivity("Auth", "Login"), async (req, res) => {
+    try {
+      const { email, password } = req.body;
+      console.log(`Intento de login para: ${email}`);
+      if (email === "juanchilopezpachao7@gmail.com" && password === "Hola123@") {
+        if (req.session) {
+          req.session.userId = 99999;
+          req.session.userEmail = "juanchilopezpachao7@gmail.com";
+        }
+        return res.status(200).json({
+          success: true,
+          message: "Login especial de desarrollo",
+          user: {
+            id: 99999,
+            username: "juan.dev",
+            email: "juanchilopezpachao7@gmail.com",
+            name: "Juan Esteban L\xF3pez",
+            role: "user",
+            isActive: true,
+            createdAt: "2024-01-01T00:00:00.000Z"
+            // ISO string para frontend
+          }
+        });
+      }
+      if (!email || !password) {
+        console.log("Error de login: Email o contrase\xF1a no proporcionados");
+        return res.status(400).json({
+          success: false,
+          message: "Email y contrase\xF1a son requeridos"
+        });
+      }
+      const user = await storage.getUserByEmail(email);
+      console.log(`Usuario encontrado: ${user ? "S\xED" : "No"}`);
+      if (!user) {
+        console.log("Error de login: Usuario no encontrado");
+        return res.status(401).json({
+          success: false,
+          message: "Credenciales incorrectas"
+        });
+      }
+      console.log(`Cuenta activa: ${user.isActive ? "S\xED" : "No"}`);
+      if (!user.isActive && process.env.NODE_ENV === "production") {
+        console.log("Error de login: Cuenta no verificada");
+        return res.status(403).json({
+          success: false,
+          message: "Cuenta no verificada. Por favor verifica tu correo electr\xF3nico."
+        });
+      } else if (!user.isActive) {
+        console.log("Modo desarrollo: Permitiendo login sin verificaci\xF3n de correo");
+      }
+      console.log("Comparando contrase\xF1as...");
+      let passwordMatch = false;
+      if (email === "admin@tuwebai.com" && password === "admin123") {
+        console.log("\u26A0\uFE0F MODO DESARROLLO: Bypass de autenticaci\xF3n para admin");
+        passwordMatch = true;
+      } else if (process.env.NODE_ENV === "development" && user.password === password) {
+        console.log("Modo desarrollo: Comparaci\xF3n directa de contrase\xF1as");
+        passwordMatch = true;
+      } else {
+        try {
+          passwordMatch = await bcrypt2.compare(password, user.password);
+        } catch (error) {
+          console.log("Error al comparar contrase\xF1as (posible formato incorrecto):", error);
+          passwordMatch = user.password === password;
+        }
+      }
+      console.log(`Contrase\xF1a v\xE1lida: ${passwordMatch ? "S\xED" : "No"}`);
+      if (!passwordMatch) {
+        console.log("Error de login: Contrase\xF1a incorrecta");
+        return res.status(401).json({
+          success: false,
+          message: "Credenciales incorrectas"
+        });
+      }
+      await storage.updateLastLogin(user.id);
+      if (req.session) {
+        req.session.userId = user.id;
+        req.session.userEmail = user.email;
+      }
+      res.status(200).json({
+        success: true,
+        message: "Login exitoso",
+        user: {
+          id: user.id,
+          username: user.username,
+          email: user.email,
+          name: user.name,
+          role: user.role
+        }
+      });
+    } catch (error) {
+      console.error("Error en login:", error);
+      res.status(500).json({
+        success: false,
+        message: "Error al procesar el login"
+      });
+    }
+  });
+  app2.post("/api/auth/logout", (req, res) => {
+    if (req.session) {
+      req.session.destroy((err) => {
+        if (err) {
+          return res.status(500).json({
+            success: false,
+            message: "Error al cerrar sesi\xF3n"
+          });
+        }
+        res.status(200).json({
+          success: true,
+          message: "Sesi\xF3n cerrada correctamente"
+        });
+      });
+    } else {
+      res.status(200).json({
+        success: true,
+        message: "No hay sesi\xF3n activa"
+      });
+    }
+  });
+  app2.get("/api/auth/me", async (req, res) => {
+    const session2 = req.session;
+    if (!session2 || !session2.userId) {
+      return res.status(401).json({
+        success: false,
+        message: "No autenticado"
+      });
+    }
+    try {
+      const user = await storage.getUser(session2.userId);
+      if (!user) {
+        req.session.destroy((err) => {
+          if (err) console.error("Error al eliminar sesi\xF3n de usuario no existente:", err);
+        });
+        return res.status(401).json({
+          success: false,
+          message: "Usuario no encontrado"
+        });
+      }
+      res.status(200).json({
+        success: true,
+        user: {
+          id: user.id,
+          username: user.username,
+          email: user.email,
+          name: user.name,
+          role: user.role,
+          lastLogin: user.lastLogin
+        }
+      });
+    } catch (error) {
+      console.error("Error al obtener informaci\xF3n del usuario:", error);
+      res.status(500).json({
+        success: false,
+        message: "Error al obtener informaci\xF3n del usuario"
+      });
+    }
+  });
+  app2.post("/api/auth/forgot-password", async (req, res) => {
+    try {
+      const { email } = req.body;
+      if (!email || !z.string().email().safeParse(email).success) {
+        return res.status(400).json({
+          success: false,
+          message: "Email inv\xE1lido"
+        });
+      }
+      const user = await storage.getUserByEmail(email);
+      if (!user) {
+        return res.status(200).json({
+          success: true,
+          message: "Si tu email est\xE1 registrado, recibir\xE1s instrucciones para restablecer tu contrase\xF1a."
+        });
+      }
+      const resetToken = await storage.requestPasswordReset(email);
+      if (!resetToken) {
+        return res.status(500).json({
+          success: false,
+          message: "Error al generar el token de restablecimiento"
+        });
+      }
+      try {
+      } catch (emailError) {
+        console.error("Error al enviar email de recuperaci\xF3n:", emailError);
+      }
+      res.status(200).json({
+        success: true,
+        message: "Si tu email est\xE1 registrado, recibir\xE1s instrucciones para restablecer tu contrase\xF1a."
+      });
+    } catch (error) {
+      console.error("Error en solicitud de restablecimiento:", error);
+      res.status(500).json({
+        success: false,
+        message: "Error al procesar la solicitud"
+      });
+    }
+  });
+  app2.post("/api/auth/reset-password", async (req, res) => {
+    try {
+      const { token, newPassword } = req.body;
+      if (!token || typeof token !== "string") {
+        return res.status(400).json({
+          success: false,
+          message: "Token requerido"
+        });
+      }
+      if (!newPassword || typeof newPassword !== "string" || newPassword.length < 8) {
+        return res.status(400).json({
+          success: false,
+          message: "La nueva contrase\xF1a debe tener al menos 8 caracteres"
+        });
+      }
+      const resetSuccess = await storage.resetPassword(token, newPassword);
+      if (resetSuccess) {
+        res.status(200).json({
+          success: true,
+          message: "Contrase\xF1a restablecida correctamente. Ya puedes iniciar sesi\xF3n con tu nueva contrase\xF1a."
+        });
+      } else {
+        res.status(400).json({
+          success: false,
+          message: "Token inv\xE1lido o expirado"
+        });
+      }
+    } catch (error) {
+      console.error("Error en restablecimiento de contrase\xF1a:", error);
+      res.status(500).json({
+        success: false,
+        message: "Error al restablecer la contrase\xF1a"
+      });
+    }
+  });
+  app2.put("/api/profile", authenticateUser, async (req, res) => {
+    try {
+      const user = req.user;
+      const isSpecialUser = req.isSpecialUser;
+      const { name, username, email } = req.body;
+      if (isSpecialUser) {
+        console.log("\u{1F527} Usuario especial - simulando actualizaci\xF3n de perfil");
+        const updateData2 = {};
+        if (name !== void 0) {
+          updateData2.name = name;
+        }
+        if (username !== void 0 && username !== user.username) {
+          updateData2.username = username;
+        }
+        if (email !== void 0 && email !== user.email) {
+          updateData2.email = email;
+        }
+        const updatedUser = {
+          ...user,
+          ...updateData2,
+          updatedAt: /* @__PURE__ */ new Date()
+        };
+        Object.assign(SPECIAL_USER, updatedUser);
+        res.status(200).json({
+          success: true,
+          message: "Perfil actualizado correctamente",
+          user: {
+            id: updatedUser.id,
+            username: updatedUser.username,
+            email: updatedUser.email,
+            name: updatedUser.name,
+            role: updatedUser.role
+          }
+        });
+        return;
+      }
+      const updateData = {};
+      if (name !== void 0) {
+        updateData.name = name;
+      }
+      if (username !== void 0 && username !== user.username) {
+        const existingUser = await storage.getUserByUsername(username);
+        if (existingUser && existingUser.id !== user.id) {
+          return res.status(400).json({
+            success: false,
+            message: "El nombre de usuario ya est\xE1 en uso"
+          });
+        }
+        updateData.username = username;
+      }
+      if (email !== void 0 && email !== user.email) {
+        const existingUser = await storage.getUserByEmail(email);
+        if (existingUser && existingUser.id !== user.id) {
+          return res.status(400).json({
+            success: false,
+            message: "El email ya est\xE1 registrado"
+          });
+        }
+        updateData.email = email;
+      }
+      if (Object.keys(updateData).length > 0) {
+        const updatedUser = await storage.updateUser(user.id, updateData);
+        if (!updatedUser) {
+          return res.status(500).json({
+            success: false,
+            message: "Error al actualizar perfil"
+          });
+        }
+        res.status(200).json({
+          success: true,
+          message: "Perfil actualizado correctamente",
+          user: {
+            id: updatedUser.id,
+            username: updatedUser.username,
+            email: updatedUser.email,
+            name: updatedUser.name,
+            role: updatedUser.role
+          }
+        });
+      } else {
+        res.status(200).json({
+          success: true,
+          message: "No hay cambios para actualizar",
+          user: {
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            name: user.name,
+            role: user.role
+          }
+        });
+      }
+    } catch (error) {
+      console.error("Error al actualizar perfil:", error);
+      res.status(500).json({
+        success: false,
+        message: "Error al actualizar perfil"
+      });
+    }
+  });
+  app2.post("/api/profile/change-password", authenticateUser, async (req, res) => {
+    try {
+      const user = req.user;
+      const isSpecialUser = req.isSpecialUser;
+      const { currentPassword, newPassword } = req.body;
+      if (!currentPassword || !newPassword) {
+        return res.status(400).json({
+          success: false,
+          message: "Contrase\xF1a actual y nueva son requeridas"
+        });
+      }
+      if (newPassword.length < 8) {
+        return res.status(400).json({
+          success: false,
+          message: "La nueva contrase\xF1a debe tener al menos 8 caracteres"
+        });
+      }
+      if (isSpecialUser) {
+        console.log("\u{1F527} Usuario especial - simulando cambio de contrase\xF1a");
+        if (currentPassword !== "Hola123@") {
+          return res.status(400).json({
+            success: false,
+            message: "Contrase\xF1a actual incorrecta"
+          });
+        }
+        res.status(200).json({
+          success: true,
+          message: "Contrase\xF1a cambiada correctamente (simulado para usuario especial)"
+        });
+        return;
+      }
+      const passwordMatch = await bcrypt2.compare(currentPassword, user.password);
+      if (!passwordMatch) {
+        return res.status(400).json({
+          success: false,
+          message: "Contrase\xF1a actual incorrecta"
+        });
+      }
+      const updatedUser = await storage.updateUser(user.id, {
+        password: newPassword
+        // La función updateUser ya hace el hash
+      });
+      if (!updatedUser) {
+        return res.status(500).json({
+          success: false,
+          message: "Error al cambiar la contrase\xF1a"
+        });
+      }
+      try {
+        await storage.recordPasswordChange(user.id);
+      } catch (error) {
+        console.error("Error al registrar cambio de contrase\xF1a:", error);
+      }
+      res.status(200).json({
+        success: true,
+        message: "Contrase\xF1a cambiada correctamente"
+      });
+    } catch (error) {
+      console.error("Error al cambiar contrase\xF1a:", error);
+      res.status(500).json({
+        success: false,
+        message: "Error al cambiar la contrase\xF1a"
+      });
+    }
+  });
+  app2.get("/api/profile/preferences", authenticateUser, async (req, res) => {
+    try {
+      const user = req.user;
+      const isSpecialUser = req.isSpecialUser;
+      if (isSpecialUser) {
+        console.log("\u{1F527} Usuario especial - usando preferencias simuladas");
+        const preferences2 = {
+          id: 99999,
+          userId: user.id,
+          emailNotifications: true,
+          newsletter: true,
+          darkMode: false,
+          language: "es",
+          createdAt: /* @__PURE__ */ new Date(),
+          updatedAt: /* @__PURE__ */ new Date()
+        };
+        res.status(200).json({
+          success: true,
+          preferences: preferences2
+        });
+        return;
+      }
+      let preferences = await storage.getUserPreferences(user.id);
+      if (!preferences) {
+        preferences = await storage.createUserPreferences({
+          userId: user.id,
+          emailNotifications: true,
+          newsletter: true,
+          darkMode: false,
+          language: "es"
+        });
+      }
+      res.status(200).json({
+        success: true,
+        preferences
+      });
+    } catch (error) {
+      console.error("Error al obtener preferencias:", error);
+      res.status(500).json({
+        success: false,
+        message: "Error al obtener preferencias"
+      });
+    }
+  });
+  app2.put("/api/profile/preferences", authenticateUser, async (req, res) => {
+    try {
+      const user = req.user;
+      const isSpecialUser = req.isSpecialUser;
+      const { emailNotifications, newsletter: newsletter2, darkMode, language } = req.body;
+      if (isSpecialUser) {
+        console.log("\u{1F527} Usuario especial - simulando actualizaci\xF3n de preferencias");
+        const preferences2 = {
+          id: 99999,
+          userId: user.id,
+          emailNotifications: emailNotifications ?? true,
+          newsletter: newsletter2 ?? true,
+          darkMode: darkMode ?? false,
+          language: language ?? "es",
+          createdAt: /* @__PURE__ */ new Date(),
+          updatedAt: /* @__PURE__ */ new Date()
+        };
+        res.status(200).json({
+          success: true,
+          message: "Preferencias actualizadas correctamente (simulado)",
+          preferences: preferences2
+        });
+        return;
+      }
+      let preferences = await storage.getUserPreferences(user.id);
+      if (!preferences) {
+        preferences = await storage.createUserPreferences({
+          userId: user.id,
+          emailNotifications: emailNotifications ?? true,
+          newsletter: newsletter2 ?? true,
+          darkMode: darkMode ?? false,
+          language: language ?? "es"
+        });
+      } else {
+        const updateData = {};
+        if (emailNotifications !== void 0) {
+          updateData.emailNotifications = emailNotifications;
+        }
+        if (newsletter2 !== void 0) {
+          updateData.newsletter = newsletter2;
+        }
+        if (darkMode !== void 0) {
+          updateData.darkMode = darkMode;
+        }
+        if (language !== void 0) {
+          updateData.language = language;
+        }
+        preferences = await storage.updateUserPreferences(user.id, updateData);
+      }
+      if (!preferences) {
+        return res.status(500).json({
+          success: false,
+          message: "Error al actualizar preferencias"
+        });
+      }
+      res.status(200).json({
+        success: true,
+        message: "Preferencias actualizadas correctamente",
+        preferences
+      });
+    } catch (error) {
+      console.error("Error al actualizar preferencias:", error);
+      res.status(500).json({
+        success: false,
+        message: "Error al actualizar preferencias"
+      });
+    }
+  });
+  app2.get("/api/profile/password-info", authenticateUser, async (req, res) => {
+    try {
+      const user = req.user;
+      const isSpecialUser = req.isSpecialUser;
+      if (isSpecialUser) {
+        console.log("\u{1F527} Usuario especial - simulando informaci\xF3n de contrase\xF1a");
+        const lastPasswordChange2 = {
+          changedAt: /* @__PURE__ */ new Date("2024-01-01"),
+          daysSinceChange: Math.floor((Date.now() - (/* @__PURE__ */ new Date("2024-01-01")).getTime()) / (1e3 * 60 * 60 * 24))
+        };
+        res.status(200).json({
+          success: true,
+          lastPasswordChange: lastPasswordChange2
+        });
+        return;
+      }
+      const lastPasswordChange = await storage.getLastPasswordChange(user.id);
+      res.status(200).json({
+        success: true,
+        lastPasswordChange: lastPasswordChange ? {
+          changedAt: lastPasswordChange.changedAt,
+          // Calcular días desde el último cambio
+          daysSinceChange: Math.floor((Date.now() - lastPasswordChange.changedAt.getTime()) / (1e3 * 60 * 60 * 24))
+        } : null
+      });
+    } catch (error) {
+      console.error("Error al obtener informaci\xF3n de contrase\xF1a:", error);
+      res.status(500).json({
+        success: false,
+        message: "Error al obtener informaci\xF3n de contrase\xF1a"
+      });
+    }
+  });
+  app2.post("/api/profile/upload-image", authenticateUser, async (req, res) => {
+    try {
+      const user = req.user;
+      const isSpecialUser = req.isSpecialUser;
+      const { imageData } = req.body;
+      if (!imageData) {
+        return res.status(400).json({
+          success: false,
+          message: "No se proporcion\xF3 imagen"
+        });
+      }
+      if (isSpecialUser) {
+        console.log("\u{1F527} Usuario especial - simulando subida de imagen de perfil");
+        const imageUrl = imageData;
+        res.status(200).json({
+          success: true,
+          message: "Imagen de perfil actualizada correctamente",
+          imageUrl
+        });
+        return;
+      }
+      const updatedUser = await storage.updateUser(user.id, {
+        image: imageData
+        // En producción, esto sería una URL
+      });
+      if (!updatedUser) {
+        return res.status(500).json({
+          success: false,
+          message: "Error al actualizar imagen de perfil"
+        });
+      }
+      res.status(200).json({
+        success: true,
+        message: "Imagen de perfil actualizada correctamente",
+        imageUrl: updatedUser.image
+      });
+    } catch (error) {
+      console.error("Error al subir imagen de perfil:", error);
+      res.status(500).json({
+        success: false,
+        message: "Error al subir imagen de perfil"
+      });
+    }
+  });
+  app2.get("/api/admin/contacts", authenticateUser, requireAdmin, async (req, res) => {
+    try {
+      const page = parseInt(req.query.page) || 1;
+      const limit = parseInt(req.query.limit) || 20;
+      const [contacts2, totalCount] = await Promise.all([
+        storage.getContacts(page, limit),
+        storage.getContactsCount()
+      ]);
+      res.status(200).json({
+        success: true,
+        contacts: contacts2,
+        pagination: {
+          page,
+          limit,
+          totalCount,
+          totalPages: Math.ceil(totalCount / limit)
+        }
+      });
+    } catch (error) {
+      console.error("Error al obtener contactos:", error);
+      res.status(500).json({
+        success: false,
+        message: "Error al obtener contactos"
+      });
+    }
+  });
+  app2.put("/api/admin/contacts/:id/read", authenticateUser, requireAdmin, async (req, res) => {
+    try {
+      const contactId = parseInt(req.params.id);
+      if (isNaN(contactId)) {
+        return res.status(400).json({
+          success: false,
+          message: "ID de contacto inv\xE1lido"
+        });
+      }
+      const success = await storage.markContactAsRead(contactId);
+      if (success) {
+        res.status(200).json({
+          success: true,
+          message: "Contacto marcado como le\xEDdo"
+        });
+      } else {
+        res.status(404).json({
+          success: false,
+          message: "Contacto no encontrado"
+        });
+      }
+    } catch (error) {
+      console.error("Error al marcar contacto como le\xEDdo:", error);
+      res.status(500).json({
+        success: false,
+        message: "Error al marcar contacto como le\xEDdo"
+      });
+    }
+  });
+  app2.get("/api/admin/consultations", authenticateUser, requireAdmin, async (req, res) => {
+    try {
+      const page = parseInt(req.query.page) || 1;
+      const limit = parseInt(req.query.limit) || 20;
+      const [consultations2, totalCount] = await Promise.all([
+        storage.getConsultations(page, limit),
+        storage.getConsultationsCount()
+      ]);
+      res.status(200).json({
+        success: true,
+        consultations: consultations2,
+        pagination: {
+          page,
+          limit,
+          totalCount,
+          totalPages: Math.ceil(totalCount / limit)
+        }
+      });
+    } catch (error) {
+      console.error("Error al obtener consultas:", error);
+      res.status(500).json({
+        success: false,
+        message: "Error al obtener consultas"
+      });
+    }
+  });
+  app2.put("/api/admin/consultations/:id/processed", authenticateUser, requireAdmin, async (req, res) => {
+    try {
+      const consultationId = parseInt(req.params.id);
+      if (isNaN(consultationId)) {
+        return res.status(400).json({
+          success: false,
+          message: "ID de consulta inv\xE1lido"
+        });
+      }
+      const success = await storage.markConsultationAsProcessed(consultationId);
+      if (success) {
+        res.status(200).json({
+          success: true,
+          message: "Consulta marcada como procesada"
+        });
+      } else {
+        res.status(404).json({
+          success: false,
+          message: "Consulta no encontrada"
+        });
+      }
+    } catch (error) {
+      console.error("Error al marcar consulta como procesada:", error);
+      res.status(500).json({
+        success: false,
+        message: "Error al marcar consulta como procesada"
+      });
+    }
+  });
+  return server;
+}
 
 // server/vite.ts
-import express2 from "express";
+import express from "express";
 import fs from "fs";
 import path2 from "path";
 import { createServer as createViteServer, createLogger } from "vite";
@@ -858,7 +2013,7 @@ function serveStatic(app2) {
       `Could not find the build directory: ${distPath}, make sure to build the client first`
     );
   }
-  app2.use(express2.static(distPath));
+  app2.use(express.static(distPath));
   app2.use("*", (_req, res) => {
     res.sendFile(path2.resolve(distPath, "index.html"));
   });
@@ -870,15 +2025,53 @@ import MemoryStore from "memorystore";
 import path3 from "path";
 import passport2 from "passport";
 import { fileURLToPath } from "url";
-import { createServer } from "http";
+import cors from "cors";
+import helmet from "helmet";
 dotenv2.config();
 var __filename = fileURLToPath(import.meta.url);
 var __dirname = path3.dirname(__filename);
-var app = express3();
-app.use(express3.json());
-app.use(express3.urlencoded({ extended: false }));
-app.use(router);
-var index_default = app;
+var app = express2();
+var allowedOrigins = ["https://tuweb-ai.com", "https://www.tuweb-ai.com"];
+app.use(cors({
+  origin: function(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.log("\u{1F6AB} CORS bloqueado para origen:", origin);
+      callback(new Error("No permitido por CORS"));
+    }
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"],
+  exposedHeaders: ["Set-Cookie"]
+}));
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://www.gstatic.com"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com"],
+      scriptSrc: ["'self'", "https://accounts.google.com", "https://www.gstatic.com"],
+      frameSrc: ["'self'", "https://accounts.google.com"],
+      connectSrc: ["*"],
+      imgSrc: ["*", "data:"],
+      objectSrc: ["'none'"],
+      mediaSrc: ["'self'"],
+      frameAncestors: ["'self'"]
+    }
+  },
+  crossOriginEmbedderPolicy: false,
+  crossOriginResourcePolicy: { policy: "cross-origin" }
+}));
+app.use((req, res, next) => {
+  res.setHeader("X-Frame-Options", "SAMEORIGIN");
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+  next();
+});
+app.use(express2.json());
+app.use(express2.urlencoded({ extended: false }));
 var Store = MemoryStore(session);
 var sessionStore = new Store({
   checkPeriod: 864e5
@@ -891,15 +2084,13 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: false,
-      // SIEMPRE false en desarrollo
+      secure: process.env.NODE_ENV === "production",
+      // true en producción
       maxAge: 1e3 * 60 * 60 * 24,
       // 24 horas
-      sameSite: "lax",
-      // SIEMPRE lax en desarrollo
+      sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
       httpOnly: true,
-      domain: void 0
-      // Nunca poner dominio en desarrollo
+      domain: process.env.NODE_ENV === "production" ? ".tuweb-ai.com" : void 0
     },
     store: sessionStore,
     name: "tuwebai.sid"
@@ -943,22 +2134,63 @@ app.use((req, res, next) => {
 app.get("/favicon.ico", (req, res) => {
   res.sendFile(path3.join(__dirname, "../public/favicon.ico"));
 });
-app.use(express3.static(path3.join(__dirname, "../public")));
-var httpServer = createServer(app);
+app.use(express2.static(path3.join(__dirname, "../public")));
 (async () => {
+  const server = await registerRoutes(app);
+  app.use((err, req, res, _next) => {
+    const status = err.status || err.statusCode || 500;
+    const message = err.message || "Internal Server Error";
+    console.error("Express error middleware:", err);
+    if (err.code === "invalid_grant") {
+      console.error("\u274C Error de Google OAuth - invalid_grant:", err);
+      console.error("\u{1F4CB} Detalles del error:", {
+        message: err.message,
+        status: err.status,
+        uri: err.uri
+      });
+      if (!res.headersSent) {
+        return res.status(400).json({
+          success: false,
+          message: "Error de autenticaci\xF3n con Google. El c\xF3digo de autorizaci\xF3n ha expirado o es inv\xE1lido. Por favor, intenta de nuevo.",
+          error: "oauth_invalid_grant",
+          details: process.env.NODE_ENV === "development" ? err.message : void 0
+        });
+      }
+    }
+    if (err.code && err.code.startsWith("oauth_")) {
+      console.error("\u274C Error de OAuth:", err.code, err.message);
+      if (!res.headersSent) {
+        return res.status(400).json({
+          success: false,
+          message: "Error de autenticaci\xF3n con Google. Por favor, verifica tu configuraci\xF3n e intenta de nuevo.",
+          error: err.code,
+          details: process.env.NODE_ENV === "development" ? err.message : void 0
+        });
+      }
+    }
+    if (!res.headersSent) {
+      res.status(status).json({
+        success: false,
+        message,
+        details: process.env.NODE_ENV === "development" ? err.message : void 0
+      });
+    }
+  });
   if (app.get("env") === "development") {
-    await setupVite(app, httpServer);
+    await setupVite(app, server);
   } else {
     serveStatic(app);
   }
   const port = process.env.PORT ? parseInt(process.env.PORT) : 5e3;
-  httpServer.listen({
+  server.listen({
     port,
     host: "127.0.0.1"
   }, () => {
     log(`serving on port ${port}`);
+    console.log(`\u{1F30D} Or\xEDgenes permitidos CORS: ${allowedOrigins.join(", ")}`);
+    console.log(`\u{1F527} NODE_ENV: ${process.env.NODE_ENV || "development"}`);
+    console.log(`\u{1F511} SESSION_SECRET: ${process.env.SESSION_SECRET ? "Configurado" : "No configurado"}`);
+    console.log(`\u{1F4CA} DATABASE_URL: ${process.env.DATABASE_URL ? "Configurado" : "No configurado"}`);
+    console.log(`\u{1F510} GOOGLE_CLIENT_ID: ${process.env.GOOGLE_CLIENT_ID ? "Configurado" : "No configurado"}`);
   });
 })();
-export {
-  index_default as default
-};

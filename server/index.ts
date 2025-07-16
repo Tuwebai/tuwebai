@@ -1,13 +1,16 @@
-import express from 'express';
-import { registerRoutes } from './routes';
+import dotenv from 'dotenv';
+dotenv.config();
+import express, { type Request, Response, NextFunction } from "express";
+import { registerRoutes } from "./routes";
+import { setupVite, serveStatic, log } from "./vite";
 import session from 'express-session';
 import MemoryStore from 'memorystore';
 import path from 'path';
 import { storage } from './storage';
 import passport from 'passport';
 import { fileURLToPath } from 'url';
-import { createServer } from 'http';
 import cors from 'cors';
+import helmet from 'helmet';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -21,25 +24,56 @@ declare module 'express-session' {
 }
 
 const app = express();
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-
-export default app;
 
 // Configuración CORS definitiva y estricta para producción
 const allowedOrigins = ['https://tuweb-ai.com', 'https://www.tuweb-ai.com'];
+
 app.use(cors({
-  origin: (origin, callback) => {
+  origin: function (origin, callback) {
+    // Permitir requests sin origin (como mobile apps o Postman)
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
+      console.log('🚫 CORS bloqueado para origen:', origin);
       callback(new Error('No permitido por CORS'));
     }
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
+  exposedHeaders: ['Set-Cookie']
 }));
+
+// Configuración de headers de seguridad con CSP permisivo para Google OAuth
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://www.gstatic.com"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com"],
+      scriptSrc: ["'self'", "https://accounts.google.com", "https://www.gstatic.com"],
+      frameSrc: ["'self'", "https://accounts.google.com"],
+      connectSrc: ["*"],
+      imgSrc: ["*", "data:"],
+      objectSrc: ["'none'"],
+      mediaSrc: ["'self'"],
+      frameAncestors: ["'self'"]
+    }
+  },
+  crossOriginEmbedderPolicy: false,
+  crossOriginResourcePolicy: { policy: "cross-origin" }
+}));
+
+// Headers adicionales para OAuth
+app.use((req: Request, res: Response, next: NextFunction) => {
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  next();
+});
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 // Configuración de la sesión
 // Utilizamos MemoryStore para almacenar sesiones en memoria localmente
@@ -48,7 +82,7 @@ const sessionStore = new Store({
   checkPeriod: 86400000 // Limpiar sesiones expiradas cada 24 horas
 });
 
-console.log("Usando MemoryStore para almacenar sesiones localmente");
+log("Usando MemoryStore para almacenar sesiones localmente");
 
 // Configuración de sesiones
 app.use(
@@ -57,11 +91,11 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: true, // SIEMPRE true en producción para cross-domain
+      secure: process.env.NODE_ENV === 'production', // true en producción
       maxAge: 1000 * 60 * 60 * 24, // 24 horas
-      sameSite: 'none', // Necesario para cross-domain
+      sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
       httpOnly: true,
-      domain: undefined, // No fijar dominio para compatibilidad
+      domain: process.env.NODE_ENV === 'production' ? '.tuweb-ai.com' : undefined,
     },
     store: sessionStore,
     name: 'tuwebai.sid',
@@ -72,7 +106,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Middleware de logging para debugging de sesiones
-app.use((req: any, res: any, next: any) => {
+app.use((req: Request, res: Response, next: NextFunction) => {
   if (req.path.includes('/auth/')) {
     console.log(`🔍 [${new Date().toISOString()}] ${req.method} ${req.path}`);
     console.log('🍪 Session ID:', req.sessionID);
@@ -105,45 +139,94 @@ app.use((req, res, next) => {
         logLine = logLine.slice(0, 79) + "…";
       }
 
-      console.log(logLine);
+      log(logLine);
     }
   });
 
   next();
 });
 
-// REGISTRAR TODAS LAS RUTAS DE LA API ANTES DE LOS ESTÁTICOS
-await registerRoutes(app);
-
 // Servir favicon.ico
 app.get('/favicon.ico', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/favicon.ico'));
 });
 
-// Servir archivos estáticos SOLO si la ruta NO es /api/*
-app.use((req, res, next) => {
-  if (req.path.startsWith('/api/')) return next();
-  express.static(path.join(__dirname, '../public'))(req, res, next);
-});
-
-// Catch-all SOLO si la ruta NO es /api/*
-app.get('*', (req, res, next) => {
-  if (req.path.startsWith('/api/')) return next();
-  res.sendFile(path.join(__dirname, '../public/index.html'));
-});
-
-const httpServer = createServer(app);
+// Servir recursos estáticos (por ejemplo, /public)
+app.use(express.static(path.join(__dirname, '../public')));
 
 (async () => {
+  const server = await registerRoutes(app);
+
+  app.use((err: any, req: Request, res: Response, _next: NextFunction) => {
+    const status = err.status || err.statusCode || 500;
+    const message = err.message || "Internal Server Error";
+    console.error('Express error middleware:', err);
+    
+    // Si es un error de OAuth, manejar específicamente
+    if (err.code === 'invalid_grant') {
+      console.error('❌ Error de Google OAuth - invalid_grant:', err);
+      console.error('📋 Detalles del error:', {
+        message: err.message,
+        status: err.status,
+        uri: err.uri
+      });
+      
+      if (!res.headersSent) {
+        return res.status(400).json({
+          success: false,
+          message: "Error de autenticación con Google. El código de autorización ha expirado o es inválido. Por favor, intenta de nuevo.",
+          error: 'oauth_invalid_grant',
+          details: process.env.NODE_ENV === 'development' ? err.message : undefined
+        });
+      }
+    }
+    
+    // Otros errores de OAuth
+    if (err.code && err.code.startsWith('oauth_')) {
+      console.error('❌ Error de OAuth:', err.code, err.message);
+      if (!res.headersSent) {
+        return res.status(400).json({
+          success: false,
+          message: "Error de autenticación con Google. Por favor, verifica tu configuración e intenta de nuevo.",
+          error: err.code,
+          details: process.env.NODE_ENV === 'development' ? err.message : undefined
+        });
+      }
+    }
+    
+    // Error genérico
+    if (!res.headersSent) {
+      res.status(status).json({ 
+        success: false, 
+        message,
+        details: process.env.NODE_ENV === 'development' ? err.message : undefined
+      });
+    }
+    // No hacer throw err;
+  });
+
+  // importantly only setup vite in development and after
+  // setting up all the other routes so the catch-all route
+  // doesn't interfere with the other routes
+  if (app.get("env") === "development") {
+    await setupVite(app, server);
+  } else {
+    serveStatic(app);
+  }
+
   // ALWAYS serve the app on port 5000
-  const port = process.env.PORT ? parseInt(process.env.PORT) : 3000;
-  httpServer.listen({
+  // this serves both the API and the client.
+  // It is the only port that is not firewalled.
+  const port = process.env.PORT ? parseInt(process.env.PORT) : 5000;
+  server.listen({
     port,
-    host: "0.0.0.0"
+    host: "127.0.0.1"
   }, () => {
-    console.log(`\n=============================`);
-    console.log(`🚀 Backend escuchando en puerto ${port}`);
+    log(`serving on port ${port}`);
     console.log(`🌍 Orígenes permitidos CORS: ${allowedOrigins.join(', ')}`);
-    console.log(`=============================`);
+    console.log(`🔧 NODE_ENV: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`🔑 SESSION_SECRET: ${process.env.SESSION_SECRET ? 'Configurado' : 'No configurado'}`);
+    console.log(`📊 DATABASE_URL: ${process.env.DATABASE_URL ? 'Configurado' : 'No configurado'}`);
+    console.log(`🔐 GOOGLE_CLIENT_ID: ${process.env.GOOGLE_CLIENT_ID ? 'Configurado' : 'No configurado'}`);
   });
 })();

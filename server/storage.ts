@@ -99,13 +99,32 @@ export class DatabaseStorage implements IStorage {
   async getUserByEmail(email: string): Promise<User | undefined> {
     try {
       console.log('[DB] Buscando usuario por email:', email);
+      console.log('[DB] DATABASE_URL configurado:', !!process.env.DATABASE_URL);
+      
       const result = await this.db.select().from(schema.users).where(eq(schema.users.email, email));
+      console.log('[DB] Usuario encontrado:', result.length > 0 ? 'Sí' : 'No');
       return result[0];
     } catch (error: any) {
-      console.error('[DB] Error getting user by email:', error && error.stack ? error.stack : error);
-      console.error('[DB] Estado de DATABASE_URL:', process.env.DATABASE_URL);
+      console.error('[DB] ❌ Error crítico de conexión a la base de datos:');
+      console.error('[DB] Error type:', error?.constructor?.name);
+      console.error('[DB] Error message:', error?.message);
+      console.error('[DB] Error code:', error?.code);
+      console.error('[DB] Error stack:', error?.stack);
+      console.error('[DB] DATABASE_URL presente:', !!process.env.DATABASE_URL);
       console.error('[DB] Email consultado:', email);
-      // Si es error de red o conexión, devolver undefined para que el flujo OAuth no se rompa
+      
+      // Si es error de conexión específico, devolver undefined para que OAuth maneje el error
+      if (error?.code === 'ECONNREFUSED' || 
+          error?.code === 'ENOTFOUND' || 
+          error?.code === 'ETIMEDOUT' ||
+          error?.message?.includes('connection') ||
+          error?.message?.includes('timeout')) {
+        console.error('[DB] 🚨 Error de conexión detectado - OAuth fallará');
+        return undefined;
+      }
+      
+      // Para otros errores, también devolver undefined para evitar crashes
+      console.error('[DB] 🚨 Error de base de datos - OAuth fallará');
       return undefined;
     }
   }
@@ -113,6 +132,8 @@ export class DatabaseStorage implements IStorage {
   async createUser(insertUser: InsertUser): Promise<User> {
     try {
       console.log('[DB] Creando usuario:', insertUser.email);
+      console.log('[DB] DATABASE_URL configurado:', !!process.env.DATABASE_URL);
+      
       const hashedPassword = await bcrypt.hash(insertUser.password, this.saltRounds);
       const verificationToken = crypto.randomBytes(32).toString('hex');
       const newUser = {
@@ -126,11 +147,28 @@ export class DatabaseStorage implements IStorage {
         isActive: false
       };
       const result = await this.db.insert(schema.users).values(newUser).returning();
+      console.log('[DB] ✅ Usuario creado exitosamente:', result[0]?.id);
       return result[0];
     } catch (error: any) {
-      console.error('[DB] Error creating user (detalle):', error && error.stack ? error.stack : error);
-      console.error('[DB] Estado de DATABASE_URL:', process.env.DATABASE_URL);
+      console.error('[DB] ❌ Error crítico al crear usuario:');
+      console.error('[DB] Error type:', error?.constructor?.name);
+      console.error('[DB] Error message:', error?.message);
+      console.error('[DB] Error code:', error?.code);
+      console.error('[DB] Error stack:', error?.stack);
+      console.error('[DB] DATABASE_URL presente:', !!process.env.DATABASE_URL);
       console.error('[DB] Email a crear:', insertUser.email);
+      
+      // Si es error de conexión específico, lanzar error específico
+      if (error?.code === 'ECONNREFUSED' || 
+          error?.code === 'ENOTFOUND' || 
+          error?.code === 'ETIMEDOUT' ||
+          error?.message?.includes('connection') ||
+          error?.message?.includes('timeout')) {
+        console.error('[DB] 🚨 Error de conexión al crear usuario');
+        throw new Error('db_connection_error');
+      }
+      
+      // Para otros errores, lanzar error genérico
       throw new Error('Error inesperado al crear usuario');
     }
   }
