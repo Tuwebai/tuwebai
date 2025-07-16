@@ -317,11 +317,14 @@ async function sendWelcomeEmail({ email, name, verificationToken }: { email: str
   const transporter = require('nodemailer').createTransport({
     host: process.env.SMTP_HOST,
     port: parseInt(process.env.SMTP_PORT || '465'),
-    secure: parseInt(process.env.SMTP_PORT || '465') === 465,
+    secure: process.env.SMTP_SECURE === 'true' || parseInt(process.env.SMTP_PORT || '465') === 465,
     auth: {
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_PASS,
     },
+    tls: {
+      rejectUnauthorized: false
+    }
   });
 
   const verifyUrl = verificationToken
@@ -455,14 +458,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       // Configuración de nodemailer con SMTP desde variables de entorno
+      console.log('📧 Configurando SMTP para consulta...');
+      console.log('📋 SMTP_HOST:', process.env.SMTP_HOST);
+      console.log('📋 SMTP_PORT:', process.env.SMTP_PORT);
+      console.log('📋 SMTP_USER:', process.env.SMTP_USER);
+      console.log('📋 SMTP_SECURE:', process.env.SMTP_SECURE);
+      
       const transporter = require('nodemailer').createTransport({
         host: process.env.SMTP_HOST,
         port: parseInt(process.env.SMTP_PORT || '465'),
-        secure: parseInt(process.env.SMTP_PORT || '465') === 465,
+        secure: process.env.SMTP_SECURE === 'true' || parseInt(process.env.SMTP_PORT || '465') === 465,
         auth: {
           user: process.env.SMTP_USER,
           pass: process.env.SMTP_PASS,
         },
+        tls: {
+          rejectUnauthorized: false
+        }
       });
 
       // Email HTML con branding de la plataforma
