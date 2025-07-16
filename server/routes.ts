@@ -159,16 +159,17 @@ router.post('/consulta', async (req, res) => {
 // Usuario especial de desarrollo - datos simulados
 const SPECIAL_USER = {
   id: 99999,
-  username: 'juan.dev',
   email: 'juanchilopezpachao7@gmail.com',
-  name: 'Juan Esteban López',
+  first_name: 'Juan Esteban',
+  last_name: 'López',
   role: 'user',
   isActive: true,
   createdAt: new Date('2024-01-01'),
   updatedAt: new Date(),
   lastLogin: new Date(),
   verificationToken: null,
-  resetPasswordToken: null
+  resetPasswordToken: null,
+  image: null
 };
 
 const authenticateUser = async (req: Request, res: Response, next: NextFunction) => {
@@ -333,10 +334,10 @@ if (googleClientId && googleClientSecret) {
       console.log('👤 Usuario no encontrado, creando nuevo usuario');
       // Crear usuario nuevo (sin image)
       user = await storage.createUser({
-        username: profile.displayName.replace(/\s+/g, '').toLowerCase() + Math.floor(Math.random()*10000),
+        first_name: profile.name?.givenName || '',
+        last_name: profile.name?.familyName || '',
         email,
         password: crypto.randomBytes(16).toString('hex'), // Contraseña aleatoria (no se usa)
-        name: profile.displayName,
       });
       console.log('✅ Usuario creado exitosamente:', user.id);
       
@@ -745,15 +746,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const userData = insertUserSchema.parse(req.body);
       
-      // Verificar si el usuario ya existe
-      const existingByUsername = await storage.getUserByUsername(userData.username);
-      if (existingByUsername) {
-        return res.status(400).json({
-          success: false,
-          message: "El nombre de usuario ya está en uso"
-        });
-      }
-      
+      // Verificar si el usuario ya existe por email
       const existingByEmail = await storage.getUserByEmail(userData.email);
       if (existingByEmail) {
         return res.status(400).json({
@@ -767,7 +760,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Generar token de verificación
       const verificationToken = await storage.generateVerificationToken(user.id);
       // Enviar email de bienvenida y verificación
-      await sendWelcomeEmail({ email: user.email, name: user.username, verificationToken });
+      await sendWelcomeEmail({ email: user.email, name: user.first_name + ' ' + user.last_name, verificationToken });
       
       // Responder con éxito (sin mostrar datos sensibles)
       res.status(201).json({
@@ -775,7 +768,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         message: "Usuario registrado correctamente. Por favor verifica tu email.",
         user: {
           id: user.id,
-          username: user.username,
+          first_name: user.first_name,
+          last_name: user.last_name,
           email: user.email,
           createdAt: user.createdAt
         }
@@ -924,9 +918,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
           message: "Login especial de desarrollo",
           user: {
             id: 99999,
-            username: 'juan.dev',
+            first_name: 'Juan Esteban',
+            last_name: 'López',
             email: 'juanchilopezpachao7@gmail.com',
-            name: 'Juan Esteban López',
             role: 'user',
             isActive: true,
             createdAt: '2024-01-01T00:00:00.000Z', // ISO string para frontend
@@ -1019,9 +1013,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         message: "Login exitoso",
         user: {
           id: user.id,
-          username: user.username,
+          first_name: user.first_name,
+          last_name: user.last_name,
           email: user.email,
-          name: user.name,
           role: user.role
         }
       });
@@ -1091,9 +1085,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         success: true,
         user: {
           id: user.id,
-          username: user.username,
+          first_name: user.first_name,
+          last_name: user.last_name,
           email: user.email,
-          name: user.name,
           role: user.role,
           lastLogin: user.lastLogin
         }
@@ -1213,7 +1207,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const user = (req as any).user;
       const isSpecialUser = (req as any).isSpecialUser;
-      const { name, username, email } = req.body;
+      const { first_name, last_name, email } = req.body;
       
       // Para usuario especial, simular actualización en memoria
       if (isSpecialUser) {
@@ -1222,15 +1216,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // Validar datos
         const updateData: any = {};
         
-        if (name !== undefined) {
-          updateData.name = name;
+        if (first_name !== undefined) {
+          updateData.first_name = first_name;
         }
         
-        if (username !== undefined && username !== user.username) {
-          updateData.username = username;
+        if (last_name !== undefined) {
+          updateData.last_name = last_name;
         }
         
         if (email !== undefined && email !== user.email) {
+          const existingUser = await storage.getUserByEmail(email);
+          if (existingUser && existingUser.id !== user.id) {
+            return res.status(400).json({
+              success: false,
+              message: "El email ya está registrado"
+            });
+          }
           updateData.email = email;
         }
         
@@ -1249,9 +1250,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
           message: "Perfil actualizado correctamente",
           user: {
             id: updatedUser.id,
-            username: updatedUser.username,
+            first_name: updatedUser.first_name,
+            last_name: updatedUser.last_name,
             email: updatedUser.email,
-            name: updatedUser.name,
             role: updatedUser.role
           }
         });
@@ -1261,24 +1262,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Para usuarios normales, usar la base de datos
       const updateData: any = {};
       
-      if (name !== undefined) {
-        updateData.name = name;
+      if (first_name !== undefined) {
+        updateData.first_name = first_name;
       }
       
-      if (username !== undefined && username !== user.username) {
-        // Verificar si el nuevo username ya existe
-        const existingUser = await storage.getUserByUsername(username);
-        if (existingUser && existingUser.id !== user.id) {
-          return res.status(400).json({
-            success: false,
-            message: "El nombre de usuario ya está en uso"
-          });
-        }
-        updateData.username = username;
+      if (last_name !== undefined) {
+        updateData.last_name = last_name;
       }
       
       if (email !== undefined && email !== user.email) {
-        // Verificar si el nuevo email ya existe
         const existingUser = await storage.getUserByEmail(email);
         if (existingUser && existingUser.id !== user.id) {
           return res.status(400).json({
@@ -1305,9 +1297,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
           message: "Perfil actualizado correctamente",
           user: {
             id: updatedUser.id,
-            username: updatedUser.username,
+            first_name: updatedUser.first_name,
+            last_name: updatedUser.last_name,
             email: updatedUser.email,
-            name: updatedUser.name,
             role: updatedUser.role
           }
         });
@@ -1317,9 +1309,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
           message: "No hay cambios para actualizar",
           user: {
             id: user.id,
-            username: user.username,
+            first_name: user.first_name,
+            last_name: user.last_name,
             email: user.email,
-            name: user.name,
             role: user.role
           }
         });

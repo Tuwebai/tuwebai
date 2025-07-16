@@ -19,7 +19,6 @@ import {
 export interface IStorage {
   // Usuarios
   getUser(id: number): Promise<User | undefined>;
-  getUserByUsername(username: string): Promise<User | undefined>;
   getUserByEmail(email: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
   updateUser(id: number, userData: Partial<User>): Promise<User | undefined>;
@@ -97,16 +96,6 @@ export class DatabaseStorage implements IStorage {
     }
   }
 
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    try {
-      const result = await this.db.select().from(schema.users).where(eq(schema.users.username, username));
-      return result[0];
-    } catch (error) {
-      console.error('Error getting user by username:', error);
-      return undefined;
-    }
-  }
-  
   async getUserByEmail(email: string): Promise<User | undefined> {
     try {
       console.log('[DB] Buscando usuario por email:', email);
@@ -127,7 +116,9 @@ export class DatabaseStorage implements IStorage {
       const hashedPassword = await bcrypt.hash(insertUser.password, this.saltRounds);
       const verificationToken = crypto.randomBytes(32).toString('hex');
       const newUser = {
-        ...insertUser,
+        first_name: insertUser.first_name,
+        last_name: insertUser.last_name,
+        email: insertUser.email,
         password: hashedPassword,
         verificationToken,
         createdAt: new Date(),
@@ -153,8 +144,13 @@ export class DatabaseStorage implements IStorage {
       
       userData.updatedAt = new Date();
       
+      const allowedFields = ['first_name', 'last_name', 'email', 'password', 'image', 'isActive', 'verificationToken', 'resetPasswordToken', 'lastLogin', 'role'];
+      const updateFields: any = {};
+      for (const key of allowedFields) {
+        if (userData[key] !== undefined) updateFields[key] = userData[key];
+      }
       const result = await this.db.update(schema.users)
-        .set(userData)
+        .set(updateFields)
         .where(eq(schema.users.id, id))
         .returning();
         
