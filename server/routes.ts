@@ -299,8 +299,8 @@ if (googleClientId && googleClientSecret) {
   passport.use(new GoogleStrategy({
     clientID: googleClientId,
     clientSecret: googleClientSecret,
-    callbackURL: process.env.NODE_ENV === 'production' && process.env.DOMAIN
-      ? `https://${process.env.DOMAIN}/api/auth/google/callback`
+    callbackURL: process.env.NODE_ENV === 'production'
+      ? 'https://tuwebai-backend.onrender.com/api/auth/google/callback'
       : 'http://localhost:5000/api/auth/google/callback',
     proxy: true, // Importante para manejar proxies correctamente
   }, async (
