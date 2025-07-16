@@ -1,5 +1,3 @@
-import dotenv from 'dotenv';
-dotenv.config();
 import express from 'express';
 import { router } from './routes';
 import { serveStatic, log } from "./vite";
@@ -111,12 +109,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 const httpServer = createServer(app);
 
 (async () => {
-  if (process.env.NODE_ENV === 'development') {
-    const { setupVite } = await import('./dev-server');
-    await setupVite(app, httpServer);
-  } else {
-    serveStatic(app);
-  }
+  serveStatic(app);
 
   // ALWAYS serve the app on port 5000
   const port = process.env.PORT ? parseInt(process.env.PORT) : 5000;
