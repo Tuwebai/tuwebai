@@ -12,7 +12,10 @@
     "check-oauth": "node scripts/check-google-oauth.js",
     "fix-oauth": "node scripts/fix-google-oauth.js",
     "db:push": "drizzle-kit push",
-    "dev": "ts-node server/index.ts"
+    "dev": "ts-node server/index.ts",
+    "test": "node test-all.js",
+    "setup:mp": "node setup-mercado-pago.js",
+    "deploy": "npm run build && git add . && git commit -m 'Deploy' && git push"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

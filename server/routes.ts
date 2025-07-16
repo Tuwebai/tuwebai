@@ -43,132 +43,9 @@ const PLANES: Record<string, number> = {
   'Plan Pro': 499
 };
 
-// Ruta /api/auth/me segura para debug
-router.get('/api/auth/me', (req, res) => {
-  try {
-    if (req.session && req.session.userId) {
-      return res.json({ success: true, userId: req.session.userId, userEmail: req.session.userEmail });
-    }
-    res.json({ success: false, user: null });
-  } catch (err: any) {
-    res.status(500).json({ error: 'Error interno', details: err.message });
-  }
-});
+// Las rutas se moverán a registerRoutes para evitar problemas de registro
 
-// Ruta /crear-preferencia robusta
-router.post('/crear-preferencia', async (req, res) => {
-  try {
-    if (!process.env.MP_ACCESS_TOKEN) {
-      return res.status(500).json({ error: 'Falta configuración de Mercado Pago' });
-    }
-    const { plan } = req.body as { plan: string };
-    if (plan === 'Plan Enterprise' || plan === 'Plan Premium' || !PLANES[plan]) {
-      return res.status(400).json({ error: 'Plan personalizado, consultar con ventas' });
-    }
-    const preference = {
-      items: [
-        {
-          title: plan,
-          unit_price: PLANES[plan],
-          quantity: 1,
-        },
-      ],
-      back_urls: {
-        success: 'https://tuweb-ai.com/pago-exitoso',
-        failure: 'https://tuweb-ai.com/pago-fallido',
-        pending: 'https://tuweb-ai.com/pago-pendiente',
-      },
-      auto_return: 'approved',
-    };
-    const mpRes = await axios.post(
-      'https://api.mercadopago.com/checkout/preferences',
-      preference,
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}`,
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-    return res.json({ init_point: mpRes.data.init_point });
-  } catch (err: any) {
-    res.status(500).json({ error: 'Error al crear preferencia', details: err.message });
-  }
-});
-
-// Alias para /consulta (sin /api) para compatibilidad con el frontend
-router.post('/consulta', async (req, res) => {
-  try {
-    const { nombre, email, empresa, telefono, tipoProyecto, urgente, detalleServicio, secciones, presupuesto, plazo, mensaje, comoNosEncontraste } = req.body;
-    if (!nombre || !email || !mensaje) {
-      return res.status(400).json({ error: 'Faltan datos obligatorios' });
-    }
-
-    // Configuración de nodemailer con SMTP desde variables de entorno
-    const transporter = require('nodemailer').createTransport({
-      host: process.env.SMTP_HOST,
-      port: parseInt(process.env.SMTP_PORT || '465'),
-      secure: parseInt(process.env.SMTP_PORT || '465') === 465,
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-    });
-
-    // Email HTML con branding de la plataforma
-    const html = `
-      <div style="background:#0a0a0f;padding:32px 0;font-family:Inter,Arial,sans-serif;min-height:100vh;">
-        <div style="max-width:520px;margin:0 auto;background:#18181b;border-radius:16px;padding:32px 24px;box-shadow:0 4px 24px rgba(0,0,0,0.12);color:#fff;">
-          <div style="text-align:center;margin-bottom:24px;">
-            <img src='https://tuweb-ai.com/favicon.ico' alt='TuWeb.ai' style='width:48px;height:48px;border-radius:8px;margin-bottom:8px;' />
-            <h2 style="font-size:2rem;font-weight:700;color:#00ccff;margin:0 0 8px 0;">Nueva consulta recibida</h2>
-            <p style="color:#b3b3b3;font-size:1rem;margin:0;">Formulario de contacto desde tuweb-ai.com</p>
-          </div>
-          <div style="margin-bottom:24px;">
-            <h3 style="color:#fff;font-size:1.1rem;margin-bottom:8px;">Datos del usuario</h3>
-            <ul style="list-style:none;padding:0;margin:0;">
-              <li><b>Nombre:</b> ${nombre}</li>
-              <li><b>Email:</b> ${email}</li>
-              ${empresa ? `<li><b>Empresa:</b> ${empresa}</li>` : ''}
-              ${tipoProyecto ? `<li><b>Tipo de proyecto:</b> ${tipoProyecto}</li>` : ''}
-              ${urgente ? `<li><b>Urgente:</b> Sí</li>` : ''}
-              ${detalleServicio && detalleServicio.length ? `<li><b>Servicios:</b> ${detalleServicio.join(', ')}</li>` : ''}
-              ${secciones && secciones.length ? `<li><b>Secciones:</b> ${secciones.join(', ')}</li>` : ''}
-              ${presupuesto ? `<li><b>Presupuesto:</b> ${presupuesto}</li>` : ''}
-              ${plazo ? `<li><b>Plazo:</b> ${plazo}</li>` : ''}
-              ${comoNosEncontraste ? `<li><b>¿Cómo nos encontró?:</b> ${comoNosEncontraste}</li>` : ''}
-            </ul>
-          </div>
-          <div style="margin-bottom:24px;">
-            <h3 style="color:#fff;font-size:1.1rem;margin-bottom:8px;">Mensaje</h3>
-            <div style="background:#23232b;padding:16px;border-radius:8px;color:#e0e0e0;white-space:pre-line;">${mensaje}</div>
-          </div>
-          <div style="text-align:center;color:#b3b3b3;font-size:0.95rem;margin-top:32px;">
-            <hr style="border:none;border-top:1px solid #222;margin:24px 0;" />
-            <p>Este mensaje fue generado automáticamente por <b>TuWeb.ai</b>.<br>Responde directamente a este correo para contactar al usuario.</p>
-            <p style="margin-top:8px;">&copy; ${new Date().getFullYear()} TuWeb.ai</p>
-          </div>
-        </div>
-      </div>
-    `;
-
-    await transporter.sendMail({
-      from: `TuWeb.ai <${process.env.SMTP_USER}>`,
-      to: 'admin@tuweb-ai.com',
-      subject: 'Nueva consulta recibida en TuWeb.ai',
-      html,
-      replyTo: email
-    });
-
-    // Log para control interno
-    console.log('Consulta enviada por email a admin@tuweb-ai.com:', { nombre, email });
-
-    return res.json({ success: true, message: 'Consulta recibida y enviada por email' });
-  } catch (err: any) {
-    console.error('Error al enviar email de consulta:', err);
-    return res.status(500).json({ error: 'Error al procesar la consulta', details: err.message });
-  }
-});
+  // Las rutas se moverán a registerRoutes para evitar problemas de registro
 
 // Middleware de Autenticación
 // Usuario especial de desarrollo - datos simulados
@@ -353,11 +230,15 @@ if (googleClientId && googleClientSecret) {
       console.log('👤 Usuario no encontrado, creando nuevo usuario');
       try {
         // Crear usuario nuevo (sin image)
+        const nameParts = profile.displayName.split(' ');
+        const firstName = nameParts[0] || '';
+        const lastName = nameParts.slice(1).join(' ') || '';
+        
         user = await storage.createUser({
-          username: profile.displayName.replace(/\s+/g, '').toLowerCase() + Math.floor(Math.random()*10000),
+          first_name: firstName,
+          last_name: lastName,
           email,
           password: crypto.randomBytes(16).toString('hex'), // Contraseña aleatoria (no se usa)
-          name: profile.displayName,
         });
         console.log('✅ Usuario creado exitosamente:', user.id);
         
@@ -494,6 +375,150 @@ async function sendWelcomeEmail({ email, name, verificationToken }: { email: str
 export async function registerRoutes(app: Express): Promise<Server> {
   // Servidor HTTP para la aplicación
   const server = createServer(app);
+
+  // Ruta /api/auth/me segura para debug
+  app.get('/api/auth/me', (req, res) => {
+    try {
+      if (req.session && req.session.userId) {
+        return res.json({ success: true, userId: req.session.userId, userEmail: req.session.userEmail });
+      }
+      res.json({ success: false, user: null });
+    } catch (err: any) {
+      res.status(500).json({ error: 'Error interno', details: err.message });
+    }
+  });
+
+  // Ruta /crear-preferencia robusta
+  app.post('/crear-preferencia', async (req, res) => {
+    try {
+      console.log('🔧 Creando preferencia de Mercado Pago para plan:', req.body.plan);
+      console.log('🔑 MP_ACCESS_TOKEN configurado:', process.env.MP_ACCESS_TOKEN ? 'Sí' : 'No');
+      
+      if (!process.env.MP_ACCESS_TOKEN) {
+        console.error('❌ Falta configuración de Mercado Pago');
+        return res.status(500).json({ error: 'Falta configuración de Mercado Pago' });
+      }
+      
+      const { plan } = req.body as { plan: string };
+      console.log('📋 Plan solicitado:', plan);
+      console.log('📋 Planes disponibles:', Object.keys(PLANES));
+      
+      if (plan === 'Plan Enterprise' || plan === 'Plan Premium' || !PLANES[plan]) {
+        console.log('❌ Plan no válido:', plan);
+        return res.status(400).json({ error: 'Plan personalizado, consultar con ventas' });
+      }
+      
+      const preference = {
+        items: [
+          {
+            title: plan,
+            unit_price: PLANES[plan],
+            quantity: 1,
+          },
+        ],
+        back_urls: {
+          success: 'https://tuweb-ai.com/pago-exitoso',
+          failure: 'https://tuweb-ai.com/pago-fallido',
+          pending: 'https://tuweb-ai.com/pago-pendiente',
+        },
+        auto_return: 'approved',
+      };
+      
+      console.log('📋 Preferencia creada:', preference);
+      
+      const mpRes = await axios.post(
+        'https://api.mercadopago.com/checkout/preferences',
+        preference,
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      
+      console.log('✅ Preferencia creada exitosamente en Mercado Pago');
+      return res.json({ init_point: mpRes.data.init_point });
+    } catch (err: any) {
+      console.error('❌ Error al crear preferencia:', err);
+      console.error('📋 Error details:', err.response?.data || err.message);
+      res.status(500).json({ error: 'Error al crear preferencia', details: err.message });
+    }
+  });
+
+  // Ruta /consulta para compatibilidad con el frontend
+  app.post('/consulta', async (req, res) => {
+    try {
+      const { nombre, email, empresa, telefono, tipoProyecto, urgente, detalleServicio, secciones, presupuesto, plazo, mensaje, comoNosEncontraste } = req.body;
+      if (!nombre || !email || !mensaje) {
+        return res.status(400).json({ error: 'Faltan datos obligatorios' });
+      }
+
+      // Configuración de nodemailer con SMTP desde variables de entorno
+      const transporter = require('nodemailer').createTransport({
+        host: process.env.SMTP_HOST,
+        port: parseInt(process.env.SMTP_PORT || '465'),
+        secure: parseInt(process.env.SMTP_PORT || '465') === 465,
+        auth: {
+          user: process.env.SMTP_USER,
+          pass: process.env.SMTP_PASS,
+        },
+      });
+
+      // Email HTML con branding de la plataforma
+      const html = `
+        <div style="background:#0a0a0f;padding:32px 0;font-family:Inter,Arial,sans-serif;min-height:100vh;">
+          <div style="max-width:520px;margin:0 auto;background:#18181b;border-radius:16px;padding:32px 24px;box-shadow:0 4px 24px rgba(0,0,0,0.12);color:#fff;">
+            <div style="text-align:center;margin-bottom:24px;">
+              <img src='https://tuweb-ai.com/favicon.ico' alt='TuWeb.ai' style='width:48px;height:48px;border-radius:8px;margin-bottom:8px;' />
+              <h2 style="font-size:2rem;font-weight:700;color:#00ccff;margin:0 0 8px 0;">Nueva consulta recibida</h2>
+              <p style="color:#b3b3b3;font-size:1rem;margin:0;">Formulario de contacto desde tuweb-ai.com</p>
+            </div>
+            <div style="margin-bottom:24px;">
+              <h3 style="color:#fff;font-size:1.1rem;margin-bottom:8px;">Datos del usuario</h3>
+              <ul style="list-style:none;padding:0;margin:0;">
+                <li><b>Nombre:</b> ${nombre}</li>
+                <li><b>Email:</b> ${email}</li>
+                ${empresa ? `<li><b>Empresa:</b> ${empresa}</li>` : ''}
+                ${tipoProyecto ? `<li><b>Tipo de proyecto:</b> ${tipoProyecto}</li>` : ''}
+                ${urgente ? `<li><b>Urgente:</b> Sí</li>` : ''}
+                ${detalleServicio && detalleServicio.length ? `<li><b>Servicios:</b> ${detalleServicio.join(', ')}</li>` : ''}
+                ${secciones && secciones.length ? `<li><b>Secciones:</b> ${secciones.join(', ')}</li>` : ''}
+                ${presupuesto ? `<li><b>Presupuesto:</b> ${presupuesto}</li>` : ''}
+                ${plazo ? `<li><b>Plazo:</b> ${plazo}</li>` : ''}
+                ${comoNosEncontraste ? `<li><b>¿Cómo nos encontró?:</b> ${comoNosEncontraste}</li>` : ''}
+              </ul>
+            </div>
+            <div style="margin-bottom:24px;">
+              <h3 style="color:#fff;font-size:1.1rem;margin-bottom:8px;">Mensaje</h3>
+              <div style="background:#23232b;padding:16px;border-radius:8px;color:#e0e0e0;white-space:pre-line;">${mensaje}</div>
+            </div>
+            <div style="text-align:center;color:#b3b3b3;font-size:0.95rem;margin-top:32px;">
+              <hr style="border:none;border-top:1px solid #222;margin:24px 0;" />
+              <p>Este mensaje fue generado automáticamente por <b>TuWeb.ai</b>.<br>Responde directamente a este correo para contactar al usuario.</p>
+              <p style="margin-top:8px;">&copy; ${new Date().getFullYear()} TuWeb.ai</p>
+            </div>
+          </div>
+        </div>
+      `;
+
+      await transporter.sendMail({
+        from: `TuWeb.ai <${process.env.SMTP_USER}>`,
+        to: 'admin@tuweb-ai.com',
+        subject: 'Nueva consulta recibida en TuWeb.ai',
+        html,
+        replyTo: email
+      });
+
+      // Log para control interno
+      console.log('Consulta enviada por email a admin@tuweb-ai.com:', { nombre, email });
+
+      return res.json({ success: true, message: 'Consulta recibida y enviada por email' });
+    } catch (err: any) {
+      console.error('Error al enviar email de consulta:', err);
+      return res.status(500).json({ error: 'Error al procesar la consulta', details: err.message });
+    }
+  });
 
   // Eliminar toda la lógica de WebSocket y broadcastNotification
 

@@ -1,1 +1,18 @@
-/*    /index.html   200 
+# Redirecciones para Netlify
+# Todas las rutas van a index.html para SPA
+/*    /index.html   200
+
+# Redirecciones específicas para páginas de pago
+/pago-exitoso    /index.html   200
+/pago-fallido    /index.html   200
+/pago-pendiente  /index.html   200
+
+# Redirecciones para autenticación
+/auth/verify/*   /index.html   200
+
+# Headers de seguridad
+/*
+  X-Frame-Options: DENY
+  X-XSS-Protection: 1; mode=block
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin 
