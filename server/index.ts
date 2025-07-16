@@ -110,16 +110,9 @@ app.use(express.static(path.join(__dirname, '../public')));
 
 const httpServer = createServer(app);
 
-let setupVite: any;
-if (process.env.NODE_ENV === 'development') {
-  (async () => {
-    const viteModule = await import('./vite');
-    setupVite = viteModule.setupVite;
-  })();
-}
-
 (async () => {
-  if (process.env.NODE_ENV === 'development' && setupVite) {
+  if (process.env.NODE_ENV === 'development') {
+    const { setupVite } = await import('./dev-server');
     await setupVite(app, httpServer);
   } else {
     serveStatic(app);
