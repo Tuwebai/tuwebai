@@ -32,6 +32,7 @@ import type { Profile, VerifyCallback } from 'passport-google-oauth20';
 import express from 'express';
 import cors from 'cors';
 import axios from 'axios';
+import nodemailer from 'nodemailer';
 
 const router = express.Router();
 
@@ -77,6 +78,80 @@ router.post('/crear-preferencia', async (req, res) => {
     return res.json({ init_point: mpRes.data.init_point });
   } catch (err: any) {
     return res.status(500).json({ error: 'Error al crear preferencia', details: err.message });
+  }
+});
+
+router.post('/api/consulta', async (req, res) => {
+  try {
+    const { nombre, email, empresa, telefono, tipoProyecto, urgente, detalleServicio, secciones, presupuesto, plazo, mensaje, comoNosEncontraste } = req.body;
+    if (!nombre || !email || !mensaje) {
+      return res.status(400).json({ error: 'Faltan datos obligatorios' });
+    }
+
+    // Configuración de nodemailer con SMTP desde variables de entorno
+    const transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST,
+      port: parseInt(process.env.SMTP_PORT || '465'),
+      secure: parseInt(process.env.SMTP_PORT || '465') === 465, // true para 465, false para otros
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    });
+
+    // Email HTML con branding de la plataforma
+    const html = `
+      <div style="background:#0a0a0f;padding:32px 0;font-family:Inter,Arial,sans-serif;min-height:100vh;">
+        <div style="max-width:520px;margin:0 auto;background:#18181b;border-radius:16px;padding:32px 24px;box-shadow:0 4px 24px rgba(0,0,0,0.12);color:#fff;">
+          <div style="text-align:center;margin-bottom:24px;">
+            <img src='https://tuweb-ai.com/favicon.ico' alt='TuWeb.ai' style='width:48px;height:48px;border-radius:8px;margin-bottom:8px;' />
+            <h2 style="font-size:2rem;font-weight:700;color:#00ccff;margin:0 0 8px 0;">Nueva consulta recibida</h2>
+            <p style="color:#b3b3b3;font-size:1rem;margin:0;">Formulario de contacto desde tuweb-ai.com</p>
+          </div>
+          <div style="margin-bottom:24px;">
+            <h3 style="color:#fff;font-size:1.1rem;margin-bottom:8px;">Datos del usuario</h3>
+            <ul style="list-style:none;padding:0;margin:0;">
+              <li><b>Nombre:</b> ${nombre}</li>
+              <li><b>Email:</b> ${email}</li>
+              ${empresa ? `<li><b>Empresa:</b> ${empresa}</li>` : ''}
+              ${telefono ? `<li><b>Teléfono:</b> ${telefono}</li>` : ''}
+              ${tipoProyecto ? `<li><b>Tipo de proyecto:</b> ${tipoProyecto}</li>` : ''}
+              ${urgente ? `<li><b>Urgente:</b> Sí</li>` : ''}
+              ${detalleServicio && detalleServicio.length ? `<li><b>Servicios:</b> ${detalleServicio.join(', ')}</li>` : ''}
+              ${secciones && secciones.length ? `<li><b>Secciones:</b> ${secciones.join(', ')}</li>` : ''}
+              ${presupuesto ? `<li><b>Presupuesto:</b> ${presupuesto}</li>` : ''}
+              ${plazo ? `<li><b>Plazo:</b> ${plazo}</li>` : ''}
+              ${comoNosEncontraste ? `<li><b>¿Cómo nos encontró?:</b> ${comoNosEncontraste}</li>` : ''}
+            </ul>
+          </div>
+          <div style="margin-bottom:24px;">
+            <h3 style="color:#fff;font-size:1.1rem;margin-bottom:8px;">Mensaje</h3>
+            <div style="background:#23232b;padding:16px;border-radius:8px;color:#e0e0e0;white-space:pre-line;">${mensaje}</div>
+          </div>
+          <div style="text-align:center;color:#b3b3b3;font-size:0.95rem;margin-top:32px;">
+            <hr style="border:none;border-top:1px solid #222;margin:24px 0;" />
+            <p>Este mensaje fue generado automáticamente por <b>TuWeb.ai</b>.<br>Responde directamente a este correo para contactar al usuario.</p>
+            <p style="margin-top:8px;">&copy; ${new Date().getFullYear()} TuWeb.ai</p>
+          </div>
+        </div>
+      </div>
+    `;
+
+    await transporter.sendMail({
+      from: `TuWeb.ai <${process.env.SMTP_USER}>`,
+      to: 'admin@tuweb-ai.com',
+      subject: 'Nueva consulta recibida en TuWeb.ai',
+      html,
+      replyTo: email
+    });
+
+    // Log para control interno
+    console.log('Consulta enviada por email a admin@tuweb-ai.com:', { nombre, email });
+
+    return res.json({ success: true, message: 'Consulta recibida y enviada por email' });
+  } catch (err: any) {
+    console.error('Error al enviar email de consulta:', err);
+    return res.status(500).json({ error: 'Error al procesar la consulta', details: err.message });
   }
 });
 
