@@ -7,7 +7,7 @@
     "build:frontend": "vite build",
     "build:backend": "esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist-server",
     "build": "npm run build:frontend",
-    "start": "cross-env NODE_ENV=production node dist/index.js",
+    "start": "NODE_ENV=production node dist-server/index.js",
     "check": "tsc",
     "check-oauth": "node scripts/check-google-oauth.js",
     "fix-oauth": "node scripts/fix-google-oauth.js",
