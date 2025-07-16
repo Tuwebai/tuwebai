@@ -23,7 +23,6 @@ declare module 'express-session' {
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(router);
 
 export default app;
 
@@ -106,14 +105,23 @@ app.use((req, res, next) => {
   next();
 });
 
+// REGISTRAR LAS RUTAS DE LA API ANTES DE LOS ESTÁTICOS
+app.use(router);
+
 // Servir favicon.ico
 app.get('/favicon.ico', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/favicon.ico'));
 });
 
-// Servir archivos estáticos desde /public (sin Vite)
-app.use(express.static(path.join(__dirname, '../public')));
-app.get('*', (req, res) => {
+// Servir archivos estáticos SOLO si la ruta NO es /api/*
+app.use((req, res, next) => {
+  if (req.path.startsWith('/api/')) return next();
+  express.static(path.join(__dirname, '../public'))(req, res, next);
+});
+
+// Catch-all SOLO si la ruta NO es /api/*
+app.get('*', (req, res, next) => {
+  if (req.path.startsWith('/api/')) return next();
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
