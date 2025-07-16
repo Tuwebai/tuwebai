@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import MetaTags from '@/components/seo/meta-tags';
+import { API_URL } from '@/lib/api';
 
 type CourseCategory = 'todos' | 'desarrollo' | 'negocios' | 'marketing' | 'diseno';
 type CourseLevel = 'Principiante' | 'Intermedio' | 'Avanzado';
@@ -143,7 +144,7 @@ const planes = [
 ];
 
 const handleCheckout = async (plan: string) => {
-  const res = await fetch('http://localhost:3000/crear-preferencia', {
+  const res = await fetch(`${API_URL}/crear-preferencia`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ plan }),

@@ -67,6 +67,7 @@ const AdminSettings = lazy(() => import('./pages/admin/settings'));
 const PagoExitoso = lazy(() => import('./pages/pago-exitoso'));
 const PagoFallido = lazy(() => import('./pages/pago-fallido'));
 const PagoPendiente = lazy(() => import('./pages/pago-pendiente'));
+const Contacto = lazy(() => import('./pages/contacto'));
 
 function App() {
   const location = useLocation();
@@ -182,6 +183,7 @@ function App() {
               <Route path="/pago-exitoso" element={<LazyRoute><PagoExitoso /></LazyRoute>} />
               <Route path="/pago-fallido" element={<LazyRoute><PagoFallido /></LazyRoute>} />
               <Route path="/pago-pendiente" element={<LazyRoute><PagoPendiente /></LazyRoute>} />
+              <Route path="/contacto" element={<LazyRoute><Contacto /></LazyRoute>} />
               
               {/* Página 404 sin lazy loading para mejor experiencia */}
               <Route path="*" element={<NotFound />} />

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useToast } from '@/hooks/use-toast';
+import { API_URL } from '@/lib/api';
 
 interface NewsletterFormProps {
   source?: string;
@@ -33,7 +34,7 @@ export default function NewsletterForm({
     setIsSubmitting(true);
     
     try {
-      const response = await fetch('/api/newsletter', {
+      const response = await fetch(`${API_URL}/newsletter`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

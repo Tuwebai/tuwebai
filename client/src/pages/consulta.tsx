@@ -12,6 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import WhatsAppButton from "@/components/ui/whatsapp-button";
 import { useIsMobile } from "@/hooks/use-mobile";
 import analytics from "@/lib/analytics";
+import { API_URL } from '@/lib/api';
 
 const formSchema = z.object({
   nombre: z.string().min(2, { message: "El nombre es requerido" }),
@@ -232,7 +233,7 @@ export default function Consulta() {
     
     try {
       // Envío real del formulario a la API
-      const response = await fetch('/api/consulta', {
+      const response = await fetch(`${API_URL}/consulta`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useIntersectionObserver } from '@/hooks/use-intersection-observer';
 import AnimatedShape from '../ui/animated-shape';
 import { useToast } from '@/hooks/use-toast';
+import { API_URL } from '@/lib/api';
 
 interface ContactFormProps {
   delay: number;
@@ -75,7 +76,7 @@ function ContactForm({ delay }: ContactFormProps) {
     
     try {
       // Envío del formulario mediante fetch
-      const response = await fetch('/api/contact', {
+      const response = await fetch(`${API_URL}/contact`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
