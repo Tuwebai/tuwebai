@@ -7,6 +7,7 @@ import { storage } from './storage';
 import passport from 'passport';
 import { fileURLToPath } from 'url';
 import { createServer } from 'http';
+import cors from 'cors';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -25,6 +26,24 @@ app.use(express.urlencoded({ extended: false }));
 app.use(router);
 
 export default app;
+
+// Configuración segura de CORS
+const allowedOrigins = [
+  'https://tuweb-ai.com',
+  'http://localhost:5173'
+];
+
+app.use(cors({
+  origin: function(origin, callback) {
+    // Permitir requests sin origin (como Postman) o si está en la lista
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('No permitido por CORS'));
+    }
+  },
+  credentials: true,
+}));
 
 // Configuración de la sesión
 // Utilizamos MemoryStore para almacenar sesiones en memoria localmente
