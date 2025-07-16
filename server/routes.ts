@@ -346,6 +346,8 @@ if (googleClientId && googleClientSecret) {
         await storage.updateUser(user.id, { image: profile.photos[0].value });
         user = await storage.getUser(user.id);
       }
+      // Email de bienvenida para Google
+      await sendWelcomeEmail({ email, name: profile.displayName });
     } else {
       console.log('👤 Usuario encontrado:', user.id);
       if (!user.isActive) {
@@ -380,6 +382,61 @@ passport.deserializeUser(async (obj: any, done) => {
     done(err);
   }
 });
+
+// Función utilitaria para enviar email de bienvenida y verificación
+async function sendWelcomeEmail({ email, name, verificationToken }: { email: string, name?: string, verificationToken?: string }) {
+  const transporter = require('nodemailer').createTransport({
+    host: process.env.SMTP_HOST,
+    port: parseInt(process.env.SMTP_PORT || '465'),
+    secure: parseInt(process.env.SMTP_PORT || '465') === 465,
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
+    },
+  });
+
+  const verifyUrl = verificationToken
+    ? `${process.env.FRONTEND_URL || 'https://tuweb-ai.com'}/auth/verify/${verificationToken}`
+    : null;
+
+  const html = `
+    <div style="background:#0a0a0f;padding:32px 0;font-family:Inter,Arial,sans-serif;min-height:100vh;">
+      <div style="max-width:520px;margin:0 auto;background:#18181b;border-radius:16px;padding:32px 24px;box-shadow:0 4px 24px rgba(0,0,0,0.12);color:#fff;">
+        <div style="text-align:center;margin-bottom:24px;">
+          <img src='https://tuweb-ai.com/favicon.ico' alt='TuWeb.ai' style='width:48px;height:48px;border-radius:8px;margin-bottom:8px;' />
+          <h2 style="font-size:2rem;font-weight:700;color:#00ccff;margin:0 0 8px 0;">¡Bienvenido a TuWeb.ai!</h2>
+          <p style="color:#b3b3b3;font-size:1rem;margin:0;">${name ? `Hola <b>${name}</b>,` : '¡Hola!'}<br>Tu cuenta ha sido creada exitosamente.</p>
+        </div>
+        <div style="margin-bottom:24px;">
+          <h3 style="color:#fff;font-size:1.1rem;margin-bottom:8px;">¿Qué podés hacer ahora?</h3>
+          <ul style="list-style:none;padding:0;margin:0;">
+            <li>✔️ Acceder a cursos y recursos exclusivos</li>
+            <li>✔️ Consultar a expertos y recibir soporte</li>
+            <li>✔️ Gestionar tu perfil y preferencias</li>
+          </ul>
+        </div>
+        ${verifyUrl ? `
+        <div style="margin-bottom:24px;text-align:center;">
+          <a href="${verifyUrl}" style="display:inline-block;padding:14px 32px;background:linear-gradient(90deg,#00ccff,#9933ff);color:#fff;border-radius:8px;font-weight:600;text-decoration:none;font-size:1.1rem;">Verificar mi cuenta</a>
+          <p style="color:#b3b3b3;font-size:0.95rem;margin-top:12px;">Si el botón no funciona, copiá y pegá este enlace en tu navegador:<br><span style="color:#00ccff;word-break:break-all;">${verifyUrl}</span></p>
+        </div>
+        ` : ''}
+        <div style="text-align:center;color:#b3b3b3;font-size:0.95rem;margin-top:32px;">
+          <hr style="border:none;border-top:1px solid #222;margin:24px 0;" />
+          <p>Este mensaje fue generado automáticamente por <b>TuWeb.ai</b>.<br>Si no creaste esta cuenta, ignorá este email.</p>
+          <p style="margin-top:8px;">&copy; ${new Date().getFullYear()} TuWeb.ai</p>
+        </div>
+      </div>
+    </div>
+  `;
+
+  await transporter.sendMail({
+    from: `TuWeb.ai <${process.env.SMTP_USER}>`,
+    to: email,
+    subject: verifyUrl ? 'Verificá tu cuenta en TuWeb.ai' : '¡Bienvenido a TuWeb.ai!',
+    html,
+  });
+}
 
 // Configurar las rutas de la API
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -703,6 +760,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Crear el usuario
       const user = await storage.createUser(userData);
+      // Generar token de verificación
+      const verificationToken = await storage.generateVerificationToken(user.id);
+      // Enviar email de bienvenida y verificación
+      await sendWelcomeEmail({ email: user.email, name: user.username, verificationToken });
       
       // Responder con éxito (sin mostrar datos sensibles)
       res.status(201).json({
