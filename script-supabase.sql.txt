@@ -1,0 +1,211 @@
+-- ===========================================
+-- 1. CREACIÓN DE TABLAS
+-- ===========================================
+
+-- USUARIOS (extensión de auth.users)
+create table public.usuarios (
+    id uuid primary key references auth.users(id) on delete cascade,
+    nombre text,
+    apellido text,
+    email text unique not null,
+    telefono text,
+    rol text default 'user', -- user, admin, etc.
+    created_at timestamptz default now(),
+    updated_at timestamptz default now()
+);
+
+-- PLANES
+create table public.planes (
+    id serial primary key,
+    nombre text not null,
+    descripcion text,
+    precio numeric(12,2) not null,
+    moneda text default 'ARS',
+    es_activo boolean default true,
+    created_at timestamptz default now(),
+    updated_at timestamptz default now()
+);
+
+-- SUSCRIPCIONES
+create table public.suscripciones (
+    id serial primary key,
+    usuario_id uuid references public.usuarios(id) on delete cascade,
+    plan_id integer references public.planes(id) on delete set null,
+    estado text not null, -- activa, cancelada, pendiente, etc.
+    fecha_inicio timestamptz default now(),
+    fecha_fin timestamptz,
+    created_at timestamptz default now(),
+    updated_at timestamptz default now()
+);
+
+-- PAGOS
+create table public.pagos (
+    id serial primary key,
+    usuario_id uuid references public.usuarios(id) on delete set null,
+    suscripcion_id integer references public.suscripciones(id) on delete set null,
+    monto numeric(12,2) not null,
+    moneda text default 'ARS',
+    estado text not null, -- aprobado, pendiente, rechazado
+    metodo text, -- mercado_pago, transferencia, etc.
+    referencia text, -- id de pago externo
+    detalles jsonb,
+    fecha_pago timestamptz default now(),
+    created_at timestamptz default now(),
+    updated_at timestamptz default now()
+);
+
+-- FORMULARIOS DE CONTACTO
+create table public.formularios_contacto (
+    id serial primary key,
+    nombre text,
+    email text not null,
+    telefono text,
+    mensaje text not null,
+    usuario_id uuid references public.usuarios(id) on delete set null,
+    leido boolean default false,
+    created_at timestamptz default now()
+);
+
+-- NEWSLETTER
+create table public.newsletter (
+    id serial primary key,
+    email text not null unique,
+    usuario_id uuid references public.usuarios(id) on delete set null,
+    confirmado boolean default false,
+    created_at timestamptz default now()
+);
+
+-- SOLICITUDES PERSONALIZADAS
+create table public.solicitudes_personalizadas (
+    id serial primary key,
+    usuario_id uuid references public.usuarios(id) on delete set null,
+    asunto text,
+    mensaje text not null,
+    estado text default 'pendiente', -- pendiente, respondida, cerrada
+    respuesta text,
+    created_at timestamptz default now(),
+    updated_at timestamptz default now()
+);
+
+-- ÍNDICES ÚTILES
+create index on public.pagos (usuario_id);
+create index on public.suscripciones (usuario_id);
+create index on public.suscripciones (plan_id);
+create index on public.formularios_contacto (usuario_id);
+create index on public.solicitudes_personalizadas (usuario_id);
+
+-- ===========================================
+-- 2. ROW LEVEL SECURITY (RLS)
+-- ===========================================
+
+alter table public.usuarios enable row level security;
+alter table public.planes enable row level security;
+alter table public.suscripciones enable row level security;
+alter table public.pagos enable row level security;
+alter table public.formularios_contacto enable row level security;
+alter table public.newsletter enable row level security;
+alter table public.solicitudes_personalizadas enable row level security;
+
+-- ===========================================
+-- 3. POLÍTICAS DE ACCESO POR ROL
+-- ===========================================
+
+-- USUARIOS: cada uno ve solo su registro
+create policy "Usuarios: solo su propio perfil"
+    on public.usuarios
+    for select using (auth.uid() = id);
+
+create policy "Usuarios: solo pueden modificar su perfil"
+    on public.usuarios
+    for update using (auth.uid() = id);
+
+-- PLANES: todos pueden ver, solo admin puede modificar
+create policy "Planes: lectura pública"
+    on public.planes
+    for select using (true);
+
+create policy "Planes: solo admin puede modificar"
+    on public.planes
+    for update using (auth.role() = 'authenticated' and exists (
+        select 1 from public.usuarios u where u.id = auth.uid() and u.rol = 'admin'
+    ));
+
+-- SUSCRIPCIONES: cada usuario ve solo las suyas
+create policy "Suscripciones: solo propias"
+    on public.suscripciones
+    for select using (usuario_id = auth.uid());
+
+create policy "Suscripciones: solo propias (update/delete)"
+    on public.suscripciones
+    for update using (usuario_id = auth.uid());
+create policy "Suscripciones: solo propias (delete)"
+    on public.suscripciones
+    for delete using (usuario_id = auth.uid());
+
+-- PAGOS: cada usuario ve solo los suyos
+create policy "Pagos: solo propios"
+    on public.pagos
+    for select using (usuario_id = auth.uid());
+
+-- FORMULARIOS DE CONTACTO: cada usuario ve solo los suyos, admin ve todos
+create policy "Formularios: propios o admin"
+    on public.formularios_contacto
+    for select using (
+        usuario_id = auth.uid() or
+        (exists (select 1 from public.usuarios u where u.id = auth.uid() and u.rol = 'admin'))
+    );
+
+-- NEWSLETTER: solo admin ve todos, usuario ve su email
+create policy "Newsletter: propios o admin"
+    on public.newsletter
+    for select using (
+        usuario_id = auth.uid() or
+        (exists (select 1 from public.usuarios u where u.id = auth.uid() and u.rol = 'admin'))
+    );
+
+-- SOLICITUDES PERSONALIZADAS: propios o admin
+create policy "Solicitudes: propios o admin"
+    on public.solicitudes_personalizadas
+    for select using (
+        usuario_id = auth.uid() or
+        (exists (select 1 from public.usuarios u where u.id = auth.uid() and u.rol = 'admin'))
+    );
+
+-- ===========================================
+-- 4. DATOS DE EJEMPLO (opcional)
+-- ===========================================
+
+insert into public.usuarios (id, nombre, apellido, email, telefono, rol)
+values
+    ('00000000-0000-0000-0000-000000000001', 'Juan', 'Pérez', 'juan@ejemplo.com', '1122334455', 'admin'),
+    ('00000000-0000-0000-0000-000000000002', 'Ana', 'García', 'ana@ejemplo.com', '1199887766', 'user');
+
+insert into public.planes (nombre, descripcion, precio, moneda)
+values
+    ('Básico', 'Acceso a recursos gratuitos', 0, 'ARS'),
+    ('Pro', 'Acceso completo a todos los cursos y soporte', 4999, 'ARS'),
+    ('Premium', 'Acceso VIP, mentorías y material exclusivo', 9999, 'ARS');
+
+insert into public.suscripciones (usuario_id, plan_id, estado, fecha_inicio)
+values
+    ('00000000-0000-0000-0000-000000000002', 2, 'activa', now());
+
+insert into public.pagos (usuario_id, suscripcion_id, monto, moneda, estado, metodo, referencia, detalles)
+values
+    ('00000000-0000-0000-0000-000000000002', 1, 4999, 'ARS', 'aprobado', 'mercado_pago', 'MP-123456', '{"external_reference": "MP-123456"}');
+
+insert into public.formularios_contacto (nombre, email, telefono, mensaje, usuario_id)
+values
+    ('Ana García', 'ana@ejemplo.com', '1199887766', 'Quiero más info sobre el plan Pro', '00000000-0000-0000-0000-000000000002');
+
+insert into public.newsletter (email, usuario_id, confirmado)
+values
+    ('ana@ejemplo.com', '00000000-0000-0000-0000-000000000002', true);
+
+insert into public.solicitudes_personalizadas (usuario_id, asunto, mensaje, estado)
+values
+    ('00000000-0000-0000-0000-000000000002', 'Solicitud de demo', 'Me gustaría agendar una demo personalizada', 'pendiente');
+
+-- ===========================================
+-- FIN DEL SCRIPT
+-- =========================================== 

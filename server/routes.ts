@@ -81,7 +81,8 @@ router.post('/crear-preferencia', async (req, res) => {
   }
 });
 
-router.post('/api/consulta', async (req, res) => {
+// Alias para /consulta (sin /api) para compatibilidad con el frontend
+router.post('/consulta', async (req, res) => {
   try {
     const { nombre, email, empresa, telefono, tipoProyecto, urgente, detalleServicio, secciones, presupuesto, plazo, mensaje, comoNosEncontraste } = req.body;
     if (!nombre || !email || !mensaje) {
@@ -89,10 +90,10 @@ router.post('/api/consulta', async (req, res) => {
     }
 
     // Configuración de nodemailer con SMTP desde variables de entorno
-    const transporter = nodemailer.createTransport({
+    const transporter = require('nodemailer').createTransport({
       host: process.env.SMTP_HOST,
       port: parseInt(process.env.SMTP_PORT || '465'),
-      secure: parseInt(process.env.SMTP_PORT || '465') === 465, // true para 465, false para otros
+      secure: parseInt(process.env.SMTP_PORT || '465') === 465,
       auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
@@ -114,7 +115,6 @@ router.post('/api/consulta', async (req, res) => {
               <li><b>Nombre:</b> ${nombre}</li>
               <li><b>Email:</b> ${email}</li>
               ${empresa ? `<li><b>Empresa:</b> ${empresa}</li>` : ''}
-              ${telefono ? `<li><b>Teléfono:</b> ${telefono}</li>` : ''}
               ${tipoProyecto ? `<li><b>Tipo de proyecto:</b> ${tipoProyecto}</li>` : ''}
               ${urgente ? `<li><b>Urgente:</b> Sí</li>` : ''}
               ${detalleServicio && detalleServicio.length ? `<li><b>Servicios:</b> ${detalleServicio.join(', ')}</li>` : ''}
