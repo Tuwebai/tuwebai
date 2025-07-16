@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import MetaTags from '@/components/seo/meta-tags';
+import { API_URL } from '@/lib/api';
 
 type CourseCategory = 'todos' | 'desarrollo' | 'negocios' | 'marketing' | 'diseno';
 type CourseLevel = 'Principiante' | 'Intermedio' | 'Avanzado';
@@ -135,6 +136,26 @@ const forumPosts: ForumPost[] = [
     tags: ["agile", "scrum", "trabajo remoto"]
   }
 ];
+
+const planes = [
+  { nombre: 'Plan Básico', precio: 10000 },
+  { nombre: 'Plan Pro', precio: 20000 },
+  { nombre: 'Plan Premium', precio: 30000 },
+];
+
+const handleCheckout = async (plan: string) => {
+  const res = await fetch(`${API_URL}/crear-preferencia`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ plan }),
+  });
+  const data = await res.json();
+  if (data.init_point) {
+    window.location.href = data.init_point;
+  } else {
+    alert('Error al iniciar el pago');
+  }
+};
 
 export default function Academia() {
   // Estados
@@ -812,10 +833,11 @@ export default function Academia() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <h1 className="text-4xl md:text-5xl font-bold mb-4">Aprende las habilidades del futuro</h1>
-              <p className="text-xl mb-8 opacity-90">
-                Cursos online impartidos por expertos de la industria. Desarrolla habilidades relevantes para el mercado laboral actual.
-              </p>
+              <div className="flex flex-col items-center justify-center gap-4 py-8">
+                <img src="/logo-tuwebai.png" alt="Logo TuWeb.ai" className="w-24 h-24 mb-2" />
+                <h1 className="text-4xl font-bold text-primary mb-2">Academia TuWeb.ai</h1>
+                <p className="text-lg text-gray-600 text-center max-w-xl">Aprendé economía, trading y finanzas con cursos premium, actividades prácticas y soporte profesional.</p>
+              </div>
               <div className="flex flex-wrap gap-4">
                 <a 
                   href="#cursos" 

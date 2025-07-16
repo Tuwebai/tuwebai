@@ -638,7 +638,7 @@ export default function EcommerceModa() {
               <address className="not-italic text-gray-400 text-sm leading-relaxed">
                 Av. Corrientes 1234<br />
                 Buenos Aires, Argentina<br /><br />
-                <a href="tel:+541198765432" className="hover:text-white transition-colors">+54 11 9876 5432</a><br />
+                <a href="tel:+543571416044" className="hover:text-white transition-colors">+54 9 3571 416044</a><br />
                 <a href="mailto:admin@tuweb-ai.com" className="hover:text-white transition-colors">admin@tuweb-ai.com</a>
               </address>
               

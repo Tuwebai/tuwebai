@@ -39,7 +39,7 @@ export default function Footer() {
               <li><a href="/servicios/desarrollo-web" className="hover:text-[#00CCFF] transition-colors">Desarrollo Web</a></li>
               <li><a href="/servicios/posicionamiento-marketing" className="hover:text-[#00CCFF] transition-colors">Posicionamiento y Marketing</a></li>
               <li><a href="/servicios/automatizacion-marketing" className="hover:text-[#00CCFF] transition-colors">Automatización de Marketing</a></li>
-              <li><a href="/consulta" className="hover:text-[#00CCFF] transition-colors">Solicitar consulta</a></li>
+              <li><a href="/contacto" className="hover:text-[#00CCFF] transition-colors">Contacto</a></li>
             </ul>
           </div>
           
@@ -51,7 +51,7 @@ export default function Footer() {
               <li><a href="/equipo" className="hover:text-[#9933FF] transition-colors">Nuestro Equipo</a></li>
               <li><a href="/tecnologias" className="hover:text-[#9933FF] transition-colors">Tecnologías</a></li>
               <li><a href="/#testimonials" className="hover:text-[#9933FF] transition-colors">Testimonios</a></li>
-              <li><a href="/consulta" className="hover:text-[#9933FF] transition-colors">Contacto</a></li>
+              <li><a href="/contacto" className="hover:text-[#9933FF] transition-colors">Contacto</a></li>
             </ul>
           </div>
           
@@ -82,7 +82,10 @@ export default function Footer() {
         </div>
         
         <div className="border-t border-gray-800 pt-8 mb-4 flex flex-col md:flex-row justify-between items-center">
-          <p>© {new Date().getFullYear()} TuWeb.ai - Todos los derechos reservados</p>
+          <div className="flex items-center gap-2">
+            <img src="/logo-tuwebai.png" alt="Logo TuWeb.ai" className="w-8 h-8" />
+            <span className="text-sm text-gray-400">© 2024 TuWeb.ai. Todos los derechos reservados.</span>
+          </div>
           <div className="mt-4 md:mt-0 flex gap-6">
             <a 
               href="/terminos-condiciones" 

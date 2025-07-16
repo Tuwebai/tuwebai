@@ -138,7 +138,13 @@ export default function Home() {
       <WhatsAppButton />
       
       <main id="main-content" className="relative">
-        <HeroSection setRef={(ref: HTMLElement | null) => setSectionRef('intro', ref)} />
+        <HeroSection setRef={(ref: HTMLElement | null) => setSectionRef('intro', ref)}>
+          <div className="flex flex-col items-center justify-center gap-4 py-12">
+            <img src="/logo-tuwebai.png" alt="Logo TuWeb.ai" className="w-28 h-28 mb-2" />
+            <h1 className="text-5xl font-extrabold text-primary mb-2">TuWeb.ai</h1>
+            <p className="text-xl text-gray-600 text-center max-w-2xl">La plataforma educativa premium para economía, trading y finanzas. Cursos, comunidad y soporte profesional en un solo lugar.</p>
+          </div>
+        </HeroSection>
         <PhilosophySection setRef={(ref: HTMLElement | null) => setSectionRef('philosophy', ref)} />
         <ServicesSection setRef={(ref: HTMLElement | null) => setSectionRef('services', ref)} />
         <ProcessSection setRef={(ref: HTMLElement | null) => setSectionRef('process', ref)} />

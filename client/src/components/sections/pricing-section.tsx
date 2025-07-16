@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useIntersectionObserver } from '@/hooks/use-intersection-observer';
 import AnimatedShape from '../ui/animated-shape';
+import { API_URL } from '@/lib/api';
 
 interface PricingTierProps {
   title: string;
@@ -12,6 +13,7 @@ interface PricingTierProps {
   highlight?: boolean;
   popular?: boolean;
   delay: number;
+  onSelect?: () => void;
 }
 
 function PricingTier({ 
@@ -22,7 +24,8 @@ function PricingTier({
   features, 
   highlight = false, 
   popular = false,
-  delay 
+  delay,
+  onSelect 
 }: PricingTierProps) {
   const { ref, hasIntersected } = useIntersectionObserver<HTMLDivElement>();
 
@@ -94,7 +97,8 @@ function PricingTier({
             </ul>
             
             <motion.a 
-              href="/consulta" 
+              href="#"
+              onClick={e => { e.preventDefault(); onSelect && onSelect(); }}
               className={`block text-center py-3 px-4 rounded-lg ${
                 highlight 
                   ? 'bg-gradient-to-r from-[#00CCFF] to-[#9933FF] text-white' 
@@ -102,6 +106,9 @@ function PricingTier({
               } transition-colors font-medium`}
               whileHover={{ scale: 1.03 }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              tabIndex={0}
+              role="button"
+              aria-label={highlight ? 'Empezar ahora' : 'Solicitar plan'}
             >
               {highlight ? 'Empezar ahora' : 'Solicitar plan'}
             </motion.a>
@@ -135,6 +142,25 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
   const subtitleVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.8, delay: 0.2 } }
+  };
+
+  const handleCheckout = async (plan: string) => {
+    try {
+      const res = await fetch(`${API_URL}/crear-preferencia`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ plan }),
+        credentials: 'include',
+      });
+      const data = await res.json();
+      if (data.init_point) {
+        window.location.href = data.init_point;
+      } else {
+        alert('Error al iniciar el pago');
+      }
+    } catch (err) {
+      alert('Error al conectar con Mercado Pago');
+    }
   };
 
   return (
@@ -172,7 +198,7 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
         <div className="grid md:grid-cols-3 gap-6 lg:gap-8 max-w-5xl mx-auto">
           <PricingTier 
             title="Plan Básico"
-            price="$999"
+            price="$299"
             period="mes"
             description="Ideal para empresas pequeñas que inician su presencia digital"
             features={[
@@ -184,11 +210,12 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
               "Soporte técnico por 3 meses"
             ]}
             delay={1}
+            onSelect={() => handleCheckout('Plan Básico')}
           />
           
           <PricingTier 
             title="Plan Profesional"
-            price="$1,999"
+            price="$499"
             period="mes"
             description="Perfecto para empresas en crecimiento que buscan destacar"
             features={[
@@ -203,6 +230,7 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
             highlight={true}
             popular={true}
             delay={2}
+            onSelect={() => handleCheckout('Plan Profesional')}
           />
           
           <PricingTier 
@@ -221,6 +249,7 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
               "Gerente de cuenta dedicado"
             ]}
             delay={3}
+            onSelect={() => window.location.href = '/consulta'}
           />
         </div>
         

@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import MetaTags from '@/components/seo/meta-tags';
+import { API_URL } from '@/lib/api';
 
 // Verificar si es entorno de desarrollo
 const isDevelopment = process.env.NODE_ENV === 'development';
@@ -44,7 +45,7 @@ export default function AuthVerify() {
       }
       
       try {
-        const response = await fetch(`/api/auth/verify/${token}`);
+        const response = await fetch(`${API_URL}/api/auth/verify/${token}`);
         const data = await response.json();
         
         setIsSuccess(data.success);
@@ -133,7 +134,7 @@ export default function AuthVerify() {
     setIsDevVerifying(true);
     
     try {
-      const response = await fetch(`/api/auth/dev-verify/${devEmail}`);
+      const response = await fetch(`${API_URL}/api/auth/dev-verify/${devEmail}`);
       const data = await response.json();
       
       setIsSuccess(data.success);

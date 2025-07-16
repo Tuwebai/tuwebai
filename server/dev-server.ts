@@ -1,0 +1,1 @@
+export { setupVite } from './vite'; 

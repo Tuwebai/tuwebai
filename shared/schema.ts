@@ -6,10 +6,10 @@ import { z } from 'zod';
 // Tabla de usuarios
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
-  username: varchar("username", { length: 255 }).notNull().unique(),
+  first_name: varchar("first_name", { length: 255 }).notNull(),
+  last_name: varchar("last_name", { length: 255 }).notNull(),
   email: varchar("email", { length: 255 }).notNull().unique(),
   password: varchar("password", { length: 255 }).notNull(),
-  name: varchar("name", { length: 255 }),
   role: varchar("role", { length: 50 }).default("user").notNull(),
   image: text("image"), // Campo para la imagen de perfil (base64 o URL)
   createdAt: timestamp("created_at").defaultNow().notNull(),
@@ -157,10 +157,10 @@ export const consultationsRelations = relations(consultations, ({ one, many }) =
 
 // Esquemas Zod para validación
 export const insertUserSchema = createInsertSchema(users).pick({
-  username: true,
+  first_name: true,
+  last_name: true,
   email: true,
   password: true,
-  name: true,
 });
 
 export const insertContactSchema = createInsertSchema(contacts).pick({

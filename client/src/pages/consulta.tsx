@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,6 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import WhatsAppButton from "@/components/ui/whatsapp-button";
 import { useIsMobile } from "@/hooks/use-mobile";
 import analytics from "@/lib/analytics";
+import { API_URL } from '@/lib/api';
 
 const formSchema = z.object({
   nombre: z.string().min(2, { message: "El nombre es requerido" }),
@@ -126,6 +127,7 @@ export default function Consulta() {
   const [currentStep, setCurrentStep] = useState(1);
   const [showEstimador, setShowEstimador] = useState(false);
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
   
   // Estado para detalles de servicios
   const [serviciosDisponibles, setServiciosDisponibles] = useState<string[]>([]);
@@ -232,7 +234,7 @@ export default function Consulta() {
     
     try {
       // Envío real del formulario a la API
-      const response = await fetch('/api/consulta', {
+      const response = await fetch(`${API_URL}/consulta`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -837,6 +839,15 @@ export default function Consulta() {
                   </>
                 )}
                 
+                {submitted && (
+                  <div className="flex flex-col items-center justify-center gap-4 p-6 bg-white rounded-lg shadow-md mt-8">
+                    <img src="/logo-tuwebai.png" alt="Logo TuWeb.ai" className="w-20 h-20 mb-2" />
+                    <h2 className="text-2xl font-bold text-primary">¡Consulta enviada con éxito!</h2>
+                    <p className="text-gray-600">Te responderemos a la brevedad. ¡Gracias por contactarnos!</p>
+                    <Button onClick={() => navigate('/')} className="mt-4">Volver al inicio</Button>
+                  </div>
+                )}
+                
                 <div className="mt-8 pt-8 border-t border-gray-800">
                   <div className="flex flex-col items-center text-center">
                     <h3 className="text-xl font-medium text-white mb-4">¿Preferís contactarnos directamente?</h3>
@@ -846,7 +857,7 @@ export default function Consulta() {
                     
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-2xl">
                       <motion.a
-                        href="https://wa.me/5492215688349?text=Hola,%20estoy%20interesado%20en%20sus%20servicios"
+                        href="https://wa.me/543571416044?text=Hola,%20estoy%20interesado%20en%20sus%20servicios"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex flex-col items-center p-4 bg-[#25D366]/10 border border-[#25D366]/30 rounded-xl text-white hover:bg-[#25D366]/20 transition-colors"
@@ -863,7 +874,7 @@ export default function Consulta() {
                       </motion.a>
                       
                       <motion.a
-                        href="tel:+5492215688349"
+                        href="tel:+543571416044"
                         className="flex flex-col items-center p-4 bg-[#00CCFF]/10 border border-[#00CCFF]/30 rounded-xl text-white hover:bg-[#00CCFF]/20 transition-colors"
                         whileHover={{ y: -5 }}
                         transition={{ duration: 0.2 }}
@@ -874,7 +885,7 @@ export default function Consulta() {
                           </svg>
                         </div>
                         <span className="font-medium mb-1">Teléfono</span>
-                        <span className="text-sm text-gray-300">+54 9 221 568-8349</span>
+                        <span className="text-sm text-gray-300">+54 9 3571 416044</span>
                       </motion.a>
                       
                       <motion.a
