@@ -351,22 +351,6 @@ if (googleClientId && googleClientSecret) {
     
     if (!user) {
       console.log('👤 Usuario no encontrado, creando nuevo usuario');
-<<<<<<< HEAD
-      // Crear usuario nuevo (sin image)
-      user = await storage.createUser({
-        first_name: profile.name?.givenName || '',
-        last_name: profile.name?.familyName || '',
-        email,
-        password: crypto.randomBytes(16).toString('hex'), // Contraseña aleatoria (no se usa)
-      });
-      console.log('✅ Usuario creado exitosamente:', user.id);
-      
-      // Si hay imagen, actualizar
-      if (profile.photos?.[0]?.value) {
-        console.log('🖼️ Actualizando imagen de perfil');
-        await storage.updateUser(user.id, { image: profile.photos[0].value });
-        user = await storage.getUser(user.id);
-=======
       try {
         // Crear usuario nuevo (sin image)
         user = await storage.createUser({
@@ -389,7 +373,6 @@ if (googleClientId && googleClientSecret) {
           return done(null, false, { message: 'db_connection_error' });
         }
         return done(createError);
->>>>>>> 496eec9 (auth solucioado)
       }
       // Email de bienvenida para Google
       await sendWelcomeEmail({ email, name: profile.displayName });
