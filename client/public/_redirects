@@ -1,6 +1,6 @@
 # Redirecciones para Netlify
 # Todas las rutas van a index.html para SPA
-/*    /index.html   200
+/*    /index.html   200 
 
 # Redirecciones específicas para páginas de pago
 /pago-exitoso    /index.html   200

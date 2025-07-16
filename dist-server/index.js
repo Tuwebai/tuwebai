@@ -667,7 +667,8 @@ var router = express.Router();
 var ACCESS_TOKEN = process.env.MP_ACCESS_TOKEN || "";
 var PLANES = {
   "Plan B\xE1sico": 299,
-  "Plan Pro": 499
+  "Plan Pro": 499,
+  "Plan Profesional": 499
 };
 var SPECIAL_USER = {
   id: 99999,
@@ -948,15 +949,28 @@ async function registerRoutes(app2) {
       }
       const { plan } = req.body;
       console.log("\u{1F4CB} Plan solicitado:", plan);
-      if (!PLANES[plan]) {
+      console.log("\u{1F4CB} Planes disponibles:", Object.keys(PLANES));
+      const normalizedPlan = plan.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      const availablePlans = Object.keys(PLANES).map((p) => p.normalize("NFD").replace(/[\u0300-\u036f]/g, ""));
+      console.log("\u{1F4CB} Plan normalizado:", normalizedPlan);
+      console.log("\u{1F4CB} Planes disponibles normalizados:", availablePlans);
+      const planKey = Object.keys(PLANES).find(
+        (p) => p.normalize("NFD").replace(/[\u0300-\u036f]/g, "") === normalizedPlan
+      );
+      if (!planKey) {
         console.log("\u274C Plan no v\xE1lido:", plan);
-        return res.status(400).json({ error: "Plan no v\xE1lido" });
+        console.log("\u274C Plan normalizado:", normalizedPlan);
+        return res.status(400).json({
+          error: "Plan no v\xE1lido",
+          availablePlans: Object.keys(PLANES),
+          requestedPlan: plan
+        });
       }
       const preference = {
         items: [
           {
-            title: plan,
-            unit_price: PLANES[plan],
+            title: planKey,
+            unit_price: PLANES[planKey],
             quantity: 1
           }
         ],

@@ -40,7 +40,8 @@ const ACCESS_TOKEN = process.env.MP_ACCESS_TOKEN || '';
 
 const PLANES: Record<string, number> = {
   'Plan Básico': 299,
-  'Plan Pro': 499
+  'Plan Pro': 499,
+  'Plan Profesional': 499
 };
 
 // Las rutas se moverán a registerRoutes para evitar problemas de registro
@@ -408,17 +409,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       const { plan } = req.body as { plan: string };
       console.log('📋 Plan solicitado:', plan);
+      console.log('📋 Planes disponibles:', Object.keys(PLANES));
       
-      if (!PLANES[plan]) {
+      // Normalizar el nombre del plan para manejar problemas de codificación
+      const normalizedPlan = plan.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      const availablePlans = Object.keys(PLANES).map(p => p.normalize('NFD').replace(/[\u0300-\u036f]/g, ''));
+      
+      console.log('📋 Plan normalizado:', normalizedPlan);
+      console.log('📋 Planes disponibles normalizados:', availablePlans);
+      
+      // Buscar el plan por nombre normalizado
+      const planKey = Object.keys(PLANES).find(p => 
+        p.normalize('NFD').replace(/[\u0300-\u036f]/g, '') === normalizedPlan
+      );
+      
+      if (!planKey) {
         console.log('❌ Plan no válido:', plan);
-        return res.status(400).json({ error: 'Plan no válido' });
+        console.log('❌ Plan normalizado:', normalizedPlan);
+        return res.status(400).json({ 
+          error: 'Plan no válido',
+          availablePlans: Object.keys(PLANES),
+          requestedPlan: plan
+        });
       }
       
       const preference = {
         items: [
           {
-            title: plan,
-            unit_price: PLANES[plan],
+            title: planKey,
+            unit_price: PLANES[planKey],
             quantity: 1,
           },
         ],
