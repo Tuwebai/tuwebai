@@ -1,6 +1,5 @@
 import express from 'express';
 import { router } from './routes';
-import { serveStatic, log } from "./vite";
 import session from 'express-session';
 import MemoryStore from 'memorystore';
 import path from 'path';
@@ -34,7 +33,7 @@ const sessionStore = new Store({
   checkPeriod: 86400000 // Limpiar sesiones expiradas cada 24 horas
 });
 
-log("Usando MemoryStore para almacenar sesiones localmente");
+console.log("Usando MemoryStore para almacenar sesiones localmente");
 
 // Configuración de sesiones
 app.use(
@@ -91,7 +90,7 @@ app.use((req, res, next) => {
         logLine = logLine.slice(0, 79) + "…";
       }
 
-      log(logLine);
+      console.log(logLine);
     }
   });
 
@@ -103,20 +102,21 @@ app.get('/favicon.ico', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/favicon.ico'));
 });
 
-// Servir recursos estáticos (por ejemplo, /public)
+// Servir archivos estáticos desde /public (sin Vite)
 app.use(express.static(path.join(__dirname, '../public')));
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/index.html'));
+});
 
 const httpServer = createServer(app);
 
 (async () => {
-  serveStatic(app);
-
   // ALWAYS serve the app on port 5000
   const port = process.env.PORT ? parseInt(process.env.PORT) : 5000;
   httpServer.listen({
     port,
-    host: "127.0.0.1"
+    host: "0.0.0.0"
   }, () => {
-    log(`serving on port ${port}`);
+    console.log(`serving on port ${port}`);
   });
 })();
