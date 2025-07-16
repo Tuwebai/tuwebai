@@ -39,16 +39,15 @@ const router = express.Router();
 const ACCESS_TOKEN = process.env.MP_ACCESS_TOKEN || '';
 
 const PLANES: Record<string, number> = {
-  'Plan Básico': 10000,
-  'Plan Pro': 20000,
-  'Plan Premium': 30000,
+  'Plan Básico': 299,
+  'Plan Pro': 499
 };
 
 router.post('/crear-preferencia', async (req, res) => {
   try {
     const { plan } = req.body as { plan: string };
-    if (!PLANES[plan]) {
-      return res.status(400).json({ error: 'Plan inválido' });
+    if (plan === 'Plan Enterprise' || plan === 'Plan Premium' || !PLANES[plan]) {
+      return res.status(400).json({ error: 'Plan personalizado, consultar con ventas' });
     }
     const preference = {
       items: [

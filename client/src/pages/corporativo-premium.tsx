@@ -707,7 +707,7 @@ export default function CorporativoPremium() {
                     </svg>
                     <div>
                       <p className="font-medium text-gray-700">Teléfono:</p>
-                      <p className="text-gray-600">+54 11 5555-7890</p>
+                      <p className="text-gray-600">+54 9 3571 416044</p>
                     </div>
                   </li>
                   <li className="flex">

@@ -857,7 +857,7 @@ export default function Consulta() {
                     
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-2xl">
                       <motion.a
-                        href="https://wa.me/5492215688349?text=Hola,%20estoy%20interesado%20en%20sus%20servicios"
+                        href="https://wa.me/543571416044?text=Hola,%20estoy%20interesado%20en%20sus%20servicios"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex flex-col items-center p-4 bg-[#25D366]/10 border border-[#25D366]/30 rounded-xl text-white hover:bg-[#25D366]/20 transition-colors"
@@ -874,7 +874,7 @@ export default function Consulta() {
                       </motion.a>
                       
                       <motion.a
-                        href="tel:+5492215688349"
+                        href="tel:+543571416044"
                         className="flex flex-col items-center p-4 bg-[#00CCFF]/10 border border-[#00CCFF]/30 rounded-xl text-white hover:bg-[#00CCFF]/20 transition-colors"
                         whileHover={{ y: -5 }}
                         transition={{ duration: 0.2 }}
@@ -885,7 +885,7 @@ export default function Consulta() {
                           </svg>
                         </div>
                         <span className="font-medium mb-1">Teléfono</span>
-                        <span className="text-sm text-gray-300">+54 9 221 568-8349</span>
+                        <span className="text-sm text-gray-300">+54 9 3571 416044</span>
                       </motion.a>
                       
                       <motion.a

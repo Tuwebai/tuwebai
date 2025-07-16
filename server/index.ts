@@ -27,12 +27,20 @@ app.use(express.urlencoded({ extended: false }));
 export default app;
 
 // Configuración CORS definitiva y estricta SOLO para https://tuweb-ai.com
-app.use(cors({
-  origin: 'https://tuweb-ai.com',
-  methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true
-}));
+const allowedOrigins = ['https://tuweb-ai.com'];
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (typeof origin === 'string' && allowedOrigins.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin);
+    res.header('Access-Control-Allow-Credentials', 'true');
+    res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+    if (req.method === 'OPTIONS') {
+      return res.sendStatus(200);
+    }
+  }
+  next();
+});
 
 // Configuración de la sesión
 // Utilizamos MemoryStore para almacenar sesiones en memoria localmente

@@ -39,7 +39,7 @@ export default function Footer() {
               <li><a href="/servicios/desarrollo-web" className="hover:text-[#00CCFF] transition-colors">Desarrollo Web</a></li>
               <li><a href="/servicios/posicionamiento-marketing" className="hover:text-[#00CCFF] transition-colors">Posicionamiento y Marketing</a></li>
               <li><a href="/servicios/automatizacion-marketing" className="hover:text-[#00CCFF] transition-colors">Automatización de Marketing</a></li>
-              <li><a href="/consulta" className="hover:text-[#00CCFF] transition-colors">Solicitar consulta</a></li>
+              <li><a href="/contacto" className="hover:text-[#00CCFF] transition-colors">Contacto</a></li>
             </ul>
           </div>
           

@@ -9,7 +9,7 @@ interface WhatsAppButtonProps {
 }
 
 export default function WhatsAppButton({ 
-  phone = "5491123456789", // Número genérico
+  phone = "543571416044", // Nuevo número
   message = "Hola, estoy interesado en sus servicios de desarrollo web", 
   showPopup = true,
   delay = 3000
