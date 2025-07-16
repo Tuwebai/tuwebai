@@ -26,21 +26,20 @@ app.use(express.urlencoded({ extended: false }));
 
 export default app;
 
-// Configuración CORS definitiva y estricta SOLO para https://tuweb-ai.com
-const allowedOrigins = ['https://tuweb-ai.com'];
-app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  if (typeof origin === 'string' && allowedOrigins.includes(origin)) {
-    res.header('Access-Control-Allow-Origin', origin);
-    res.header('Access-Control-Allow-Credentials', 'true');
-    res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');
-    if (req.method === 'OPTIONS') {
-      return res.sendStatus(200);
+// Configuración CORS definitiva y estricta para producción
+const allowedOrigins = ['https://tuweb-ai.com', 'https://www.tuweb-ai.com'];
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('No permitido por CORS'));
     }
-  }
-  next();
-});
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 
 // Configuración de la sesión
 // Utilizamos MemoryStore para almacenar sesiones en memoria localmente
@@ -137,11 +136,14 @@ const httpServer = createServer(app);
 
 (async () => {
   // ALWAYS serve the app on port 5000
-  const port = process.env.PORT ? parseInt(process.env.PORT) : 5000;
+  const port = process.env.PORT ? parseInt(process.env.PORT) : 3000;
   httpServer.listen({
     port,
     host: "0.0.0.0"
   }, () => {
-    console.log(`serving on port ${port}`);
+    console.log(`\n=============================`);
+    console.log(`🚀 Backend escuchando en puerto ${port}`);
+    console.log(`🌍 Orígenes permitidos CORS: ${allowedOrigins.join(', ')}`);
+    console.log(`=============================`);
   });
 })();

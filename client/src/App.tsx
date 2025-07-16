@@ -107,9 +107,9 @@ function App() {
             {/* Precargar recursos críticos */}
             <ResourcePreload
               resources={[
-                { href: '/assets/logo.png', as: 'image' },
-                { href: '/fonts/inter-var.woff2', as: 'font', type: 'font/woff2', crossOrigin: 'anonymous' },
-                // Agregar otros recursos críticos aquí
+                // Preload solo si se usan en la carga inicial
+                // { href: '/assets/logo.png', as: 'image' },
+                // { href: '/fonts/inter-var.woff2', as: 'font', type: 'font/woff2', crossOrigin: 'anonymous' },
               ]}
             />
             

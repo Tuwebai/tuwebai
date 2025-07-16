@@ -43,8 +43,24 @@ const PLANES: Record<string, number> = {
   'Plan Pro': 499
 };
 
+// Ruta /api/auth/me segura para debug
+router.get('/api/auth/me', (req, res) => {
+  try {
+    if (req.session && req.session.userId) {
+      return res.json({ success: true, userId: req.session.userId, userEmail: req.session.userEmail });
+    }
+    res.json({ success: false, user: null });
+  } catch (err: any) {
+    res.status(500).json({ error: 'Error interno', details: err.message });
+  }
+});
+
+// Ruta /crear-preferencia robusta
 router.post('/crear-preferencia', async (req, res) => {
   try {
+    if (!process.env.MP_ACCESS_TOKEN) {
+      return res.status(500).json({ error: 'Falta configuración de Mercado Pago' });
+    }
     const { plan } = req.body as { plan: string };
     if (plan === 'Plan Enterprise' || plan === 'Plan Premium' || !PLANES[plan]) {
       return res.status(400).json({ error: 'Plan personalizado, consultar con ventas' });
@@ -69,14 +85,14 @@ router.post('/crear-preferencia', async (req, res) => {
       preference,
       {
         headers: {
-          Authorization: `Bearer ${ACCESS_TOKEN}`,
+          Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}`,
           'Content-Type': 'application/json',
         },
       }
     );
     return res.json({ init_point: mpRes.data.init_point });
   } catch (err: any) {
-    return res.status(500).json({ error: 'Error al crear preferencia', details: err.message });
+    res.status(500).json({ error: 'Error al crear preferencia', details: err.message });
   }
 });
 
