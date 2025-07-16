@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
 import { router } from './routes';
-import { setupVite, serveStatic, log } from "./vite";
+import { serveStatic, log } from "./vite";
 import session from 'express-session';
 import MemoryStore from 'memorystore';
 import path from 'path';
@@ -110,8 +110,16 @@ app.use(express.static(path.join(__dirname, '../public')));
 
 const httpServer = createServer(app);
 
+let setupVite: any;
+if (process.env.NODE_ENV === 'development') {
+  (async () => {
+    const viteModule = await import('./vite');
+    setupVite = viteModule.setupVite;
+  })();
+}
+
 (async () => {
-  if (app.get("env") === "development") {
+  if (process.env.NODE_ENV === 'development' && setupVite) {
     await setupVite(app, httpServer);
   } else {
     serveStatic(app);
