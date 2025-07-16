@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import { API_URL } from '@/lib/api';
 
 // Definición de tipos para usuarios y datos de autenticación
 export interface User {
@@ -115,18 +116,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
   
-  // Helper para obtener la URL base del backend
-  const getBackendUrl = () => {
-    return process.env.NODE_ENV === 'production'
-      ? window.location.origin
-      : 'http://localhost:5000';
-  };
-
   // Verificar si el usuario ya está autenticado al cargar la página
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
-        const response = await fetch(`${getBackendUrl()}/api/auth/me`, { credentials: 'include' });
+        const response = await fetch(`${API_URL}/api/auth/me`, { credentials: 'include' });
         
         if (response.ok) {
           const data = await response.json();
@@ -184,7 +178,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setError(null);
     
     try {
-      const response = await fetch(`${getBackendUrl()}/api/auth/login`, {
+      const response = await fetch(`${API_URL}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -220,15 +214,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Iniciar sesión con Google
   const loginWithGoogle = () => {
     try {
-      // Usar la URL del backend dinámicamente
-      const backendUrl = process.env.NODE_ENV === 'production' 
-        ? window.location.origin 
-        : 'http://localhost:5000';
-      
-      console.log('🚀 Iniciando login con Google...');
-      console.log('🔗 URL del backend:', backendUrl);
-      
-      window.location.href = `${backendUrl}/api/auth/google`;
+      window.location.href = `${API_URL}/api/auth/google`;
     } catch (error) {
       console.error('Error al iniciar login con Google:', error);
       setError('Error al iniciar sesión con Google. Por favor, inténtalo de nuevo.');
@@ -241,7 +227,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setError(null);
     
     try {
-      const response = await fetch(`${getBackendUrl()}/api/auth/logout`, {
+      const response = await fetch(`${API_URL}/api/auth/logout`, {
         method: 'POST',
       });
       
@@ -267,7 +253,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setError(null);
     
     try {
-      const response = await fetch(`${getBackendUrl()}/api/auth/register`, {
+      const response = await fetch(`${API_URL}/api/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -301,7 +287,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setError(null);
     
     try {
-      const response = await fetch(`${getBackendUrl()}/api/auth/forgot-password`, {
+      const response = await fetch(`${API_URL}/api/auth/forgot-password`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -333,7 +319,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setError(null);
     
     try {
-      const response = await fetch(`${getBackendUrl()}/api/auth/reset-password`, {
+      const response = await fetch(`${API_URL}/api/auth/reset-password`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -365,7 +351,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setError(null);
     
     try {
-      const response = await fetch(`${getBackendUrl()}/api/profile`, {
+      const response = await fetch(`${API_URL}/api/profile`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -401,7 +387,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setError(null);
     
     try {
-      const response = await fetch(`${getBackendUrl()}/api/profile/preferences`, { credentials: 'include' });
+      const response = await fetch(`${API_URL}/api/profile/preferences`, { credentials: 'include' });
       
       if (!response.ok) {
         const data = await response.json();
@@ -429,7 +415,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setError(null);
     
     try {
-      const response = await fetch(`${getBackendUrl()}/api/profile/preferences`, {
+      const response = await fetch(`${API_URL}/api/profile/preferences`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -466,7 +452,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setError(null);
     
     try {
-      const response = await fetch(`${getBackendUrl()}/api/profile/password-info`, { credentials: 'include' });
+      const response = await fetch(`${API_URL}/api/profile/password-info`, { credentials: 'include' });
       
       if (!response.ok) {
         const data = await response.json();
@@ -494,7 +480,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setError(null);
     
     try {
-      const response = await fetch(`${getBackendUrl()}/api/profile/change-password`, {
+      const response = await fetch(`${API_URL}/api/profile/change-password`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -552,7 +538,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         reader.readAsDataURL(imageFile);
       });
       
-      const response = await fetch(`${getBackendUrl()}/api/profile/upload-image`, {
+      const response = await fetch(`${API_URL}/api/profile/upload-image`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
