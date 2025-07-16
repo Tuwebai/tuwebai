@@ -29,6 +29,56 @@ import crypto from 'crypto';
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import type { Profile, VerifyCallback } from 'passport-google-oauth20';
+import express from 'express';
+import cors from 'cors';
+import axios from 'axios';
+
+const router = express.Router();
+
+const ACCESS_TOKEN = process.env.MP_ACCESS_TOKEN || '';
+
+const PLANES: Record<string, number> = {
+  'Plan Básico': 10000,
+  'Plan Pro': 20000,
+  'Plan Premium': 30000,
+};
+
+router.post('/crear-preferencia', async (req, res) => {
+  try {
+    const { plan } = req.body as { plan: string };
+    if (!PLANES[plan]) {
+      return res.status(400).json({ error: 'Plan inválido' });
+    }
+    const preference = {
+      items: [
+        {
+          title: plan,
+          unit_price: PLANES[plan],
+          quantity: 1,
+        },
+      ],
+      back_urls: {
+        success: 'https://tuweb-ai.com/pago-exitoso',
+        failure: 'https://tuweb-ai.com/pago-fallido',
+        pending: 'https://tuweb-ai.com/pago-pendiente',
+      },
+      auto_return: 'approved',
+    };
+    const mpRes = await axios.post(
+      'https://api.mercadopago.com/checkout/preferences',
+      preference,
+      {
+        headers: {
+          Authorization: `Bearer ${ACCESS_TOKEN}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    return res.json({ init_point: mpRes.data.init_point });
+  } catch (err: any) {
+    return res.status(500).json({ error: 'Error al crear preferencia', details: err.message });
+  }
+});
 
 // Middleware de Autenticación
 // Usuario especial de desarrollo - datos simulados
@@ -1603,3 +1653,5 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   return server;
 }
+
+export { router };

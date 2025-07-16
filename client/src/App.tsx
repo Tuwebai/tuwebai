@@ -64,6 +64,10 @@ const AdminNewsletter = lazy(() => import('./pages/admin/newsletter'));
 const AdminAnalytics = lazy(() => import('./pages/admin/analytics'));
 const AdminSettings = lazy(() => import('./pages/admin/settings'));
 
+const PagoExitoso = lazy(() => import('./pages/pago-exitoso'));
+const PagoFallido = lazy(() => import('./pages/pago-fallido'));
+const PagoPendiente = lazy(() => import('./pages/pago-pendiente'));
+
 function App() {
   const location = useLocation();
   
@@ -173,6 +177,11 @@ function App() {
               <Route path="/admin/newsletter" element={<LazyRoute><AdminRoute><AdminNewsletter /></AdminRoute></LazyRoute>} />
               <Route path="/admin/analytics" element={<LazyRoute><AdminRoute><AdminAnalytics /></AdminRoute></LazyRoute>} />
               <Route path="/admin/settings" element={<LazyRoute><AdminRoute><AdminSettings /></AdminRoute></LazyRoute>} />
+              
+              {/* Rutas para pagos */}
+              <Route path="/pago-exitoso" element={<LazyRoute><PagoExitoso /></LazyRoute>} />
+              <Route path="/pago-fallido" element={<LazyRoute><PagoFallido /></LazyRoute>} />
+              <Route path="/pago-pendiente" element={<LazyRoute><PagoPendiente /></LazyRoute>} />
               
               {/* Página 404 sin lazy loading para mejor experiencia */}
               <Route path="*" element={<NotFound />} />

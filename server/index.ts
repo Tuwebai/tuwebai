@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
-import express, { type Request, Response, NextFunction } from "express";
-import { registerRoutes } from "./routes";
+import express from 'express';
+import { router } from './routes';
 import { setupVite, serveStatic, log } from "./vite";
 import session from 'express-session';
 import MemoryStore from 'memorystore';
@@ -9,6 +9,7 @@ import path from 'path';
 import { storage } from './storage';
 import passport from 'passport';
 import { fileURLToPath } from 'url';
+import { createServer } from 'http';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -24,6 +25,9 @@ declare module 'express-session' {
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(router);
+
+export default app;
 
 // Configuración de la sesión
 // Utilizamos MemoryStore para almacenar sesiones en memoria localmente
@@ -56,7 +60,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Middleware de logging para debugging de sesiones
-app.use((req: Request, res: Response, next: NextFunction) => {
+app.use((req: any, res: any, next: any) => {
   if (req.path.includes('/auth/')) {
     console.log(`🔍 [${new Date().toISOString()}] ${req.method} ${req.path}`);
     console.log('🍪 Session ID:', req.sessionID);
@@ -104,71 +108,18 @@ app.get('/favicon.ico', (req, res) => {
 // Servir recursos estáticos (por ejemplo, /public)
 app.use(express.static(path.join(__dirname, '../public')));
 
+const httpServer = createServer(app);
+
 (async () => {
-  const server = await registerRoutes(app);
-
-  app.use((err: any, req: Request, res: Response, _next: NextFunction) => {
-    const status = err.status || err.statusCode || 500;
-    const message = err.message || "Internal Server Error";
-    console.error('Express error middleware:', err);
-    
-    // Si es un error de OAuth, manejar específicamente
-    if (err.code === 'invalid_grant') {
-      console.error('❌ Error de Google OAuth - invalid_grant:', err);
-      console.error('📋 Detalles del error:', {
-        message: err.message,
-        status: err.status,
-        uri: err.uri
-      });
-      
-      if (!res.headersSent) {
-        return res.status(400).json({
-          success: false,
-          message: "Error de autenticación con Google. El código de autorización ha expirado o es inválido. Por favor, intenta de nuevo.",
-          error: 'oauth_invalid_grant',
-          details: process.env.NODE_ENV === 'development' ? err.message : undefined
-        });
-      }
-    }
-    
-    // Otros errores de OAuth
-    if (err.code && err.code.startsWith('oauth_')) {
-      console.error('❌ Error de OAuth:', err.code, err.message);
-      if (!res.headersSent) {
-        return res.status(400).json({
-          success: false,
-          message: "Error de autenticación con Google. Por favor, verifica tu configuración e intenta de nuevo.",
-          error: err.code,
-          details: process.env.NODE_ENV === 'development' ? err.message : undefined
-        });
-      }
-    }
-    
-    // Error genérico
-    if (!res.headersSent) {
-      res.status(status).json({ 
-        success: false, 
-        message,
-        details: process.env.NODE_ENV === 'development' ? err.message : undefined
-      });
-    }
-    // No hacer throw err;
-  });
-
-  // importantly only setup vite in development and after
-  // setting up all the other routes so the catch-all route
-  // doesn't interfere with the other routes
   if (app.get("env") === "development") {
-    await setupVite(app, server);
+    await setupVite(app, httpServer);
   } else {
     serveStatic(app);
   }
 
   // ALWAYS serve the app on port 5000
-  // this serves both the API and the client.
-  // It is the only port that is not firewalled.
   const port = process.env.PORT ? parseInt(process.env.PORT) : 5000;
-  server.listen({
+  httpServer.listen({
     port,
     host: "127.0.0.1"
   }, () => {

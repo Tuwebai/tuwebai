@@ -136,6 +136,26 @@ const forumPosts: ForumPost[] = [
   }
 ];
 
+const planes = [
+  { nombre: 'Plan Básico', precio: 10000 },
+  { nombre: 'Plan Pro', precio: 20000 },
+  { nombre: 'Plan Premium', precio: 30000 },
+];
+
+const handleCheckout = async (plan: string) => {
+  const res = await fetch('http://localhost:3000/crear-preferencia', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ plan }),
+  });
+  const data = await res.json();
+  if (data.init_point) {
+    window.location.href = data.init_point;
+  } else {
+    alert('Error al iniciar el pago');
+  }
+};
+
 export default function Academia() {
   // Estados
   const [activeCategory, setActiveCategory] = useState<CourseCategory>('todos');
