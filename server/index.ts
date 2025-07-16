@@ -50,11 +50,11 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: false, // SIEMPRE false en desarrollo
+      secure: true, // SIEMPRE true en producción para cross-domain
       maxAge: 1000 * 60 * 60 * 24, // 24 horas
-      sameSite: 'lax', // SIEMPRE lax en desarrollo
+      sameSite: 'none', // Necesario para cross-domain
       httpOnly: true,
-      domain: undefined, // Nunca poner dominio en desarrollo
+      domain: undefined, // No fijar dominio para compatibilidad
     },
     store: sessionStore,
     name: 'tuwebai.sid',
