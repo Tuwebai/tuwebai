@@ -1,12 +1,148 @@
 var __defProp = Object.defineProperty;
+var __getOwnPropNames = Object.getOwnPropertyNames;
+var __require = /* @__PURE__ */ ((x) => typeof require !== "undefined" ? require : typeof Proxy !== "undefined" ? new Proxy(x, {
+  get: (a, b) => (typeof require !== "undefined" ? require : a)[b]
+}) : x)(function(x) {
+  if (typeof require !== "undefined") return require.apply(this, arguments);
+  throw Error('Dynamic require of "' + x + '" is not supported');
+});
+var __esm = (fn, res) => function __init() {
+  return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
+};
 var __export = (target, all) => {
   for (var name in all)
     __defProp(target, name, { get: all[name], enumerable: true });
 };
 
+// vite.config.ts
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import themePlugin from "@replit/vite-plugin-shadcn-theme-json";
+import path from "path";
+import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
+var vite_config_default;
+var init_vite_config = __esm({
+  async "vite.config.ts"() {
+    "use strict";
+    vite_config_default = defineConfig({
+      plugins: [
+        react(),
+        runtimeErrorOverlay(),
+        themePlugin(),
+        ...process.env.NODE_ENV !== "production" && process.env.REPL_ID !== void 0 ? [
+          await import("@replit/vite-plugin-cartographer").then(
+            (m) => m.cartographer()
+          )
+        ] : []
+      ],
+      server: {
+        proxy: {
+          "/api": "http://localhost:5000"
+        }
+      },
+      resolve: {
+        alias: {
+          "@": path.resolve(import.meta.dirname, "client", "src"),
+          "@shared": path.resolve(import.meta.dirname, "shared"),
+          "@assets": path.resolve(import.meta.dirname, "attached_assets")
+        }
+      },
+      root: path.resolve(import.meta.dirname, "client"),
+      build: {
+        outDir: path.resolve(import.meta.dirname, "dist"),
+        emptyOutDir: true
+      }
+    });
+  }
+});
+
+// server/vite.ts
+var vite_exports = {};
+__export(vite_exports, {
+  log: () => log,
+  serveStatic: () => serveStatic,
+  setupVite: () => setupVite
+});
+import express2 from "express";
+import fs from "fs";
+import path2 from "path";
+import { createServer as createViteServer, createLogger } from "vite";
+import { nanoid } from "nanoid";
+function log(message, source = "express") {
+  const formattedTime = (/* @__PURE__ */ new Date()).toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true
+  });
+  console.log(`${formattedTime} [${source}] ${message}`);
+}
+async function setupVite(app2, server) {
+  const serverOptions = {
+    middlewareMode: true,
+    hmr: { server },
+    allowedHosts: ["localhost", "127.0.0.1"]
+  };
+  const vite = await createViteServer({
+    ...vite_config_default,
+    configFile: false,
+    customLogger: {
+      ...viteLogger,
+      error: (msg, options) => {
+        viteLogger.error(msg, options);
+        process.exit(1);
+      }
+    },
+    server: serverOptions,
+    appType: "custom"
+  });
+  app2.use(vite.middlewares);
+  app2.use("*", async (req, res, next) => {
+    const url = req.originalUrl;
+    try {
+      const clientTemplate = path2.resolve(
+        import.meta.dirname,
+        "..",
+        "client",
+        "index.html"
+      );
+      let template = await fs.promises.readFile(clientTemplate, "utf-8");
+      template = template.replace(
+        `src="/src/main.tsx"`,
+        `src="/src/main.tsx?v=${nanoid()}"`
+      );
+      const page = await vite.transformIndexHtml(url, template);
+      res.status(200).set({ "Content-Type": "text/html" }).end(page);
+    } catch (e) {
+      vite.ssrFixStacktrace(e);
+      next(e);
+    }
+  });
+}
+function serveStatic(app2) {
+  const distPath = path2.resolve(import.meta.dirname, "public");
+  if (!fs.existsSync(distPath)) {
+    throw new Error(
+      `Could not find the build directory: ${distPath}, make sure to build the client first`
+    );
+  }
+  app2.use(express2.static(distPath));
+  app2.use("*", (_req, res) => {
+    res.sendFile(path2.resolve(distPath, "index.html"));
+  });
+}
+var viteLogger;
+var init_vite = __esm({
+  async "server/vite.ts"() {
+    "use strict";
+    await init_vite_config();
+    viteLogger = createLogger();
+  }
+});
+
 // server/index.ts
 import dotenv2 from "dotenv";
-import express2 from "express";
+import express3 from "express";
 
 // server/routes.ts
 import dotenv from "dotenv";
@@ -44,10 +180,10 @@ import { pgTable, serial, varchar, text, timestamp, boolean, integer } from "dri
 import { createInsertSchema } from "drizzle-zod";
 var users = pgTable("users", {
   id: serial("id").primaryKey(),
-  username: varchar("username", { length: 255 }).notNull().unique(),
+  first_name: varchar("first_name", { length: 255 }).notNull(),
+  last_name: varchar("last_name", { length: 255 }).notNull(),
   email: varchar("email", { length: 255 }).notNull().unique(),
   password: varchar("password", { length: 255 }).notNull(),
-  name: varchar("name", { length: 255 }),
   role: varchar("role", { length: 50 }).default("user").notNull(),
   image: text("image"),
   // Campo para la imagen de perfil (base64 o URL)
@@ -173,10 +309,10 @@ var consultationsRelations = relations(consultations, ({ one, many }) => ({
   sections: many(consultationSections)
 }));
 var insertUserSchema = createInsertSchema(users).pick({
-  username: true,
+  first_name: true,
+  last_name: true,
   email: true,
-  password: true,
-  name: true
+  password: true
 });
 var insertContactSchema = createInsertSchema(contacts).pick({
   name: true,
@@ -230,15 +366,6 @@ var DatabaseStorage = class {
       return void 0;
     }
   }
-  async getUserByUsername(username) {
-    try {
-      const result = await this.db.select().from(users).where(eq(users.username, username));
-      return result[0];
-    } catch (error) {
-      console.error("Error getting user by username:", error);
-      return void 0;
-    }
-  }
   async getUserByEmail(email) {
     try {
       console.log("[DB] Buscando usuario por email:", email);
@@ -269,7 +396,9 @@ var DatabaseStorage = class {
       const hashedPassword = await bcrypt.hash(insertUser.password, this.saltRounds);
       const verificationToken = crypto.randomBytes(32).toString("hex");
       const newUser = {
-        ...insertUser,
+        first_name: insertUser.first_name,
+        last_name: insertUser.last_name,
+        email: insertUser.email,
         password: hashedPassword,
         verificationToken,
         createdAt: /* @__PURE__ */ new Date(),
@@ -300,7 +429,12 @@ var DatabaseStorage = class {
         userData.password = await bcrypt.hash(userData.password, this.saltRounds);
       }
       userData.updatedAt = /* @__PURE__ */ new Date();
-      const result = await this.db.update(users).set(userData).where(eq(users.id, id)).returning();
+      const allowedFields = ["first_name", "last_name", "email", "password", "image", "isActive", "verificationToken", "resetPasswordToken", "lastLogin", "role"];
+      const updateFields = {};
+      for (const key of allowedFields) {
+        if (userData[key] !== void 0) updateFields[key] = userData[key];
+      }
+      const result = await this.db.update(users).set(updateFields).where(eq(users.id, id)).returning();
       return result.length ? result[0] : void 0;
     } catch (error) {
       console.error("Error updating user:", error);
@@ -649,6 +783,8 @@ var storage = new DatabaseStorage();
 import crypto2 from "crypto";
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
+import express from "express";
+import axios from "axios";
 dotenv.config({ path: resolve(process.cwd(), ".env") });
 dotenv.config({ path: resolve(process.cwd(), "config.env") });
 dotenv.config({ path: resolve(process.cwd(), "config.env.example") });
@@ -657,18 +793,138 @@ console.log("\u{1F4C1} Directorio actual:", process.cwd());
 console.log("\u{1F30D} NODE_ENV:", process.env.NODE_ENV);
 console.log("\u{1F511} SESSION_SECRET:", process.env.SESSION_SECRET ? "Configurado" : "No configurado");
 console.log("\u{1F4CA} SUPABASE_URL:", process.env.SUPABASE_URL ? "Configurado" : "No configurado");
+var router = express.Router();
+var ACCESS_TOKEN = process.env.MP_ACCESS_TOKEN || "";
+var PLANES = {
+  "Plan B\xE1sico": 299,
+  "Plan Pro": 499
+};
+router.get("/api/auth/me", (req, res) => {
+  try {
+    if (req.session && req.session.userId) {
+      return res.json({ success: true, userId: req.session.userId, userEmail: req.session.userEmail });
+    }
+    res.json({ success: false, user: null });
+  } catch (err) {
+    res.status(500).json({ error: "Error interno", details: err.message });
+  }
+});
+router.post("/crear-preferencia", async (req, res) => {
+  try {
+    if (!process.env.MP_ACCESS_TOKEN) {
+      return res.status(500).json({ error: "Falta configuraci\xF3n de Mercado Pago" });
+    }
+    const { plan } = req.body;
+    if (plan === "Plan Enterprise" || plan === "Plan Premium" || !PLANES[plan]) {
+      return res.status(400).json({ error: "Plan personalizado, consultar con ventas" });
+    }
+    const preference = {
+      items: [
+        {
+          title: plan,
+          unit_price: PLANES[plan],
+          quantity: 1
+        }
+      ],
+      back_urls: {
+        success: "https://tuweb-ai.com/pago-exitoso",
+        failure: "https://tuweb-ai.com/pago-fallido",
+        pending: "https://tuweb-ai.com/pago-pendiente"
+      },
+      auto_return: "approved"
+    };
+    const mpRes = await axios.post(
+      "https://api.mercadopago.com/checkout/preferences",
+      preference,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}`,
+          "Content-Type": "application/json"
+        }
+      }
+    );
+    return res.json({ init_point: mpRes.data.init_point });
+  } catch (err) {
+    res.status(500).json({ error: "Error al crear preferencia", details: err.message });
+  }
+});
+router.post("/consulta", async (req, res) => {
+  try {
+    const { nombre, email, empresa, telefono, tipoProyecto, urgente, detalleServicio, secciones, presupuesto, plazo, mensaje, comoNosEncontraste } = req.body;
+    if (!nombre || !email || !mensaje) {
+      return res.status(400).json({ error: "Faltan datos obligatorios" });
+    }
+    const transporter = __require("nodemailer").createTransport({
+      host: process.env.SMTP_HOST,
+      port: parseInt(process.env.SMTP_PORT || "465"),
+      secure: parseInt(process.env.SMTP_PORT || "465") === 465,
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS
+      }
+    });
+    const html = `
+      <div style="background:#0a0a0f;padding:32px 0;font-family:Inter,Arial,sans-serif;min-height:100vh;">
+        <div style="max-width:520px;margin:0 auto;background:#18181b;border-radius:16px;padding:32px 24px;box-shadow:0 4px 24px rgba(0,0,0,0.12);color:#fff;">
+          <div style="text-align:center;margin-bottom:24px;">
+            <img src='https://tuweb-ai.com/favicon.ico' alt='TuWeb.ai' style='width:48px;height:48px;border-radius:8px;margin-bottom:8px;' />
+            <h2 style="font-size:2rem;font-weight:700;color:#00ccff;margin:0 0 8px 0;">Nueva consulta recibida</h2>
+            <p style="color:#b3b3b3;font-size:1rem;margin:0;">Formulario de contacto desde tuweb-ai.com</p>
+          </div>
+          <div style="margin-bottom:24px;">
+            <h3 style="color:#fff;font-size:1.1rem;margin-bottom:8px;">Datos del usuario</h3>
+            <ul style="list-style:none;padding:0;margin:0;">
+              <li><b>Nombre:</b> ${nombre}</li>
+              <li><b>Email:</b> ${email}</li>
+              ${empresa ? `<li><b>Empresa:</b> ${empresa}</li>` : ""}
+              ${tipoProyecto ? `<li><b>Tipo de proyecto:</b> ${tipoProyecto}</li>` : ""}
+              ${urgente ? `<li><b>Urgente:</b> S\xED</li>` : ""}
+              ${detalleServicio && detalleServicio.length ? `<li><b>Servicios:</b> ${detalleServicio.join(", ")}</li>` : ""}
+              ${secciones && secciones.length ? `<li><b>Secciones:</b> ${secciones.join(", ")}</li>` : ""}
+              ${presupuesto ? `<li><b>Presupuesto:</b> ${presupuesto}</li>` : ""}
+              ${plazo ? `<li><b>Plazo:</b> ${plazo}</li>` : ""}
+              ${comoNosEncontraste ? `<li><b>\xBFC\xF3mo nos encontr\xF3?:</b> ${comoNosEncontraste}</li>` : ""}
+            </ul>
+          </div>
+          <div style="margin-bottom:24px;">
+            <h3 style="color:#fff;font-size:1.1rem;margin-bottom:8px;">Mensaje</h3>
+            <div style="background:#23232b;padding:16px;border-radius:8px;color:#e0e0e0;white-space:pre-line;">${mensaje}</div>
+          </div>
+          <div style="text-align:center;color:#b3b3b3;font-size:0.95rem;margin-top:32px;">
+            <hr style="border:none;border-top:1px solid #222;margin:24px 0;" />
+            <p>Este mensaje fue generado autom\xE1ticamente por <b>TuWeb.ai</b>.<br>Responde directamente a este correo para contactar al usuario.</p>
+            <p style="margin-top:8px;">&copy; ${(/* @__PURE__ */ new Date()).getFullYear()} TuWeb.ai</p>
+          </div>
+        </div>
+      </div>
+    `;
+    await transporter.sendMail({
+      from: `TuWeb.ai <${process.env.SMTP_USER}>`,
+      to: "admin@tuweb-ai.com",
+      subject: "Nueva consulta recibida en TuWeb.ai",
+      html,
+      replyTo: email
+    });
+    console.log("Consulta enviada por email a admin@tuweb-ai.com:", { nombre, email });
+    return res.json({ success: true, message: "Consulta recibida y enviada por email" });
+  } catch (err) {
+    console.error("Error al enviar email de consulta:", err);
+    return res.status(500).json({ error: "Error al procesar la consulta", details: err.message });
+  }
+});
 var SPECIAL_USER = {
   id: 99999,
-  username: "juan.dev",
   email: "juanchilopezpachao7@gmail.com",
-  name: "Juan Esteban L\xF3pez",
+  first_name: "Juan Esteban",
+  last_name: "L\xF3pez",
   role: "user",
   isActive: true,
   createdAt: /* @__PURE__ */ new Date("2024-01-01"),
   updatedAt: /* @__PURE__ */ new Date(),
   lastLogin: /* @__PURE__ */ new Date(),
   verificationToken: null,
-  resetPasswordToken: null
+  resetPasswordToken: null,
+  image: null
 };
 var authenticateUser = async (req, res, next) => {
   const session2 = req.session;
@@ -766,7 +1022,7 @@ if (googleClientId && googleClientSecret) {
   passport.use(new GoogleStrategy({
     clientID: googleClientId,
     clientSecret: googleClientSecret,
-    callbackURL: process.env.NODE_ENV === "production" && process.env.DOMAIN ? `https://${process.env.DOMAIN}/api/auth/google/callback` : "http://localhost:5000/api/auth/google/callback",
+    callbackURL: process.env.NODE_ENV === "production" ? "https://tuwebai-backend.onrender.com/api/auth/google/callback" : "http://localhost:5000/api/auth/google/callback",
     proxy: true
     // Importante para manejar proxies correctamente
   }, async (accessToken, refreshToken, profile, done) => {
@@ -811,6 +1067,7 @@ if (googleClientId && googleClientSecret) {
           }
           return done(createError);
         }
+        await sendWelcomeEmail({ email, name: profile.displayName });
       } else {
         console.log("\u{1F464} Usuario encontrado:", user.id);
         if (!user.isActive) {
@@ -855,6 +1112,55 @@ passport.deserializeUser(async (obj, done) => {
     done(err);
   }
 });
+async function sendWelcomeEmail({ email, name, verificationToken }) {
+  const transporter = __require("nodemailer").createTransport({
+    host: process.env.SMTP_HOST,
+    port: parseInt(process.env.SMTP_PORT || "465"),
+    secure: parseInt(process.env.SMTP_PORT || "465") === 465,
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS
+    }
+  });
+  const verifyUrl = verificationToken ? `${process.env.FRONTEND_URL || "https://tuweb-ai.com"}/auth/verify/${verificationToken}` : null;
+  const LOGO_URL = process.env.FRONTEND_URL ? `${process.env.FRONTEND_URL}/logo-tuwebai.png` : "https://tuweb-ai.com/logo-tuwebai.png";
+  const html = `
+    <div style="background:#0a0a0f;padding:32px 0;font-family:Inter,Arial,sans-serif;min-height:100vh;">
+      <div style="max-width:520px;margin:0 auto;background:#18181b;border-radius:16px;padding:32px 24px;box-shadow:0 4px 24px rgba(0,0,0,0.12);color:#fff;">
+        <div style="text-align:center;margin-bottom:24px;">
+          <img src='${LOGO_URL}' alt='TuWeb.ai' style='width:48px;height:48px;border-radius:8px;margin-bottom:8px;' />
+          <h2 style="font-size:2rem;font-weight:700;color:#00ccff;margin:0 0 8px 0;">\xA1Bienvenido a TuWeb.ai!</h2>
+          <p style="color:#b3b3b3;font-size:1rem;margin:0;">${name ? `Hola <b>${name}</b>,` : "\xA1Hola!"}<br>Tu cuenta ha sido creada exitosamente.</p>
+        </div>
+        <div style="margin-bottom:24px;">
+          <h3 style="color:#fff;font-size:1.1rem;margin-bottom:8px;">\xBFQu\xE9 pod\xE9s hacer ahora?</h3>
+          <ul style="list-style:none;padding:0;margin:0;">
+            <li>\u2714\uFE0F Acceder a cursos y recursos exclusivos</li>
+            <li>\u2714\uFE0F Consultar a expertos y recibir soporte</li>
+            <li>\u2714\uFE0F Gestionar tu perfil y preferencias</li>
+          </ul>
+        </div>
+        ${verifyUrl ? `
+        <div style="margin-bottom:24px;text-align:center;">
+          <a href="${verifyUrl}" style="display:inline-block;padding:14px 32px;background:linear-gradient(90deg,#00ccff,#9933ff);color:#fff;border-radius:8px;font-weight:600;text-decoration:none;font-size:1.1rem;">Verificar mi cuenta</a>
+          <p style="color:#b3b3b3;font-size:0.95rem;margin-top:12px;">Si el bot\xF3n no funciona, copi\xE1 y peg\xE1 este enlace en tu navegador:<br><span style="color:#00ccff;word-break:break-all;">${verifyUrl}</span></p>
+        </div>
+        ` : ""}
+        <div style="text-align:center;color:#b3b3b3;font-size:0.95rem;margin-top:32px;">
+          <hr style="border:none;border-top:1px solid #222;margin:24px 0;" />
+          <p>Este mensaje fue generado autom\xE1ticamente por <b>TuWeb.ai</b>.<br>Si no creaste esta cuenta, ignor\xE1 este email.</p>
+          <p style="margin-top:8px;">&copy; ${(/* @__PURE__ */ new Date()).getFullYear()} TuWeb.ai</p>
+        </div>
+      </div>
+    </div>
+  `;
+  await transporter.sendMail({
+    from: `TuWeb.ai <${process.env.SMTP_USER}>`,
+    to: email,
+    subject: verifyUrl ? "Verific\xE1 tu cuenta en TuWeb.ai" : "\xA1Bienvenido a TuWeb.ai!",
+    html
+  });
+}
 async function registerRoutes(app2) {
   const server = createServer(app2);
   if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
@@ -1083,13 +1389,6 @@ async function registerRoutes(app2) {
   app2.post("/api/auth/register", trackActivity("Auth", "Register"), async (req, res) => {
     try {
       const userData = insertUserSchema.parse(req.body);
-      const existingByUsername = await storage.getUserByUsername(userData.username);
-      if (existingByUsername) {
-        return res.status(400).json({
-          success: false,
-          message: "El nombre de usuario ya est\xE1 en uso"
-        });
-      }
       const existingByEmail = await storage.getUserByEmail(userData.email);
       if (existingByEmail) {
         return res.status(400).json({
@@ -1098,19 +1397,22 @@ async function registerRoutes(app2) {
         });
       }
       const user = await storage.createUser(userData);
+      const verificationToken = await storage.generateVerificationToken(user.id);
+      await sendWelcomeEmail({ email: user.email, name: user.first_name + " " + user.last_name, verificationToken });
       res.status(201).json({
         success: true,
         message: "Usuario registrado correctamente. Por favor verifica tu email.",
         user: {
           id: user.id,
-          username: user.username,
+          first_name: user.first_name,
+          last_name: user.last_name,
           email: user.email,
           createdAt: user.createdAt
         }
       });
       try {
-        const verificationToken = await storage.generateVerificationToken(user.id);
-        if (verificationToken) {
+        const verificationToken2 = await storage.generateVerificationToken(user.id);
+        if (verificationToken2) {
         } else {
           console.error(`No se pudo generar token de verificaci\xF3n para el usuario: ${user.id}`);
         }
@@ -1226,9 +1528,9 @@ async function registerRoutes(app2) {
           message: "Login especial de desarrollo",
           user: {
             id: 99999,
-            username: "juan.dev",
+            first_name: "Juan Esteban",
+            last_name: "L\xF3pez",
             email: "juanchilopezpachao7@gmail.com",
-            name: "Juan Esteban L\xF3pez",
             role: "user",
             isActive: true,
             createdAt: "2024-01-01T00:00:00.000Z"
@@ -1296,9 +1598,9 @@ async function registerRoutes(app2) {
         message: "Login exitoso",
         user: {
           id: user.id,
-          username: user.username,
+          first_name: user.first_name,
+          last_name: user.last_name,
           email: user.email,
-          name: user.name,
           role: user.role
         }
       });
@@ -1354,9 +1656,9 @@ async function registerRoutes(app2) {
         success: true,
         user: {
           id: user.id,
-          username: user.username,
+          first_name: user.first_name,
+          last_name: user.last_name,
           email: user.email,
-          name: user.name,
           role: user.role,
           lastLogin: user.lastLogin
         }
@@ -1447,17 +1749,24 @@ async function registerRoutes(app2) {
     try {
       const user = req.user;
       const isSpecialUser = req.isSpecialUser;
-      const { name, username, email } = req.body;
+      const { first_name, last_name, email } = req.body;
       if (isSpecialUser) {
         console.log("\u{1F527} Usuario especial - simulando actualizaci\xF3n de perfil");
         const updateData2 = {};
-        if (name !== void 0) {
-          updateData2.name = name;
+        if (first_name !== void 0) {
+          updateData2.first_name = first_name;
         }
-        if (username !== void 0 && username !== user.username) {
-          updateData2.username = username;
+        if (last_name !== void 0) {
+          updateData2.last_name = last_name;
         }
         if (email !== void 0 && email !== user.email) {
+          const existingUser = await storage.getUserByEmail(email);
+          if (existingUser && existingUser.id !== user.id) {
+            return res.status(400).json({
+              success: false,
+              message: "El email ya est\xE1 registrado"
+            });
+          }
           updateData2.email = email;
         }
         const updatedUser = {
@@ -1471,27 +1780,20 @@ async function registerRoutes(app2) {
           message: "Perfil actualizado correctamente",
           user: {
             id: updatedUser.id,
-            username: updatedUser.username,
+            first_name: updatedUser.first_name,
+            last_name: updatedUser.last_name,
             email: updatedUser.email,
-            name: updatedUser.name,
             role: updatedUser.role
           }
         });
         return;
       }
       const updateData = {};
-      if (name !== void 0) {
-        updateData.name = name;
+      if (first_name !== void 0) {
+        updateData.first_name = first_name;
       }
-      if (username !== void 0 && username !== user.username) {
-        const existingUser = await storage.getUserByUsername(username);
-        if (existingUser && existingUser.id !== user.id) {
-          return res.status(400).json({
-            success: false,
-            message: "El nombre de usuario ya est\xE1 en uso"
-          });
-        }
-        updateData.username = username;
+      if (last_name !== void 0) {
+        updateData.last_name = last_name;
       }
       if (email !== void 0 && email !== user.email) {
         const existingUser = await storage.getUserByEmail(email);
@@ -1516,9 +1818,9 @@ async function registerRoutes(app2) {
           message: "Perfil actualizado correctamente",
           user: {
             id: updatedUser.id,
-            username: updatedUser.username,
+            first_name: updatedUser.first_name,
+            last_name: updatedUser.last_name,
             email: updatedUser.email,
-            name: updatedUser.name,
             role: updatedUser.role
           }
         });
@@ -1528,9 +1830,9 @@ async function registerRoutes(app2) {
           message: "No hay cambios para actualizar",
           user: {
             id: user.id,
-            username: user.username,
+            first_name: user.first_name,
+            last_name: user.last_name,
             email: user.email,
-            name: user.name,
             role: user.role
           }
         });
@@ -1910,115 +2212,6 @@ async function registerRoutes(app2) {
   return server;
 }
 
-// server/vite.ts
-import express from "express";
-import fs from "fs";
-import path2 from "path";
-import { createServer as createViteServer, createLogger } from "vite";
-
-// vite.config.ts
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import themePlugin from "@replit/vite-plugin-shadcn-theme-json";
-import path from "path";
-import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
-var vite_config_default = defineConfig({
-  plugins: [
-    react(),
-    runtimeErrorOverlay(),
-    themePlugin(),
-    ...process.env.NODE_ENV !== "production" && process.env.REPL_ID !== void 0 ? [
-      await import("@replit/vite-plugin-cartographer").then(
-        (m) => m.cartographer()
-      )
-    ] : []
-  ],
-  server: {
-    proxy: {
-      "/api": "http://localhost:5000"
-    }
-  },
-  resolve: {
-    alias: {
-      "@": path.resolve(import.meta.dirname, "client", "src"),
-      "@shared": path.resolve(import.meta.dirname, "shared"),
-      "@assets": path.resolve(import.meta.dirname, "attached_assets")
-    }
-  },
-  root: path.resolve(import.meta.dirname, "client"),
-  build: {
-    outDir: path.resolve(import.meta.dirname, "dist"),
-    emptyOutDir: true
-  }
-});
-
-// server/vite.ts
-import { nanoid } from "nanoid";
-var viteLogger = createLogger();
-function log(message, source = "express") {
-  const formattedTime = (/* @__PURE__ */ new Date()).toLocaleTimeString("en-US", {
-    hour: "numeric",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: true
-  });
-  console.log(`${formattedTime} [${source}] ${message}`);
-}
-async function setupVite(app2, server) {
-  const serverOptions = {
-    middlewareMode: true,
-    hmr: { server },
-    allowedHosts: ["localhost", "127.0.0.1"]
-  };
-  const vite = await createViteServer({
-    ...vite_config_default,
-    configFile: false,
-    customLogger: {
-      ...viteLogger,
-      error: (msg, options) => {
-        viteLogger.error(msg, options);
-        process.exit(1);
-      }
-    },
-    server: serverOptions,
-    appType: "custom"
-  });
-  app2.use(vite.middlewares);
-  app2.use("*", async (req, res, next) => {
-    const url = req.originalUrl;
-    try {
-      const clientTemplate = path2.resolve(
-        import.meta.dirname,
-        "..",
-        "client",
-        "index.html"
-      );
-      let template = await fs.promises.readFile(clientTemplate, "utf-8");
-      template = template.replace(
-        `src="/src/main.tsx"`,
-        `src="/src/main.tsx?v=${nanoid()}"`
-      );
-      const page = await vite.transformIndexHtml(url, template);
-      res.status(200).set({ "Content-Type": "text/html" }).end(page);
-    } catch (e) {
-      vite.ssrFixStacktrace(e);
-      next(e);
-    }
-  });
-}
-function serveStatic(app2) {
-  const distPath = path2.resolve(import.meta.dirname, "public");
-  if (!fs.existsSync(distPath)) {
-    throw new Error(
-      `Could not find the build directory: ${distPath}, make sure to build the client first`
-    );
-  }
-  app2.use(express.static(distPath));
-  app2.use("*", (_req, res) => {
-    res.sendFile(path2.resolve(distPath, "index.html"));
-  });
-}
-
 // server/index.ts
 import session from "express-session";
 import MemoryStore from "memorystore";
@@ -2028,9 +2221,35 @@ import { fileURLToPath } from "url";
 import cors from "cors";
 import helmet from "helmet";
 dotenv2.config();
+var setupVite2;
+var serveStatic2;
+var log2;
+if (process.env.NODE_ENV !== "production") {
+  const viteModule = await init_vite().then(() => vite_exports);
+  setupVite2 = viteModule.setupVite;
+  serveStatic2 = viteModule.serveStatic;
+  log2 = viteModule.log;
+} else {
+  log2 = (message, source = "express") => {
+    const formattedTime = (/* @__PURE__ */ new Date()).toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: true
+    });
+    console.log(`${formattedTime} [${source}] ${message}`);
+  };
+  serveStatic2 = (app2) => {
+    const distPath = path3.resolve(import.meta.dirname, "../dist");
+    app2.use(express3.static(distPath));
+    app2.use("*", (_req, res) => {
+      res.sendFile(path3.resolve(distPath, "index.html"));
+    });
+  };
+}
 var __filename = fileURLToPath(import.meta.url);
 var __dirname = path3.dirname(__filename);
-var app = express2();
+var app = express3();
 var allowedOrigins = ["https://tuweb-ai.com", "https://www.tuweb-ai.com"];
 app.use(cors({
   origin: function(origin, callback) {
@@ -2070,14 +2289,14 @@ app.use((req, res, next) => {
   res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
   next();
 });
-app.use(express2.json());
-app.use(express2.urlencoded({ extended: false }));
+app.use(express3.json());
+app.use(express3.urlencoded({ extended: false }));
 var Store = MemoryStore(session);
 var sessionStore = new Store({
   checkPeriod: 864e5
   // Limpiar sesiones expiradas cada 24 horas
 });
-log("Usando MemoryStore para almacenar sesiones localmente");
+log2("Usando MemoryStore para almacenar sesiones localmente");
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "tuwebai-super-secret-key",
@@ -2126,7 +2345,7 @@ app.use((req, res, next) => {
       if (logLine.length > 80) {
         logLine = logLine.slice(0, 79) + "\u2026";
       }
-      log(logLine);
+      log2(logLine);
     }
   });
   next();
@@ -2134,7 +2353,7 @@ app.use((req, res, next) => {
 app.get("/favicon.ico", (req, res) => {
   res.sendFile(path3.join(__dirname, "../public/favicon.ico"));
 });
-app.use(express2.static(path3.join(__dirname, "../public")));
+app.use(express3.static(path3.join(__dirname, "../public")));
 (async () => {
   const server = await registerRoutes(app);
   app.use((err, req, res, _next) => {
@@ -2177,16 +2396,16 @@ app.use(express2.static(path3.join(__dirname, "../public")));
     }
   });
   if (app.get("env") === "development") {
-    await setupVite(app, server);
+    await setupVite2(app, server);
   } else {
-    serveStatic(app);
+    serveStatic2(app);
   }
   const port = process.env.PORT ? parseInt(process.env.PORT) : 5e3;
   server.listen({
     port,
     host: "127.0.0.1"
   }, () => {
-    log(`serving on port ${port}`);
+    log2(`serving on port ${port}`);
     console.log(`\u{1F30D} Or\xEDgenes permitidos CORS: ${allowedOrigins.join(", ")}`);
     console.log(`\u{1F527} NODE_ENV: ${process.env.NODE_ENV || "development"}`);
     console.log(`\u{1F511} SESSION_SECRET: ${process.env.SESSION_SECRET ? "Configurado" : "No configurado"}`);

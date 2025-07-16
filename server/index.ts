@@ -2,7 +2,6 @@ import dotenv from 'dotenv';
 dotenv.config();
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
-import { setupVite, serveStatic, log } from "./vite";
 import session from 'express-session';
 import MemoryStore from 'memorystore';
 import path from 'path';
@@ -11,6 +10,34 @@ import passport from 'passport';
 import { fileURLToPath } from 'url';
 import cors from 'cors';
 import helmet from 'helmet';
+
+// Solo importar vite en desarrollo
+let setupVite: any, serveStatic: any, log: any;
+if (process.env.NODE_ENV !== 'production') {
+  const viteModule = await import("./vite");
+  setupVite = viteModule.setupVite;
+  serveStatic = viteModule.serveStatic;
+  log = viteModule.log;
+} else {
+  // En producción, usar funciones simples
+  log = (message: string, source = "express") => {
+    const formattedTime = new Date().toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: true,
+    });
+    console.log(`${formattedTime} [${source}] ${message}`);
+  };
+  
+  serveStatic = (app: express.Express) => {
+    const distPath = path.resolve(import.meta.dirname, "../dist");
+    app.use(express.static(distPath));
+    app.use("*", (_req, res) => {
+      res.sendFile(path.resolve(distPath, "index.html"));
+    });
+  };
+}
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -29,7 +56,7 @@ const app = express();
 const allowedOrigins = ['https://tuweb-ai.com', 'https://www.tuweb-ai.com'];
 
 app.use(cors({
-  origin: function (origin, callback) {
+  origin: function (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) {
     // Permitir requests sin origin (como mobile apps o Postman)
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
