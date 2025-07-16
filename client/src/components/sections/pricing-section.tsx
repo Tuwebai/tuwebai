@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useIntersectionObserver } from '@/hooks/use-intersection-observer';
 import AnimatedShape from '../ui/animated-shape';
+import { API_URL } from '@/lib/api';
 
 interface PricingTierProps {
   title: string;
@@ -145,7 +146,7 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
 
   const handleCheckout = async (plan: string) => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL || ''}/crear-preferencia`, {
+      const res = await fetch(`${API_URL}/crear-preferencia`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ plan }),
