@@ -9,6 +9,8 @@ import path from 'path';
 import { storage } from './storage';
 import passport from 'passport';
 import { fileURLToPath } from 'url';
+import cors from 'cors';
+import helmet from 'helmet';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -22,6 +24,54 @@ declare module 'express-session' {
 }
 
 const app = express();
+
+// Configuración CORS definitiva y estricta para producción
+const allowedOrigins = ['https://tuweb-ai.com', 'https://www.tuweb-ai.com'];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // Permitir requests sin origin (como mobile apps o Postman)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.log('🚫 CORS bloqueado para origen:', origin);
+      callback(new Error('No permitido por CORS'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
+  exposedHeaders: ['Set-Cookie']
+}));
+
+// Configuración de headers de seguridad con CSP permisivo para Google OAuth
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://www.gstatic.com"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com"],
+      scriptSrc: ["'self'", "https://accounts.google.com", "https://www.gstatic.com"],
+      frameSrc: ["'self'", "https://accounts.google.com"],
+      connectSrc: ["*"],
+      imgSrc: ["*", "data:"],
+      objectSrc: ["'none'"],
+      mediaSrc: ["'self'"],
+      frameAncestors: ["'self'"]
+    }
+  },
+  crossOriginEmbedderPolicy: false,
+  crossOriginResourcePolicy: { policy: "cross-origin" }
+}));
+
+// Headers adicionales para OAuth
+app.use((req: Request, res: Response, next: NextFunction) => {
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  next();
+});
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -41,11 +91,11 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: false, // SIEMPRE false en desarrollo
+      secure: process.env.NODE_ENV === 'production', // true en producción
       maxAge: 1000 * 60 * 60 * 24, // 24 horas
-      sameSite: 'lax', // SIEMPRE lax en desarrollo
+      sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
       httpOnly: true,
-      domain: undefined, // Nunca poner dominio en desarrollo
+      domain: process.env.NODE_ENV === 'production' ? '.tuweb-ai.com' : undefined,
     },
     store: sessionStore,
     name: 'tuwebai.sid',
@@ -173,5 +223,10 @@ app.use(express.static(path.join(__dirname, '../public')));
     host: "127.0.0.1"
   }, () => {
     log(`serving on port ${port}`);
+    console.log(`🌍 Orígenes permitidos CORS: ${allowedOrigins.join(', ')}`);
+    console.log(`🔧 NODE_ENV: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`🔑 SESSION_SECRET: ${process.env.SESSION_SECRET ? 'Configurado' : 'No configurado'}`);
+    console.log(`📊 DATABASE_URL: ${process.env.DATABASE_URL ? 'Configurado' : 'No configurado'}`);
+    console.log(`🔐 GOOGLE_CLIENT_ID: ${process.env.GOOGLE_CLIENT_ID ? 'Configurado' : 'No configurado'}`);
   });
 })();

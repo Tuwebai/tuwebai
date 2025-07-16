@@ -188,6 +188,7 @@ if (googleClientId && googleClientSecret) {
     console.log('🔐 Google OAuth callback iniciado');
     console.log('📧 Email del perfil:', profile.emails?.[0]?.value);
     console.log('👤 Nombre del perfil:', profile.displayName);
+    console.log('🔧 DATABASE_URL configurado:', !!process.env.DATABASE_URL);
     
     // Buscar usuario por email
     const email = profile.emails?.[0]?.value;
@@ -198,42 +199,73 @@ if (googleClientId && googleClientSecret) {
     
     console.log('🔍 Buscando usuario por email:', email);
     let user = await storage.getUserByEmail(email);
+    
+    // Verificar si hubo error de conexión a la base de datos
     if (user === undefined) {
-      // Error de conexión a la base de datos
-      console.error('❌ Error de conexión a la base de datos al buscar usuario por email.');
+      console.error('❌ Error crítico de conexión a la base de datos durante OAuth');
+      console.error('📊 DATABASE_URL:', process.env.DATABASE_URL ? 'Configurado' : 'No configurado');
+      console.error('🌍 NODE_ENV:', process.env.NODE_ENV);
       return done(null, false, { message: 'db_connection_error' });
     }
     
     if (!user) {
       console.log('👤 Usuario no encontrado, creando nuevo usuario');
-      // Crear usuario nuevo (sin image)
-      user = await storage.createUser({
-        username: profile.displayName.replace(/\s+/g, '').toLowerCase() + Math.floor(Math.random()*10000),
-        email,
-        password: crypto.randomBytes(16).toString('hex'), // Contraseña aleatoria (no se usa)
-        name: profile.displayName,
-      });
-      console.log('✅ Usuario creado exitosamente:', user.id);
-      
-      // Si hay imagen, actualizar
-      if (profile.photos?.[0]?.value) {
-        console.log('🖼️ Actualizando imagen de perfil');
-        await storage.updateUser(user.id, { image: profile.photos[0].value });
-        user = await storage.getUser(user.id);
+      try {
+        // Crear usuario nuevo (sin image)
+        user = await storage.createUser({
+          username: profile.displayName.replace(/\s+/g, '').toLowerCase() + Math.floor(Math.random()*10000),
+          email,
+          password: crypto.randomBytes(16).toString('hex'), // Contraseña aleatoria (no se usa)
+          name: profile.displayName,
+        });
+        console.log('✅ Usuario creado exitosamente:', user.id);
+        
+        // Si hay imagen, actualizar
+        if (profile.photos?.[0]?.value) {
+          console.log('🖼️ Actualizando imagen de perfil');
+          await storage.updateUser(user.id, { image: profile.photos[0].value });
+          user = await storage.getUser(user.id);
+        }
+      } catch (createError: any) {
+        console.error('❌ Error al crear usuario durante OAuth:', createError);
+        if (createError.message === 'db_connection_error') {
+          return done(null, false, { message: 'db_connection_error' });
+        }
+        return done(createError);
       }
     } else {
       console.log('👤 Usuario encontrado:', user.id);
       if (!user.isActive) {
         console.log('✅ Activando usuario inactivo');
-        // Activar usuario si viene de Google
-        await storage.updateUser(user.id, { isActive: true });
+        try {
+          // Activar usuario si viene de Google
+          await storage.updateUser(user.id, { isActive: true });
+        } catch (updateError: any) {
+          console.error('❌ Error al activar usuario durante OAuth:', updateError);
+          if (updateError.message === 'db_connection_error') {
+            return done(null, false, { message: 'db_connection_error' });
+          }
+          // Continuar con el usuario sin activar si hay error
+        }
       }
     }
     
     console.log('🎉 Google OAuth completado exitosamente');
     return done(null, user);
-  } catch (err) {
-    console.error('❌ Error en Google OAuth callback:', err);
+  } catch (err: any) {
+    console.error('❌ Error general en Google OAuth callback:', err);
+    console.error('📋 Error type:', err?.constructor?.name);
+    console.error('📋 Error message:', err?.message);
+    console.error('📋 Error code:', err?.code);
+    
+    // Si es error de conexión a la base de datos
+    if (err?.message === 'db_connection_error' || 
+        err?.code === 'ECONNREFUSED' || 
+        err?.code === 'ENOTFOUND' || 
+        err?.code === 'ETIMEDOUT') {
+      return done(null, false, { message: 'db_connection_error' });
+    }
+    
     return done(err);
   }
   }));
@@ -285,42 +317,75 @@ export async function registerRoutes(app: Express): Promise<Server> {
     app.get('/api/auth/google/callback', (req: Request, res: Response, next: NextFunction) => {
       console.log('🔄 Callback de Google recibido');
       console.log('📋 Query params:', req.query);
+      console.log('🌍 NODE_ENV:', process.env.NODE_ENV);
+      console.log('🔧 DOMAIN:', process.env.DOMAIN);
       
       passport.authenticate('google', { 
-        failureRedirect: '/?error=google_auth_failed',
+        failureRedirect: process.env.NODE_ENV === 'production' 
+          ? 'https://tuweb-ai.com/?error=google_auth_failed'
+          : '/?error=google_auth_failed',
         failureFlash: true
       }, (err: any, user: any, info: any) => {
         if (err) {
           console.error('❌ Error en autenticación de Google:', err);
-          return res.redirect('/?error=google_auth_failed');
+          console.error('📋 Error type:', err?.constructor?.name);
+          console.error('📋 Error message:', err?.message);
+          console.error('📋 Error code:', err?.code);
+          
+          const errorRedirect = process.env.NODE_ENV === 'production' 
+            ? 'https://tuweb-ai.com/?error=google_auth_failed'
+            : '/?error=google_auth_failed';
+          
+          return res.redirect(errorRedirect);
         }
         
         if (!user) {
           if (info && info.message === 'db_connection_error') {
-            console.error('❌ Error de conexión a la base de datos durante login con Google');
-            return res.redirect('/?error=db_connection_error');
+            console.error('❌ Error crítico de conexión a la base de datos durante login con Google');
+            console.error('📊 DATABASE_URL:', process.env.DATABASE_URL ? 'Configurado' : 'No configurado');
+            
+            const errorRedirect = process.env.NODE_ENV === 'production' 
+              ? 'https://tuweb-ai.com/?error=db_connection_error'
+              : '/?error=db_connection_error';
+            
+            return res.redirect(errorRedirect);
           }
           console.log('❌ Usuario no autenticado en Google');
-          return res.redirect('/?error=google_auth_failed');
+          const errorRedirect = process.env.NODE_ENV === 'production' 
+            ? 'https://tuweb-ai.com/?error=google_auth_failed'
+            : '/?error=google_auth_failed';
+          
+          return res.redirect(errorRedirect);
         }
         
         // Login exitoso
         req.logIn(user, (loginErr) => {
           if (loginErr) {
             console.error('❌ Error al establecer sesión:', loginErr);
-            return res.redirect('/?error=google_auth_failed');
+            const errorRedirect = process.env.NODE_ENV === 'production' 
+              ? 'https://tuweb-ai.com/?error=google_auth_failed'
+              : '/?error=google_auth_failed';
+            
+            return res.redirect(errorRedirect);
           }
           
           console.log('✅ Login con Google exitoso para usuario:', user.email);
+          console.log('👤 User ID:', user.id);
           
           // Establecer sesión manualmente si es necesario
           if (req.session) {
             req.session.userId = user.id;
             req.session.userEmail = user.email;
+            console.log('🍪 Sesión establecida - User ID:', req.session.userId);
           }
           
           // Redirigir SIEMPRE a la raíz con query param para refrescar el estado
-          res.redirect('/?google=1');
+          const successRedirect = process.env.NODE_ENV === 'production' 
+            ? 'https://tuweb-ai.com/?google=1'
+            : '/?google=1';
+          
+          console.log('🔄 Redirigiendo a:', successRedirect);
+          res.redirect(successRedirect);
         });
       })(req, res, next);
     });
