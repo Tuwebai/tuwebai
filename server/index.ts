@@ -1,5 +1,5 @@
 import express from 'express';
-import { router } from './routes';
+import { registerRoutes } from './routes';
 import session from 'express-session';
 import MemoryStore from 'memorystore';
 import path from 'path';
@@ -105,8 +105,8 @@ app.use((req, res, next) => {
   next();
 });
 
-// REGISTRAR LAS RUTAS DE LA API ANTES DE LOS ESTÁTICOS
-app.use(router);
+// REGISTRAR TODAS LAS RUTAS DE LA API ANTES DE LOS ESTÁTICOS
+await registerRoutes(app);
 
 // Servir favicon.ico
 app.get('/favicon.ico', (req, res) => {
