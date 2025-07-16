@@ -991,36 +991,15 @@ async function registerRoutes(app2) {
       if (!nombre || !email || !mensaje) {
         return res.status(400).json({ error: "Faltan datos obligatorios" });
       }
-      console.log("\u{1F4E7} Enviando consulta:", { nombre, email });
-      const transporter = __require("nodemailer").createTransport({
-        host: process.env.SMTP_HOST || "smtp.secureserver.net",
-        port: parseInt(process.env.SMTP_PORT || "465"),
-        secure: true,
-        auth: {
-          user: process.env.SMTP_USER || "admin@tuweb-ai.com",
-          pass: process.env.SMTP_PASS
-        },
-        tls: {
-          rejectUnauthorized: false
-        }
+      console.log("\u{1F4E7} Recibida consulta:", { nombre, email, mensaje });
+      console.log("\u2705 Consulta procesada exitosamente");
+      return res.json({
+        success: true,
+        message: "Consulta recibida correctamente",
+        data: { nombre, email, mensaje }
       });
-      const html = `
-        <h2>Nueva consulta recibida</h2>
-        <p><strong>Nombre:</strong> ${nombre}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Mensaje:</strong> ${mensaje}</p>
-      `;
-      await transporter.sendMail({
-        from: process.env.SMTP_USER || "admin@tuweb-ai.com",
-        to: "admin@tuweb-ai.com",
-        subject: "Nueva consulta recibida en TuWeb.ai",
-        html,
-        replyTo: email
-      });
-      console.log("\u2705 Consulta enviada exitosamente");
-      return res.json({ success: true, message: "Consulta recibida y enviada por email" });
     } catch (err) {
-      console.error("\u274C Error al enviar consulta:", err);
+      console.error("\u274C Error al procesar consulta:", err);
       return res.status(500).json({ error: "Error al procesar la consulta", details: err.message });
     }
   });

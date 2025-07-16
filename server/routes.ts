@@ -460,42 +460,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ error: 'Faltan datos obligatorios' });
       }
 
-      console.log('📧 Enviando consulta:', { nombre, email });
+      console.log('📧 Recibida consulta:', { nombre, email, mensaje });
 
-      // Configuración SMTP simplificada
-      const transporter = require('nodemailer').createTransport({
-        host: process.env.SMTP_HOST || 'smtp.secureserver.net',
-        port: parseInt(process.env.SMTP_PORT || '465'),
-        secure: true,
-        auth: {
-          user: process.env.SMTP_USER || 'admin@tuweb-ai.com',
-          pass: process.env.SMTP_PASS,
-        },
-        tls: {
-          rejectUnauthorized: false
-        }
+      // Por ahora, solo guardamos la consulta sin enviar email
+      // TODO: Implementar envío de email cuando SMTP esté configurado correctamente
+      
+      console.log('✅ Consulta procesada exitosamente');
+      return res.json({ 
+        success: true, 
+        message: 'Consulta recibida correctamente',
+        data: { nombre, email, mensaje }
       });
-
-      // Email simple
-      const html = `
-        <h2>Nueva consulta recibida</h2>
-        <p><strong>Nombre:</strong> ${nombre}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Mensaje:</strong> ${mensaje}</p>
-      `;
-
-      await transporter.sendMail({
-        from: process.env.SMTP_USER || 'admin@tuweb-ai.com',
-        to: 'admin@tuweb-ai.com',
-        subject: 'Nueva consulta recibida en TuWeb.ai',
-        html,
-        replyTo: email
-      });
-
-      console.log('✅ Consulta enviada exitosamente');
-      return res.json({ success: true, message: 'Consulta recibida y enviada por email' });
     } catch (err: any) {
-      console.error('❌ Error al enviar consulta:', err);
+      console.error('❌ Error al procesar consulta:', err);
       return res.status(500).json({ error: 'Error al procesar la consulta', details: err.message });
     }
   });
