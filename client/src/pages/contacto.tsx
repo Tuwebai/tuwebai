@@ -4,12 +4,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { API_URL } from '@/lib/api';
+import { useNavigate } from 'react-router-dom';
 
 const Contacto: React.FC = () => {
   const { toast } = useToast();
   const [form, setForm] = useState({ nombre: '', email: '', asunto: '', mensaje: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [sent, setSent] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -41,12 +43,11 @@ const Contacto: React.FC = () => {
         <h1 className="text-3xl font-bold text-[#00ccff] mb-2 font-rajdhani">Contacto de Soporte</h1>
         <p className="text-gray-400 mb-6 text-center">¿Tenés dudas, problemas o necesitás ayuda? Completá el formulario y nuestro equipo de soporte te responderá a la brevedad.</p>
         {sent ? (
-          <div className="text-center py-8">
-            <div className="w-16 h-16 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-            </div>
-            <h3 className="text-xl font-bold text-white mb-2">¡Mensaje enviado!</h3>
-            <p className="text-gray-300">Gracias por contactarnos. Te responderemos pronto.</p>
+          <div className="flex flex-col items-center justify-center gap-4 p-6 bg-white rounded-lg shadow-md mt-8">
+            <img src="/logo-tuwebai.png" alt="Logo TuWeb.ai" className="w-20 h-20 mb-2" />
+            <h2 className="text-2xl font-bold text-primary">¡Mensaje enviado!</h2>
+            <p className="text-gray-600">Gracias por contactarnos. Te responderemos pronto.</p>
+            <Button onClick={() => navigate('/')} className="mt-4">Volver al inicio</Button>
           </div>
         ) : (
           <form className="w-full space-y-4" onSubmit={handleSubmit}>

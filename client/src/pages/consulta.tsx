@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -127,6 +127,7 @@ export default function Consulta() {
   const [currentStep, setCurrentStep] = useState(1);
   const [showEstimador, setShowEstimador] = useState(false);
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
   
   // Estado para detalles de servicios
   const [serviciosDisponibles, setServiciosDisponibles] = useState<string[]>([]);
@@ -836,6 +837,15 @@ export default function Consulta() {
                       </div>
                     </form>
                   </>
+                )}
+                
+                {submitted && (
+                  <div className="flex flex-col items-center justify-center gap-4 p-6 bg-white rounded-lg shadow-md mt-8">
+                    <img src="/logo-tuwebai.png" alt="Logo TuWeb.ai" className="w-20 h-20 mb-2" />
+                    <h2 className="text-2xl font-bold text-primary">¡Consulta enviada con éxito!</h2>
+                    <p className="text-gray-600">Te responderemos a la brevedad. ¡Gracias por contactarnos!</p>
+                    <Button onClick={() => navigate('/')} className="mt-4">Volver al inicio</Button>
+                  </div>
                 )}
                 
                 <div className="mt-8 pt-8 border-t border-gray-800">

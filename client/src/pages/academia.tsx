@@ -833,10 +833,11 @@ export default function Academia() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <h1 className="text-4xl md:text-5xl font-bold mb-4">Aprende las habilidades del futuro</h1>
-              <p className="text-xl mb-8 opacity-90">
-                Cursos online impartidos por expertos de la industria. Desarrolla habilidades relevantes para el mercado laboral actual.
-              </p>
+              <div className="flex flex-col items-center justify-center gap-4 py-8">
+                <img src="/logo-tuwebai.png" alt="Logo TuWeb.ai" className="w-24 h-24 mb-2" />
+                <h1 className="text-4xl font-bold text-primary mb-2">Academia TuWeb.ai</h1>
+                <p className="text-lg text-gray-600 text-center max-w-xl">Aprendé economía, trading y finanzas con cursos premium, actividades prácticas y soporte profesional.</p>
+              </div>
               <div className="flex flex-wrap gap-4">
                 <a 
                   href="#cursos" 

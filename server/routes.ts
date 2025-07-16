@@ -399,11 +399,15 @@ async function sendWelcomeEmail({ email, name, verificationToken }: { email: str
     ? `${process.env.FRONTEND_URL || 'https://tuweb-ai.com'}/auth/verify/${verificationToken}`
     : null;
 
+  const LOGO_URL = process.env.FRONTEND_URL
+    ? `${process.env.FRONTEND_URL}/logo-tuwebai.png`
+    : 'https://tuweb-ai.com/logo-tuwebai.png';
+
   const html = `
     <div style="background:#0a0a0f;padding:32px 0;font-family:Inter,Arial,sans-serif;min-height:100vh;">
       <div style="max-width:520px;margin:0 auto;background:#18181b;border-radius:16px;padding:32px 24px;box-shadow:0 4px 24px rgba(0,0,0,0.12);color:#fff;">
         <div style="text-align:center;margin-bottom:24px;">
-          <img src='https://tuweb-ai.com/favicon.ico' alt='TuWeb.ai' style='width:48px;height:48px;border-radius:8px;margin-bottom:8px;' />
+          <img src='${LOGO_URL}' alt='TuWeb.ai' style='width:48px;height:48px;border-radius:8px;margin-bottom:8px;' />
           <h2 style="font-size:2rem;font-weight:700;color:#00ccff;margin:0 0 8px 0;">¡Bienvenido a TuWeb.ai!</h2>
           <p style="color:#b3b3b3;font-size:1rem;margin:0;">${name ? `Hola <b>${name}</b>,` : '¡Hola!'}<br>Tu cuenta ha sido creada exitosamente.</p>
         </div>
