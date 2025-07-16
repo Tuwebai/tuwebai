@@ -27,22 +27,12 @@ app.use(router);
 
 export default app;
 
-// Configuración segura de CORS
-const allowedOrigins = [
-  'https://tuweb-ai.com',
-  'http://localhost:5173'
-];
-
+// Configuración CORS definitiva y estricta SOLO para https://tuweb-ai.com
 app.use(cors({
-  origin: function(origin, callback) {
-    // Permitir requests sin origin (como Postman) o si está en la lista
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('No permitido por CORS'));
-    }
-  },
-  credentials: true,
+  origin: 'https://tuweb-ai.com',
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
 }));
 
 // Configuración de la sesión
