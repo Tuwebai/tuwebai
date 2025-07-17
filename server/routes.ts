@@ -19,7 +19,6 @@ import { z } from "zod";
 import bcrypt from 'bcryptjs';
 import { storage } from "./storage";
 import { 
-  insertContactSchema, 
   insertConsultationSchema, 
   insertNewsletterSchema, 
   insertUserSchema,
