@@ -48,7 +48,8 @@ export default function PanelUsuario() {
     fetchUserPreferences,
     fetchPasswordInfo,
     uploadProfileImage,
-    setUserImage
+    setUserImage,
+    error
   } = useAuth();
   const { toast } = useToast();
   
@@ -695,21 +696,6 @@ export default function PanelUsuario() {
                           {user?.isActive ? 'Activa' : 'En revisión'}
                         </span>
                               </div>
-                      <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
-                        <span className="text-gray-300">Último acceso</span>
-                        <span className="text-white">
-                          {user?.lastLogin 
-                            ? new Date(user.lastLogin).toLocaleDateString('es-ES', { 
-                                year: 'numeric', 
-                                month: 'short', 
-                                day: 'numeric',
-                                hour: '2-digit',
-                                minute: '2-digit'
-                              })
-                            : 'Nunca'
-                          }
-                              </span>
-                            </div>
                       {passwordInfo.changedAt && (
                         <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
                           <span className="text-gray-300">Último cambio de contraseña</span>

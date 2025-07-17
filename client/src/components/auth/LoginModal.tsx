@@ -382,6 +382,7 @@ export default function LoginModal({
                   : (isRegistering ? 'Crear cuenta' : 'Iniciar sesión')
               )}
             </button>
+            {authError && <p className="text-red-500 text-xs mt-2">{authError}</p>}
           </form>
           
           {!showForgotPassword && (

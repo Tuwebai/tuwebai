@@ -1,28 +1,34 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
+import { auth, googleProvider } from '@/lib/firebase';
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+  sendPasswordResetEmail,
+  updateProfile,
+  signInWithPopup,
+  User as FirebaseUser,
+  updatePassword
+} from 'firebase/auth';
+import {
+  getUser,
+  setUser,
+  updateUser,
+  getUserPreferences,
+  setUserPreferences,
+  User as FirestoreUser,
+  UserPreferences
+} from '@/services/firestore';
 import { useToast } from '@/hooks/use-toast';
-import { API_URL } from '@/lib/api';
 
-// Definición de tipos para usuarios y datos de autenticación
-export interface User {
-  id: number;
+export interface User extends FirestoreUser {}
+export interface RegisterData {
   username: string;
   email: string;
-  name: string;
-  role: string;
-  lastLogin?: string;
-  image?: string; // Nuevo campo para la imagen del perfil
-  isActive?: boolean;
-  createdAt?: string;
-  updatedAt?: string;
+  password: string;
+  name?: string;
 }
-
-export interface UserPreferences {
-  emailNotifications: boolean;
-  newsletter: boolean;
-  darkMode: boolean;
-  language: string;
-}
-
 export interface PasswordInfo {
   changedAt: string | null;
   daysSinceChange: number | null;
@@ -50,17 +56,9 @@ interface AuthContextType {
   uploadProfileImage: (imageFile: File) => Promise<void>;
   error: string | null;
   clearError: () => void;
-  setUserImage: (imageUrl: string) => void; // Nuevo campo para actualizar la imagen del usuario
+  setUserImage: (imageUrl: string) => void;
 }
 
-export interface RegisterData {
-  username: string;
-  email: string;
-  password: string;
-  name?: string;
-}
-
-// Creación del contexto con valores por defecto
 const AuthContext = createContext<AuthContextType>({
   user: null,
   userPreferences: {
@@ -91,16 +89,14 @@ const AuthContext = createContext<AuthContextType>({
   uploadProfileImage: async () => {},
   error: null,
   clearError: () => {},
-  setUserImage: () => {}, // Valor por defecto para setUserImage
+  setUserImage: () => {},
 });
 
-// Hook para usar el contexto de autenticación
 export const useAuth = () => useContext(AuthContext);
 
-// Proveedor de autenticación
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [userPreferences, setUserPreferences] = useState<UserPreferences>({
+  const [user, setUserState] = useState<User | null>(null);
+  const [userPreferences, setUserPreferencesState] = useState<UserPreferences>({
     emailNotifications: false,
     newsletter: false,
     darkMode: false,
@@ -115,473 +111,285 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isLoadingPasswordInfo, setIsLoadingPasswordInfo] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
-  
-  // Verificar si el usuario ya está autenticado al cargar la página
-  useEffect(() => {
-    const checkAuthStatus = async () => {
-      try {
-        const response = await fetch(`${API_URL}/api/auth/me`, { credentials: 'include' });
-        
-        if (response.ok) {
-          const data = await response.json();
-          if (data.success && data.user) {
-            setUser(data.user);
-            // Si venimos del callback de Google, mostrar mensaje de éxito
-            if (window.location.search.includes('google=1')) {
-              // Limpiar la URL
-              window.history.replaceState({}, document.title, window.location.pathname);
-              // Mostrar toast de éxito
-              toast({
-                title: '¡Sesión iniciada con Google!',
-                description: 'Has iniciado sesión correctamente.',
-              });
-            }
-          } else {
-            setUser(null);
-          }
-        } else {
-          setUser(null);
-        }
-      } catch (err) {
-        console.error('Error al verificar estado de autenticación:', err);
-        setUser(null);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    
-    checkAuthStatus();
 
-    // Mostrar toast de error si hay error de Google OAuth
-    if (window.location.search.includes('error=google_auth_failed')) {
-      window.history.replaceState({}, document.title, window.location.pathname);
-      toast({
-        title: 'Error al iniciar sesión con Google',
-        description: 'No se pudo completar el inicio de sesión con Google. Intenta de nuevo o usa otro método.',
-        variant: 'destructive',
-      });
-    }
-    // Mostrar toast de error si hay error de conexión a la base de datos
-    if (window.location.search.includes('error=db_connection_error')) {
-      window.history.replaceState({}, document.title, window.location.pathname);
-      toast({
-        title: 'Error de conexión a la base de datos',
-        description: 'No se pudo conectar a la base de datos. Intenta más tarde o contacta soporte.',
-        variant: 'destructive',
-      });
-    }
-  }, [toast]);
-  
-  // Iniciar sesión
-  const login = async (email: string, password: string, remember: boolean = false) => {
+  // Escuchar cambios de autenticación
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      setIsLoading(true);
+      if (firebaseUser) {
+        // Obtener datos del usuario desde Firestore
+        let dbUser = await getUser(firebaseUser.uid);
+        if (!dbUser) {
+          dbUser = {
+            uid: firebaseUser.uid,
+            email: firebaseUser.email || '',
+            username: firebaseUser.displayName || '',
+            name: firebaseUser.displayName || '',
+            image: firebaseUser.photoURL || '',
+            isActive: true,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+          };
+          await setUser(dbUser);
+        }
+        setUserState(dbUser);
+        fetchUserPreferences(dbUser.uid);
+      } else {
+        setUserState(null);
+        setUserPreferencesState({
+          emailNotifications: false,
+          newsletter: false,
+          darkMode: false,
+          language: 'es'
+        });
+      }
+      setIsLoading(false);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  // Login con email y contraseña
+  const login = async (email: string, password: string) => {
     setIsLoading(true);
     setError(null);
-    
     try {
-      const response = await fetch(`${API_URL}/api/auth/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password, remember }),
-      });
-      
-      const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.message || 'Error al iniciar sesión');
-      }
-      
-      if (data.success && data.user) {
-        setUser(data.user);
-        
-        // Guardar email para autocompletar en próximos inicios de sesión
-        if (remember && email) {
-          localStorage.setItem('userEmail', email);
-        }
-      } else {
-        throw new Error(data.message || 'Error al iniciar sesión');
-      }
+      const cred = await signInWithEmailAndPassword(auth, email, password);
+      // El listener de onAuthStateChanged se encarga del resto
+      toast({ title: 'Sesión iniciada', description: 'Has iniciado sesión correctamente.' });
     } catch (err: any) {
-      console.error('Error en login:', err);
-      setError(err.message || 'Ha ocurrido un error al iniciar sesión');
+      setError(err.message || 'Error al iniciar sesión');
+      toast({ title: 'Error', description: err.message || 'Error al iniciar sesión', variant: 'destructive' });
       throw err;
     } finally {
       setIsLoading(false);
     }
   };
-  
-  // Iniciar sesión con Google
-  const loginWithGoogle = () => {
+
+  // Login con Google
+  const loginWithGoogle = async () => {
+    setIsLoading(true);
+    setError(null);
     try {
-      window.location.href = `${API_URL}/api/auth/google`;
-    } catch (error) {
-      console.error('Error al iniciar login con Google:', error);
-      setError('Error al iniciar sesión con Google. Por favor, inténtalo de nuevo.');
+      const result = await signInWithPopup(auth, googleProvider);
+      const firebaseUser = result.user;
+      let dbUser = await getUser(firebaseUser.uid);
+      if (!dbUser) {
+        dbUser = {
+          uid: firebaseUser.uid,
+          email: firebaseUser.email || '',
+          username: firebaseUser.displayName || '',
+          name: firebaseUser.displayName || '',
+          image: firebaseUser.photoURL || '',
+          isActive: true,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        };
+        await setUser(dbUser);
+      }
+      setUserState(dbUser);
+      toast({ title: '¡Sesión iniciada con Google!', description: 'Has iniciado sesión correctamente.' });
+    } catch (err: any) {
+      setError(err.message || 'Error al iniciar sesión con Google');
+      toast({ title: 'Error', description: err.message || 'Error al iniciar sesión con Google', variant: 'destructive' });
+      throw err;
+    } finally {
+      setIsLoading(false);
     }
   };
-  
-  // Cerrar sesión
+
+  // Logout
   const logout = async () => {
     setIsLoading(true);
     setError(null);
-    
     try {
-      const response = await fetch(`${API_URL}/api/auth/logout`, {
-        method: 'POST',
+      await signOut(auth);
+      setUserState(null);
+      setUserPreferencesState({
+        emailNotifications: false,
+        newsletter: false,
+        darkMode: false,
+        language: 'es'
       });
-      
-      const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.message || 'Error al cerrar sesión');
-      }
-      
-      setUser(null);
+      toast({ title: 'Sesión cerrada', description: 'Has cerrado sesión correctamente.' });
     } catch (err: any) {
-      console.error('Error en logout:', err);
-      setError(err.message || 'Ha ocurrido un error al cerrar sesión');
+      setError(err.message || 'Error al cerrar sesión');
+      toast({ title: 'Error', description: err.message || 'Error al cerrar sesión', variant: 'destructive' });
       throw err;
     } finally {
       setIsLoading(false);
     }
   };
-  
-  // Registrar nuevo usuario
+
+  // Registro
   const register = async (userData: RegisterData) => {
     setIsLoading(true);
     setError(null);
-    
     try {
-      const response = await fetch(`${API_URL}/api/auth/register`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userData),
+      const cred = await createUserWithEmailAndPassword(auth, userData.email, userData.password);
+      await updateProfile(cred.user, {
+        displayName: userData.name || userData.username,
       });
-      
-      const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.message || 'Error al registrar usuario');
-      }
-      
-      if (!data.success) {
-        throw new Error(data.message || 'Error al registrar usuario');
-      }
-      
-      // No establecemos el usuario porque generalmente se requiere verificación por email
+      const dbUser: User = {
+        uid: cred.user.uid,
+        email: userData.email,
+        username: userData.username,
+        name: userData.name || userData.username,
+        image: cred.user.photoURL || '',
+        isActive: true,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+      await setUser(dbUser);
+      setUserState(dbUser);
+      toast({ title: 'Registro exitoso', description: 'Por favor, verifica tu email para activar tu cuenta.' });
     } catch (err: any) {
-      console.error('Error en registro:', err);
-      setError(err.message || 'Ha ocurrido un error al registrar el usuario');
+      setError(err.message || 'Error al registrar usuario');
+      toast({ title: 'Error', description: err.message || 'Error al registrar usuario', variant: 'destructive' });
       throw err;
     } finally {
       setIsLoading(false);
     }
   };
-  
+
   // Solicitar restablecimiento de contraseña
   const requestPasswordReset = async (email: string) => {
     setIsLoading(true);
     setError(null);
-    
     try {
-      const response = await fetch(`${API_URL}/api/auth/forgot-password`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email }),
-      });
-      
-      const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.message || 'Error al solicitar restablecimiento de contraseña');
-      }
-      
-      if (!data.success) {
-        throw new Error(data.message || 'Error al solicitar restablecimiento de contraseña');
-      }
+      await sendPasswordResetEmail(auth, email);
+      toast({ title: 'Solicitud enviada', description: 'Si el email existe, recibirás instrucciones para restablecer tu contraseña.' });
     } catch (err: any) {
-      console.error('Error en solicitud de restablecimiento:', err);
-      setError(err.message || 'Ha ocurrido un error en la solicitud');
+      setError(err.message || 'Error al solicitar restablecimiento de contraseña');
+      toast({ title: 'Error', description: err.message || 'Error al solicitar restablecimiento', variant: 'destructive' });
       throw err;
     } finally {
       setIsLoading(false);
     }
   };
-  
-  // Restablecer contraseña
-  const resetPassword = async (token: string, newPassword: string) => {
-    setIsLoading(true);
-    setError(null);
-    
-    try {
-      const response = await fetch(`${API_URL}/api/auth/reset-password`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ token, newPassword }),
-      });
-      
-      const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.message || 'Error al restablecer contraseña');
-      }
-      
-      if (!data.success) {
-        throw new Error(data.message || 'Error al restablecer contraseña');
-      }
-    } catch (err: any) {
-      console.error('Error en restablecimiento de contraseña:', err);
-      setError(err.message || 'Ha ocurrido un error al restablecer la contraseña');
-      throw err;
-    } finally {
-      setIsLoading(false);
-    }
+
+  // Restablecer contraseña (no se usa token en frontend con Firebase)
+  const resetPassword = async (_token: string, _newPassword: string) => {
+    // Firebase maneja esto por email, no por token manual
+    toast({ title: 'Función no soportada', description: 'Usa el enlace enviado por email para restablecer tu contraseña.' });
   };
-  
+
   // Actualizar perfil de usuario
   const updateUserProfile = async (data: Partial<User>) => {
+    if (!user) return;
     setIsLoading(true);
     setError(null);
-    
     try {
-      const response = await fetch(`${API_URL}/api/profile`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-      
-      const responseData = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(responseData.message || 'Error al actualizar perfil');
-      }
-      
-      if (responseData.success && responseData.user) {
-        setUser(responseData.user);
-      } else {
-        throw new Error(responseData.message || 'Error al actualizar perfil');
-      }
+      await updateUser(user.uid, data);
+      const updated = await getUser(user.uid);
+      setUserState(updated);
+      toast({ title: 'Perfil actualizado', description: 'Tu información de perfil ha sido actualizada.' });
     } catch (err: any) {
-      console.error('Error al actualizar perfil:', err);
-      setError(err.message || 'Ha ocurrido un error al actualizar el perfil');
+      setError(err.message || 'Error al actualizar perfil');
+      toast({ title: 'Error', description: err.message || 'Error al actualizar perfil', variant: 'destructive' });
       throw err;
     } finally {
       setIsLoading(false);
     }
   };
-  
+
   // Obtener preferencias del usuario
-  const fetchUserPreferences = async () => {
-    if (!user) return;
-    
+  const fetchUserPreferences = async (uid?: string) => {
+    if (!user && !uid) return;
     setIsLoadingPreferences(true);
     setError(null);
-    
     try {
-      const response = await fetch(`${API_URL}/api/profile/preferences`, { credentials: 'include' });
-      
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.message || 'Error al obtener preferencias');
-      }
-      
-      const data = await response.json();
-      
-      if (data.success && data.preferences) {
-        setUserPreferences(data.preferences);
-      }
+      const prefs = await getUserPreferences(uid || user!.uid);
+      if (prefs) setUserPreferencesState(prefs);
     } catch (err: any) {
-      console.error('Error al obtener preferencias:', err);
-      setError(err.message || 'Ha ocurrido un error al obtener las preferencias');
+      setError(err.message || 'Error al obtener preferencias');
     } finally {
       setIsLoadingPreferences(false);
     }
   };
-  
+
   // Actualizar preferencias del usuario
   const updateUserPreferences = async (preferences: Partial<UserPreferences>) => {
     if (!user) return;
-    
     setIsLoadingPreferences(true);
     setError(null);
-    
     try {
-      const response = await fetch(`${API_URL}/api/profile/preferences`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(preferences),
-      });
-      
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.message || 'Error al actualizar preferencias');
-      }
-      
-      const data = await response.json();
-      
-      if (data.success && data.preferences) {
-        setUserPreferences(data.preferences);
-      } else {
-        throw new Error('Error al actualizar preferencias');
-      }
+      await setUserPreferences(user.uid, preferences);
+      await fetchUserPreferences(user.uid);
+      toast({ title: 'Preferencias actualizadas', description: 'Tus preferencias han sido actualizadas.' });
     } catch (err: any) {
-      console.error('Error al actualizar preferencias:', err);
-      setError(err.message || 'Ha ocurrido un error al actualizar las preferencias');
+      setError(err.message || 'Error al actualizar preferencias');
+      toast({ title: 'Error', description: err.message || 'Error al actualizar preferencias', variant: 'destructive' });
       throw err;
     } finally {
       setIsLoadingPreferences(false);
     }
   };
-  
-  // Obtener información de la contraseña
+
+  // Obtener información de la contraseña (no disponible en Firebase, se simula)
   const fetchPasswordInfo = async () => {
-    if (!user) return;
-    
     setIsLoadingPasswordInfo(true);
-    setError(null);
-    
-    try {
-      const response = await fetch(`${API_URL}/api/profile/password-info`, { credentials: 'include' });
-      
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.message || 'Error al obtener información de contraseña');
-      }
-      
-      const data = await response.json();
-      
-      if (data.success && data.passwordInfo) {
-        setPasswordInfo(data.passwordInfo);
-      }
-    } catch (err: any) {
-      console.error('Error al obtener información de contraseña:', err);
-      setError(err.message || 'Ha ocurrido un error al obtener la información de contraseña');
-    } finally {
-      setIsLoadingPasswordInfo(false);
-    }
+    setPasswordInfo({ changedAt: null, daysSinceChange: null });
+    setIsLoadingPasswordInfo(false);
   };
-  
+
   // Cambiar contraseña
-  const changePassword = async (currentPassword: string, newPassword: string) => {
-    if (!user) return;
-    
+  const changePassword = async (_currentPassword: string, newPassword: string) => {
+    if (!auth.currentUser) return;
     setIsLoading(true);
     setError(null);
-    
     try {
-      const response = await fetch(`${API_URL}/api/profile/change-password`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ currentPassword, newPassword }),
-      });
-      
-      const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.message || 'Error al cambiar contraseña');
-      }
-      
-      if (!data.success) {
-        throw new Error(data.message || 'Error al cambiar contraseña');
-      }
-      
-      // Actualizamos la información de la contraseña después de cambiarla
-      await fetchPasswordInfo();
+      await updatePassword(auth.currentUser, newPassword);
+      toast({ title: 'Contraseña actualizada', description: 'Tu contraseña ha sido actualizada.' });
     } catch (err: any) {
-      console.error('Error al cambiar contraseña:', err);
-      setError(err.message || 'Ha ocurrido un error al cambiar la contraseña');
+      setError(err.message || 'Error al cambiar contraseña');
+      toast({ title: 'Error', description: err.message || 'Error al cambiar contraseña', variant: 'destructive' });
       throw err;
     } finally {
       setIsLoading(false);
     }
   };
-  
-  // Cargar preferencias y información de contraseña al autenticar usuario
-  useEffect(() => {
-    if (user) {
-      fetchUserPreferences();
-      fetchPasswordInfo();
-    }
-  }, [user]);
-  
-  // Limpiar mensaje de error
-  const clearError = () => {
-    setError(null);
-  };
 
-  // Función para subir imagen de perfil
+  // Subir imagen de perfil (solo se guarda la URL, para Storage implementar aparte)
   const uploadProfileImage = async (imageFile: File) => {
     if (!user) return;
-    
     setIsLoading(true);
     setError(null);
-    
     try {
-      // Convertir imagen a base64
+      // Convertir imagen a base64 (solo para demo, en producción usar Firebase Storage)
       const reader = new FileReader();
       const imageData = await new Promise<string>((resolve, reject) => {
         reader.onload = () => resolve(reader.result as string);
         reader.onerror = reject;
         reader.readAsDataURL(imageFile);
       });
-      
-      const response = await fetch(`${API_URL}/api/profile/upload-image`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ imageData }),
-      });
-      
-      const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.message || 'Error al subir imagen');
+      await updateUser(user.uid, { image: imageData });
+      const updated = await getUser(user.uid);
+      setUserState(updated);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('userImage', imageData);
       }
-      
-      if (data.success && data.imageUrl) {
-        setUser(prevUser => prevUser ? { ...prevUser, image: data.imageUrl } : null);
-        // Persistir en localStorage para desarrollo
-        if (typeof window !== 'undefined') {
-          localStorage.setItem('userImage', data.imageUrl);
-        }
-      } else {
-        throw new Error('Error al subir imagen');
-      }
+      toast({ title: 'Imagen actualizada', description: 'Tu foto de perfil ha sido actualizada.' });
     } catch (err: any) {
-      console.error('Error al subir imagen:', err);
-      setError(err.message || 'Ha ocurrido un error al subir la imagen');
+      setError(err.message || 'Error al subir imagen');
+      toast({ title: 'Error', description: err.message || 'Error al subir imagen', variant: 'destructive' });
       throw err;
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Función para actualizar la imagen del usuario
+  // Actualizar la imagen del usuario en el estado
   const setUserImage = (imageUrl: string) => {
     if (user) {
-      setUser(prevUser => prevUser ? { ...prevUser, image: imageUrl } : null);
-      // También persistir en localStorage para desarrollo
+      setUserState(prevUser => prevUser ? { ...prevUser, image: imageUrl } : null);
       if (typeof window !== 'undefined') {
         localStorage.setItem('userImage', imageUrl);
       }
     }
   };
-  
-  // Valor del contexto
+
+  const clearError = () => setError(null);
+
   const value = {
     user,
     userPreferences,
@@ -604,8 +412,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     uploadProfileImage,
     error,
     clearError,
-    setUserImage, // Exponer la función para actualizar la imagen
+    setUserImage,
   };
-  
+
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
