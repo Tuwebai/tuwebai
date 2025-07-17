@@ -642,7 +642,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({
           success: false,
           message: 'Faltan campos requeridos',
-          fields: { nombre, email, asunto, mensaje }
+          fields: { nombre, email, asunto, mensaje },
+          bodyRecibido: req.body
         });
       }
       // Log para debug
