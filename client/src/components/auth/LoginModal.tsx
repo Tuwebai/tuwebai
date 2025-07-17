@@ -31,7 +31,7 @@ export default function LoginModal({
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
-  const { login, register, requestPasswordReset, error: authError, clearError, loginWithGoogle } = useAuth();
+  const { login, register, requestPasswordReset, error: authError, clearError, loginWithGoogle, user } = useAuth();
   const { toast } = useToast();
 
   // Reset form when modal is opened/closed or mode changes
@@ -48,6 +48,13 @@ export default function LoginModal({
       clearError();
     }
   }, [isOpen, isRegistering, clearError]);
+
+  // Efecto para cerrar el modal si el usuario está autenticado:
+  React.useEffect(() => {
+    if (isOpen && user) {
+      onClose();
+    }
+  }, [user, isOpen, onClose]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -141,7 +148,7 @@ export default function LoginModal({
           title: "Sesión iniciada",
           description: "Has iniciado sesión correctamente"
         });
-        onClose();
+        // onClose(); // Eliminado para que el efecto lo maneje
         
         // Redirect if needed
         if (redirectUrl) {

@@ -633,118 +633,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // API de Contacto
   app.post("/api/contact", trackActivity('FormSubmit', 'Contact'), async (req: Request, res: Response) => {
-    try {
-      console.log('📩 Body recibido en /api/contact:', JSON.stringify(req.body, null, 2));
-      
-      // Validación manual simple y directa
-      const { nombre, email, asunto, mensaje } = req.body;
-      
-      // Verificar que todos los campos existan y no estén vacíos
-      if (!nombre || typeof nombre !== 'string' || nombre.trim() === '') {
-        return res.status(400).json({
-          success: false,
-          message: 'El campo nombre es requerido',
-          bodyRecibido: req.body
-        });
-      }
-      
-      if (!email || typeof email !== 'string' || email.trim() === '') {
-        return res.status(400).json({
-          success: false,
-          message: 'El campo email es requerido',
-          bodyRecibido: req.body
-        });
-      }
-      
-      if (!asunto || typeof asunto !== 'string' || asunto.trim() === '') {
-        return res.status(400).json({
-          success: false,
-          message: 'El campo asunto es requerido',
-          bodyRecibido: req.body
-        });
-      }
-      
-      if (!mensaje || typeof mensaje !== 'string' || mensaje.trim() === '') {
-        return res.status(400).json({
-          success: false,
-          message: 'El campo mensaje es requerido',
-          bodyRecibido: req.body
-        });
-      }
-      
-      console.log('✅ Validación exitosa, guardando contacto...');
-      
-      // Guardar en MongoDB
-      const contacto = new Contacto({ 
-        nombre: nombre.trim(), 
-        email: email.trim(), 
-        asunto: asunto.trim(), 
-        mensaje: mensaje.trim() 
-      });
-      await contacto.save();
-      
-      console.log('✅ Contacto guardado en MongoDB');
-      
-      // Envío de email al admin
-      try {
-        const transporter = require('nodemailer').createTransport({
-          host: process.env.SMTP_HOST,
-          port: parseInt(process.env.SMTP_PORT || '465'),
-          secure: process.env.SMTP_SECURE === 'true' || parseInt(process.env.SMTP_PORT || '465') === 465,
-          auth: {
-            user: process.env.SMTP_USER,
-            pass: process.env.SMTP_PASS,
-          },
-          tls: {
-            rejectUnauthorized: false
-          }
-        });
-
-        const adminMailHtml = `
-          <div style="background:#0a0a0f;padding:32px 0;font-family:Inter,Arial,sans-serif;min-height:100vh;">
-            <div style="max-width:520px;margin:0 auto;background:#18181b;border-radius:16px;padding:32px 24px;box-shadow:0 4px 24px rgba(0,0,0,0.12);color:#fff;">
-              <h2 style="color:#00ccff;font-size:1.5rem;margin-bottom:16px;">Nuevo contacto recibido desde TuWeb.ai</h2>
-              <ul style="color:#fff;font-size:1rem;line-height:1.7;">
-                <li><b>Nombre:</b> ${nombre}</li>
-                <li><b>Email:</b> ${email}</li>
-                <li><b>Asunto:</b> ${asunto}</li>
-                <li><b>Mensaje:</b> ${mensaje}</li>
-              </ul>
-              <p style="color:#b3b3b3;font-size:0.95rem;margin-top:32px;">Contacto recibido el ${new Date().toLocaleString('es-AR')}</p>
-            </div>
-          </div>
-        `;
-        
-        await transporter.sendMail({
-          from: `TuWeb.ai <${process.env.SMTP_USER}>`,
-          to: 'admin@tuweb-ai.com',
-          subject: 'Nuevo contacto recibido en TuWeb.ai',
-          html: adminMailHtml,
-        });
-        
-        console.log('✅ Email enviado al admin');
-      } catch (emailError) {
-        console.error('❌ Error al enviar email:', emailError);
-        // No fallar si el email no se envía
-      }
-
-      console.log('✅ Respuesta exitosa enviada');
-      res.status(201).json({ 
-        success: true, 
-        message: "Mensaje enviado correctamente",
-        contact: {
-          id: contacto._id,
-          date: contacto.createdAt
-        }
-      });
-    } catch (error) {
-      console.error("❌ Error en formulario de contacto:", error);
-      res.status(500).json({ 
-        success: false, 
-        message: "Error al procesar la solicitud",
-        error: error instanceof Error ? error.message : 'Error desconocido'
-      });
-    }
+    return res.status(418).json({
+      success: false,
+      message: "ESTE ES EL NUEVO ENDPOINT - " + new Date().toISOString(),
+      env: process.env.NODE_ENV,
+      body: req.body
+    });
   });
 
   // API de Consulta
