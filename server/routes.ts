@@ -39,9 +39,9 @@ const router = express.Router();
 const ACCESS_TOKEN = process.env.MP_ACCESS_TOKEN || '';
 
 const PLANES: Record<string, number> = {
-  'Plan Básico': 29900, // $299 USD en centavos
-  'Plan Pro': 49900,    // $499 USD en centavos
-  'Plan Profesional': 49900 // $499 USD en centavos
+  'Plan Básico': 299000, // $299.000 ARS
+  'Plan Pro': 499000,    // $499.000 ARS
+  'Plan Profesional': 499000 // $499.000 ARS
 };
 
 // Las rutas se moverán a registerRoutes para evitar problemas de registro
@@ -439,7 +439,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             title: planKey,
             unit_price: PLANES[planKey],
             quantity: 1,
-            currency_id: 'USD', // Especificar moneda USD
+            currency_id: 'ARS', // Especificar moneda ARS (Pesos Argentinos)
           },
         ],
         back_urls: {
@@ -448,7 +448,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           pending: 'https://tuweb-ai.com/pago-pendiente',
         },
         auto_return: 'approved',
-        currency_id: 'USD', // Moneda principal de la preferencia
+        currency_id: 'ARS', // Moneda principal de la preferencia (Pesos Argentinos)
       };
       
       console.log('📋 Preferencia creada:', preference);

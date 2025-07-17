@@ -666,12 +666,12 @@ console.log("\u{1F4CA} SUPABASE_URL:", process.env.SUPABASE_URL ? "Configurado" 
 var router = express.Router();
 var ACCESS_TOKEN = process.env.MP_ACCESS_TOKEN || "";
 var PLANES = {
-  "Plan B\xE1sico": 29900,
-  // $299 USD en centavos
-  "Plan Pro": 49900,
-  // $499 USD en centavos
-  "Plan Profesional": 49900
-  // $499 USD en centavos
+  "Plan B\xE1sico": 299e3,
+  // $299.000 ARS
+  "Plan Pro": 499e3,
+  // $499.000 ARS
+  "Plan Profesional": 499e3
+  // $499.000 ARS
 };
 var SPECIAL_USER = {
   id: 99999,
@@ -975,8 +975,8 @@ async function registerRoutes(app2) {
             title: planKey,
             unit_price: PLANES[planKey],
             quantity: 1,
-            currency_id: "USD"
-            // Especificar moneda USD
+            currency_id: "ARS"
+            // Especificar moneda ARS (Pesos Argentinos)
           }
         ],
         back_urls: {
@@ -985,8 +985,8 @@ async function registerRoutes(app2) {
           pending: "https://tuweb-ai.com/pago-pendiente"
         },
         auto_return: "approved",
-        currency_id: "USD"
-        // Moneda principal de la preferencia
+        currency_id: "ARS"
+        // Moneda principal de la preferencia (Pesos Argentinos)
       };
       console.log("\u{1F4CB} Preferencia creada:", preference);
       const mpRes = await axios.post(

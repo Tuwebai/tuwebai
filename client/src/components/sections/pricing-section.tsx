@@ -198,7 +198,7 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
         <div className="grid md:grid-cols-3 gap-6 lg:gap-8 max-w-5xl mx-auto">
           <PricingTier 
             title="Plan Básico"
-            price="$299"
+            price="$299.000"
             period="mes"
             description="Ideal para empresas pequeñas que inician su presencia digital"
             features={[
@@ -215,7 +215,7 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
           
           <PricingTier 
             title="Plan Profesional"
-            price="$499"
+            price="$499.000"
             period="mes"
             description="Perfecto para empresas en crecimiento que buscan destacar"
             features={[
