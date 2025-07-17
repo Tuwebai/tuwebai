@@ -380,6 +380,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Servidor HTTP para la aplicación
   const server = createServer(app);
 
+  // Configuración universal de CORS para frontend y backend
+  const allowedOrigins = [
+    'https://tuweb-ai.com',
+    'https://www.tuweb-ai.com',
+    'http://localhost:5173',
+    'http://localhost:3000'
+  ];
+
+  // Middleware CORS
+  app.use(cors({
+    origin: allowedOrigins,
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+  }));
+
+  // Preflight requests
+  app.options('*', cors());
+
   // Ruta de health check
   app.get('/health', (req, res) => {
     res.json({ status: 'OK', timestamp: new Date().toISOString() });
