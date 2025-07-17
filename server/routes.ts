@@ -491,32 +491,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Ruta /consulta simplificada
-  app.post('/consulta', async (req, res) => {
-    try {
-      const { nombre, email, empresa, telefono, tipoProyecto, urgente, detalleServicio, secciones, presupuesto, plazo, mensaje, comoNosEncontraste } = req.body;
-      
-      if (!nombre || !email || !mensaje) {
-        return res.status(400).json({ error: 'Faltan datos obligatorios' });
-      }
-
-      console.log('📧 Recibida consulta:', { nombre, email, mensaje });
-
-      // Por ahora, solo guardamos la consulta sin enviar email
-      // TODO: Implementar envío de email cuando SMTP esté configurado correctamente
-      
-      console.log('✅ Consulta procesada exitosamente');
-      return res.json({ 
-        success: true, 
-        message: 'Consulta recibida correctamente',
-        data: { nombre, email, mensaje }
-      });
-    } catch (err: any) {
-      console.error('❌ Error al procesar consulta:', err);
-      return res.status(500).json({ error: 'Error al procesar la consulta', details: err.message });
-    }
-  });
-
   // Eliminar toda la lógica de WebSocket y broadcastNotification
 
   // const emailService = new EmailService(); // This line is no longer needed
@@ -669,10 +643,51 @@ export async function registerRoutes(app: Express): Promise<Server> {
         Array.isArray(detalleServicio) ? detalleServicio : undefined,
         Array.isArray(secciones) ? secciones : undefined
       );
-      
-      // Enviar notificación en tiempo real a administradores
-      // Eliminar broadcastNotification
-      
+
+      // Enviar email al admin
+      const nodemailer = require('nodemailer');
+      const transporter = nodemailer.createTransport({
+        host: process.env.SMTP_HOST,
+        port: parseInt(process.env.SMTP_PORT || '465'),
+        secure: process.env.SMTP_SECURE === 'true' || parseInt(process.env.SMTP_PORT || '465') === 465,
+        auth: {
+          user: process.env.SMTP_USER,
+          pass: process.env.SMTP_PASS,
+        },
+        tls: {
+          rejectUnauthorized: false
+        }
+      });
+
+      const adminMailHtml = `
+        <div style="background:#0a0a0f;padding:32px 0;font-family:Inter,Arial,sans-serif;min-height:100vh;">
+          <div style="max-width:520px;margin:0 auto;background:#18181b;border-radius:16px;padding:32px 24px;box-shadow:0 4px 24px rgba(0,0,0,0.12);color:#fff;">
+            <h2 style="color:#00ccff;font-size:1.5rem;margin-bottom:16px;">Nueva consulta recibida desde TuWeb.ai</h2>
+            <ul style="color:#fff;font-size:1rem;line-height:1.7;">
+              <li><b>Nombre:</b> ${consultaData.nombre}</li>
+              <li><b>Email:</b> ${consultaData.email}</li>
+              <li><b>Empresa:</b> ${consultaData.empresa || '-'}</li>
+              <li><b>Teléfono:</b> ${consultaData.telefono || '-'}</li>
+              <li><b>Tipo de proyecto:</b> ${consultaData.tipoProyecto}</li>
+              <li><b>Urgente:</b> ${consultaData.urgente ? 'Sí' : 'No'}</li>
+              <li><b>Servicios:</b> ${(detalleServicio && Array.isArray(detalleServicio) && detalleServicio.length > 0) ? detalleServicio.join(', ') : '-'}</li>
+              <li><b>Secciones:</b> ${(secciones && Array.isArray(secciones) && secciones.length > 0) ? secciones.join(', ') : '-'}</li>
+              <li><b>Presupuesto:</b> ${consultaData.presupuesto || '-'}</li>
+              <li><b>Plazo:</b> ${consultaData.plazo || '-'}</li>
+              <li><b>Mensaje:</b> ${consultaData.mensaje}</li>
+              <li><b>¿Cómo nos encontró?:</b> ${consultaData.comoNosEncontraste || '-'}</li>
+            </ul>
+            <p style="color:#b3b3b3;font-size:0.95rem;margin-top:32px;">Consulta recibida el ${new Date().toLocaleString('es-AR')}</p>
+          </div>
+        </div>
+      `;
+      await transporter.sendMail({
+        from: `TuWeb.ai <${process.env.SMTP_USER}>`,
+        to: 'admin@tuweb-ai.com',
+        subject: 'Nueva consulta recibida en TuWeb.ai',
+        html: adminMailHtml,
+      });
+
       // Responder con éxito
       res.status(201).json({ 
         success: true, 

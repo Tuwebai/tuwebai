@@ -74,7 +74,7 @@ export default function Footer() {
                 </svg>
                 <div>
                   <p className="text-gray-300">Web:</p>
-                  <a href="https://www.tuweb.ai" target="_blank" rel="noopener noreferrer" className="hover:text-[#9933FF] transition-colors">www.tuweb.ai</a>
+                  <a href="https://www.tuweb-ai.com" target="_blank" rel="noopener noreferrer" className="hover:text-[#9933FF] transition-colors">www.tuweb-ai.com</a>
                 </div>
               </div>
             </div>
@@ -84,7 +84,7 @@ export default function Footer() {
         <div className="border-t border-gray-800 pt-8 mb-4 flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center gap-2">
             <img src="/logo-tuwebai.png" alt="Logo TuWeb.ai" className="w-8 h-8" />
-            <span className="text-sm text-gray-400">© 2024 TuWeb.ai. Todos los derechos reservados.</span>
+            <span className="text-sm text-gray-400">© 2025 TuWeb.ai. Todos los derechos reservados.</span>
           </div>
           <div className="mt-4 md:mt-0 flex gap-6">
             <a 

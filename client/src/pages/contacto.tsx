@@ -21,7 +21,7 @@ const Contacto: React.FC = () => {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      const res = await fetch(`${API_URL}/contact`, {
+      const res = await fetch(`${API_URL}/api/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),

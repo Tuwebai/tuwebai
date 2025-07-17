@@ -234,7 +234,7 @@ export default function Consulta() {
     
     try {
       // Envío real del formulario a la API
-      const response = await fetch(`${API_URL}/consulta`, {
+      const response = await fetch(`${API_URL}/api/consulta`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -840,12 +840,28 @@ export default function Consulta() {
                 )}
                 
                 {submitted && (
-                  <div className="flex flex-col items-center justify-center gap-4 p-6 bg-white rounded-lg shadow-md mt-8">
-                    <img src="/logo-tuwebai.png" alt="Logo TuWeb.ai" className="w-20 h-20 mb-2" />
-                    <h2 className="text-2xl font-bold text-primary">¡Consulta enviada con éxito!</h2>
-                    <p className="text-gray-600">Te responderemos a la brevedad. ¡Gracias por contactarnos!</p>
-                    <Button onClick={() => navigate('/')} className="mt-4">Volver al inicio</Button>
-                  </div>
+                  <motion.div
+                    className="text-center py-16"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <div className="w-20 h-20 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-full flex items-center justify-center mx-auto mb-6">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                    <h3 className="text-2xl font-rajdhani font-bold mb-4 text-white">¡Gracias por tu solicitud!</h3>
+                    <p className="text-gray-300 mb-6">
+                      Hemos recibido los detalles de tu proyecto. Nuestro equipo está trabajando en tu propuesta personalizada y la recibirás en menos de 48 horas.
+                    </p>
+                    <Link 
+                      to="/"
+                      className="inline-block px-6 py-3 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-full text-white font-medium"
+                    >
+                      Volver al inicio
+                    </Link>
+                  </motion.div>
                 )}
                 
                 <div className="mt-8 pt-8 border-t border-gray-800">
