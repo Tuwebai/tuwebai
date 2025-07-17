@@ -635,7 +635,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // API de Contacto
   app.post("/api/contact", trackActivity('FormSubmit', 'Contact'), async (req: Request, res: Response) => {
     try {
-      const contacto = new Contacto(req.body);
+      // Validación robusta de campos requeridos
+      const { nombre, email, asunto, mensaje } = req.body;
+      if (!nombre || !email || !asunto || !mensaje) {
+        console.warn('❌ Faltan campos requeridos en /api/contact:', req.body);
+        return res.status(400).json({
+          success: false,
+          message: 'Faltan campos requeridos',
+          fields: { nombre, email, asunto, mensaje }
+        });
+      }
+      // Log para debug
+      console.log('📩 Contacto recibido:', req.body);
+      const contacto = new Contacto({ nombre, email, asunto, mensaje });
       await contacto.save();
       // Envío de email al admin (sin cambios)
       const transporter = require('nodemailer').createTransport({
