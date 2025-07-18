@@ -8,7 +8,7 @@ import passport from 'passport';
 import { fileURLToPath } from 'url';
 import cors from 'cors';
 import helmet from 'helmet';
-import mercadopago from 'mercadopago';
+import { MercadoPagoConfig, Preference } from 'mercadopago';
 import emailjs from 'emailjs-com';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -140,7 +140,8 @@ app.use((err: Error, req: Request, res: Response, _next: NextFunction) => {
 });
 
 // Configuración Mercado Pago
-mercadopago.configure({ access_token: process.env.MP_ACCESS_TOKEN || '' });
+const client = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN || '' });
+const preference = new Preference(client);
 
 app.post('/crear-preferencia', async (req: Request, res: Response) => {
   try {
@@ -153,9 +154,10 @@ app.post('/crear-preferencia', async (req: Request, res: Response) => {
       'Plan Enterprise': 999000,
     };
     if (!precios[plan]) return res.status(400).json({ error: 'Plan inválido' });
-    const preference = {
+    const preferenceData = {
       items: [
         {
+          id: plan.toLowerCase().replace(/\s+/g, '-'),
           title: plan,
           unit_price: precios[plan],
           quantity: 1,
@@ -169,8 +171,8 @@ app.post('/crear-preferencia', async (req: Request, res: Response) => {
       },
       auto_return: 'approved',
     };
-    const mpRes = await mercadopago.preferences.create(preference);
-    return res.json({ init_point: mpRes.body.init_point });
+    const mpRes = await preference.create({ body: preferenceData });
+    return res.json({ init_point: mpRes.init_point });
   } catch (err) {
     console.error('Error Mercado Pago:', err);
     return res.status(500).json({ error: 'Error al crear preferencia de pago' });
