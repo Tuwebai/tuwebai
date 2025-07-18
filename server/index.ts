@@ -205,7 +205,7 @@ app.post("/api/contact", async (req: Request, res: Response) => {
     try {
       await transporter.sendMail({
         from: `TuWeb.ai <${smtpUser}>`,
-        to: 'admin@tuweb-ai.com',
+        to: 'tuwebai@gmail.com',
         subject: `Nuevo contacto: ${contactData.asunto}`,
         html: adminMailHtml,
       });
