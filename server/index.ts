@@ -182,6 +182,16 @@ app.get('/favicon.ico', (req, res) => {
 // Servir recursos estáticos (por ejemplo, /public)
 app.use(express.static(path.join(__dirname, '../public')));
 
+// Endpoint de prueba directo en index.ts
+app.post('/api/test', (req, res) => {
+  console.log('🧪 Endpoint de prueba llamado');
+  res.json({ 
+    success: true, 
+    message: 'Endpoint de prueba funcionando',
+    timestamp: new Date().toISOString()
+  });
+});
+
 (async () => {
   const server = await registerRoutes(app);
 
