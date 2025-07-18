@@ -34,12 +34,7 @@ import axios from 'axios';
 import nodemailer from 'nodemailer';
 import mongoose from 'mongoose';
 
-// Conexión a MongoDB
-mongoose.connect(process.env.MONGODB_URI || '').then(() => {
-  console.log('✅ Conectado a MongoDB');
-}).catch((err: any) => {
-  console.error('❌ Error al conectar a MongoDB:', err);
-});
+// Eliminar imports y conexión de mongoose
 
 // Modelos de Mongoose
 const ConsultaSchema = new mongoose.Schema({
@@ -676,14 +671,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
       };
       console.log('📧 Nuevo contacto recibido:', contactData);
       
+      // Validar variables SMTP
+      const smtpHost = process.env.SMTP_HOST;
+      const smtpUser = process.env.SMTP_USER;
+      const smtpPass = process.env.SMTP_PASS;
+      if (!smtpHost || !smtpUser || !smtpPass) {
+        console.error('❌ Faltan variables SMTP:', { smtpHost, smtpUser, smtpPass });
+        return res.status(500).json({
+          success: false,
+          message: 'Error de configuración del servidor: faltan variables SMTP. Contactá al administrador.'
+        });
+      }
+      
       // Envío de email al admin
       const transporter = require('nodemailer').createTransport({
-        host: process.env.SMTP_HOST,
+        host: smtpHost,
         port: parseInt(process.env.SMTP_PORT || '465'),
         secure: process.env.SMTP_SECURE === 'true' || parseInt(process.env.SMTP_PORT || '465') === 465,
         auth: {
-          user: process.env.SMTP_USER,
-          pass: process.env.SMTP_PASS,
+          user: smtpUser,
+          pass: smtpPass,
         },
         tls: {
           rejectUnauthorized: false
@@ -706,12 +713,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
         </div>
       `;
       
-      await transporter.sendMail({
-        from: `TuWeb.ai <${process.env.SMTP_USER}>`,
-        to: 'admin@tuweb-ai.com',
-        subject: `Nuevo contacto: ${contactData.asunto}`,
-        html: adminMailHtml,
-      });
+      try {
+        await transporter.sendMail({
+          from: `TuWeb.ai <${smtpUser}>`,
+          to: 'admin@tuweb-ai.com',
+          subject: `Nuevo contacto: ${contactData.asunto}`,
+          html: adminMailHtml,
+        });
+      } catch (err) {
+        console.error('❌ Error enviando email:', err);
+        return res.status(500).json({
+          success: false,
+          message: 'No se pudo enviar el email de contacto. Intenta de nuevo más tarde.'
+        });
+      }
 
       // Responder con éxito
       res.status(201).json({ 
@@ -726,7 +741,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.error("Error en formulario de contacto:", error);
       res.status(500).json({ 
         success: false, 
-        message: "Error al enviar el mensaje. Por favor intenta nuevamente."
+        message: "Error inesperado en el servidor. Intenta de nuevo más tarde."
       });
     }
   });
