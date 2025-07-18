@@ -177,10 +177,10 @@ app.post('/crear-preferencia', async (req: Request, res: Response) => {
   }
 });
 
-// Configuración de EmailJS
+// Configuración de EmailJS - READY FOR PRODUCTION
 const EMAILJS_SERVICE_ID = "service_9s9hqqn";
-const EMAILJS_TEMPLATE_ID = "template_8pxfpyh"; // Reemplazá con tu template ID
-const EMAILJS_PRIVATE_KEY = "JwEzBkL2LmY4a6WRkkodX"; // Reemplazá con tu private key
+const EMAILJS_TEMPLATE_ID = "template_8pxfpyh";
+const EMAILJS_PRIVATE_KEY = "JwEzBkL2LmY4a6WRkkodX";
 
 // API de Contacto con EmailJS
 app.post("/api/contact", async (req: Request, res: Response) => {
