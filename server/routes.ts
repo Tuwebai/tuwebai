@@ -631,106 +631,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
    * --------------------------------------------------------------------------
    */
   
-  // API de Contacto
-  app.post("/api/contact", trackActivity('FormSubmit', 'Contact'), async (req: Request, res: Response) => {
-    try {
-      // Validación manual robusta
-      const { nombre, email, asunto, mensaje } = req.body;
-      
-      if (!nombre || typeof nombre !== 'string' || nombre.trim().length < 2) {
-        return res.status(400).json({
-          success: false,
-          message: "El nombre es requerido y debe tener al menos 2 caracteres"
-        });
-      }
-      
-      if (!email || typeof email !== 'string' || !email.includes('@')) {
-        return res.status(400).json({
-          success: false,
-          message: "El email es requerido y debe ser válido"
-        });
-      }
-      
-      if (!asunto || typeof asunto !== 'string' || asunto.trim().length < 3) {
-        return res.status(400).json({
-          success: false,
-          message: "El asunto es requerido y debe tener al menos 3 caracteres"
-        });
-      }
-      
-      if (!mensaje || typeof mensaje !== 'string' || mensaje.trim().length < 10) {
-        return res.status(400).json({
-          success: false,
-          message: "El mensaje es requerido y debe tener al menos 10 caracteres"
-        });
-      }
-      
-      // Guardar en Firebase Firestore (colección 'contacts')
-      const contactData = {
-        nombre: nombre.trim(),
-        email: email.trim().toLowerCase(),
-        asunto: asunto.trim(),
-        mensaje: mensaje.trim(),
-        createdAt: new Date(),
-        source: req.body.source || 'sitio_web_principal'
-      };
-      
-      // Por ahora, solo logueamos los datos (en producción se guardaría en Firestore)
-      console.log('📧 Nuevo contacto recibido:', contactData);
-      
-      // Envío de email al admin
-      const transporter = nodemailer.createTransport({
-        host: process.env.SMTP_HOST,
-        port: parseInt(process.env.SMTP_PORT || '465'),
-        secure: process.env.SMTP_SECURE === 'true' || parseInt(process.env.SMTP_PORT || '465') === 465,
-        auth: {
-          user: process.env.SMTP_USER,
-          pass: process.env.SMTP_PASS,
-        },
-        tls: {
-          rejectUnauthorized: false
-        }
-      });
-
-      const adminMailHtml = `
-        <div style="background:#0a0a0f;padding:32px 0;font-family:Inter,Arial,sans-serif;min-height:100vh;">
-          <div style="max-width:520px;margin:0 auto;background:#18181b;border-radius:16px;padding:32px 24px;box-shadow:0 4px 24px rgba(0,0,0,0.12);color:#fff;">
-            <h2 style="color:#00ccff;font-size:1.5rem;margin-bottom:16px;">Nuevo mensaje de contacto desde TuWeb.ai</h2>
-            <ul style="color:#fff;font-size:1rem;line-height:1.7;">
-              <li><b>Nombre:</b> ${contactData.nombre}</li>
-              <li><b>Email:</b> ${contactData.email}</li>
-              <li><b>Asunto:</b> ${contactData.asunto}</li>
-              <li><b>Mensaje:</b> ${contactData.mensaje}</li>
-              <li><b>Origen:</b> ${contactData.source}</li>
-            </ul>
-            <p style="color:#b3b3b3;font-size:0.95rem;margin-top:32px;">Mensaje recibido el ${new Date().toLocaleString('es-AR')}</p>
-          </div>
-        </div>
-      `;
-      
-      await transporter.sendMail({
-        from: `TuWeb.ai <${process.env.SMTP_USER}>`,
-        to: 'admin@tuweb-ai.com',
-        subject: `Nuevo contacto: ${contactData.asunto}`,
-        html: adminMailHtml,
-      });
-
-      // Responder con éxito
-      res.status(201).json({ 
-        success: true, 
-        message: "Mensaje enviado correctamente. Te responderemos pronto.",
-        contact: {
-          id: Date.now(), // ID temporal
-          date: contactData.createdAt
-        }
-      });
-    } catch (error) {
-      console.error("Error en formulario de contacto:", error);
-      res.status(500).json({ 
-        success: false, 
-        message: "Error al enviar el mensaje. Por favor intenta nuevamente."
-      });
-    }
+  // API de Contacto - Versión simplificada para testing
+  app.post("/api/contact", async (req: Request, res: Response) => {
+    console.log('📧 Endpoint /api/contact llamado con:', req.body);
+    res.status(200).json({ 
+      success: true, 
+      message: "Endpoint funcionando correctamente",
+      received: req.body,
+      timestamp: new Date().toISOString()
+    });
   });
 
   // API de Consulta
