@@ -235,7 +235,7 @@ app.post("/api/contact", async (req: Request, res: Response) => {
         message: contactData.message,
       },
       {
-        publicKey: EMAILJS_PRIVATE_KEY
+        privateKey: EMAILJS_PRIVATE_KEY
       }
     );
 
