@@ -8,7 +8,8 @@ import passport from 'passport';
 import { fileURLToPath } from 'url';
 import cors from 'cors';
 import helmet from 'helmet';
-import nodemailer from 'nodemailer';
+import mercadopago from 'mercadopago';
+import emailjs from 'emailjs-com';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -125,11 +126,67 @@ app.get('/favicon.ico', (req, res) => {
 });
 app.use(express.static(path.join(__dirname, '../public')));
 
-// API de Contacto
+app.use((err: Error, req: Request, res: Response, _next: NextFunction) => {
+  const status = (err as any).status || (err as any).statusCode || 500;
+  const message = err.message || "Internal Server Error";
+  console.error('Express error middleware:', err);
+  if (!res.headersSent) {
+    res.status(status).json({ 
+      success: false, 
+      message,
+      details: process.env.NODE_ENV === 'development' ? err.message : undefined
+    });
+  }
+});
+
+// Configuración Mercado Pago
+mercadopago.configure({ access_token: process.env.MP_ACCESS_TOKEN || '' });
+
+app.post('/crear-preferencia', async (req: Request, res: Response) => {
+  try {
+    const { plan } = req.body;
+    if (!plan) return res.status(400).json({ error: 'Plan requerido' });
+    // Definir precios según plan
+    const precios: Record<string, number> = {
+      'Plan Básico': 299000,
+      'Plan Profesional': 499000,
+      'Plan Enterprise': 999000,
+    };
+    if (!precios[plan]) return res.status(400).json({ error: 'Plan inválido' });
+    const preference = {
+      items: [
+        {
+          title: plan,
+          unit_price: precios[plan],
+          quantity: 1,
+          currency_id: 'ARS',
+        },
+      ],
+      back_urls: {
+        success: 'https://tuweb-ai.com/pago-exitoso',
+        failure: 'https://tuweb-ai.com/pago-fallido',
+        pending: 'https://tuweb-ai.com/pago-pendiente',
+      },
+      auto_return: 'approved',
+    };
+    const mpRes = await mercadopago.preferences.create(preference);
+    return res.json({ init_point: mpRes.body.init_point });
+  } catch (err) {
+    console.error('Error Mercado Pago:', err);
+    return res.status(500).json({ error: 'Error al crear preferencia de pago' });
+  }
+});
+
+// Configuración de EmailJS
+const EMAILJS_SERVICE_ID = "service_9s9hqqn";
+const EMAILJS_TEMPLATE_ID = "template_8pxfpyh"; // Reemplazá con tu template ID
+const EMAILJS_PRIVATE_KEY = "JwEzBkL2LmY4a6WRkkodX"; // Reemplazá con tu private key
+
+// API de Contacto con EmailJS
 app.post("/api/contact", async (req: Request, res: Response) => {
   try {
-    const { nombre, email, asunto, mensaje } = req.body;
-    if (!nombre || typeof nombre !== 'string' || nombre.trim().length < 2) {
+    const { name, email, title, message } = req.body;
+    if (!name || typeof name !== 'string' || name.trim().length < 2) {
       return res.status(400).json({
         success: false,
         message: "El nombre es requerido y debe tener al menos 2 caracteres"
@@ -141,81 +198,43 @@ app.post("/api/contact", async (req: Request, res: Response) => {
         message: "El email es requerido y debe ser válido"
       });
     }
-    if (!asunto || typeof asunto !== 'string' || asunto.trim().length < 3) {
+    if (!title || typeof title !== 'string' || title.trim().length < 3) {
       return res.status(400).json({
         success: false,
         message: "El asunto es requerido y debe tener al menos 3 caracteres"
       });
     }
-    if (!mensaje || typeof mensaje !== 'string' || mensaje.trim().length < 10) {
+    if (!message || typeof message !== 'string' || message.trim().length < 10) {
       return res.status(400).json({
         success: false,
         message: "El mensaje es requerido y debe tener al menos 10 caracteres"
       });
     }
+
     const contactData = {
-      nombre: nombre.trim(),
+      name: name.trim(),
       email: email.trim().toLowerCase(),
-      asunto: asunto.trim(),
-      mensaje: mensaje.trim(),
+      title: title.trim(),
+      message: message.trim(),
       createdAt: new Date(),
       source: req.body.source || 'sitio_web_principal'
     };
+
     console.log('📧 Nuevo contacto recibido:', contactData);
-    // --- Si tenés lógica de Firestore, dejarla aquí ---
-    // await firestore.collection('contacts').add(contactData);
-    // -----------------------------------------------
-    const smtpHost = process.env.SMTP_HOST;
-    const smtpUser = process.env.SMTP_USER;
-    const smtpPass = process.env.SMTP_PASS;
-    if (!smtpHost || !smtpUser || !smtpPass) {
-      console.error('❌ Faltan variables SMTP:', { smtpHost, smtpUser, smtpPass });
-      return res.status(500).json({
-        success: false,
-        message: 'Error de configuración del servidor: faltan variables SMTP. Contactá al administrador.'
-      });
-    }
-    const transporter = nodemailer.createTransport({
-      host: smtpHost,
-      port: parseInt(process.env.SMTP_PORT || '465'),
-      secure: process.env.SMTP_SECURE === 'true' || parseInt(process.env.SMTP_PORT || '465') === 465,
-      auth: {
-        user: smtpUser,
-        pass: smtpPass,
+
+    // Enviar email con EmailJS
+    await emailjs.send(
+      EMAILJS_SERVICE_ID,
+      EMAILJS_TEMPLATE_ID,
+      {
+        name: contactData.name,
+        email: contactData.email,
+        title: contactData.title,
+        message: contactData.message,
       },
-      tls: {
-        rejectUnauthorized: false
-      }
-    });
-    const adminMailHtml = `
-      <div style="background:#0a0a0f;padding:32px 0;font-family:Inter,Arial,sans-serif;min-height:100vh;">
-        <div style="max-width:520px;margin:0 auto;background:#18181b;border-radius:16px;padding:32px 24px;box-shadow:0 4px 24px rgba(0,0,0,0.12);color:#fff;">
-          <h2 style="color:#00ccff;font-size:1.5rem;margin-bottom:16px;">Nuevo mensaje de contacto desde TuWeb.ai</h2>
-          <ul style="color:#fff;font-size:1rem;line-height:1.7;">
-            <li><b>Nombre:</b> ${contactData.nombre}</li>
-            <li><b>Email:</b> ${contactData.email}</li>
-            <li><b>Asunto:</b> ${contactData.asunto}</li>
-            <li><b>Mensaje:</b> ${contactData.mensaje}</li>
-            <li><b>Origen:</b> ${contactData.source}</li>
-          </ul>
-          <p style="color:#b3b3b3;font-size:0.95rem;margin-top:32px;">Mensaje recibido el ${new Date().toLocaleString('es-AR')}</p>
-        </div>
-      </div>
-    `;
-    try {
-      await transporter.sendMail({
-        from: `TuWeb.ai <${smtpUser}>`,
-        to: 'tuwebai@gmail.com',
-        subject: `Nuevo contacto: ${contactData.asunto}`,
-        html: adminMailHtml,
-      });
-    } catch (err: unknown) {
-      console.error('❌ Error enviando email:', err);
-      return res.status(500).json({
-        success: false,
-        message: 'No se pudo enviar el email de contacto. Intenta de nuevo más tarde.'
-      });
-    }
+      EMAILJS_PRIVATE_KEY
+    );
+
     res.status(201).json({ 
       success: true, 
       message: "Mensaje enviado correctamente. Te responderemos pronto.",
@@ -229,19 +248,6 @@ app.post("/api/contact", async (req: Request, res: Response) => {
     res.status(500).json({ 
       success: false, 
       message: "Error inesperado en el servidor. Intenta de nuevo más tarde."
-    });
-  }
-});
-
-app.use((err: Error, req: Request, res: Response, _next: NextFunction) => {
-  const status = (err as any).status || (err as any).statusCode || 500;
-  const message = err.message || "Internal Server Error";
-  console.error('Express error middleware:', err);
-  if (!res.headersSent) {
-    res.status(status).json({ 
-      success: false, 
-      message,
-      details: process.env.NODE_ENV === 'development' ? err.message : undefined
     });
   }
 });

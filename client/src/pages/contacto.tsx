@@ -6,7 +6,7 @@ import { API_URL } from '@/lib/api';
 import { useNavigate } from 'react-router-dom';
 
 const Contacto: React.FC = () => {
-  const [form, setForm] = useState({ nombre: '', email: '', asunto: '', mensaje: '' });
+  const [form, setForm] = useState({ name: '', email: '', title: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [alert, setAlert] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ const Contacto: React.FC = () => {
       }
       if (res.ok) {
         setAlert({ type: 'success', message: data.message || '¡Mensaje enviado! Te responderemos pronto.' });
-        setForm({ nombre: '', email: '', asunto: '', mensaje: '' });
+        setForm({ name: '', email: '', title: '', message: '' });
       } else {
         setAlert({ type: 'error', message: data.message || 'No se pudo enviar el mensaje. Intenta de nuevo.' });
       }
@@ -58,20 +58,20 @@ const Contacto: React.FC = () => {
         )}
         <form className="w-full space-y-4" onSubmit={handleSubmit}>
           <div>
-            <label htmlFor="nombre" className="block text-white font-medium mb-1">Nombre completo</label>
-            <Input id="nombre" name="nombre" value={form.nombre} onChange={handleChange} required className="bg-[#1A1A23] border-gray-700 text-white" placeholder="Tu nombre" />
+            <label htmlFor="name" className="block text-white font-medium mb-1">Nombre completo</label>
+            <Input id="name" name="name" value={form.name} onChange={handleChange} required className="bg-[#1A1A23] border-gray-700 text-white" placeholder="Tu nombre" />
           </div>
           <div>
             <label htmlFor="email" className="block text-white font-medium mb-1">Correo electrónico</label>
             <Input id="email" name="email" type="email" value={form.email} onChange={handleChange} required className="bg-[#1A1A23] border-gray-700 text-white" placeholder="tu@email.com" />
           </div>
           <div>
-            <label htmlFor="asunto" className="block text-white font-medium mb-1">Asunto</label>
-            <Input id="asunto" name="asunto" value={form.asunto} onChange={handleChange} required className="bg-[#1A1A23] border-gray-700 text-white" placeholder="Motivo del contacto" />
+            <label htmlFor="title" className="block text-white font-medium mb-1">Asunto</label>
+            <Input id="title" name="title" value={form.title} onChange={handleChange} required className="bg-[#1A1A23] border-gray-700 text-white" placeholder="Motivo del contacto" />
           </div>
           <div>
-            <label htmlFor="mensaje" className="block text-white font-medium mb-1">Mensaje</label>
-            <Textarea id="mensaje" name="mensaje" value={form.mensaje} onChange={handleChange} required className="bg-[#1A1A23] border-gray-700 text-white" placeholder="Contanos en qué podemos ayudarte" rows={5} />
+            <label htmlFor="message" className="block text-white font-medium mb-1">Mensaje</label>
+            <Textarea id="message" name="message" value={form.message} onChange={handleChange} required className="bg-[#1A1A23] border-gray-700 text-white" placeholder="Contanos en qué podemos ayudarte" rows={5} />
           </div>
           <Button type="submit" className="w-full py-3 text-lg bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-full text-white font-semibold" disabled={isSubmitting}>
             {isSubmitting ? <span className="animate-pulse">Enviando...</span> : 'Enviar'}
