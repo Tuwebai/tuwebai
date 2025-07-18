@@ -183,7 +183,7 @@ app.get('/favicon.ico', (req, res) => {
 app.use(express.static(path.join(__dirname, '../public')));
 
 // Endpoint de prueba directo en index.ts
-app.post('/api/test', (req, res) => {
+app.get('/api/test', (req, res) => {
   console.log('🧪 Endpoint de prueba llamado');
   res.json({ 
     success: true, 
