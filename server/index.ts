@@ -37,7 +37,14 @@ const log = (message: string, source = "express") => {
 const serveStatic = (app: express.Express) => {
   const distPath = path.resolve(__dirname, "../dist");
   app.use(express.static(distPath));
-  app.use("*", (_req, res) => {
+  // Solo servir index.html para rutas que NO sean de la API
+  app.use("*", (req, res) => {
+    if (req.path.startsWith('/api/')) {
+      return res.status(404).json({ 
+        success: false, 
+        message: "API endpoint not found" 
+      });
+    }
     res.sendFile(path.resolve(distPath, "index.html"));
   });
 };
