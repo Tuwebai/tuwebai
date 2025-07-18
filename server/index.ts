@@ -52,25 +52,38 @@ const serveStatic = (app: express.Express) => {
 const app = express();
 
 // Configuración CORS definitiva y estricta para producción
-const allowedOrigins = process.env.NODE_ENV === 'development' 
-  ? ['https://tuweb-ai.com', 'https://www.tuweb-ai.com', 'http://localhost:3000', 'http://localhost:5173']
-  : ['https://tuweb-ai.com', 'https://www.tuweb-ai.com'];
+const allowedOrigins = [
+  "https://tuweb-ai.com",
+  "https://www.tuweb-ai.com",
+  "http://localhost:3000",
+  "http://localhost:5173"
+];
 
-app.use(cors({
-  origin: function (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) {
-    // Permitir requests sin origin (como mobile apps o Postman)
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      console.log('🚫 CORS bloqueado para origen:', origin);
-      callback(new Error('No permitido por CORS'));
-    }
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
-  exposedHeaders: ['Set-Cookie']
-}));
+// Middleware CORS robusto
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // Permitir requests sin origin (como Postman)
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("No permitido por CORS"));
+      }
+    },
+    credentials: true,
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "X-Requested-With",
+      "Accept"
+    ],
+    exposedHeaders: ["Set-Cookie"]
+  })
+);
+
+// Responder preflight OPTIONS para todas las rutas
+app.options("*", cors());
 
 // Configuración de headers de seguridad con CSP permisivo para Google OAuth
 app.use(helmet({
