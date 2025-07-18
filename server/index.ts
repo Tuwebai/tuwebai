@@ -233,14 +233,8 @@ app.use(express.static(path.join(__dirname, '../public')));
     // No hacer throw err;
   });
 
-  // importantly only setup vite in development and after
-  // setting up all the other routes so the catch-all route
-  // doesn't interfere with the other routes
-  if (app.get("env") === "development") {
-    // No setupVite, ya que vite no se usa en producción
-  } else {
-    serveStatic(app);
-  }
+  // No usar serveStatic en producción - este es un backend puro
+  // El frontend se sirve desde otro dominio
 
   // ALWAYS serve the app on port 5000
   // this serves both the API and the client.
