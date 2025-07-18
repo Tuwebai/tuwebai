@@ -121,6 +121,15 @@ app.use((req, res, next) => {
   next();
 });
 
+// Endpoint de prueba para verificar que el servidor funciona
+app.get('/api/health', (req: Request, res: Response) => {
+  res.json({ 
+    status: 'OK', 
+    message: 'Servidor funcionando correctamente',
+    timestamp: new Date().toISOString()
+  });
+});
+
 app.get('/favicon.ico', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/favicon.ico'));
 });
@@ -249,9 +258,17 @@ app.post("/api/contact", async (req: Request, res: Response) => {
     });
   } catch (error: unknown) {
     console.error("Error en formulario de contacto:", error);
+    
+    // Log detallado del error
+    if (error instanceof Error) {
+      console.error("Error details:", error.message);
+      console.error("Error stack:", error.stack);
+    }
+    
     res.status(500).json({ 
       success: false, 
-      message: "Error inesperado en el servidor. Intenta de nuevo más tarde."
+      message: "Error inesperado en el servidor. Intenta de nuevo más tarde.",
+      error: process.env.NODE_ENV === 'development' ? error : undefined
     });
   }
 });
