@@ -45,7 +45,9 @@ const serveStatic = (app: express.Express) => {
 const app = express();
 
 // Configuración CORS definitiva y estricta para producción
-const allowedOrigins = ['https://tuweb-ai.com', 'https://www.tuweb-ai.com'];
+const allowedOrigins = process.env.NODE_ENV === 'development' 
+  ? ['https://tuweb-ai.com', 'https://www.tuweb-ai.com', 'http://localhost:3000', 'http://localhost:5173']
+  : ['https://tuweb-ai.com', 'https://www.tuweb-ai.com'];
 
 app.use(cors({
   origin: function (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) {
