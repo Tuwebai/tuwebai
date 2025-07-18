@@ -631,23 +631,52 @@ export async function registerRoutes(app: Express): Promise<Server> {
    * --------------------------------------------------------------------------
    */
   
-  // API de Contacto - Versión simplificada para testing
+  // API de Contacto
   app.post("/api/contact", async (req: Request, res: Response) => {
-    console.log('📧 Endpoint /api/contact llamado con:', req.body);
-    res.status(200).json({ 
-      success: true, 
-      message: "Endpoint funcionando correctamente",
-      received: req.body,
-      timestamp: new Date().toISOString()
-    });
-  });
-
-  // API de Consulta
-  app.post("/api/consulta", trackActivity('FormSubmit', 'Consultation'), async (req: Request, res: Response) => {
     try {
-      const consulta = new Consulta(req.body);
-      await consulta.save();
-      // Envío de email al admin (sin cambios)
+      // Validación manual robusta
+      const { nombre, email, asunto, mensaje } = req.body;
+      
+      if (!nombre || typeof nombre !== 'string' || nombre.trim().length < 2) {
+        return res.status(400).json({
+          success: false,
+          message: "El nombre es requerido y debe tener al menos 2 caracteres"
+        });
+      }
+      
+      if (!email || typeof email !== 'string' || !email.includes('@')) {
+        return res.status(400).json({
+          success: false,
+          message: "El email es requerido y debe ser válido"
+        });
+      }
+      
+      if (!asunto || typeof asunto !== 'string' || asunto.trim().length < 3) {
+        return res.status(400).json({
+          success: false,
+          message: "El asunto es requerido y debe tener al menos 3 caracteres"
+        });
+      }
+      
+      if (!mensaje || typeof mensaje !== 'string' || mensaje.trim().length < 10) {
+        return res.status(400).json({
+          success: false,
+          message: "El mensaje es requerido y debe tener al menos 10 caracteres"
+        });
+      }
+      
+      // Guardar en Firestore (simulado: solo logging)
+      const contactData = {
+        nombre: nombre.trim(),
+        email: email.trim().toLowerCase(),
+        asunto: asunto.trim(),
+        mensaje: mensaje.trim(),
+        createdAt: new Date(),
+        source: req.body.source || 'sitio_web_principal'
+      };
+      console.log('📧 Nuevo contacto recibido:', contactData);
+      
+      // Envío de email al admin
       const transporter = require('nodemailer').createTransport({
         host: process.env.SMTP_HOST,
         port: parseInt(process.env.SMTP_PORT || '465'),
@@ -664,56 +693,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const adminMailHtml = `
         <div style="background:#0a0a0f;padding:32px 0;font-family:Inter,Arial,sans-serif;min-height:100vh;">
           <div style="max-width:520px;margin:0 auto;background:#18181b;border-radius:16px;padding:32px 24px;box-shadow:0 4px 24px rgba(0,0,0,0.12);color:#fff;">
-            <h2 style="color:#00ccff;font-size:1.5rem;margin-bottom:16px;">Nueva consulta recibida desde TuWeb.ai</h2>
+            <h2 style="color:#00ccff;font-size:1.5rem;margin-bottom:16px;">Nuevo mensaje de contacto desde TuWeb.ai</h2>
             <ul style="color:#fff;font-size:1rem;line-height:1.7;">
-              <li><b>Nombre:</b> ${req.body.nombre}</li>
-              <li><b>Email:</b> ${req.body.email}</li>
-              <li><b>Empresa:</b> ${req.body.empresa || '-'}</li>
-              <li><b>Teléfono:</b> ${req.body.telefono || '-'}</li>
-              <li><b>Tipo de proyecto:</b> ${req.body.tipoProyecto}</li>
-              <li><b>Urgente:</b> ${req.body.urgente ? 'Sí' : 'No'}</li>
-              <li><b>Servicios:</b> ${(req.body.detalleServicio && Array.isArray(req.body.detalleServicio) && req.body.detalleServicio.length > 0) ? req.body.detalleServicio.join(', ') : '-'}</li>
-              <li><b>Secciones:</b> ${(req.body.secciones && Array.isArray(req.body.secciones) && req.body.secciones.length > 0) ? req.body.secciones.join(', ') : '-'}</li>
-              <li><b>Presupuesto:</b> ${req.body.presupuesto || '-'}</li>
-              <li><b>Plazo:</b> ${req.body.plazo || '-'}</li>
-              <li><b>Mensaje:</b> ${req.body.mensaje}</li>
-              <li><b>¿Cómo nos encontró?:</b> ${req.body.comoNosEncontraste || '-'}</li>
+              <li><b>Nombre:</b> ${contactData.nombre}</li>
+              <li><b>Email:</b> ${contactData.email}</li>
+              <li><b>Asunto:</b> ${contactData.asunto}</li>
+              <li><b>Mensaje:</b> ${contactData.mensaje}</li>
+              <li><b>Origen:</b> ${contactData.source}</li>
             </ul>
-            <p style="color:#b3b3b3;font-size:0.95rem;margin-top:32px;">Consulta recibida el ${new Date().toLocaleString('es-AR')}</p>
+            <p style="color:#b3b3b3;font-size:0.95rem;margin-top:32px;">Mensaje recibido el ${new Date().toLocaleString('es-AR')}</p>
           </div>
         </div>
       `;
+      
       await transporter.sendMail({
         from: `TuWeb.ai <${process.env.SMTP_USER}>`,
         to: 'admin@tuweb-ai.com',
-        subject: 'Nueva consulta recibida en TuWeb.ai',
+        subject: `Nuevo contacto: ${contactData.asunto}`,
         html: adminMailHtml,
       });
 
       // Responder con éxito
       res.status(201).json({ 
         success: true, 
-        message: "Solicitud recibida correctamente",
-        consulta: {
-          id: consulta._id,
-          date: consulta.createdAt
+        message: "Mensaje enviado correctamente. Te responderemos pronto.",
+        contact: {
+          id: Date.now(), // ID temporal
+          date: contactData.createdAt
         }
       });
     } catch (error) {
-      console.error("Error en formulario de consulta:", error);
-      // Si es error de validación, enviar detalles
-      if (error instanceof z.ZodError) {
-        return res.status(400).json({ 
-          success: false, 
-          message: "Error de validación", 
-          errors: error.errors 
-        });
-      }
-      
-      // Error genérico
+      console.error("Error en formulario de contacto:", error);
       res.status(500).json({ 
         success: false, 
-        message: "Error al procesar la solicitud"
+        message: "Error al enviar el mensaje. Por favor intenta nuevamente."
       });
     }
   });
