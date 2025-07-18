@@ -9,7 +9,7 @@ import { fileURLToPath } from 'url';
 import cors from 'cors';
 import helmet from 'helmet';
 import { MercadoPagoConfig, Preference } from 'mercadopago';
-import emailjs from 'emailjs-com';
+import emailjs from '@emailjs/nodejs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -234,7 +234,9 @@ app.post("/api/contact", async (req: Request, res: Response) => {
         title: contactData.title,
         message: contactData.message,
       },
-      EMAILJS_PRIVATE_KEY
+      {
+        publicKey: EMAILJS_PRIVATE_KEY
+      }
     );
 
     res.status(201).json({ 

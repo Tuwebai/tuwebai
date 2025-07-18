@@ -19,6 +19,7 @@
     "deploy": "npm run build && git add . && git commit -m 'Deploy' && git push"
   },
   "dependencies": {
+    "@emailjs/nodejs": "^5.0.2",
     "@hookform/resolvers": "^3.10.0",
     "@jridgewell/trace-mapping": "^0.3.25",
     "@radix-ui/react-accordion": "^1.2.1",
