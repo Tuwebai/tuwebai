@@ -209,7 +209,7 @@ app.post("/api/contact", async (req: Request, res: Response) => {
         subject: `Nuevo contacto: ${contactData.asunto}`,
         html: adminMailHtml,
       });
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('❌ Error enviando email:', err);
       return res.status(500).json({
         success: false,
@@ -224,7 +224,7 @@ app.post("/api/contact", async (req: Request, res: Response) => {
         date: contactData.createdAt
       }
     });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Error en formulario de contacto:", error);
     res.status(500).json({ 
       success: false, 
