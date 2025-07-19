@@ -178,7 +178,6 @@ function App() {
               <Route path="/auth/verify/:token" element={<LazyRoute><AuthVerify /></LazyRoute>} />
               <Route path="/auth/reset-password" element={<LazyRoute><AuthVerify /></LazyRoute>} />
               <Route path="/panel" element={<LazyRoute><PanelUsuario /></LazyRoute>} />
-              <Route path="/dashboard" element={<LazyRoute><Dashboard /></LazyRoute>} />
               
               {/* Rutas de administración (protegidas) */}
               <Route path="/admin" element={<LazyRoute><AdminRoute><AdminDashboard /></AdminRoute></LazyRoute>} />
