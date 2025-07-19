@@ -30,6 +30,7 @@ interface ProjectFile {
   url: string;
   uploadedAt: string;
   uploadedBy: string;
+  // Los archivos serán URLs externas o enlaces a Google Drive/Dropbox
 }
 
 interface Comment {
@@ -510,19 +511,34 @@ export default function Dashboard() {
                         {/* Archivos */}
                         {phase.files && phase.files.length > 0 && (
                           <div>
-                            <h4 className="font-medium mb-2">Archivos</h4>
+                            <h4 className="font-medium mb-2">Archivos Compartidos</h4>
                             <div className="space-y-2">
                               {phase.files.map((file) => (
                                 <div key={file.id} className="flex items-center justify-between p-2 bg-[#1a1a1f] rounded">
                                   <div className="flex items-center gap-2">
-                                    <svg className="w-4 h-4 text-[#00CCFF]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                    </svg>
+                                    {file.type === 'image' ? (
+                                      <svg className="w-4 h-4 text-[#9933FF]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                      </svg>
+                                    ) : file.type === 'pdf' ? (
+                                      <svg className="w-4 h-4 text-[#00CCFF]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                                      </svg>
+                                    ) : (
+                                      <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                      </svg>
+                                    )}
                                     <span className="text-sm">{file.name}</span>
                                   </div>
-                                  <Button size="sm" variant="outline" className="border-gray-600">
-                                    Descargar
-                                  </Button>
+                                  <a 
+                                    href={file.url} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="px-3 py-1 text-xs bg-[#00CCFF] text-black rounded hover:bg-[#00CCFF]/80 transition-colors"
+                                  >
+                                    Ver
+                                  </a>
                                 </div>
                               ))}
                             </div>
