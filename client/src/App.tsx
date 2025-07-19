@@ -28,6 +28,7 @@ const DesarrolloWeb = lazy(() => import('./pages/servicios/desarrollo-web'));
 const PosicionamientoMarketing = lazy(() => import('./pages/servicios/posicionamiento-marketing'));
 const AutomatizacionMarketing = lazy(() => import('./pages/servicios/automatizacion-marketing'));
 const Blog = lazy(() => import('./pages/blog'));
+const BlogArticle = lazy(() => import('./pages/blog-article-template'));
 const FAQ = lazy(() => import('./pages/faq'));
 const Equipo = lazy(() => import('./pages/equipo'));
 const Tecnologias = lazy(() => import('./pages/tecnologias'));
@@ -68,6 +69,11 @@ const PagoExitoso = lazy(() => import('./pages/pago-exitoso'));
 const PagoFallido = lazy(() => import('./pages/pago-fallido'));
 const PagoPendiente = lazy(() => import('./pages/pago-pendiente'));
 const Contacto = lazy(() => import('./pages/contacto'));
+
+// Páginas legales
+const TerminosCondiciones = lazy(() => import('./pages/terminos-condiciones'));
+const PoliticaPrivacidad = lazy(() => import('./pages/politica-privacidad'));
+const PoliticaCookies = lazy(() => import('./pages/politica-cookies'));
 
 function App() {
   const location = useLocation();
@@ -142,6 +148,7 @@ function App() {
               
               {/* Rutas para secciones adicionales */}
               <Route path="/blog" element={<LazyRoute><Blog /></LazyRoute>} />
+              <Route path="/blog/:slug" element={<LazyRoute><BlogArticle /></LazyRoute>} />
               <Route path="/faq" element={<LazyRoute><FAQ /></LazyRoute>} />
               <Route path="/equipo" element={<LazyRoute><Equipo /></LazyRoute>} />
               <Route path="/tecnologias" element={<LazyRoute><Tecnologias /></LazyRoute>} />
@@ -184,6 +191,11 @@ function App() {
               <Route path="/pago-fallido" element={<LazyRoute><PagoFallido /></LazyRoute>} />
               <Route path="/pago-pendiente" element={<LazyRoute><PagoPendiente /></LazyRoute>} />
               <Route path="/contacto" element={<LazyRoute><Contacto /></LazyRoute>} />
+              
+              {/* Rutas para páginas legales */}
+              <Route path="/terminos-condiciones" element={<LazyRoute><TerminosCondiciones /></LazyRoute>} />
+              <Route path="/politica-privacidad" element={<LazyRoute><PoliticaPrivacidad /></LazyRoute>} />
+              <Route path="/politica-cookies" element={<LazyRoute><PoliticaCookies /></LazyRoute>} />
               
               {/* Página 404 sin lazy loading para mejor experiencia */}
               <Route path="*" element={<NotFound />} />
