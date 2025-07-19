@@ -153,22 +153,17 @@ export default function Dashboard() {
   useEffect(() => {
     const loadUserData = async () => {
       if (!user?.uid) return;
-      
       try {
         setLoading(true);
-        
         // Cargar proyecto del usuario
         const userProject = await getUserProject(user.uid);
-        setProject(userProject || defaultProject);
-        
+        setProject(userProject || null);
         // Cargar pagos del usuario
         const userPayments = await getUserPayments(user.uid);
         setPayments(userPayments);
-        
         // Cargar tickets del usuario
         const userTickets = await getUserTickets(user.uid);
         setTickets(userTickets);
-        
       } catch (error) {
         console.error('Error cargando datos del usuario:', error);
         toast({
@@ -176,68 +171,13 @@ export default function Dashboard() {
           description: "No se pudieron cargar los datos del usuario",
           variant: "destructive"
         });
-        
-        // Usar datos por defecto si hay error
-        setProject(defaultProject);
-        setPayments([
-          {
-            id: '1',
-            userId: user.uid,
-            projectId: 'default',
-            amount: 2500,
-            currency: 'USD',
-            date: '2025-01-15',
-            status: 'completed',
-            description: 'Pago inicial - 50% del proyecto',
-            invoiceUrl: '#'
-          },
-          {
-            id: '2',
-            userId: user.uid,
-            projectId: 'default',
-            amount: 2500,
-            currency: 'USD',
-            date: '2025-03-15',
-            status: 'pending',
-            description: 'Pago final - 50% restante'
-          }
-        ]);
-        setTickets([
-          {
-            id: '1',
-            userId: user.uid,
-            subject: 'Cambio de colores en el header',
-            message: 'Me gustaría cambiar los colores del header a tonos más azules.',
-            status: 'resolved',
-            priority: 'medium',
-            createdAt: '2025-01-20T10:00:00Z',
-            updatedAt: '2025-01-21T14:30:00Z',
-            responses: [
-              {
-                id: '1',
-                message: 'Cambio realizado. Los nuevos colores están aplicados.',
-                author: 'TuWeb.ai',
-                authorType: 'admin',
-                createdAt: '2025-01-21T14:30:00Z'
-              }
-            ]
-          },
-          {
-            id: '2',
-            userId: user.uid,
-            subject: 'Integración con redes sociales',
-            message: '¿Es posible agregar botones de redes sociales en el footer?',
-            status: 'open',
-            priority: 'low',
-            createdAt: '2025-02-10T16:00:00Z',
-            updatedAt: '2025-02-10T16:00:00Z'
-          }
-        ]);
+        setProject(null);
+        setPayments([]);
+        setTickets([]);
       } finally {
         setLoading(false);
       }
     };
-
     loadUserData();
   }, [user?.uid, toast]);
 
@@ -323,12 +263,39 @@ export default function Dashboard() {
     }
   };
 
-  if (loading || !project) {
+  if (loading) {
     return (
       <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00CCFF] mx-auto mb-4"></div>
           <p className="text-gray-400">Cargando tu dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Si no hay proyecto, mostrar dashboard vacío
+  if (!project) {
+    return (
+      <div className="min-h-screen bg-[#0a0a0f] flex flex-col items-center justify-center p-4">
+        <h1 className="text-2xl md:text-3xl font-bold text-white mb-4">¡Bienvenido, {user?.name || user?.email}!</h1>
+        <p className="text-gray-400 mb-8">Aún no tienes un proyecto asignado. Cuando contrates un servicio, verás aquí el progreso, pagos y soporte.</p>
+        <div className="w-full max-w-xl bg-[#18181b] rounded-xl p-6 flex flex-col gap-6">
+          <div>
+            <h2 className="text-lg font-semibold text-white mb-2">Progreso General</h2>
+            <div className="flex items-center gap-4">
+              <span className="text-3xl font-bold text-[#00CCFF]">0%</span>
+              <span className="px-3 py-1 rounded-full bg-gray-700 text-gray-300 text-xs">Sin proyecto</span>
+            </div>
+          </div>
+          <div>
+            <h2 className="text-lg font-semibold text-white mb-2">Pagos</h2>
+            <p className="text-gray-400">No hay pagos registrados.</p>
+          </div>
+          <div>
+            <h2 className="text-lg font-semibold text-white mb-2">Soporte</h2>
+            <p className="text-gray-400">No tienes tickets de soporte abiertos.</p>
+          </div>
         </div>
       </div>
     );

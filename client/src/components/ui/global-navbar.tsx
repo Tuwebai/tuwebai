@@ -194,7 +194,7 @@ export default function GlobalNavbar() {
                   </div>
                 ))}
                 
-                <div className="flex items-center gap-3 ml-6">
+                <div className="flex flex-wrap items-center gap-3 md:gap-4 relative z-20">
                   {/* Botones de autenticación para desktop */}
                   {!isAuthenticated ? (
                     <div className="flex items-center gap-2">
@@ -212,7 +212,7 @@ export default function GlobalNavbar() {
                       </button>
                     </div>
                   ) : (
-                    <div className="relative">
+                    <div className="relative flex-shrink-0 min-w-[160px]">
                       <button
                         onClick={() => setShowProfileMenu(!showProfileMenu)}
                         className="flex items-center gap-2 py-1.5 px-3 rounded-md hover:bg-gray-800/50 transition-colors"
@@ -281,7 +281,7 @@ export default function GlobalNavbar() {
                   
                   <Link
                     to="/consulta"
-                    className="px-5 py-2 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-full text-white text-sm font-medium shadow-lg shadow-[#00CCFF]/20 hover:shadow-[#9933FF]/30 transition-all"
+                    className="px-5 py-2 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-full text-white text-sm font-medium shadow-lg shadow-[#00CCFF]/20 hover:shadow-[#9933FF]/30 transition-all whitespace-nowrap"
                   >
                     Consultanos
                   </Link>
