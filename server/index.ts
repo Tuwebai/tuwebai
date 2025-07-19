@@ -233,24 +233,21 @@ app.post("/api/contact", async (req: Request, res: Response) => {
 
     console.log('📧 Nuevo contacto recibido:', contactData);
 
-    // Enviar email con EmailJS
-    await emailjs.send(
-      EMAILJS_SERVICE_ID,
-      EMAILJS_TEMPLATE_ID,
-      {
+    // Por ahora, solo guardar en logs sin enviar email
+    console.log('📧 Email que se enviaría:', {
+      serviceId: EMAILJS_SERVICE_ID,
+      templateId: EMAILJS_TEMPLATE_ID,
+      data: {
         name: contactData.name,
         email: contactData.email,
         title: contactData.title,
         message: contactData.message,
-      },
-      {
-        publicKey: EMAILJS_PUBLIC_KEY
       }
-    );
+    });
 
     res.status(201).json({ 
       success: true, 
-      message: "Mensaje enviado correctamente. Te responderemos pronto.",
+      message: "Mensaje recibido correctamente. Te responderemos pronto.",
       contact: {
         id: Date.now(),
         date: contactData.createdAt
