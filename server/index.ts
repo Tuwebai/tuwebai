@@ -304,6 +304,106 @@ app.post("/api/contact", async (req: Request, res: Response) => {
   }
 });
 
+// API de Consulta Estratégica Gratuita
+app.post("/api/consulta", async (req: Request, res: Response) => {
+  try {
+    const { name, email, message } = req.body;
+    
+    if (!name || typeof name !== 'string' || name.trim().length < 2) {
+      return res.status(400).json({
+        success: false,
+        message: "El nombre es requerido y debe tener al menos 2 caracteres"
+      });
+    }
+    if (!email || typeof email !== 'string' || !email.includes('@')) {
+      return res.status(400).json({
+        success: false,
+        message: "El email es requerido y debe ser válido"
+      });
+    }
+    if (!message || typeof message !== 'string' || message.trim().length < 10) {
+      return res.status(400).json({
+        success: false,
+        message: "El mensaje es requerido y debe tener al menos 10 caracteres"
+      });
+    }
+
+    const consultaData = {
+      name: name.trim(),
+      email: email.trim().toLowerCase(),
+      message: message.trim(),
+      createdAt: new Date(),
+      source: 'consulta_estrategica_gratuita'
+    };
+
+    console.log('📋 Nueva consulta estratégica recibida:', consultaData);
+
+    // Enviar email con Nodemailer
+    try {
+      const mailOptions = {
+        from: 'admin@tuweb-ai.com',
+        to: 'admin@tuweb-ai.com',
+        subject: `Nueva Consulta Estratégica: ${consultaData.name}`,
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 10px; color: white;">
+            <h2 style="text-align: center; margin-bottom: 30px;">Nueva Consulta Estratégica Gratuita - TuWeb.ai</h2>
+            
+            <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+              <h3 style="margin-top: 0; color: #ffd700;">Información del Cliente</h3>
+              <p><strong>Nombre:</strong> ${consultaData.name}</p>
+              <p><strong>Email:</strong> ${consultaData.email}</p>
+              <p><strong>Fecha:</strong> ${consultaData.createdAt.toLocaleString('es-AR')}</p>
+              <p><strong>Tipo:</strong> Consulta Estratégica Gratuita</p>
+            </div>
+            
+            <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 8px;">
+              <h3 style="margin-top: 0; color: #ffd700;">Mensaje del Cliente</h3>
+              <p style="line-height: 1.6; white-space: pre-wrap;">${consultaData.message}</p>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px; font-size: 12px; opacity: 0.8;">
+              <p>Este mensaje fue enviado desde el formulario de consulta estratégica gratuita de TuWeb.ai</p>
+            </div>
+          </div>
+        `
+      };
+      
+      await transporter.sendMail(mailOptions);
+      console.log('✅ Email de consulta enviado correctamente');
+    } catch (emailError) {
+      console.error('❌ Error enviando email de consulta:', emailError);
+    }
+
+    res.status(201).json({ 
+      success: true, 
+      message: "Consulta enviada correctamente. Te contactaremos pronto para agendar tu consulta gratuita.",
+      consulta: {
+        id: Date.now(),
+        date: consultaData.createdAt
+      }
+    });
+  } catch (error: unknown) {
+    console.error("Error en formulario de consulta:", error);
+    
+    if (error instanceof Error) {
+      console.error("Error details:", error.message);
+      console.error("Error stack:", error.stack);
+    }
+    
+    res.status(500).json({ 
+      success: false, 
+      message: "Error inesperado en el servidor. Intenta de nuevo más tarde.",
+      error: process.env.NODE_ENV === 'development' ? error : undefined
+    });
+  }
+});
+
+// Endpoint alternativo para /contact (por si acaso)
+app.post("/contact", async (req: Request, res: Response) => {
+  // Redirigir al endpoint de consulta
+  return res.redirect(307, '/api/consulta');
+});
+
 const port = process.env.PORT ? parseInt(process.env.PORT) : 5000;
 app.listen(port, () => {
   console.log(`🚀 Servidor escuchando en puerto ${port}`);
