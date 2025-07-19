@@ -195,7 +195,10 @@ const transporter = nodemailer.createTransport({
   secure: false, // true para 465, false para otros puertos
   auth: {
     user: 'tuwebai@gmail.com', // Tu email de GoDaddy
-    pass: process.env.GODADDY_EMAIL_PASSWORD || 'tu_password_aqui' // Contraseña de tu email
+    pass: process.env.GODADDY_EMAIL_PASSWORD || 'tu_contraseña_normal_aqui' // Contraseña de tu email
+  },
+  tls: {
+    rejectUnauthorized: false
   }
 });
 
