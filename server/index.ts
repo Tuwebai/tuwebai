@@ -398,6 +398,110 @@ app.post("/api/consulta", async (req: Request, res: Response) => {
   }
 });
 
+// Endpoint para formulario de propuesta personalizada (Detalles finales)
+app.post("/api/propuesta", async (req: Request, res: Response) => {
+  try {
+    console.log('📋 Datos recibidos en propuesta:', req.body);
+    
+    const { 
+      tipo_proyecto, 
+      servicios, 
+      presupuesto, 
+      plazo, 
+      detalles,
+      nombre,
+      email 
+    } = req.body;
+    
+    // Validación más flexible para este formulario
+    if (!detalles || typeof detalles !== 'string' || detalles.trim().length < 5) {
+      return res.status(400).json({
+        success: false,
+        message: "Los detalles del proyecto son requeridos y deben tener al menos 5 caracteres"
+      });
+    }
+
+    const propuestaData = {
+      nombre: nombre || 'No especificado',
+      email: email || 'No especificado',
+      tipo_proyecto: tipo_proyecto || 'No especificado',
+      servicios: servicios || 'No especificado',
+      presupuesto: presupuesto || 'No especificado',
+      plazo: plazo || 'No especificado',
+      detalles: detalles.trim(),
+      createdAt: new Date(),
+      source: 'propuesta_personalizada'
+    };
+
+    console.log('📋 Nueva propuesta personalizada recibida:', propuestaData);
+
+    // Enviar email con Nodemailer
+    try {
+      const mailOptions = {
+        from: 'admin@tuweb-ai.com',
+        to: 'admin@tuweb-ai.com',
+        subject: `Nueva Propuesta Personalizada: ${propuestaData.tipo_proyecto}`,
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 10px; color: white;">
+            <h2 style="text-align: center; margin-bottom: 30px;">Nueva Propuesta Personalizada - TuWeb.ai</h2>
+            
+            <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+              <h3 style="margin-top: 0; color: #ffd700;">Información del Cliente</h3>
+              <p><strong>Nombre:</strong> ${propuestaData.nombre}</p>
+              <p><strong>Email:</strong> ${propuestaData.email}</p>
+              <p><strong>Fecha:</strong> ${propuestaData.createdAt.toLocaleString('es-AR')}</p>
+            </div>
+            
+            <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+              <h3 style="margin-top: 0; color: #ffd700;">Detalles del Proyecto</h3>
+              <p><strong>Tipo de proyecto:</strong> ${propuestaData.tipo_proyecto}</p>
+              <p><strong>Servicios:</strong> ${propuestaData.servicios}</p>
+              <p><strong>Presupuesto:</strong> ${propuestaData.presupuesto}</p>
+              <p><strong>Plazo:</strong> ${propuestaData.plazo}</p>
+            </div>
+            
+            <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 8px;">
+              <h3 style="margin-top: 0; color: #ffd700;">Detalles del Proyecto</h3>
+              <p style="line-height: 1.6; white-space: pre-wrap;">${propuestaData.detalles}</p>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px; font-size: 12px; opacity: 0.8;">
+              <p>Este mensaje fue enviado desde el formulario de propuesta personalizada de TuWeb.ai</p>
+            </div>
+          </div>
+        `
+      };
+      
+      await transporter.sendMail(mailOptions);
+      console.log('✅ Email de propuesta enviado correctamente');
+    } catch (emailError) {
+      console.error('❌ Error enviando email de propuesta:', emailError);
+    }
+
+    res.status(201).json({ 
+      success: true, 
+      message: "Propuesta enviada correctamente. Te enviaremos tu propuesta personalizada pronto.",
+      propuesta: {
+        id: Date.now(),
+        date: propuestaData.createdAt
+      }
+    });
+  } catch (error: unknown) {
+    console.error("Error en formulario de propuesta:", error);
+    
+    if (error instanceof Error) {
+      console.error("Error details:", error.message);
+      console.error("Error stack:", error.stack);
+    }
+    
+    res.status(500).json({ 
+      success: false, 
+      message: "Error inesperado en el servidor. Intenta de nuevo más tarde.",
+      error: process.env.NODE_ENV === 'development' ? error : undefined
+    });
+  }
+});
+
 // Endpoint alternativo para /contact (por si acaso)
 app.post("/contact", async (req: Request, res: Response) => {
   // Redirigir al endpoint de consulta
