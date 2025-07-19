@@ -9,7 +9,7 @@ import { fileURLToPath } from 'url';
 import cors from 'cors';
 import helmet from 'helmet';
 import { MercadoPagoConfig, Preference } from 'mercadopago';
-import emailjs from '@emailjs/nodejs';
+import nodemailer from 'nodemailer';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -188,10 +188,16 @@ app.post('/crear-preferencia', async (req: Request, res: Response) => {
   }
 });
 
-// Configuración de EmailJS - READY FOR PRODUCTION
-const EMAILJS_SERVICE_ID = "service_9s9hqqn";
-const EMAILJS_TEMPLATE_ID = "template_8pxfpyh";
-const EMAILJS_PUBLIC_KEY = "bPdFsDkAPp5dXKALy";
+// Configuración de Nodemailer con GoDaddy SMTP
+const transporter = nodemailer.createTransport({
+  host: 'smtpout.secureserver.net',
+  port: 587,
+  secure: false, // true para 465, false para otros puertos
+  auth: {
+    user: 'tuwebai@gmail.com', // Tu email de GoDaddy
+    pass: process.env.GODADDY_EMAIL_PASSWORD || 'tu_password_aqui' // Contraseña de tu email
+  }
+});
 
 // API de Contacto con EmailJS
 app.post("/api/contact", async (req: Request, res: Response) => {
@@ -233,21 +239,37 @@ app.post("/api/contact", async (req: Request, res: Response) => {
 
     console.log('📧 Nuevo contacto recibido:', contactData);
 
-    // Enviar email con EmailJS
+    // Enviar email con Nodemailer
     try {
-      await emailjs.send(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_ID,
-        {
-          name: contactData.name,
-          email: contactData.email,
-          title: contactData.title,
-          message: contactData.message,
-        },
-        {
-          publicKey: EMAILJS_PUBLIC_KEY
-        }
-      );
+      const mailOptions = {
+        from: 'tuwebai@gmail.com',
+        to: 'tuwebai@gmail.com', // Email donde quieres recibir los mensajes
+        subject: `Nuevo contacto: ${contactData.title}`,
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 10px; color: white;">
+            <h2 style="text-align: center; margin-bottom: 30px;">Nuevo Mensaje de Contacto - TuWeb.ai</h2>
+            
+            <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+              <h3 style="margin-top: 0; color: #ffd700;">Información del Contacto</h3>
+              <p><strong>Nombre:</strong> ${contactData.name}</p>
+              <p><strong>Email:</strong> ${contactData.email}</p>
+              <p><strong>Asunto:</strong> ${contactData.title}</p>
+              <p><strong>Fecha:</strong> ${contactData.createdAt.toLocaleString('es-AR')}</p>
+            </div>
+            
+            <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 8px;">
+              <h3 style="margin-top: 0; color: #ffd700;">Mensaje</h3>
+              <p style="line-height: 1.6; white-space: pre-wrap;">${contactData.message}</p>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px; font-size: 12px; opacity: 0.8;">
+              <p>Este mensaje fue enviado desde el formulario de contacto de TuWeb.ai</p>
+            </div>
+          </div>
+        `
+      };
+      
+      await transporter.sendMail(mailOptions);
       console.log('✅ Email enviado correctamente');
     } catch (emailError) {
       console.error('❌ Error enviando email:', emailError);
