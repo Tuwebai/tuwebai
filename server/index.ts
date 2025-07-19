@@ -233,17 +233,26 @@ app.post("/api/contact", async (req: Request, res: Response) => {
 
     console.log('📧 Nuevo contacto recibido:', contactData);
 
-    // Por ahora, solo guardar en logs sin enviar email
-    console.log('📧 Email que se enviaría:', {
-      serviceId: EMAILJS_SERVICE_ID,
-      templateId: EMAILJS_TEMPLATE_ID,
-      data: {
-        name: contactData.name,
-        email: contactData.email,
-        title: contactData.title,
-        message: contactData.message,
-      }
-    });
+    // Enviar email con EmailJS
+    try {
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        {
+          name: contactData.name,
+          email: contactData.email,
+          title: contactData.title,
+          message: contactData.message,
+        },
+        {
+          publicKey: EMAILJS_PUBLIC_KEY
+        }
+      );
+      console.log('✅ Email enviado correctamente');
+    } catch (emailError) {
+      console.error('❌ Error enviando email:', emailError);
+      // Continuar aunque falle el email
+    }
 
     res.status(201).json({ 
       success: true, 
