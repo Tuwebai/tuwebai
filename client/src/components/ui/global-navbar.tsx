@@ -241,6 +241,18 @@ export default function GlobalNavbar() {
                         <div className="absolute right-0 mt-2 w-56 rounded-xl shadow-lg bg-[#18181b] ring-1 ring-black ring-opacity-5 z-50 border border-white/10">
                           <div className="py-1">
                             <Link
+                              to="/panel"
+                              className="block px-4 py-2 text-sm text-gray-300 hover:bg-[#23232b] hover:text-white rounded-lg transition-colors"
+                              onClick={() => setShowProfileMenu(false)}
+                            >
+                              <div className="flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                </svg>
+                                Mi Perfil
+                              </div>
+                            </Link>
+                            <Link
                               to="/dashboard"
                               className="block px-4 py-2 text-sm text-gray-300 hover:bg-[#23232b] hover:text-white rounded-lg transition-colors"
                               onClick={() => setShowProfileMenu(false)}
@@ -397,6 +409,18 @@ export default function GlobalNavbar() {
                         <div className="text-sm text-gray-400">{user?.email}</div>
                       </div>
                     </div>
+                    <Link
+                      to="/panel"
+                      className="block w-full py-2 px-4 text-left rounded-md text-gray-300 hover:bg-gray-800 transition-colors"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      <div className="flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                        Mi Perfil
+                      </div>
+                    </Link>
                     <Link
                       to="/dashboard"
                       className="block w-full py-2 px-4 text-left rounded-md text-gray-300 hover:bg-gray-800 transition-colors"

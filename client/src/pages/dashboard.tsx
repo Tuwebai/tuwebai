@@ -9,77 +9,130 @@ import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
+import { 
+  getUserProject, 
+  getUserPayments, 
+  getUserTickets, 
+  createTicket,
+  Project,
+  Payment,
+  SupportTicket,
+  ProjectPhase,
+  ProjectFile,
+  Comment,
+  TicketResponse
+} from '@/services/firestore';
 
-// Tipos para el dashboard
-interface ProjectPhase {
-  id: string;
-  name: string;
-  status: 'pending' | 'in-progress' | 'completed';
-  description: string;
-  estimatedDate: string;
-  completedDate?: string;
-  progress: number;
-  files?: ProjectFile[];
-  comments?: Comment[];
-}
-
-interface ProjectFile {
-  id: string;
-  name: string;
-  type: 'image' | 'pdf' | 'document';
-  url: string;
-  uploadedAt: string;
-  uploadedBy: string;
-  // Los archivos serán URLs externas o enlaces a Google Drive/Dropbox
-}
-
-interface Comment {
-  id: string;
-  text: string;
-  author: string;
-  authorType: 'client' | 'admin';
-  createdAt: string;
-}
-
-interface Project {
-  id: string;
-  name: string;
-  type: string;
-  startDate: string;
-  estimatedEndDate: string;
-  phases: ProjectPhase[];
-  overallProgress: number;
-  status: 'active' | 'completed' | 'on-hold';
-}
-
-interface Payment {
-  id: string;
-  amount: number;
-  currency: string;
-  date: string;
-  status: 'completed' | 'pending' | 'failed';
-  description: string;
-  invoiceUrl?: string;
-}
-
-interface SupportTicket {
-  id: string;
-  subject: string;
-  message: string;
-  status: 'open' | 'in-progress' | 'resolved';
-  priority: 'low' | 'medium' | 'high';
-  createdAt: string;
-  updatedAt: string;
-  responses?: TicketResponse[];
-}
-
-interface TicketResponse {
-  id: string;
-  message: string;
-  author: string;
-  authorType: 'client' | 'admin';
-  createdAt: string;
-}
+// Datos simulados por defecto (se usarán si no hay datos reales)
+const defaultProject: Project = {
+  id: 'default',
+  userId: '',
+  name: 'Sitio Web Corporativo Premium',
+  type: 'E-commerce + Blog',
+  startDate: '2025-01-15',
+  estimatedEndDate: '2025-03-15',
+  overallProgress: 65,
+  status: 'active',
+  phases: [
+    {
+      id: '1',
+      name: 'UI Design',
+      status: 'completed',
+      description: 'Diseño de interfaz de usuario y experiencia de usuario',
+      estimatedDate: '2025-01-25',
+      completedDate: '2025-01-22',
+      progress: 100,
+      files: [
+        {
+          id: '1',
+          name: 'Mockups_Fase1.pdf',
+          type: 'pdf',
+          url: 'https://drive.google.com/file/d/example/view',
+          uploadedAt: '2025-01-22',
+          uploadedBy: 'TuWeb.ai'
+        }
+      ],
+      comments: [
+        {
+          id: '1',
+          text: 'Diseños aprobados por el cliente. Listo para maquetado.',
+          author: 'TuWeb.ai',
+          authorType: 'admin',
+          createdAt: '2025-01-22T10:30:00Z'
+        }
+      ]
+    },
+    {
+      id: '2',
+      name: 'Maquetado',
+      status: 'completed',
+      description: 'Desarrollo del frontend con React y TailwindCSS',
+      estimatedDate: '2025-02-10',
+      completedDate: '2025-02-08',
+      progress: 100,
+      files: [
+        {
+          id: '2',
+          name: 'Screenshot_Homepage.png',
+          type: 'image',
+          url: 'https://drive.google.com/file/d/example2/view',
+          uploadedAt: '2025-02-08',
+          uploadedBy: 'TuWeb.ai'
+        }
+      ],
+      comments: [
+        {
+          id: '2',
+          text: 'Maquetado completado. Revisar en el navegador.',
+          author: 'TuWeb.ai',
+          authorType: 'admin',
+          createdAt: '2025-02-08T15:45:00Z'
+        }
+      ]
+    },
+    {
+      id: '3',
+      name: 'Contenido',
+      status: 'in-progress',
+      description: 'Integración de contenido y textos del cliente',
+      estimatedDate: '2025-02-20',
+      progress: 75,
+      comments: [
+        {
+          id: '3',
+          text: 'Necesitamos las imágenes de productos para completar esta fase.',
+          author: 'TuWeb.ai',
+          authorType: 'admin',
+          createdAt: '2025-02-15T09:15:00Z'
+        }
+      ]
+    },
+    {
+      id: '4',
+      name: 'Funcionalidades',
+      status: 'pending',
+      description: 'Implementación de funcionalidades avanzadas y e-commerce',
+      estimatedDate: '2025-02-28',
+      progress: 0
+    },
+    {
+      id: '5',
+      name: 'SEO',
+      status: 'pending',
+      description: 'Optimización para motores de búsqueda',
+      estimatedDate: '2025-03-05',
+      progress: 0
+    },
+    {
+      id: '6',
+      name: 'Deploy',
+      status: 'pending',
+      description: 'Publicación en servidor de producción',
+      estimatedDate: '2025-03-15',
+      progress: 0
+    }
+  ]
+};
 
 export default function Dashboard() {
   const { user, isAuthenticated } = useAuth();
@@ -88,172 +141,152 @@ export default function Dashboard() {
   const [activeTab, setActiveTab] = useState('overview');
   const [loading, setLoading] = useState(true);
 
-  // Datos simulados del proyecto (en producción vendrían de Firestore)
-  const [project] = useState<Project>({
-    id: '1',
-    name: 'Sitio Web Corporativo Premium',
-    type: 'E-commerce + Blog',
-    startDate: '2025-01-15',
-    estimatedEndDate: '2025-03-15',
-    overallProgress: 65,
-    status: 'active',
-    phases: [
-      {
-        id: '1',
-        name: 'UI Design',
-        status: 'completed',
-        description: 'Diseño de interfaz de usuario y experiencia de usuario',
-        estimatedDate: '2025-01-25',
-        completedDate: '2025-01-22',
-        progress: 100,
-        files: [
+  // Estados para datos reales
+  const [project, setProject] = useState<Project | null>(null);
+  const [payments, setPayments] = useState<Payment[]>([]);
+  const [tickets, setTickets] = useState<SupportTicket[]>([]);
+  const [newTicketSubject, setNewTicketSubject] = useState('');
+  const [newTicketMessage, setNewTicketMessage] = useState('');
+  const [newTicketPriority, setNewTicketPriority] = useState<'low' | 'medium' | 'high'>('medium');
+
+  // Cargar datos reales del usuario
+  useEffect(() => {
+    const loadUserData = async () => {
+      if (!user?.uid) return;
+      
+      try {
+        setLoading(true);
+        
+        // Cargar proyecto del usuario
+        const userProject = await getUserProject(user.uid);
+        setProject(userProject || defaultProject);
+        
+        // Cargar pagos del usuario
+        const userPayments = await getUserPayments(user.uid);
+        setPayments(userPayments);
+        
+        // Cargar tickets del usuario
+        const userTickets = await getUserTickets(user.uid);
+        setTickets(userTickets);
+        
+      } catch (error) {
+        console.error('Error cargando datos del usuario:', error);
+        toast({
+          title: "Error",
+          description: "No se pudieron cargar los datos del usuario",
+          variant: "destructive"
+        });
+        
+        // Usar datos por defecto si hay error
+        setProject(defaultProject);
+        setPayments([
           {
             id: '1',
-            name: 'Mockups_Fase1.pdf',
-            type: 'pdf',
-            url: '#',
-            uploadedAt: '2025-01-22',
-            uploadedBy: 'TuWeb.ai'
-          }
-        ],
-        comments: [
-          {
-            id: '1',
-            text: 'Diseños aprobados por el cliente. Listo para maquetado.',
-            author: 'TuWeb.ai',
-            authorType: 'admin',
-            createdAt: '2025-01-22T10:30:00Z'
-          }
-        ]
-      },
-      {
-        id: '2',
-        name: 'Maquetado',
-        status: 'completed',
-        description: 'Desarrollo del frontend con React y TailwindCSS',
-        estimatedDate: '2025-02-10',
-        completedDate: '2025-02-08',
-        progress: 100,
-        files: [
-          {
-            id: '2',
-            name: 'Screenshot_Homepage.png',
-            type: 'image',
-            url: '#',
-            uploadedAt: '2025-02-08',
-            uploadedBy: 'TuWeb.ai'
-          }
-        ],
-        comments: [
-          {
-            id: '2',
-            text: 'Maquetado completado. Revisar en el navegador.',
-            author: 'TuWeb.ai',
-            authorType: 'admin',
-            createdAt: '2025-02-08T15:45:00Z'
-          }
-        ]
-      },
-      {
-        id: '3',
-        name: 'Contenido',
-        status: 'in-progress',
-        description: 'Integración de contenido y textos del cliente',
-        estimatedDate: '2025-02-20',
-        progress: 75,
-        comments: [
-          {
-            id: '3',
-            text: 'Necesitamos las imágenes de productos para completar esta fase.',
-            author: 'TuWeb.ai',
-            authorType: 'admin',
-            createdAt: '2025-02-15T09:15:00Z'
+            userId: user.uid,
+            projectId: 'default',
+            amount: 2500,
+            currency: 'USD',
+            date: '2025-01-15',
+            status: 'completed',
+            description: 'Pago inicial - 50% del proyecto',
+            invoiceUrl: '#'
           },
           {
-            id: '4',
-            text: 'Las imágenes estarán listas para el lunes.',
-            author: user?.name || 'Cliente',
-            authorType: 'client',
-            createdAt: '2025-02-15T14:30:00Z'
+            id: '2',
+            userId: user.uid,
+            projectId: 'default',
+            amount: 2500,
+            currency: 'USD',
+            date: '2025-03-15',
+            status: 'pending',
+            description: 'Pago final - 50% restante'
           }
-        ]
-      },
-      {
-        id: '4',
-        name: 'Funcionalidades',
-        status: 'pending',
-        description: 'Implementación de funcionalidades avanzadas y e-commerce',
-        estimatedDate: '2025-02-28',
-        progress: 0
-      },
-      {
-        id: '5',
-        name: 'SEO',
-        status: 'pending',
-        description: 'Optimización para motores de búsqueda',
-        estimatedDate: '2025-03-05',
-        progress: 0
-      },
-      {
-        id: '6',
-        name: 'Deploy',
-        status: 'pending',
-        description: 'Publicación en servidor de producción',
-        estimatedDate: '2025-03-15',
-        progress: 0
+        ]);
+        setTickets([
+          {
+            id: '1',
+            userId: user.uid,
+            subject: 'Cambio de colores en el header',
+            message: 'Me gustaría cambiar los colores del header a tonos más azules.',
+            status: 'resolved',
+            priority: 'medium',
+            createdAt: '2025-01-20T10:00:00Z',
+            updatedAt: '2025-01-21T14:30:00Z',
+            responses: [
+              {
+                id: '1',
+                message: 'Cambio realizado. Los nuevos colores están aplicados.',
+                author: 'TuWeb.ai',
+                authorType: 'admin',
+                createdAt: '2025-01-21T14:30:00Z'
+              }
+            ]
+          },
+          {
+            id: '2',
+            userId: user.uid,
+            subject: 'Integración con redes sociales',
+            message: '¿Es posible agregar botones de redes sociales en el footer?',
+            status: 'open',
+            priority: 'low',
+            createdAt: '2025-02-10T16:00:00Z',
+            updatedAt: '2025-02-10T16:00:00Z'
+          }
+        ]);
+      } finally {
+        setLoading(false);
       }
-    ]
-  });
+    };
 
-  const [payments] = useState<Payment[]>([
-    {
-      id: '1',
-      amount: 2500,
-      currency: 'USD',
-      date: '2025-01-15',
-      status: 'completed',
-      description: 'Pago inicial - 50% del proyecto',
-      invoiceUrl: '#'
-    },
-    {
-      id: '2',
-      amount: 2500,
-      currency: 'USD',
-      date: '2025-03-15',
-      status: 'pending',
-      description: 'Pago final - 50% restante'
-    }
-  ]);
+    loadUserData();
+  }, [user?.uid, toast]);
 
-  const [tickets] = useState<SupportTicket[]>([
-    {
-      id: '1',
-      subject: 'Cambio de colores en el header',
-      message: 'Me gustaría cambiar los colores del header a tonos más azules.',
-      status: 'resolved',
-      priority: 'medium',
-      createdAt: '2025-01-20T10:00:00Z',
-      updatedAt: '2025-01-21T14:30:00Z',
-      responses: [
-        {
-          id: '1',
-          message: 'Cambio realizado. Los nuevos colores están aplicados.',
-          author: 'TuWeb.ai',
-          authorType: 'admin',
-          createdAt: '2025-01-21T14:30:00Z'
-        }
-      ]
-    },
-    {
-      id: '2',
-      subject: 'Integración con redes sociales',
-      message: '¿Es posible agregar botones de redes sociales en el footer?',
-      status: 'open',
-      priority: 'low',
-      createdAt: '2025-02-10T16:00:00Z',
-      updatedAt: '2025-02-10T16:00:00Z'
+  // Función para crear nuevo ticket
+  const handleCreateTicket = async () => {
+    if (!user?.uid || !newTicketSubject || !newTicketMessage) {
+      toast({
+        title: "Error",
+        description: "Por favor completa todos los campos",
+        variant: "destructive"
+      });
+      return;
     }
-  ]);
+
+    try {
+      const ticketData = {
+        userId: user.uid,
+        subject: newTicketSubject,
+        message: newTicketMessage,
+        priority: newTicketPriority,
+        status: 'open' as const,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+
+      await createTicket(ticketData);
+      
+      // Recargar tickets
+      const updatedTickets = await getUserTickets(user.uid);
+      setTickets(updatedTickets);
+      
+      // Limpiar formulario
+      setNewTicketSubject('');
+      setNewTicketMessage('');
+      setNewTicketPriority('medium');
+      
+      toast({
+        title: "Ticket creado",
+        description: "Tu ticket de soporte ha sido creado exitosamente"
+      });
+    } catch (error) {
+      console.error('Error creando ticket:', error);
+      toast({
+        title: "Error",
+        description: "No se pudo crear el ticket",
+        variant: "destructive"
+      });
+    }
+  };
 
   // Verificar autenticación
   useEffect(() => {
@@ -266,9 +299,6 @@ export default function Dashboard() {
       });
       return;
     }
-    
-    // Simular carga de datos
-    setTimeout(() => setLoading(false), 1000);
   }, [isAuthenticated, navigate, toast]);
 
   const getStatusColor = (status: string) => {
@@ -293,7 +323,7 @@ export default function Dashboard() {
     }
   };
 
-  if (loading) {
+  if (loading || !project) {
     return (
       <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center">
         <div className="text-center">
@@ -697,6 +727,8 @@ export default function Dashboard() {
                         <label className="block text-sm font-medium mb-2">Asunto</label>
                         <input
                           type="text"
+                          value={newTicketSubject}
+                          onChange={(e) => setNewTicketSubject(e.target.value)}
                           className="w-full px-3 py-2 bg-[#1a1a1f] border border-gray-700 rounded-md text-white focus:outline-none focus:border-[#00CCFF]"
                           placeholder="Describe brevemente tu consulta"
                         />
@@ -705,19 +737,28 @@ export default function Dashboard() {
                         <label className="block text-sm font-medium mb-2">Mensaje</label>
                         <textarea
                           rows={4}
+                          value={newTicketMessage}
+                          onChange={(e) => setNewTicketMessage(e.target.value)}
                           className="w-full px-3 py-2 bg-[#1a1a1f] border border-gray-700 rounded-md text-white focus:outline-none focus:border-[#00CCFF] resize-none"
                           placeholder="Describe detalladamente tu consulta o solicitud..."
                         />
                       </div>
                       <div>
                         <label className="block text-sm font-medium mb-2">Prioridad</label>
-                        <select className="w-full px-3 py-2 bg-[#1a1a1f] border border-gray-700 rounded-md text-white focus:outline-none focus:border-[#00CCFF]">
+                        <select 
+                          value={newTicketPriority}
+                          onChange={(e) => setNewTicketPriority(e.target.value as 'low' | 'medium' | 'high')}
+                          className="w-full px-3 py-2 bg-[#1a1a1f] border border-gray-700 rounded-md text-white focus:outline-none focus:border-[#00CCFF]"
+                        >
                           <option value="low">Baja</option>
                           <option value="medium">Media</option>
                           <option value="high">Alta</option>
                         </select>
                       </div>
-                      <Button className="w-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF]">
+                      <Button 
+                        onClick={handleCreateTicket}
+                        className="w-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF]"
+                      >
                         Crear Ticket
                       </Button>
                     </div>
