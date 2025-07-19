@@ -44,99 +44,18 @@ interface Testimonial {
 const teamMembers: TeamMember[] = [
   {
     id: 1,
-    name: "Carlos Martínez",
-    role: "CEO & Estratega Digital",
-    bio: "Con más de 10 años de experiencia en marketing digital y desarrollo de negocios, Carlos lidera nuestra visión estratégica. Ha trabajado con marcas internacionales optimizando su presencia digital y maximizando su ROI.",
-    skills: ["Estrategia Digital", "Marketing", "Análisis de Negocio", "Liderazgo"],
-    image: "https://randomuser.me/api/portraits/men/35.jpg",
-    linkedin: "https://linkedin.com/",
-    twitter: "https://twitter.com/",
-    longBio: "Carlos es un visionario del mundo digital, reconocido por su capacidad para identificar tendencias y desarrollar estrategias innovadoras. Antes de fundar TuWeb.ai, lideró departamentos de marketing en empresas Fortune 500, donde implementó campañas que aumentaron los ingresos en más de un 300%. Comprometido con el aprendizaje continuo, Carlos es conferencista habitual en eventos de marketing digital y tecnología.",
+    name: "Juanchi López",
+    role: "CEO & Full-Stack",
+    bio: "Desarrollador Full-Stack apasionado por crear soluciones digitales innovadoras. Con experiencia en tecnologías modernas y un enfoque centrado en resultados, lidero proyectos que transforman ideas en realidades digitales exitosas.",
+    skills: ["Desarrollo Full-Stack", "React", "Node.js", "TypeScript", "Firebase", "MongoDB", "AWS"],
+    image: "/image_perfil.jpg",
+    linkedin: "https://www.linkedin.com/in/juan-esteban-l%C3%B3pez-pachao-040b89345?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+    twitter: "https://www.instagram.com/juanchi_lopezd3?igsh=cjM2emZzd2xucXI3",
+    longBio: "Juanchi es un desarrollador Full-Stack con una pasión innata por la tecnología y la innovación. Especializado en crear aplicaciones web modernas y escalables, combina habilidades técnicas sólidas con una visión estratégica para desarrollar soluciones que no solo cumplen con los requisitos técnicos, sino que también generan valor real para los usuarios y las empresas. Su experiencia abarca desde el desarrollo frontend con React y TypeScript hasta la implementación de arquitecturas backend robustas con Node.js y bases de datos modernas.",
     achievements: [
-      "Premio a 'Innovador Digital del Año' 2022",
-      "Docente en MBA Digital Business en Universidad de Buenos Aires",
-      "Autor del libro 'Transformación Digital para Negocios'"
-    ]
-  },
-  {
-    id: 2,
-    name: "Laura González",
-    role: "Directora de Diseño UX/UI",
-    bio: "Laura combina creatividad y análisis de usuario para crear experiencias digitales que no solo son visualmente atractivas, sino también altamente funcionales. Su enfoque centrado en el usuario ha redefinido la interacción digital para docenas de marcas.",
-    skills: ["Diseño UX/UI", "Investigación de Usuarios", "Prototipado", "Design Thinking"],
-    image: "https://randomuser.me/api/portraits/women/67.jpg",
-    linkedin: "https://linkedin.com/",
-    github: "https://github.com/",
-    personalSite: "https://example.com",
-    longBio: "Laura es una diseñadora multipremiada cuyo trabajo se caracteriza por la combinación perfecta de estética y funcionalidad. Con un máster en Diseño de Interacción de la Universidad de California, ha desarrollado interfaces que han transformado la experiencia de usuario en diversas industrias. Su metodología única integra psicología cognitiva, análisis de datos y las últimas tendencias de diseño.",
-    achievements: [
-      "Premio Awwwards a mejor diseño web 2023",
-      "Miembro del jurado en los Web Design Awards",
-      "Ponente regular en conferencias UX/UI"
-    ]
-  },
-  {
-    id: 3,
-    name: "Miguel Serrano",
-    role: "CTO & Líder de Desarrollo",
-    bio: "Ingeniero de software con especialización en arquitecturas web escalables. Miguel dirige nuestro equipo de desarrollo y asegura que cada proyecto cumpla con los más altos estándares técnicos y de rendimiento.",
-    skills: ["Desarrollo Full-Stack", "Arquitectura Cloud", "DevOps", "Performance"],
-    image: "https://randomuser.me/api/portraits/men/54.jpg",
-    linkedin: "https://linkedin.com/",
-    github: "https://github.com/",
-    longBio: "Miguel es un arquitecto de software con un enfoque único en crear soluciones tecnológicas robustas y escalables. Su experiencia abarca desde startups hasta grandes corporaciones, donde ha liderado equipos de desarrollo en la implementación de sistemas que procesan millones de transacciones diarias. Es un firme defensor de las metodologías ágiles y la cultura DevOps.",
-    achievements: [
-      "Contribuidor a proyectos open source de alto impacto",
-      "Desarrollador de arquitecturas cloud para sistemas de alta disponibilidad",
-      "Mentor de más de 50 desarrolladores junior"
-    ]
-  },
-  {
-    id: 4,
-    name: "Ana Torres",
-    role: "Especialista en SEO & SEM",
-    bio: "Experta en posicionamiento y marketing digital con experiencia específica en mercados latinoamericanos y europeos. Ana desarrolla estrategias que generan tráfico cualificado y maximizan las conversiones.",
-    skills: ["SEO Técnico", "Google Ads", "Analítica Web", "Content Marketing"],
-    image: "https://randomuser.me/api/portraits/women/32.jpg",
-    linkedin: "https://linkedin.com/",
-    twitter: "https://twitter.com/",
-    longBio: "Ana ha revolucionado el enfoque SEO para docenas de empresas, logrando incrementos de tráfico orgánico superiores al 200% en mercados altamente competitivos. Certificada por Google y HubSpot, combina un profundo conocimiento técnico con una visión estratégica para desarrollar campañas que no solo atraen visitantes, sino que los convierten en clientes leales.",
-    achievements: [
-      "Certificada como Google Partner Premier",
-      "Más de 100 proyectos SEO exitosos implementados",
-      "Incremento promedio de 180% en conversiones para clientes"
-    ]
-  },
-  {
-    id: 5,
-    name: "Javier Méndez",
-    role: "Desarrollador Senior",
-    bio: "Especialista en frontend con amplia experiencia en frameworks modernos y optimización de rendimiento. Javier transforma diseños complejos en código eficiente y mantenible.",
-    skills: ["React", "Next.js", "TypeScript", "Optimización Web"],
-    image: "https://randomuser.me/api/portraits/men/78.jpg",
-    github: "https://github.com/",
-    linkedin: "https://linkedin.com/",
-    longBio: "Javier es un desarrollador frontend obsesionado con la optimización de rendimiento y la creación de interfaces fluidas. Ha trabajado en proyectos de alta complejidad para sectores como fintech, ecommerce y entretenimiento. Su dominio de React y arquitecturas modernas de frontend ha permitido crear experiencias digitales que destacan en mercados saturados.",
-    achievements: [
-      "Creador de bibliotecas de componentes utilizadas por miles de desarrolladores",
-      "Optimización de rendimiento web con mejoras de velocidad de hasta un 300%",
-      "Speaker en conferencias de desarrollo frontend"
-    ]
-  },
-  {
-    id: 6,
-    name: "Sofía Ramírez",
-    role: "Especialista en Automatización",
-    bio: "Experta en implementación de soluciones CRM y automatización de marketing, Sofía ayuda a nuestros clientes a escalar sus procesos comerciales y optimizar sus flujos de trabajo.",
-    skills: ["HubSpot", "ActiveCampaign", "Email Marketing", "Data Analytics"],
-    image: "https://randomuser.me/api/portraits/women/45.jpg",
-    linkedin: "https://linkedin.com/",
-    personalSite: "https://example.com",
-    longBio: "Sofía es pionera en la implementación de soluciones de automatización que transforman la manera en que las empresas interactúan con sus clientes. Su enfoque sistemático para identificar oportunidades de optimización ha resultado en ahorros de tiempo y recursos de hasta un 70% para nuestros clientes, mientras mejora significativamente la experiencia del cliente final.",
-    achievements: [
-      "Certificada en las principales plataformas de automatización",
-      "Implementación de sistemas que han generado más de $10M en ingresos para clientes",
-      "Diseño de flujos de trabajo que reducen en 65% el tiempo de gestión comercial"
+      "Desarrollo de más de 50 aplicaciones web exitosas",
+      "Especialista en tecnologías modernas como React, Node.js y Firebase",
+      "Líder en implementación de soluciones digitales escalables"
     ]
   }
 ];
@@ -145,24 +64,24 @@ const teamMembers: TeamMember[] = [
 const featuredProjects: FeaturedProject[] = [
   {
     id: 1,
-    title: "Rediseño E-commerce Premium",
-    description: "Transformación completa de plataforma de moda de lujo con aumento de 150% en conversiones",
+    title: "Plataforma E-commerce Moderna",
+    description: "Desarrollo completo de tienda online con React, Node.js y Firebase. Aumento de 200% en conversiones",
     image: "https://images.unsplash.com/photo-1523381294911-8d3cead13475?q=80&w=600&auto=format&fit=crop",
-    memberId: 2 // Laura González
+    memberId: 1 // Juanchi López
   },
   {
     id: 2,
-    title: "App Móvil Sector Salud",
-    description: "Desarrollo de aplicación para gestión de citas médicas con más de 50,000 usuarios activos",
+    title: "App de Gestión Empresarial",
+    description: "Aplicación web full-stack para gestión de inventarios y ventas con más de 10,000 usuarios activos",
     image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=600&auto=format&fit=crop",
-    memberId: 3 // Miguel Serrano
+    memberId: 1 // Juanchi López
   },
   {
     id: 3,
-    title: "Campaña SEO Inmobiliaria",
-    description: "Estrategia que incrementó el tráfico orgánico en 200% en un mercado altamente competitivo",
+    title: "Sistema de Automatización",
+    description: "Plataforma de automatización de marketing con integración de APIs y análisis avanzado de datos",
     image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=600&auto=format&fit=crop",
-    memberId: 4 // Ana Torres
+    memberId: 1 // Juanchi López
   }
 ];
 
@@ -321,11 +240,11 @@ export default function Equipo() {
                             href={member.twitter} 
                             target="_blank" 
                             rel="noopener noreferrer"
-                            className="text-gray-400 hover:text-[#1DA1F2] transition-colors"
+                            className="text-gray-400 hover:text-[#E4405F] transition-colors"
                             onClick={(e) => e.stopPropagation()}
                           >
                             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                              <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723 10.035 10.035 0 01-3.127 1.184 4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.937 4.937 0 004.604 3.417 9.868 9.868 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.054 0 13.999-7.496 13.999-13.986 0-.209 0-.42-.015-.63a9.936 9.936 0 002.46-2.548l-.047-.02z"></path>
+                              <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.746-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24.009 12.017 24.009c6.624 0 11.99-5.367 11.99-11.988C24.007 5.367 18.641.001 12.017.001z"/>
                             </svg>
                           </a>
                         )}
@@ -450,10 +369,10 @@ export default function Equipo() {
                             href={selectedMember.twitter} 
                             target="_blank" 
                             rel="noopener noreferrer"
-                            className="text-gray-400 hover:text-[#1DA1F2] transition-colors"
+                            className="text-gray-400 hover:text-[#E4405F] transition-colors"
                           >
                             <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                              <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723 10.035 10.035 0 01-3.127 1.184 4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.937 4.937 0 004.604 3.417 9.868 9.868 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.054 0 13.999-7.496 13.999-13.986 0-.209 0-.42-.015-.63a9.936 9.936 0 002.46-2.548l-.047-.02z"></path>
+                              <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.746-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24.009 12.017 24.009c6.624 0 11.99-5.367 11.99-11.988C24.007 5.367 18.641.001 12.017.001z"/>
                             </svg>
                           </a>
                         )}
