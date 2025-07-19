@@ -18,6 +18,7 @@ export interface User {
   image?: string;
   role?: string;
   isActive?: boolean;
+  projectId?: string;
   createdAt?: string;
   updatedAt?: string;
 }

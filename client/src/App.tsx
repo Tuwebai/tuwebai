@@ -5,6 +5,7 @@ import Footer from './components/ui/footer';
 import { Toaster } from "@/components/ui/toaster";
 import { LazyRoute } from './components/route-wrapper';
 import AdminRoute from './components/auth/AdminRoute';
+import DashboardRoute from './components/auth/DashboardRoute';
 import analytics from '@/lib/analytics';
 import { SkipLink } from '@/components/a11y';
 import { ResourcePreload, MemoryManager } from '@/components/performance';
@@ -55,6 +56,7 @@ const PetBoutique = lazy(() => import('./pages/petboutique'));
 // Páginas de autenticación
 const AuthVerify = lazy(() => import('./pages/auth-verify'));
 const PanelUsuario = lazy(() => import('./pages/panel-usuario'));
+const Dashboard = lazy(() => import('./pages/dashboard'));
 
 // Páginas de administración
 const AdminDashboard = lazy(() => import('./pages/admin'));
@@ -176,6 +178,7 @@ function App() {
               <Route path="/auth/verify/:token" element={<LazyRoute><AuthVerify /></LazyRoute>} />
               <Route path="/auth/reset-password" element={<LazyRoute><AuthVerify /></LazyRoute>} />
               <Route path="/panel" element={<LazyRoute><PanelUsuario /></LazyRoute>} />
+              <Route path="/dashboard" element={<LazyRoute><DashboardRoute><Dashboard /></DashboardRoute></LazyRoute>} />
               
               {/* Rutas de administración (protegidas) */}
               <Route path="/admin" element={<LazyRoute><AdminRoute><AdminDashboard /></AdminRoute></LazyRoute>} />

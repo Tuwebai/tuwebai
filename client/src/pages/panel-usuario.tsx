@@ -694,8 +694,8 @@ export default function PanelUsuario() {
                             : 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
                         }`}>
                           {user?.isActive ? 'Activa' : 'En revisión'}
-                        </span>
-                              </div>
+                              </span>
+                            </div>
                       {passwordInfo.changedAt && (
                         <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
                           <span className="text-gray-300">Último cambio de contraseña</span>
