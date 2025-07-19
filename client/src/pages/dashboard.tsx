@@ -486,6 +486,7 @@ export default function Dashboard() {
           </TabsContent>
         </Tabs>
       </div>
+      <a href="https://tuweb-ai.com/" target="_blank" rel="noopener noreferrer" className="fixed top-6 right-6 z-50 px-5 py-2 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-full text-white text-sm font-medium shadow-lg hover:shadow-[#9933FF]/30 transition-all">Ir a la página principal</a>
     </div>
   );
 } 
