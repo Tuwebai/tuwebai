@@ -194,7 +194,7 @@ const transporter = nodemailer.createTransport({
   port: 587,
   secure: false, // true para 465, false para otros puertos
   auth: {
-    user: 'tuwebai@gmail.com', // Tu email de GoDaddy
+    user: 'admin@tuweb-ai.com', // Tu email de GoDaddy
     pass: process.env.GODADDY_EMAIL_PASSWORD || 'tu_contraseña_normal_aqui' // Contraseña de tu email
   },
   tls: {
@@ -245,8 +245,8 @@ app.post("/api/contact", async (req: Request, res: Response) => {
     // Enviar email con Nodemailer
     try {
       const mailOptions = {
-        from: 'tuwebai@gmail.com',
-        to: 'tuwebai@gmail.com', // Email donde quieres recibir los mensajes
+        from: 'admin@tuweb-ai.com',
+        to: 'admin@tuweb-ai.com', // Email donde quieres recibir los mensajes
         subject: `Nuevo contacto: ${contactData.title}`,
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 10px; color: white;">
