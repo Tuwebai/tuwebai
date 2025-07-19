@@ -245,8 +245,8 @@ app.post("/api/contact", async (req: Request, res: Response) => {
     // Enviar email con Nodemailer
     try {
       const mailOptions = {
-        from: 'admin@tuweb-ai.com',
-        to: 'admin@tuweb-ai.com', // Email donde quieres recibir los mensajes
+        from: contactData.email, // El email del usuario como remitente
+        to: 'admin@tuweb-ai.com', // Siempre recibir en admin@tuweb-ai.com
         subject: `Nuevo contacto: ${contactData.title}`,
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 10px; color: white;">
@@ -341,8 +341,8 @@ app.post("/api/consulta", async (req: Request, res: Response) => {
     // Enviar email con Nodemailer
     try {
       const mailOptions = {
-        from: 'admin@tuweb-ai.com',
-        to: 'admin@tuweb-ai.com',
+        from: consultaData.email, // El email del usuario como remitente
+        to: 'admin@tuweb-ai.com', // Siempre recibir en admin@tuweb-ai.com
         subject: `Nueva Consulta Estratégica: ${consultaData.name}`,
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 10px; color: white;">
@@ -438,8 +438,8 @@ app.post("/api/propuesta", async (req: Request, res: Response) => {
     // Enviar email con Nodemailer
     try {
       const mailOptions = {
-        from: 'admin@tuweb-ai.com',
-        to: 'admin@tuweb-ai.com',
+        from: propuestaData.email, // El email del usuario como remitente
+        to: 'admin@tuweb-ai.com', // Siempre recibir en admin@tuweb-ai.com
         subject: `Nueva Propuesta Personalizada: ${propuestaData.tipo_proyecto}`,
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 10px; color: white;">
@@ -561,8 +561,8 @@ app.post("/api/presupuesto", async (req: Request, res: Response) => {
     // Enviar email con Nodemailer
     try {
       const mailOptions = {
-        from: 'admin@tuweb-ai.com',
-        to: 'admin@tuweb-ai.com',
+        from: presupuestoData.email, // El email del usuario como remitente
+        to: 'admin@tuweb-ai.com', // Siempre recibir en admin@tuweb-ai.com
         subject: `Nueva Solicitud de Presupuesto: ${presupuestoData.tipo_proyecto}`,
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 10px; color: white;">
@@ -645,8 +645,8 @@ app.post("/api/newsletter", async (req: Request, res: Response) => {
     // Enviar email con Nodemailer
     try {
       const mailOptions = {
-        from: 'admin@tuweb-ai.com',
-        to: 'admin@tuweb-ai.com',
+        from: newsletterData.email, // El email del usuario como remitente
+        to: 'admin@tuweb-ai.com', // Siempre recibir en admin@tuweb-ai.com
         subject: `📧 Nueva Suscripción al Newsletter: ${newsletterData.email}`,
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 10px; color: white;">
@@ -741,8 +741,8 @@ app.post("/api/demo", async (req: Request, res: Response) => {
     // Enviar email con Nodemailer
     try {
       const mailOptions = {
-        from: 'admin@tuweb-ai.com',
-        to: 'admin@tuweb-ai.com',
+        from: demoData.email, // El email del usuario como remitente
+        to: 'admin@tuweb-ai.com', // Siempre recibir en admin@tuweb-ai.com
         subject: `🎬 Nueva Solicitud de Demo: ${demoData.tipo_demo}`,
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 10px; color: white;">
@@ -842,8 +842,8 @@ app.post("/api/feedback", async (req: Request, res: Response) => {
     // Enviar email con Nodemailer
     try {
       const mailOptions = {
-        from: 'admin@tuweb-ai.com',
-        to: 'admin@tuweb-ai.com',
+        from: feedbackData.email, // El email del usuario como remitente
+        to: 'admin@tuweb-ai.com', // Siempre recibir en admin@tuweb-ai.com
         subject: `⭐ Nuevo Feedback: ${feedbackData.nombre} - ${feedbackData.rating}/5`,
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 10px; color: white;">
