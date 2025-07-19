@@ -233,13 +233,24 @@ export default function Consulta() {
     setIsSubmitting(true);
     
     try {
+      // Mapear los datos del formulario a los campos que espera el endpoint
+      const propuestaData = {
+        nombre: data.nombre,
+        email: data.email,
+        tipo_proyecto: data.tipoProyecto,
+        servicios: data.detalleServicio?.join(', ') || 'No especificado',
+        presupuesto: data.presupuesto,
+        plazo: data.plazo,
+        detalles: data.mensaje
+      };
+
       // Envío real del formulario a la API
-      const response = await fetch(`${API_URL}/api/consulta`, {
+      const response = await fetch(`${API_URL}/api/propuesta`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(propuestaData)
       });
       
       if (!response.ok) {
