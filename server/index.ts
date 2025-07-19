@@ -508,6 +508,397 @@ app.post("/contact", async (req: Request, res: Response) => {
   return res.redirect(307, '/api/consulta');
 });
 
+// API de Presupuesto
+app.post("/api/presupuesto", async (req: Request, res: Response) => {
+  try {
+    const { 
+      nombre, 
+      email, 
+      empresa, 
+      tipo_proyecto, 
+      servicios, 
+      presupuesto_estimado, 
+      plazo_estimado, 
+      descripcion_proyecto,
+      telefono 
+    } = req.body;
+    
+    if (!nombre || typeof nombre !== 'string' || nombre.trim().length < 2) {
+      return res.status(400).json({
+        success: false,
+        message: "El nombre es requerido y debe tener al menos 2 caracteres"
+      });
+    }
+    if (!email || typeof email !== 'string' || !email.includes('@')) {
+      return res.status(400).json({
+        success: false,
+        message: "El email es requerido y debe ser válido"
+      });
+    }
+    if (!descripcion_proyecto || typeof descripcion_proyecto !== 'string' || descripcion_proyecto.trim().length < 10) {
+      return res.status(400).json({
+        success: false,
+        message: "La descripción del proyecto es requerida y debe tener al menos 10 caracteres"
+      });
+    }
+
+    const presupuestoData = {
+      nombre: nombre.trim(),
+      email: email.trim().toLowerCase(),
+      empresa: empresa || 'No especificado',
+      tipo_proyecto: tipo_proyecto || 'No especificado',
+      servicios: servicios || 'No especificado',
+      presupuesto_estimado: presupuesto_estimado || 'No especificado',
+      plazo_estimado: plazo_estimado || 'No especificado',
+      descripcion_proyecto: descripcion_proyecto.trim(),
+      telefono: telefono || 'No especificado',
+      createdAt: new Date(),
+      source: 'solicitud_presupuesto'
+    };
+
+    console.log('💰 Nueva solicitud de presupuesto recibida:', presupuestoData);
+
+    // Enviar email con Nodemailer
+    try {
+      const mailOptions = {
+        from: 'admin@tuweb-ai.com',
+        to: 'admin@tuweb-ai.com',
+        subject: `Nueva Solicitud de Presupuesto: ${presupuestoData.tipo_proyecto}`,
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 10px; color: white;">
+            <h2 style="text-align: center; margin-bottom: 30px;">💰 Nueva Solicitud de Presupuesto - TuWeb.ai</h2>
+            
+            <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+              <h3 style="margin-top: 0; color: #ffd700;">👤 Información del Cliente</h3>
+              <p><strong>Nombre:</strong> ${presupuestoData.nombre}</p>
+              <p><strong>Email:</strong> ${presupuestoData.email}</p>
+              <p><strong>Empresa:</strong> ${presupuestoData.empresa}</p>
+              <p><strong>Teléfono:</strong> ${presupuestoData.telefono}</p>
+              <p><strong>Fecha:</strong> ${presupuestoData.createdAt.toLocaleString('es-AR')}</p>
+            </div>
+            
+            <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+              <h3 style="margin-top: 0; color: #ffd700;">📋 Detalles del Proyecto</h3>
+              <p><strong>Tipo de proyecto:</strong> ${presupuestoData.tipo_proyecto}</p>
+              <p><strong>Servicios requeridos:</strong> ${presupuestoData.servicios}</p>
+              <p><strong>Presupuesto estimado:</strong> ${presupuestoData.presupuesto_estimado}</p>
+              <p><strong>Plazo estimado:</strong> ${presupuestoData.plazo_estimado}</p>
+            </div>
+            
+            <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 8px;">
+              <h3 style="margin-top: 0; color: #ffd700;">📝 Descripción del Proyecto</h3>
+              <p style="line-height: 1.6; white-space: pre-wrap;">${presupuestoData.descripcion_proyecto}</p>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px; font-size: 12px; opacity: 0.8;">
+              <p>Este mensaje fue enviado desde el formulario de solicitud de presupuesto de TuWeb.ai</p>
+            </div>
+          </div>
+        `
+      };
+      
+      await transporter.sendMail(mailOptions);
+      console.log('✅ Email de presupuesto enviado correctamente');
+    } catch (emailError) {
+      console.error('❌ Error enviando email de presupuesto:', emailError);
+    }
+
+    res.status(201).json({ 
+      success: true, 
+      message: "Solicitud de presupuesto enviada correctamente. Te enviaremos tu presupuesto personalizado en 24-48 horas.",
+      presupuesto: {
+        id: Date.now(),
+        date: presupuestoData.createdAt
+      }
+    });
+  } catch (error: unknown) {
+    console.error("Error en formulario de presupuesto:", error);
+    res.status(500).json({ 
+      success: false, 
+      message: "Error inesperado en el servidor. Intenta de nuevo más tarde."
+    });
+  }
+});
+
+// API de Newsletter
+app.post("/api/newsletter", async (req: Request, res: Response) => {
+  try {
+    const { email, nombre, interes } = req.body;
+    
+    if (!email || typeof email !== 'string' || !email.includes('@')) {
+      return res.status(400).json({
+        success: false,
+        message: "El email es requerido y debe ser válido"
+      });
+    }
+
+    const newsletterData = {
+      email: email.trim().toLowerCase(),
+      nombre: nombre || 'Suscriptor',
+      interes: interes || 'General',
+      createdAt: new Date(),
+      source: 'newsletter'
+    };
+
+    console.log('📧 Nueva suscripción al newsletter:', newsletterData);
+
+    // Enviar email con Nodemailer
+    try {
+      const mailOptions = {
+        from: 'admin@tuweb-ai.com',
+        to: 'admin@tuweb-ai.com',
+        subject: `📧 Nueva Suscripción al Newsletter: ${newsletterData.email}`,
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 10px; color: white;">
+            <h2 style="text-align: center; margin-bottom: 30px;">📧 Nueva Suscripción al Newsletter - TuWeb.ai</h2>
+            
+            <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+              <h3 style="margin-top: 0; color: #ffd700;">👤 Información del Suscriptor</h3>
+              <p><strong>Nombre:</strong> ${newsletterData.nombre}</p>
+              <p><strong>Email:</strong> ${newsletterData.email}</p>
+              <p><strong>Área de interés:</strong> ${newsletterData.interes}</p>
+              <p><strong>Fecha de suscripción:</strong> ${newsletterData.createdAt.toLocaleString('es-AR')}</p>
+            </div>
+            
+            <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 8px;">
+              <h3 style="margin-top: 0; color: #ffd700;">📊 Estadísticas</h3>
+              <p>Total de suscriptores: [Contador automático]</p>
+              <p>Última suscripción: ${newsletterData.createdAt.toLocaleString('es-AR')}</p>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px; font-size: 12px; opacity: 0.8;">
+              <p>Este mensaje fue enviado desde el formulario de newsletter de TuWeb.ai</p>
+            </div>
+          </div>
+        `
+      };
+      
+      await transporter.sendMail(mailOptions);
+      console.log('✅ Email de newsletter enviado correctamente');
+    } catch (emailError) {
+      console.error('❌ Error enviando email de newsletter:', emailError);
+    }
+
+    res.status(201).json({ 
+      success: true, 
+      message: "¡Gracias por suscribirte! Recibirás contenido exclusivo sobre desarrollo web y marketing digital.",
+      newsletter: {
+        id: Date.now(),
+        date: newsletterData.createdAt
+      }
+    });
+  } catch (error: unknown) {
+    console.error("Error en formulario de newsletter:", error);
+    res.status(500).json({ 
+      success: false, 
+      message: "Error inesperado en el servidor. Intenta de nuevo más tarde."
+    });
+  }
+});
+
+// API de Solicitud de Demo
+app.post("/api/demo", async (req: Request, res: Response) => {
+  try {
+    const { 
+      nombre, 
+      email, 
+      empresa, 
+      tipo_demo, 
+      fecha_preferida, 
+      horario_preferido,
+      telefono,
+      comentarios 
+    } = req.body;
+    
+    if (!nombre || typeof nombre !== 'string' || nombre.trim().length < 2) {
+      return res.status(400).json({
+        success: false,
+        message: "El nombre es requerido y debe tener al menos 2 caracteres"
+      });
+    }
+    if (!email || typeof email !== 'string' || !email.includes('@')) {
+      return res.status(400).json({
+        success: false,
+        message: "El email es requerido y debe ser válido"
+      });
+    }
+
+    const demoData = {
+      nombre: nombre.trim(),
+      email: email.trim().toLowerCase(),
+      empresa: empresa || 'No especificado',
+      tipo_demo: tipo_demo || 'General',
+      fecha_preferida: fecha_preferida || 'No especificado',
+      horario_preferido: horario_preferido || 'No especificado',
+      telefono: telefono || 'No especificado',
+      comentarios: comentarios || 'Sin comentarios adicionales',
+      createdAt: new Date(),
+      source: 'solicitud_demo'
+    };
+
+    console.log('🎬 Nueva solicitud de demo recibida:', demoData);
+
+    // Enviar email con Nodemailer
+    try {
+      const mailOptions = {
+        from: 'admin@tuweb-ai.com',
+        to: 'admin@tuweb-ai.com',
+        subject: `🎬 Nueva Solicitud de Demo: ${demoData.tipo_demo}`,
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 10px; color: white;">
+            <h2 style="text-align: center; margin-bottom: 30px;">🎬 Nueva Solicitud de Demo - TuWeb.ai</h2>
+            
+            <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+              <h3 style="margin-top: 0; color: #ffd700;">👤 Información del Cliente</h3>
+              <p><strong>Nombre:</strong> ${demoData.nombre}</p>
+              <p><strong>Email:</strong> ${demoData.email}</p>
+              <p><strong>Empresa:</strong> ${demoData.empresa}</p>
+              <p><strong>Teléfono:</strong> ${demoData.telefono}</p>
+              <p><strong>Fecha de solicitud:</strong> ${demoData.createdAt.toLocaleString('es-AR')}</p>
+            </div>
+            
+            <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+              <h3 style="margin-top: 0; color: #ffd700;">📅 Detalles de la Demo</h3>
+              <p><strong>Tipo de demo:</strong> ${demoData.tipo_demo}</p>
+              <p><strong>Fecha preferida:</strong> ${demoData.fecha_preferida}</p>
+              <p><strong>Horario preferido:</strong> ${demoData.horario_preferido}</p>
+            </div>
+            
+            <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 8px;">
+              <h3 style="margin-top: 0; color: #ffd700;">💬 Comentarios Adicionales</h3>
+              <p style="line-height: 1.6; white-space: pre-wrap;">${demoData.comentarios}</p>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px; font-size: 12px; opacity: 0.8;">
+              <p>Este mensaje fue enviado desde el formulario de solicitud de demo de TuWeb.ai</p>
+            </div>
+          </div>
+        `
+      };
+      
+      await transporter.sendMail(mailOptions);
+      console.log('✅ Email de demo enviado correctamente');
+    } catch (emailError) {
+      console.error('❌ Error enviando email de demo:', emailError);
+    }
+
+    res.status(201).json({ 
+      success: true, 
+      message: "Solicitud de demo enviada correctamente. Te contactaremos pronto para coordinar la fecha y hora.",
+      demo: {
+        id: Date.now(),
+        date: demoData.createdAt
+      }
+    });
+  } catch (error: unknown) {
+    console.error("Error en formulario de demo:", error);
+    res.status(500).json({ 
+      success: false, 
+      message: "Error inesperado en el servidor. Intenta de nuevo más tarde."
+    });
+  }
+});
+
+// API de Feedback/Testimonios
+app.post("/api/feedback", async (req: Request, res: Response) => {
+  try {
+    const { 
+      nombre, 
+      email, 
+      tipo_feedback, 
+      rating, 
+      comentario,
+      proyecto,
+      empresa 
+    } = req.body;
+    
+    if (!nombre || typeof nombre !== 'string' || nombre.trim().length < 2) {
+      return res.status(400).json({
+        success: false,
+        message: "El nombre es requerido y debe tener al menos 2 caracteres"
+      });
+    }
+    if (!comentario || typeof comentario !== 'string' || comentario.trim().length < 10) {
+      return res.status(400).json({
+        success: false,
+        message: "El comentario es requerido y debe tener al menos 10 caracteres"
+      });
+    }
+
+    const feedbackData = {
+      nombre: nombre.trim(),
+      email: email || 'No especificado',
+      tipo_feedback: tipo_feedback || 'General',
+      rating: rating || 'No especificado',
+      comentario: comentario.trim(),
+      proyecto: proyecto || 'No especificado',
+      empresa: empresa || 'No especificado',
+      createdAt: new Date(),
+      source: 'feedback_testimonio'
+    };
+
+    console.log('⭐ Nuevo feedback/testimonio recibido:', feedbackData);
+
+    // Enviar email con Nodemailer
+    try {
+      const mailOptions = {
+        from: 'admin@tuweb-ai.com',
+        to: 'admin@tuweb-ai.com',
+        subject: `⭐ Nuevo Feedback: ${feedbackData.nombre} - ${feedbackData.rating}/5`,
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 10px; color: white;">
+            <h2 style="text-align: center; margin-bottom: 30px;">⭐ Nuevo Feedback/Testimonio - TuWeb.ai</h2>
+            
+            <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+              <h3 style="margin-top: 0; color: #ffd700;">👤 Información del Cliente</h3>
+              <p><strong>Nombre:</strong> ${feedbackData.nombre}</p>
+              <p><strong>Email:</strong> ${feedbackData.email}</p>
+              <p><strong>Empresa:</strong> ${feedbackData.empresa}</p>
+              <p><strong>Proyecto:</strong> ${feedbackData.proyecto}</p>
+              <p><strong>Fecha:</strong> ${feedbackData.createdAt.toLocaleString('es-AR')}</p>
+            </div>
+            
+            <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+              <h3 style="margin-top: 0; color: #ffd700;">📊 Evaluación</h3>
+              <p><strong>Tipo de feedback:</strong> ${feedbackData.tipo_feedback}</p>
+              <p><strong>Calificación:</strong> ${feedbackData.rating}/5 ⭐</p>
+            </div>
+            
+            <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 8px;">
+              <h3 style="margin-top: 0; color: #ffd700;">💬 Comentario/Testimonio</h3>
+              <p style="line-height: 1.6; white-space: pre-wrap;">${feedbackData.comentario}</p>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px; font-size: 12px; opacity: 0.8;">
+              <p>Este mensaje fue enviado desde el formulario de feedback/testimonios de TuWeb.ai</p>
+            </div>
+          </div>
+        `
+      };
+      
+      await transporter.sendMail(mailOptions);
+      console.log('✅ Email de feedback enviado correctamente');
+    } catch (emailError) {
+      console.error('❌ Error enviando email de feedback:', emailError);
+    }
+
+    res.status(201).json({ 
+      success: true, 
+      message: "¡Gracias por tu feedback! Tu opinión es muy valiosa para nosotros.",
+      feedback: {
+        id: Date.now(),
+        date: feedbackData.createdAt
+      }
+    });
+  } catch (error: unknown) {
+    console.error("Error en formulario de feedback:", error);
+    res.status(500).json({ 
+      success: false, 
+      message: "Error inesperado en el servidor. Intenta de nuevo más tarde."
+    });
+  }
+});
+
 const port = process.env.PORT ? parseInt(process.env.PORT) : 5000;
 app.listen(port, () => {
   console.log(`🚀 Servidor escuchando en puerto ${port}`);
