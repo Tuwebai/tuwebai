@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import AnimatedShape from '../components/ui/animated-shape';
 import { useIsMobile } from '@/hooks/use-mobile';
-import imagePerfil from '/image_perfil.jpg';
+import imagePerfil from '../../public/image_perfil.jpg';
 
 // Tipo para miembros del equipo
 interface TeamMember {
