@@ -265,7 +265,7 @@ export default function GlobalNavbar() {
                               </div>
                             </Link> */}
                             <a
-                              href={`https://dashboard.tuweb-ai.com/login?token=${encodeURIComponent(btoa(JSON.stringify({
+                              href={`https://dashboard.tuweb-ai.com/?token=${encodeURIComponent(btoa(JSON.stringify({
                                 email: user?.email,
                                 name: user?.name || user?.username,
                                 timestamp: Date.now()
@@ -452,7 +452,7 @@ export default function GlobalNavbar() {
                       </div>
                     </Link> */}
                     <a
-                      href={`https://dashboard.tuweb-ai.com/login?token=${encodeURIComponent(btoa(JSON.stringify({
+                      href={`https://dashboard.tuweb-ai.com/?token=${encodeURIComponent(btoa(JSON.stringify({
                         email: user?.email,
                         name: user?.name || user?.username,
                         timestamp: Date.now()
