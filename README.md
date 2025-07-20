@@ -65,6 +65,36 @@ If you continue having issues with the ZIP file upload, try these alternatives:
 
 3. **Split the ZIP**: If the ZIP file is very large, consider splitting it into smaller parts.
 
+## 🔥 Sistema de Sincronización de Pagos con Firebase
+
+El proyecto incluye un sistema completo de sincronización de pagos entre la página principal (tuweb-ai.com) y el dashboard (dashboard.tuweb-ai.com), usando Mercado Pago como procesador de pagos y Firebase/Firestore como base de datos.
+
+### Características Principales
+- ✅ Endpoint para sincronizar pagos con Firebase
+- ✅ Webhook de Mercado Pago
+- ✅ Sistema de autenticación con API key
+- ✅ Logs de auditoría
+- ✅ Integración completa con Firestore
+- ✅ Botón de panel de control en navbar
+- ✅ Configuración de CORS
+- ✅ Rate limiting básico
+
+### Instalación Rápida
+```bash
+# Instalar sistema de pagos
+bash install_firebase_payment_system.sh
+
+# Inicializar colecciones de Firestore
+php firebase/init_collections.php
+
+# Verificar salud del sistema
+php firebase/health_check.php
+```
+
+### Documentación Completa
+- [Guía de instalación](FIREBASE_PAYMENT_SYNC_SETUP.md)
+- [Documentación de Firebase](firebase/README.md)
+
 ## Need Further Assistance?
 
 If you're still having trouble deploying your Tuweb.ai application, please provide more details about the project structure or any specific error messages you're encountering.

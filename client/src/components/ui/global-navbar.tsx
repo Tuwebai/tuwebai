@@ -264,14 +264,24 @@ export default function GlobalNavbar() {
                                 Mi Panel
                               </div>
                             </Link> */}
-                            <span className="block px-4 py-2 text-sm text-gray-300 hover:bg-[#23232b] hover:text-white rounded-lg transition-colors cursor-not-allowed opacity-50">
+                            <a
+                              href={`https://dashboard.tuweb-ai.com/login?token=${encodeURIComponent(btoa(JSON.stringify({
+                                email: user?.email,
+                                name: user?.name || user?.username,
+                                timestamp: Date.now()
+                              }))}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="block px-4 py-2 text-sm text-gray-300 hover:bg-[#23232b] hover:text-white rounded-lg transition-colors"
+                              onClick={() => setShowProfileMenu(false)}
+                            >
                               <div className="flex items-center gap-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                                 </svg>
-                                Mi Panel (Temporario)
+                                🎛️ Panel de Control
                               </div>
-                            </span>
+                            </a>
                             <button
                               onClick={() => {
                                 logout();
@@ -441,14 +451,24 @@ export default function GlobalNavbar() {
                         Mi Panel
                       </div>
                     </Link> */}
-                    <span className="block w-full py-2 px-4 text-left rounded-md text-gray-300 hover:bg-gray-800 transition-colors cursor-not-allowed opacity-50">
+                    <a
+                      href={`https://dashboard.tuweb-ai.com/login?token=${encodeURIComponent(btoa(JSON.stringify({
+                        email: user?.email,
+                        name: user?.name || user?.username,
+                        timestamp: Date.now()
+                      }))}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block w-full py-2 px-4 text-left rounded-md text-gray-300 hover:bg-gray-800 transition-colors"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
                       <div className="flex items-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                         </svg>
-                        Mi Panel (Temporario)
+                        🎛️ Panel de Control
                       </div>
-                    </span>
+                    </a>
                     <button
                       onClick={() => {
                         logout();
