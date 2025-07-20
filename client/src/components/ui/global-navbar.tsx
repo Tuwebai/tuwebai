@@ -269,7 +269,7 @@ export default function GlobalNavbar() {
                                 email: user?.email,
                                 name: user?.name || user?.username,
                                 timestamp: Date.now()
-                              }))}`}
+                              })))}`}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="block px-4 py-2 text-sm text-gray-300 hover:bg-[#23232b] hover:text-white rounded-lg transition-colors"
@@ -456,7 +456,7 @@ export default function GlobalNavbar() {
                         email: user?.email,
                         name: user?.name || user?.username,
                         timestamp: Date.now()
-                      }))}`}
+                      })))}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="block w-full py-2 px-4 text-left rounded-md text-gray-300 hover:bg-gray-800 transition-colors"
