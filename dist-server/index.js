@@ -172,16 +172,17 @@ var EMAILJS_PRIVATE_KEY = "JwEzBkL2LmY4a6WRkkodX";
 app.post("/contact", async (req, res) => {
   try {
     const { name, email, title, message } = req.body;
-    if (!name || !email || !title || !message || message.trim().length < 10) {
-      return res.status(400).json({ error: "Datos inv\xE1lidos" });
+    if (!name || !email || !message || message.trim().length < 10) {
+      return res.status(400).json({ error: "Datos inv\xE1lidos: nombre, email y mensaje son requeridos" });
     }
+    const emailTitle = title || "Consulta desde formulario de contacto";
     await emailjs.send(
       EMAILJS_SERVICE_ID,
       EMAILJS_TEMPLATE_ID,
       {
         name,
         email,
-        title,
+        title: emailTitle,
         message
       },
       EMAILJS_PRIVATE_KEY

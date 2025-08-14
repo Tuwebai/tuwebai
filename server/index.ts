@@ -208,9 +208,13 @@ app.post("/contact", async (req, res) => {
   try {
     const { name, email, title, message } = req.body;
 
-    if (!name || !email || !title || !message || message.trim().length < 10) {
-      return res.status(400).json({ error: "Datos inválidos" });
+    // Validar campos requeridos
+    if (!name || !email || !message || message.trim().length < 10) {
+      return res.status(400).json({ error: "Datos inválidos: nombre, email y mensaje son requeridos" });
     }
+
+    // Usar título por defecto si no se proporciona
+    const emailTitle = title || "Consulta desde formulario de contacto";
 
     // Enviar email con EmailJS
     await emailjs.send(
@@ -219,7 +223,7 @@ app.post("/contact", async (req, res) => {
       {
         name,
         email,
-        title,
+        title: emailTitle,
         message,
       },
       EMAILJS_PRIVATE_KEY
