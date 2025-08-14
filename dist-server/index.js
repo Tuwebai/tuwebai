@@ -169,6 +169,29 @@ app.post("/crear-preferencia", async (req, res) => {
 var EMAILJS_SERVICE_ID = "service_9s9hqqn";
 var EMAILJS_TEMPLATE_ID = "template_8pxfpyh";
 var EMAILJS_PRIVATE_KEY = "JwEzBkL2LmY4a6WRkkodX";
+app.post("/contact", async (req, res) => {
+  try {
+    const { name, email, title, message } = req.body;
+    if (!name || !email || !title || !message || message.trim().length < 10) {
+      return res.status(400).json({ error: "Datos inv\xE1lidos" });
+    }
+    await emailjs.send(
+      EMAILJS_SERVICE_ID,
+      EMAILJS_TEMPLATE_ID,
+      {
+        name,
+        email,
+        title,
+        message
+      },
+      EMAILJS_PRIVATE_KEY
+    );
+    return res.json({ message: "Mensaje enviado correctamente" });
+  } catch (err) {
+    console.error("Error en consulta:", err);
+    return res.status(500).json({ error: "Error en el servidor" });
+  }
+});
 app.post("/consulta", async (req, res) => {
   try {
     const { name, email, title, message } = req.body;
