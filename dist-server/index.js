@@ -125,7 +125,7 @@ app.get("/favicon.ico", (req, res) => {
 });
 app.use(express.static(path.join(__dirname, "../public")));
 var client = new MercadoPagoConfig({
-  accessToken: process.env.MP_ACCESS_TOKEN || ""
+  accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN || ""
 });
 var preference = new Preference(client);
 var payment = new Payment(client);
@@ -243,7 +243,7 @@ app.post("/webhook/mercadopago", async (req, res) => {
       ip: req.ip
     };
     writeLog(webhookData);
-    const webhookSecret = process.env.MP_WEBHOOK_SECRET;
+    const webhookSecret = process.env.MERCADOPAGO_WEBHOOK_SECRET;
     if (webhookSecret) {
       const signature = req.headers["x-signature"];
       const payload = JSON.stringify(req.body);
@@ -275,9 +275,9 @@ app.post("/webhook/mercadopago", async (req, res) => {
       return;
     }
     global[processedKey] = true;
-    const accessToken = process.env.MP_ACCESS_TOKEN;
+    const accessToken = process.env.MERCADOPAGO_ACCESS_TOKEN;
     if (!accessToken) {
-      console.error("\u274C MP_ACCESS_TOKEN no configurado");
+      console.error("\u274C MERCADOPAGO_ACCESS_TOKEN no configurado");
       return;
     }
     try {
@@ -336,8 +336,8 @@ app.listen(port, () => {
   console.log(`\u{1F30D} Or\xEDgenes permitidos CORS: ${allowedOrigins.join(", ")}`);
   console.log(`\u2699\uFE0F NODE_ENV: ${process.env.NODE_ENV || "development"}`);
   console.log(`\u{1F510} SESSION_SECRET: ${process.env.SESSION_SECRET ? "Configurado" : "No configurado"}`);
-  console.log(`\u{1F4B3} MP_ACCESS_TOKEN: ${process.env.MP_ACCESS_TOKEN ? "Configurado" : "No configurado"}`);
-  console.log(`\u{1F512} MP_WEBHOOK_SECRET: ${process.env.MP_WEBHOOK_SECRET ? "Configurado" : "No configurado"}`);
+  console.log(`\u{1F4B3} MERCADOPAGO_ACCESS_TOKEN: ${process.env.MERCADOPAGO_ACCESS_TOKEN ? "Configurado" : "No configurado"}`);
+  console.log(`\u{1F512} MERCADOPAGO_WEBHOOK_SECRET: ${process.env.MERCADOPAGO_WEBHOOK_SECRET ? "Configurado" : "No configurado"}`);
   console.log(`\u{1F4E7} EMAILJS: ${EMAILJS_SERVICE_ID ? "Configurado" : "No configurado"}`);
   console.log(`\u{1F310} Webhook URL: https://tuweb-ai.com/webhook/mercadopago`);
   console.log(`\u{1F3E5} Health Check: https://tuweb-ai.com/webhook/mercadopago/health`);

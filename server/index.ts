@@ -150,7 +150,7 @@ app.use(express.static(path.join(__dirname, "../public")));
 
 // Configuración de Mercado Pago
 const client = new MercadoPagoConfig({ 
-  accessToken: process.env.MP_ACCESS_TOKEN || "" 
+  accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN || "" 
 });
 const preference = new Preference(client);
 const payment = new Payment(client);
@@ -305,8 +305,8 @@ app.post("/webhook/mercadopago", async (req, res) => {
     
     writeLog(webhookData);
     
-    // Verificar firma si existe MP_WEBHOOK_SECRET
-    const webhookSecret = process.env.MP_WEBHOOK_SECRET;
+    // Verificar firma si existe MERCADOPAGO_WEBHOOK_SECRET
+    const webhookSecret = process.env.MERCADOPAGO_WEBHOOK_SECRET;
     if (webhookSecret) {
       const signature = req.headers['x-signature'] as string;
       const payload = JSON.stringify(req.body);
@@ -351,9 +351,9 @@ app.post("/webhook/mercadopago", async (req, res) => {
     (global as any)[processedKey] = true;
     
     // Consultar API de Mercado Pago para obtener detalles del pago
-    const accessToken = process.env.MP_ACCESS_TOKEN;
+    const accessToken = process.env.MERCADOPAGO_ACCESS_TOKEN;
     if (!accessToken) {
-      console.error("❌ MP_ACCESS_TOKEN no configurado");
+      console.error("❌ MERCADOPAGO_ACCESS_TOKEN no configurado");
       return;
     }
     
@@ -428,8 +428,8 @@ app.listen(port, () => {
   console.log(`🌍 Orígenes permitidos CORS: ${allowedOrigins.join(", ")}`);
   console.log(`⚙️ NODE_ENV: ${process.env.NODE_ENV || "development"}`);
   console.log(`🔐 SESSION_SECRET: ${process.env.SESSION_SECRET ? "Configurado" : "No configurado"}`);
-  console.log(`💳 MP_ACCESS_TOKEN: ${process.env.MP_ACCESS_TOKEN ? "Configurado" : "No configurado"}`);
-  console.log(`🔒 MP_WEBHOOK_SECRET: ${process.env.MP_WEBHOOK_SECRET ? "Configurado" : "No configurado"}`);
+  console.log(`💳 MERCADOPAGO_ACCESS_TOKEN: ${process.env.MERCADOPAGO_ACCESS_TOKEN ? "Configurado" : "No configurado"}`);
+  console.log(`🔒 MERCADOPAGO_WEBHOOK_SECRET: ${process.env.MERCADOPAGO_WEBHOOK_SECRET ? "Configurado" : "No configurado"}`);
   console.log(`📧 EMAILJS: ${EMAILJS_SERVICE_ID ? "Configurado" : "No configurado"}`);
   console.log(`🌐 Webhook URL: https://tuweb-ai.com/webhook/mercadopago`);
   console.log(`🏥 Health Check: https://tuweb-ai.com/webhook/mercadopago/health`);
