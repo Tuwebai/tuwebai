@@ -29,7 +29,7 @@ npm start
 
 ## 🎯 Resultado:
 - Formulario de contacto funcionando
-- Emails enviados a admin@tuweb-ai.com con diseño profesional
+- Emails enviados a tuwebai@gmail.com con diseño profesional
 - Backend limpio y sin dependencias innecesarias
 - Todo listo para producción
 

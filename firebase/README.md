@@ -150,7 +150,7 @@ find api/logs/ -name "*.log" -mtime +90 -delete
 Para problemas específicos de Firebase:
 - [Firebase Documentation](https://firebase.google.com/docs)
 - [Firestore Documentation](https://firebase.google.com/docs/firestore)
-- Email: admin@tuweb-ai.com
+- Email: tuwebai@gmail.com
 
 ## 📝 Notas
 

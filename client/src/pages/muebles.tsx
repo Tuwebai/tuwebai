@@ -547,7 +547,7 @@ export default function Muebles() {
                 <div>
                   <input 
                     type="email" 
-                    placeholder="admin@tuweb-ai.com" 
+                    placeholder="tuwebai@gmail.com" 
                     className="w-full px-4 py-2 border border-gray-300 text-gray-800 rounded-sm focus:border-[#C8A97E] focus:outline-none font-serif"
                   />
                 </div>

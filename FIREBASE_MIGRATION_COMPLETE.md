@@ -218,7 +218,7 @@ tail -f api/logs/payments_sync.log
 ## 📞 Soporte
 
 Para soporte técnico:
-- Email: admin@tuweb-ai.com
+- Email: tuwebai@gmail.com
 - Documentación: [FIREBASE_PAYMENT_SYNC_SETUP.md](FIREBASE_PAYMENT_SYNC_SETUP.md)
 - Firebase Docs: [firebase/README.md](firebase/README.md)
 

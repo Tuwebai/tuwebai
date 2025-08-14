@@ -145,7 +145,7 @@ echo "   - Verificar salud: php firebase/health_check.php\n";
 echo "   - Probar endpoints: php api/test/test_endpoints.php\n";
 echo "   - Limpiar datos: php firebase/cleanup_example_data.php\n\n";
 
-echo "📞 Soporte: admin@tuweb-ai.com\n";
+echo "📞 Soporte: tuwebai@gmail.com\n";
 echo "📚 Documentación: FIREBASE_PAYMENT_SYNC_SETUP.md\n\n";
 
 echo "✅ ¡Prueba completada exitosamente!\n";

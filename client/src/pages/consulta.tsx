@@ -916,7 +916,7 @@ export default function Consulta() {
                       </motion.a>
                       
                       <motion.a
-                        href="mailto:admin@tuweb-ai.com"
+                        href="mailto:tuwebai@gmail.com"
                         className="flex flex-col items-center p-4 bg-[#9933FF]/10 border border-[#9933FF]/30 rounded-xl text-white hover:bg-[#9933FF]/20 transition-colors"
                         whileHover={{ y: -5 }}
                         transition={{ duration: 0.2 }}
@@ -927,7 +927,7 @@ export default function Consulta() {
                           </svg>
                         </div>
                         <span className="font-medium mb-1">Email</span>
-                        <span className="text-sm text-gray-300">admin@tuweb-ai.com</span>
+                        <span className="text-sm text-gray-300">tuwebai@gmail.com</span>
                       </motion.a>
                     </div>
                     

@@ -8,8 +8,10 @@ import passport from "passport";
 import { fileURLToPath } from "url";
 import cors from "cors";
 import helmet from "helmet";
-import { MercadoPagoConfig, Preference } from "mercadopago";
+import { MercadoPagoConfig, Preference, Payment } from "mercadopago";
 import emailjs from "@emailjs/nodejs";
+import crypto from "crypto";
+import fs from "fs";
 dotenv.config();
 var __filename = fileURLToPath(import.meta.url);
 var __dirname = path.dirname(__filename);
@@ -35,7 +37,9 @@ app.use(
       "Content-Type",
       "Authorization",
       "X-Requested-With",
-      "Accept"
+      "Accept",
+      "X-Signature",
+      "X-Request-Id"
     ],
     exposedHeaders: ["Set-Cookie"]
   })
@@ -88,7 +92,7 @@ app.use((req, res, next) => {
 app.use((req, res, next) => {
   const start = Date.now();
   const path2 = req.path;
-  let capturedJsonResponse = void 0;
+  let capturedJsonResponse;
   const originalResJson = res.json;
   res.json = function(bodyJson, ...args) {
     capturedJsonResponse = bodyJson;
@@ -120,20 +124,11 @@ app.get("/favicon.ico", (req, res) => {
   res.sendFile(path.join(__dirname, "../public/favicon.ico"));
 });
 app.use(express.static(path.join(__dirname, "../public")));
-app.use((err, req, res, _next) => {
-  const status = err.status || err.statusCode || 500;
-  const message = err.message || "Internal Server Error";
-  console.error("Express error middleware:", err);
-  if (!res.headersSent) {
-    res.status(status).json({
-      success: false,
-      message,
-      details: process.env.NODE_ENV === "development" ? err.message : void 0
-    });
-  }
+var client = new MercadoPagoConfig({
+  accessToken: process.env.MP_ACCESS_TOKEN || ""
 });
-var client = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN || "" });
 var preference = new Preference(client);
+var payment = new Payment(client);
 app.post("/crear-preferencia", async (req, res) => {
   try {
     const { plan } = req.body;
@@ -143,7 +138,9 @@ app.post("/crear-preferencia", async (req, res) => {
       "Plan Profesional": 499e3,
       "Plan Enterprise": 999e3
     };
-    if (!precios[plan]) return res.status(400).json({ error: "Plan inv\xE1lido" });
+    if (!precios[plan]) {
+      return res.status(400).json({ error: "Plan inv\xE1lido" });
+    }
     const preferenceData = {
       items: [
         {
@@ -170,74 +167,166 @@ app.post("/crear-preferencia", async (req, res) => {
 });
 var EMAILJS_SERVICE_ID = "service_9s9hqqn";
 var EMAILJS_TEMPLATE_ID = "template_8pxfpyh";
-var EMAILJS_PUBLIC_KEY = "bPdFsDkAPp5dXKALy";
-app.post("/api/contact", async (req, res) => {
+var EMAILJS_PRIVATE_KEY = "JwEzBkL2LmY4a6WRkkodX";
+app.post("/consulta", async (req, res) => {
   try {
     const { name, email, title, message } = req.body;
-    if (!name || typeof name !== "string" || name.trim().length < 2) {
-      return res.status(400).json({
-        success: false,
-        message: "El nombre es requerido y debe tener al menos 2 caracteres"
-      });
+    if (!name || !email || !title || !message || message.trim().length < 10) {
+      return res.status(400).json({ error: "Datos inv\xE1lidos" });
     }
-    if (!email || typeof email !== "string" || !email.includes("@")) {
-      return res.status(400).json({
-        success: false,
-        message: "El email es requerido y debe ser v\xE1lido"
-      });
-    }
-    if (!title || typeof title !== "string" || title.trim().length < 3) {
-      return res.status(400).json({
-        success: false,
-        message: "El asunto es requerido y debe tener al menos 3 caracteres"
-      });
-    }
-    if (!message || typeof message !== "string" || message.trim().length < 10) {
-      return res.status(400).json({
-        success: false,
-        message: "El mensaje es requerido y debe tener al menos 10 caracteres"
-      });
-    }
-    const contactData = {
-      name: name.trim(),
-      email: email.trim().toLowerCase(),
-      title: title.trim(),
-      message: message.trim(),
-      createdAt: /* @__PURE__ */ new Date(),
-      source: req.body.source || "sitio_web_principal"
-    };
-    console.log("\u{1F4E7} Nuevo contacto recibido:", contactData);
     await emailjs.send(
       EMAILJS_SERVICE_ID,
       EMAILJS_TEMPLATE_ID,
       {
-        name: contactData.name,
-        email: contactData.email,
-        title: contactData.title,
-        message: contactData.message
+        name,
+        email,
+        title,
+        message
       },
-      {
-        publicKey: EMAILJS_PUBLIC_KEY
-      }
+      EMAILJS_PRIVATE_KEY
     );
-    res.status(201).json({
-      success: true,
-      message: "Mensaje enviado correctamente. Te responderemos pronto.",
-      contact: {
-        id: Date.now(),
-        date: contactData.createdAt
-      }
-    });
+    return res.json({ message: "Mensaje enviado correctamente" });
+  } catch (err) {
+    console.error("Error en consulta:", err);
+    return res.status(500).json({ error: "Error en el servidor" });
+  }
+});
+function ensureLogDirectory() {
+  const logDir = path.join(__dirname, "../logs/mercadopago");
+  if (!fs.existsSync(logDir)) {
+    fs.mkdirSync(logDir, { recursive: true });
+  }
+  return logDir;
+}
+function writeLog(data) {
+  try {
+    const logDir = ensureLogDirectory();
+    const today = (/* @__PURE__ */ new Date()).toISOString().split("T")[0];
+    const logFile = path.join(logDir, `${today}.log`);
+    const timestamp = (/* @__PURE__ */ new Date()).toISOString();
+    const logEntry = `[${timestamp}] ${JSON.stringify(data)}
+`;
+    fs.appendFileSync(logFile, logEntry);
   } catch (error) {
-    console.error("Error en formulario de contacto:", error);
-    if (error instanceof Error) {
-      console.error("Error details:", error.message);
-      console.error("Error stack:", error.stack);
+    console.error("Error escribiendo log:", error);
+  }
+}
+function verifyWebhookSignature(payload, signature, secret) {
+  try {
+    const expectedSignature = crypto.createHmac("sha256", secret).update(payload).digest("hex");
+    return crypto.timingSafeEqual(
+      Buffer.from(signature, "hex"),
+      Buffer.from(expectedSignature, "hex")
+    );
+  } catch (error) {
+    console.error("Error verificando firma:", error);
+    return false;
+  }
+}
+app.get("/webhook/mercadopago/health", (req, res) => {
+  res.json({ ok: true });
+});
+app.post("/webhook/mercadopago", async (req, res) => {
+  const startTime = Date.now();
+  res.status(200).json({ received: true });
+  try {
+    const headers = {
+      "x-signature": req.headers["x-signature"],
+      "x-request-id": req.headers["x-request-id"],
+      "user-agent": req.headers["user-agent"]
+    };
+    console.log("\u{1F514} Webhook recibido - Headers:", headers);
+    const webhookData = {
+      timestamp: (/* @__PURE__ */ new Date()).toISOString(),
+      headers,
+      body: req.body,
+      ip: req.ip
+    };
+    writeLog(webhookData);
+    const webhookSecret = process.env.MP_WEBHOOK_SECRET;
+    if (webhookSecret) {
+      const signature = req.headers["x-signature"];
+      const payload = JSON.stringify(req.body);
+      if (!signature || !verifyWebhookSignature(payload, signature, webhookSecret)) {
+        console.error("\u274C Firma del webhook inv\xE1lida");
+        writeLog({
+          timestamp: (/* @__PURE__ */ new Date()).toISOString(),
+          error: "Firma inv\xE1lida",
+          headers,
+          body: req.body
+        });
+        return;
+      }
     }
-    res.status(500).json({
+    const { type, data } = req.body;
+    if (!data?.id || !type) {
+      console.error("\u274C Webhook sin data.id o type");
+      return;
+    }
+    if (type !== "payment") {
+      console.log(`\u2139\uFE0F Evento ignorado: ${type}`);
+      return;
+    }
+    const paymentId = data.id;
+    console.log(`\u{1F4B3} Procesando pago ID: ${paymentId}`);
+    const processedKey = `processed_${paymentId}`;
+    if (global[processedKey]) {
+      console.log(`\u{1F504} Pago ${paymentId} ya procesado, ignorando`);
+      return;
+    }
+    global[processedKey] = true;
+    const accessToken = process.env.MP_ACCESS_TOKEN;
+    if (!accessToken) {
+      console.error("\u274C MP_ACCESS_TOKEN no configurado");
+      return;
+    }
+    try {
+      const paymentDetails = await payment.get({ id: paymentId });
+      console.log(`\u{1F4CA} Estado del pago ${paymentId}: ${paymentDetails.status}`);
+      const orderData = {
+        payment_id: paymentId,
+        status: paymentDetails.status,
+        amount: paymentDetails.transaction_amount,
+        currency: paymentDetails.currency_id,
+        payer_email: paymentDetails.payer?.email,
+        created_at: (/* @__PURE__ */ new Date()).toISOString(),
+        updated_at: (/* @__PURE__ */ new Date()).toISOString()
+      };
+      console.log("\u{1F4BE} Actualizando pedido:", orderData);
+      writeLog({
+        timestamp: (/* @__PURE__ */ new Date()).toISOString(),
+        success: true,
+        payment_id: paymentId,
+        status: paymentDetails.status,
+        processing_time: Date.now() - startTime
+      });
+    } catch (apiError) {
+      console.error(`\u274C Error consultando API de MP para pago ${paymentId}:`, apiError);
+      writeLog({
+        timestamp: (/* @__PURE__ */ new Date()).toISOString(),
+        error: "Error consultando API de MP",
+        payment_id: paymentId,
+        api_error: apiError
+      });
+    }
+  } catch (error) {
+    console.error("\u274C Error procesando webhook:", error);
+    writeLog({
+      timestamp: (/* @__PURE__ */ new Date()).toISOString(),
+      error: "Error general procesando webhook",
+      error_details: error
+    });
+  }
+});
+app.use((err, req, res, _next) => {
+  const status = err.status || err.statusCode || 500;
+  const message = err.message || "Internal Server Error";
+  console.error("Express error middleware:", err);
+  if (!res.headersSent) {
+    res.status(status).json({
       success: false,
-      message: "Error inesperado en el servidor. Intenta de nuevo m\xE1s tarde.",
-      error: process.env.NODE_ENV === "development" ? error : void 0
+      message,
+      details: process.env.NODE_ENV === "development" ? err.message : void 0
     });
   }
 });
@@ -245,8 +334,11 @@ var port = process.env.PORT ? parseInt(process.env.PORT) : 5e3;
 app.listen(port, () => {
   console.log(`\u{1F680} Servidor escuchando en puerto ${port}`);
   console.log(`\u{1F30D} Or\xEDgenes permitidos CORS: ${allowedOrigins.join(", ")}`);
-  console.log(`\u{1F527} NODE_ENV: ${process.env.NODE_ENV || "development"}`);
-  console.log(`\u{1F511} SESSION_SECRET: ${process.env.SESSION_SECRET ? "Configurado" : "No configurado"}`);
-  console.log(`\u{1F4CA} DATABASE_URL: ${process.env.DATABASE_URL ? "Configurado" : "No configurado"}`);
-  console.log(`\u{1F510} GOOGLE_CLIENT_ID: ${process.env.GOOGLE_CLIENT_ID ? "Configurado" : "No configurado"}`);
+  console.log(`\u2699\uFE0F NODE_ENV: ${process.env.NODE_ENV || "development"}`);
+  console.log(`\u{1F510} SESSION_SECRET: ${process.env.SESSION_SECRET ? "Configurado" : "No configurado"}`);
+  console.log(`\u{1F4B3} MP_ACCESS_TOKEN: ${process.env.MP_ACCESS_TOKEN ? "Configurado" : "No configurado"}`);
+  console.log(`\u{1F512} MP_WEBHOOK_SECRET: ${process.env.MP_WEBHOOK_SECRET ? "Configurado" : "No configurado"}`);
+  console.log(`\u{1F4E7} EMAILJS: ${EMAILJS_SERVICE_ID ? "Configurado" : "No configurado"}`);
+  console.log(`\u{1F310} Webhook URL: https://tuweb-ai.com/webhook/mercadopago`);
+  console.log(`\u{1F3E5} Health Check: https://tuweb-ai.com/webhook/mercadopago/health`);
 });

@@ -279,5 +279,5 @@ echo "  4. Implementa la sincronización en tu dashboard"
 echo "  5. Ejecuta las pruebas: php api/test/test_endpoints.php"
 echo ""
 
-log_info "Para soporte técnico: admin@tuweb-ai.com"
+log_info "Para soporte técnico: tuwebai@gmail.com"
 echo "" 

@@ -353,7 +353,7 @@ gcloud firestore export gs://tu-bucket/backup-$(date +%Y%m%d)
 ## 📞 Soporte
 
 Para soporte técnico:
-- Email: admin@tuweb-ai.com
+- Email: tuwebai@gmail.com
 - WhatsApp: +54 9 11 1234-5678
 - Documentación: https://docs.tuweb-ai.com
 

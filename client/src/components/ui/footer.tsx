@@ -64,7 +64,7 @@ export default function Footer() {
                 </svg>
                 <div>
                   <p className="text-gray-300">Email:</p>
-                  <a href="mailto:admin@tuweb-ai.com" className="hover:text-[#00CCFF] transition-colors">admin@tuweb-ai.com</a>
+                  <a href="mailto:tuwebai@gmail.com" className="hover:text-[#00CCFF] transition-colors">tuwebai@gmail.com</a>
                 </div>
               </div>
               
@@ -137,7 +137,7 @@ export default function Footer() {
             </motion.a>
             
             <motion.a 
-              href="mailto:admin@tuweb-ai.com" 
+                              href="mailto:tuwebai@gmail.com" 
               className="w-10 h-10 rounded-full bg-glass flex items-center justify-center text-gray-300 hover:text-[#00CCFF] hover:border-[#00CCFF] border border-gray-700 transition-colors"
               whileHover={{ y: -3 }}
               transition={{ duration: 0.2 }}
