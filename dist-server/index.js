@@ -340,6 +340,6 @@ app.listen(port, () => {
   console.log(`\u{1F4B3} MERCADOPAGO_ACCESS_TOKEN: ${process.env.MERCADOPAGO_ACCESS_TOKEN ? "Configurado" : "No configurado"}`);
   console.log(`\u{1F512} MERCADOPAGO_WEBHOOK_SECRET: ${process.env.MERCADOPAGO_WEBHOOK_SECRET ? "Configurado" : "No configurado"}`);
   console.log(`\u{1F4E7} EMAILJS: ${EMAILJS_SERVICE_ID ? "Configurado" : "No configurado"}`);
-  console.log(`\u{1F310} Webhook URL: https://api.tuweb-ai.com/webhook/mercadopago`);
-  console.log(`\u{1F3E5} Health Check: https://api.tuweb-ai.com/webhook/mercadopago/health`);
+  console.log(`\u{1F310} Webhook URL: https://tuwebai-backend.onrender.com/webhook/mercadopago`);
+  console.log(`\u{1F3E5} Health Check: https://tuwebai-backend.onrender.com/webhook/mercadopago/health`);
 });
