@@ -65,8 +65,8 @@ Se implementó un endpoint completo de webhook de Mercado Pago en el servidor Ex
 ### 2. `config.env.production` (ACTUALIZADO)
 ```env
 # Variables agregadas:
-+ MP_ACCESS_TOKEN=APP_USR-7632702423261345-071520-e935a1cff45988d55056de36b0afdaa9-388958610
-+ MP_WEBHOOK_SECRET=cd8ea5b1b0882291870e48ba6446016f554d52302a52186bb7cd6cfbde343688
++ MP_ACCESS_TOKEN=TU_ACCESS_TOKEN_AQUI
++ MP_WEBHOOK_SECRET=TU_WEBHOOK_SECRET_AQUI
 ```
 
 ### 3. `README.md` (ACTUALIZADO)
