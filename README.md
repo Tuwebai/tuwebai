@@ -98,7 +98,7 @@ php firebase/health_check.php
 ## 🔔 Webhook de Mercado Pago
 
 ### Endpoint Principal
-**URL**: `https://tuweb-ai.com/webhook/mercadopago`
+**URL**: `https://api.tuweb-ai.com/webhook/mercadopago`
 
 **Método**: `POST`
 
@@ -113,7 +113,7 @@ php firebase/health_check.php
 - ✅ **Actualización de DB**: Actualiza pedidos en base de datos
 
 ### Health Check
-**URL**: `https://tuweb-ai.com/webhook/mercadopago/health`
+**URL**: `https://api.tuweb-ai.com/webhook/mercadopago/health`
 
 **Método**: `GET`
 
@@ -137,7 +137,7 @@ MP_WEBHOOK_SECRET=cd8ea5b1b0882291870e48ba6446016f554d52302a52186bb7cd6cfbde3436
 2. **Ve a Configuración > Webhooks**
 3. **Configura la URL del webhook**:
    ```
-   https://tuweb-ai.com/webhook/mercadopago
+   https://api.tuweb-ai.com/webhook/mercadopago
    ```
 4. **Selecciona los eventos**:
    - `payment.created`
@@ -148,7 +148,7 @@ MP_WEBHOOK_SECRET=cd8ea5b1b0882291870e48ba6446016f554d52302a52186bb7cd6cfbde3436
 
 #### 1. Test con curl
 ```bash
-curl -X POST https://tuweb-ai.com/webhook/mercadopago \
+curl -X POST https://api.tuweb-ai.com/webhook/mercadopago \
   -H "Content-Type: application/json" \
   -d '{
     "type": "payment",
@@ -160,7 +160,7 @@ curl -X POST https://tuweb-ai.com/webhook/mercadopago \
 
 #### 2. Test de health check
 ```bash
-curl https://tuweb-ai.com/webhook/mercadopago/health
+curl https://api.tuweb-ai.com/webhook/mercadopago/health
 ```
 
 #### 3. Tests automatizados
@@ -169,7 +169,7 @@ curl https://tuweb-ai.com/webhook/mercadopago/health
 node test-webhook.js
 
 # Test con URL específica
-TEST_URL=https://tuweb-ai.com node test-webhook.js
+TEST_URL=https://api.tuweb-ai.com node test-webhook.js
 ```
 
 #### 4. Simular notificación en Mercado Pago
