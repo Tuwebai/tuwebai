@@ -13,6 +13,14 @@ export default function CompanyLogoSlider({ className = '' }: CompanyLogoSliderP
   const sliderRef = useRef(null);
   const { ref, hasIntersected } = useIntersectionObserver();
 
+  // Lista de logos de empresas con sus nombres
+  const companyLogos = [
+    {
+      name: 'LH Decants',
+      logo: '/lhdecant-logo.jpg'
+    }
+  ];
+
   // Configuración del slider
   const settings = {
     dots: false,
@@ -46,14 +54,6 @@ export default function CompanyLogoSlider({ className = '' }: CompanyLogoSliderP
       }
     ]
   };
-
-  // Lista de logos de empresas con sus nombres
-  const companyLogos = [
-    {
-      name: 'LH Decants',
-      logo: '/lhdecant-logo.jpg'
-    }
-  ];
 
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
