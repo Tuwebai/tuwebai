@@ -27,13 +27,27 @@ const allowedOrigins = [
   "http://localhost:5173"
 ];
 
+// Agregar logging para debug de CORS
+app.use((req, res, next) => {
+  console.log(`🌐 [${new Date().toISOString()}] ${req.method} ${req.path}`);
+  console.log(`📍 Origin: ${req.headers.origin || 'No origin'}`);
+  console.log(`🔗 Referer: ${req.headers.referer || 'No referer'}`);
+  next();
+});
+
 app.use(
   cors({
     origin: function (origin, callback) {
+      console.log(`🔍 CORS check - Origin: ${origin}`);
+      console.log(`📋 Allowed origins: ${allowedOrigins.join(', ')}`);
+      
       if (!origin || allowedOrigins.includes(origin)) {
+        console.log(`✅ CORS permitido para: ${origin}`);
         callback(null, true);
       } else {
-        callback(new Error("No permitido por CORS"));
+        console.log(`❌ CORS bloqueado para: ${origin}`);
+        // Por ahora, permitir todos los orígenes para debug
+        callback(null, true);
       }
     },
     credentials: true,

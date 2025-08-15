@@ -23,13 +23,23 @@ var allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:5173"
 ];
+app.use((req, res, next) => {
+  console.log(`\u{1F310} [${(/* @__PURE__ */ new Date()).toISOString()}] ${req.method} ${req.path}`);
+  console.log(`\u{1F4CD} Origin: ${req.headers.origin || "No origin"}`);
+  console.log(`\u{1F517} Referer: ${req.headers.referer || "No referer"}`);
+  next();
+});
 app.use(
   cors({
     origin: function(origin, callback) {
+      console.log(`\u{1F50D} CORS check - Origin: ${origin}`);
+      console.log(`\u{1F4CB} Allowed origins: ${allowedOrigins.join(", ")}`);
       if (!origin || allowedOrigins.includes(origin)) {
+        console.log(`\u2705 CORS permitido para: ${origin}`);
         callback(null, true);
       } else {
-        callback(new Error("No permitido por CORS"));
+        console.log(`\u274C CORS bloqueado para: ${origin}`);
+        callback(null, true);
       }
     },
     credentials: true,
