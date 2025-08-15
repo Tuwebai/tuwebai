@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useIntersectionObserver } from '@/hooks/use-intersection-observer';
@@ -28,6 +28,20 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
   
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  
+  // Prevenir scroll del body cuando el modal está abierto
+  useEffect(() => {
+    if (selectedProject) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    
+    // Cleanup al desmontar el componente
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [selectedProject]);
   
   // Set the ref for the parent component
   if (sectionRef.current && !sectionRef.current.hasAttribute('data-ref-set')) {
@@ -243,12 +257,16 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
         
         {/* Modal de detalle de proyecto */}
         {selectedProject && (
-          <div className="fixed inset-0 bg-black/95 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div 
+            className="fixed inset-0 bg-black flex items-center justify-center z-50 p-4 overflow-hidden"
+            onClick={() => setSelectedProject(null)}
+          >
             <motion.div 
-              className="bg-[#121217] rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto border border-gray-800 shadow-2xl"
+              className="bg-[#121217] rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto border border-gray-800 shadow-2xl relative"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.3 }}
+              onClick={(e) => e.stopPropagation()}
             >
               <div className="p-6 flex justify-between items-start border-b border-gray-800">
                 <div>
