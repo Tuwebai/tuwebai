@@ -84,7 +84,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
         { label: "Variedad", value: "+200 fragancias" }
       ],
       image: "/lhdecant-card.png",
-      detailsUrl: "https://lhdecant.com/"
+      detailsUrl: "/lhdecant"
     }
   ];
 

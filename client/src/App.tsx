@@ -45,6 +45,7 @@ const CorporativoPremium = lazy(() => import('./pages/corporativo-premium'));
 const AppRestaurantes = lazy(() => import('./pages/app-restaurantes'));
 const PortalInmobiliario = lazy(() => import('./pages/portal-inmobiliario'));
 const MarketingB2B = lazy(() => import('./pages/marketing-b2b'));
+const LHDecant = lazy(() => import('./pages/lhdecant'));
 
 // Nuevos proyectos (lazy loaded)
 const Fitness = lazy(() => import('./pages/fitness'));
@@ -166,6 +167,7 @@ function App() {
               <Route path="/app-restaurantes" element={<LazyRoute><AppRestaurantes /></LazyRoute>} />
               <Route path="/portal-inmobiliario" element={<LazyRoute><PortalInmobiliario /></LazyRoute>} />
               <Route path="/marketing-b2b" element={<LazyRoute><MarketingB2B /></LazyRoute>} />
+              <Route path="/lhdecant" element={<LazyRoute><LHDecant /></LazyRoute>} />
               
               {/* Rutas para nuevos proyectos */}
               <Route path="/fitness" element={<LazyRoute><Fitness /></LazyRoute>} />
