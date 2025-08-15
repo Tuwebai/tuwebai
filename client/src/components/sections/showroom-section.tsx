@@ -13,6 +13,7 @@ interface Project {
   results: { label: string; value: string }[];
   image: string;
   detailsUrl: string;
+  externalUrl?: string;
 }
 
 interface ShowroomSectionProps {
@@ -84,7 +85,8 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
         { label: "Variedad", value: "+200 fragancias" }
       ],
       image: "/lhdecant-card.png",
-      detailsUrl: "/lhdecant"
+      detailsUrl: "/showroom",
+      externalUrl: "https://lhdecant.com/"
     }
   ];
 
@@ -200,14 +202,16 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
                   <span className="text-white font-medium text-sm">Vista Previa</span>
                 </div>
                 {/* Botón "Visitar página web" que aparece en hover */}
-                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                  <button
-                    onClick={(e) => handleVisitWebsite(project.detailsUrl, e)}
-                    className="bg-gradient-to-r from-[#00CCFF] to-[#9933FF] text-white px-4 py-2 rounded-lg font-medium hover:shadow-lg hover:shadow-[#00CCFF]/20 transition-all duration-200 transform hover:scale-105"
-                  >
-                    Visitar página web
-                  </button>
-                </div>
+                {project.externalUrl && (
+                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <button
+                      onClick={(e) => handleVisitWebsite(project.externalUrl!, e)}
+                      className="bg-gradient-to-r from-[#00CCFF] to-[#9933FF] text-white px-4 py-2 rounded-lg font-medium hover:shadow-lg hover:shadow-[#00CCFF]/20 transition-all duration-200 transform hover:scale-105"
+                    >
+                      Visitar página web
+                    </button>
+                  </div>
+                )}
               </div>
               
               <div className="p-6">
@@ -220,10 +224,10 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
                 
                 <p className="text-gray-400 text-sm mb-4 line-clamp-3">{project.description}</p>
                 
-                <Link 
-                  to={project.detailsUrl}
+                <button 
                   onClick={(e) => {
                     e.stopPropagation();
+                    handleProjectClick(project);
                   }}
                   className="flex items-center text-[#00CCFF] text-sm font-medium hover:text-[#9933FF] transition-colors"
                 >
@@ -231,7 +235,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                   </svg>
-                </Link>
+                </button>
               </div>
             </motion.div>
           ))}
@@ -308,12 +312,21 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
                 
                 <div className="flex justify-end pt-4 border-t border-gray-800">
                   <motion.div whileHover={{ scale: 1.05 }} transition={{ type: "spring", stiffness: 400, damping: 10 }}>
-                    <Link 
-                      to={selectedProject.detailsUrl}
-                      className="inline-block px-6 py-3 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-lg text-white font-medium"
-                    >
-                      Ver página completa
-                    </Link>
+                    {selectedProject.externalUrl ? (
+                      <button
+                        onClick={() => window.open(selectedProject.externalUrl, '_blank', 'noopener,noreferrer')}
+                        className="inline-block px-6 py-3 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-lg text-white font-medium"
+                      >
+                        Visitar página web
+                      </button>
+                    ) : (
+                      <Link 
+                        to={selectedProject.detailsUrl}
+                        className="inline-block px-6 py-3 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-lg text-white font-medium"
+                      >
+                        Ver página completa
+                      </Link>
+                    )}
                   </motion.div>
                 </div>
               </div>
