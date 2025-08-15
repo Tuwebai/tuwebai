@@ -32,14 +32,47 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
   // Prevenir scroll del body cuando el modal está abierto
   useEffect(() => {
     if (selectedProject) {
+      // Guardar la posición actual del scroll
+      const scrollY = window.scrollY;
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = '100%';
       document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = 'unset';
+      // Restaurar la posición del scroll
+      const scrollY = document.body.style.top;
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      document.body.style.overflow = '';
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+      }
     }
     
     // Cleanup al desmontar el componente
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      document.body.style.overflow = '';
+    };
+  }, [selectedProject]);
+
+  // Manejador de teclas para cerrar modal con Escape
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && selectedProject) {
+        setSelectedProject(null);
+      }
+    };
+
+    if (selectedProject) {
+      document.addEventListener('keydown', handleKeyDown);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
     };
   }, [selectedProject]);
   
