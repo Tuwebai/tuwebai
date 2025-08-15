@@ -22,7 +22,6 @@ const app = express();
 const allowedOrigins = [
   "https://tuweb-ai.com",
   "https://www.tuweb-ai.com",
-  "https://api.tuweb-ai.com",
   "http://localhost:3000",
   "http://localhost:5173"
 ];
@@ -37,7 +36,31 @@ app.use((req, res, next) => {
 
 app.use(
   cors({
-    origin: true, // Permitir TODOS los orígenes
+    origin: function (origin, callback) {
+      console.log(`🔍 CORS check - Origin: ${origin}`);
+      
+      // Permitir todos los orígenes para desarrollo
+      if (!origin) {
+        console.log(`✅ CORS permitido (no origin)`);
+        return callback(null, true);
+      }
+      
+      // Lista de orígenes permitidos
+      const allowedOrigins = [
+        "https://tuweb-ai.com",
+        "https://www.tuweb-ai.com",
+        "http://localhost:3000",
+        "http://localhost:5173"
+      ];
+      
+      if (allowedOrigins.includes(origin)) {
+        console.log(`✅ CORS permitido para: ${origin}`);
+        callback(null, true);
+      } else {
+        console.log(`❌ CORS bloqueado para: ${origin}`);
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: true,
     methods: ["GET", "POST", "OPTIONS"],
     allowedHeaders: [
