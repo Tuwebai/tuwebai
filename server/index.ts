@@ -165,6 +165,41 @@ app.post("/test", (req, res) => {
   });
 });
 
+// Test endpoint para probar Nodemailer
+app.post("/test-email", async (req, res) => {
+  try {
+    console.log("📧 Test de Nodemailer iniciado...");
+    
+    const testResult = await transporter.sendMail({
+      from: 'tuwebai@gmail.com',
+      to: 'tuwebai@gmail.com',
+      subject: 'Test de Nodemailer - ' + new Date().toISOString(),
+      html: `
+        <h2>Test de Nodemailer</h2>
+        <p>Este es un email de prueba para verificar que Nodemailer funciona correctamente.</p>
+        <p><strong>Timestamp:</strong> ${new Date().toISOString()}</p>
+        <p><strong>Servidor:</strong> tuwebai-backend.onrender.com</p>
+      `
+    });
+    
+    console.log("✅ Test de email exitoso:", testResult.messageId);
+    res.json({
+      status: "OK",
+      message: "Email de prueba enviado correctamente",
+      messageId: testResult.messageId,
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error("❌ Error en test de email:", error);
+    res.status(500).json({
+      status: "ERROR",
+      message: "Error enviando email de prueba",
+      error: error.message,
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
 // Favicon
 app.get("/favicon.ico", (req, res) => {
   res.sendFile(path.join(__dirname, "../public/favicon.ico"));

@@ -140,6 +140,37 @@ app.post("/test", (req, res) => {
     timestamp: (/* @__PURE__ */ new Date()).toISOString()
   });
 });
+app.post("/test-email", async (req, res) => {
+  try {
+    console.log("\u{1F4E7} Test de Nodemailer iniciado...");
+    const testResult = await transporter.sendMail({
+      from: "tuwebai@gmail.com",
+      to: "tuwebai@gmail.com",
+      subject: "Test de Nodemailer - " + (/* @__PURE__ */ new Date()).toISOString(),
+      html: `
+        <h2>Test de Nodemailer</h2>
+        <p>Este es un email de prueba para verificar que Nodemailer funciona correctamente.</p>
+        <p><strong>Timestamp:</strong> ${(/* @__PURE__ */ new Date()).toISOString()}</p>
+        <p><strong>Servidor:</strong> tuwebai-backend.onrender.com</p>
+      `
+    });
+    console.log("\u2705 Test de email exitoso:", testResult.messageId);
+    res.json({
+      status: "OK",
+      message: "Email de prueba enviado correctamente",
+      messageId: testResult.messageId,
+      timestamp: (/* @__PURE__ */ new Date()).toISOString()
+    });
+  } catch (error) {
+    console.error("\u274C Error en test de email:", error);
+    res.status(500).json({
+      status: "ERROR",
+      message: "Error enviando email de prueba",
+      error: error.message,
+      timestamp: (/* @__PURE__ */ new Date()).toISOString()
+    });
+  }
+});
 app.get("/favicon.ico", (req, res) => {
   res.sendFile(path.join(__dirname, "../public/favicon.ico"));
 });
