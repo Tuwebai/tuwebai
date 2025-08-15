@@ -225,7 +225,7 @@ app.post("/crear-preferencia", async (req, res) => {
 // Configuración de EmailJS
 const EMAILJS_SERVICE_ID = "service_9s9hqqn";
 const EMAILJS_TEMPLATE_ID = "template_8pxfpyh";
-const EMAILJS_PRIVATE_KEY = "JwEzBkL2LmY4a6WRkkodX";
+const EMAILJS_PUBLIC_KEY = "JwEzBkL2LmY4a6WRkkodX";
 
 // Endpoint de consulta (alias para compatibilidad)
 app.post("/contact", async (req, res) => {
@@ -254,7 +254,7 @@ app.post("/contact", async (req, res) => {
     console.log("📤 Enviando email con EmailJS...");
     console.log("- Service ID:", EMAILJS_SERVICE_ID);
     console.log("- Template ID:", EMAILJS_TEMPLATE_ID);
-    console.log("- Private Key:", EMAILJS_PRIVATE_KEY ? "Configurado" : "No configurado");
+    console.log("- Public Key:", EMAILJS_PUBLIC_KEY ? "Configurado" : "No configurado");
 
     // Enviar email con EmailJS
     const emailResult = await emailjs.send(
@@ -266,7 +266,7 @@ app.post("/contact", async (req, res) => {
         title: emailTitle,
         message,
       },
-      { privateKey: EMAILJS_PRIVATE_KEY }
+      { publicKey: EMAILJS_PUBLIC_KEY }
     );
 
     console.log("✅ Email enviado exitosamente:", emailResult);
@@ -306,7 +306,7 @@ app.post("/consulta", async (req, res) => {
         title,
         message,
       },
-      { privateKey: EMAILJS_PRIVATE_KEY }
+      { publicKey: EMAILJS_PUBLIC_KEY }
     );
 
     return res.json({ message: "Mensaje enviado correctamente" });
