@@ -64,167 +64,27 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
     }
   };
 
-  // SOLO LOS 3 PROYECTOS QUE FUNCIONAN
+  // Array de proyectos (actualmente vacío - listo para proyectos reales)
   const projects: Project[] = [
     {
       id: 1,
-      title: "Ropa Urbana Moderna",
+      title: "LH Decants",
       category: "e-commerce",
-      description: "Marca joven de moda urbana con diseño exclusivo y tienda online integrada con pasarela de pagos, stock en tiempo real y catálogo dinámico.",
+      description: "Explorá el arte del perfume sin comprar a ciegas: nuestros decants 100% originales te acercan a las fragancias más exclusivas del mundo, gota a gota.",
       features: [
-        "Diseño minimalista y moderno",
-        "Slider de productos destacados",
-        "Catálogo por categorías",
-        "Carrito funcional",
-        "Estilo dark con acentos en neón"
+        "Decants 100% originales",
+        "Fragancias exclusivas del mundo",
+        "Preserva calidad e intensidad",
+        "Frascos auténticos",
+        "Elegancia en su forma más pura"
       ],
       results: [
-        { label: "Conversión", value: "4.2%" },
-        { label: "Ventas móviles", value: "+75%" },
-        { label: "Retorno visitas", value: "68%" }
+        { label: "Satisfacción", value: "98%" },
+        { label: "Productos originales", value: "100%" },
+        { label: "Variedad", value: "+200 fragancias" }
       ],
-      image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1112&q=80",
-      detailsUrl: "/ropaurbana"
-    },
-    {
-      id: 2,
-      title: "Muebles Minimalistas",
-      category: "muebleria",
-      description: "Tienda de muebles de diseño contemporáneo, con catálogo interactivo, sección de inspiración y contacto personalizado.",
-      features: [
-        "Catálogo por ambientes",
-        "Sección 'Inspiración'",
-        "Carrusel de ambientes reales",
-        "Página de contacto con mapa",
-        "Diseño limpio con paleta clara"
-      ],
-      results: [
-        { label: "Tiempo en página", value: "+62%" },
-        { label: "Contactos", value: "+95%" },
-        { label: "Visualizaciones", value: "4.3x" }
-      ],
-      image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-      detailsUrl: "/muebles"
-    },
-    {
-      id: 3,
-      title: "Dulce Tentación",
-      category: "tienda-online",
-      description: "Sitio alegre para venta de golosinas artesanales, con promociones, sección de productos y experiencia visual divertida.",
-      features: [
-        "Diseño colorido y amigable",
-        "Grid de productos con precios",
-        "Sección 'Promos del mes'",
-        "Animaciones interactivas",
-        "Integración con redes sociales"
-      ],
-      results: [
-        { label: "Ventas online", value: "+185%" },
-        { label: "Tiempo en sitio", value: "+73%" },
-        { label: "Tasa de rebote", value: "-45%" }
-      ],
-      image: "https://images.unsplash.com/photo-1621939514649-280e2ee25f60?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-      detailsUrl: "/dulce"
-    },
-    {
-      id: 4,
-      title: "Fitness Personalizado",
-      category: "salud-bienestar",
-      description: "Plataforma de entrenamiento físico personalizado con programas a medida, seguimiento de progreso y asesoramiento nutricional.",
-      features: [
-        "Planes personalizados de entrenamiento",
-        "Videos de ejercicios en HD",
-        "Seguimiento de métricas físicas",
-        "Asesoramiento nutricional",
-        "Reserva de sesiones online"
-      ],
-      results: [
-        { label: "Retención", value: "+87%" },
-        { label: "Resultados", value: "98% efectividad" },
-        { label: "Satisfacción", value: "4.9/5" }
-      ],
-      image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-      detailsUrl: "/fitness"
-    },
-    {
-      id: 5,
-      title: "Estudio Creativo",
-      category: "diseno-branding",
-      description: "Portfolio interactivo de un estudio de diseño y branding con showcases de proyectos, proceso creativo y formulario de presupuesto.",
-      features: [
-        "Portfolio visual interactivo",
-        "Casos de estudio detallados",
-        "Animaciones sofisticadas",
-        "Sistema de cotización online",
-        "Descarga de recursos"
-      ],
-      results: [
-        { label: "Captación", value: "+132%" },
-        { label: "Proyectos", value: "3.7x más" },
-        { label: "Nuevos clientes", value: "+56%" }
-      ],
-      image: "https://images.unsplash.com/photo-1572044162444-ad60f128bdea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-      detailsUrl: "/estudio"
-    },
-    {
-      id: 6,
-      title: "Viajes de Autor",
-      category: "turismo-exclusivo",
-      description: "Agencia de viajes premium con experiencias únicas, destinos exclusivos y servicios personalizados para viajeros exigentes.",
-      features: [
-        "Galería inmersiva de destinos",
-        "Itinerarios personalizados",
-        "Testimonios de viajeros",
-        "Reservas y pagos seguros",
-        "Asesor personal de viajes"
-      ],
-      results: [
-        { label: "Reservas premium", value: "+230%" },
-        { label: "Tiempo de planeación", value: "-45%" },
-        { label: "Recomendaciones", value: "8/10 clientes" }
-      ],
-      image: "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-      detailsUrl: "/viajes"
-    },
-    {
-      id: 7,
-      title: "Academia Online",
-      category: "educacion",
-      description: "Plataforma educativa con cursos de alta calidad, clases en vivo y certificaciones reconocidas en diversas disciplinas profesionales.",
-      features: [
-        "Cursos on-demand y en vivo",
-        "Dashboard de progreso",
-        "Certificaciones descargables",
-        "Comunidad de estudiantes",
-        "Profesores expertos"
-      ],
-      results: [
-        { label: "Finalización", value: "85% de cursos" },
-        { label: "Colocación laboral", value: "+67%" },
-        { label: "Satisfacción", value: "4.8/5" }
-      ],
-      image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1171&q=80",
-      detailsUrl: "/academia"
-    },
-    {
-      id: 8,
-      title: "Pet Boutique",
-      category: "mascotas",
-      description: "Tienda premium para mascotas con productos exclusivos, accesorios de diseño y servicios de cuidado personalizado para tu mejor amigo.",
-      features: [
-        "Catálogo premium para mascotas",
-        "Filtros por tipo de mascota",
-        "Recomendaciones personalizadas",
-        "Suscripción mensual",
-        "Asesoramiento veterinario"
-      ],
-      results: [
-        { label: "Recurrencia", value: "76% mensual" },
-        { label: "Ticket promedio", value: "+124%" },
-        { label: "Alcance", value: "3.8x" }
-      ],
-      image: "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80",
-      detailsUrl: "/petboutique"
+      image: "/lhdecant-card.png",
+      detailsUrl: "https://lhdecant.com/"
     }
   ];
 
@@ -252,6 +112,12 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
   // Manejador de navegación para proyectos
   const handleProjectClick = (project: Project) => {
     setSelectedProject(project);
+  };
+
+  // Manejador para visitar página web externa
+  const handleVisitWebsite = (url: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   return (
@@ -324,14 +190,23 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
                 transition: { duration: 0.2 }
               }}
             >
-              <div className="h-48 overflow-hidden relative">
+              <div className="h-48 overflow-hidden relative group">
                 <img 
                   src={project.image} 
                   alt={project.title} 
-                  className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-3">
                   <span className="text-white font-medium text-sm">Vista Previa</span>
+                </div>
+                {/* Botón "Visitar página web" que aparece en hover */}
+                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                  <button
+                    onClick={(e) => handleVisitWebsite(project.detailsUrl, e)}
+                    className="bg-gradient-to-r from-[#00CCFF] to-[#9933FF] text-white px-4 py-2 rounded-lg font-medium hover:shadow-lg hover:shadow-[#00CCFF]/20 transition-all duration-200 transform hover:scale-105"
+                  >
+                    Visitar página web
+                  </button>
                 </div>
               </div>
               
