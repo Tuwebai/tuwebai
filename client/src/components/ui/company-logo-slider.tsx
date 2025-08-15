@@ -18,6 +18,22 @@ export default function CompanyLogoSlider({ className = '' }: CompanyLogoSliderP
     {
       name: 'LH Decants',
       logo: '/lhdecant-logo.jpg'
+    },
+    {
+      name: 'LH Decants',
+      logo: '/lhdecant-logo.jpg'
+    },
+    {
+      name: 'LH Decants',
+      logo: '/lhdecant-logo.jpg'
+    },
+    {
+      name: 'LH Decants',
+      logo: '/lhdecant-logo.jpg'
+    },
+    {
+      name: 'LH Decants',
+      logo: '/lhdecant-logo.jpg'
     }
   ];
 
@@ -25,31 +41,31 @@ export default function CompanyLogoSlider({ className = '' }: CompanyLogoSliderP
   const settings = {
     dots: false,
     infinite: true,
-    slidesToShow: Math.min(5, companyLogos.length),
+    slidesToShow: 3,
     slidesToScroll: 1,
     autoplay: true,
-    speed: 3000,
-    autoplaySpeed: 0,
-    cssEase: 'linear',
+    speed: 2000,
+    autoplaySpeed: 3000,
+    cssEase: 'ease-in-out',
     pauseOnHover: true,
     arrows: false,
     responsive: [
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: Math.min(4, companyLogos.length),
+          slidesToShow: 3,
         }
       },
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: Math.min(3, companyLogos.length),
+          slidesToShow: 2,
         }
       },
       {
         breakpoint: 640,
         settings: {
-          slidesToShow: Math.min(2, companyLogos.length),
+          slidesToShow: 1,
         }
       }
     ]
