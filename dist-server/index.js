@@ -121,6 +121,24 @@ app.get("/api/health", (req, res) => {
     timestamp: (/* @__PURE__ */ new Date()).toISOString()
   });
 });
+app.get("/test", (req, res) => {
+  res.json({
+    status: "OK",
+    message: "Test endpoint funcionando",
+    timestamp: (/* @__PURE__ */ new Date()).toISOString(),
+    env: process.env.NODE_ENV || "development"
+  });
+});
+app.post("/test", (req, res) => {
+  console.log("\u{1F9EA} POST /test recibido");
+  console.log("\u{1F4CB} Body:", req.body);
+  res.json({
+    status: "OK",
+    message: "Test POST funcionando",
+    receivedData: req.body,
+    timestamp: (/* @__PURE__ */ new Date()).toISOString()
+  });
+});
 app.get("/favicon.ico", (req, res) => {
   res.sendFile(path.join(__dirname, "../public/favicon.ico"));
 });
@@ -170,13 +188,26 @@ var EMAILJS_SERVICE_ID = "service_9s9hqqn";
 var EMAILJS_TEMPLATE_ID = "template_8pxfpyh";
 var EMAILJS_PRIVATE_KEY = "JwEzBkL2LmY4a6WRkkodX";
 app.post("/contact", async (req, res) => {
+  console.log("\u{1F4E7} POST /contact recibido");
+  console.log("\u{1F4CB} Body recibido:", req.body);
   try {
     const { name, email, title, message } = req.body;
+    console.log("\u{1F50D} Validando campos...");
+    console.log("- name:", name);
+    console.log("- email:", email);
+    console.log("- title:", title);
+    console.log("- message:", message);
     if (!name || !email || !message || message.trim().length < 10) {
+      console.log("\u274C Validaci\xF3n fallida");
       return res.status(400).json({ error: "Datos inv\xE1lidos: nombre, email y mensaje son requeridos" });
     }
     const emailTitle = title || "Consulta desde formulario de contacto";
-    await emailjs.send(
+    console.log("\u{1F4DD} T\xEDtulo del email:", emailTitle);
+    console.log("\u{1F4E4} Enviando email con EmailJS...");
+    console.log("- Service ID:", EMAILJS_SERVICE_ID);
+    console.log("- Template ID:", EMAILJS_TEMPLATE_ID);
+    console.log("- Private Key:", EMAILJS_PRIVATE_KEY ? "Configurado" : "No configurado");
+    const emailResult = await emailjs.send(
       EMAILJS_SERVICE_ID,
       EMAILJS_TEMPLATE_ID,
       {
@@ -187,10 +218,19 @@ app.post("/contact", async (req, res) => {
       },
       EMAILJS_PRIVATE_KEY
     );
+    console.log("\u2705 Email enviado exitosamente:", emailResult);
     return res.json({ message: "Mensaje enviado correctamente" });
   } catch (err) {
-    console.error("Error en consulta:", err);
-    return res.status(500).json({ error: "Error en el servidor" });
+    console.error("\u274C Error en endpoint /contact:", err);
+    console.error("\u274C Error details:", {
+      message: err.message,
+      stack: err.stack,
+      name: err.name
+    });
+    return res.status(500).json({
+      error: "Error en el servidor",
+      details: process.env.NODE_ENV === "development" ? err.message : "Error interno del servidor"
+    });
   }
 });
 app.post("/consulta", async (req, res) => {
