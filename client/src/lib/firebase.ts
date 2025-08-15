@@ -13,7 +13,8 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig, {
-  name: 'TuWeb.ai'
+  name: 'TuWeb.ai',
+  authDomain: 'tuwebai-db.firebaseapp.com'
 });
 
 export const auth = getAuth(app);
