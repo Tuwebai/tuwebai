@@ -26,7 +26,9 @@ export default function TestimonialForm({ onAddTestimonial }: TestimonialFormPro
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Validación simple
@@ -39,26 +41,33 @@ export default function TestimonialForm({ onAddTestimonial }: TestimonialFormPro
       return;
     }
 
-    // Enviar el nuevo testimonio al componente padre
-    onAddTestimonial({
-      name: formData.name,
-      company: formData.company || 'Cliente',
-      testimonial: formData.testimonial,
-    });
+    setIsSubmitting(true);
 
-    // Mostrar mensaje de éxito
-    toast({
-      title: "¡Gracias por tu testimonio!",
-      description: "Tu experiencia ha sido agregada a nuestra sección de testimonios.",
-    });
+    try {
+      // Enviar el nuevo testimonio al componente padre
+      await onAddTestimonial({
+        name: formData.name,
+        company: formData.company || 'Cliente',
+        testimonial: formData.testimonial,
+      });
 
-    // Resetear formulario y cerrar
-    setFormData({
-      name: '',
-      company: '',
-      testimonial: '',
-    });
-    setIsOpen(false);
+      // Resetear formulario y cerrar
+      setFormData({
+        name: '',
+        company: '',
+        testimonial: '',
+      });
+      setIsOpen(false);
+    } catch (error) {
+      console.error('Error submitting testimonial:', error);
+      toast({
+        title: "Error",
+        description: "No se pudo enviar el testimonio. Por favor, inténtalo de nuevo.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -169,11 +178,21 @@ export default function TestimonialForm({ onAddTestimonial }: TestimonialFormPro
                   </motion.button>
                   <motion.button
                     type="submit"
-                    className="px-4 py-2 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-md text-white font-medium"
-                    whileHover={{ scale: 1.05, boxShadow: '0 5px 15px -5px rgba(0, 204, 255, 0.7)' }}
-                    whileTap={{ scale: 0.95 }}
+                    disabled={isSubmitting}
+                    className={`px-4 py-2 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-md text-white font-medium ${
+                      isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
+                    }`}
+                    whileHover={!isSubmitting ? { scale: 1.05, boxShadow: '0 5px 15px -5px rgba(0, 204, 255, 0.7)' } : {}}
+                    whileTap={!isSubmitting ? { scale: 0.95 } : {}}
                   >
-                    Enviar testimonio
+                    {isSubmitting ? (
+                      <div className="flex items-center">
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                        Enviando...
+                      </div>
+                    ) : (
+                      'Enviar testimonio'
+                    )}
                   </motion.button>
                 </div>
               </form>

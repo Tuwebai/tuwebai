@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback } from 'react';
+import { useRef, useState, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useIntersectionObserver } from '@/hooks/use-intersection-observer';
 import AnimatedShape from '../ui/animated-shape';
@@ -6,6 +6,8 @@ import TestimonialForm from '../ui/testimonial-form';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { getApprovedTestimonials, createTestimonial, Testimonial as TestimonialType } from '@/services/testimonials';
+import { useToast } from '@/hooks/use-toast';
 
 interface Testimonial {
   name: string;
@@ -105,23 +107,42 @@ export default function TestimonialsSection({ setRef }: TestimonialsSectionProps
   const sectionRef = useRef<HTMLElement>(null);
   const { ref: titleRef, hasIntersected: titleVisible } = useIntersectionObserver();
   const sliderRef = useRef<any>(null);
+  const { toast } = useToast();
   
-  // Lista de testimonios predefinidos
-  const initialTestimonials: Testimonial[] = [
-    {
-      name: "Carlos Sánchez",
-      company: "CEO, Muebles Modernos",
-      testimonial: "Estamos extremadamente satisfechos con los resultados que TuWeb.ai ha conseguido para nuestro negocio. Nuestra tasa de conversión digital ha aumentado un 245% y el retorno de inversión superó nuestras expectativas más optimistas."
-    },
-    {
-      name: "Dra. Marta Rodríguez",
-      company: "Directora, Clínica Dental Sonrisa",
-      testimonial: "La estrategia SEO local que implementaron aumentó nuestras solicitudes de citas en un 180%. Lo mejor es que el equipo entendió perfectamente las particularidades de nuestro sector."
+  // Estado para gestionar los testimonios
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [loading, setLoading] = useState(true);
+  
+  // Cargar testimonios desde Firestore al montar el componente
+  useEffect(() => {
+    loadTestimonials();
+  }, []);
+  
+  const loadTestimonials = async () => {
+    try {
+      setLoading(true);
+      const approvedTestimonials = await getApprovedTestimonials();
+      
+      // Convertir testimonios de Firestore al formato local
+      const formattedTestimonials: Testimonial[] = approvedTestimonials.map(t => ({
+        name: t.name,
+        company: t.company,
+        testimonial: t.testimonial,
+        isNew: false
+      }));
+      
+      setTestimonials(formattedTestimonials);
+    } catch (error) {
+      console.error('Error loading testimonials:', error);
+      toast({
+        title: "Error",
+        description: "No se pudieron cargar los testimonios. Por favor, recarga la página.",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
     }
-  ];
-  
-  // Estado para gestionar los testimonios, incluyendo los nuevos
-  const [testimonials, setTestimonials] = useState<Testimonial[]>(initialTestimonials);
+  };
   
   // Set the ref for the parent component
   if (sectionRef.current && !sectionRef.current.hasAttribute('data-ref-set')) {
@@ -135,24 +156,46 @@ export default function TestimonialsSection({ setRef }: TestimonialsSectionProps
   };
   
   // Función para agregar un nuevo testimonio
-  const handleAddTestimonial = useCallback((newTestimonial: Testimonial) => {
-    // Marcar el testimonio como nuevo
-    const testimonialWithFlag = {
-      ...newTestimonial,
-      isNew: true
-    };
-    
-    // Actualizar la lista de testimonios
-    setTestimonials(prevTestimonials => [testimonialWithFlag, ...prevTestimonials]);
-    
-    // Si hay un slider activo, moverse a la primera diapositiva para mostrar el nuevo testimonio
-    if (sliderRef.current) {
-      setTimeout(() => {
-        // @ts-ignore
-        sliderRef.current.slickGoTo(0);
-      }, 300);
+  const handleAddTestimonial = useCallback(async (newTestimonial: Testimonial) => {
+    try {
+      // Guardar testimonio en Firestore
+      await createTestimonial({
+        name: newTestimonial.name,
+        company: newTestimonial.company,
+        testimonial: newTestimonial.testimonial
+      });
+      
+      // Marcar el testimonio como nuevo para mostrar en la UI
+      const testimonialWithFlag = {
+        ...newTestimonial,
+        isNew: true
+      };
+      
+      // Actualizar la lista de testimonios localmente
+      setTestimonials(prevTestimonials => [testimonialWithFlag, ...prevTestimonials]);
+      
+      // Mostrar mensaje de éxito
+      toast({
+        title: "¡Testimonio enviado!",
+        description: "Tu testimonio ha sido enviado y será revisado antes de ser publicado.",
+      });
+      
+      // Si hay un slider activo, moverse a la primera diapositiva para mostrar el nuevo testimonio
+      if (sliderRef.current) {
+        setTimeout(() => {
+          // @ts-ignore
+          sliderRef.current.slickGoTo(0);
+        }, 300);
+      }
+    } catch (error) {
+      console.error('Error creating testimonial:', error);
+      toast({
+        title: "Error",
+        description: "No se pudo enviar el testimonio. Por favor, inténtalo de nuevo.",
+        variant: "destructive"
+      });
     }
-  }, [sliderRef]);
+  }, [sliderRef, toast]);
 
   // Configuración del slider
   const settings = {
@@ -217,19 +260,30 @@ export default function TestimonialsSection({ setRef }: TestimonialsSectionProps
         
         {/* Versión móvil y tablet: Slider */}
         <div className="lg:hidden w-full px-2">
-          <Slider {...settings} ref={sliderRef}>
-            {testimonials.map((testimonial, index: number) => (
-              <div key={`mobile-${testimonial.name}-${index}`} className="px-2">
-                <TestimonialCard 
-                  name={testimonial.name}
-                  company={testimonial.company}
-                  testimonial={testimonial.testimonial}
-                  delay={index % 3}
-                  isNew={testimonial.isNew}
-                />
-              </div>
-            ))}
-          </Slider>
+          {loading ? (
+            <div className="flex justify-center items-center h-64">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00CCFF]"></div>
+            </div>
+          ) : testimonials.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-gray-400 text-lg">Aún no hay testimonios publicados.</p>
+              <p className="text-gray-500 text-sm mt-2">¡Sé el primero en compartir tu experiencia!</p>
+            </div>
+          ) : (
+            <Slider {...settings} ref={sliderRef}>
+              {testimonials.map((testimonial, index: number) => (
+                <div key={`mobile-${testimonial.name}-${index}`} className="px-2">
+                  <TestimonialCard 
+                    name={testimonial.name}
+                    company={testimonial.company}
+                    testimonial={testimonial.testimonial}
+                    delay={index % 3}
+                    isNew={testimonial.isNew}
+                  />
+                </div>
+              ))}
+            </Slider>
+          )}
           
           {/* Controles del slider */}
           <div className="flex justify-center gap-4 mt-8">
@@ -261,24 +315,35 @@ export default function TestimonialsSection({ setRef }: TestimonialsSectionProps
         
         {/* Versión desktop: Grid */}
         <div className="hidden lg:grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          <AnimatePresence>
-            {testimonials.slice(0, 6).map((testimonial, index) => (
-              <motion.div 
-                key={`desktop-${testimonial.name}-${index}`}
-                initial={testimonial.isNew ? { opacity: 0, scale: 0.8 } : false}
-                animate={testimonial.isNew ? { opacity: 1, scale: 1 } : false}
-                transition={{ duration: 0.5, type: 'spring' }}
-              >
-                <TestimonialCard 
-                  name={testimonial.name}
-                  company={testimonial.company}
-                  testimonial={testimonial.testimonial}
-                  delay={index % 3}
-                  isNew={testimonial.isNew}
-                />
-              </motion.div>
-            ))}
-          </AnimatePresence>
+          {loading ? (
+            <div className="col-span-3 flex justify-center items-center h-64">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#00CCFF]"></div>
+            </div>
+          ) : testimonials.length === 0 ? (
+            <div className="col-span-3 text-center py-12">
+              <p className="text-gray-400 text-lg">Aún no hay testimonios publicados.</p>
+              <p className="text-gray-500 text-sm mt-2">¡Sé el primero en compartir tu experiencia!</p>
+            </div>
+          ) : (
+            <AnimatePresence>
+              {testimonials.slice(0, 6).map((testimonial, index) => (
+                <motion.div 
+                  key={`desktop-${testimonial.name}-${index}`}
+                  initial={testimonial.isNew ? { opacity: 0, scale: 0.8 } : false}
+                  animate={testimonial.isNew ? { opacity: 1, scale: 1 } : false}
+                  transition={{ duration: 0.5, type: 'spring' }}
+                >
+                  <TestimonialCard 
+                    name={testimonial.name}
+                    company={testimonial.company}
+                    testimonial={testimonial.testimonial}
+                    delay={index % 3}
+                    isNew={testimonial.isNew}
+                  />
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          )}
         </div>
         
         {/* Botón de "Dejar testimonio" */}
