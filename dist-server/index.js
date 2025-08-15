@@ -143,16 +143,17 @@ app.post("/test", (req, res) => {
 app.post("/test-email", async (req, res) => {
   try {
     console.log("\u{1F4E7} Test de Nodemailer iniciado...");
+    const testData = {
+      name: "Sistema de Prueba",
+      email: "test@tuweb-ai.com",
+      message: "Este es un email de prueba para verificar que Nodemailer funciona correctamente con la nueva plantilla profesional.",
+      type: "test"
+    };
     const testResult = await transporter.sendMail({
       from: "tuwebai@gmail.com",
       to: "tuwebai@gmail.com",
       subject: "Test de Nodemailer - " + (/* @__PURE__ */ new Date()).toISOString(),
-      html: `
-        <h2>Test de Nodemailer</h2>
-        <p>Este es un email de prueba para verificar que Nodemailer funciona correctamente.</p>
-        <p><strong>Timestamp:</strong> ${(/* @__PURE__ */ new Date()).toISOString()}</p>
-        <p><strong>Servidor:</strong> tuwebai-backend.onrender.com</p>
-      `
+      html: generateEmailTemplate(testData)
     });
     console.log("\u2705 Test de email exitoso:", testResult.messageId);
     res.json({
@@ -223,6 +224,188 @@ var transporter = nodemailer.createTransport({
     pass: "c z n h h w t e c r q m k u a a"
   }
 });
+function generateEmailTemplate(data) {
+  const { name, email, message, title, type } = data;
+  const emailTitle = title || "Consulta desde formulario de contacto";
+  const isTest = type === "test";
+  return `
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>${emailTitle}</title>
+      <style>
+        body {
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          line-height: 1.6;
+          color: #333;
+          margin: 0;
+          padding: 0;
+          background-color: #f8f9fa;
+        }
+        .container {
+          max-width: 600px;
+          margin: 0 auto;
+          background-color: #ffffff;
+          border-radius: 12px;
+          overflow: hidden;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          padding: 30px 20px;
+          text-align: center;
+          color: white;
+        }
+        .logo {
+          font-size: 28px;
+          font-weight: bold;
+          margin-bottom: 10px;
+          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        .subtitle {
+          font-size: 16px;
+          opacity: 0.9;
+          margin: 0;
+        }
+        .content {
+          padding: 40px 30px;
+        }
+        .title {
+          color: #2d3748;
+          font-size: 24px;
+          font-weight: 600;
+          margin-bottom: 30px;
+          text-align: center;
+        }
+        .info-section {
+          background-color: #f7fafc;
+          border-radius: 8px;
+          padding: 20px;
+          margin-bottom: 25px;
+          border-left: 4px solid #667eea;
+        }
+        .info-item {
+          margin-bottom: 15px;
+        }
+        .info-label {
+          font-weight: 600;
+          color: #4a5568;
+          margin-bottom: 5px;
+        }
+        .info-value {
+          color: #2d3748;
+          font-size: 16px;
+        }
+        .message-section {
+          background-color: #ffffff;
+          border: 1px solid #e2e8f0;
+          border-radius: 8px;
+          padding: 20px;
+          margin-top: 20px;
+        }
+        .message-label {
+          font-weight: 600;
+          color: #4a5568;
+          margin-bottom: 10px;
+          font-size: 16px;
+        }
+        .message-content {
+          color: #2d3748;
+          font-size: 16px;
+          line-height: 1.7;
+          white-space: pre-wrap;
+        }
+        .footer {
+          background-color: #2d3748;
+          color: white;
+          text-align: center;
+          padding: 20px;
+          font-size: 14px;
+        }
+        .footer a {
+          color: #667eea;
+          text-decoration: none;
+        }
+        .footer a:hover {
+          text-decoration: underline;
+        }
+        .timestamp {
+          color: #718096;
+          font-size: 12px;
+          text-align: center;
+          margin-top: 20px;
+          padding-top: 20px;
+          border-top: 1px solid #e2e8f0;
+        }
+        @media (max-width: 600px) {
+          .container {
+            margin: 10px;
+            border-radius: 8px;
+          }
+          .content {
+            padding: 20px 15px;
+          }
+          .header {
+            padding: 20px 15px;
+          }
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <div class="logo">TuWebAI</div>
+          <p class="subtitle">Inteligencia Artificial para tu Negocio</p>
+        </div>
+        
+        <div class="content">
+          <h1 class="title">${isTest ? "Test de Nodemailer" : emailTitle}</h1>
+          
+          <div class="info-section">
+            <div class="info-item">
+              <div class="info-label">\u{1F464} Nombre:</div>
+              <div class="info-value">${name}</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">\u{1F4E7} Email:</div>
+              <div class="info-value">${email}</div>
+            </div>
+            ${isTest ? `
+            <div class="info-item">
+              <div class="info-label">\u{1F5A5}\uFE0F Servidor:</div>
+              <div class="info-value">tuwebai-backend.onrender.com</div>
+            </div>
+            ` : ""}
+          </div>
+          
+          <div class="message-section">
+            <div class="message-label">\u{1F4AC} Mensaje:</div>
+            <div class="message-content">${message}</div>
+          </div>
+          
+          <div class="timestamp">
+            \u{1F4C5} Enviado el: ${(/* @__PURE__ */ new Date()).toLocaleString("es-ES", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: "America/Argentina/Buenos_Aires"
+  })}
+          </div>
+        </div>
+        
+        <div class="footer">
+          <p>\xA9 2024 TuWebAI. Todos los derechos reservados.</p>
+          <p>Visita nuestro sitio: <a href="https://tuweb-ai.com">tuweb-ai.com</a></p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+}
 app.post("/contact", async (req, res) => {
   console.log("\u{1F4E7} POST /contact recibido");
   console.log("\u{1F4CB} Body recibido:", req.body);
@@ -247,13 +430,13 @@ app.post("/contact", async (req, res) => {
       from: "tuwebai@gmail.com",
       to: "tuwebai@gmail.com",
       subject: emailTitle,
-      html: `
-        <h2>Nueva consulta desde el sitio web</h2>
-        <p><strong>Nombre:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Mensaje:</strong></p>
-        <p>${message}</p>
-      `
+      html: generateEmailTemplate({
+        name,
+        email,
+        message,
+        title: emailTitle,
+        type: "contact"
+      })
     });
     console.log("\u2705 Email enviado exitosamente:", emailResult.messageId);
     return res.json({ message: "Mensaje enviado correctamente" });
@@ -280,13 +463,13 @@ app.post("/consulta", async (req, res) => {
       from: "tuwebai@gmail.com",
       to: "tuwebai@gmail.com",
       subject: title,
-      html: `
-        <h2>Nueva consulta desde el sitio web</h2>
-        <p><strong>Nombre:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Mensaje:</strong></p>
-        <p>${message}</p>
-      `
+      html: generateEmailTemplate({
+        name,
+        email,
+        message,
+        title,
+        type: "contact"
+      })
     });
     return res.json({ message: "Mensaje enviado correctamente" });
   } catch (err) {
