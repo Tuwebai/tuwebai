@@ -8,7 +8,7 @@ import { fileURLToPath } from "url";
 import cors from "cors";
 import helmet from "helmet";
 import { MercadoPagoConfig, Preference, Payment } from "mercadopago";
-import emailjs from "@emailjs/nodejs";
+import nodemailer from "nodemailer";
 import crypto from "crypto";
 import fs from "fs";
 
@@ -222,10 +222,14 @@ app.post("/crear-preferencia", async (req, res) => {
   }
 });
 
-// Configuración de EmailJS
-const EMAILJS_SERVICE_ID = "service_9s9hqqn";
-const EMAILJS_TEMPLATE_ID = "template_8pxfpyh";
-const EMAILJS_PUBLIC_KEY = "JwEzBkL2LmY4a6WRkkodX";
+// Configuración de Nodemailer (SMTP Gmail)
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'tuwebai@gmail.com',
+    pass: 'c z n h h w t e c r q m k u a a'
+  }
+});
 
 // Endpoint de consulta (alias para compatibilidad)
 app.post("/contact", async (req, res) => {
@@ -251,25 +255,26 @@ app.post("/contact", async (req, res) => {
     const emailTitle = title || "Consulta desde formulario de contacto";
     console.log("📝 Título del email:", emailTitle);
 
-    console.log("📤 Enviando email con EmailJS...");
-    console.log("- Service ID:", EMAILJS_SERVICE_ID);
-    console.log("- Template ID:", EMAILJS_TEMPLATE_ID);
-    console.log("- Public Key:", EMAILJS_PUBLIC_KEY ? "Configurado" : "No configurado");
+    console.log("📤 Enviando email con Nodemailer...");
+    console.log("- From:", 'tuwebai@gmail.com');
+    console.log("- To:", 'tuwebai@gmail.com');
+    console.log("- Subject:", emailTitle);
 
-    // Enviar email con EmailJS
-    const emailResult = await emailjs.send(
-      EMAILJS_SERVICE_ID,
-      EMAILJS_TEMPLATE_ID,
-      {
-        name,
-        email,
-        title: emailTitle,
-        message,
-      },
-      { publicKey: EMAILJS_PUBLIC_KEY }
-    );
+    // Enviar email con Nodemailer
+    const emailResult = await transporter.sendMail({
+      from: 'tuwebai@gmail.com',
+      to: 'tuwebai@gmail.com',
+      subject: emailTitle,
+      html: `
+        <h2>Nueva consulta desde el sitio web</h2>
+        <p><strong>Nombre:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Mensaje:</strong></p>
+        <p>${message}</p>
+      `
+    });
 
-    console.log("✅ Email enviado exitosamente:", emailResult);
+    console.log("✅ Email enviado exitosamente:", emailResult.messageId);
     return res.json({ message: "Mensaje enviado correctamente" });
   } catch (err) {
     console.error("❌ Error en endpoint /contact:", err);
@@ -296,18 +301,19 @@ app.post("/consulta", async (req, res) => {
       return res.status(400).json({ error: "Datos inválidos" });
     }
 
-    // Enviar email con EmailJS
-    await emailjs.send(
-      EMAILJS_SERVICE_ID,
-      EMAILJS_TEMPLATE_ID,
-      {
-        name,
-        email,
-        title,
-        message,
-      },
-      { publicKey: EMAILJS_PUBLIC_KEY }
-    );
+    // Enviar email con Nodemailer
+    await transporter.sendMail({
+      from: 'tuwebai@gmail.com',
+      to: 'tuwebai@gmail.com',
+      subject: title,
+      html: `
+        <h2>Nueva consulta desde el sitio web</h2>
+        <p><strong>Nombre:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Mensaje:</strong></p>
+        <p>${message}</p>
+      `
+    });
 
     return res.json({ message: "Mensaje enviado correctamente" });
   } catch (err) {
@@ -515,7 +521,7 @@ app.listen(port, () => {
   console.log(`🔐 SESSION_SECRET: ${process.env.SESSION_SECRET ? "Configurado" : "No configurado"}`);
   console.log(`💳 MERCADOPAGO_ACCESS_TOKEN: ${process.env.MERCADOPAGO_ACCESS_TOKEN ? "Configurado" : "No configurado"}`);
   console.log(`🔒 MERCADOPAGO_WEBHOOK_SECRET: ${process.env.MERCADOPAGO_WEBHOOK_SECRET ? "Configurado" : "No configurado"}`);
-  console.log(`📧 EMAILJS: ${EMAILJS_SERVICE_ID ? "Configurado" : "No configurado"}`);
+  console.log(`📧 NODEMAILER: ${transporter ? "Configurado" : "No configurado"}`);
   console.log(`🌐 Webhook URL: https://tuwebai-backend.onrender.com/webhook/mercadopago`);
   console.log(`🏥 Health Check: https://tuwebai-backend.onrender.com/webhook/mercadopago/health`);
 });
