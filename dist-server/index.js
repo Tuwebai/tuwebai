@@ -31,17 +31,8 @@ app.use((req, res, next) => {
 });
 app.use(
   cors({
-    origin: function(origin, callback) {
-      console.log(`\u{1F50D} CORS check - Origin: ${origin}`);
-      console.log(`\u{1F4CB} Allowed origins: ${allowedOrigins.join(", ")}`);
-      if (!origin || allowedOrigins.includes(origin)) {
-        console.log(`\u2705 CORS permitido para: ${origin}`);
-        callback(null, true);
-      } else {
-        console.log(`\u274C CORS bloqueado para: ${origin}`);
-        callback(null, true);
-      }
-    },
+    origin: true,
+    // Permitir TODOS los orígenes
     credentials: true,
     methods: ["GET", "POST", "OPTIONS"],
     allowedHeaders: [
