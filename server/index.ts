@@ -249,6 +249,11 @@ app.post("/contact", async (req, res) => {
     const emailTitle = title || "Consulta desde formulario de contacto";
     console.log("📝 Título del email:", emailTitle);
 
+    // Por ahora, solo responder éxito sin enviar email para diagnosticar
+    console.log("✅ Simulando envío exitoso (modo debug)");
+    return res.json({ message: "Mensaje enviado correctamente (modo debug)" });
+    
+    /* Comentado temporalmente para debug
     console.log("📤 Enviando email con EmailJS...");
     console.log("- Service ID:", EMAILJS_SERVICE_ID);
     console.log("- Template ID:", EMAILJS_TEMPLATE_ID);
@@ -269,6 +274,7 @@ app.post("/contact", async (req, res) => {
 
     console.log("✅ Email enviado exitosamente:", emailResult);
     return res.json({ message: "Mensaje enviado correctamente" });
+    */
   } catch (err) {
     console.error("❌ Error en endpoint /contact:", err);
     console.error("❌ Error details:", {
