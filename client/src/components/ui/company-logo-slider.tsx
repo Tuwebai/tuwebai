@@ -48,7 +48,12 @@ export default function CompanyLogoSlider({ className = '' }: CompanyLogoSliderP
   };
 
   // Lista de logos de empresas con sus nombres
-  const companyLogos = [];
+  const companyLogos = [
+    {
+      name: 'LH Decants',
+      logo: '/lhdecant-logo.jpg'
+    }
+  ];
 
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -68,8 +73,12 @@ export default function CompanyLogoSlider({ className = '' }: CompanyLogoSliderP
           {companyLogos.map((company, index: number) => (
             <div key={index} className="px-4">
               <div className="flex flex-col items-center justify-center h-20">
-                <div className="w-16 h-16 bg-gray-800 bg-opacity-50 rounded-lg flex items-center justify-center text-[#00CCFF] hover:text-[#9933FF] transition-colors duration-300 border border-gray-700">
-                  {company.icon}
+                <div className="w-16 h-16 bg-gray-800 bg-opacity-50 rounded-lg flex items-center justify-center transition-all duration-300 border border-gray-700 hover:border-[#00CCFF] overflow-hidden">
+                  <img 
+                    src={company.logo} 
+                    alt={`Logo de ${company.name}`}
+                    className="w-full h-full object-contain p-2"
+                  />
                 </div>
                 <p className="mt-2 text-xs text-gray-400">{company.name}</p>
               </div>
