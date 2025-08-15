@@ -275,10 +275,22 @@ function generateEmailTemplate(data) {
           text-align: center;
           color: white;
         }
-        .logo {
+        .logo-container {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-bottom: 15px;
+          gap: 15px;
+        }
+        .logo-image {
+          width: 50px;
+          height: 50px;
+          border-radius: 8px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+        .logo-text {
           font-size: 28px;
           font-weight: bold;
-          margin-bottom: 10px;
           text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
         .subtitle {
@@ -367,14 +379,28 @@ function generateEmailTemplate(data) {
           .header {
             padding: 20px 15px;
           }
+          .logo-container {
+            flex-direction: column;
+            gap: 10px;
+          }
+          .logo-image {
+            width: 40px;
+            height: 40px;
+          }
+          .logo-text {
+            font-size: 24px;
+          }
         }
       </style>
     </head>
     <body>
       <div class="container">
         <div class="header">
-          <div class="logo">TuWebAI</div>
-          <p class="subtitle">Inteligencia Artificial para tu Negocio</p>
+          <div class="logo-container">
+            <img src="https://tuweb-ai.com/logo-tuwebai.png" alt="TuWebAI Logo" class="logo-image" />
+            <div class="logo-text">TuWebAI</div>
+          </div>
+          <p class="subtitle">Agencia Digital de Desarrollo Web</p>
         </div>
         
         <div class="content">
