@@ -21,7 +21,7 @@ const Contacto: React.FC = () => {
     setAlert(null);
     let timeoutId: NodeJS.Timeout | null = null;
     try {
-      const res = await fetch(`${API_URL}/api/contact`, {
+      const res = await fetch(`${API_URL}/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
