@@ -1,4 +1,19 @@
-// Usar API REST en lugar de Firebase directo para evitar problemas de permisos
+import { db } from '@/lib/firebase';
+import {
+  collection,
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+  getDocs,
+  query,
+  where,
+  addDoc,
+  orderBy,
+  limit,
+  deleteDoc,
+  Timestamp
+} from 'firebase/firestore';
 
 export interface Testimonial {
   id?: string;
@@ -16,43 +31,40 @@ export interface Testimonial {
  */
 export async function getAllTestimonials(): Promise<Testimonial[]> {
   try {
-    const response = await fetch('/api/testimonials/');
-    const result = await response.json();
+    const testimonialsRef = collection(db, 'testimonials');
+    const q = query(
+      testimonialsRef,
+      orderBy('createdAt', 'desc')
+    );
+    const snapshot = await getDocs(q);
     
-    if (result.success) {
-      return result.data || [];
-    } else {
-      console.error('Error getting testimonials:', result.error);
-      return [];
-    }
+    return snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    })) as Testimonial[];
   } catch (error) {
     console.error('Error getting testimonials:', error);
     return [];
   }
 }
 
-
-
 /**
  * Crear un nuevo testimonio
  */
 export async function createTestimonial(testimonial: Omit<Testimonial, 'id' | 'createdAt' | 'updatedAt'>): Promise<string> {
   try {
-    const response = await fetch('/api/testimonials/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(testimonial)
-    });
+    const testimonialsRef = collection(db, 'testimonials');
+    const now = new Date().toISOString();
     
-    const result = await response.json();
+    const testimonialData = {
+      ...testimonial,
+      isApproved: true, // Publicado directamente
+      createdAt: now,
+      updatedAt: now
+    };
     
-    if (result.success) {
-      return result.data?.id || 'created';
-    } else {
-      throw new Error(result.error || 'Error al crear el testimonio');
-    }
+    const docRef = await addDoc(testimonialsRef, testimonialData);
+    return docRef.id;
   } catch (error) {
     console.error('Error creating testimonial:', error);
     throw new Error('Error al crear el testimonio');
@@ -64,19 +76,13 @@ export async function createTestimonial(testimonial: Omit<Testimonial, 'id' | 'c
  */
 export async function updateTestimonial(testimonialId: string, data: Partial<Testimonial>): Promise<void> {
   try {
-    const response = await fetch(`/api/testimonials/${testimonialId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data)
-    });
+    const testimonialRef = doc(db, 'testimonials', testimonialId);
+    const updateData = {
+      ...data,
+      updatedAt: new Date().toISOString()
+    };
     
-    const result = await response.json();
-    
-    if (!result.success) {
-      throw new Error(result.error || 'Error al actualizar el testimonio');
-    }
+    await updateDoc(testimonialRef, updateData);
   } catch (error) {
     console.error('Error updating testimonial:', error);
     throw new Error('Error al actualizar el testimonio');
@@ -88,15 +94,8 @@ export async function updateTestimonial(testimonialId: string, data: Partial<Tes
  */
 export async function deleteTestimonial(testimonialId: string): Promise<void> {
   try {
-    const response = await fetch(`/api/testimonials/${testimonialId}`, {
-      method: 'DELETE'
-    });
-    
-    const result = await response.json();
-    
-    if (!result.success) {
-      throw new Error(result.error || 'Error al eliminar el testimonio');
-    }
+    const testimonialRef = doc(db, 'testimonials', testimonialId);
+    await deleteDoc(testimonialRef);
   } catch (error) {
     console.error('Error deleting testimonial:', error);
     throw new Error('Error al eliminar el testimonio');
@@ -108,14 +107,17 @@ export async function deleteTestimonial(testimonialId: string): Promise<void> {
  */
 export async function getTestimonial(testimonialId: string): Promise<Testimonial | null> {
   try {
-    const response = await fetch(`/api/testimonials/${testimonialId}`);
-    const result = await response.json();
+    const testimonialRef = doc(db, 'testimonials', testimonialId);
+    const snapshot = await getDoc(testimonialRef);
     
-    if (result.success) {
-      return result.data;
-    } else {
-      return null;
+    if (snapshot.exists()) {
+      return {
+        id: snapshot.id,
+        ...snapshot.data()
+      } as Testimonial;
     }
+    
+    return null;
   } catch (error) {
     console.error('Error getting testimonial:', error);
     return null;

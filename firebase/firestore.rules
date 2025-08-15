@@ -15,6 +15,11 @@ service cloud.firestore {
         validateApiKey(request.headers.get('Authorization'));
     }
     
+    // Colección de testimonios - Permitir lectura y escritura sin autenticación
+    match /testimonials/{document} {
+      allow read, write: if true;
+    }
+    
     // Colección de configuración de webhooks
     match /webhook_config/{document} {
       // Solo lectura para usuarios autenticados
