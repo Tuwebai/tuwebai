@@ -213,8 +213,23 @@ app.post("/contact", async (req, res) => {
     }
     const emailTitle = title || "Consulta desde formulario de contacto";
     console.log("\u{1F4DD} T\xEDtulo del email:", emailTitle);
-    console.log("\u2705 Simulando env\xEDo exitoso (modo debug)");
-    return res.json({ message: "Mensaje enviado correctamente (modo debug)" });
+    console.log("\u{1F4E4} Enviando email con EmailJS...");
+    console.log("- Service ID:", EMAILJS_SERVICE_ID);
+    console.log("- Template ID:", EMAILJS_TEMPLATE_ID);
+    console.log("- Private Key:", EMAILJS_PRIVATE_KEY ? "Configurado" : "No configurado");
+    const emailResult = await emailjs.send(
+      EMAILJS_SERVICE_ID,
+      EMAILJS_TEMPLATE_ID,
+      {
+        name,
+        email,
+        title: emailTitle,
+        message
+      },
+      { privateKey: EMAILJS_PRIVATE_KEY }
+    );
+    console.log("\u2705 Email enviado exitosamente:", emailResult);
+    return res.json({ message: "Mensaje enviado correctamente" });
   } catch (err) {
     console.error("\u274C Error en endpoint /contact:", err);
     console.error("\u274C Error details:", {
@@ -243,7 +258,7 @@ app.post("/consulta", async (req, res) => {
         title,
         message
       },
-      EMAILJS_PRIVATE_KEY
+      { privateKey: EMAILJS_PRIVATE_KEY }
     );
     return res.json({ message: "Mensaje enviado correctamente" });
   } catch (err) {
