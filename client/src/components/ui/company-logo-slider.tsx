@@ -1,4 +1,3 @@
-import { useRef, useEffect } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -10,27 +9,10 @@ interface CompanyLogoSliderProps {
 }
 
 export default function CompanyLogoSlider({ className = '' }: CompanyLogoSliderProps) {
-  const sliderRef = useRef(null);
   const { ref, hasIntersected } = useIntersectionObserver();
 
   // Lista de logos de empresas con sus nombres
   const companyLogos = [
-    {
-      name: 'LH Decants',
-      logo: '/lhdecant-logo.jpg'
-    },
-    {
-      name: 'LH Decants',
-      logo: '/lhdecant-logo.jpg'
-    },
-    {
-      name: 'LH Decants',
-      logo: '/lhdecant-logo.jpg'
-    },
-    {
-      name: 'LH Decants',
-      logo: '/lhdecant-logo.jpg'
-    },
     {
       name: 'LH Decants',
       logo: '/lhdecant-logo.jpg'
@@ -41,7 +23,7 @@ export default function CompanyLogoSlider({ className = '' }: CompanyLogoSliderP
   const settings = {
     dots: false,
     infinite: true,
-    slidesToShow: 3,
+    slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
     speed: 2000,
@@ -53,13 +35,13 @@ export default function CompanyLogoSlider({ className = '' }: CompanyLogoSliderP
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 3,
+          slidesToShow: 1,
         }
       },
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 1,
         }
       },
       {
