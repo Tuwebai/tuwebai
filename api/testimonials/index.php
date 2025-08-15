@@ -23,8 +23,8 @@ try {
     switch ($method) {
         case 'GET':
             if ($endpoint === 'testimonials' || $endpoint === 'index.php') {
-                // Obtener todos los testimonios aprobados
-                $testimonials = getApprovedTestimonials();
+                // Obtener todos los testimonios
+                $testimonials = getAllTestimonials();
                 echo json_encode([
                     'success' => true,
                     'data' => $testimonials
@@ -76,7 +76,7 @@ try {
                 'name' => toFirestoreValue($input['name']),
                 'company' => toFirestoreValue($input['company'] ?? 'Cliente'),
                 'testimonial' => toFirestoreValue($input['testimonial']),
-                'isApproved' => toFirestoreValue(false),
+                'isApproved' => toFirestoreValue(true),
                 'createdAt' => toFirestoreValue(date('c')),
                 'updatedAt' => toFirestoreValue(date('c'))
             ];
@@ -174,12 +174,11 @@ try {
 }
 
 /**
- * Obtener testimonios aprobados
+ * Obtener todos los testimonios
  */
-function getApprovedTestimonials() {
+function getAllTestimonials() {
     try {
-        $filters = ['isApproved' => 'true'];
-        $result = queryFirestoreDocuments('testimonials', $filters);
+        $result = queryFirestoreDocuments('testimonials', []);
         
         $testimonials = [];
         if (isset($result['document'])) {
@@ -201,7 +200,7 @@ function getApprovedTestimonials() {
         
         return $testimonials;
     } catch (Exception $e) {
-        error_log('Error getting approved testimonials: ' . $e->getMessage());
+        error_log('Error getting testimonials: ' . $e->getMessage());
         return [];
     }
 }

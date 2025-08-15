@@ -27,14 +27,13 @@ export interface Testimonial {
 }
 
 /**
- * Obtener todos los testimonios aprobados
+ * Obtener todos los testimonios
  */
-export async function getApprovedTestimonials(): Promise<Testimonial[]> {
+export async function getAllTestimonials(): Promise<Testimonial[]> {
   try {
     const testimonialsRef = collection(db, 'testimonials');
     const q = query(
       testimonialsRef,
-      where('isApproved', '==', true),
       orderBy('createdAt', 'desc')
     );
     const snapshot = await getDocs(q);
@@ -44,29 +43,12 @@ export async function getApprovedTestimonials(): Promise<Testimonial[]> {
       ...doc.data()
     })) as Testimonial[];
   } catch (error) {
-    console.error('Error getting approved testimonials:', error);
+    console.error('Error getting testimonials:', error);
     return [];
   }
 }
 
-/**
- * Obtener todos los testimonios (para administración)
- */
-export async function getAllTestimonials(): Promise<Testimonial[]> {
-  try {
-    const testimonialsRef = collection(db, 'testimonials');
-    const q = query(testimonialsRef, orderBy('createdAt', 'desc'));
-    const snapshot = await getDocs(q);
-    
-    return snapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    })) as Testimonial[];
-  } catch (error) {
-    console.error('Error getting all testimonials:', error);
-    return [];
-  }
-}
+
 
 /**
  * Crear un nuevo testimonio
@@ -78,7 +60,7 @@ export async function createTestimonial(testimonial: Omit<Testimonial, 'id' | 'c
     
     const testimonialData = {
       ...testimonial,
-      isApproved: false, // Por defecto no aprobado
+      isApproved: true, // Publicado directamente
       createdAt: now,
       updatedAt: now
     };
@@ -168,25 +150,4 @@ export async function getTestimonial(testimonialId: string): Promise<Testimonial
   }
 }
 
-/**
- * Obtener testimonios pendientes de aprobación
- */
-export async function getPendingTestimonials(): Promise<Testimonial[]> {
-  try {
-    const testimonialsRef = collection(db, 'testimonials');
-    const q = query(
-      testimonialsRef,
-      where('isApproved', '==', false),
-      orderBy('createdAt', 'desc')
-    );
-    const snapshot = await getDocs(q);
-    
-    return snapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    })) as Testimonial[];
-  } catch (error) {
-    console.error('Error getting pending testimonials:', error);
-    return [];
-  }
-}
+

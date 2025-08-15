@@ -6,7 +6,7 @@ import TestimonialForm from '../ui/testimonial-form';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { getApprovedTestimonials, createTestimonial, Testimonial as TestimonialType } from '@/services/testimonials';
+import { getAllTestimonials, createTestimonial, Testimonial as TestimonialType } from '@/services/testimonials';
 import { useToast } from '@/hooks/use-toast';
 
 interface Testimonial {
@@ -121,10 +121,10 @@ export default function TestimonialsSection({ setRef }: TestimonialsSectionProps
   const loadTestimonials = async () => {
     try {
       setLoading(true);
-      const approvedTestimonials = await getApprovedTestimonials();
+      const allTestimonials = await getAllTestimonials();
       
       // Convertir testimonios de Firestore al formato local
-      const formattedTestimonials: Testimonial[] = approvedTestimonials.map(t => ({
+      const formattedTestimonials: Testimonial[] = allTestimonials.map(t => ({
         name: t.name,
         company: t.company,
         testimonial: t.testimonial,
@@ -176,8 +176,8 @@ export default function TestimonialsSection({ setRef }: TestimonialsSectionProps
       
       // Mostrar mensaje de éxito
       toast({
-        title: "¡Testimonio enviado!",
-        description: "Tu testimonio ha sido enviado y será revisado antes de ser publicado.",
+        title: "¡Testimonio publicado!",
+        description: "Tu testimonio ha sido publicado exitosamente en nuestra sección de testimonios.",
       });
       
       // Si hay un slider activo, moverse a la primera diapositiva para mostrar el nuevo testimonio

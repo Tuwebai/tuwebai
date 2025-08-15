@@ -14,32 +14,27 @@ try {
         [
             'name' => 'Carlos Sánchez',
             'company' => 'CEO, Muebles Modernos',
-            'testimonial' => 'Estamos extremadamente satisfechos con los resultados que TuWeb.ai ha conseguido para nuestro negocio. Nuestra tasa de conversión digital ha aumentado un 245% y el retorno de inversión superó nuestras expectativas más optimistas.',
-            'isApproved' => true
+            'testimonial' => 'Estamos extremadamente satisfechos con los resultados que TuWeb.ai ha conseguido para nuestro negocio. Nuestra tasa de conversión digital ha aumentado un 245% y el retorno de inversión superó nuestras expectativas más optimistas.'
         ],
         [
             'name' => 'Dra. Marta Rodríguez',
             'company' => 'Directora, Clínica Dental Sonrisa',
-            'testimonial' => 'La estrategia SEO local que implementaron aumentó nuestras solicitudes de citas en un 180%. Lo mejor es que el equipo entendió perfectamente las particularidades de nuestro sector.',
-            'isApproved' => true
+            'testimonial' => 'La estrategia SEO local que implementaron aumentó nuestras solicitudes de citas en un 180%. Lo mejor es que el equipo entendió perfectamente las particularidades de nuestro sector.'
         ],
         [
             'name' => 'Roberto Fernández',
             'company' => 'Global Retail S.A.',
-            'testimonial' => 'El equipo de TuWeb.ai transformó nuestra presencia digital por completo. Su enfoque estratégico y atención al detalle nos ha permitido duplicar nuestras conversiones en apenas tres meses.',
-            'isApproved' => true
+            'testimonial' => 'El equipo de TuWeb.ai transformó nuestra presencia digital por completo. Su enfoque estratégico y atención al detalle nos ha permitido duplicar nuestras conversiones en apenas tres meses.'
         ],
         [
             'name' => 'Marcela Díaz',
             'company' => 'HealthTech Innovations',
-            'testimonial' => 'Trabajar con este equipo ha sido una experiencia excepcional. Su capacidad para entender las complejidades de nuestro sector y traducirlas en soluciones digitales intuitivas superó todas nuestras expectativas.',
-            'isApproved' => true
+            'testimonial' => 'Trabajar con este equipo ha sido una experiencia excepcional. Su capacidad para entender las complejidades de nuestro sector y traducirlas en soluciones digitales intuitivas superó todas nuestras expectativas.'
         ],
         [
             'name' => 'Gabriel Torres',
             'company' => 'Constructora Futuro',
-            'testimonial' => 'Buscábamos un equipo que pudiera renovar nuestra imagen y mejorar nuestra presencia online. TuWeb.ai no solo cumplió estos objetivos, sino que implementó estrategias que nos han ayudado a alcanzar nuevos mercados.',
-            'isApproved' => true
+            'testimonial' => 'Buscábamos un equipo que pudiera renovar nuestra imagen y mejorar nuestra presencia online. TuWeb.ai no solo cumplió estos objetivos, sino que implementó estrategias que nos han ayudado a alcanzar nuevos mercados.'
         ]
     ];
     
@@ -52,7 +47,7 @@ try {
                 'name' => toFirestoreValue($testimonial['name']),
                 'company' => toFirestoreValue($testimonial['company']),
                 'testimonial' => toFirestoreValue($testimonial['testimonial']),
-                'isApproved' => toFirestoreValue($testimonial['isApproved']),
+                'isApproved' => toFirestoreValue(true),
                 'createdAt' => toFirestoreValue(date('c')),
                 'updatedAt' => toFirestoreValue(date('c'))
             ];
