@@ -17,7 +17,7 @@ export default function CompanyLogoSlider({ className = '' }: CompanyLogoSliderP
   const settings = {
     dots: false,
     infinite: true,
-    slidesToShow: 5,
+    slidesToShow: Math.min(5, companyLogos.length),
     slidesToScroll: 1,
     autoplay: true,
     speed: 3000,
@@ -29,19 +29,19 @@ export default function CompanyLogoSlider({ className = '' }: CompanyLogoSliderP
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 4,
+          slidesToShow: Math.min(4, companyLogos.length),
         }
       },
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: 3,
+          slidesToShow: Math.min(3, companyLogos.length),
         }
       },
       {
         breakpoint: 640,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: Math.min(2, companyLogos.length),
         }
       }
     ]
