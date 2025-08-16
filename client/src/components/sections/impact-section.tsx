@@ -103,26 +103,26 @@ export default function ImpactSection({ setRef }: ImpactSectionProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16 max-w-5xl mx-auto">
           <StatCard 
             value="Caso #1" 
-            label="E-commerce de Muebles"
-            description="Aumento del 245% en conversiones de venta en sólo 3 meses mediante la implementación de una estrategia de marketing integral y optimización de la web." 
+            label="LH Decants - E-commerce Premium"
+            description="Aumento del 150% en ventas online mediante la implementación de un sitio web corporativo premium con diseño elegante y sofisticado que refleja la calidad de sus productos exclusivos de perfumes y fragancias." 
             delay={1} 
           />
           <StatCard 
             value="Caso #2" 
-            label="Clínica Dental" 
-            description="Incremento del 180% en solicitudes de citas en 2 meses gracias a una estrategia SEO local específica y campañas PPC segmentadas por ubicación."
+            label="LH Decants - Experiencia de Usuario" 
+            description="Mejora del 80% en la percepción de marca premium y reducción del 40% en el abandono del carrito gracias a una interfaz elegante y sofisticada optimizada para la experiencia de compra."
             delay={2} 
           />
           <StatCard 
             value="Caso #3" 
-            label="Empresa de Software B2B" 
-            description="Reducción del costo de adquisición por cliente en un 40% mejorando la tasa de conversión desde la landing page y optimizando las campañas."
+            label="LH Decants - Optimización Conversión" 
+            description="Incremento del 60% en el tiempo de permanencia en el sitio y optimización del embudo de conversión para maximizar las ventas de productos premium."
             delay={3} 
           />
           <StatCard 
             value="Caso #4" 
-            label="Restaurante Premium" 
-            description="Aumento del 320% en reservas online mediante la implementación de una estrategia completa de marketing digital y social media."
+            label="LH Decants - Diseño Premium" 
+            description="Transformación completa de la presencia digital con un diseño que destaca la exclusividad y calidad premium de los productos de perfumes y fragancias."
             delay={4} 
           />
         </div>
