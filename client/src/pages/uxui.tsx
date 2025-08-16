@@ -187,59 +187,21 @@ export default function UXUI() {
   const uxuiProjects: UXUIProject[] = [
     {
       id: 1,
-      title: "Rediseño app bancaria",
-      description: "Rediseño completo de la experiencia de usuario para una app bancaria enfocada en mejorar la accesibilidad y usabilidad.",
-      challenge: "El cliente buscaba modernizar su app bancaria que tenía altas tasas de abandono y malas valoraciones por su complejidad de uso y diseño anticuado.",
-      solution: "Realizamos un estudio completo de usabilidad con más de 50 usuarios identificando puntos de fricción. Rediseñamos la arquitectura de información y creamos una nueva interfaz centrada en la simplicidad y velocidad de las operaciones más comunes.",
+      title: "LH Decants - E-commerce Premium",
+      description: "Diseño UX/UI para sitio web corporativo premium de perfumes y fragancias exclusivas, enfocado en la experiencia de compra y la elegancia de la marca.",
+      challenge: "El cliente necesitaba un sitio web que reflejara la exclusividad y calidad premium de sus productos de perfumes, mientras ofrecía una experiencia de compra fluida y sofisticada.",
+      solution: "Creamos una interfaz elegante y sofisticada que destaca la calidad premium de los productos. Optimizamos el embudo de conversión y simplificamos el proceso de compra para maximizar las ventas.",
       results: [
-        "Reducción del 45% en las llamadas al soporte técnico",
-        "Aumento del 60% en transacciones completadas",
-        "Mejora de calificación en stores de 2.3 a 4.7 estrellas",
-        "Incremento del 35% en usuarios activos mensuales"
+        "Aumento del 150% en ventas online",
+        "Mejora del 80% en la percepción de marca premium",
+        "Reducción del 40% en el abandono del carrito",
+        "Incremento del 60% en el tiempo de permanencia en el sitio"
       ],
-      tags: ["Fintech", "App Móvil", "UX Research", "UI Design"],
-      image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+      tags: ["E-commerce", "Diseño Premium", "Perfumes", "Lujo"],
+      image: "/lhdecant-card.png",
       mockups: [
-        "https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
-        "https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
-      ]
-    },
-    {
-      id: 2,
-      title: "Plataforma educativa online",
-      description: "Diseño de experiencia de usuario para una plataforma educativa que facilita el aprendizaje remoto y la interacción entre estudiantes y profesores.",
-      challenge: "La plataforma educativa existente presentaba problemas de navegación y dificultad para seguir el progreso de los estudiantes, lo que afectaba la retención y el engagement.",
-      solution: "Desarrollamos un sistema intuitivo de seguimiento de progreso, rediseñamos la navegación principal basada en investigación con usuarios, e incorporamos elementos de gamificación para aumentar la motivación.",
-      results: [
-        "Incremento del 75% en la tasa de finalización de cursos",
-        "Aumento del 40% en el tiempo de permanencia en la plataforma",
-        "Reducción del 50% en el tiempo de aprendizaje de uso",
-        "Crecimiento del 80% en interacciones entre estudiantes"
-      ],
-      tags: ["E-learning", "Diseño Web", "Gamificación", "Usabilidad"],
-      image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
-      mockups: [
-        "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
-        "https://images.unsplash.com/photo-1590402494587-44b71d7772f6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
-      ]
-    },
-    {
-      id: 3,
-      title: "E-commerce de moda sostenible",
-      description: "Diseño UX/UI para una tienda online de moda sostenible con enfoque en la experiencia de compra y conciencia ambiental.",
-      challenge: "El cliente necesitaba una tienda online que comunicara eficazmente sus valores de sostenibilidad mientras ofrecía una experiencia de compra fluida y atractiva.",
-      solution: "Creamos una interfaz que destaca la historia detrás de cada prenda y su impacto ambiental positivo. Optimizamos el embudo de conversión y simplificamos el proceso de checkout para aumentar las ventas.",
-      results: [
-        "Aumento del 65% en la tasa de conversión",
-        "Reducción del 45% en el abandono del carrito",
-        "Incremento del 30% en el valor promedio de compra",
-        "80% de los usuarios valoran positivamente la información de sostenibilidad"
-      ],
-      tags: ["E-commerce", "Sostenibilidad", "Diseño Responsivo", "CRO"],
-      image: "https://images.unsplash.com/photo-1507553532144-b9df5e38c8d1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
-      mockups: [
-        "https://images.unsplash.com/photo-1507553532144-b9df5e38c8d1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
-        "https://images.unsplash.com/photo-1506152983158-b4a74a01c721?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+        "/lhdecant-card.png",
+        "/lhdecant-card.png"
       ]
     }
   ];

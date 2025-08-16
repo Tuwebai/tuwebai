@@ -154,35 +154,34 @@ export default function Ecommerce() {
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            {[1, 2].map((item, index) => (
-              <motion.div
-                key={index}
-                className="rounded-xl overflow-hidden"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
-              >
-                <div className="bg-gradient-to-br from-[#00CCFF]/10 to-[#9933FF]/10 p-[1px] rounded-xl">
-                  <div className="bg-[#121217] rounded-xl p-6">
-                    <div className="h-64 rounded-lg bg-gradient-to-br from-[#0f0f19]/90 to-[#121217]/90 mb-4 flex items-center justify-center">
-                      <span className="text-gray-500 font-medium">
-                        Tienda {item}
-                      </span>
-                    </div>
-                    <h4 className="text-xl font-rajdhani font-bold mb-2 text-white">E-commerce {item}</h4>
-                    <p className="text-gray-300 mb-4">
-                      Descripción del proyecto, implementaciones y resultados obtenidos tras el lanzamiento.
-                    </p>
-                    <div className="flex flex-wrap gap-2 text-sm">
-                      <span className="px-3 py-1 rounded-full bg-[#00CCFF]/20 text-[#00CCFF]">+200% ventas</span>
-                      <span className="px-3 py-1 rounded-full bg-[#9933FF]/20 text-[#9933FF]">Multimoneda</span>
-                      <span className="px-3 py-1 rounded-full bg-[#00CCFF]/20 text-[#00CCFF]">Integraciones API</span>
-                    </div>
+          <div className="grid md:grid-cols-1 gap-8 max-w-2xl mx-auto">
+            <motion.div
+              className="rounded-xl overflow-hidden"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+            >
+              <div className="bg-gradient-to-br from-[#00CCFF]/10 to-[#9933FF]/10 p-[1px] rounded-xl">
+                <div className="bg-[#121217] rounded-xl p-6">
+                  <div className="h-64 rounded-lg bg-gradient-to-br from-[#0f0f19]/90 to-[#121217]/90 mb-4 flex items-center justify-center overflow-hidden">
+                    <img
+                      src="/lhdecant-card.png"
+                      alt="LH Decants"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <h4 className="text-xl font-rajdhani font-bold mb-2 text-white">LH Decants - E-commerce Premium</h4>
+                  <p className="text-gray-300 mb-4">
+                    Sitio web corporativo premium para empresa de perfumes y fragancias exclusivas. Diseño elegante y sofisticado que refleja la calidad de sus productos premium.
+                  </p>
+                  <div className="flex flex-wrap gap-2 text-sm">
+                    <span className="px-3 py-1 rounded-full bg-[#00CCFF]/20 text-[#00CCFF]">+150% ventas</span>
+                    <span className="px-3 py-1 rounded-full bg-[#9933FF]/20 text-[#9933FF]">Diseño Premium</span>
+                    <span className="px-3 py-1 rounded-full bg-[#00CCFF]/20 text-[#00CCFF]">Perfumes Exclusivos</span>
                   </div>
                 </div>
-              </motion.div>
-            ))}
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
