@@ -637,14 +637,14 @@ export default function Equipo() {
               Nuestros Valores
             </h2>
             <p className="text-gray-300 max-w-2xl mx-auto">
-              Estos son los principios que guían nuestro trabajo diario y la forma en que 
-              interactuamos con nuestros clientes y entre nosotros.
+              Más que principios, estos son los valores que vivimos día a día. Son la base de cada 
+              proyecto que emprendemos y cada relación que construimos con nuestros clientes.
             </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <motion.div
-              className="bg-[#121217] rounded-xl p-6 border border-gray-800"
+              className="bg-[#121217] rounded-xl p-6 border border-gray-800 hover:border-[#00CCFF]/30 transition-all duration-300"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
@@ -654,33 +654,35 @@ export default function Equipo() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
-              <h3 className="font-rajdhani font-bold text-xl mb-3 text-white">Innovación Constante</h3>
+              <h3 className="font-rajdhani font-bold text-xl mb-3 text-white">Pasión por la Excelencia</h3>
               <p className="text-gray-300">
-                Nos mantenemos a la vanguardia de las tecnologías emergentes y tendencias digitales 
-                para ofrecer soluciones innovadoras que destaquen en el mercado.
+                No solo entregamos proyectos, creamos experiencias que marcan la diferencia. 
+                Cada línea de código, cada pixel y cada interacción está pensada para superar 
+                las expectativas y generar un impacto real en el negocio de nuestros clientes.
               </p>
             </motion.div>
             
             <motion.div
-              className="bg-[#121217] rounded-xl p-6 border border-gray-800"
+              className="bg-[#121217] rounded-xl p-6 border border-gray-800 hover:border-[#00CCFF]/30 transition-all duration-300"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
               <div className="h-14 w-14 rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] flex items-center justify-center mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
               </div>
-              <h3 className="font-rajdhani font-bold text-xl mb-3 text-white">Transparencia Total</h3>
+              <h3 className="font-rajdhani font-bold text-xl mb-3 text-white">Confianza y Transparencia</h3>
               <p className="text-gray-300">
-                Creemos en la comunicación clara y honesta. Mantenemos a nuestros clientes informados 
-                en cada etapa del proceso y somos transparentes sobre costos, plazos y resultados.
+                Construimos relaciones duraderas basadas en la honestidad. Te mantenemos informado 
+                en cada paso del proceso, compartimos nuestros desafíos y celebramos juntos los 
+                éxitos. Tu proyecto es nuestro proyecto.
               </p>
             </motion.div>
             
             <motion.div
-              className="bg-[#121217] rounded-xl p-6 border border-gray-800"
+              className="bg-[#121217] rounded-xl p-6 border border-gray-800 hover:border-[#00CCFF]/30 transition-all duration-300"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
@@ -690,10 +692,11 @@ export default function Equipo() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>
               </div>
-              <h3 className="font-rajdhani font-bold text-xl mb-3 text-white">Orientación a Resultados</h3>
+              <h3 className="font-rajdhani font-bold text-xl mb-3 text-white">Resultados que Hablan</h3>
               <p className="text-gray-300">
-                Nos enfocamos en crear soluciones que generen resultados medibles. Cada decisión 
-                que tomamos está orientada a maximizar el retorno de inversión para nuestros clientes.
+                No solo prometemos, demostramos. Cada proyecto que desarrollamos está diseñado 
+                para generar resultados medibles: más ventas, mejor engagement, mayor eficiencia. 
+                Tu éxito es nuestra métrica de éxito.
               </p>
             </motion.div>
           </div>
@@ -703,7 +706,7 @@ export default function Equipo() {
       {/* Culture Section */}
       <section className="py-16">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="max-w-4xl mx-auto">
             <div>
               <h2 className="font-rajdhani font-bold text-3xl md:text-4xl mb-6 gradient-text">
                 Nuestra Cultura
@@ -753,13 +756,7 @@ export default function Equipo() {
               </div>
             </div>
             
-            <div className="relative h-96 bg-[#121217] rounded-xl overflow-hidden border border-gray-800">
-              <div className="absolute inset-0 bg-gradient-to-r from-[#00CCFF]/20 to-[#9933FF]/20 flex items-center justify-center">
-                <div className="text-center p-6">
-                  <span className="text-white font-medium">Imagen del equipo trabajando</span>
-                </div>
-              </div>
-            </div>
+
           </div>
         </div>
       </section>
