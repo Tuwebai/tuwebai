@@ -279,9 +279,9 @@ export default function Estudio() {
     <div className="relative font-sans text-gray-900 overflow-x-hidden bg-gray-50">
       {/* Metadatos SEO */}
       <MetaTags
-        title="Estudio Creativo de Diseño y Branding"
-        description="Somos un estudio de diseño especializado en branding, diseño web, ilustración y diseño editorial. Creamos soluciones visuales impactantes para marcas innovadoras."
-        keywords="diseño gráfico, branding, diseño web, ilustración, diseño editorial, estudio creativo, identidad de marca"
+        title="TuWeb.ai - Agencia de Diseño y Desarrollo Web"
+        description="Somos una agencia especializada en diseño web, desarrollo frontend, branding y marketing digital. Creamos soluciones digitales impactantes para empresas innovadoras."
+        keywords="diseño web, desarrollo frontend, branding, marketing digital, agencia digital, identidad de marca"
         type="article"
       />
       
@@ -692,9 +692,9 @@ export default function Estudio() {
                 <div className="space-y-6">
                   {[
                     {
-                      quote: "El equipo de Estudio Creativo transformó completamente nuestra marca. Su enfoque detallista y su creatividad nos ayudaron a destacar en un mercado muy competitivo.",
+                      quote: "El equipo de TuWeb.ai transformó completamente nuestra marca. Su enfoque detallista y su creatividad nos ayudaron a destacar en un mercado muy competitivo.",
                       author: "María González",
-                      position: "CEO, Natural Organics",
+                      position: "CEO, LH Decants",
                       image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=250&q=80"
                     },
                     {
@@ -760,10 +760,10 @@ export default function Estudio() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
               <h3 className="text-xl font-bold mb-4">
-                Estudio<span className="text-blue-500">Creativo</span>
+                TuWeb<span className="text-blue-500">.ai</span>
               </h3>
               <p className="text-gray-400 mb-4">
-                Transformamos ideas en experiencias visuales memorables, conectando marcas con su audiencia.
+                Transformamos ideas en experiencias digitales memorables, conectando empresas con su audiencia.
               </p>
               <div className="flex space-x-4">
                 <a href="#" className="text-gray-400 hover:text-white transition-colors">
@@ -819,7 +819,7 @@ export default function Estudio() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
                   <span className="text-gray-400">
-                    info@estudiocreativo.com
+                    info@tuweb-ai.com
                   </span>
                 </li>
                 <li className="flex items-start">
@@ -851,7 +851,7 @@ export default function Estudio() {
           
           <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-400 text-sm mb-4 md:mb-0">
-              © 2025 Estudio Creativo. Todos los derechos reservados.
+              © 2025 TuWeb.ai. Todos los derechos reservados.
             </p>
             <div className="flex space-x-6">
               <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">Términos y Condiciones</a>

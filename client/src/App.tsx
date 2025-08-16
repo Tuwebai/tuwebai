@@ -34,17 +34,7 @@ const Tecnologias = lazy(() => import('./pages/tecnologias'));
 const Recursos = lazy(() => import('./pages/recursos'));
 
 // Proyectos del Showroom (lazy loaded)
-const RopaUrbana = lazy(() => import('./pages/ropaurbana'));
-const Dulce = lazy(() => import('./pages/dulce'));
-const EcommerceModa = lazy(() => import('./pages/ecommerce-moda'));
-const CorporativoPremium = lazy(() => import('./pages/corporativo-premium'));
-const AppRestaurantes = lazy(() => import('./pages/app-restaurantes'));
-
-
-// Nuevos proyectos (lazy loaded)
-const Fitness = lazy(() => import('./pages/fitness'));
 const Estudio = lazy(() => import('./pages/estudio'));
-const Viajes = lazy(() => import('./pages/viajes'));
 
 // Páginas de autenticación
 const AuthVerify = lazy(() => import('./pages/auth-verify'));
@@ -141,17 +131,7 @@ function App() {
               <Route path="/recursos" element={<LazyRoute><Recursos /></LazyRoute>} />
               
               {/* Rutas para proyectos del showroom */}
-              <Route path="/ropaurbana" element={<LazyRoute><RopaUrbana /></LazyRoute>} />
-              <Route path="/dulce" element={<LazyRoute><Dulce /></LazyRoute>} />
-              <Route path="/ecommerce-moda" element={<LazyRoute><EcommerceModa /></LazyRoute>} />
-              <Route path="/corporativo-premium" element={<LazyRoute><CorporativoPremium /></LazyRoute>} />
-              <Route path="/app-restaurantes" element={<LazyRoute><AppRestaurantes /></LazyRoute>} />
-
-              
-              {/* Rutas para nuevos proyectos */}
-              <Route path="/fitness" element={<LazyRoute><Fitness /></LazyRoute>} />
               <Route path="/estudio" element={<LazyRoute><Estudio /></LazyRoute>} />
-              <Route path="/viajes" element={<LazyRoute><Viajes /></LazyRoute>} />
               
               {/* Rutas de autenticación */}
               <Route path="/auth/verify/:token" element={<LazyRoute><AuthVerify /></LazyRoute>} />
