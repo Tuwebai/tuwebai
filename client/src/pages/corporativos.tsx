@@ -136,7 +136,7 @@ export default function Corporativos() {
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-1 lg:grid-cols-1 gap-8 max-w-2xl mx-auto">
             {[
               {
                 image: "/lhdecant-card.png",
@@ -144,20 +144,6 @@ export default function Corporativos() {
                 description: "Sitio web corporativo premium para empresa de perfumes y fragancias. Diseño elegante y sofisticado que refleja la calidad de sus productos exclusivos.",
                 tags: ["E-commerce", "Diseño Premium"],
                 results: "Aumento del 150% en ventas online"
-              },
-              {
-                image: "/ropaurbana-card.png",
-                title: "Ropa Urbana",
-                description: "Plataforma de e-commerce moderna para tienda de ropa urbana. Interfaz intuitiva y optimizada para conversiones.",
-                tags: ["E-commerce", "UX/UI"],
-                results: "300% más de conversiones"
-              },
-              {
-                image: "/dulce-card.png",
-                title: "Dulce Tentación",
-                description: "Sitio web para pastelería artesanal con sistema de pedidos online integrado y galería de productos.",
-                tags: ["Sistema de Pedidos", "Galería"],
-                results: "200% incremento en pedidos"
               }
             ].map((caseStudy, index) => (
               <motion.div
