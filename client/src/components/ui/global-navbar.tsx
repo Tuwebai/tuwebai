@@ -48,7 +48,7 @@ export default function GlobalNavbar() {
       ]
     },
     { name: 'E-commerce', href: '/ecommerce' },
-    { name: 'Blog', href: '/blog' },
+    
     { name: 'Equipo', href: '/equipo' },
     { 
       name: 'Tecnologías', 

@@ -4,7 +4,7 @@ import GlobalNavbar from './components/ui/global-navbar';
 import Footer from './components/ui/footer';
 import { Toaster } from "@/components/ui/toaster";
 import { LazyRoute } from './components/route-wrapper';
-import AdminRoute from './components/auth/AdminRoute';
+
 import analytics from '@/lib/analytics';
 import { SkipLink } from '@/components/a11y';
 import { ResourcePreload, MemoryManager } from '@/components/performance';
@@ -27,8 +27,7 @@ const ConsultoriaEstrategica = lazy(() => import('./pages/servicios/consultoria-
 const DesarrolloWeb = lazy(() => import('./pages/servicios/desarrollo-web'));
 const PosicionamientoMarketing = lazy(() => import('./pages/servicios/posicionamiento-marketing'));
 const AutomatizacionMarketing = lazy(() => import('./pages/servicios/automatizacion-marketing'));
-const Blog = lazy(() => import('./pages/blog'));
-const BlogArticle = lazy(() => import('./pages/blog-article-template'));
+
 const FAQ = lazy(() => import('./pages/faq'));
 const Equipo = lazy(() => import('./pages/equipo'));
 const Tecnologias = lazy(() => import('./pages/tecnologias'));
@@ -57,14 +56,7 @@ const PetBoutique = lazy(() => import('./pages/petboutique'));
 const AuthVerify = lazy(() => import('./pages/auth-verify'));
 const PanelUsuario = lazy(() => import('./pages/panel-usuario'));
 
-// Páginas de administración
-const AdminDashboard = lazy(() => import('./pages/admin'));
-const AdminContacts = lazy(() => import('./pages/admin/contacts'));
-const AdminConsultations = lazy(() => import('./pages/admin/consultations'));
-const AdminUsers = lazy(() => import('./pages/admin/users'));
-const AdminNewsletter = lazy(() => import('./pages/admin/newsletter'));
-const AdminAnalytics = lazy(() => import('./pages/admin/analytics'));
-const AdminSettings = lazy(() => import('./pages/admin/settings'));
+
 
 const PagoExitoso = lazy(() => import('./pages/pago-exitoso'));
 const PagoFallido = lazy(() => import('./pages/pago-fallido'));
@@ -148,8 +140,7 @@ function App() {
               } />
               
               {/* Rutas para secciones adicionales */}
-              <Route path="/blog" element={<LazyRoute><Blog /></LazyRoute>} />
-              <Route path="/blog/:slug" element={<LazyRoute><BlogArticle /></LazyRoute>} />
+              
               <Route path="/faq" element={<LazyRoute><FAQ /></LazyRoute>} />
               <Route path="/equipo" element={<LazyRoute><Equipo /></LazyRoute>} />
               <Route path="/tecnologias" element={<LazyRoute><Tecnologias /></LazyRoute>} />
@@ -179,14 +170,7 @@ function App() {
               <Route path="/auth/reset-password" element={<LazyRoute><AuthVerify /></LazyRoute>} />
               <Route path="/panel" element={<LazyRoute><PanelUsuario /></LazyRoute>} />
               
-              {/* Rutas de administración (protegidas) */}
-              <Route path="/admin" element={<LazyRoute><AdminRoute><AdminDashboard /></AdminRoute></LazyRoute>} />
-              <Route path="/admin/contacts" element={<LazyRoute><AdminRoute><AdminContacts /></AdminRoute></LazyRoute>} />
-              <Route path="/admin/consultations" element={<LazyRoute><AdminRoute><AdminConsultations /></AdminRoute></LazyRoute>} />
-              <Route path="/admin/users" element={<LazyRoute><AdminRoute><AdminUsers /></AdminRoute></LazyRoute>} />
-              <Route path="/admin/newsletter" element={<LazyRoute><AdminRoute><AdminNewsletter /></AdminRoute></LazyRoute>} />
-              <Route path="/admin/analytics" element={<LazyRoute><AdminRoute><AdminAnalytics /></AdminRoute></LazyRoute>} />
-              <Route path="/admin/settings" element={<LazyRoute><AdminRoute><AdminSettings /></AdminRoute></LazyRoute>} />
+              
               
               {/* Rutas para pagos */}
               <Route path="/pago-exitoso" element={<LazyRoute><PagoExitoso /></LazyRoute>} />

@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import AnimatedShape from '../components/ui/animated-shape';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { getAllTestimonials, Testimonial as TestimonialType } from '@/services/testimonials';
 
 
 // Tipo para miembros del equipo
@@ -54,72 +55,32 @@ const teamMembers: TeamMember[] = [
     twitter: "https://www.instagram.com/juanchi_lopezd3?igsh=cjM2emZzd2xucXI3",
     longBio: "Juanchi es un desarrollador Full-Stack con una pasión innata por la tecnología y la innovación. Especializado en crear aplicaciones web modernas y escalables, combina habilidades técnicas sólidas con una visión estratégica para desarrollar soluciones que no solo cumplen con los requisitos técnicos, sino que también generan valor real para los usuarios y las empresas. Su experiencia abarca desde el desarrollo frontend con React y TypeScript hasta la implementación de arquitecturas backend robustas con Node.js y bases de datos modernas.",
     achievements: [
-      "Desarrollo de más de 50 aplicaciones web exitosas",
+      "Desarrollo de sitios web premium como LH Decants",
       "Especialista en tecnologías modernas como React, Node.js y Firebase",
       "Líder en implementación de soluciones digitales escalables"
     ]
   }
 ];
 
-// Proyectos destacados
+// Proyectos destacados reales
 const featuredProjects: FeaturedProject[] = [
   {
     id: 1,
-    title: "Plataforma E-commerce Moderna",
-    description: "Desarrollo completo de tienda online con React, Node.js y Firebase. Aumento de 200% en conversiones",
-    image: "https://images.unsplash.com/photo-1523381294911-8d3cead13475?q=80&w=600&auto=format&fit=crop",
-    memberId: 1 // Juanchi López
-  },
-  {
-    id: 2,
-    title: "App de Gestión Empresarial",
-    description: "Aplicación web full-stack para gestión de inventarios y ventas con más de 10,000 usuarios activos",
-    image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=600&auto=format&fit=crop",
-    memberId: 1 // Juanchi López
-  },
-  {
-    id: 3,
-    title: "Sistema de Automatización",
-    description: "Plataforma de automatización de marketing con integración de APIs y análisis avanzado de datos",
-    image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=600&auto=format&fit=crop",
+    title: "LH Decants - E-commerce Premium",
+    description: "Sitio web corporativo premium para empresa de perfumes y fragancias exclusivas. Aumento del 150% en ventas online",
+    image: "/lhdecant-card.png",
     memberId: 1 // Juanchi López
   }
 ];
 
-// Testimonios
-const testimonials: Testimonial[] = [
-  {
-    id: 1,
-    name: "Roberto Fernández",
-    company: "Global Retail S.A.",
-    role: "Director de Marketing",
-    text: "El equipo de TuWeb.ai transformó nuestra presencia digital por completo. Su enfoque estratégico y atención al detalle nos ha permitido duplicar nuestras conversiones en apenas tres meses. Son verdaderos socios de negocio, no simples proveedores.",
-    image: "https://randomuser.me/api/portraits/men/41.jpg",
-    rating: 5
-  },
-  {
-    id: 2,
-    name: "Marcela Díaz",
-    company: "HealthTech Innovations",
-    role: "CEO",
-    text: "Trabajar con este equipo ha sido una experiencia excepcional. Su capacidad para entender las complejidades de nuestro sector y traducirlas en soluciones digitales intuitivas y efectivas superó todas nuestras expectativas. Recomiendo TuWeb.ai sin ninguna duda.",
-    image: "https://randomuser.me/api/portraits/women/24.jpg",
-    rating: 5
-  },
-  {
-    id: 3,
-    name: "Gabriel Torres",
-    company: "Constructora Futuro",
-    role: "Director Comercial",
-    text: "Buscábamos un equipo que pudiera renovar nuestra imagen y mejorar nuestra presencia online. TuWeb.ai no solo cumplió estos objetivos, sino que implementó estrategias que nos han ayudado a alcanzar nuevos mercados y aumentar significativamente nuestras ventas.",
-    image: "https://randomuser.me/api/portraits/men/22.jpg",
-    rating: 4
-  }
-];
+// Testimonios (se cargarán desde la base de datos)
+const testimonials: Testimonial[] = [];
 
 export default function Equipo() {
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
   const [testimonialIndex, setTestimonialIndex] = useState(0);
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [loadingTestimonials, setLoadingTestimonials] = useState(true);
   const testimonialRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
 
@@ -128,13 +89,44 @@ export default function Equipo() {
     window.scrollTo(0, 0);
   }, []);
 
-  // Testimonial autoplay
+  // Cargar testimonios desde la base de datos
   useEffect(() => {
+    const loadTestimonials = async () => {
+      try {
+        setLoadingTestimonials(true);
+        const allTestimonials = await getAllTestimonials();
+        
+        // Convertir testimonios de Firestore al formato local
+        const formattedTestimonials: Testimonial[] = allTestimonials.map((t, index) => ({
+          id: index + 1,
+          name: t.name,
+          company: t.company,
+          role: "Cliente",
+          text: t.testimonial,
+          image: `https://ui-avatars.com/api/?name=${encodeURIComponent(t.name)}&background=0D8ABC&color=fff`,
+          rating: 5
+        }));
+        
+        setTestimonials(formattedTestimonials);
+      } catch (error) {
+        console.error('Error loading testimonials:', error);
+      } finally {
+        setLoadingTestimonials(false);
+      }
+    };
+
+    loadTestimonials();
+  }, []);
+
+  // Testimonial autoplay (solo si hay testimonios)
+  useEffect(() => {
+    if (testimonials.length === 0) return;
+    
     const interval = setInterval(() => {
       setTestimonialIndex((prev) => (prev + 1) % testimonials.length);
     }, 8000);
     return () => clearInterval(interval);
-  }, []);
+  }, [testimonials.length]);
 
   // Encontrar proyectos destacados por miembro
   const getMemberProjects = (memberId: number) => {
@@ -501,105 +493,138 @@ export default function Equipo() {
             </p>
           </div>
           
-          <div className="relative max-w-4xl mx-auto" ref={testimonialRef}>
-            <div className="relative overflow-hidden rounded-xl bg-[#121217] border border-gray-800 p-6 md:p-10">
-              <AnimatePresence mode="wait">
-                {testimonials.map((testimonial, index) => 
-                  testimonialIndex === index && (
-                    <motion.div
-                      key={testimonial.id}
-                      className="flex flex-col md:flex-row gap-8"
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -20 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      <div className="flex-shrink-0 flex flex-col items-center">
-                        <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border-4 border-[#1a1a23]">
-                          <img 
-                            src={testimonial.image} 
-                            alt={testimonial.name} 
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                        
-                        <div className="flex mt-3">
-                          {[...Array(5)].map((_, i) => (
-                            <svg 
-                              key={i} 
-                              className={`w-5 h-5 ${i < testimonial.rating ? 'text-[#00CCFF]' : 'text-gray-600'}`} 
-                              fill="currentColor" 
-                              viewBox="0 0 20 20"
-                            >
-                              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                            </svg>
-                          ))}
-                        </div>
-                      </div>
-                      
-                      <div className="flex-grow">
-                        <div className="mb-4 md:mb-6 relative">
-                          {/* Comillas */}
-                          <div className="absolute -top-4 -left-2 text-[#00CCFF]/20 text-7xl font-serif">
-                            "
-                          </div>
-                          
-                          <p className="text-gray-300 italic relative z-10">
-                            {testimonial.text}
-                          </p>
-                          
-                          <div className="absolute -bottom-4 -right-2 text-[#00CCFF]/20 text-7xl font-serif">
-                            "
-                          </div>
-                        </div>
-                        
-                        <div className="mt-auto">
-                          <h4 className="font-rajdhani font-bold text-xl text-white">
-                            {testimonial.name}
-                          </h4>
-                          <p className="text-[#00CCFF]">{testimonial.role}</p>
-                          <p className="text-gray-400 text-sm">{testimonial.company}</p>
-                        </div>
-                      </div>
-                    </motion.div>
-                  )
-                )}
-              </AnimatePresence>
-              
-              {/* Indicadores */}
-              <div className="flex justify-center mt-8 space-x-2">
-                {testimonials.map((_, i) => (
-                  <button
-                    key={i}
-                    className={`w-2 h-2 rounded-full transition-all ${
-                      i === testimonialIndex ? 'bg-[#00CCFF] w-8' : 'bg-gray-600 hover:bg-gray-500'
-                    }`}
-                    onClick={() => setTestimonialIndex(i)}
-                  />
-                ))}
+                    <div className="max-w-4xl mx-auto" ref={testimonialRef}>
+            {loadingTestimonials ? (
+              <div className="text-center py-12">
+                <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[#00CCFF]"></div>
+                <p className="text-gray-400 mt-4">Cargando testimonios...</p>
               </div>
-              
-              {/* Botones de navegación */}
-              <div className="absolute left-4 right-4 top-1/2 -translate-y-1/2 flex justify-between items-center">
-                <button
-                  className="w-10 h-10 rounded-full bg-gray-800/50 text-white flex items-center justify-center hover:bg-gray-800 transition-colors"
-                  onClick={() => setTestimonialIndex((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1))}
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                  </svg>
-                </button>
+            ) : testimonials.length > 0 ? (
+              <div className="relative overflow-hidden rounded-xl bg-[#121217] border border-gray-800 p-6 md:p-10">
+                <AnimatePresence mode="wait">
+                  {testimonials.map((testimonial, index) => 
+                    testimonialIndex === index && (
+                      <motion.div
+                        key={testimonial.id}
+                        className="flex flex-col md:flex-row gap-8"
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -20 }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        <div className="flex-shrink-0 flex flex-col items-center">
+                          <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border-4 border-[#1a1a23]">
+                            <img 
+                              src={testimonial.image} 
+                              alt={testimonial.name} 
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                          
+                          <div className="flex mt-3">
+                            {[...Array(5)].map((_, i) => (
+                              <svg 
+                                key={i} 
+                                className={`w-5 h-5 ${i < testimonial.rating ? 'text-[#00CCFF]' : 'text-gray-600'}`} 
+                                fill="currentColor" 
+                                viewBox="0 0 20 20"
+                              >
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                              </svg>
+                            ))}
+                          </div>
+                        </div>
+                        
+                        <div className="flex-grow">
+                          <div className="mb-4 md:mb-6 relative">
+                            {/* Comillas */}
+                            <div className="absolute -top-4 -left-2 text-[#00CCFF]/20 text-7xl font-serif">
+                              "
+                            </div>
+                            
+                            <p className="text-gray-300 italic relative z-10">
+                              {testimonial.text}
+                            </p>
+                            
+                            <div className="absolute -bottom-4 -right-2 text-[#00CCFF]/20 text-7xl font-serif">
+                              "
+                            </div>
+                          </div>
+                          
+                          <div className="mt-auto">
+                            <h4 className="font-rajdhani font-bold text-xl text-white">
+                              {testimonial.name}
+                            </h4>
+                            <p className="text-[#00CCFF]">{testimonial.role}</p>
+                            <p className="text-gray-400 text-sm">{testimonial.company}</p>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )
+                  )}
+                </AnimatePresence>
                 
-                <button
-                  className="w-10 h-10 rounded-full bg-gray-800/50 text-white flex items-center justify-center hover:bg-gray-800 transition-colors"
-                  onClick={() => setTestimonialIndex((prev) => (prev + 1) % testimonials.length)}
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </button>
+                {/* Indicadores */}
+                <div className="flex justify-center mt-8 space-x-2">
+                  {testimonials.map((_, i) => (
+                    <button
+                      key={i}
+                      className={`w-2 h-2 rounded-full transition-all ${
+                        i === testimonialIndex ? 'bg-[#00CCFF] w-8' : 'bg-gray-600 hover:bg-gray-500'
+                      }`}
+                      onClick={() => setTestimonialIndex(i)}
+                    />
+                  ))}
+                </div>
+                
+                {/* Botones de navegación */}
+                <div className="absolute left-4 right-4 top-1/2 -translate-y-1/2 flex justify-between items-center">
+                  <button
+                    className="w-10 h-10 rounded-full bg-gray-800/50 text-white flex items-center justify-center hover:bg-gray-800 transition-colors"
+                    onClick={() => setTestimonialIndex((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1))}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    </svg>
+                  </button>
+                  
+                  <button
+                    className="w-10 h-10 rounded-full bg-gray-800/50 text-white flex items-center justify-center hover:bg-gray-800 transition-colors"
+                    onClick={() => setTestimonialIndex((prev) => (prev + 1) % testimonials.length)}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="text-center py-12">
+                <div className="bg-[#121217] rounded-xl p-8 border border-gray-800">
+                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-[#00CCFF]/20 to-[#9933FF]/20 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-[#00CCFF]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-rajdhani font-bold text-white mb-2">
+                    ¡Sé el primero en compartir tu experiencia!
+                  </h3>
+                  <p className="text-gray-400 mb-6 max-w-md mx-auto">
+                    Aún no tenemos testimonios publicados. ¿Has trabajado con nosotros? 
+                    Comparte tu experiencia y ayuda a otros a conocer nuestro trabajo.
+                  </p>
+                  <Link 
+                    to="/#testimonials"
+                    className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-lg text-white font-medium hover:shadow-lg hover:shadow-[#00CCFF]/20 transition-all"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                    Agregar testimonio
+                  </Link>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </section>
