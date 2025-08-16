@@ -158,7 +158,7 @@ export default function ResourcesSection({ setRef }: ResourcesSectionProps) {
           variants={buttonVariants}
         >
           <motion.a 
-            href="/blog" 
+                          href="/faq" 
             className="inline-block px-8 py-4 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-full text-white font-medium shadow-lg hover:shadow-[#00CCFF]/20"
             whileHover={{ scale: 1.05 }}
             transition={{ type: "spring", stiffness: 400, damping: 10 }}

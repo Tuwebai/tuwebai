@@ -194,16 +194,16 @@ export default function AutomatizacionMarketing() {
                     <h3 className="font-rajdhani font-bold text-xl mb-3">Plataformas con las que trabajamos</h3>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                       <div className="bg-[#0a0a0f] p-4 rounded-lg text-center">
-                        <div className="font-medium text-white">HubSpot</div>
+                        <div className="font-medium text-white">Marketing Automation</div>
                       </div>
                       <div className="bg-[#0a0a0f] p-4 rounded-lg text-center">
-                        <div className="font-medium text-white">ActiveCampaign</div>
+                        <div className="font-medium text-white">Email Marketing</div>
                       </div>
                       <div className="bg-[#0a0a0f] p-4 rounded-lg text-center">
-                        <div className="font-medium text-white">Mailchimp</div>
+                        <div className="font-medium text-white">CRM Integration</div>
                       </div>
                       <div className="bg-[#0a0a0f] p-4 rounded-lg text-center">
-                        <div className="font-medium text-white">Zapier</div>
+                        <div className="font-medium text-white">Workflow Automation</div>
                       </div>
                     </div>
                     
@@ -374,7 +374,7 @@ export default function AutomatizacionMarketing() {
                           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#00CCFF] mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                           </svg>
-                          <span>HubSpot</span>
+                          <span>Marketing Automation</span>
                         </div>
                         <div className="flex items-center bg-[#0a0a0f] p-3 rounded">
                           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#00CCFF] mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -552,7 +552,7 @@ export default function AutomatizacionMarketing() {
                           <h3 className="font-rajdhani font-bold text-2xl mb-1 text-white">Software B2B</h3>
                           <p className="text-gray-400 mb-2">Implementación CRM + Automatización Marketing</p>
                           <div className="flex flex-wrap gap-2">
-                            <span className="text-xs bg-[#00CCFF]/20 text-[#00CCFF] px-2 py-1 rounded">HubSpot</span>
+                            <span className="text-xs bg-[#00CCFF]/20 text-[#00CCFF] px-2 py-1 rounded">Marketing Automation</span>
                             <span className="text-xs bg-[#9933FF]/20 text-[#9933FF] px-2 py-1 rounded">Lead Nurturing</span>
                             <span className="text-xs bg-[#00CCFF]/20 text-[#00CCFF] px-2 py-1 rounded">CRM</span>
                           </div>
@@ -575,7 +575,7 @@ export default function AutomatizacionMarketing() {
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#9933FF] mr-2 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                             </svg>
-                            <span>Implementación de HubSpot (Marketing, Sales y Service Hub)</span>
+                            <span>Implementación de Marketing Automation (Marketing, Sales y Service Hub)</span>
                           </li>
                           <li className="flex items-start">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#9933FF] mr-2 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -632,7 +632,7 @@ export default function AutomatizacionMarketing() {
                           <h3 className="font-rajdhani font-bold text-2xl mb-1 text-white">E-commerce de Moda</h3>
                           <p className="text-gray-400 mb-2">Email Marketing + Automatización</p>
                           <div className="flex flex-wrap gap-2">
-                            <span className="text-xs bg-[#00CCFF]/20 text-[#00CCFF] px-2 py-1 rounded">ActiveCampaign</span>
+                            <span className="text-xs bg-[#00CCFF]/20 text-[#00CCFF] px-2 py-1 rounded">Email Marketing</span>
                             <span className="text-xs bg-[#9933FF]/20 text-[#9933FF] px-2 py-1 rounded">Shopify</span>
                             <span className="text-xs bg-[#00CCFF]/20 text-[#00CCFF] px-2 py-1 rounded">Email Marketing</span>
                           </div>
@@ -655,7 +655,7 @@ export default function AutomatizacionMarketing() {
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#00CCFF] mr-2 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                             </svg>
-                            <span>Implementación de ActiveCampaign con integración avanzada con Shopify</span>
+                            <span>Implementación de Email Marketing con integración avanzada con Shopify</span>
                           </li>
                           <li className="flex items-start">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#00CCFF] mr-2 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -734,9 +734,9 @@ export default function AutomatizacionMarketing() {
                       <p className="text-gray-300">
                         La elección de la plataforma adecuada depende de diversos factores como el 
                         tamaño de tu empresa, industria, presupuesto, objetivos y complejidad de tus 
-                        procesos. Por ejemplo, HubSpot es ideal para empresas que buscan una solución 
+                        procesos. Por ejemplo, las plataformas de Marketing Automation son ideales para empresas que buscan una solución 
                         all-in-one con un fuerte componente de inbound marketing, mientras que 
-                        ActiveCampaign es excelente para negocios centrados en email marketing con 
+                        las herramientas de Email Marketing son excelentes para negocios centrados en email marketing con 
                         automatización avanzada a un precio más asequible. Durante nuestra consulta 
                         inicial, analizamos tus necesidades específicas para recomendarte la solución 
                         más adecuada.
@@ -799,8 +799,8 @@ export default function AutomatizacionMarketing() {
                         Desarrollamos integraciones personalizadas entre tu plataforma de automatización 
                         y otras herramientas de tu stack tecnológico. Esto puede incluir tu sitio web, 
                         e-commerce, ERP, sistemas de atención al cliente, plataformas de webinars, 
-                        herramientas de análisis, etc. Utilizamos APIs nativas, webhooks, Zapier u otras 
-                        herramientas de integración dependiendo de tus necesidades específicas. El 
+                        herramientas de análisis, etc. Utilizamos APIs nativas, webhooks, herramientas de integración u otras 
+                        soluciones dependiendo de tus necesidades específicas. El 
                         objetivo es crear un ecosistema digital coherente donde los datos fluyan 
                         automáticamente entre sistemas, eliminando silos de información y procesos manuales.
                       </p>

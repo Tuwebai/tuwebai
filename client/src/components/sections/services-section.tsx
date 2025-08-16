@@ -139,7 +139,7 @@ export default function ServicesSection({ setRef }: ServicesSectionProps) {
           
           <ServiceCard 
             title="Automatización de Marketing"
-            description="Implementación de procesos automatizados e integraciones con HubSpot, ActiveCampaign y otras herramientas líderes."
+            description="Implementación de procesos automatizados e integraciones con plataformas de marketing automation y otras herramientas líderes."
             icon={
               <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />

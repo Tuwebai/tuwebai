@@ -67,8 +67,8 @@ export default function NotFound() {
               </Link>
             </li>
             <li>
-              <Link to="/blog" className="text-indigo-600 hover:text-indigo-800 hover:underline">
-                Blog y artículos
+              <Link to="/faq" className="text-indigo-600 hover:text-indigo-800 hover:underline">
+                Preguntas Frecuentes
               </Link>
             </li>
           </ul>

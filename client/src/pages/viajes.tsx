@@ -1236,7 +1236,7 @@ export default function Viajes() {
               <ul className="space-y-2">
                 <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Sobre nosotros</a></li>
                 <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Experiencias</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Blog de viajes</a></li>
+                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Contacto</a></li>
                 <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Preguntas frecuentes</a></li>
                 <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Contacto</a></li>
               </ul>

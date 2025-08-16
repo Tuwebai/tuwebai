@@ -97,125 +97,49 @@ export default function Estudio() {
   const projects: Project[] = [
     {
       id: 1,
-      title: "Renovación de Marca",
-      client: "TechSolutions Inc.",
-      category: "branding",
-      description: "Renovación integral de identidad de marca para empresa de tecnología en expansión.",
-      fullDescription: "Desarrollamos una renovación completa de la identidad visual de TechSolutions Inc., alineando su imagen con su nueva visión estratégica. El proceso incluyó investigación de mercado, talleres colaborativos, desarrollo de concepto y sistema de identidad flexible adaptable a diferentes plataformas y aplicaciones.",
-      image: "https://images.unsplash.com/photo-1600508774634-4e11d34730e2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1350&q=80",
+      title: "LH Decants - E-commerce Premium",
+      client: "LH Decants",
+      category: "diseño-web",
+      description: "Sitio web corporativo premium para empresa de perfumes y fragancias exclusivas.",
+      fullDescription: "Desarrollamos un sitio web corporativo premium para LH Decants, especialistas en decants de perfumes exclusivos. El proyecto incluyó diseño UX/UI sofisticado, optimización del embudo de conversión, integración de e-commerce y estrategia de marca premium que refleja la exclusividad de sus productos.",
+      image: "/lhdecant-card.png",
       images: [
-        "https://images.unsplash.com/photo-1600508774634-4e11d34730e2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1350&q=80",
-        "https://images.unsplash.com/photo-1600508773339-111d91283e7c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1350&q=80",
-        "https://images.unsplash.com/photo-1600508773268-57933e39b9aa?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1350&q=80"
+        "/lhdecant-card.png",
+        "/lhdecant-card.png",
+        "/lhdecant-card.png"
       ],
-      services: ["Investigación de mercado", "Estrategia de marca", "Diseño de logo", "Sistema de identidad", "Manual de marca", "Aplicaciones"],
+      services: ["UX/UI Design", "Desarrollo Frontend", "E-commerce", "SEO", "Optimización móvil", "Branding"],
       featured: true
     },
     {
       id: 2,
-      title: "Sitio Web Responsive",
-      client: "Natural Organics",
-      category: "diseño-web",
-      description: "Diseño y desarrollo de sitio web e-commerce para marca de productos orgánicos.",
-      fullDescription: "Creamos una experiencia digital completa para Natural Organics, focalizando en la usabilidad y el storytelling de marca. Desarrollamos un e-commerce intuitivo con una estética eco-friendly que refleja los valores de la marca, incluyendo funcionalidades de filtrado de productos, proceso de checkout optimizado y blog integrado.",
-      image: "https://images.unsplash.com/photo-1509395062183-67c5ad6faff9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1350&q=80",
+      title: "LH Decants - Branding y Identidad",
+      client: "LH Decants",
+      category: "branding",
+      description: "Desarrollo de identidad visual premium para marca de perfumes exclusivos.",
+      fullDescription: "Creamos una identidad visual sofisticada y elegante para LH Decants que comunica la exclusividad y calidad premium de sus decants de perfumes. El sistema incluye logo, paleta cromática, tipografías y aplicaciones de marca que reflejan la elegancia del mundo de las fragancias.",
+      image: "/lhdecant-card.png",
       images: [
-        "https://images.unsplash.com/photo-1509395062183-67c5ad6faff9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1350&q=80",
-        "https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1350&q=80",
-        "https://images.unsplash.com/photo-1508921112287-7a9658a11d06?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1350&q=80"
+        "/lhdecant-card.png",
+        "/lhdecant-card.png",
+        "/lhdecant-card.png"
       ],
-      services: ["UX/UI Design", "Desarrollo Frontend", "E-commerce", "SEO", "Optimización móvil", "CMS personalizado"]
+      services: ["Estrategia de marca", "Diseño de logo", "Sistema de identidad", "Aplicaciones de marca", "Brand Guidelines"]
     },
     {
       id: 3,
-      title: "Serie de Ilustraciones",
-      client: "Festival Cultural 2025",
-      category: "ilustracion",
-      description: "Serie de ilustraciones digitales para evento cultural anual con temática futurista.",
-      fullDescription: "Desarrollamos un sistema visual completo para el Festival Cultural 2025 a través de ilustraciones digitales que combinan elementos futuristas con toques artesanales. Las ilustraciones se adaptaron a diferentes formatos de comunicación, desde redes sociales hasta posters físicos y merchandising del evento.",
-      image: "https://images.unsplash.com/photo-1608726325013-5fa7b1546d46?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1350&q=80",
-      images: [
-        "https://images.unsplash.com/photo-1608726325013-5fa7b1546d46?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1350&q=80",
-        "https://images.unsplash.com/photo-1574875139451-e50f7d6a4350?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1350&q=80",
-        "https://images.unsplash.com/photo-1620396464930-36c19adce4ee?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1350&q=80"
-      ],
-      services: ["Concepto creativo", "Ilustración digital", "Animación", "Adaptaciones para redes", "Diseño de merchandising"]
-    },
-    {
-      id: 4,
-      title: "Revista Trimestral",
-      client: "Revista Innovación",
-      category: "editorial",
-      description: "Diseño editorial para revista trimestral especializada en innovación y tecnología.",
-      fullDescription: "Renovamos el sistema de diseño de la revista Innovación, creando una experiencia de lectura moderna y coherente que balanza contenido denso con descansos visuales. Desarrollamos una serie de plantillas versátiles que mantienen la identidad editorial a lo largo de diferentes secciones y permiten flexibilidad para ediciones especiales.",
-      image: "https://images.unsplash.com/photo-1634128221889-82ed6efebfc3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1350&q=80",
-      images: [
-        "https://images.unsplash.com/photo-1634128221889-82ed6efebfc3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1350&q=80",
-        "https://images.unsplash.com/photo-1616004413079-dc6bb6e59207?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1350&q=80",
-        "https://images.unsplash.com/photo-1585435465945-bef5a93f8849?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1350&q=80"
-      ],
-      services: ["Diseño editorial", "Diagramación", "Dirección de arte", "Selección fotográfica", "Preparación para imprenta", "Versión digital"]
-    },
-    {
-      id: 5,
-      title: "Identidad Visual",
-      client: "Café Artesanal",
-      category: "branding",
-      description: "Desarrollo de identidad para cadena de cafeterías artesanales con enfoque sustentable.",
-      fullDescription: "Creamos una identidad visual con carácter artesanal y contemporáneo para una cadena de cafeterías de especialidad. El sistema visual incluye elementos gráficos inspirados en el proceso manual del café, una paleta cromática terrosa con acentos vibrantes y tipografías que comunican autenticidad y calidad premium.",
-      image: "https://images.unsplash.com/photo-1620646880917-74370ed0ccbb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1350&q=80",
-      images: [
-        "https://images.unsplash.com/photo-1620646880917-74370ed0ccbb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1350&q=80",
-        "https://images.unsplash.com/photo-1560357358-53e1c44233e4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1350&q=80",
-        "https://images.unsplash.com/photo-1534010401190-67e2b6353ad9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1350&q=80"
-      ],
-      services: ["Estrategia de marca", "Naming", "Diseño de logo", "Packaging", "Aplicaciones de marca", "Diseño de interiores"],
-      featured: true
-    },
-    {
-      id: 6,
-      title: "App de Bienestar",
-      client: "MindfulMe",
+      title: "LH Decants - Experiencia de Usuario",
+      client: "LH Decants",
       category: "diseño-web",
-      description: "Diseño de interfaz y experiencia de usuario para aplicación de meditación y bienestar.",
-      fullDescription: "Diseñamos la experiencia completa para MindfulMe, una aplicación de meditación y bienestar, focalizando en la simplicidad y serenidad. Creamos un sistema de navegación intuitivo, visualizaciones de datos para seguimiento de progreso y un sistema de iconografía personalizado que refuerza la identidad de la aplicación.",
-      image: "https://images.unsplash.com/photo-1596642912045-4bb2587d747c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1350&q=80",
+      description: "Optimización de la experiencia de compra para e-commerce de perfumes premium.",
+      fullDescription: "Rediseñamos la experiencia de usuario completa del sitio web de LH Decants, focalizando en la simplicidad del proceso de compra, la presentación elegante de productos y la optimización del embudo de conversión para maximizar las ventas de productos premium.",
+      image: "/lhdecant-card.png",
       images: [
-        "https://images.unsplash.com/photo-1596642912045-4bb2587d747c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1350&q=80",
-        "https://images.unsplash.com/photo-1585435557343-3b4cb67ee917?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1350&q=80",
-        "https://images.unsplash.com/photo-1584949514490-73fc1a2fbb88?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1350&q=80"
+        "/lhdecant-card.png",
+        "/lhdecant-card.png",
+        "/lhdecant-card.png"
       ],
-      services: ["UX Research", "UI Design", "Prototipado", "Diseño de interacción", "Design System", "Pruebas de usabilidad"]
-    },
-    {
-      id: 7,
-      title: "Animaciones para Redes",
-      client: "SneakerBrand",
-      category: "ilustracion",
-      description: "Serie de ilustraciones animadas para campaña de lanzamiento de nuevos productos.",
-      fullDescription: "Creamos una serie de ilustraciones animadas para el lanzamiento de una nueva colección de zapatillas. Las animaciones combinan técnicas 2D y 3D para destacar las características del producto con un lenguaje visual contemporáneo y dinámico que resonó especialmente con el público objetivo de la marca en redes sociales.",
-      image: "https://images.unsplash.com/photo-1580537659466-0a9bfa916a54?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1350&q=80",
-      images: [
-        "https://images.unsplash.com/photo-1580537659466-0a9bfa916a54?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1350&q=80",
-        "https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1350&q=80",
-        "https://images.unsplash.com/photo-1608889825205-eebdb9fc5806?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1350&q=80"
-      ],
-      services: ["Concepto creativo", "Storyboarding", "Ilustración digital", "Motion graphics", "Optimización para redes sociales"]
-    },
-    {
-      id: 8,
-      title: "Catálogo de Productos",
-      client: "Design Furniture",
-      category: "editorial",
-      description: "Diseño de catálogo físico y digital para marca de muebles de diseño contemporáneo.",
-      fullDescription: "Desarrollamos un catálogo premium para Design Furniture que pone en valor la artesanía y calidad de sus productos. El diseño editorial enfatiza los detalles y texturas de los muebles a través de una cuidada selección fotográfica, espacios blancos generosos y una tipografía elegante que refuerza el posicionamiento de la marca en el segmento premium.",
-      image: "https://images.unsplash.com/photo-1544457070-4cd773b4d71e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1350&q=80",
-      images: [
-        "https://images.unsplash.com/photo-1544457070-4cd773b4d71e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1350&q=80",
-        "https://images.unsplash.com/photo-1554907984-15263bfd63bd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1350&q=80",
-        "https://images.unsplash.com/photo-1588852656646-f483f8011592?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1350&q=80"
-      ],
-      services: ["Dirección de arte", "Fotografía de producto", "Diseño editorial", "Copywriting", "Versión interactiva digital", "Preparación para imprenta"]
+      services: ["UX Research", "UI Design", "Optimización conversión", "Testing de usabilidad", "Analytics"]
     }
   ];
   
@@ -776,7 +700,7 @@ export default function Estudio() {
                     {
                       quote: "La atención al detalle y su capacidad para entender nuestros objetivos de negocio nos impresionó. El resultado final superó nuestras expectativas en todos los sentidos.",
                       author: "Carlos Méndez",
-                      position: "Director de Marketing, TechSolutions",
+                      position: "CEO, LH Decants",
                       image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=250&q=80"
                     }
                   ].map((testimonial, index) => (
@@ -807,7 +731,7 @@ export default function Estudio() {
                 <div className="mt-12">
                   <h3 className="text-xl font-semibold mb-4">Clientes que confían en nosotros</h3>
                   <div className="grid grid-cols-3 gap-4">
-                    {['TechSolutions', 'Natural Organics', 'Festival Cultural', 'Revista Innovación', 'Café Artesanal', 'MindfulMe'].map((client, index) => (
+                    {['LH Decants', 'LH Decants', 'LH Decants', 'LH Decants', 'LH Decants', 'LH Decants'].map((client, index) => (
                       <div key={index} className="bg-gray-800 p-4 rounded-lg flex items-center justify-center">
                         <span className="text-sm font-medium">{client}</span>
                       </div>

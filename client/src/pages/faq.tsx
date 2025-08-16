@@ -161,11 +161,11 @@ const faqs: FAQ[] = [
   {
     id: 11,
     question: "¿Qué plataforma de automatización recomiendan?",
-    answer: "La elección de la plataforma adecuada depende de diversos factores como el tamaño de tu empresa, industria, presupuesto, objetivos y complejidad de tus procesos. Trabajamos con HubSpot, ActiveCampaign, Mailchimp, Zapier, entre otras. Durante nuestra consulta inicial, analizamos tus necesidades específicas para recomendarte la solución más adecuada.",
+    answer: "La elección de la plataforma adecuada depende de diversos factores como el tamaño de tu empresa, industria, presupuesto, objetivos y complejidad de tus procesos. Trabajamos con diversas plataformas de marketing automation, email marketing, CRM y herramientas de integración. Durante nuestra consulta inicial, analizamos tus necesidades específicas para recomendarte la solución más adecuada.",
     category: 'marketing',
     helpfulCount: 53,
     notHelpfulCount: 3,
-    keywords: ['automatización', 'plataforma', 'hubspot', 'activecampaign', 'mailchimp', 'zapier'],
+    keywords: ['automatización', 'plataforma', 'marketing', 'email', 'crm', 'integración'],
     relatedQuestions: [
       { id: 6, question: "¿Cómo miden el éxito de sus estrategias de marketing?" },
       { id: 1, question: "¿Qué servicios ofrece TuWeb.ai?" }
