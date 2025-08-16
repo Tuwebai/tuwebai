@@ -803,7 +803,7 @@ export default function Estudio() {
             <div>
               <h4 className="text-lg font-semibold mb-4">Recursos</h4>
               <ul className="space-y-2">
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Blog</a></li>
+                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">FAQ</a></li>
                 <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Guías de diseño</a></li>
                 <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Procesos creativos</a></li>
                 <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Estudios de caso</a></li>
