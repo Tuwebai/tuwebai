@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useAnimation, useScroll } from 'framer-motion';
+import { motion, useAnimation } from 'framer-motion';
 import MetaTags from '@/components/seo/meta-tags';
 
 type ProjectCategory = 'todos' | 'branding' | 'diseño-web' | 'ilustracion' | 'editorial';
@@ -31,15 +31,7 @@ export default function Estudio() {
   // Estados
   const [activeCategory, setActiveCategory] = useState<ProjectCategory>('todos');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [contactForm, setContactForm] = useState({
-    name: '',
-    email: '',
-    company: '',
-    service: '',
-    budget: '',
-    message: '',
-    attachment: null as File | null
-  });
+
   const [showNotification, setShowNotification] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState('');
   
@@ -228,8 +220,7 @@ export default function Estudio() {
     ? projects 
     : projects.filter(project => project.category === activeCategory);
   
-  // Proyectos destacados
-  const featuredProjects = projects.filter(project => project.featured);
+
   
   // Función para mostrar notificaciones
   const showNotificationMessage = (message: string) => {
@@ -238,33 +229,7 @@ export default function Estudio() {
     setTimeout(() => setShowNotification(false), 3000);
   };
   
-  // Función para manejar el envío del formulario
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    showNotificationMessage('¡Gracias por contactarnos! Te responderemos a la brevedad.');
-    setContactForm({
-      name: '',
-      email: '',
-      company: '',
-      service: '',
-      budget: '',
-      message: '',
-      attachment: null
-    });
-  };
-  
-  // Función para actualizar el formulario
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setContactForm(prev => ({ ...prev, [name]: value }));
-  };
-  
-  // Función para manejar archivos adjuntos
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setContactForm(prev => ({ ...prev, attachment: e.target.files ? e.target.files[0] : null }));
-    }
-  };
+
   
   // Function para alternar la selección de proyectos
   const toggleProjectSelection = (project: Project) => {
