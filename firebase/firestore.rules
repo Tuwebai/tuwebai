@@ -20,6 +20,12 @@ service cloud.firestore {
       allow read, write: if true;
     }
     
+    // Colección de aplicaciones de trabajo - Permitir escritura sin autenticación
+    match /applications/{document} {
+      allow read: if request.auth != null;
+      allow write: if true;
+    }
+    
     // Colección de configuración de webhooks
     match /webhook_config/{document} {
       // Solo lectura para usuarios autenticados

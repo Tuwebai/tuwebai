@@ -776,14 +776,14 @@ export default function Equipo() {
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href="#"
+              <Link
+                to="/vacantes"
                 className="px-6 py-3 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-lg text-white font-medium text-center shadow-lg shadow-[#00CCFF]/20 hover:shadow-[#9933FF]/30"
               >
                 Ver vacantes
-              </a>
+              </Link>
               <a
-                href="mailto:careers@tuweb.ai"
+                href="mailto:tuwebai@gmail.com?subject=Postulación%20para%20TuWeb.ai&body=Hola%20equipo%20de%20TuWeb.ai,%0D%0A%0D%0AMe%20interesa%20formar%20parte%20de%20su%20equipo.%0D%0A%0D%0AMi%20CV%20se%20adjunta%20en%20este%20correo.%0D%0A%0D%0ASaludos,%0D%0A[Nombre%20y%20Apellido]"
                 className="px-6 py-3 bg-[#1a1a23] border border-gray-700 rounded-lg text-white font-medium text-center hover:bg-[#1f1f29] transition-colors"
               >
                 Enviar CV

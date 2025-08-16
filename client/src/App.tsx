@@ -30,6 +30,7 @@ const AutomatizacionMarketing = lazy(() => import('./pages/servicios/automatizac
 
 const FAQ = lazy(() => import('./pages/faq'));
 const Equipo = lazy(() => import('./pages/equipo'));
+const Vacantes = lazy(() => import('./pages/vacantes'));
 const Tecnologias = lazy(() => import('./pages/tecnologias'));
 const Recursos = lazy(() => import('./pages/recursos'));
 
@@ -127,6 +128,7 @@ function App() {
               
               <Route path="/faq" element={<LazyRoute><FAQ /></LazyRoute>} />
               <Route path="/equipo" element={<LazyRoute><Equipo /></LazyRoute>} />
+              <Route path="/vacantes" element={<LazyRoute><Vacantes /></LazyRoute>} />
               <Route path="/tecnologias" element={<LazyRoute><Tecnologias /></LazyRoute>} />
               <Route path="/recursos" element={<LazyRoute><Recursos /></LazyRoute>} />
               
