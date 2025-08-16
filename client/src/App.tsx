@@ -1,5 +1,5 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
-import { lazy, useEffect, Suspense } from 'react';
+import { lazy, useEffect } from 'react';
 import GlobalNavbar from './components/ui/global-navbar';
 import Footer from './components/ui/footer';
 import { Toaster } from "@/components/ui/toaster";
