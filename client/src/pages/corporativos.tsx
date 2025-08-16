@@ -137,7 +137,29 @@ export default function Corporativos() {
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {[1, 2, 3].map((item, index) => (
+            {[
+              {
+                image: "/lhdecant-card.png",
+                title: "LH Decants",
+                description: "Sitio web corporativo premium para empresa de perfumes y fragancias. Diseño elegante y sofisticado que refleja la calidad de sus productos exclusivos.",
+                tags: ["E-commerce", "Diseño Premium"],
+                results: "Aumento del 150% en ventas online"
+              },
+              {
+                image: "/ropaurbana-card.png",
+                title: "Ropa Urbana",
+                description: "Plataforma de e-commerce moderna para tienda de ropa urbana. Interfaz intuitiva y optimizada para conversiones.",
+                tags: ["E-commerce", "UX/UI"],
+                results: "300% más de conversiones"
+              },
+              {
+                image: "/dulce-card.png",
+                title: "Dulce Tentación",
+                description: "Sitio web para pastelería artesanal con sistema de pedidos online integrado y galería de productos.",
+                tags: ["Sistema de Pedidos", "Galería"],
+                results: "200% incremento en pedidos"
+              }
+            ].map((caseStudy, index) => (
               <motion.div
                 key={index}
                 className="rounded-xl overflow-hidden"
@@ -147,18 +169,29 @@ export default function Corporativos() {
               >
                 <div className="bg-gradient-to-br from-[#00CCFF]/10 to-[#9933FF]/10 p-[1px] rounded-xl">
                   <div className="bg-[#121217] rounded-xl p-6">
-                    <div className="h-48 rounded-lg bg-gradient-to-br from-[#0f0f19]/90 to-[#121217]/90 mb-4 flex items-center justify-center">
-                      <span className="text-gray-500 font-medium">
-                        Imagen del caso
-                      </span>
+                    <div className="h-48 rounded-lg bg-gradient-to-br from-[#0f0f19]/90 to-[#121217]/90 mb-4 flex items-center justify-center overflow-hidden">
+                      <img 
+                        src={caseStudy.image} 
+                        alt={caseStudy.title}
+                        className="w-full h-full object-cover"
+                      />
                     </div>
-                    <h4 className="text-xl font-rajdhani font-bold mb-2 text-white">Empresa {item}</h4>
-                    <p className="text-gray-300 mb-4">
-                      Breve descripción del proyecto y los resultados obtenidos tras la implementación del sitio corporativo.
+                    <h4 className="text-xl font-rajdhani font-bold mb-2 text-white">{caseStudy.title}</h4>
+                    <p className="text-gray-300 mb-3">
+                      {caseStudy.description}
+                    </p>
+                    <p className="text-[#00CCFF] text-sm font-medium mb-4">
+                      {caseStudy.results}
                     </p>
                     <div className="flex space-x-2 text-sm">
-                      <span className="px-3 py-1 rounded-full bg-[#00CCFF]/20 text-[#00CCFF]">SEO</span>
-                      <span className="px-3 py-1 rounded-full bg-[#9933FF]/20 text-[#9933FF]">Conversión</span>
+                      {caseStudy.tags.map((tag, tagIndex) => (
+                        <span 
+                          key={tagIndex}
+                          className="px-3 py-1 rounded-full bg-[#00CCFF]/20 text-[#00CCFF]"
+                        >
+                          {tag}
+                        </span>
+                      ))}
                     </div>
                   </div>
                 </div>

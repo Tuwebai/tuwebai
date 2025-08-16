@@ -23,105 +23,126 @@ import {
   TicketResponse
 } from '@/services/firestore';
 
-// Datos simulados por defecto (se usarán si no hay datos reales)
+// Datos reales de LH Decants
 const defaultProject: Project = {
-  id: 'default',
+  id: 'lhdecants',
   userId: '',
-  name: 'Sitio Web Corporativo Premium',
-  type: 'E-commerce + Blog',
-  startDate: '2025-01-15',
-  estimatedEndDate: '2025-03-15',
-  overallProgress: 65,
-  status: 'active',
+  name: 'LH Decants - Sitio Web Corporativo',
+  type: 'E-commerce Premium',
+  startDate: '2025-01-10',
+  estimatedEndDate: '2025-02-28',
+  overallProgress: 100,
+  status: 'completed',
   phases: [
     {
       id: '1',
-      name: 'UI Design',
+      name: 'Diseño y Branding',
       status: 'completed',
-      description: 'Diseño de interfaz de usuario y experiencia de usuario',
-      estimatedDate: '2025-01-25',
-      completedDate: '2025-01-22',
+      description: 'Diseño de identidad visual y experiencia de usuario para empresa de perfumes',
+      estimatedDate: '2025-01-20',
+      completedDate: '2025-01-18',
       progress: 100,
       files: [
         {
           id: '1',
-          name: 'Mockups_Fase1.pdf',
+          name: 'LH_Decants_Mockups.pdf',
           type: 'pdf',
-          url: 'https://drive.google.com/file/d/example/view',
-          uploadedAt: '2025-01-22',
+          url: 'https://drive.google.com/file/d/lhdecants-mockups/view',
+          uploadedAt: '2025-01-18',
           uploadedBy: 'TuWeb.ai'
         }
       ],
       comments: [
         {
           id: '1',
-          text: 'Diseños aprobados por el cliente. Listo para maquetado.',
+          text: 'Diseño elegante y sofisticado aprobado. Refleja perfectamente la calidad premium de los productos.',
           author: 'TuWeb.ai',
           authorType: 'admin',
-          createdAt: '2025-01-22T10:30:00Z'
+          createdAt: '2025-01-18T14:30:00Z'
         }
       ]
     },
     {
       id: '2',
-      name: 'Maquetado',
+      name: 'Desarrollo Frontend',
       status: 'completed',
-      description: 'Desarrollo del frontend con React y TailwindCSS',
-      estimatedDate: '2025-02-10',
-      completedDate: '2025-02-08',
+      description: 'Desarrollo del sitio web con React, TailwindCSS y animaciones premium',
+      estimatedDate: '2025-02-05',
+      completedDate: '2025-02-03',
       progress: 100,
       files: [
         {
           id: '2',
-          name: 'Screenshot_Homepage.png',
+          name: 'LH_Decants_Homepage.png',
           type: 'image',
-          url: 'https://drive.google.com/file/d/example2/view',
-          uploadedAt: '2025-02-08',
+          url: 'https://drive.google.com/file/d/lhdecants-homepage/view',
+          uploadedAt: '2025-02-03',
           uploadedBy: 'TuWeb.ai'
         }
       ],
       comments: [
         {
           id: '2',
-          text: 'Maquetado completado. Revisar en el navegador.',
+          text: 'Sitio web completamente funcional. Diseño responsive y optimizado para conversiones.',
           author: 'TuWeb.ai',
           authorType: 'admin',
-          createdAt: '2025-02-08T15:45:00Z'
+          createdAt: '2025-02-03T16:45:00Z'
         }
       ]
     },
     {
       id: '3',
-      name: 'Contenido',
-      status: 'in-progress',
-      description: 'Integración de contenido y textos del cliente',
-      estimatedDate: '2025-02-20',
-      progress: 75,
+      name: 'Integración E-commerce',
+      status: 'completed',
+      description: 'Configuración de tienda online y sistema de pagos',
+      estimatedDate: '2025-02-15',
+      completedDate: '2025-02-12',
+      progress: 100,
       comments: [
         {
           id: '3',
-          text: 'Necesitamos las imágenes de productos para completar esta fase.',
+          text: 'E-commerce completamente configurado. Sistema de pagos integrado y funcional.',
           author: 'TuWeb.ai',
           authorType: 'admin',
-          createdAt: '2025-02-15T09:15:00Z'
+          createdAt: '2025-02-12T11:30:00Z'
         }
       ]
     },
     {
       id: '4',
-      name: 'Funcionalidades',
-      status: 'pending',
-      description: 'Implementación de funcionalidades avanzadas y e-commerce',
-      estimatedDate: '2025-02-28',
-      progress: 0
+      name: 'SEO y Optimización',
+      status: 'completed',
+      description: 'Optimización para motores de búsqueda y rendimiento',
+      estimatedDate: '2025-02-20',
+      completedDate: '2025-02-18',
+      progress: 100,
+      comments: [
+        {
+          id: '4',
+          text: 'SEO implementado. Sitio optimizado para Google y velocidad de carga mejorada.',
+          author: 'TuWeb.ai',
+          authorType: 'admin',
+          createdAt: '2025-02-18T13:20:00Z'
+        }
+      ]
     },
     {
       id: '5',
-      name: 'SEO',
-      status: 'pending',
-      description: 'Optimización para motores de búsqueda',
-      estimatedDate: '2025-03-05',
-      progress: 0
+      name: 'Lanzamiento',
+      status: 'completed',
+      description: 'Despliegue final y configuración de dominio',
+      estimatedDate: '2025-02-28',
+      completedDate: '2025-02-25',
+      progress: 100,
+      comments: [
+        {
+          id: '5',
+          text: '¡Proyecto completado! Sitio web lanzado exitosamente en lhdecant.com',
+          author: 'TuWeb.ai',
+          authorType: 'admin',
+          createdAt: '2025-02-25T10:00:00Z'
+        }
+      ]
     },
     {
       id: '6',
