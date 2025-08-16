@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 import AnimatedShape from '../components/ui/animated-shape';
 import { addDoc, collection } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
-import { toast } from 'react-hot-toast';
+import { toast } from '@/components/ui/use-toast';
+import { API_URL } from '@/lib/api';
 
 // Tipo para las vacantes
 interface Vacancy {
@@ -149,7 +150,7 @@ export default function Vacantes() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!selectedVacancy) return;
@@ -165,7 +166,47 @@ export default function Vacantes() {
         status: 'pending'
       });
 
-      toast.success('¡Aplicación enviada con éxito! Te contactaremos pronto.');
+      // Enviar email usando el mismo sistema que los formularios de contacto
+      const response = await fetch(`${API_URL}/contact`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: application.name,
+          email: application.email,
+          title: `Nueva aplicación: ${selectedVacancy.title}`,
+          message: `
+Nueva aplicación recibida:
+
+Posición: ${selectedVacancy.title}
+Departamento: ${selectedVacancy.department}
+Tipo: ${selectedVacancy.type}
+
+Información del candidato:
+- Nombre: ${application.name}
+- Email: ${application.email}
+- Teléfono: ${application.phone || 'No proporcionado'}
+- Años de experiencia: ${application.experience}
+- Portfolio: ${application.portfolio || 'No proporcionado'}
+
+Mensaje del candidato:
+${application.message || 'No se proporcionó mensaje adicional'}
+
+Esta aplicación ha sido guardada en la base de datos con estado: pending
+          `.trim()
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al enviar el email de notificación');
+      }
+
+      toast({
+        title: "¡Aplicación enviada con éxito!",
+        description: "Te contactaremos pronto.",
+        variant: "default"
+      });
       setShowApplicationForm(false);
       setApplication({
         name: '',
@@ -178,7 +219,11 @@ export default function Vacantes() {
       });
     } catch (error) {
       console.error('Error submitting application:', error);
-      toast.error('Error al enviar la aplicación. Intenta nuevamente.');
+      toast({
+        title: "Error al enviar la aplicación",
+        description: "Intenta nuevamente.",
+        variant: "destructive"
+      });
     } finally {
       setIsSubmitting(false);
     }

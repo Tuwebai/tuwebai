@@ -50,6 +50,7 @@ app.use(
         "https://tuweb-ai.com",
         "https://www.tuweb-ai.com",
         "http://localhost:3000",
+        "http://localhost:3001",
         "http://localhost:5173"
       ];
       
@@ -288,7 +289,10 @@ const transporter = nodemailer.createTransport({
   auth: {
     user: 'tuwebai@gmail.com',
     pass: 'c z n h h w t e c r q m k u a a'
-  }
+  },
+  // Configuración para evitar problemas de codificación
+  charset: 'utf-8',
+  encoding: 'utf-8'
 });
 
 // Función para generar plantilla de email profesional
@@ -334,24 +338,27 @@ function generateEmailTemplate(data: {
           text-align: center;
           color: white;
         }
-        .logo-container {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin-bottom: 15px;
-          gap: 15px;
-        }
-        .logo-image {
-          width: 50px;
-          height: 50px;
-          border-radius: 8px;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-        }
-        .logo-text {
-          font-size: 28px;
-          font-weight: bold;
-          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-        }
+                 .logo-container {
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           margin-bottom: 15px;
+           width: 100%;
+           gap: 15px;
+         }
+         .logo-image {
+           width: 50px;
+           height: 50px;
+           border-radius: 8px;
+           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+         }
+         .logo-text {
+           font-size: 36px;
+           font-weight: bold;
+           text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+           text-align: center;
+           letter-spacing: 2px;
+         }
         .subtitle {
           font-size: 16px;
           opacity: 0.9;
@@ -438,29 +445,30 @@ function generateEmailTemplate(data: {
           .header {
             padding: 20px 15px;
           }
-          .logo-container {
-            flex-direction: column;
-            gap: 10px;
-          }
-          .logo-image {
-            width: 40px;
-            height: 40px;
-          }
-          .logo-text {
-            font-size: 24px;
-          }
+                     .logo-container {
+             flex-direction: column;
+             gap: 10px;
+           }
+           .logo-image {
+             width: 40px;
+             height: 40px;
+           }
+           .logo-text {
+             font-size: 30px;
+             letter-spacing: 1px;
+           }
         }
       </style>
     </head>
     <body>
       <div class="container">
-        <div class="header">
-          <div class="logo-container">
-            <img src="https://tuweb-ai.com/logo-tuwebai.png" alt="TuWebAI Logo" class="logo-image" />
-            <div class="logo-text">TuWebAI</div>
-          </div>
-          <p class="subtitle">Agencia Digital de Desarrollo Web</p>
-        </div>
+                 <div class="header">
+           <div class="logo-container">
+             <img src="https://tuweb-ai.com/logo.png" alt="TuWebAI Logo" class="logo-image" onerror="this.style.display='none'">
+             <div class="logo-text">TuWebAI</div>
+           </div>
+           <p class="subtitle">Agencia Digital de Desarrollo Web</p>
+         </div>
         
         <div class="content">
           <h1 class="title">${isTest ? 'Test de Nodemailer' : emailTitle}</h1>
