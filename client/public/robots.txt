@@ -1,0 +1,26 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://tuweb-ai.com/sitemap.xml
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /panel/
+Disallow: /auth/
+Disallow: /api/
+
+# Allow important pages
+Allow: /corporativos
+Allow: /uxui
+Allow: /ecommerce
+Allow: /consulta
+Allow: /servicios/
+Allow: /faq
+Allow: /equipo
+Allow: /tecnologias
+Allow: /recursos
+Allow: /contacto
+
+# Crawl delay (optional)
+Crawl-delay: 1

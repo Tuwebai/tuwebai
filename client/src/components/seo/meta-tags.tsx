@@ -18,7 +18,7 @@ const MetaTags: React.FC<MetaTagsProps> = ({
   title,
   description,
   keywords,
-  image = '/logo.png',
+  image = '/logo-tuwebai.png',
   url = window.location.href,
   type = 'website',
   twitterCard = 'summary_large_image',
