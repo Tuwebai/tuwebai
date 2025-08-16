@@ -148,7 +148,7 @@ const faqs: FAQ[] = [
   {
     id: 10,
     question: "¿Puedo actualizar el contenido de mi sitio yo mismo?",
-    answer: "Absolutamente. Todos nuestros sitios incluyen un panel de administración intuitivo que te permite actualizar el contenido, añadir páginas, publicar artículos de blog y gestionar otros aspectos de tu sitio sin conocimientos técnicos. Además, proporcionamos capacitación completa para que te sientas cómodo administrando tu sitio.",
+    answer: "Absolutamente. Todos nuestros sitios incluyen un panel de administración intuitivo que te permite actualizar el contenido, añadir páginas y gestionar otros aspectos de tu sitio sin conocimientos técnicos. Además, proporcionamos capacitación completa para que te sientas cómodo administrando tu sitio.",
     category: 'desarrollo',
     helpfulCount: 87,
     notHelpfulCount: 2,

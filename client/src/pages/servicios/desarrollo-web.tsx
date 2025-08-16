@@ -623,9 +623,8 @@ export default function DesarrolloWeb() {
                         <p className="text-gray-400 mb-4">Sitio Web Corporativo + Sistema de Citas</p>
                         
                         <p className="text-gray-300 mb-4">
-                          Sitio web corporativo con sistema integrado de reserva de citas, blog de 
-                          contenido especializado y landing pages para campañas específicas. Optimizado 
-                          para SEO local.
+                          Sitio web corporativo con sistema integrado de reserva de citas y landing pages 
+                          para campañas específicas. Optimizado para SEO local.
                         </p>
                         
                         <div className="space-y-2 mb-6">
@@ -717,10 +716,9 @@ export default function DesarrolloWeb() {
                       <h3 className="font-rajdhani font-bold text-xl mb-3">¿Puedo actualizar el contenido de mi sitio yo mismo?</h3>
                       <p className="text-gray-300">
                         Absolutamente. Todos nuestros sitios incluyen un panel de administración 
-                        intuitivo que te permite actualizar el contenido, añadir páginas, publicar 
-                        artículos de blog y gestionar otros aspectos de tu sitio sin conocimientos 
-                        técnicos. Además, proporcionamos capacitación completa para que te sientas 
-                        cómodo administrando tu sitio.
+                        intuitivo que te permite actualizar el contenido, añadir páginas y gestionar 
+                        otros aspectos de tu sitio sin conocimientos técnicos. Además, proporcionamos 
+                        capacitación completa para que te sientas cómodo administrando tu sitio.
                       </p>
                     </div>
                     

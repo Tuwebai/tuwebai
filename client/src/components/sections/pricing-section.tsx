@@ -221,7 +221,7 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
             features={[
               "Sitio web de 10 páginas",
               "Estrategia SEO completa",
-              "Blog integrado con CMS",
+              "Sistema de gestión de contenido",
               "Panel de administración",
               "Email marketing (hasta 1,000 suscriptores)",
               "Integraciones con CRM",

@@ -371,12 +371,12 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
                         Visitar página web
                       </button>
                     ) : (
-                      <Link 
-                        to={selectedProject.detailsUrl}
-                        className="inline-block px-6 py-3 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-lg text-white font-medium"
-                      >
-                        Ver página completa
-                      </Link>
+                    <Link 
+                      to={selectedProject.detailsUrl}
+                      className="inline-block px-6 py-3 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-lg text-white font-medium"
+                    >
+                      Ver página completa
+                    </Link>
                     )}
                   </motion.div>
                 </div>
