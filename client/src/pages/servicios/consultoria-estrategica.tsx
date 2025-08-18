@@ -37,7 +37,7 @@ export default function ConsultoriaEstrategica() {
               </h1>
               
               <p className="text-xl text-gray-300 mb-10">
-                Transformamos datos en estrategias efectivas para el crecimiento digital de tu negocio
+                Analizamos tu negocio actual y diseñamos estrategias digitales personalizadas para maximizar tu ROI y crecimiento online
               </p>
               
               <motion.a 
@@ -208,9 +208,9 @@ export default function ConsultoriaEstrategica() {
                       <div className="ml-4">
                         <h3 className="font-rajdhani font-bold text-xl mb-2">Descubrimiento</h3>
                         <p className="text-gray-400">
-                          Realizamos entrevistas iniciales para comprender tus objetivos de negocio, 
-                          desafíos actuales y visión a largo plazo. Recopilamos datos de todas las fuentes 
-                          relevantes para obtener una visión completa de tu situación.
+                          Realizamos 2-3 entrevistas por Zoom para entender tu negocio, competencia y objetivos. 
+                          Analizamos tu sitio web actual, redes sociales, y presencia digital. Utilizamos herramientas 
+                          como Google Analytics, Search Console y SEMrush para recopilar datos reales.
                         </p>
                       </div>
                     </div>
@@ -222,9 +222,9 @@ export default function ConsultoriaEstrategica() {
                       <div className="ml-4">
                         <h3 className="font-rajdhani font-bold text-xl mb-2">Análisis</h3>
                         <p className="text-gray-400">
-                          Evaluamos todos los datos recopilados utilizando nuestras herramientas propietarias 
-                          y metodologías de análisis. Identificamos patrones, oportunidades y áreas de mejora 
-                          específicas para tu negocio.
+                          Analizamos datos de tráfico, conversiones, competencia y mercado. Utilizamos Google Analytics 4, 
+                          Google Search Console, SEMrush y herramientas de análisis de redes sociales. Identificamos 
+                          oportunidades específicas de mejora y crecimiento.
                         </p>
                       </div>
                     </div>
@@ -236,9 +236,9 @@ export default function ConsultoriaEstrategica() {
                       <div className="ml-4">
                         <h3 className="font-rajdhani font-bold text-xl mb-2">Estrategia</h3>
                         <p className="text-gray-400">
-                          Desarrollamos un plan estratégico personalizado con recomendaciones priorizadas 
-                          según su impacto potencial y facilidad de implementación. Definimos KPIs claros 
-                          para medir el éxito.
+                          Creamos un plan de acción con 3-5 estrategias prioritarias, cronograma de implementación 
+                          y presupuesto estimado. Definimos KPIs específicos como: aumento de tráfico, conversiones, 
+                          posiciones en Google, y ROI de campañas.
                         </p>
                       </div>
                     </div>

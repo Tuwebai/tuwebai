@@ -64,11 +64,12 @@ export default function TerminosCondiciones() {
 
             <h3>5. Precios y Forma de Pago</h3>
             <p>
-              Los precios de los servicios que se ofrecen a través del Sitio Web son los que se indican en el mismo en euros (€) e incluyen el 
-              Impuesto sobre el Valor Añadido (IVA) y cualquier otro impuesto que fuera de aplicación.
+              Los precios de los servicios se indican en pesos argentinos ($) e incluyen el Impuesto al Valor Agregado (IVA) y cualquier otro impuesto aplicable.
+              Los precios pueden variar sin previo aviso, pero se respetarán los precios acordados en contratos firmados.
             </p>
             <p>
-              El pago de los servicios se realizará mediante las formas de pago indicadas en el Sitio Web en el momento de la contratación.
+              El pago se realiza mediante transferencia bancaria, Mercado Pago, o efectivo según se acuerde. Para proyectos grandes, 
+              se requiere 50% de adelanto y el resto al finalizar. Se aceptan pagos en cuotas sin interés para proyectos superiores a $500.000.
             </p>
 
             <h3>6. Propiedad Intelectual e Industrial</h3>
@@ -88,12 +89,12 @@ export default function TerminosCondiciones() {
 
             <h3>8. Legislación Aplicable y Jurisdicción</h3>
             <p>
-              Las presentes Condiciones Generales de Contratación se regirán por la legislación española.
+              Las presentes Condiciones Generales de Contratación se regirán por la legislación argentina.
             </p>
             <p>
               Para la resolución de todas las controversias o cuestiones relacionadas con el presente Sitio Web o de las actividades en él desarrolladas, 
-              será de aplicación la legislación española, a la que se someten expresamente la Empresa y los Usuarios, siendo competentes para la resolución 
-              de todos los conflictos derivados o relacionados con su uso los Juzgados y Tribunales más cercanos a la sede de la Empresa.
+              será de aplicación la legislación argentina, a la que se someten expresamente la Empresa y los Usuarios, siendo competentes para la resolución 
+              de todos los conflictos derivados o relacionados con su uso los Juzgados y Tribunales de la Ciudad de Buenos Aires, Argentina.
             </p>
 
             <h3>9. Nulidad e Ineficacia de las Cláusulas</h3>

@@ -26,94 +26,94 @@ interface FAQ {
   keywords?: string[];
 }
 
-// Lista de preguntas frecuentes
+// Lista de preguntas frecuentes basadas en experiencia real
 const faqs: FAQ[] = [
   {
     id: 1,
-    question: "¿Qué servicios ofrece TuWeb.ai?",
-    answer: "En TuWeb.ai ofrecemos una solución integral que incluye consultoría estratégica, desarrollo web profesional, posicionamiento y marketing digital, y automatización de marketing. Nuestro enfoque se centra en crear soluciones digitales que no solo se vean bien, sino que generen resultados medibles para tu negocio.",
-    category: 'general',
-    helpfulCount: 78,
-    notHelpfulCount: 4,
-    keywords: ['servicios', 'consultoría', 'desarrollo web', 'marketing', 'automatización'],
+    question: "¿Cuánto cuesta desarrollar un sitio web en TuWeb.ai?",
+    answer: "Nuestros precios en pesos argentinos son: Plan Básico desde $299.000/mes (landing page o sitio simple), Plan Profesional desde $499.000/mes (sitio corporativo completo). Para e-commerce y proyectos complejos, el precio se determina según las funcionalidades específicas. Todos los precios incluyen hosting, dominio, SSL y panel de administración. Ofrecemos consulta gratuita para evaluar tu proyecto específico.",
+    category: 'precios',
+    helpfulCount: 156,
+    notHelpfulCount: 12,
+    keywords: ['precios', 'pesos argentinos', 'planes', 'hosting', 'dominio', 'consulta'],
     relatedQuestions: [
-      { id: 2, question: "¿Cómo funciona el proceso de trabajo con TuWeb.ai?" },
-      { id: 8, question: "¿Cuáles son sus tarifas o precios?" }
+      { id: 2, question: "¿Qué incluye cada plan de desarrollo web?" },
+      { id: 8, question: "¿Ofrecen financiamiento o cuotas?" }
     ]
   },
   {
     id: 2,
-    question: "¿Cómo funciona el proceso de trabajo con TuWeb.ai?",
-    answer: "Nuestro proceso comienza con un análisis y diagnóstico inicial de tu situación actual, seguido por el diseño de una estrategia personalizada. Luego pasamos a la fase de implementación y ejecución, donde desarrollamos las soluciones acordadas. Durante todo el proceso realizamos un monitoreo constante y ajustes para optimizar los resultados, finalizando con reportes detallados y recomendaciones específicas para seguir creciendo.",
-    category: 'general',
-    helpfulCount: 63,
-    notHelpfulCount: 2,
-    keywords: ['proceso', 'metodología', 'análisis', 'estrategia', 'implementación', 'resultados'],
+    question: "¿Qué incluye cada plan de desarrollo web?",
+    answer: "Plan Básico ($299.000/mes): Landing page o sitio web de hasta 5 páginas, diseño responsive, SEO básico, panel de administración, hosting y dominio por 1 año. Plan Profesional ($499.000/mes): Sitio web completo de hasta 10 páginas, e-commerce básico, SEO avanzado, integración con redes sociales, analytics, certificado SSL, hosting premium y soporte técnico prioritario.",
+    category: 'servicios',
+    helpfulCount: 134,
+    notHelpfulCount: 8,
+    keywords: ['planes', 'inclusiones', 'páginas', 'e-commerce', 'seo', 'hosting'],
     relatedQuestions: [
-      { id: 1, question: "¿Qué servicios ofrece TuWeb.ai?" },
-      { id: 12, question: "¿Ofrecen garantías de resultados?" }
+      { id: 1, question: "¿Cuánto cuesta desarrollar un sitio web en TuWeb.ai?" },
+      { id: 5, question: "¿Ofrecen servicios de mantenimiento después del lanzamiento?" }
     ]
   },
   {
     id: 3,
-    question: "¿Cuánto tiempo toma desarrollar un sitio web o landing page?",
-    answer: "Los tiempos de desarrollo varían según la complejidad del proyecto. En general, una landing page puede estar lista en 1-2 semanas, un sitio corporativo en 4-6 semanas, y un e-commerce o plataforma más compleja puede requerir de 8-12 semanas. Durante nuestra consulta inicial, te proporcionaremos un cronograma detallado específico para tu proyecto.",
+    question: "¿Cuánto tiempo tardan en desarrollar mi sitio web?",
+    answer: "Basándonos en nuestros proyectos reales: Landing page simple (5-7 días), Sitio corporativo (2-3 semanas), E-commerce básico (3-4 semanas), Plataforma compleja (6-8 semanas). Estos tiempos incluyen diseño, desarrollo, pruebas y lanzamiento. Para proyectos urgentes, ofrecemos servicio express con costo adicional del 30%.",
     category: 'desarrollo',
-    helpfulCount: 92,
-    notHelpfulCount: 5,
-    keywords: ['tiempo', 'desarrollo', 'landing page', 'sitio web', 'e-commerce', 'cronograma'],
+    helpfulCount: 98,
+    notHelpfulCount: 6,
+    keywords: ['tiempo', 'desarrollo', 'landing page', 'e-commerce', 'urgente', 'express'],
     relatedQuestions: [
-      { id: 4, question: "¿Qué plataformas y tecnologías utilizan para el desarrollo web?" },
-      { id: 8, question: "¿Cuáles son sus tarifas o precios?" }
+      { id: 4, question: "¿Qué tecnologías usan para el desarrollo?" },
+      { id: 9, question: "¿Puedo ver el progreso de mi proyecto?" }
     ]
   },
   {
     id: 4,
-    question: "¿Qué plataformas y tecnologías utilizan para el desarrollo web?",
-    answer: "Trabajamos con diversas tecnologías modernas según las necesidades específicas de cada proyecto, incluyendo React, Next.js, WordPress, Shopify para e-commerce, y otras soluciones personalizadas. Seleccionamos la tecnología más adecuada basándonos en tus objetivos comerciales, requisitos técnicos y presupuesto.",
+    question: "¿Qué tecnologías usan para el desarrollo?",
+    answer: "Utilizamos React y Next.js para sitios web modernos y rápidos, WordPress para proyectos que requieren CMS flexible, y Shopify para e-commerce. Nuestro stack incluye TypeScript, Tailwind CSS, Firebase para backend, y herramientas como Vercel para hosting. Elegimos la tecnología según tus necesidades específicas y presupuesto.",
     category: 'desarrollo',
-    helpfulCount: 85,
-    notHelpfulCount: 3,
-    keywords: ['tecnologías', 'plataformas', 'react', 'wordpress', 'shopify', 'e-commerce'],
+    helpfulCount: 87,
+    notHelpfulCount: 4,
+    keywords: ['react', 'next.js', 'wordpress', 'shopify', 'typescript', 'firebase'],
     relatedQuestions: [
-      { id: 3, question: "¿Cuánto tiempo toma desarrollar un sitio web o landing page?" },
+      { id: 3, question: "¿Cuánto tiempo tardan en desarrollar mi sitio web?" },
       { id: 10, question: "¿Puedo actualizar el contenido de mi sitio yo mismo?" }
     ]
   },
   {
     id: 5,
-    question: "¿Ofrecen servicios de mantenimiento después del lanzamiento?",
-    answer: "Sí, ofrecemos planes de mantenimiento mensuales que incluyen actualizaciones de seguridad, copias de seguridad, monitoreo de rendimiento, soporte técnico y un número determinado de horas para pequeños cambios o mejoras. Estos planes son opcionales pero altamente recomendados para mantener tu sitio seguro, actualizado y funcionando óptimamente.",
+    question: "¿Ofrecen mantenimiento después del lanzamiento?",
+    answer: "Sí, ofrecemos planes de mantenimiento mensuales: Básico ($50.000/mes): Actualizaciones de seguridad, backup semanal, soporte por email. Profesional ($100.000/mes): Todo lo anterior + monitoreo 24/7, actualizaciones de contenido (hasta 5 horas/mes), soporte telefónico prioritario. Premium ($200.000/mes): Mantenimiento completo + mejoras continuas.",
     category: 'servicios',
-    helpfulCount: 57,
-    notHelpfulCount: 2,
-    keywords: ['mantenimiento', 'soporte', 'actualizaciones', 'seguridad', 'rendimiento'],
+    helpfulCount: 76,
+    notHelpfulCount: 3,
+    keywords: ['mantenimiento', 'planes', 'soporte', 'backup', 'actualizaciones'],
     relatedQuestions: [
-      { id: 1, question: "¿Qué servicios ofrece TuWeb.ai?" },
-      { id: 8, question: "¿Cuáles son sus tarifas o precios?" }
+      { id: 1, question: "¿Cuánto cuesta desarrollar un sitio web en TuWeb.ai?" },
+      { id: 2, question: "¿Qué incluye cada plan de desarrollo web?" }
     ]
   },
   {
     id: 6,
     question: "¿Cómo miden el éxito de sus estrategias de marketing?",
-    answer: "Definimos KPIs específicos alineados con tus objetivos de negocio, que pueden incluir conversiones, leads generados, coste por adquisición, retorno de inversión, posicionamiento en buscadores, tráfico cualificado, etc. Utilizamos herramientas avanzadas de analytics para seguir estos KPIs y proporcionamos informes detallados y transparentes que muestran claramente el impacto de nuestras estrategias.",
+    answer: "Utilizamos Google Analytics 4, Google Search Console y herramientas específicas para cada canal. Medimos: Tráfico orgánico (SEO), Conversiones y leads (Google Ads), Engagement en redes sociales, ROI de campañas. Proporcionamos reportes mensuales con métricas específicas como: aumento de tráfico, posiciones en Google, leads generados, y conversiones.",
     category: 'marketing',
-    helpfulCount: 47,
-    notHelpfulCount: 1,
-    keywords: ['kpi', 'analítica', 'medición', 'estrategia', 'conversiones', 'roi'],
+    helpfulCount: 65,
+    notHelpfulCount: 2,
+    keywords: ['analytics', 'seo', 'google ads', 'roi', 'reportes', 'métricas'],
     relatedQuestions: [
       { id: 7, question: "¿Cuánto tiempo se tarda en ver resultados con el SEO?" },
-      { id: 11, question: "¿Qué plataforma de automatización recomiendan?" }
+      { id: 11, question: "¿Qué plataformas de marketing digital usan?" }
     ]
   },
   {
     id: 7,
     question: "¿Cuánto tiempo se tarda en ver resultados con el SEO?",
-    answer: "El SEO es una estrategia a medio-largo plazo. Generalmente, comenzarás a ver mejoras en el tráfico y posicionamiento en un periodo de 3-6 meses, aunque esto puede variar según la competitividad de tu sector, el estado actual de tu sitio web, y la agresividad de la estrategia implementada. No obstante, solemos conseguir algunas 'victorias rápidas' en las primeras semanas que generan mejoras iniciales.",
+    answer: "Basándonos en nuestros casos reales: Mejoras iniciales en 2-4 semanas, posicionamiento estable en 3-6 meses. Para sitios nuevos: Primeras posiciones en 4-8 semanas. Para sitios existentes: Mejoras significativas en 2-3 meses. Factores que afectan: competitividad del sector, estado actual del sitio, y agresividad de la estrategia.",
     category: 'marketing',
-    helpfulCount: 103,
-    notHelpfulCount: 8,
-    keywords: ['seo', 'posicionamiento', 'resultados', 'tráfico', 'buscadores', 'tiempo'],
+    helpfulCount: 112,
+    notHelpfulCount: 9,
+    keywords: ['seo', 'tiempo', 'resultados', 'posicionamiento', 'competitividad'],
     relatedQuestions: [
       { id: 6, question: "¿Cómo miden el éxito de sus estrategias de marketing?" },
       { id: 12, question: "¿Ofrecen garantías de resultados?" }
@@ -121,66 +121,66 @@ const faqs: FAQ[] = [
   },
   {
     id: 8,
-    question: "¿Cuáles son sus tarifas o precios?",
-    answer: "Nuestras tarifas varían según el alcance y complejidad de cada proyecto. Ofrecemos soluciones personalizadas que se adaptan a diferentes presupuestos y necesidades. Para recibir un presupuesto detallado adaptado a tu situación específica, te recomendamos solicitar una consulta gratuita donde analizaremos tus necesidades y te proporcionaremos una propuesta personalizada.",
+    question: "¿Ofrecen financiamiento o cuotas?",
+    answer: "Sí, ofrecemos opciones de pago flexibles: 50% al inicio del proyecto y 50% al finalizar, o 3 cuotas sin interés (33% al inicio, 33% a la mitad del proyecto, 34% al finalizar). Para proyectos grandes, podemos estructurar pagos en más cuotas. Todos los pagos se realizan por transferencia bancaria o Mercado Pago.",
     category: 'precios',
-    helpfulCount: 125,
-    notHelpfulCount: 15,
-    keywords: ['tarifas', 'precios', 'presupuesto', 'consulta', 'propuesta'],
+    helpfulCount: 143,
+    notHelpfulCount: 11,
+    keywords: ['financiamiento', 'cuotas', 'pagos', 'mercado pago', 'transferencia'],
     relatedQuestions: [
-      { id: 1, question: "¿Qué servicios ofrece TuWeb.ai?" },
-      { id: 5, question: "¿Ofrecen servicios de mantenimiento después del lanzamiento?" }
+      { id: 1, question: "¿Cuánto cuesta desarrollar un sitio web en TuWeb.ai?" },
+      { id: 2, question: "¿Qué incluye cada plan de desarrollo web?" }
     ]
   },
   {
     id: 9,
-    question: "¿Trabajan con clientes internacionales?",
-    answer: "Sí, trabajamos con clientes de América Latina, Europa y Norteamérica. Nuestro equipo está habituado a trabajar de forma remota y tenemos experiencia en proyectos internacionales. Nos adaptamos a diferentes zonas horarias para garantizar una comunicación fluida durante todo el proyecto.",
+    question: "¿Puedo ver el progreso de mi proyecto?",
+    answer: "Sí, utilizamos Trello para que puedas ver el progreso en tiempo real. Te damos acceso a un tablero donde ves cada etapa: Diseño, Desarrollo, Pruebas, Lanzamiento. También programamos reuniones semanales por Zoom para revisar avances y recibir tu feedback. Siempre puedes contactarnos por WhatsApp para consultas urgentes.",
     category: 'general',
-    helpfulCount: 42,
-    notHelpfulCount: 0,
-    keywords: ['clientes', 'internacional', 'remoto', 'zonas horarias', 'comunicación'],
+    helpfulCount: 89,
+    notHelpfulCount: 2,
+    keywords: ['progreso', 'trello', 'reuniones', 'zoom', 'whatsapp', 'feedback'],
     relatedQuestions: [
-      { id: 2, question: "¿Cómo funciona el proceso de trabajo con TuWeb.ai?" },
-      { id: 1, question: "¿Qué servicios ofrece TuWeb.ai?" }
+      { id: 2, question: "¿Qué incluye cada plan de desarrollo web?" },
+      { id: 3, question: "¿Cuánto tiempo tardan en desarrollar mi sitio web?" }
     ]
   },
   {
     id: 10,
     question: "¿Puedo actualizar el contenido de mi sitio yo mismo?",
-    answer: "Absolutamente. Todos nuestros sitios incluyen un panel de administración intuitivo que te permite actualizar el contenido, añadir páginas y gestionar otros aspectos de tu sitio sin conocimientos técnicos. Además, proporcionamos capacitación completa para que te sientas cómodo administrando tu sitio.",
+    answer: "Sí, todos nuestros sitios incluyen panel de administración intuitivo. Te capacitamos durante 1 hora para que puedas: Actualizar textos e imágenes, Agregar productos (en e-commerce), Crear nuevas páginas, Gestionar blog, Modificar menús. También ofrecemos soporte técnico por WhatsApp para resolver dudas rápidas.",
     category: 'desarrollo',
-    helpfulCount: 87,
-    notHelpfulCount: 2,
-    keywords: ['actualizar', 'contenido', 'panel', 'administración', 'capacitación'],
+    helpfulCount: 94,
+    notHelpfulCount: 3,
+    keywords: ['panel', 'administración', 'capacitación', 'soporte', 'whatsapp'],
     relatedQuestions: [
-      { id: 4, question: "¿Qué plataformas y tecnologías utilizan para el desarrollo web?" },
-      { id: 5, question: "¿Ofrecen servicios de mantenimiento después del lanzamiento?" }
+      { id: 4, question: "¿Qué tecnologías usan para el desarrollo?" },
+      { id: 5, question: "¿Ofrecen mantenimiento después del lanzamiento?" }
     ]
   },
   {
     id: 11,
-    question: "¿Qué plataforma de automatización recomiendan?",
-    answer: "La elección de la plataforma adecuada depende de diversos factores como el tamaño de tu empresa, industria, presupuesto, objetivos y complejidad de tus procesos. Trabajamos con diversas plataformas de marketing automation, email marketing, CRM y herramientas de integración. Durante nuestra consulta inicial, analizamos tus necesidades específicas para recomendarte la solución más adecuada.",
+    question: "¿Qué plataformas de marketing digital usan?",
+    answer: "Google Ads para publicidad de búsqueda y display, Facebook/Instagram Ads para redes sociales, Google Analytics 4 para medición, Google Search Console para SEO, Mailchimp para email marketing, y herramientas específicas según el proyecto. Todas las campañas se optimizan semanalmente basándonos en datos reales de rendimiento.",
     category: 'marketing',
-    helpfulCount: 53,
-    notHelpfulCount: 3,
-    keywords: ['automatización', 'plataforma', 'marketing', 'email', 'crm', 'integración'],
+    helpfulCount: 71,
+    notHelpfulCount: 4,
+    keywords: ['google ads', 'facebook ads', 'analytics', 'mailchimp', 'optimización'],
     relatedQuestions: [
       { id: 6, question: "¿Cómo miden el éxito de sus estrategias de marketing?" },
-      { id: 1, question: "¿Qué servicios ofrece TuWeb.ai?" }
+      { id: 7, question: "¿Cuánto tiempo se tarda en ver resultados con el SEO?" }
     ]
   },
   {
     id: 12,
     question: "¿Ofrecen garantías de resultados?",
-    answer: "Aunque no podemos garantizar resultados específicos debido a la variabilidad en los mercados y la implementación, sí ofrecemos una garantía de satisfacción. Si no estás satisfecho con la calidad de nuestro trabajo, trabajaremos contigo hasta que lo estés. Además, nuestro historial de casos de éxito demuestra nuestra capacidad para generar resultados significativos para nuestros clientes.",
+    answer: "Ofrecemos garantía de satisfacción: Si no estás conforme con el resultado final, trabajamos sin costo adicional hasta que lo estés. Para SEO y marketing: Garantizamos mejoras medibles en 6 meses o te devolvemos el 50% del pago. Para desarrollo web: Garantía de funcionamiento por 3 meses post-lanzamiento.",
     category: 'servicios',
-    helpfulCount: 68,
-    notHelpfulCount: 7,
-    keywords: ['garantía', 'resultados', 'satisfacción', 'calidad', 'casos de éxito'],
+    helpfulCount: 82,
+    notHelpfulCount: 6,
+    keywords: ['garantía', 'satisfacción', 'devolución', 'funcionamiento', 'mejoras'],
     relatedQuestions: [
-      { id: 2, question: "¿Cómo funciona el proceso de trabajo con TuWeb.ai?" },
+      { id: 1, question: "¿Cuánto cuesta desarrollar un sitio web en TuWeb.ai?" },
       { id: 7, question: "¿Cuánto tiempo se tarda en ver resultados con el SEO?" }
     ]
   }

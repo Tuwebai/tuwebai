@@ -29,7 +29,7 @@ export default function PoliticaPrivacidad() {
             <h3>1. Responsable del Tratamiento</h3>
             <p>
               El responsable del tratamiento de los datos personales que facilites a través de este sitio web es <strong>TuWeb.ai</strong>, 
-              con domicilio en [Dirección Fiscal] y correo electrónico hola@tuweb.ai.
+              con correo electrónico tuwebai@gmail.com y teléfono +54 357 141 6044.
             </p>
 
             <h3>2. Finalidad del Tratamiento</h3>
@@ -79,7 +79,7 @@ export default function PoliticaPrivacidad() {
               a hola@tuweb.ai, acompañando copia de tu DNI o documento identificativo equivalente.
             </p>
             <p>
-              También tienes derecho a presentar una reclamación ante la Agencia Española de Protección de Datos.
+              También tienes derecho a presentar una reclamación ante la Dirección Nacional de Protección de Datos Personales (DNPDP) de Argentina.
             </p>
 
             <h3>7. Medidas de Seguridad</h3>
