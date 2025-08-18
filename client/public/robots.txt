@@ -9,6 +9,8 @@ Disallow: /admin/
 Disallow: /panel/
 Disallow: /auth/
 Disallow: /api/
+Disallow: /_redirects
+Disallow: /netlify.toml
 
 # Allow important pages
 Allow: /corporativos
@@ -19,8 +21,28 @@ Allow: /servicios/
 Allow: /faq
 Allow: /equipo
 Allow: /tecnologias
-Allow: /recursos
 Allow: /contacto
+Allow: /estudio
+Allow: /vacantes
+Allow: /politica-privacidad
+Allow: /politica-cookies
+Allow: /terminos-condiciones
 
-# Crawl delay (optional)
+# Specific rules for search engines
+User-agent: Googlebot
+Allow: /
 Crawl-delay: 1
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# Block bad bots
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+# Host
+Host: https://tuweb-ai.com

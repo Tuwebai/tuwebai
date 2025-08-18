@@ -10,7 +10,6 @@ import ImpactSection from '@/components/sections/impact-section';
 import TestimonialsSection from '@/components/sections/testimonials-section';
 import ContactSection from '@/components/sections/contact-section';
 import PricingSection from '@/components/sections/pricing-section';
-import ResourcesSection from '@/components/sections/resources-section';
 import ComparisonSection from '@/components/sections/comparison-section';
 import ShowroomSection from '@/components/sections/showroom-section';
 import CompanyLogoSlider from '@/components/ui/company-logo-slider';
@@ -29,7 +28,6 @@ export default function Home() {
     { id: "comparison", label: "Comparativa" },
     { id: "showroom", label: "Proyectos" },
     { id: "pricing", label: "Planes" },
-    { id: "resources", label: "Recursos" },
     { id: "impact", label: "Impacto" },
     { id: "testimonials", label: "Testimonios" },
     { id: "contact", label: "Contacto" }
@@ -44,7 +42,6 @@ export default function Home() {
     comparison: null,
     showroom: null,
     pricing: null,
-    resources: null,
     impact: null,
     testimonials: null,
     contact: null
@@ -123,9 +120,12 @@ export default function Home() {
     <>
       {/* Metadatos SEO para la página principal */}
       <MetaTags
-        title="Agencia Digital de Desarrollo Web y Marketing"
-        description="Tu mejor aliado para desarrollar tu presencia digital. Ofrecemos soluciones web personalizadas, ecommerce, marketing digital y más para potenciar tu negocio online."
-        keywords="desarrollo web, marketing digital, diseño web, ecommerce, SEO, agencia digital, Tuweb.ai"
+        title="TuWeb.ai - Agencia Digital de Desarrollo Web y Marketing Digital en Argentina"
+        description="Desarrollo web profesional, marketing digital y automatización para empresas. Especialistas en React, Node.js, SEO y estrategias digitales. Consultoría gratuita disponible."
+        keywords="desarrollo web argentina, marketing digital, diseño web, ecommerce, SEO, agencia digital, React, Node.js, automatización marketing, consultoría digital, TuWeb.ai"
+        ogImage="/logo-tuwebai.png"
+        ogType="website"
+        twitterCard="summary_large_image"
       />
       
       {/* Barra de progreso de scroll */}
@@ -142,7 +142,7 @@ export default function Home() {
           <div className="flex flex-col items-center justify-center gap-4 py-12">
             <img src="/logo-tuwebai.png" alt="Logo TuWeb.ai" className="w-28 h-28 mb-2" />
             <h1 className="text-5xl font-extrabold text-primary mb-2">TuWeb.ai</h1>
-            <p className="text-xl text-gray-600 text-center max-w-2xl">La plataforma educativa premium para economía, trading y finanzas. Cursos, comunidad y soporte profesional en un solo lugar.</p>
+            <p className="text-xl text-gray-600 text-center max-w-2xl">Tu mejor aliado para desarrollar tu presencia digital. Ofrecemos soluciones web personalizadas, ecommerce, marketing digital y más para potenciar tu negocio online.</p>
           </div>
         </HeroSection>
         <PhilosophySection setRef={(ref: HTMLElement | null) => setSectionRef('philosophy', ref)} />
@@ -152,7 +152,6 @@ export default function Home() {
         <ComparisonSection setRef={(ref: HTMLElement | null) => setSectionRef('comparison', ref)} />
         <ShowroomSection setRef={(ref: HTMLElement | null) => setSectionRef('showroom', ref)} />
         <PricingSection setRef={(ref: HTMLElement | null) => setSectionRef('pricing', ref)} />
-        <ResourcesSection setRef={(ref: HTMLElement | null) => setSectionRef('resources', ref)} />
         
         {/* Slider de logos de empresas antes de la sección de impacto */}
         <CompanyLogoSlider className="py-20 bg-gray-900 bg-opacity-30" />

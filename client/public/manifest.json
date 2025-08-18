@@ -1,7 +1,7 @@
 {
   "name": "TuWeb.ai - Agencia Digital de Desarrollo Web y Marketing",
   "short_name": "TuWeb.ai",
-  "description": "TuWeb.ai es tu agencia digital especializada en desarrollo web, diseño web, e-commerce, marketing digital y SEO",
+  "description": "Agencia digital especializada en desarrollo web, marketing digital y automatización para empresas en Argentina. Especialistas en React, Node.js, SEO y estrategias digitales.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0a0a0f",
@@ -31,6 +31,17 @@
     }
   ],
   "categories": ["business", "productivity", "utilities"],
-  "lang": "es",
-  "dir": "ltr"
+  "lang": "es-AR",
+  "dir": "ltr",
+  "scope": "/",
+  "prefer_related_applications": false,
+  "related_applications": [],
+  "screenshots": [
+    {
+      "src": "/logo-tuwebai.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ]
 }

@@ -61,7 +61,6 @@ export default function GlobalNavbar() {
         { id: 'design', label: 'Diseño' }
       ]
     },
-    { name: 'Recursos', href: '/recursos' },
     { name: 'FAQ', href: '/faq' }
   ];
   

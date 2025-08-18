@@ -10,7 +10,7 @@ export const technologies: Technology[] = [
     logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1200px-React-icon.svg.png',
     website: 'https://reactjs.org/',
     popularity: 95,
-    expertise: 90,
+    expertise: 95,
     featured: true
   },
   {
@@ -21,7 +21,7 @@ export const technologies: Technology[] = [
     logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Vue.js_Logo_2.svg/1200px-Vue.js_Logo_2.svg.png',
     website: 'https://vuejs.org/',
     popularity: 85,
-    expertise: 85,
+    expertise: 90,
     featured: true
   },
   {
@@ -54,7 +54,7 @@ export const technologies: Technology[] = [
     logo: 'https://seeklogo.com/images/N/next-js-logo-8FCFF51DD2-seeklogo.com.png',
     website: 'https://nextjs.org/',
     popularity: 90,
-    expertise: 90,
+    expertise: 95,
     featured: true
   },
   {
@@ -65,7 +65,7 @@ export const technologies: Technology[] = [
     logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Tailwind_CSS_Logo.svg/1200px-Tailwind_CSS_Logo.svg.png',
     website: 'https://tailwindcss.com/',
     popularity: 92,
-    expertise: 95,
+    expertise: 98,
     featured: true
   },
   {
@@ -76,7 +76,7 @@ export const technologies: Technology[] = [
     logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/1200px-Typescript_logo_2020.svg.png',
     website: 'https://www.typescriptlang.org/',
     popularity: 94,
-    expertise: 90,
+    expertise: 95,
     featured: true
   },
   
@@ -89,7 +89,7 @@ export const technologies: Technology[] = [
     logo: 'https://nodejs.org/static/images/logo.svg',
     website: 'https://nodejs.org/',
     popularity: 95,
-    expertise: 95,
+    expertise: 98,
     featured: true
   },
   {
@@ -100,7 +100,7 @@ export const technologies: Technology[] = [
     logo: 'https://expressjs.com/images/express-facebook-share.png',
     website: 'https://expressjs.com/',
     popularity: 92,
-    expertise: 95,
+    expertise: 98,
     featured: true
   },
   {
@@ -144,7 +144,7 @@ export const technologies: Technology[] = [
     logo: 'https://fastapi.tiangolo.com/img/logo-margin/logo-teal.png',
     website: 'https://fastapi.tiangolo.com/',
     popularity: 82,
-    expertise: 85,
+    expertise: 88,
     featured: true
   },
   {
@@ -155,7 +155,7 @@ export const technologies: Technology[] = [
     logo: 'https://nestjs.com/img/logo-small.svg',
     website: 'https://nestjs.com/',
     popularity: 84,
-    expertise: 88,
+    expertise: 92,
     featured: true
   },
   
@@ -168,7 +168,7 @@ export const technologies: Technology[] = [
     logo: 'https://wiki.postgresql.org/images/a/a4/PostgreSQL_logo.3colors.svg',
     website: 'https://www.postgresql.org/',
     popularity: 91,
-    expertise: 90,
+    expertise: 95,
     featured: true
   },
   {
@@ -179,7 +179,7 @@ export const technologies: Technology[] = [
     logo: 'https://webassets.mongodb.com/_com_assets/cms/mongodb_logo1-76twgcu2dm.png',
     website: 'https://www.mongodb.com/',
     popularity: 90,
-    expertise: 90,
+    expertise: 92,
     featured: true
   },
   {
@@ -225,7 +225,7 @@ export const technologies: Technology[] = [
     logo: 'https://s.w.org/style/images/about/WordPress-logotype-standard.png',
     website: 'https://wordpress.org/',
     popularity: 95,
-    expertise: 95,
+    expertise: 98,
     featured: true
   },
   {
@@ -236,7 +236,7 @@ export const technologies: Technology[] = [
     logo: 'https://strapi.io/assets/strapi-logo-dark.svg',
     website: 'https://strapi.io/',
     popularity: 85,
-    expertise: 90,
+    expertise: 95,
     featured: true
   },
   {
@@ -271,7 +271,7 @@ export const technologies: Technology[] = [
     logo: 'https://www.docker.com/wp-content/uploads/2022/03/vertical-logo-monochromatic.png',
     website: 'https://www.docker.com/',
     popularity: 92,
-    expertise: 85,
+    expertise: 90,
     featured: true
   },
   {
@@ -293,7 +293,7 @@ export const technologies: Technology[] = [
     logo: 'https://github.githubassets.com/images/modules/site/features/actions-icon-actions.svg',
     website: 'https://github.com/features/actions',
     popularity: 88,
-    expertise: 85,
+    expertise: 92,
     featured: true
   },
   {
@@ -315,7 +315,7 @@ export const technologies: Technology[] = [
     logo: 'https://assets.vercel.com/image/upload/front/favicon/vercel/180x180.png',
     website: 'https://vercel.com/',
     popularity: 88,
-    expertise: 90,
+    expertise: 95,
     featured: true
   }
 ];

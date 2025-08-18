@@ -32,7 +32,7 @@ const FAQ = lazy(() => import('./pages/faq'));
 const Equipo = lazy(() => import('./pages/equipo'));
 const Vacantes = lazy(() => import('./pages/vacantes'));
 const Tecnologias = lazy(() => import('./pages/tecnologias'));
-const Recursos = lazy(() => import('./pages/recursos'));
+
 
 // Proyectos del Showroom (lazy loaded)
 const Estudio = lazy(() => import('./pages/estudio'));
@@ -130,7 +130,7 @@ function App() {
               <Route path="/equipo" element={<LazyRoute><Equipo /></LazyRoute>} />
               <Route path="/vacantes" element={<LazyRoute><Vacantes /></LazyRoute>} />
               <Route path="/tecnologias" element={<LazyRoute><Tecnologias /></LazyRoute>} />
-              <Route path="/recursos" element={<LazyRoute><Recursos /></LazyRoute>} />
+
               
               {/* Rutas para proyectos del showroom */}
               <Route path="/estudio" element={<LazyRoute><Estudio /></LazyRoute>} />
