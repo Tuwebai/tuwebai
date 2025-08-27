@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import PasswordStrength from './PasswordStrength';
+import { Link } from 'react-router-dom'; // Added Link import
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -339,6 +340,33 @@ export default function LoginModal({
                   disabled={isSubmitting}
                 />
                 {errors.confirmPassword && <p className="text-red-500 text-xs mt-1">{errors.confirmPassword}</p>}
+              </div>
+            )}
+            
+            {/* Texto de aceptación de términos para registro */}
+            {isRegistering && !showForgotPassword && (
+              <div className="mt-4 text-xs text-gray-600 dark:text-gray-400 text-center">
+                <p>
+                  Al registrarte, aceptas nuestros{' '}
+                  <Link
+                    to="/terminos-condiciones"
+                    className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Términos y Condiciones
+                  </Link>
+                  {' '}y nuestra{' '}
+                  <Link
+                    to="/politica-privacidad"
+                    className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Política de Privacidad
+                  </Link>
+                  .
+                </p>
               </div>
             )}
             

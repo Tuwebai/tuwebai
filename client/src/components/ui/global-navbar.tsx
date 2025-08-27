@@ -157,6 +157,25 @@ export default function GlobalNavbar() {
               TuWeb<span className="text-[#00CCFF]">.ai</span>
             </Link>
             
+            {/* Enlaces legales para Google OAuth - visibles en desktop */}
+            {!isMobile && (
+              <div className="hidden md:flex items-center space-x-4 text-xs text-gray-400">
+                <Link
+                  to="/politica-privacidad"
+                  className="hover:text-[#00CCFF] transition-colors"
+                >
+                  Política de Privacidad
+                </Link>
+                <span className="text-gray-600">•</span>
+                <Link
+                  to="/terminos-condiciones"
+                  className="hover:text-[#9933FF] transition-colors"
+                >
+                  Términos y Condiciones
+                </Link>
+              </div>
+            )}
+            
             {/* Navegación desktop */}
             {!isMobile && (
               <nav className="hidden md:flex items-center space-x-6">
@@ -377,6 +396,27 @@ export default function GlobalNavbar() {
               
               {/* Footer del menú móvil */}
               <div className="p-4 border-t border-gray-800">
+                {/* Enlaces legales para Google OAuth - visibles en móvil */}
+                <div className="mb-6 text-center">
+                  <div className="flex justify-center space-x-4 text-sm text-gray-400">
+                    <Link
+                      to="/politica-privacidad"
+                      className="hover:text-[#00CCFF] transition-colors"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Política de Privacidad
+                    </Link>
+                    <span className="text-gray-600">•</span>
+                    <Link
+                      to="/terminos-condiciones"
+                      className="hover:text-[#9933FF] transition-colors"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Términos y Condiciones
+                    </Link>
+                  </div>
+                </div>
+                
                 {/* Botones de autenticación para móvil */}
                 {!isAuthenticated ? (
                   <div className="flex gap-2 my-4">
