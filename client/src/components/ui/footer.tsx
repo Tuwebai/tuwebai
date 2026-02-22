@@ -1,13 +1,6 @@
-import { motion } from 'framer-motion';
-
 export default function Footer() {
   return (
-    <motion.footer 
-      className="bg-[#0a0a0f] pt-12 pb-8 text-gray-400 text-sm border-t border-gray-800 relative z-10"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.8 }}
-    >
+    <footer className="bg-[#0a0a0f] pt-12 pb-8 text-gray-400 text-sm border-t border-gray-800 relative z-10 animate-fadeIn">
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-4 gap-8 mb-10">
           <div>
@@ -92,6 +85,6 @@ export default function Footer() {
         
 
       </div>
-    </motion.footer>
+    </footer>
   );
 }

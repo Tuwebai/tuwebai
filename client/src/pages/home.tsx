@@ -1,5 +1,5 @@
 import { useRef, useEffect } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import NavDots from '@/components/ui/nav-dots';
 import HeroSection from '@/components/sections/hero-section';
 import WhatsAppButton from '@/components/ui/whatsapp-button';
@@ -141,32 +141,7 @@ export default function Home() {
       <WhatsAppButton />
       
       <main id="main-content" className="relative">
-        <HeroSection setRef={(ref: HTMLElement | null) => setSectionRef('intro', ref)}>
-          <div className="flex flex-col items-center justify-center gap-4 py-12">
-            <img src="/logo-tuwebai.png" alt="Logo TuWeb.ai" className="w-28 h-28 mb-2" />
-            <h1 className="text-5xl font-extrabold text-primary mb-2">TuWeb.ai</h1>
-            <p className="text-xl text-gray-600 text-center max-w-2xl">Tu mejor aliado para desarrollar tu presencia digital. Ofrecemos soluciones web personalizadas, ecommerce, marketing digital y más para potenciar tu negocio online.</p>
-            
-            {/* Enlaces legales para Google OAuth - visibles en la página principal */}
-            <div className="mt-6 text-center">
-              <div className="flex justify-center items-center space-x-4 text-sm text-gray-500">
-                <Link
-                  to="/politica-privacidad"
-                  className="hover:text-[#00CCFF] transition-colors underline"
-                >
-                  Política de Privacidad
-                </Link>
-                <span className="text-gray-400">•</span>
-                <Link
-                  to="/terminos-condiciones"
-                  className="hover:text-[#9933FF] transition-colors underline"
-                >
-                  Términos y Condiciones
-                </Link>
-              </div>
-            </div>
-          </div>
-        </HeroSection>
+        <HeroSection setRef={(ref: HTMLElement | null) => setSectionRef('intro', ref)} />
         
         {/* Usamos Suspense para mostrar las secciones dinámicas a medida que se cargan después del hilo principal */}
         <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-8 h-8 rounded-full border-4 border-[#00CCFF] border-t-transparent animate-spin"></div></div>}>
