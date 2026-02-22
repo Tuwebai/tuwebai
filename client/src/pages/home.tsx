@@ -2,20 +2,23 @@ import { useRef, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import NavDots from '@/components/ui/nav-dots';
 import HeroSection from '@/components/sections/hero-section';
-import PhilosophySection from '@/components/sections/philosophy-section';
-import ServicesSection from '@/components/sections/services-section';
-import ProcessSection from '@/components/sections/process-section';
-import TechSection from '@/components/sections/tech-section';
-import ImpactSection from '@/components/sections/impact-section';
-import TestimonialsSection from '@/components/sections/testimonials-section';
-import ContactSection from '@/components/sections/contact-section';
-import PricingSection from '@/components/sections/pricing-section';
-import ComparisonSection from '@/components/sections/comparison-section';
-import ShowroomSection from '@/components/sections/showroom-section';
-import CompanyLogoSlider from '@/components/ui/company-logo-slider';
 import WhatsAppButton from '@/components/ui/whatsapp-button';
 import ScrollProgress from '@/components/ui/scroll-progress';
 import MetaTags from '@/components/seo/meta-tags';
+import { Suspense, lazy } from 'react';
+
+// Lazy loading all sections below the fold to improve LCP and TTI
+const PhilosophySection = lazy(() => import('@/components/sections/philosophy-section'));
+const ServicesSection = lazy(() => import('@/components/sections/services-section'));
+const ProcessSection = lazy(() => import('@/components/sections/process-section'));
+const TechSection = lazy(() => import('@/components/sections/tech-section'));
+const ImpactSection = lazy(() => import('@/components/sections/impact-section'));
+const TestimonialsSection = lazy(() => import('@/components/sections/testimonials-section'));
+const ContactSection = lazy(() => import('@/components/sections/contact-section'));
+const PricingSection = lazy(() => import('@/components/sections/pricing-section'));
+const ComparisonSection = lazy(() => import('@/components/sections/comparison-section'));
+const ShowroomSection = lazy(() => import('@/components/sections/showroom-section'));
+const CompanyLogoSlider = lazy(() => import('@/components/ui/company-logo-slider'));
 
 export default function Home() {
   const location = useLocation();
@@ -164,20 +167,24 @@ export default function Home() {
             </div>
           </div>
         </HeroSection>
-        <PhilosophySection setRef={(ref: HTMLElement | null) => setSectionRef('philosophy', ref)} />
-        <ServicesSection setRef={(ref: HTMLElement | null) => setSectionRef('services', ref)} />
-        <ProcessSection setRef={(ref: HTMLElement | null) => setSectionRef('process', ref)} />
-        <TechSection setRef={(ref: HTMLElement | null) => setSectionRef('tech', ref)} />
-        <ComparisonSection setRef={(ref: HTMLElement | null) => setSectionRef('comparison', ref)} />
-        <ShowroomSection setRef={(ref: HTMLElement | null) => setSectionRef('showroom', ref)} />
-        <PricingSection setRef={(ref: HTMLElement | null) => setSectionRef('pricing', ref)} />
         
-        {/* Slider de logos de empresas antes de la sección de impacto */}
-        <CompanyLogoSlider className="py-20 bg-gray-900 bg-opacity-30" />
-        
-        <ImpactSection setRef={(ref: HTMLElement | null) => setSectionRef('impact', ref)} />
-        <TestimonialsSection setRef={(ref: HTMLElement | null) => setSectionRef('testimonials', ref)} />
-        <ContactSection setRef={(ref: HTMLElement | null) => setSectionRef('contact', ref)} />
+        {/* Usamos Suspense para mostrar las secciones dinámicas a medida que se cargan después del hilo principal */}
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-8 h-8 rounded-full border-4 border-[#00CCFF] border-t-transparent animate-spin"></div></div>}>
+          <PhilosophySection setRef={(ref: HTMLElement | null) => setSectionRef('philosophy', ref)} />
+          <ServicesSection setRef={(ref: HTMLElement | null) => setSectionRef('services', ref)} />
+          <ProcessSection setRef={(ref: HTMLElement | null) => setSectionRef('process', ref)} />
+          <TechSection setRef={(ref: HTMLElement | null) => setSectionRef('tech', ref)} />
+          <ComparisonSection setRef={(ref: HTMLElement | null) => setSectionRef('comparison', ref)} />
+          <ShowroomSection setRef={(ref: HTMLElement | null) => setSectionRef('showroom', ref)} />
+          <PricingSection setRef={(ref: HTMLElement | null) => setSectionRef('pricing', ref)} />
+          
+          {/* Slider de logos de empresas antes de la sección de impacto */}
+          <CompanyLogoSlider className="py-20 bg-gray-900 bg-opacity-30" />
+          
+          <ImpactSection setRef={(ref: HTMLElement | null) => setSectionRef('impact', ref)} />
+          <TestimonialsSection setRef={(ref: HTMLElement | null) => setSectionRef('testimonials', ref)} />
+          <ContactSection setRef={(ref: HTMLElement | null) => setSectionRef('contact', ref)} />
+        </Suspense>
       </main>
     </>
   );

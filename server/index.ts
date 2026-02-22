@@ -137,9 +137,9 @@ app.use((req, res, next) => {
   let capturedJsonResponse: any;
 
   const originalResJson = res.json;
-  res.json = function (bodyJson: any, ...args: any[]) {
+  res.json = function (bodyJson?: any) {
     capturedJsonResponse = bodyJson;
-    return originalResJson.apply(res, [bodyJson, ...args]);
+    return originalResJson.call(res, bodyJson);
   };
 
   res.on("finish", () => {
@@ -220,7 +220,7 @@ app.post("/test-email", async (req, res) => {
     res.status(500).json({
       status: "ERROR",
       message: "Error enviando email de prueba",
-      error: error.message,
+      error: error instanceof Error ? error.message : String(error),
       timestamp: new Date().toISOString()
     });
   }
@@ -285,14 +285,13 @@ app.post("/crear-preferencia", async (req, res) => {
 
 // Configuración de Nodemailer (SMTP Gmail)
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true, // true for 465, false for other ports
   auth: {
     user: 'tuwebai@gmail.com',
     pass: 'c z n h h w t e c r q m k u a a'
-  },
-  // Configuración para evitar problemas de codificación
-  charset: 'utf-8',
-  encoding: 'utf-8'
+  }
 });
 
 // Función para generar plantilla de email profesional
@@ -562,18 +561,18 @@ app.post("/contact", async (req, res) => {
 
     console.log("✅ Email enviado exitosamente:", emailResult.messageId);
     return res.json({ message: "Mensaje enviado correctamente" });
-  } catch (err) {
+  } catch (err: any) {
     console.error("❌ Error en endpoint /contact:", err);
     console.error("❌ Error details:", {
-      message: err.message,
-      stack: err.stack,
-      name: err.name
+      message: err?.message,
+      stack: err?.stack,
+      name: err?.name
     });
     
     // Devolver error más específico
     return res.status(500).json({ 
       error: "Error en el servidor",
-      details: process.env.NODE_ENV === "development" ? err.message : "Error interno del servidor"
+      details: process.env.NODE_ENV === "development" ? err?.message : "Error interno del servidor"
     });
   }
 });

@@ -1,14 +1,14 @@
 import { useRef, useEffect, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import AnimatedShape from '../ui/animated-shape';
 import TypeWriterEffect from 'react-typewriter-effect';
 import { Link } from 'react-scroll';
 
 interface HeroSectionProps {
   setRef: (ref: HTMLElement | null) => void;
+  children?: React.ReactNode;
 }
 
-export default function HeroSection({ setRef }: HeroSectionProps) {
+export default function HeroSection({ setRef, children }: HeroSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const [isReady, setIsReady] = useState(false);
   
@@ -18,8 +18,6 @@ export default function HeroSection({ setRef }: HeroSectionProps) {
     offset: ["start start", "end start"]
   });
   
-  const y1 = useTransform(scrollYProgress, [0, 1], [0, 200]);
-  const y2 = useTransform(scrollYProgress, [0, 1], [0, -200]);
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
   
   // Set the ref for the parent component
@@ -28,8 +26,9 @@ export default function HeroSection({ setRef }: HeroSectionProps) {
       setRef(sectionRef.current);
       sectionRef.current.setAttribute('data-ref-set', 'true');
     }
-    // Pequeño delay para asegurar que TypeWriter se inicialice correctamente
-    const timer = setTimeout(() => setIsReady(true), 500);
+    // Reducimos el delay a 0 para que la primera visualización sea inmediata
+    // TypeWriterEffect ya manejará su propia cadencia visual
+    const timer = setTimeout(() => setIsReady(true), 0);
     return () => clearTimeout(timer);
   }, [setRef]);
 
@@ -126,6 +125,15 @@ export default function HeroSection({ setRef }: HeroSectionProps) {
           </Link>
         </motion.div>
       </motion.div>
+
+      {/* Render children passed from parent */}
+      {children && (
+        <div className="absolute inset-x-0 bottom-24 z-20 pointer-events-none">
+          <div className="container mx-auto px-4 pointer-events-auto">
+            {children}
+          </div>
+        </div>
+      )}
     </section>
   );
 }
