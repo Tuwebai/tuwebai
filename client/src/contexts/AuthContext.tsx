@@ -1,26 +1,30 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import { auth, googleProvider } from '@/lib/firebase';
-import {
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged,
-  sendPasswordResetEmail,
-  updateProfile,
-  signInWithPopup,
+import type {
   User as FirebaseUser,
-  updatePassword
 } from 'firebase/auth';
-import {
-  getUser,
-  setUser,
-  updateUser,
-  getUserPreferences,
-  setUserPreferences,
+import type {
   User as FirestoreUser,
   UserPreferences
 } from '@/services/firestore';
 import { useToast } from '@/hooks/use-toast';
+
+// Helper properties para cargar dinámicamente librerías pesadas (Firebase) solo cuando se necesiten, no en boot
+let firebasePromise: Promise<any> | null = null;
+let fireauthPromise: Promise<any> | null = null;
+let firestorePromise: Promise<any> | null = null;
+
+const getFirebase = () => {
+  if (!firebasePromise) firebasePromise = import('@/lib/firebase');
+  return firebasePromise;
+};
+const getFirebaseAuth = () => {
+  if (!fireauthPromise) fireauthPromise = import('firebase/auth');
+  return fireauthPromise;
+};
+const getFirestoreService = () => {
+  if (!firestorePromise) firestorePromise = import('@/services/firestore');
+  return firestorePromise;
+};
 
 export interface User extends FirestoreUser {}
 export interface RegisterData {
@@ -114,38 +118,67 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // Escuchar cambios de autenticación
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      setIsLoading(true);
-      if (firebaseUser) {
-        // Obtener datos del usuario desde Firestore
-        let dbUser = await getUser(firebaseUser.uid);
-        if (!dbUser) {
-          dbUser = {
-            uid: firebaseUser.uid,
-            email: firebaseUser.email || '',
-            username: firebaseUser.displayName || '',
-            name: firebaseUser.displayName || '',
-            image: firebaseUser.photoURL || '',
-            isActive: true,
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-          };
-          await setUser(dbUser);
-        }
-        setUserState(dbUser);
-        fetchUserPreferences(dbUser.uid);
-      } else {
-        setUserState(null);
-        setUserPreferencesState({
-          emailNotifications: false,
-          newsletter: false,
-          darkMode: false,
-          language: 'es'
+    let unsubscribeFn: (() => void) | null = null;
+    let isMounted = true;
+
+    const initAuth = async () => {
+      try {
+        const { auth } = await getFirebase();
+        const { onAuthStateChanged } = await getFirebaseAuth();
+        const { getUser } = await getFirestoreService();
+
+        const unsubscribe = onAuthStateChanged(auth, async (firebaseUser: FirebaseUser | null) => {
+          if (!isMounted) return; // Prevent state updates if component unmounted
+          setIsLoading(true);
+          if (firebaseUser) {
+            // Obtener datos del usuario desde Firestore
+            let dbUser = await getUser(firebaseUser.uid);
+            if (!dbUser) {
+              const { setUser } = await getFirestoreService();
+              dbUser = {
+                uid: firebaseUser.uid,
+                email: firebaseUser.email || '',
+                username: firebaseUser.displayName || '',
+                name: firebaseUser.displayName || '',
+                image: firebaseUser.photoURL || '',
+                isActive: true,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(), // Added missing updatedAt
+              };
+              await setUser(dbUser);
+            }
+            if (isMounted) {
+              setUserState(dbUser);
+              fetchUserPreferences(); // Call fetchUserPreferences without uid, it will use the user state
+            }
+          } else {
+            if (isMounted) {
+              setUserState(null);
+              setUserPreferencesState({
+                emailNotifications: false,
+                newsletter: false,
+                darkMode: false,
+                language: 'es'
+              });
+            }
+          }
+          if (isMounted) setIsLoading(false);
         });
+        
+        if (isMounted) unsubscribeFn = unsubscribe;
+        else unsubscribe(); // If component unmounted before unsubscribeFn is set, unsubscribe immediately
+      } catch (error) {
+        console.error("Error inicializando Auth:", error);
+        if (isMounted) setIsLoading(false);
       }
-      setIsLoading(false);
-    });
-    return () => unsubscribe();
+    };
+
+    initAuth();
+
+    return () => {
+      isMounted = false;
+      if (unsubscribeFn) unsubscribeFn();
+    };
   }, []);
 
   // Login con email y contraseña
@@ -153,7 +186,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsLoading(true);
     setError(null);
     try {
-      const cred = await signInWithEmailAndPassword(auth, email, password);
+      const { auth } = await getFirebase();
+      const { signInWithEmailAndPassword } = await getFirebaseAuth();
+      await signInWithEmailAndPassword(auth, email, password);
       // El listener de onAuthStateChanged se encarga del resto
       toast({ title: 'Sesión iniciada', description: 'Has iniciado sesión correctamente.' });
     } catch (err: any) {
@@ -170,6 +205,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsLoading(true);
     setError(null);
     try {
+      const { auth, googleProvider } = await getFirebase();
+      const { signInWithPopup } = await getFirebaseAuth();
+      const { getUser, setUser } = await getFirestoreService();
+
       const result = await signInWithPopup(auth, googleProvider);
       const firebaseUser = result.user;
       let dbUser = await getUser(firebaseUser.uid);
@@ -187,7 +226,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         await setUser(dbUser);
       }
       setUserState(dbUser);
-      toast({ title: '¡Sesión iniciada con Google!', description: 'Has iniciado sesión correctamente.' });
+      toast({
+        title: "Inicio de sesión exitoso",
+        description: `Bienvenido${result.user.displayName ? `, ${result.user.displayName}` : ''}!`,
+      });
     } catch (err: any) {
       setError(err.message || 'Error al iniciar sesión con Google');
       toast({ title: 'Error', description: err.message || 'Error al iniciar sesión con Google', variant: 'destructive' });
@@ -202,6 +244,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsLoading(true);
     setError(null);
     try {
+      const { auth } = await getFirebase();
+      const { signOut } = await getFirebaseAuth();
       await signOut(auth);
       setUserState(null);
       setUserPreferencesState({
@@ -225,22 +269,36 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsLoading(true);
     setError(null);
     try {
-      const cred = await createUserWithEmailAndPassword(auth, userData.email, userData.password);
-      await updateProfile(cred.user, {
+      const { auth } = await getFirebase();
+      const { createUserWithEmailAndPassword, updateProfile } = await getFirebaseAuth();
+      const { setUser } = await getFirestoreService();
+
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        userData.email,
+        userData.password
+      );
+
+      // Update Auth Profile
+      await updateProfile(userCredential.user, {
         displayName: userData.name || userData.username,
       });
-      const dbUser: User = {
-        uid: cred.user.uid,
+
+      // Save user to Firestore directly
+      const newUser: User = {
+        uid: userCredential.user.uid,
         email: userData.email,
         username: userData.username,
         name: userData.name || userData.username,
-        image: cred.user.photoURL || '',
+        image: userCredential.user.photoURL || '', // Use photoURL from firebaseUser if available
         isActive: true,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
-      await setUser(dbUser);
-      setUserState(dbUser);
+      
+      await setUser(newUser);
+      setUserState(newUser); // Set the user state after successful registration and Firestore save
+      
       toast({ title: 'Registro exitoso', description: 'Por favor, verifica tu email para activar tu cuenta.' });
     } catch (err: any) {
       setError(err.message || 'Error al registrar usuario');
@@ -256,8 +314,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsLoading(true);
     setError(null);
     try {
+      const { auth } = await getFirebase();
+      const { sendPasswordResetEmail } = await getFirebaseAuth();
       await sendPasswordResetEmail(auth, email);
-      toast({ title: 'Solicitud enviada', description: 'Si el email existe, recibirás instrucciones para restablecer tu contraseña.' });
+      toast({
+        title: "Correo enviado", description: 'Si el email existe, recibirás instrucciones para restablecer tu contraseña.' });
     } catch (err: any) {
       setError(err.message || 'Error al solicitar restablecimiento de contraseña');
       toast({ title: 'Error', description: err.message || 'Error al solicitar restablecimiento', variant: 'destructive' });
@@ -279,9 +340,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsLoading(true);
     setError(null);
     try {
+      const { updateUser } = await getFirestoreService();
       await updateUser(user.uid, data);
-      const updated = await getUser(user.uid);
-      setUserState(updated);
+      // Update local state directly for immediate feedback
+      setUserState(prevUser => prevUser ? { ...prevUser, ...data } : null);
       toast({ title: 'Perfil actualizado', description: 'Tu información de perfil ha sido actualizada.' });
     } catch (err: any) {
       setError(err.message || 'Error al actualizar perfil');
@@ -293,12 +355,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   // Obtener preferencias del usuario
-  const fetchUserPreferences = async (uid?: string) => {
-    if (!user && !uid) return;
+  const fetchUserPreferences = async () => {
+    if (!user) return;
     setIsLoadingPreferences(true);
     setError(null);
     try {
-      const prefs = await getUserPreferences(uid || user!.uid);
+      const { getUserPreferences } = await getFirestoreService();
+      const prefs = await getUserPreferences(user.uid);
       if (prefs) setUserPreferencesState(prefs);
     } catch (err: any) {
       setError(err.message || 'Error al obtener preferencias');
@@ -313,8 +376,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsLoadingPreferences(true);
     setError(null);
     try {
+      const { setUserPreferences } = await getFirestoreService();
       await setUserPreferences(user.uid, preferences);
-      await fetchUserPreferences(user.uid);
+      setUserPreferencesState(prev => ({ ...prev, ...preferences }));
       toast({ title: 'Preferencias actualizadas', description: 'Tus preferencias han sido actualizadas.' });
     } catch (err: any) {
       setError(err.message || 'Error al actualizar preferencias');
@@ -334,12 +398,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // Cambiar contraseña
   const changePassword = async (_currentPassword: string, newPassword: string) => {
-    if (!auth.currentUser) return;
+    if (!user) return; // Ensure user is logged in
     setIsLoading(true);
     setError(null);
     try {
-      await updatePassword(auth.currentUser, newPassword);
-      toast({ title: 'Contraseña actualizada', description: 'Tu contraseña ha sido actualizada.' });
+      const { auth } = await getFirebase();
+      const { updatePassword } = await getFirebaseAuth();
+      if (auth.currentUser) {
+        await updatePassword(auth.currentUser, newPassword);
+        toast({
+          title: "Contraseña actualizada", description: 'Tu contraseña ha sido actualizada.' });
+      } else {
+        throw new Error("No hay usuario autenticado para cambiar la contraseña.");
+      }
     } catch (err: any) {
       setError(err.message || 'Error al cambiar contraseña');
       toast({ title: 'Error', description: err.message || 'Error al cambiar contraseña', variant: 'destructive' });
@@ -362,6 +433,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         reader.onerror = reject;
         reader.readAsDataURL(imageFile);
       });
+      const { updateUser, getUser } = await getFirestoreService();
       await updateUser(user.uid, { image: imageData });
       const updated = await getUser(user.uid);
       setUserState(updated);
