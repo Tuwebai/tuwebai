@@ -4,6 +4,7 @@ import { useIntersectionObserver } from '@/hooks/use-intersection-observer';
 import { backendApi, type PaymentPlan } from '@/lib/backend-api';
 import { getUiErrorMessage } from '@/lib/http-client';
 import { useToast } from '@/hooks/use-toast';
+import PaymentErrorDialog from '@/components/payment/payment-error-dialog';
 
 interface PricingTierProps {
   title: string;
@@ -128,9 +129,12 @@ interface PricingSectionProps {
 export default function PricingSection({ setRef }: PricingSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const [submittingPlan, setSubmittingPlan] = useState<PaymentPlan | null>(null);
+  const [errorCheckout, setErrorCheckout] = useState<string | null>(null);
+  const [failedPlan, setFailedPlan] = useState<PaymentPlan | null>(null);
   const { ref: titleRef, hasIntersected: titleVisible } = useIntersectionObserver<HTMLDivElement>();
   const { ref: subtitleRef, hasIntersected: subtitleVisible } = useIntersectionObserver<HTMLDivElement>();
   const { toast } = useToast();
+  const useStrictPaymentErrorDialog = import.meta.env.VITE_STRICT_PAYMENT_ERROR_DIALOG === 'true';
 
   useEffect(() => {
     if (sectionRef.current && !sectionRef.current.hasAttribute('data-ref-set')) {
@@ -159,14 +163,34 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
         throw new Error('Mercado Pago no devolvio un link de checkout');
       }
     } catch (err: any) {
-      toast({
-        variant: 'destructive',
-        title: 'Error al conectar con Mercado Pago',
-        description: getUiErrorMessage(err, 'Error al conectar con Mercado Pago'),
-      });
+      const errorMessage = getUiErrorMessage(err, 'Error al conectar con Mercado Pago');
+      if (useStrictPaymentErrorDialog) {
+        setFailedPlan(plan);
+        setErrorCheckout(errorMessage);
+      } else {
+        toast({
+          variant: 'destructive',
+          title: 'Error al conectar con Mercado Pago',
+          description: errorMessage,
+        });
+      }
     } finally {
       setSubmittingPlan(null);
     }
+  };
+
+  const handleRetryCheckout = () => {
+    const planToRetry = failedPlan;
+    setErrorCheckout(null);
+    setFailedPlan(null);
+    if (planToRetry) {
+      void handleCheckout(planToRetry);
+    }
+  };
+
+  const handleCloseCheckoutError = () => {
+    setErrorCheckout(null);
+    setFailedPlan(null);
   };
 
   return (
@@ -175,6 +199,12 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
       ref={sectionRef}
       className="min-h-screen flex items-center justify-center relative bg-gradient-1 py-20"
     >
+      <PaymentErrorDialog
+        open={!!errorCheckout}
+        message={errorCheckout}
+        onRetry={handleRetryCheckout}
+        onClose={handleCloseCheckoutError}
+      />
       
       <div className="container mx-auto px-4 z-10">
         <motion.div 
