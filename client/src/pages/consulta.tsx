@@ -121,8 +121,7 @@ const PresupuestoEstimado: React.FC<{
 
 export default function Consulta() {
   const { toast } = useToast();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+    const [submitted, setSubmitted] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const [showEstimador, setShowEstimador] = useState(false);
   
@@ -227,58 +226,56 @@ export default function Consulta() {
   };
 
   const onSubmit = async (data: FormValues) => {
-    setIsSubmitting(true);
-    
-    try {
-      // Mapear los datos del formulario a los campos que espera el endpoint
-      const propuestaData = {
-        nombre: data.nombre,
-        email: data.email,
-        tipo_proyecto: data.tipoProyecto,
-        servicios: data.detalleServicio?.join(', ') || 'No especificado',
-        presupuesto: data.presupuesto,
-        plazo: data.plazo,
-        detalles: data.mensaje
-      };
+    const snapshotData = { ...data };
+    const snapshotStep = currentStep;
 
-      // Envío real del formulario a la API
-      await backendApi.submitProposal(propuestaData);
-      
-      setSubmitted(true);
-      
-      toast({
-        title: "Solicitud recibida",
-        description: "Tu propuesta personalizada estará lista en menos de 48 horas",
-      });
-      
-      reset();
-      setCurrentStep(1);
-      
-      // Guardamos el email en localStorage para futuras interacciones
-      if (data.email) {
-        localStorage.setItem('userEmail', data.email);
-      }
-      
-      // Registro del evento en analytics
-      analytics.event('Formulario', 'Consulta Enviada', data.tipoProyecto);
-      
-      // Revertimos el estado después de 10 segundos
-      setTimeout(() => {
-        setSubmitted(false);
-      }, 10000);
-    } catch (error) {
-      console.error('Error al enviar formulario:', error);
-      toast({
-        title: "Error al enviar",
-        description: getUiErrorMessage(
-          error,
-          "Ha ocurrido un problema al procesar tu solicitud. Por favor, intentalo de nuevo."
-        ),
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
+    const propuestaData = {
+      nombre: data.nombre,
+      email: data.email,
+      tipo_proyecto: data.tipoProyecto,
+      servicios: data.detalleServicio?.join(', ') || 'No especificado',
+      presupuesto: data.presupuesto,
+      plazo: data.plazo,
+      detalles: data.mensaje
+    };
+
+    // Feedback instantaneo: la UI confirma recepcion antes de red.
+    setSubmitted(true);
+    reset();
+    setCurrentStep(1);
+
+    if (data.email) {
+      localStorage.setItem('userEmail', data.email);
     }
+
+    analytics.event('Formulario', 'Consulta Enviada', data.tipoProyecto);
+
+    const successTimer = setTimeout(() => {
+      setSubmitted(false);
+    }, 10000);
+
+    void backendApi.submitProposal(propuestaData)
+      .then(() => {
+        toast({
+          title: "Solicitud recibida",
+          description: "Tu propuesta personalizada estara lista en menos de 48 horas",
+        });
+      })
+      .catch((error) => {
+        clearTimeout(successTimer);
+        setSubmitted(false);
+        reset(snapshotData);
+        setCurrentStep(snapshotStep);
+        console.error('Error al enviar formulario:', error);
+        toast({
+          title: "Error al enviar",
+          description: getUiErrorMessage(
+            error,
+            "Ha ocurrido un problema al procesar tu solicitud. Por favor, intentalo de nuevo."
+          ),
+          variant: "destructive",
+        });
+      });
   };
 
   return (
@@ -818,19 +815,8 @@ export default function Consulta() {
                             <Button
                               type="submit"
                               className="w-full py-4 text-lg bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-full text-white font-medium hover:shadow-lg hover:shadow-[#00CCFF]/20 transition-all"
-                              disabled={isSubmitting}
-                            >
-                              {isSubmitting ? (
-                                <div className="flex items-center">
-                                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                  </svg>
-                                  Enviando...
-                                </div>
-                              ) : (
-                                "Solicitar propuesta personalizada"
-                              )}
+                              >
+                              Solicitar propuesta personalizada
                             </Button>
                           </motion.div>
                         )}
@@ -839,30 +825,6 @@ export default function Consulta() {
                   </>
                 )}
                 
-                {submitted && (
-                  <motion.div
-                    className="text-center py-16"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <div className="w-20 h-20 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-full flex items-center justify-center mx-auto mb-6">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                    <h3 className="text-2xl font-rajdhani font-bold mb-4 text-white">¡Gracias por tu solicitud!</h3>
-                    <p className="text-gray-300 mb-6">
-                      Hemos recibido los detalles de tu proyecto. Nuestro equipo está trabajando en tu propuesta personalizada y la recibirás en menos de 48 horas.
-                    </p>
-                    <Link 
-                      to="/"
-                      className="inline-block px-6 py-3 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-full text-white font-medium"
-                    >
-                      Volver al inicio
-                    </Link>
-                  </motion.div>
-                )}
                 
                 <div className="mt-8 pt-8 border-t border-gray-800">
                   <div className="flex flex-col items-center text-center">
@@ -933,3 +895,4 @@ export default function Consulta() {
     </div>
   );
 }
+

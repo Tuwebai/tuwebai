@@ -22,38 +22,60 @@ interface ShowroomSectionProps {
 
 export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
+  const lockedScrollYRef = useRef(0);
+  const modalWasOpenRef = useRef(false);
   const { ref: titleRef, hasIntersected: titleVisible } = useIntersectionObserver<HTMLDivElement>();
   const { ref: subtitleRef, hasIntersected: subtitleVisible } = useIntersectionObserver<HTMLDivElement>();
   const { ref: projectsRef, hasIntersected: projectsVisible } = useIntersectionObserver<HTMLDivElement>();
   
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [hasShownTitle, setHasShownTitle] = useState(false);
+  const [hasShownSubtitle, setHasShownSubtitle] = useState(false);
+  const [hasShownProjects, setHasShownProjects] = useState(false);
+
+  useEffect(() => {
+    if (titleVisible) setHasShownTitle(true);
+  }, [titleVisible]);
+
+  useEffect(() => {
+    if (subtitleVisible) setHasShownSubtitle(true);
+  }, [subtitleVisible]);
+
+  useEffect(() => {
+    if (projectsVisible) setHasShownProjects(true);
+  }, [projectsVisible]);
   
   // Prevenir scroll del body cuando el modal está abierto
   useEffect(() => {
     if (selectedProject) {
-      // Guardar la posición actual del scroll
-      const scrollY = window.scrollY;
+      // Guardar la posición actual del scroll y congelar la página detrás del modal.
+      modalWasOpenRef.current = true;
+      lockedScrollYRef.current = window.scrollY;
       document.body.style.position = 'fixed';
-      document.body.style.top = `-${scrollY}px`;
+      document.body.style.top = `-${lockedScrollYRef.current}px`;
+      document.body.style.left = '0';
+      document.body.style.right = '0';
       document.body.style.width = '100%';
       document.body.style.overflow = 'hidden';
-    } else {
-      // Restaurar la posición del scroll
-      const scrollY = document.body.style.top;
+    } else if (modalWasOpenRef.current) {
+      // Restaurar solo cuando el modal pasó de abierto a cerrado.
       document.body.style.position = '';
       document.body.style.top = '';
+      document.body.style.left = '';
+      document.body.style.right = '';
       document.body.style.width = '';
       document.body.style.overflow = '';
-      if (scrollY) {
-        window.scrollTo(0, parseInt(scrollY || '0') * -1);
-      }
+      window.scrollTo(0, lockedScrollYRef.current);
+      modalWasOpenRef.current = false;
     }
     
     // Cleanup al desmontar el componente
     return () => {
       document.body.style.position = '';
       document.body.style.top = '';
+      document.body.style.left = '';
+      document.body.style.right = '';
       document.body.style.width = '';
       document.body.style.overflow = '';
     };
@@ -113,27 +135,90 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
   };
 
   // Array de proyectos (actualmente vacío - listo para proyectos reales)
-  const projects: Project[] = [
+      const projects: Project[] = [
     {
       id: 1,
       title: "LH Decants",
       category: "e-commerce",
-      description: "Explorá el arte del perfume sin comprar a ciegas: nuestros decants 100% originales te acercan a las fragancias más exclusivas del mundo, gota a gota.",
+      description: "Explora el arte del perfume sin comprar a ciegas: decants 100% originales para descubrir fragancias exclusivas por mililitro.",
       features: [
         "Decants 100% originales",
         "Fragancias exclusivas del mundo",
         "Preserva calidad e intensidad",
-        "Frascos auténticos",
-        "Elegancia en su forma más pura"
+        "Frascos autenticos",
+        "Elegancia en su forma mas pura"
       ],
       results: [
-        { label: "Satisfacción", value: "98%" },
+        { label: "Satisfaccion", value: "98%" },
         { label: "Productos originales", value: "100%" },
         { label: "Variedad", value: "+200 fragancias" }
       ],
       image: "/lhdecant-card.png",
       detailsUrl: "/showroom",
       externalUrl: "https://lhdecant.com/"
+    },
+    {
+      id: 2,
+      title: "TuWeb.ai Dashboard",
+      category: "saas",
+      description: "Panel de gestion para clientes TuWeb.ai: seguimiento de proyectos, tickets de soporte, pagos y estado operativo en una interfaz unificada.",
+      features: [
+        "Autenticacion segura por usuario",
+        "Seguimiento de proyectos en tiempo real",
+        "Centro de tickets y respuestas",
+        "Historial de pagos y estado de servicio",
+        "Panel optimizado para desktop y mobile"
+      ],
+      results: [
+        { label: "Visibilidad", value: "360" },
+        { label: "Flujos centralizados", value: "4 modulos" },
+        { label: "Disponibilidad", value: "24/7" }
+      ],
+      image: "/dashboardtuwebai.png",
+      detailsUrl: "/showroom",
+      externalUrl: "https://dashboard.tuweb-ai.com/"
+    },
+    {
+      id: 3,
+      title: "SafeSpot",
+      category: "seguridad-ciudadana",
+      description: "Plataforma de seguridad ciudadana para reportar objetos robados, generar alertas y conectar a la comunidad en tiempo real.",
+      features: [
+        "Reportes de objetos robados geolocalizados",
+        "Busqueda por categoria, zona y descripcion",
+        "Alertas y notificaciones en tiempo real",
+        "Canal comunitario para seguimiento de casos",
+        "Panel administrable para moderacion y soporte"
+      ],
+      results: [
+        { label: "Foco", value: "Seguridad 24/7" },
+        { label: "Cobertura", value: "Comunidad activa" },
+        { label: "Objetivo", value: "Recuperacion rapida" }
+      ],
+      image: "/safespot.png",
+      detailsUrl: "/showroom",
+      externalUrl: "https://safespot.tuweb-ai.com/"
+    },
+    {
+      id: 4,
+      title: "Trading TuWeb.ai",
+      category: "saas",
+      description: "Dashboard de trading para monitoreo de mercado, gestion de operaciones y seguimiento de rendimiento en tiempo real.",
+      features: [
+        "Panel de mercado con metricas en vivo",
+        "Seguimiento de operaciones y posiciones",
+        "Resumen de rendimiento y riesgo",
+        "Vista clara de balances y movimientos",
+        "Experiencia optimizada para toma de decisiones"
+      ],
+      results: [
+        { label: "Visibilidad", value: "Tiempo real" },
+        { label: "Control", value: "Operaciones 24/7" },
+        { label: "Analisis", value: "Rendimiento continuo" }
+      ],
+      image: "/trading-tuwebai.png",
+      detailsUrl: "/showroom",
+      externalUrl: "https://trading.tuweb-ai.com/"
     }
   ];
 
@@ -149,6 +234,8 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
   const categoryNames: Record<string, string> = {
     all: 'Todos',
     'e-commerce': 'E-commerce',
+    saas: 'SaaS',
+    'seguridad-ciudadana': 'Seguridad Ciudadana',
     muebleria: 'Mueblerías',
     'tienda-online': 'Tiendas Online',
     'salud-bienestar': 'Salud y Bienestar',
@@ -181,7 +268,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
           ref={titleRef}
           className="text-center"
           initial="hidden"
-          animate={titleVisible ? "visible" : "hidden"}
+          animate={hasShownTitle ? "visible" : "hidden"}
           variants={titleVariants}
         >
           <h2 className="font-rajdhani font-bold text-3xl md:text-5xl mb-4">
@@ -193,7 +280,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
           ref={subtitleRef}
           className="text-center mb-12"
           initial="hidden"
-          animate={subtitleVisible ? "visible" : "hidden"}
+          animate={hasShownSubtitle ? "visible" : "hidden"}
           variants={subtitleVariants}
         >
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">
@@ -226,7 +313,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
           className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto"
           variants={projectsVariants}
           initial="hidden"
-          animate={projectsVisible ? "visible" : "hidden"}
+          animate={hasShownProjects ? "visible" : "hidden"}
         >
           {filteredProjects.map((project) => (
             <motion.div
@@ -404,3 +491,4 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
     </section>
   );
 }
+

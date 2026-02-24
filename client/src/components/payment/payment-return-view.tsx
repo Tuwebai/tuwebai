@@ -68,7 +68,7 @@ const iconByVariant: Record<Variant, JSX.Element> = {
 export default function PaymentReturnView({ variant, title, description, ctaLabel }: PaymentReturnViewProps) {
   const styles = variantStyles[variant];
   const [searchParams] = useSearchParams();
-  const [loading, setLoading] = useState(false);
+  const [isRefreshingStatus, setIsRefreshingStatus] = useState(false);
   const [status, setStatus] = useState<PaymentStatusPayload | null>(null);
   const [statusError, setStatusError] = useState<string | null>(null);
 
@@ -82,7 +82,7 @@ export default function PaymentReturnView({ variant, title, description, ctaLabe
 
     let cancelled = false;
     const loadStatus = async () => {
-      setLoading(true);
+      setIsRefreshingStatus(true);
       setStatusError(null);
       try {
         const data = await backendApi.getPaymentStatus(paymentId);
@@ -98,7 +98,7 @@ export default function PaymentReturnView({ variant, title, description, ctaLabe
         }
       } finally {
         if (!cancelled) {
-          setLoading(false);
+          setIsRefreshingStatus(false);
         }
       }
     };
@@ -120,14 +120,16 @@ export default function PaymentReturnView({ variant, title, description, ctaLabe
           <div className="w-full mb-5 rounded-lg border border-gray-200 bg-gray-50 p-3 text-sm text-gray-700">
             <p className="font-semibold mb-1">Referencia de pago</p>
             <p className="break-all">{paymentId}</p>
-            {loading && <p className="mt-2 text-gray-500">Validando estado del pago...</p>}
-            {!loading && status?.status && <p className="mt-2">Estado confirmado: <strong>{status.status}</strong></p>}
-            {!loading && status?.transaction_amount && (
+            {status?.status && <p className="mt-2">Estado confirmado: <strong>{status.status}</strong></p>}
+            {status?.transaction_amount && (
               <p className="mt-1">
                 Monto: <strong>{status.transaction_amount} {status.currency_id || ''}</strong>
               </p>
             )}
-            {!loading && statusError && <p className="mt-2 text-red-600">{statusError}</p>}
+            {isRefreshingStatus && !status && !statusError && (
+              <p className="mt-2 text-gray-500">Actualizando estado en segundo plano...</p>
+            )}
+            {statusError && <p className="mt-2 text-red-600">{statusError}</p>}
           </div>
         )}
 

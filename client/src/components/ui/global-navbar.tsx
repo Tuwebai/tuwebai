@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useAuthActions, useAuthState } from '@/contexts/AuthContext';
 import { useLoginModal } from '@/hooks/use-login-modal';
+import { prefetchRoute } from '@/lib/route-prefetch';
 
 interface NavigationLink {
   name: string;
@@ -23,6 +24,10 @@ export default function GlobalNavbar() {
   const debugNav = import.meta.env.DEV;
   
   const [showProfileMenu, setShowProfileMenu] = useState(false);
+
+  const handleIntentPrefetch = (path: string) => {
+    prefetchRoute(path);
+  };
   
   // Navegación principal
   const mainNavigation: NavigationLink[] = [
@@ -192,6 +197,9 @@ export default function GlobalNavbar() {
                   <div key={item.name} className="relative group">
                     <Link
                       to={item.href}
+                      onMouseEnter={() => handleIntentPrefetch(item.href)}
+                      onFocus={() => handleIntentPrefetch(item.href)}
+                      onTouchStart={() => handleIntentPrefetch(item.href)}
                       className={`text-sm font-medium transition-colors ${
                         activePage === item.name 
                           ? 'text-[#00CCFF]' 
@@ -268,6 +276,9 @@ export default function GlobalNavbar() {
                           <div className="py-1">
                             <Link
                               to="/panel"
+                              onMouseEnter={() => handleIntentPrefetch('/panel')}
+                              onFocus={() => handleIntentPrefetch('/panel')}
+                              onTouchStart={() => handleIntentPrefetch('/panel')}
                               className="block px-4 py-2 text-sm text-gray-300 hover:bg-[#23232b] hover:text-white rounded-lg transition-colors"
                               onClick={() => setShowProfileMenu(false)}
                             >
@@ -314,6 +325,9 @@ export default function GlobalNavbar() {
                   
                   <Link
                     to="/consulta"
+                    onMouseEnter={() => handleIntentPrefetch('/consulta')}
+                    onFocus={() => handleIntentPrefetch('/consulta')}
+                    onTouchStart={() => handleIntentPrefetch('/consulta')}
                     className="px-5 py-2 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-full text-white text-sm font-medium shadow-lg shadow-[#00CCFF]/20 hover:shadow-[#9933FF]/30 transition-all whitespace-nowrap"
                   >
                     Consultanos
@@ -370,6 +384,9 @@ export default function GlobalNavbar() {
                     <div key={item.name} className="border-b border-gray-800 pb-4">
                       <Link
                         to={item.href}
+                        onMouseEnter={() => handleIntentPrefetch(item.href)}
+                        onFocus={() => handleIntentPrefetch(item.href)}
+                        onTouchStart={() => handleIntentPrefetch(item.href)}
                         className={`text-lg font-medium block py-2 ${
                           activePage === item.name 
                             ? 'text-[#00CCFF]' 
@@ -465,6 +482,9 @@ export default function GlobalNavbar() {
                     </div>
                     <Link
                       to="/panel"
+                      onMouseEnter={() => handleIntentPrefetch('/panel')}
+                      onFocus={() => handleIntentPrefetch('/panel')}
+                      onTouchStart={() => handleIntentPrefetch('/panel')}
                       className="block w-full py-2 px-4 text-left rounded-md text-gray-300 hover:bg-gray-800 transition-colors"
                       onClick={() => setIsMenuOpen(false)}
                     >
@@ -508,6 +528,9 @@ export default function GlobalNavbar() {
                 
                 <Link
                   to="/consulta"
+                  onMouseEnter={() => handleIntentPrefetch('/consulta')}
+                  onFocus={() => handleIntentPrefetch('/consulta')}
+                  onTouchStart={() => handleIntentPrefetch('/consulta')}
                   className="block w-full py-3 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-lg text-white font-medium text-center"
                   onClick={() => setIsMenuOpen(false)}
                 >

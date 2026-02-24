@@ -14,6 +14,7 @@ const envSchema = z
       .transform((str) => str.split(',').map((s) => s.trim())),
     FRONTEND_URL: z.string().url('FRONTEND_URL debe ser una URL valida').default('https://tuweb-ai.com'),
     BACKEND_URL: z.string().url('BACKEND_URL debe ser una URL valida').optional(),
+    CONTACT_TO_EMAIL: z.string().email('CONTACT_TO_EMAIL debe ser un email valido').optional(),
     SMTP_USER: z.string().optional(),
     SMTP_PASS: z.string().optional(),
     SMTP_HOST: z.string().default('smtp.gmail.com'),

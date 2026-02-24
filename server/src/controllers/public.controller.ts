@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { env } from '../config/env.config';
-import { sendContactEmail } from '../services/email.service';
+import { queueContactEmail } from '../services/email.service';
 import { appLogger } from '../utils/app-logger';
 import { storeSubmission } from '../utils/submission-store';
 import { getAdminFirestore } from '../config/firebase-admin';
@@ -42,28 +42,20 @@ export const handlePropuesta = async (req: Request, res: Response) => {
       detalles,
     ].join('\n');
 
-    try {
-      await sendContactEmail({
+    queueContactEmail(
+      {
         name: nombre,
         email,
         title: 'Nueva solicitud de propuesta',
         message,
-      });
-      return res.json({
-        success: true,
-        message: 'Solicitud recibida. Te enviaremos una propuesta en menos de 48 horas.',
-      });
-    } catch (mailError: any) {
-      appLogger.warn('public.propuesta_smtp_failed_fallback', {
-        error: mailError?.message,
-        route: req.path,
-        method: req.method,
-      });
-      return res.status(202).json({
-        success: true,
-        message: 'Solicitud recibida. Procesaremos tu propuesta en breve.',
-      });
-    }
+      },
+      { event: 'public.propuesta', meta: { route: req.path, method: req.method } }
+    );
+
+    return res.status(202).json({
+      success: true,
+      message: 'Solicitud recibida. Procesaremos tu propuesta en breve.',
+    });
   } catch (error: any) {
     appLogger.error('public.propuesta_failed', {
       error: error?.message,
@@ -71,8 +63,7 @@ export const handlePropuesta = async (req: Request, res: Response) => {
       method: req.method,
     });
 
-    const status = error?.message?.includes('SMTP no configurado') ? 503 : 500;
-    return res.status(status).json({
+    return res.status(500).json({
       success: false,
       message: 'No se pudo procesar la solicitud en este momento.',
       details: env.NODE_ENV === 'development' ? error?.message : undefined,
@@ -89,28 +80,20 @@ export const handleNewsletter = async (req: Request, res: Response) => {
       createdAt: new Date().toISOString(),
     });
 
-    try {
-      await sendContactEmail({
+    queueContactEmail(
+      {
         name: 'Newsletter',
         email,
         title: 'Nueva suscripcion a newsletter',
         message: `Email: ${email}\nSource: ${source || 'website'}\nTimestamp: ${new Date().toISOString()}`,
-      });
-      return res.json({
-        success: true,
-        message: 'Suscripcion registrada correctamente.',
-      });
-    } catch (mailError: any) {
-      appLogger.warn('public.newsletter_smtp_failed_fallback', {
-        error: mailError?.message,
-        route: req.path,
-        method: req.method,
-      });
-      return res.status(202).json({
-        success: true,
-        message: 'Suscripcion registrada. Procesaremos la confirmacion en breve.',
-      });
-    }
+      },
+      { event: 'public.newsletter', meta: { route: req.path, method: req.method } }
+    );
+
+    return res.status(202).json({
+      success: true,
+      message: 'Suscripcion registrada. Procesaremos la confirmacion en breve.',
+    });
   } catch (error: any) {
     appLogger.error('public.newsletter_failed', {
       error: error?.message,
@@ -118,8 +101,7 @@ export const handleNewsletter = async (req: Request, res: Response) => {
       method: req.method,
     });
 
-    const status = error?.message?.includes('SMTP no configurado') ? 503 : 500;
-    return res.status(status).json({
+    return res.status(500).json({
       success: false,
       message: 'No se pudo procesar la suscripcion en este momento.',
       details: env.NODE_ENV === 'development' ? error?.message : undefined,
@@ -139,28 +121,20 @@ export const handleTestimonialSubmission = async (req: Request, res: Response) =
     };
 
     storeSubmission('testimonials', payload);
-    try {
-      await sendContactEmail({
+    queueContactEmail(
+      {
         name: payload.name,
         email: 'no-reply@tuweb-ai.com',
         title: 'Nuevo testimonio pendiente de revision',
         message: `Nombre: ${payload.name}\nEmpresa: ${payload.company}\nEstado: ${payload.status}\n\n${payload.testimonial}`,
-      });
-      return res.status(201).json({
-        success: true,
-        message: 'Testimonio recibido y enviado para revision.',
-      });
-    } catch (mailError: any) {
-      appLogger.warn('public.testimonial_smtp_failed_fallback', {
-        error: mailError?.message,
-        route: req.path,
-        method: req.method,
-      });
-      return res.status(201).json({
-        success: true,
-        message: 'Testimonio recibido y pendiente de revision.',
-      });
-    }
+      },
+      { event: 'public.testimonial', meta: { route: req.path, method: req.method } }
+    );
+
+    return res.status(201).json({
+      success: true,
+      message: 'Testimonio recibido y pendiente de revision.',
+    });
   } catch (error: any) {
     appLogger.error('public.testimonial_submission_failed', {
       error: error?.message,
@@ -194,8 +168,8 @@ export const handleApplicationSubmission = async (req: Request, res: Response) =
     };
 
     storeSubmission('applications', payload);
-    try {
-      await sendContactEmail({
+    queueContactEmail(
+      {
         name: payload.name,
         email: payload.email,
         title: `Nueva aplicacion: ${payload.position}`,
@@ -211,22 +185,14 @@ export const handleApplicationSubmission = async (req: Request, res: Response) =
           '',
           `Mensaje: ${payload.message || 'Sin mensaje adicional'}`,
         ].join('\n'),
-      });
-      return res.status(201).json({
-        success: true,
-        message: 'Aplicacion recibida correctamente.',
-      });
-    } catch (mailError: any) {
-      appLogger.warn('public.application_smtp_failed_fallback', {
-        error: mailError?.message,
-        route: req.path,
-        method: req.method,
-      });
-      return res.status(201).json({
-        success: true,
-        message: 'Aplicacion recibida y pendiente de revision.',
-      });
-    }
+      },
+      { event: 'public.application', meta: { route: req.path, method: req.method } }
+    );
+
+    return res.status(201).json({
+      success: true,
+      message: 'Aplicacion recibida y pendiente de revision.',
+    });
   } catch (error: any) {
     appLogger.error('public.application_submission_failed', {
       error: error?.message,

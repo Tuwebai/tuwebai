@@ -7,7 +7,7 @@ import { getUiErrorMessage } from '@/lib/http-client';
 
 const Contacto: React.FC = () => {
   const [form, setForm] = useState({ name: '', email: '', title: '', message: '' });
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitState, setSubmitState] = useState<'idle' | 'sent'>('idle');
   const [alert, setAlert] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -16,22 +16,26 @@ const Contacto: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
     setAlert(null);
+    const snapshot = { ...form };
+    setSubmitState('sent');
+    setAlert({ type: 'success', message: 'Mensaje recibido. Lo estamos procesando.' });
+    setForm({ name: '', email: '', title: '', message: '' });
 
-    try {
-      const data = await backendApi.submitContact(form);
-      setAlert({ type: 'success', message: data.message || 'Mensaje enviado. Te responderemos pronto.' });
-      setForm({ name: '', email: '', title: '', message: '' });
-    } catch (err) {
-      setAlert({
-        type: 'error',
-        message: getUiErrorMessage(err, 'No se pudo enviar el mensaje. Intenta de nuevo.'),
+    setTimeout(() => {
+      setAlert(null);
+      setSubmitState('idle');
+    }, 4000);
+
+    void backendApi.submitContact(snapshot)
+      .catch((err) => {
+        setAlert({
+          type: 'error',
+          message: getUiErrorMessage(err, 'No se pudo enviar el mensaje. Intenta de nuevo.'),
+        });
+        setForm(snapshot);
+        setSubmitState('idle');
       });
-    } finally {
-      setIsSubmitting(false);
-      setTimeout(() => setAlert(null), 5000);
-    }
   };
 
   return (
@@ -59,8 +63,8 @@ const Contacto: React.FC = () => {
             <label htmlFor="message" className="block text-white font-medium mb-1">Mensaje</label>
             <Textarea id="message" name="message" value={form.message} onChange={handleChange} required className="bg-[#1A1A23] border-gray-700 text-white" placeholder="Contanos en que podemos ayudarte" rows={5} />
           </div>
-          <Button type="submit" className="w-full py-3 text-lg bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-full text-white font-semibold" disabled={isSubmitting}>
-            {isSubmitting ? <span className="animate-pulse">Enviando...</span> : 'Enviar'}
+          <Button type="submit" className="w-full py-3 text-lg bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-full text-white font-semibold">
+            {submitState === 'sent' ? 'Enviado' : 'Enviar'}
           </Button>
         </form>
       </div>

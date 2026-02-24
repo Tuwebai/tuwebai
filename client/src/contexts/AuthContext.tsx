@@ -51,6 +51,7 @@ interface AuthState {
   userPreferences: UserPreferences;
   passwordInfo: PasswordInfo;
   isLoading: boolean;
+  isMutatingAuth: boolean;
   isLoadingPreferences: boolean;
   isLoadingPasswordInfo: boolean;
   isAuthenticated: boolean;
@@ -141,7 +142,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     changePasswordMutation.isPending || 
     resetPasswordMutation.isPending;
     
-  const isLoading = isLoadingAuth || isAnyMutationPending;
+  const isLoading = isLoadingAuth;
+  const isMutatingAuth = isAnyMutationPending;
 
   // Escuchar cambios de autenticación
   useEffect(() => {
@@ -341,6 +343,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     userPreferences: userPreferencesData || DEFAULT_PREFS,
     passwordInfo,
     isLoading,
+    isMutatingAuth,
     isLoadingPreferences: isLoadingPreferencesQuery || updatePreferencesMutation.isPending,
     isLoadingPasswordInfo,
     isAuthenticated: !!user,
@@ -350,6 +353,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     userPreferencesData,
     passwordInfo,
     isLoading,
+    isMutatingAuth,
     isLoadingPreferencesQuery,
     updatePreferencesMutation.isPending,
     isLoadingPasswordInfo,

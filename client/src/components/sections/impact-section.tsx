@@ -104,25 +104,25 @@ export default function ImpactSection({ setRef }: ImpactSectionProps) {
           <StatCard 
             value="Caso #1" 
             label="LH Decants - E-commerce Premium"
-            description="Aumento del 150% en ventas online mediante la implementación de un sitio web corporativo premium con diseño elegante y sofisticado que refleja la calidad de sus productos exclusivos de perfumes y fragancias." 
+            description="Aumento sostenido de ventas online con una tienda premium enfocada en conversión, confianza visual y mejor experiencia de compra." 
             delay={1} 
           />
           <StatCard 
             value="Caso #2" 
-            label="LH Decants - Experiencia de Usuario" 
-            description="Mejora del 80% en la percepción de marca premium y reducción del 40% en el abandono del carrito gracias a una interfaz elegante y sofisticada optimizada para la experiencia de compra."
+            label="TuWeb.ai Dashboard - Operación Interna" 
+            description="Centralización de métricas, clientes y operaciones en un dashboard único para reducir fricción en el trabajo comercial y técnico."
             delay={2} 
           />
           <StatCard 
             value="Caso #3" 
-            label="LH Decants - Optimización Conversión" 
-            description="Incremento del 60% en el tiempo de permanencia en el sitio y optimización del embudo de conversión para maximizar las ventas de productos premium."
+            label="SafeSpot - Seguridad Ciudadana" 
+            description="Plataforma de reportes de objetos robados con foco en trazabilidad, rapidez de carga y acceso simple para la comunidad."
             delay={3} 
           />
           <StatCard 
             value="Caso #4" 
-            label="LH Decants - Diseño Premium" 
-            description="Transformación completa de la presencia digital con un diseño que destaca la exclusividad y calidad premium de los productos de perfumes y fragancias."
+            label="Trading TuWeb.ai - Analítica Financiera" 
+            description="Interfaz orientada a decisiones de trading con paneles claros, datos accionables y mejor lectura operativa para usuarios activos."
             delay={4} 
           />
         </div>

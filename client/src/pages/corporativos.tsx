@@ -136,14 +136,35 @@ export default function Corporativos() {
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-1 lg:grid-cols-1 gap-8 max-w-2xl mx-auto">
+          <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {[
               {
                 image: "/lhdecant-card.png",
                 title: "LH Decants",
-                description: "Sitio web corporativo premium para empresa de perfumes y fragancias. Diseño elegante y sofisticado que refleja la calidad de sus productos exclusivos.",
-                tags: ["E-commerce", "Diseño Premium"],
+                description: "Sitio web corporativo premium para empresa de perfumes y fragancias. Diseno elegante y sofisticado que refleja la calidad de sus productos exclusivos.",
+                tags: ["E-commerce", "Diseno Premium"],
                 results: "Aumento del 150% en ventas online"
+              },
+              {
+                image: "/dashboardtuwebai.png",
+                title: "TuWeb.ai Dashboard",
+                description: "Plataforma corporativa para clientes con panel de seguimiento de proyectos, tickets y pagos en una sola interfaz.",
+                tags: ["SaaS", "Panel de Clientes"],
+                results: "Centralizacion del 100% de gestiones operativas"
+              },
+              {
+                image: "/safespot.png",
+                title: "SafeSpot",
+                description: "Solucion digital orientada a seguridad ciudadana para reportes y trazabilidad de objetos robados con enfoque comunitario.",
+                tags: ["Seguridad", "Comunidad"],
+                results: "Mayor velocidad de respuesta y reporte ciudadano"
+              },
+              {
+                image: "/trading-tuwebai.png",
+                title: "Trading TuWeb.ai",
+                description: "Dashboard de trading para visualizacion de mercado, control de operaciones y rendimiento con enfoque de decisiones rapidas.",
+                tags: ["Fintech", "Analitica"],
+                results: "Mejora del control operativo en tiempo real"
               }
             ].map((caseStudy, index) => (
               <motion.div

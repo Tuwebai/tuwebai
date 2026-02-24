@@ -10,15 +10,19 @@ export interface Testimonial {
   isNew?: boolean;
 }
 
+interface CreateTestimonialContext {
+  previousTestimonials: Testimonial[];
+}
+
 export const useTestimonials = () => {
   const { toast } = useToast();
-  
+
   return useQuery({
     queryKey: ['testimonials'],
     queryFn: async (): Promise<Testimonial[]> => {
       try {
         const allTestimonials = await getAllTestimonials();
-        
+
         // Convertir testimonios de Firestore al formato local
         return allTestimonials.map(t => ({
           name: t.name,
@@ -29,9 +33,9 @@ export const useTestimonials = () => {
       } catch (error) {
         console.error('Error loading testimonials:', error);
         toast({
-          title: "Error",
-          description: "No se pudieron cargar los testimonios. Por favor, recarga la página.",
-          variant: "destructive"
+          title: 'Error',
+          description: 'No se pudieron cargar los testimonios. Por favor, recarga la pagina.',
+          variant: 'destructive'
         });
         throw error;
       }
@@ -52,25 +56,45 @@ export const useCreateTestimonial = () => {
       });
       return newTestimonial;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['testimonials'] });
+    onMutate: async (newTestimonial): Promise<CreateTestimonialContext> => {
+      await queryClient.cancelQueries({ queryKey: ['testimonials'] });
+      const previousTestimonials = queryClient.getQueryData<Testimonial[]>(['testimonials']) ?? [];
 
+      queryClient.setQueryData<Testimonial[]>(['testimonials'], (current = []) => [
+        {
+          name: newTestimonial.name,
+          company: newTestimonial.company,
+          testimonial: newTestimonial.testimonial,
+          isNew: true
+        },
+        ...current,
+      ]);
+
+      return { previousTestimonials };
+    },
+    onSuccess: () => {
       toast({
-        title: "Testimonio recibido",
-        description: "Tu testimonio quedó pendiente de revisión y será publicado luego de validarlo.",
+        title: 'Testimonio recibido',
+        description: 'Tu testimonio quedo pendiente de revision y sera publicado luego de validarlo.',
       });
     },
-    onError: (error) => {
+    onError: (error, _variables, context) => {
+      if (context) {
+        queryClient.setQueryData<Testimonial[]>(['testimonials'], context.previousTestimonials);
+      }
+
       console.error('Error creating testimonial:', error);
       toast({
-        title: "Error",
+        title: 'Error',
         description: getUiErrorMessage(
           error,
-          "No se pudo enviar el testimonio. Por favor, intentalo de nuevo."
+          'No se pudo enviar el testimonio. Por favor, intentalo de nuevo.'
         ),
-        variant: "destructive"
+        variant: 'destructive'
       });
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['testimonials'], refetchType: 'inactive' });
     }
   });
 };
-

@@ -15,7 +15,7 @@ export const apiLimiter = rateLimit({
 // Stricter Rate Limiter for critical unauthenticated endpoints like /contact or Payment generation
 export const strictApiLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hora
-  max: 10, // Max 10 solicitudes críticas por hora por IP
+  max: 60, // Max 60 solicitudes críticas por hora por IP
   standardHeaders: true,
   legacyHeaders: false,
   message: {

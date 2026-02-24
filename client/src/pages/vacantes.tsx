@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import AnimatedShape from '../components/ui/animated-shape';
 import { useApplyVacancy } from '@/hooks/use-vacancies';
+import { useToast } from '@/hooks/use-toast';
 
 // Tipo para las vacantes
 interface Vacancy {
@@ -124,6 +125,7 @@ export default function Vacantes() {
     message: ''
   });
   const applyVacancy = useApplyVacancy();
+  const { toast } = useToast();
 
   // Scroll to top on page load
   useEffect(() => {
@@ -147,30 +149,43 @@ export default function Vacantes() {
     }
   };
 
-    const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!selectedVacancy) return;
 
-    try {
-      await applyVacancy.mutateAsync({
-        application: application,
-        vacancy: selectedVacancy
-      });
+    const snapshotVacancy = selectedVacancy;
+    const snapshotApplication = { ...application };
 
-      setShowApplicationForm(false);
-      setApplication({
-        name: '',
-        email: '',
-        phone: '',
-        position: '',
-        experience: '',
-        portfolio: '',
-        message: ''
-      });
-    } catch (error) {
-      // Error handling is centralized in the hook
-    }
+    setShowApplicationForm(false);
+    setApplication({
+      name: '',
+      email: '',
+      phone: '',
+      position: '',
+      experience: '',
+      portfolio: '',
+      message: ''
+    });
+
+    toast({
+      title: 'Aplicacion recibida',
+      description: 'Ya registramos tu postulacion. Te contactaremos pronto.',
+    });
+
+    applyVacancy.mutate(
+      {
+        application: snapshotApplication,
+        vacancy: snapshotVacancy
+      },
+      {
+        onError: () => {
+          setSelectedVacancy(snapshotVacancy);
+          setApplication(snapshotApplication);
+          setShowApplicationForm(true);
+        }
+      }
+    );
   };
 
   const openApplicationForm = (vacancy: Vacancy) => {
@@ -502,10 +517,9 @@ export default function Vacantes() {
                   <div className="flex gap-4 pt-4">
                     <button
                       type="submit"
-                      disabled={applyVacancy.isPending}
-                      className="flex-1 px-6 py-3 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-lg text-white font-medium hover:shadow-lg hover:shadow-[#00CCFF]/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="flex-1 px-6 py-3 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-lg text-white font-medium hover:shadow-lg hover:shadow-[#00CCFF]/20 transition-all"
                     >
-                      {applyVacancy.isPending ? 'Enviando...' : 'Enviar aplicación'}
+                      Enviar aplicacion
                     </button>
                     
                     <button

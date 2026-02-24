@@ -25,7 +25,7 @@ export default function TestimonialForm({ onSuccess }: TestimonialFormProps) {
     });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
     // Validación simple
@@ -38,27 +38,22 @@ export default function TestimonialForm({ onSuccess }: TestimonialFormProps) {
       return;
     }
 
-    try {
-      await createTestimonial.mutateAsync({
-        name: formData.name,
-        company: formData.company || 'Cliente',
-        testimonial: formData.testimonial,
-      });
+    createTestimonial.mutate({
+      name: formData.name,
+      company: formData.company || 'Cliente',
+      testimonial: formData.testimonial,
+    });
 
-      // Resetear formulario y cerrar
-      setFormData({
-        name: '',
-        company: '',
-        testimonial: '',
-      });
-      setIsOpen(false);
-      
-      if (onSuccess) {
-          onSuccess();
-      }
-    } catch (error) {
-      // El hook ya maneja el toast de error de forma centralizada
-      console.error('Submission failed from component scope');
+    // Feedback instantaneo: cerrar y limpiar sin esperar red
+    setFormData({
+      name: '',
+      company: '',
+      testimonial: '',
+    });
+    setIsOpen(false);
+
+    if (onSuccess) {
+      onSuccess();
     }
   };
 
@@ -170,21 +165,11 @@ export default function TestimonialForm({ onSuccess }: TestimonialFormProps) {
                   </motion.button>
                   <motion.button
                     type="submit"
-                    disabled={createTestimonial.isPending}
-                    className={`px-4 py-2 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-md text-white font-medium ${
-                      createTestimonial.isPending ? 'opacity-50 cursor-not-allowed' : ''
-                    }`}
-                    whileHover={!createTestimonial.isPending ? { scale: 1.05, boxShadow: '0 5px 15px -5px rgba(0, 204, 255, 0.7)' } : {}}
-                    whileTap={!createTestimonial.isPending ? { scale: 0.95 } : {}}
+                    className="px-4 py-2 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-md text-white font-medium"
+                    whileHover={{ scale: 1.05, boxShadow: '0 5px 15px -5px rgba(0, 204, 255, 0.7)' }}
+                    whileTap={{ scale: 0.95 }}
                   >
-                    {createTestimonial.isPending ? (
-                      <div className="flex items-center">
-                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                        Enviando...
-                      </div>
-                    ) : (
-                      'Enviar testimonio'
-                    )}
+                    Enviar testimonio
                   </motion.button>
                 </div>
               </form>

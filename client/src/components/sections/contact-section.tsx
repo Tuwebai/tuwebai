@@ -18,7 +18,7 @@ function ContactForm({ delay }: ContactFormProps) {
     email: '',
     message: ''
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitState, setSubmitState] = useState<'idle' | 'sent'>('idle');
   const [errors, setErrors] = useState<{[key: string]: string}>({});
 
   const formVariants = {
@@ -72,62 +72,56 @@ function ContactForm({ delay }: ContactFormProps) {
     e.preventDefault();
     
     if (!validateForm()) return;
-    
-    setIsSubmitting(true);
-    
-    try {
-      await backendApi.submitContact({
-        name: formState.name,
-        email: formState.email,
-        message: formState.message,
-        source: 'sitio_web_principal',
-      });
-      
-      // Limpiar formulario tras éxito
-      setFormState({ name: '', email: '', message: '' });
-      toast({
-        title: "Mensaje enviado",
-        description: "¡Gracias por contactar con nosotros! Nos pondremos en contacto contigo pronto.",
-      });
-      
-      // Registrar evento de analítica (opcional)
-      if (typeof window !== 'undefined' && (window as any).gtag) {
-        (window as any).gtag('event', 'submit_form', {
-          'event_category': 'engagement',
-          'event_label': 'contact_form'
-        });
-      }
-      
-    } catch (error: unknown) {
-      // Si hay errores de validación del servidor
-      if (error instanceof ApiError) {
-        const payload = error.payload as any;
-        if (payload?.errors && Array.isArray(payload.errors)) {
-          const serverErrors: {[key: string]: string} = {};
-          payload.errors.forEach((err: any) => {
-            if (err.path && err.message) {
-              serverErrors[err.path] = err.message;
-            }
+
+    const snapshot = { ...formState };
+    setSubmitState('sent');
+    setErrors({});
+    setFormState({ name: '', email: '', message: '' });
+
+    setTimeout(() => {
+      setSubmitState('idle');
+    }, 4000);
+
+    void backendApi.submitContact({
+      name: snapshot.name,
+      email: snapshot.email,
+      message: snapshot.message,
+      source: 'sitio_web_principal',
+    })
+      .then(() => {
+        if (typeof window !== 'undefined' && (window as any).gtag) {
+          (window as any).gtag('event', 'submit_form', {
+            event_category: 'engagement',
+            event_label: 'contact_form',
           });
-          
-          if (Object.keys(serverErrors).length > 0) {
-            setErrors(serverErrors);
-            throw new Error('Por favor corrige los errores en el formulario');
+        }
+      })
+      .catch((error: unknown) => {
+        if (error instanceof ApiError) {
+          const payload = error.payload as any;
+          if (payload?.errors && Array.isArray(payload.errors)) {
+            const serverErrors: {[key: string]: string} = {};
+            payload.errors.forEach((err: any) => {
+              if (err.path && err.message) {
+                serverErrors[err.path] = err.message;
+              }
+            });
+            if (Object.keys(serverErrors).length > 0) {
+              setErrors(serverErrors);
+            }
           }
         }
-      }
-      console.error('Error al enviar el formulario:', error);
-      toast({
-        title: "Error al enviar",
-        description: getUiErrorMessage(
-          error,
-          "Ha ocurrido un problema al enviar tu mensaje. Por favor, inténtalo de nuevo."
-        ),
-        variant: "destructive",
+        setFormState(snapshot);
+        setSubmitState('idle');
+        toast({
+          title: "Error al enviar",
+          description: getUiErrorMessage(
+            error,
+            "Ha ocurrido un problema al enviar tu mensaje. Por favor, inténtalo de nuevo."
+          ),
+          variant: "destructive",
+        });
       });
-    } finally {
-      setIsSubmitting(false);
-    }
   };
 
   return (
@@ -194,21 +188,12 @@ function ContactForm({ delay }: ContactFormProps) {
           
           <motion.button
             type="submit"
-            disabled={isSubmitting}
             className="w-full px-6 py-3 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-lg text-white font-medium disabled:opacity-70 shadow-lg shadow-[#00CCFF]/20 hover:shadow-[#9933FF]/30"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             transition={{ duration: 0.2 }}
           >
-            {isSubmitting ? (
-              <div className="flex items-center justify-center">
-                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                Enviando...
-              </div>
-            ) : "Solicitar consulta gratuita"}
+            {submitState === 'sent' ? "Enviado" : "Solicitar consulta gratuita"}
           </motion.button>
         </form>
       </div>
@@ -364,3 +349,4 @@ export default function ContactSection({ setRef }: ContactSectionProps) {
     </section>
   );
 }
+

@@ -1,0 +1,28 @@
+type PrefetchLoader = () => Promise<unknown>;
+
+const routeLoaders: Record<string, PrefetchLoader> = {
+  '/consulta': () => import('@/pages/consulta'),
+  '/vacantes': () => import('@/pages/vacantes'),
+  '/panel': () => import('@/pages/panel-usuario'),
+};
+
+const inFlightPrefetch = new Map<string, Promise<unknown>>();
+
+/**
+ * Prefetch no bloqueante y deduplicado de chunks de ruta.
+ * Solo precarga rutas críticas para mejorar TTI percibido al navegar.
+ */
+export function prefetchRoute(path: string): void {
+  const loader = routeLoaders[path];
+  if (!loader) return;
+
+  if (inFlightPrefetch.has(path)) return;
+
+  const prefetchPromise = loader().catch(() => {
+    // El prefetch no debe romper UX si falla red/caché.
+  }).finally(() => {
+    inFlightPrefetch.delete(path);
+  });
+
+  inFlightPrefetch.set(path, prefetchPromise);
+}

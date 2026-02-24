@@ -46,7 +46,9 @@ export default function PanelUsuario() {
   
   const [activeTab, setActiveTab] = useState<'profile' | 'security' | 'preferences' | 'integrations'>('profile');
   const [isEditing, setIsEditing] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
+  const [isSavingProfile, setIsSavingProfile] = useState(false);
+  const [isSavingPassword, setIsSavingPassword] = useState(false);
+  const [isSavingPreferences, setIsSavingPreferences] = useState(false);
   const [isChangingPassword, setIsChangingPassword] = useState(false);
   const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -101,7 +103,7 @@ export default function PanelUsuario() {
   }, [user, setUserImage]);
   
   const handleUpdatePreferences = async (newPreferences: Partial<typeof userPreferences>) => {
-    setIsSaving(true);
+    setIsSavingPreferences(true);
     try {
       await updateUserPreferences(newPreferences);
       
@@ -117,7 +119,7 @@ export default function PanelUsuario() {
         variant: "destructive",
       });
     } finally {
-      setIsSaving(false);
+      setIsSavingPreferences(false);
     }
   };
   
@@ -202,7 +204,7 @@ export default function PanelUsuario() {
     
     if (!validateProfileForm()) return;
     
-    setIsSaving(true);
+    setIsSavingProfile(true);
     
     try {
       await updateUserProfile({
@@ -225,7 +227,7 @@ export default function PanelUsuario() {
         variant: "destructive",
       });
     } finally {
-      setIsSaving(false);
+      setIsSavingProfile(false);
     }
   };
   
@@ -234,7 +236,7 @@ export default function PanelUsuario() {
     
     if (!validatePasswordForm()) return;
     
-    setIsSaving(true);
+    setIsSavingPassword(true);
     
     try {
       await changePassword(
@@ -261,7 +263,7 @@ export default function PanelUsuario() {
         variant: "destructive",
       });
     } finally {
-      setIsSaving(false);
+      setIsSavingPassword(false);
     }
   };
 
@@ -627,10 +629,10 @@ export default function PanelUsuario() {
                       <div className="flex gap-3 pt-4">
                         <button
                           type="submit"
-                          disabled={isSaving}
+                          disabled={isSavingProfile}
                           className="flex items-center gap-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium transition-all disabled:opacity-60"
                         >
-                          {isSaving ? (
+                          {isSavingProfile ? (
                             <>
                               <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white"></div>
                               Guardando...
@@ -814,10 +816,10 @@ export default function PanelUsuario() {
                         <div className="flex gap-3 pt-4">
                         <button
                             type="submit" 
-                            disabled={isSaving} 
+                            disabled={isSavingPassword} 
                             className="flex items-center gap-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium transition-all disabled:opacity-60"
                           >
-                            {isSaving ? (
+                            {isSavingPassword ? (
                               <>
                                 <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white"></div>
                                 Actualizando...
@@ -877,6 +879,7 @@ export default function PanelUsuario() {
                             type="checkbox" 
                               checked={userPreferences?.emailNotifications ?? true} 
                               onChange={e => handleUpdatePreferences({ emailNotifications: e.target.checked })} 
+                              disabled={isSavingPreferences}
                             className="sr-only peer" 
                           />
                             <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
@@ -892,6 +895,7 @@ export default function PanelUsuario() {
                             type="checkbox" 
                               checked={userPreferences?.newsletter ?? true} 
                               onChange={e => handleUpdatePreferences({ newsletter: e.target.checked })} 
+                              disabled={isSavingPreferences}
                             className="sr-only peer" 
                           />
                             <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
@@ -917,6 +921,7 @@ export default function PanelUsuario() {
                             type="checkbox" 
                               checked={userPreferences?.darkMode ?? false} 
                               onChange={e => handleUpdatePreferences({ darkMode: e.target.checked })} 
+                              disabled={isSavingPreferences}
                             className="sr-only peer" 
                           />
                             <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
@@ -930,6 +935,7 @@ export default function PanelUsuario() {
                       <select 
                             value={userPreferences?.language || 'es'} 
                             onChange={e => handleUpdatePreferences({ language: e.target.value })} 
+                            disabled={isSavingPreferences}
                             className="w-full px-4 py-3 rounded-lg bg-white/5 text-white border border-white/20 focus:border-blue-500 transition-all"
                       >
                         <option value="es">Español</option>

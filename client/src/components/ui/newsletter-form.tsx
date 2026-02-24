@@ -18,7 +18,7 @@ export default function NewsletterForm({
   buttonText = 'Suscribirse'
 }: NewsletterFormProps) {
   const [email, setEmail] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitState, setSubmitState] = useState<'idle' | 'sent'>('idle');
   const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
 
@@ -31,37 +31,36 @@ export default function NewsletterForm({
     }
 
     setError(null);
-    setIsSubmitting(true);
+    const emailSnapshot = email;
+    setSubmitState('sent');
+    setEmail('');
 
-    try {
-      await backendApi.subscribeNewsletter({ email, source });
+    setTimeout(() => {
+      setSubmitState('idle');
+    }, 3000);
 
-      setEmail('');
-
-      toast({
-        title: 'Suscripcion exitosa',
-        description: 'Gracias por suscribirte a nuestro newsletter.',
-      });
-
-      if (typeof window !== 'undefined' && (window as any).gtag) {
-        (window as any).gtag('event', 'newsletter_signup', {
-          event_category: 'engagement',
-          event_label: source,
+    void backendApi.subscribeNewsletter({ email: emailSnapshot, source })
+      .then(() => {
+        if (typeof window !== 'undefined' && (window as any).gtag) {
+          (window as any).gtag('event', 'newsletter_signup', {
+            event_category: 'engagement',
+            event_label: source,
+          });
+        }
+      })
+      .catch((submitError) => {
+        console.error('Error al procesar la suscripcion:', submitError);
+        setEmail(emailSnapshot);
+        setSubmitState('idle');
+        toast({
+          title: 'Error al suscribirse',
+          description: getUiErrorMessage(
+            submitError,
+            'Ha ocurrido un problema al procesar tu suscripcion. Por favor, intentalo de nuevo.'
+          ),
+          variant: 'destructive',
         });
-      }
-    } catch (submitError) {
-      console.error('Error al procesar la suscripcion:', submitError);
-      toast({
-        title: 'Error al suscribirse',
-        description: getUiErrorMessage(
-          submitError,
-          'Ha ocurrido un problema al procesar tu suscripcion. Por favor, intentalo de nuevo.'
-        ),
-        variant: 'destructive',
       });
-    } finally {
-      setIsSubmitting(false);
-    }
   };
 
   const inputClasses = theme === 'dark'
@@ -81,7 +80,6 @@ export default function NewsletterForm({
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Tu email"
-            disabled={isSubmitting}
             className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200 ${inputClasses}`}
           />
           {error && <p className="absolute -bottom-6 left-0 text-red-500 text-xs">{error}</p>}
@@ -89,21 +87,12 @@ export default function NewsletterForm({
 
         <motion.button
           type="submit"
-          disabled={isSubmitting}
           className={`px-6 py-3 rounded-lg font-medium shadow-lg disabled:opacity-70 ${buttonClasses}`}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           transition={{ duration: 0.2 }}
         >
-          {isSubmitting ? (
-            <div className="flex items-center justify-center">
-              <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-              </svg>
-              Procesando...
-            </div>
-          ) : buttonText}
+          {submitState === 'sent' ? 'Enviado' : buttonText}
         </motion.button>
       </div>
 

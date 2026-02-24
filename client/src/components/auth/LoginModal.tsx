@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useAuthActions, useAuthState } from '@/contexts/AuthContext';
-import { useToast } from '@/hooks/use-toast';
 import PasswordStrength from './PasswordStrength';
 import { Link } from 'react-router-dom'; // Added Link import
 
@@ -34,8 +33,6 @@ export default function LoginModal({
 
   const { user, error: authError } = useAuthState();
   const { login, register, requestPasswordReset, clearError, loginWithGoogle } = useAuthActions();
-  const { toast } = useToast();
-
   // Reset form when modal is opened/closed or mode changes
   React.useEffect(() => {
     if (isOpen) {
@@ -125,10 +122,6 @@ export default function LoginModal({
       if (showForgotPassword) {
         // Process password reset request
         await requestPasswordReset(formState.email);
-        toast({
-          title: "Solicitud enviada",
-          description: "Si el email existe en nuestro sistema, recibirás instrucciones para restablecer tu contraseña."
-        });
         setShowForgotPassword(false);
       } else if (isRegistering) {
         // Process registration
@@ -138,19 +131,10 @@ export default function LoginModal({
           password: formState.password,
           name: formState.name
         });
-        toast({
-          title: "Registro exitoso",
-          description: "Por favor, verifica tu email para activar tu cuenta."
-        });
         setIsRegistering(false);
       } else {
         // Process login
         await login(formState.email, formState.password, rememberMe);
-        toast({
-          title: "Sesión iniciada",
-          description: "Has iniciado sesión correctamente"
-        });
-        // onClose(); // Eliminado para que el efecto lo maneje
         
         // Redirect if needed
         if (redirectUrl) {
@@ -158,29 +142,24 @@ export default function LoginModal({
         }
       }
     } catch (err: any) {
-      console.error('Error en autenticación:', err);
-      toast({
-        title: "Error",
-        description: authError || (err.message || "Ha ocurrido un error. Por favor, inténtalo de nuevo."),
-        variant: "destructive",
-      });
+      console.error('Error en autenticacion:', err);
     } finally {
       setIsSubmitting(false);
     }
   };
 
   // Iniciar sesión con Google
-  const handleGoogleLogin = () => {
+  const handleGoogleLogin = async () => {
     setIsGoogleLoading(true);
     try {
-      loginWithGoogle();
+      await loginWithGoogle();
+      if (redirectUrl) {
+        window.location.href = redirectUrl;
+      }
     } catch (error) {
+      console.error('Error en autenticacion con Google:', error);
+    } finally {
       setIsGoogleLoading(false);
-      toast({
-        title: "Error",
-        description: "Error al iniciar sesión con Google. Por favor, inténtalo de nuevo.",
-        variant: "destructive",
-      });
     }
   };
 
@@ -452,3 +431,5 @@ export default function LoginModal({
     </div>
   );
 };
+
+

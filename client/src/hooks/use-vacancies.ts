@@ -33,21 +33,13 @@ export const useApplyVacancy = () => {
         type: vacancy.type,
       });
     },
-    onSuccess: () => {
-      toast({
-        title: "¡Aplicación enviada con éxito!",
-        description: "Te contactaremos pronto.",
-        variant: "default"
-      });
-    },
     onError: (error) => {
       console.error('Error submitting application:', error);
       toast({
-        title: "Error al enviar la aplicación",
-        description: getUiErrorMessage(error, "Intenta nuevamente."),
-        variant: "destructive"
+        title: 'Error al enviar la aplicacion',
+        description: getUiErrorMessage(error, 'Intenta nuevamente.'),
+        variant: 'destructive'
       });
     }
   });
 };
-

@@ -6,6 +6,9 @@ import { getUiErrorMessage } from '@/lib/http-client';
 import { useToast } from '@/hooks/use-toast';
 import PaymentErrorDialog from '@/components/payment/payment-error-dialog';
 
+const CHECKOUT_TIMEOUT_MS = 9000;
+const CHECKOUT_MAX_ATTEMPTS = 2;
+
 interface PricingTierProps {
   title: string;
   price: string;
@@ -153,10 +156,28 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
     visible: { opacity: 1, y: 0, transition: { duration: 0.8, delay: 0.2 } }
   };
 
+  const createPreferenceWithRetry = async (plan: PaymentPlan) => {
+    for (let attempt = 1; attempt <= CHECKOUT_MAX_ATTEMPTS; attempt += 1) {
+      try {
+        return await Promise.race([
+          backendApi.createPaymentPreference(plan),
+          new Promise<never>((_, reject) =>
+            setTimeout(() => reject(new Error('Timeout al generar preferencia de pago')), CHECKOUT_TIMEOUT_MS)
+          )
+        ]);
+      } catch (error: unknown) {
+        if (attempt >= CHECKOUT_MAX_ATTEMPTS) {
+          throw error;
+        }
+      }
+    }
+    throw new Error('No se pudo generar preferencia de pago');
+  };
+
   const handleCheckout = async (plan: PaymentPlan) => {
     try {
       setSubmittingPlan(plan);
-      const data = await backendApi.createPaymentPreference(plan);
+      const data = await createPreferenceWithRetry(plan);
       if (typeof data?.init_point === 'string' && data.init_point.length > 0) {
         window.location.href = data.init_point;
       } else {

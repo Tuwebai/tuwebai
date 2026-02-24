@@ -5,6 +5,29 @@ interface CompanyLogoSliderProps {
   className?: string;
 }
 
+const featuredProjects = [
+  {
+    name: 'LH Decants',
+    logo: '/lhdecant-logo.jpg',
+    alt: 'Logo de LH Decants'
+  },
+  {
+    name: 'TuWeb.ai Dashboard',
+    logo: '/dashboardtuwebai.png',
+    alt: 'Logo de TuWeb.ai Dashboard'
+  },
+  {
+    name: 'SafeSpot',
+    logo: '/safespot.png',
+    alt: 'Logo de SafeSpot'
+  },
+  {
+    name: 'Trading TuWeb.ai',
+    logo: '/trading-tuwebai.png',
+    alt: 'Logo de Trading TuWeb.ai'
+  }
+] as const;
+
 export default function CompanyLogoSlider({ className = '' }: CompanyLogoSliderProps) {
   const { ref, hasIntersected } = useIntersectionObserver();
 
@@ -22,17 +45,19 @@ export default function CompanyLogoSlider({ className = '' }: CompanyLogoSliderP
       variants={containerVariants}
     >
       <div className="max-w-6xl mx-auto px-4">
-        <div className="flex justify-center">
-          <div className="flex flex-col items-center justify-center h-20">
-            <div className="w-16 h-16 bg-gray-800 bg-opacity-50 rounded-lg flex items-center justify-center transition-all duration-300 border border-gray-700 hover:border-[#00CCFF] overflow-hidden">
-              <img 
-                src="/lhdecant-logo.jpg" 
-                alt="Logo de LH Decants"
-                className="w-full h-full object-contain p-2"
-              />
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 place-items-center">
+          {featuredProjects.map((project) => (
+            <div key={project.name} className="flex flex-col items-center justify-center h-24">
+              <div className="w-16 h-16 bg-gray-800 bg-opacity-50 rounded-lg flex items-center justify-center transition-all duration-300 border border-gray-700 hover:border-[#00CCFF] overflow-hidden">
+                <img
+                  src={project.logo}
+                  alt={project.alt}
+                  className="w-full h-full object-contain p-2"
+                />
+              </div>
+              <p className="mt-2 text-xs text-gray-400 text-center">{project.name}</p>
             </div>
-            <p className="mt-2 text-xs text-gray-400">LH Decants</p>
-          </div>
+          ))}
         </div>
       </div>
     </motion.div>
