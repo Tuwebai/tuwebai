@@ -1,8 +1,9 @@
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useIntersectionObserver } from '@/hooks/use-intersection-observer';
-import AnimatedShape from '../ui/animated-shape';
-import { API_URL } from '@/lib/api';
+import { backendApi, type PaymentPlan } from '@/lib/backend-api';
+import { getUiErrorMessage } from '@/lib/http-client';
+import { useToast } from '@/hooks/use-toast';
 
 interface PricingTierProps {
   title: string;
@@ -14,6 +15,7 @@ interface PricingTierProps {
   popular?: boolean;
   delay: number;
   onSelect?: () => void;
+  isSubmitting?: boolean;
 }
 
 function PricingTier({ 
@@ -25,7 +27,8 @@ function PricingTier({
   highlight = false, 
   popular = false,
   delay,
-  onSelect 
+  onSelect,
+  isSubmitting = false,
 }: PricingTierProps) {
   const { ref, hasIntersected } = useIntersectionObserver<HTMLDivElement>();
 
@@ -96,22 +99,21 @@ function PricingTier({
               ))}
             </ul>
             
-            <motion.a 
-              href="#"
-              onClick={e => { e.preventDefault(); onSelect && onSelect(); }}
+            <motion.button
+              type="button"
+              onClick={() => onSelect && onSelect()}
+              disabled={isSubmitting}
               className={`block text-center py-3 px-4 rounded-lg ${
                 highlight 
                   ? 'bg-gradient-to-r from-[#00CCFF] to-[#9933FF] text-white' 
                   : 'bg-[#1a1a23] text-white border border-gray-700 hover:bg-[#252530]'
-              } transition-colors font-medium`}
+              } transition-colors font-medium w-full disabled:opacity-60 disabled:cursor-not-allowed`}
               whileHover={{ scale: 1.03 }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
-              tabIndex={0}
-              role="button"
               aria-label={highlight ? 'Empezar ahora' : 'Solicitar plan'}
             >
-              {highlight ? 'Empezar ahora' : 'Solicitar plan'}
-            </motion.a>
+              {isSubmitting ? 'Redirigiendo...' : highlight ? 'Empezar ahora' : 'Solicitar plan'}
+            </motion.button>
           </div>
         </div>
       </div>
@@ -125,14 +127,17 @@ interface PricingSectionProps {
 
 export default function PricingSection({ setRef }: PricingSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
+  const [submittingPlan, setSubmittingPlan] = useState<PaymentPlan | null>(null);
   const { ref: titleRef, hasIntersected: titleVisible } = useIntersectionObserver<HTMLDivElement>();
   const { ref: subtitleRef, hasIntersected: subtitleVisible } = useIntersectionObserver<HTMLDivElement>();
-  
-  // Set the ref for the parent component
-  if (sectionRef.current && !sectionRef.current.hasAttribute('data-ref-set')) {
-    setRef(sectionRef.current);
-    sectionRef.current.setAttribute('data-ref-set', 'true');
-  }
+  const { toast } = useToast();
+
+  useEffect(() => {
+    if (sectionRef.current && !sectionRef.current.hasAttribute('data-ref-set')) {
+      setRef(sectionRef.current);
+      sectionRef.current.setAttribute('data-ref-set', 'true');
+    }
+  }, [setRef]);
 
   const titleVariants = {
     hidden: { opacity: 0, y: 30 },
@@ -144,22 +149,23 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
     visible: { opacity: 1, y: 0, transition: { duration: 0.8, delay: 0.2 } }
   };
 
-  const handleCheckout = async (plan: string) => {
+  const handleCheckout = async (plan: PaymentPlan) => {
     try {
-      const res = await fetch(`${API_URL}/crear-preferencia`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ plan }),
-        credentials: 'include',
-      });
-      const data = await res.json();
-      if (data.init_point) {
+      setSubmittingPlan(plan);
+      const data = await backendApi.createPaymentPreference(plan);
+      if (typeof data?.init_point === 'string' && data.init_point.length > 0) {
         window.location.href = data.init_point;
       } else {
-        alert('Error al iniciar el pago');
+        throw new Error('Mercado Pago no devolvio un link de checkout');
       }
-    } catch (err) {
-      alert('Error al conectar con Mercado Pago');
+    } catch (err: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Error al conectar con Mercado Pago',
+        description: getUiErrorMessage(err, 'Error al conectar con Mercado Pago'),
+      });
+    } finally {
+      setSubmittingPlan(null);
     }
   };
 
@@ -210,7 +216,8 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
               "Soporte técnico por 3 meses"
             ]}
             delay={1}
-            onSelect={() => handleCheckout('Plan Básico')}
+            onSelect={() => handleCheckout('esencial')}
+            isSubmitting={submittingPlan === 'esencial'}
           />
           
           <PricingTier 
@@ -230,7 +237,8 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
             highlight={true}
             popular={true}
             delay={2}
-            onSelect={() => handleCheckout('Plan Profesional')}
+            onSelect={() => handleCheckout('avanzado')}
+            isSubmitting={submittingPlan === 'avanzado'}
           />
           
           <PricingTier 
@@ -249,7 +257,8 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
               "Gerente de cuenta dedicado"
             ]}
             delay={3}
-            onSelect={() => window.location.href = '/consulta'}
+            onSelect={() => handleCheckout('premium')}
+            isSubmitting={submittingPlan === 'premium'}
           />
         </div>
         
