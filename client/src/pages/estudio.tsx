@@ -32,9 +32,6 @@ export default function Estudio() {
   const [activeCategory, setActiveCategory] = useState<ProjectCategory>('todos');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
-  const [showNotification, setShowNotification] = useState(false);
-  const [notificationMessage, setNotificationMessage] = useState('');
-  
   // Referencias
   const cursorRef = useRef<HTMLDivElement>(null);
   const cursorDotRef = useRef<HTMLDivElement>(null);
@@ -222,14 +219,6 @@ export default function Estudio() {
   
 
   
-  // Función para mostrar notificaciones
-  const showNotificationMessage = (message: string) => {
-    setNotificationMessage(message);
-    setShowNotification(true);
-    setTimeout(() => setShowNotification(false), 3000);
-  };
-  
-
   
   // Function para alternar la selección de proyectos
   const toggleProjectSelection = (project: Project) => {
@@ -266,18 +255,6 @@ export default function Estudio() {
           <span>Volver a Proyectos</span>
         </Link>
       </div>
-      
-      {/* Notificación */}
-      {showNotification && (
-        <motion.div 
-          className="fixed top-5 right-5 bg-gray-900 text-white px-4 py-2 rounded-lg shadow-lg z-50"
-          initial={{ opacity: 0, y: -50 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -50 }}
-        >
-          {notificationMessage}
-        </motion.div>
-      )}
       
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 bg-white z-40 backdrop-blur-sm bg-opacity-90 border-b border-gray-100">

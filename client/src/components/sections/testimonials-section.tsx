@@ -1,20 +1,11 @@
-import { useRef, useState, useCallback, useEffect } from 'react';
+import { useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useIntersectionObserver } from '@/hooks/use-intersection-observer';
 import AnimatedShape from '../ui/animated-shape';
 import TestimonialForm from '../ui/testimonial-form';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-import { getAllTestimonials, createTestimonial, Testimonial as TestimonialType } from '@/services/testimonials';
-import { useToast } from '@/hooks/use-toast';
-
-interface Testimonial {
-  name: string;
-  company: string;
-  testimonial: string;
-  isNew?: boolean;
-}
+import { useTestimonials } from '@/hooks/use-testimonials';
 
 interface TestimonialCardProps {
   name: string;
@@ -22,10 +13,9 @@ interface TestimonialCardProps {
   testimonial: string;
   delay: number;
   isNew?: boolean;
-  avatar?: string;
 }
 
-function TestimonialCard({ name, company, testimonial, delay, isNew, avatar }: TestimonialCardProps) {
+function TestimonialCard({ name, company, testimonial, delay, isNew }: TestimonialCardProps) {
   const { ref, hasIntersected } = useIntersectionObserver();
 
   const cardVariants = {
@@ -107,42 +97,9 @@ export default function TestimonialsSection({ setRef }: TestimonialsSectionProps
   const sectionRef = useRef<HTMLElement>(null);
   const { ref: titleRef, hasIntersected: titleVisible } = useIntersectionObserver();
   const sliderRef = useRef<any>(null);
-  const { toast } = useToast();
   
-  // Estado para gestionar los testimonios
-  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
-  const [loading, setLoading] = useState(true);
-  
-  // Cargar testimonios desde Firestore al montar el componente
-  useEffect(() => {
-    loadTestimonials();
-  }, []);
-  
-  const loadTestimonials = async () => {
-    try {
-      setLoading(true);
-      const allTestimonials = await getAllTestimonials();
-      
-      // Convertir testimonios de Firestore al formato local
-      const formattedTestimonials: Testimonial[] = allTestimonials.map(t => ({
-        name: t.name,
-        company: t.company,
-        testimonial: t.testimonial,
-        isNew: false
-      }));
-      
-      setTestimonials(formattedTestimonials);
-    } catch (error) {
-      console.error('Error loading testimonials:', error);
-      toast({
-        title: "Error",
-        description: "No se pudieron cargar los testimonios. Por favor, recarga la página.",
-        variant: "destructive"
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Cargar testimonios mediante React Query
+  const { data: testimonials = [], isLoading: loading } = useTestimonials();
   
   // Set the ref for the parent component
   if (sectionRef.current && !sectionRef.current.hasAttribute('data-ref-set')) {
@@ -155,31 +112,10 @@ export default function TestimonialsSection({ setRef }: TestimonialsSectionProps
     visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }
   };
   
-  // Función para agregar un nuevo testimonio
-  const handleAddTestimonial = useCallback(async (newTestimonial: Testimonial) => {
-    try {
-      // Guardar testimonio en Firestore
-      await createTestimonial({
-        name: newTestimonial.name,
-        company: newTestimonial.company,
-        testimonial: newTestimonial.testimonial
-      });
-      
-      // Marcar el testimonio como nuevo para mostrar en la UI
-      const testimonialWithFlag = {
-        ...newTestimonial,
-        isNew: true
-      };
-      
-      // Actualizar la lista de testimonios localmente
-      setTestimonials(prevTestimonials => [testimonialWithFlag, ...prevTestimonials]);
-      
-      // Mostrar mensaje de éxito
-      toast({
-        title: "¡Testimonio publicado!",
-        description: "Tu testimonio ha sido publicado exitosamente en nuestra sección de testimonios.",
-      });
-      
+  // Función para agregar un nuevo testimonio (manejada arriba vía hook / props o re-fetch si el hijo requiere local ref)
+  // Ahora el formulario usará directamente useCreateTestimonial(),
+  // el componente List se actualizará automáticamente vía React Query Cache.
+  const handleTestimonialSuccess = useCallback(() => {
       // Si hay un slider activo, moverse a la primera diapositiva para mostrar el nuevo testimonio
       if (sliderRef.current) {
         setTimeout(() => {
@@ -187,15 +123,7 @@ export default function TestimonialsSection({ setRef }: TestimonialsSectionProps
           sliderRef.current.slickGoTo(0);
         }, 300);
       }
-    } catch (error) {
-      console.error('Error creating testimonial:', error);
-      toast({
-        title: "Error",
-        description: "No se pudo enviar el testimonio. Por favor, inténtalo de nuevo.",
-        variant: "destructive"
-      });
-    }
-  }, [sliderRef, toast]);
+  }, [sliderRef]);
 
   // Configuración del slider
   const settings = {
@@ -346,9 +274,8 @@ export default function TestimonialsSection({ setRef }: TestimonialsSectionProps
           )}
         </div>
         
-        {/* Botón de "Dejar testimonio" */}
         <div className="flex justify-center">
-          <TestimonialForm onAddTestimonial={handleAddTestimonial} />
+          <TestimonialForm onSuccess={handleTestimonialSuccess} />
         </div>
       </div>
     </section>

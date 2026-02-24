@@ -1,8 +1,6 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
-import { lazy, useEffect } from 'react';
-import GlobalNavbar from './components/ui/global-navbar';
+import { lazy, useEffect, Suspense } from 'react';
 import Footer from './components/ui/footer';
-import { Toaster } from "@/components/ui/toaster";
 import { LazyRoute } from './components/route-wrapper';
 
 import analytics from '@/lib/analytics';
@@ -15,6 +13,8 @@ import { LoginModalProvider } from './hooks/use-login-modal';
 // Carga inmediata para la página principal para mejor experiencia de usuario
 import Home from './pages/home';
 import NotFound from './pages/not-found';
+const GlobalNavbar = lazy(() => import('./components/ui/global-navbar'));
+const Toaster = lazy(() => import('@/components/ui/toaster').then((module) => ({ default: module.Toaster })));
 
 // Importaciones lazy para reducir el tamaño del bundle inicial
 const Corporativos = lazy(() => import('./pages/corporativos'));
@@ -85,7 +85,7 @@ function App() {
       <AuthProvider>
         <LoginModalProvider>
           <>
-            {/* Componente de optimización de memoria */}
+            {/* Monitor pasivo de memoria (sin GC forzado) */}
             <MemoryManager thresholdMB={150} debug={false} />
             
             {/* Precargar recursos críticos */}
@@ -98,7 +98,11 @@ function App() {
             />
             
             <SkipLink />
-            {shouldUseGlobalNav && <GlobalNavbar />}
+            {shouldUseGlobalNav && (
+              <Suspense fallback={<div className="h-16" />}>
+                <GlobalNavbar />
+              </Suspense>
+            )}
 
             <Routes>
               {/* Ruta principal sin lazy loading para mejor experiencia inicial */}
@@ -158,7 +162,9 @@ function App() {
             </Routes>
 
             <Footer />
-            <Toaster />
+            <Suspense fallback={null}>
+              <Toaster />
+            </Suspense>
           </>
         </LoginModalProvider>
       </AuthProvider>

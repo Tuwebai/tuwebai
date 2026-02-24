@@ -36,7 +36,7 @@
   }
 
   * {
-    @apply border-border/20;
+    border-color: hsl(var(--border) / 0.2);
   }
 
   html {
@@ -46,7 +46,8 @@
   }
 
   body {
-    @apply text-foreground font-inter;
+    color: hsl(var(--foreground));
+    font-family: 'Inter', sans-serif;
     background: linear-gradient(to bottom, #0a0a0f, #121320);
   }
 

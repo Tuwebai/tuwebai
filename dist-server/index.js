@@ -1,246 +1,31 @@
 // server/index.ts
-import dotenv from "dotenv";
+import dotenv2 from "dotenv";
 import express from "express";
 import session from "express-session";
 import MemoryStore from "memorystore";
-import path from "path";
+import path2 from "path";
 import passport from "passport";
-import { fileURLToPath } from "url";
+import { fileURLToPath as fileURLToPath2 } from "url";
 import cors from "cors";
 import helmet from "helmet";
-import { MercadoPagoConfig, Preference, Payment } from "mercadopago";
+
+// server/src/routes/contact.routes.ts
+import { Router } from "express";
+
+// server/src/config/mailer.ts
 import nodemailer from "nodemailer";
-import crypto from "crypto";
-import fs from "fs";
-dotenv.config();
-var __filename = fileURLToPath(import.meta.url);
-var __dirname = path.dirname(__filename);
-var app = express();
-var allowedOrigins = [
-  "https://tuweb-ai.com",
-  "https://www.tuweb-ai.com",
-  "http://localhost:3000",
-  "http://localhost:5173"
-];
-app.use((req, res, next) => {
-  console.log(`\u{1F310} [${(/* @__PURE__ */ new Date()).toISOString()}] ${req.method} ${req.path}`);
-  console.log(`\u{1F4CD} Origin: ${req.headers.origin || "No origin"}`);
-  console.log(`\u{1F517} Referer: ${req.headers.referer || "No referer"}`);
-  next();
-});
-app.use(
-  cors({
-    origin: function(origin, callback) {
-      console.log(`\u{1F50D} CORS check - Origin: ${origin}`);
-      if (!origin) {
-        console.log(`\u2705 CORS permitido (no origin)`);
-        return callback(null, true);
-      }
-      const allowedOrigins2 = [
-        "https://tuweb-ai.com",
-        "https://www.tuweb-ai.com",
-        "http://localhost:3000",
-        "http://localhost:5173"
-      ];
-      if (allowedOrigins2.includes(origin)) {
-        console.log(`\u2705 CORS permitido para: ${origin}`);
-        callback(null, true);
-      } else {
-        console.log(`\u274C CORS bloqueado para: ${origin}`);
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true,
-    methods: ["GET", "POST", "OPTIONS"],
-    allowedHeaders: [
-      "Content-Type",
-      "Authorization",
-      "X-Requested-With",
-      "Accept",
-      "X-Signature",
-      "X-Request-Id"
-    ],
-    exposedHeaders: ["Set-Cookie"]
-  })
-);
-app.options("*", cors());
-app.use(helmet({
-  contentSecurityPolicy: false,
-  crossOriginEmbedderPolicy: false,
-  crossOriginResourcePolicy: { policy: "cross-origin" }
-}));
-app.use((req, res, next) => {
-  res.setHeader("X-Frame-Options", "SAMEORIGIN");
-  res.setHeader("X-Content-Type-Options", "nosniff");
-  res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
-  next();
-});
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-var Store = MemoryStore(session);
-var sessionStore = new Store({
-  checkPeriod: 864e5
-});
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET || "tuwebai-super-secret-key",
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 1e3 * 60 * 60 * 24,
-      sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
-      httpOnly: true,
-      domain: process.env.NODE_ENV === "production" ? ".tuweb-ai.com" : void 0
-    },
-    store: sessionStore,
-    name: "tuwebai.sid"
-  })
-);
-app.use(passport.initialize());
-app.use(passport.session());
-app.use((req, res, next) => {
-  if (req.path.includes("/auth/")) {
-    console.log(`\u{1F50D} [${(/* @__PURE__ */ new Date()).toISOString()}] ${req.method} ${req.path}`);
-    console.log("\u{1F36A} Session ID:", req.sessionID);
-    console.log("\u{1F464} User ID en sesi\xF3n:", req.session?.userId);
-    console.log("\u{1F4E7} User Email en sesi\xF3n:", req.session?.userEmail);
-  }
-  next();
-});
-app.use((req, res, next) => {
-  const start = Date.now();
-  const path2 = req.path;
-  let capturedJsonResponse;
-  const originalResJson = res.json;
-  res.json = function(bodyJson, ...args) {
-    capturedJsonResponse = bodyJson;
-    return originalResJson.apply(res, [bodyJson, ...args]);
-  };
-  res.on("finish", () => {
-    const duration = Date.now() - start;
-    if (path2.startsWith("/api")) {
-      let logLine = `${req.method} ${path2} ${res.statusCode} in ${duration}ms`;
-      if (capturedJsonResponse) {
-        logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
-      }
-      if (logLine.length > 80) {
-        logLine = logLine.slice(0, 79) + "\u2026";
-      }
-      console.log(logLine);
-    }
-  });
-  next();
-});
-app.get("/api/health", (req, res) => {
-  res.json({
-    status: "OK",
-    message: "Servidor funcionando correctamente",
-    timestamp: (/* @__PURE__ */ new Date()).toISOString()
-  });
-});
-app.get("/test", (req, res) => {
-  res.json({
-    status: "OK",
-    message: "Test endpoint funcionando",
-    timestamp: (/* @__PURE__ */ new Date()).toISOString(),
-    env: process.env.NODE_ENV || "development"
-  });
-});
-app.post("/test", (req, res) => {
-  console.log("\u{1F9EA} POST /test recibido");
-  console.log("\u{1F4CB} Body:", req.body);
-  res.json({
-    status: "OK",
-    message: "Test POST funcionando",
-    receivedData: req.body,
-    timestamp: (/* @__PURE__ */ new Date()).toISOString()
-  });
-});
-app.post("/test-email", async (req, res) => {
-  try {
-    console.log("\u{1F4E7} Test de Nodemailer iniciado...");
-    const testData = {
-      name: "Sistema de Prueba",
-      email: "test@tuweb-ai.com",
-      message: "Este es un email de prueba para verificar que Nodemailer funciona correctamente con la nueva plantilla profesional.",
-      type: "test"
-    };
-    const testResult = await transporter.sendMail({
-      from: "tuwebai@gmail.com",
-      to: "tuwebai@gmail.com",
-      subject: "Test de Nodemailer - " + (/* @__PURE__ */ new Date()).toISOString(),
-      html: generateEmailTemplate(testData)
-    });
-    console.log("\u2705 Test de email exitoso:", testResult.messageId);
-    res.json({
-      status: "OK",
-      message: "Email de prueba enviado correctamente",
-      messageId: testResult.messageId,
-      timestamp: (/* @__PURE__ */ new Date()).toISOString()
-    });
-  } catch (error) {
-    console.error("\u274C Error en test de email:", error);
-    res.status(500).json({
-      status: "ERROR",
-      message: "Error enviando email de prueba",
-      error: error.message,
-      timestamp: (/* @__PURE__ */ new Date()).toISOString()
-    });
-  }
-});
-app.get("/favicon.ico", (req, res) => {
-  res.sendFile(path.join(__dirname, "../public/favicon.ico"));
-});
-app.use(express.static(path.join(__dirname, "../public")));
-var client = new MercadoPagoConfig({
-  accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN || ""
-});
-var preference = new Preference(client);
-var payment = new Payment(client);
-app.post("/crear-preferencia", async (req, res) => {
-  try {
-    const { plan } = req.body;
-    if (!plan) return res.status(400).json({ error: "Plan requerido" });
-    const precios = {
-      "Plan B\xE1sico": 299e3,
-      "Plan Profesional": 499e3,
-      "Plan Enterprise": 999e3
-    };
-    if (!precios[plan]) {
-      return res.status(400).json({ error: "Plan inv\xE1lido" });
-    }
-    const preferenceData = {
-      items: [
-        {
-          id: plan.toLowerCase().replace(/\s+/g, "-"),
-          title: plan,
-          unit_price: precios[plan],
-          quantity: 1,
-          currency_id: "ARS"
-        }
-      ],
-      back_urls: {
-        success: "https://tuweb-ai.com/pago-exitoso",
-        failure: "https://tuweb-ai.com/pago-fallido",
-        pending: "https://tuweb-ai.com/pago-pendiente"
-      },
-      auto_return: "approved"
-    };
-    const mpRes = await preference.create({ body: preferenceData });
-    return res.json({ init_point: mpRes.init_point });
-  } catch (err) {
-    console.error("Error Mercado Pago:", err);
-    return res.status(500).json({ error: "Error al crear preferencia de pago" });
-  }
-});
 var transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
+  // true for 465, false for other ports
   auth: {
     user: "tuwebai@gmail.com",
     pass: "c z n h h w t e c r q m k u a a"
   }
 });
+
+// server/src/templates/email.template.ts
 function generateEmailTemplate(data) {
   const { name, email, message, title, type } = data;
   const emailTitle = title || "Consulta desde formulario de contacto";
@@ -280,6 +65,7 @@ function generateEmailTemplate(data) {
           align-items: center;
           justify-content: center;
           margin-bottom: 15px;
+          width: 100%;
           gap: 15px;
         }
         .logo-image {
@@ -289,9 +75,11 @@ function generateEmailTemplate(data) {
           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
         }
         .logo-text {
-          font-size: 28px;
+          font-size: 36px;
           font-weight: bold;
           text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+          text-align: center;
+          letter-spacing: 2px;
         }
         .subtitle {
           font-size: 16px;
@@ -388,7 +176,8 @@ function generateEmailTemplate(data) {
             height: 40px;
           }
           .logo-text {
-            font-size: 24px;
+            font-size: 30px;
+            letter-spacing: 1px;
           }
         }
       </style>
@@ -397,7 +186,7 @@ function generateEmailTemplate(data) {
       <div class="container">
         <div class="header">
           <div class="logo-container">
-            <img src="https://tuweb-ai.com/logo-tuwebai.png" alt="TuWebAI Logo" class="logo-image" />
+            <img src="https://tuweb-ai.com/logo.png" alt="TuWebAI Logo" class="logo-image" onerror="this.style.display='none'">
             <div class="logo-text">TuWebAI</div>
           </div>
           <p class="subtitle">Agencia Digital de Desarrollo Web</p>
@@ -449,7 +238,28 @@ function generateEmailTemplate(data) {
     </html>
   `;
 }
-app.post("/contact", async (req, res) => {
+
+// server/src/services/email.service.ts
+var sendContactEmail = async (data) => {
+  const { name, email, title, message, type = "contact" } = data;
+  const emailTitle = title || "Consulta desde formulario de contacto";
+  const emailResult = await transporter.sendMail({
+    from: "tuwebai@gmail.com",
+    to: "tuwebai@gmail.com",
+    subject: emailTitle,
+    html: generateEmailTemplate({
+      name,
+      email,
+      message,
+      title: emailTitle,
+      type
+    })
+  });
+  return emailResult;
+};
+
+// server/src/controllers/contact.controller.ts
+var handleContact = async (req, res) => {
   console.log("\u{1F4E7} POST /contact recibido");
   console.log("\u{1F4CB} Body recibido:", req.body);
   try {
@@ -463,65 +273,140 @@ app.post("/contact", async (req, res) => {
       console.log("\u274C Validaci\xF3n fallida");
       return res.status(400).json({ error: "Datos inv\xE1lidos: nombre, email y mensaje son requeridos" });
     }
-    const emailTitle = title || "Consulta desde formulario de contacto";
-    console.log("\u{1F4DD} T\xEDtulo del email:", emailTitle);
-    console.log("\u{1F4E4} Enviando email con Nodemailer...");
-    console.log("- From:", "tuwebai@gmail.com");
-    console.log("- To:", "tuwebai@gmail.com");
-    console.log("- Subject:", emailTitle);
-    const emailResult = await transporter.sendMail({
-      from: "tuwebai@gmail.com",
-      to: "tuwebai@gmail.com",
-      subject: emailTitle,
-      html: generateEmailTemplate({
-        name,
-        email,
-        message,
-        title: emailTitle,
-        type: "contact"
-      })
-    });
+    const emailResult = await sendContactEmail({ name, email, title, message });
     console.log("\u2705 Email enviado exitosamente:", emailResult.messageId);
     return res.json({ message: "Mensaje enviado correctamente" });
   } catch (err) {
     console.error("\u274C Error en endpoint /contact:", err);
     console.error("\u274C Error details:", {
-      message: err.message,
-      stack: err.stack,
-      name: err.name
+      message: err?.message,
+      stack: err?.stack,
+      name: err?.name
     });
     return res.status(500).json({
       error: "Error en el servidor",
-      details: process.env.NODE_ENV === "development" ? err.message : "Error interno del servidor"
+      details: process.env.NODE_ENV === "development" ? err?.message : "Error interno del servidor"
     });
   }
-});
-app.post("/consulta", async (req, res) => {
+};
+var handleConsulta = async (req, res) => {
   try {
     const { name, email, title, message } = req.body;
     if (!name || !email || !title || !message || message.trim().length < 10) {
       return res.status(400).json({ error: "Datos inv\xE1lidos" });
     }
-    await transporter.sendMail({
-      from: "tuwebai@gmail.com",
-      to: "tuwebai@gmail.com",
-      subject: title,
-      html: generateEmailTemplate({
-        name,
-        email,
-        message,
-        title,
-        type: "contact"
-      })
-    });
+    await sendContactEmail({ name, email, title, message });
     return res.json({ message: "Mensaje enviado correctamente" });
   } catch (err) {
     console.error("Error en consulta:", err);
     return res.status(500).json({ error: "Error en el servidor" });
   }
+};
+var handleTestEmail = async (req, res) => {
+  try {
+    console.log("\u{1F4E7} Test de Nodemailer iniciado...");
+    const testData = {
+      name: "Sistema de Prueba",
+      email: "test@tuweb-ai.com",
+      message: "Este es un email de prueba para verificar que Nodemailer funciona correctamente con la nueva plantilla profesional.",
+      type: "test"
+    };
+    const testResult = await sendContactEmail(testData);
+    console.log("\u2705 Test de email exitoso:", testResult.messageId);
+    res.json({
+      status: "OK",
+      message: "Email de prueba enviado correctamente",
+      messageId: testResult.messageId,
+      timestamp: (/* @__PURE__ */ new Date()).toISOString()
+    });
+  } catch (error) {
+    console.error("\u274C Error en test de email:", error);
+    res.status(500).json({
+      status: "ERROR",
+      message: "Error enviando email de prueba",
+      error: error instanceof Error ? error.message : String(error),
+      timestamp: (/* @__PURE__ */ new Date()).toISOString()
+    });
+  }
+};
+
+// server/src/routes/contact.routes.ts
+var router = Router();
+router.post("/contact", handleContact);
+router.post("/consulta", handleConsulta);
+router.post("/test-email", handleTestEmail);
+var contact_routes_default = router;
+
+// server/src/routes/payment.routes.ts
+import { Router as Router2 } from "express";
+
+// server/src/services/payment.service.ts
+import crypto from "crypto";
+
+// server/src/config/mercadopago.ts
+import { MercadoPagoConfig, Preference, Payment } from "mercadopago";
+import dotenv from "dotenv";
+dotenv.config();
+var client = new MercadoPagoConfig({
+  accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN || ""
 });
+var preference = new Preference(client);
+var payment = new Payment(client);
+
+// server/src/services/payment.service.ts
+var createPaymentPreference = async (plan) => {
+  const precios = {
+    "Plan B\xE1sico": 299e3,
+    "Plan Profesional": 499e3,
+    "Plan Enterprise": 999e3
+  };
+  if (!precios[plan]) {
+    throw new Error("Plan inv\xE1lido");
+  }
+  const preferenceData = {
+    items: [
+      {
+        id: plan.toLowerCase().replace(/\s+/g, "-"),
+        title: plan,
+        unit_price: precios[plan],
+        quantity: 1,
+        currency_id: "ARS"
+      }
+    ],
+    back_urls: {
+      success: "https://tuweb-ai.com/pago-exitoso",
+      failure: "https://tuweb-ai.com/pago-fallido",
+      pending: "https://tuweb-ai.com/pago-pendiente"
+    },
+    auto_return: "approved"
+  };
+  const mpRes = await preference.create({ body: preferenceData });
+  return mpRes;
+};
+var verifyWebhookSignature = (payload, signature, secret) => {
+  try {
+    const expectedSignature = crypto.createHmac("sha256", secret).update(payload).digest("hex");
+    return crypto.timingSafeEqual(
+      Buffer.from(signature, "hex"),
+      Buffer.from(expectedSignature, "hex")
+    );
+  } catch (error) {
+    console.error("Error verificando firma:", error);
+    return false;
+  }
+};
+var getPaymentDetails = async (paymentId) => {
+  return await payment.get({ id: paymentId });
+};
+
+// server/src/utils/logger.ts
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+var __filename = fileURLToPath(import.meta.url);
+var __dirname = path.dirname(__filename);
 function ensureLogDirectory() {
-  const logDir = path.join(__dirname, "../logs/mercadopago");
+  const logDir = path.join(__dirname, "../../../logs/mercadopago");
   if (!fs.existsSync(logDir)) {
     fs.mkdirSync(logDir, { recursive: true });
   }
@@ -540,22 +425,26 @@ function writeLog(data) {
     console.error("Error escribiendo log:", error);
   }
 }
-function verifyWebhookSignature(payload, signature, secret) {
+
+// server/src/controllers/payment.controller.ts
+var handleCreatePreference = async (req, res) => {
   try {
-    const expectedSignature = crypto.createHmac("sha256", secret).update(payload).digest("hex");
-    return crypto.timingSafeEqual(
-      Buffer.from(signature, "hex"),
-      Buffer.from(expectedSignature, "hex")
-    );
-  } catch (error) {
-    console.error("Error verificando firma:", error);
-    return false;
+    const { plan } = req.body;
+    if (!plan) return res.status(400).json({ error: "Plan requerido" });
+    const mpRes = await createPaymentPreference(plan);
+    return res.json({ init_point: mpRes.init_point });
+  } catch (err) {
+    console.error("Error Mercado Pago:", err);
+    if (err.message === "Plan inv\xE1lido") {
+      return res.status(400).json({ error: "Plan inv\xE1lido" });
+    }
+    return res.status(500).json({ error: "Error al crear preferencia de pago" });
   }
-}
-app.get("/webhook/mercadopago/health", (req, res) => {
+};
+var handleWebhookHealth = (req, res) => {
   res.json({ ok: true });
-});
-app.post("/webhook/mercadopago", async (req, res) => {
+};
+var handleWebhook = async (req, res) => {
   const startTime = Date.now();
   res.status(200).json({ received: true });
   try {
@@ -610,7 +499,7 @@ app.post("/webhook/mercadopago", async (req, res) => {
       return;
     }
     try {
-      const paymentDetails = await payment.get({ id: paymentId });
+      const paymentDetails = await getPaymentDetails(paymentId);
       console.log(`\u{1F4CA} Estado del pago ${paymentId}: ${paymentDetails.status}`);
       const orderData = {
         payment_id: paymentId,
@@ -646,7 +535,168 @@ app.post("/webhook/mercadopago", async (req, res) => {
       error_details: error
     });
   }
+};
+
+// server/src/routes/payment.routes.ts
+var router2 = Router2();
+router2.post("/crear-preferencia", handleCreatePreference);
+router2.post("/webhook/mercadopago", handleWebhook);
+router2.get("/webhook/mercadopago/health", handleWebhookHealth);
+var payment_routes_default = router2;
+
+// server/index.ts
+dotenv2.config();
+var __filename2 = fileURLToPath2(import.meta.url);
+var __dirname2 = path2.dirname(__filename2);
+var app = express();
+var allowedOrigins = [
+  "https://tuweb-ai.com",
+  "https://www.tuweb-ai.com",
+  "http://localhost:3000",
+  "http://localhost:5173"
+];
+app.use((req, res, next) => {
+  console.log(`\u{1F310} [${(/* @__PURE__ */ new Date()).toISOString()}] ${req.method} ${req.path}`);
+  console.log(`\u{1F4CD} Origin: ${req.headers.origin || "No origin"}`);
+  console.log(`\u{1F517} Referer: ${req.headers.referer || "No referer"}`);
+  next();
 });
+app.use(
+  cors({
+    origin: function(origin, callback) {
+      console.log(`\u{1F50D} CORS check - Origin: ${origin}`);
+      if (!origin) {
+        console.log(`\u2705 CORS permitido (no origin)`);
+        return callback(null, true);
+      }
+      const allowedOrigins2 = [
+        "https://tuweb-ai.com",
+        "https://www.tuweb-ai.com",
+        "http://localhost:3000",
+        "http://localhost:3001",
+        "http://localhost:5173"
+      ];
+      if (allowedOrigins2.includes(origin)) {
+        console.log(`\u2705 CORS permitido para: ${origin}`);
+        callback(null, true);
+      } else {
+        console.log(`\u274C CORS bloqueado para: ${origin}`);
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "X-Requested-With",
+      "Accept",
+      "X-Signature",
+      "X-Request-Id"
+    ],
+    exposedHeaders: ["Set-Cookie"]
+  })
+);
+app.options("*", cors());
+app.use(helmet({
+  contentSecurityPolicy: false,
+  crossOriginEmbedderPolicy: false,
+  crossOriginResourcePolicy: { policy: "cross-origin" }
+}));
+app.use((req, res, next) => {
+  res.setHeader("X-Frame-Options", "SAMEORIGIN");
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+  next();
+});
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+var Store = MemoryStore(session);
+var sessionStore = new Store({
+  checkPeriod: 864e5
+});
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "tuwebai-super-secret-key",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 1e3 * 60 * 60 * 24,
+      sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
+      httpOnly: true,
+      domain: process.env.NODE_ENV === "production" ? ".tuweb-ai.com" : void 0
+    },
+    store: sessionStore,
+    name: "tuwebai.sid"
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
+app.use((req, res, next) => {
+  if (req.path.includes("/auth/")) {
+    console.log(`\u{1F50D} [${(/* @__PURE__ */ new Date()).toISOString()}] ${req.method} ${req.path}`);
+    console.log("\u{1F36A} Session ID:", req.sessionID);
+    console.log("\u{1F464} User ID en sesi\xF3n:", req.session?.userId);
+    console.log("\u{1F4E7} User Email en sesi\xF3n:", req.session?.userEmail);
+  }
+  next();
+});
+app.use((req, res, next) => {
+  const start = Date.now();
+  const path3 = req.path;
+  let capturedJsonResponse;
+  const originalResJson = res.json;
+  res.json = function(bodyJson) {
+    capturedJsonResponse = bodyJson;
+    return originalResJson.call(res, bodyJson);
+  };
+  res.on("finish", () => {
+    const duration = Date.now() - start;
+    if (path3.startsWith("/api")) {
+      let logLine = `${req.method} ${path3} ${res.statusCode} in ${duration}ms`;
+      if (capturedJsonResponse) {
+        logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
+      }
+      if (logLine.length > 80) {
+        logLine = logLine.slice(0, 79) + "\u2026";
+      }
+      console.log(logLine);
+    }
+  });
+  next();
+});
+app.get("/api/health", (req, res) => {
+  res.json({
+    status: "OK",
+    message: "Servidor funcionando correctamente",
+    timestamp: (/* @__PURE__ */ new Date()).toISOString()
+  });
+});
+app.get("/test", (req, res) => {
+  res.json({
+    status: "OK",
+    message: "Test endpoint funcionando",
+    timestamp: (/* @__PURE__ */ new Date()).toISOString(),
+    env: process.env.NODE_ENV || "development"
+  });
+});
+app.post("/test", (req, res) => {
+  console.log("\u{1F9EA} POST /test recibido");
+  console.log("\u{1F4CB} Body:", req.body);
+  res.json({
+    status: "OK",
+    message: "Test POST funcionando",
+    receivedData: req.body,
+    timestamp: (/* @__PURE__ */ new Date()).toISOString()
+  });
+});
+app.get("/favicon.ico", (req, res) => {
+  res.sendFile(path2.join(__dirname2, "../public/favicon.ico"));
+});
+app.use(express.static(path2.join(__dirname2, "../public")));
+app.use(contact_routes_default);
+app.use(payment_routes_default);
 app.use((err, req, res, _next) => {
   const status = err.status || err.statusCode || 500;
   const message = err.message || "Internal Server Error";
@@ -667,7 +717,7 @@ app.listen(port, () => {
   console.log(`\u{1F510} SESSION_SECRET: ${process.env.SESSION_SECRET ? "Configurado" : "No configurado"}`);
   console.log(`\u{1F4B3} MERCADOPAGO_ACCESS_TOKEN: ${process.env.MERCADOPAGO_ACCESS_TOKEN ? "Configurado" : "No configurado"}`);
   console.log(`\u{1F512} MERCADOPAGO_WEBHOOK_SECRET: ${process.env.MERCADOPAGO_WEBHOOK_SECRET ? "Configurado" : "No configurado"}`);
-  console.log(`\u{1F4E7} NODEMAILER: ${transporter ? "Configurado" : "No configurado"}`);
+  console.log(`\u{1F4E7} NODEMAILER: ${process.env.SMTP_USER || "tuwebai@gmail.com" ? "Configurado" : "No configurado"}`);
   console.log(`\u{1F310} Webhook URL: https://tuwebai-backend.onrender.com/webhook/mercadopago`);
   console.log(`\u{1F3E5} Health Check: https://tuwebai-backend.onrender.com/webhook/mercadopago/health`);
 });

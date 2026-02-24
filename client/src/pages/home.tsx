@@ -1,11 +1,12 @@
 import { useRef, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import NavDots from '@/components/ui/nav-dots';
-import HeroSection from '@/components/sections/hero-section';
-import WhatsAppButton from '@/components/ui/whatsapp-button';
-import ScrollProgress from '@/components/ui/scroll-progress';
 import MetaTags from '@/components/seo/meta-tags';
 import { Suspense, lazy } from 'react';
+
+const HeroSection = lazy(() => import('@/components/sections/hero-section'));
+const NavDots = lazy(() => import('@/components/ui/nav-dots'));
+const WhatsAppButton = lazy(() => import('@/components/ui/whatsapp-button'));
+const ScrollProgress = lazy(() => import('@/components/ui/scroll-progress'));
 
 // Lazy loading all sections below the fold to improve LCP and TTI
 const PhilosophySection = lazy(() => import('@/components/sections/philosophy-section'));
@@ -22,6 +23,7 @@ const CompanyLogoSlider = lazy(() => import('@/components/ui/company-logo-slider
 
 export default function Home() {
   const location = useLocation();
+  const debugScroll = import.meta.env.DEV;
   const sections = [
     { id: "intro", label: "Introducción" },
     { id: "philosophy", label: "Filosofía" },
@@ -56,17 +58,17 @@ export default function Home() {
 
   // Función para desplazarse a una sección específica
   const scrollToSection = (sectionId: string) => {
-    console.log("Intentando desplazarse a la sección:", sectionId);
+    if (debugScroll) console.debug("Intentando desplazarse a la sección:", sectionId);
     const section = sectionRefs.current[sectionId];
     if (section) {
-      console.log("Sección encontrada, desplazándose...");
+      if (debugScroll) console.debug("Sección encontrada, desplazándose...");
       // Intenta un enfoque más directo para el desplazamiento
       window.scrollTo({
         top: section.offsetTop - 100, // Restamos 100px para evitar que el header cubra el contenido
         behavior: 'smooth'
       });
     } else {
-      console.log("Sección no encontrada en refs:", Object.keys(sectionRefs.current));
+      if (debugScroll) console.debug("Sección no encontrada en refs:", Object.keys(sectionRefs.current));
     }
   };
 
@@ -82,20 +84,20 @@ export default function Home() {
     // Usar primero el hash, o si no existe, el parámetro de consulta
     const targetSection = hashSection || sectionParam;
     
-    console.log("Intentando navegar a sección:", targetSection);
+    if (debugScroll) console.debug("Intentando navegar a sección:", targetSection);
     
     // Si hay una sección objetivo válida, desplazarse a ella
     if (targetSection && sections.some(s => s.id === targetSection)) {
       // Asegurarse de que todas las secciones estén renderizadas primero
       setTimeout(() => {
-        console.log("Intentando scroll a sección:", targetSection);
+        if (debugScroll) console.debug("Intentando scroll a sección:", targetSection);
         scrollToSection(targetSection);
         
         // Backup scroll con otro método en caso de que el primero falle
         setTimeout(() => {
           const section = document.getElementById(targetSection);
           if (section) {
-            console.log("Usando método alternativo de scroll");
+            if (debugScroll) console.debug("Usando método alternativo de scroll");
             
             // Aplicar desplazamiento con ajuste para el header flotante
             const headerOffset = 100;
@@ -112,7 +114,7 @@ export default function Home() {
               section.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }, 100);
           } else {
-            console.log("Elemento no encontrado con ID:", targetSection);
+            if (debugScroll) console.debug("Elemento no encontrado con ID:", targetSection);
           }
         }, 100);
       }, 300);
@@ -132,16 +134,37 @@ export default function Home() {
       />
       
       {/* Barra de progreso de scroll */}
-      <ScrollProgress />
+      <Suspense fallback={null}>
+        <ScrollProgress />
+      </Suspense>
       
       {/* Navegación de puntos */}
-      <NavDots sections={sections} />
+      <Suspense fallback={null}>
+        <NavDots sections={sections} />
+      </Suspense>
       
       {/* Botón de WhatsApp */}
-      <WhatsAppButton />
+      <Suspense fallback={null}>
+        <WhatsAppButton />
+      </Suspense>
       
       <main id="main-content" className="relative">
-        <HeroSection setRef={(ref: HTMLElement | null) => setSectionRef('intro', ref)} />
+        <Suspense
+          fallback={
+            <section id="intro" className="min-h-screen flex items-center justify-center relative bg-gradient-1 overflow-hidden">
+              <div className="container mx-auto px-4 text-center z-10">
+                <h1 className="font-rajdhani font-bold text-5xl md:text-7xl mb-2">
+                  <span className="gradient-text">TuWeb.ai</span>
+                </h1>
+                <p className="font-rajdhani text-xl md:text-3xl text-gray-300 mb-12">
+                  Asesoría Comercial Digital para Empresas de Alto Rendimiento
+                </p>
+              </div>
+            </section>
+          }
+        >
+          <HeroSection setRef={(ref: HTMLElement | null) => setSectionRef('intro', ref)} />
+        </Suspense>
         
         {/* Usamos Suspense para mostrar las secciones dinámicas a medida que se cargan después del hilo principal */}
         <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-8 h-8 rounded-full border-4 border-[#00CCFF] border-t-transparent animate-spin"></div></div>}>

@@ -5,6 +5,7 @@ import path from 'path'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  envDir: '..',
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
@@ -32,7 +33,8 @@ export default defineConfig({
   },
   // Optimizaciones para desarrollo
   server: {
-    port: 3000,
+    port: 5173,
+    strictPort: true,
     host: true,
   },
   // Preload de recursos críticos

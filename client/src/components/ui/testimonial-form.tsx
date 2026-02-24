@@ -1,16 +1,13 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useToast } from '@/hooks/use-toast';
+import { useCreateTestimonial } from '@/hooks/use-testimonials';
 
 interface TestimonialFormProps {
-  onAddTestimonial: (testimonial: {
-    name: string;
-    company: string;
-    testimonial: string;
-  }) => void;
+  onSuccess?: () => void;
 }
 
-export default function TestimonialForm({ onAddTestimonial }: TestimonialFormProps) {
+export default function TestimonialForm({ onSuccess }: TestimonialFormProps) {
   const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState({
@@ -19,14 +16,14 @@ export default function TestimonialForm({ onAddTestimonial }: TestimonialFormPro
     testimonial: '',
   });
 
+  const createTestimonial = useCreateTestimonial();
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
   };
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,11 +38,8 @@ export default function TestimonialForm({ onAddTestimonial }: TestimonialFormPro
       return;
     }
 
-    setIsSubmitting(true);
-
     try {
-      // Enviar el nuevo testimonio al componente padre
-      await onAddTestimonial({
+      await createTestimonial.mutateAsync({
         name: formData.name,
         company: formData.company || 'Cliente',
         testimonial: formData.testimonial,
@@ -58,15 +52,13 @@ export default function TestimonialForm({ onAddTestimonial }: TestimonialFormPro
         testimonial: '',
       });
       setIsOpen(false);
+      
+      if (onSuccess) {
+          onSuccess();
+      }
     } catch (error) {
-      console.error('Error submitting testimonial:', error);
-      toast({
-        title: "Error",
-        description: "No se pudo enviar el testimonio. Por favor, inténtalo de nuevo.",
-        variant: "destructive"
-      });
-    } finally {
-      setIsSubmitting(false);
+      // El hook ya maneja el toast de error de forma centralizada
+      console.error('Submission failed from component scope');
     }
   };
 
@@ -178,14 +170,14 @@ export default function TestimonialForm({ onAddTestimonial }: TestimonialFormPro
                   </motion.button>
                   <motion.button
                     type="submit"
-                    disabled={isSubmitting}
+                    disabled={createTestimonial.isPending}
                     className={`px-4 py-2 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-md text-white font-medium ${
-                      isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
+                      createTestimonial.isPending ? 'opacity-50 cursor-not-allowed' : ''
                     }`}
-                    whileHover={!isSubmitting ? { scale: 1.05, boxShadow: '0 5px 15px -5px rgba(0, 204, 255, 0.7)' } : {}}
-                    whileTap={!isSubmitting ? { scale: 0.95 } : {}}
+                    whileHover={!createTestimonial.isPending ? { scale: 1.05, boxShadow: '0 5px 15px -5px rgba(0, 204, 255, 0.7)' } : {}}
+                    whileTap={!createTestimonial.isPending ? { scale: 0.95 } : {}}
                   >
-                    {isSubmitting ? (
+                    {createTestimonial.isPending ? (
                       <div className="flex items-center">
                         <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
                         Enviando...

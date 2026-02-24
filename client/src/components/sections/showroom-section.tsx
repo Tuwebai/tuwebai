@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useIntersectionObserver } from '@/hooks/use-intersection-observer';
-import AnimatedShape from '../ui/animated-shape';
+
 
 interface Project {
   id: number;

@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useIntersectionObserver } from '@/hooks/use-intersection-observer';
-import AnimatedShape from '../ui/animated-shape';
+
 
 interface ComparisonSectionProps {
   setRef: (ref: HTMLElement | null) => void;

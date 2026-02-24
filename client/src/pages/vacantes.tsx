@@ -2,10 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import AnimatedShape from '../components/ui/animated-shape';
-import { addDoc, collection } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
-import { toast } from '@/components/ui/use-toast';
-import { API_URL } from '@/lib/api';
+import { useApplyVacancy } from '@/hooks/use-vacancies';
 
 // Tipo para las vacantes
 interface Vacancy {
@@ -126,7 +123,7 @@ export default function Vacantes() {
     portfolio: '',
     message: ''
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const applyVacancy = useApplyVacancy();
 
   // Scroll to top on page load
   useEffect(() => {
@@ -155,58 +152,12 @@ export default function Vacantes() {
     
     if (!selectedVacancy) return;
 
-    setIsSubmitting(true);
-    
     try {
-      // Guardar aplicación en Firestore
-      await addDoc(collection(db, 'applications'), {
-        ...application,
-        position: selectedVacancy.title,
-        appliedAt: new Date(),
-        status: 'pending'
+      await applyVacancy.mutateAsync({
+        application: application,
+        vacancy: selectedVacancy
       });
 
-      // Enviar email usando el mismo sistema que los formularios de contacto
-      const response = await fetch(`${API_URL}/contact`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: application.name,
-          email: application.email,
-          title: `Nueva aplicación: ${selectedVacancy.title}`,
-          message: `
-Nueva aplicación recibida:
-
-Posición: ${selectedVacancy.title}
-Departamento: ${selectedVacancy.department}
-Tipo: ${selectedVacancy.type}
-
-Información del candidato:
-- Nombre: ${application.name}
-- Email: ${application.email}
-- Teléfono: ${application.phone || 'No proporcionado'}
-- Años de experiencia: ${application.experience}
-- Portfolio: ${application.portfolio || 'No proporcionado'}
-
-Mensaje del candidato:
-${application.message || 'No se proporcionó mensaje adicional'}
-
-Esta aplicación ha sido guardada en la base de datos con estado: pending
-          `.trim()
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error('Error al enviar el email de notificación');
-      }
-
-      toast({
-        title: "¡Aplicación enviada con éxito!",
-        description: "Te contactaremos pronto.",
-        variant: "default"
-      });
       setShowApplicationForm(false);
       setApplication({
         name: '',
@@ -218,14 +169,7 @@ Esta aplicación ha sido guardada en la base de datos con estado: pending
         message: ''
       });
     } catch (error) {
-      console.error('Error submitting application:', error);
-      toast({
-        title: "Error al enviar la aplicación",
-        description: "Intenta nuevamente.",
-        variant: "destructive"
-      });
-    } finally {
-      setIsSubmitting(false);
+      // Error handling is centralized in the hook
     }
   };
 
@@ -558,10 +502,10 @@ Esta aplicación ha sido guardada en la base de datos con estado: pending
                   <div className="flex gap-4 pt-4">
                     <button
                       type="submit"
-                      disabled={isSubmitting}
+                      disabled={applyVacancy.isPending}
                       className="flex-1 px-6 py-3 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-lg text-white font-medium hover:shadow-lg hover:shadow-[#00CCFF]/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      {isSubmitting ? 'Enviando...' : 'Enviar aplicación'}
+                      {applyVacancy.isPending ? 'Enviando...' : 'Enviar aplicación'}
                     </button>
                     
                     <button

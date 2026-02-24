@@ -1,17 +1,4 @@
-import { db } from '@/lib/firebase';
-import {
-  collection,
-  doc,
-  getDoc,
-  setDoc,
-  updateDoc,
-  getDocs,
-  query,
-  where,
-  addDoc,
-  orderBy,
-  limit
-} from 'firebase/firestore';
+import { backendApi } from '@/lib/backend-api';
 
 export interface User {
   uid: string;
@@ -108,127 +95,112 @@ export interface TicketResponse {
 
 // Funciones existentes
 export async function getUser(uid: string): Promise<User | null> {
-  const userRef = doc(db, 'users', uid);
-  const snap = await getDoc(userRef);
-  return snap.exists() ? (snap.data() as User) : null;
+  try {
+    const res = await backendApi.getUser(uid);
+    return res?.data || null;
+  } catch {
+    return null;
+  }
 }
 
 export async function setUser(user: User): Promise<void> {
-  const userRef = doc(db, 'users', user.uid);
-  await setDoc(userRef, {
+  await backendApi.upsertUser(user.uid, {
     ...user,
     updatedAt: new Date().toISOString(),
-  }, { merge: true });
+  });
 }
 
 export async function updateUser(uid: string, data: Partial<User>): Promise<void> {
-  const userRef = doc(db, 'users', uid);
-  await updateDoc(userRef, {
+  await backendApi.upsertUser(uid, {
     ...data,
     updatedAt: new Date().toISOString(),
   });
 }
 
 export async function getUserPreferences(uid: string): Promise<UserPreferences | null> {
-  const prefRef = doc(db, 'users', uid);
-  const snap = await getDoc(prefRef);
-  return snap.exists() && snap.data().preferences ? snap.data().preferences as UserPreferences : null;
+  try {
+    const res = await backendApi.getUserPreferences(uid);
+    return res?.data || null;
+  } catch {
+    return null;
+  }
 }
 
 export async function setUserPreferences(uid: string, preferences: Partial<UserPreferences>): Promise<void> {
-  const prefRef = doc(db, 'users', uid);
-  await setDoc(prefRef, {
-    preferences: {
-      ...preferences,
-      updatedAt: new Date().toISOString(),
-    },
-  }, { merge: true });
+  await backendApi.setUserPreferences(uid, preferences);
 }
 
 // Nuevas funciones para el dashboard
 export async function getUserProject(userId: string): Promise<Project | null> {
-  const projectsRef = collection(db, 'projects');
-  const q = query(projectsRef, where('userId', '==', userId), limit(1));
-  const snapshot = await getDocs(q);
-  
-  if (snapshot.empty) {
-    return null;
-  }
-  
-  const doc = snapshot.docs[0];
-  return { id: doc.id, ...doc.data() } as Project;
+  const res = await backendApi.getUserProject(userId);
+  return (res?.data as Project | null) || null;
 }
 
-export async function getUserPayments(userId: string): Promise<Payment[]> {
-  const paymentsRef = collection(db, 'payments');
-  const q = query(paymentsRef, where('userId', '==', userId), orderBy('date', 'desc'));
-  const snapshot = await getDocs(q);
-  
-  return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }) as Payment);
+export async function getUserPayments(userId: string, limit?: number): Promise<Payment[]> {
+  const res = await backendApi.getUserPayments(userId, limit);
+  return (res?.data as Payment[] | undefined) || [];
 }
 
-export async function getUserTickets(userId: string): Promise<SupportTicket[]> {
-  const ticketsRef = collection(db, 'support_tickets');
-  const q = query(ticketsRef, where('userId', '==', userId), orderBy('createdAt', 'desc'));
-  const snapshot = await getDocs(q);
-  
-  return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }) as SupportTicket);
+export async function getUserTickets(userId: string, limit?: number): Promise<SupportTicket[]> {
+  const res = await backendApi.getUserTickets(userId, limit);
+  return (res?.data as SupportTicket[] | undefined) || [];
 }
 
 export async function createTicket(ticket: Omit<SupportTicket, 'id'>): Promise<string> {
-  const ticketsRef = collection(db, 'support_tickets');
-  const docRef = await addDoc(ticketsRef, {
+  const response = await backendApi.createTicket(ticket.userId, {
     ...ticket,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
+    status: ticket.status || 'open',
+    priority: ticket.priority || 'medium',
+    responses: ticket.responses || [],
   });
-  return docRef.id;
+  return response.id;
 }
 
 export async function updateTicket(ticketId: string, data: Partial<SupportTicket>): Promise<void> {
-  const ticketRef = doc(db, 'support_tickets', ticketId);
-  await updateDoc(ticketRef, {
+  let uid = data.userId;
+  if (!uid) {
+    const ticket = await backendApi.getTicketById(ticketId);
+    uid = ticket?.data?.userId as string | undefined;
+  }
+
+  if (!uid) {
+    throw new Error('No se pudo determinar el usuario del ticket');
+  }
+
+  await backendApi.updateTicket(uid, ticketId, {
     ...data,
     updatedAt: new Date().toISOString(),
-  });
+  } as Record<string, unknown>);
 }
 
 export async function addTicketResponse(ticketId: string, response: Omit<TicketResponse, 'id'>): Promise<void> {
-  const ticketRef = doc(db, 'support_tickets', ticketId);
-  const ticket = await getDoc(ticketRef);
-  
-  if (ticket.exists()) {
-    const currentResponses = ticket.data().responses || [];
-    const newResponses = [...currentResponses, { id: Date.now().toString(), ...response }];
-    
-    await updateDoc(ticketRef, {
-      responses: newResponses,
-      updatedAt: new Date().toISOString(),
-    });
+  const ticket = await backendApi.getTicketById(ticketId);
+  const uid = ticket?.data?.userId as string | undefined;
+  if (!uid) {
+    throw new Error('No se pudo determinar el usuario del ticket');
   }
+  await backendApi.addTicketResponse(uid, ticketId, {
+    message: response.message,
+    author: response.author,
+    authorType: response.authorType,
+    createdAt: response.createdAt,
+  });
 }
 
 // Funciones para admin
-export async function getAllProjects(): Promise<Project[]> {
-  const projectsRef = collection(db, 'projects');
-  const q = query(projectsRef, orderBy('createdAt', 'desc'));
-  const snapshot = await getDocs(q);
-  
-  return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }) as Project);
+export async function getAllProjects(limit?: number): Promise<Project[]> {
+  const res = await backendApi.getAllProjects(limit);
+  return (res?.data as Project[] | undefined) || [];
 }
 
-export async function getAllTickets(): Promise<SupportTicket[]> {
-  const ticketsRef = collection(db, 'support_tickets');
-  const q = query(ticketsRef, orderBy('createdAt', 'desc'));
-  const snapshot = await getDocs(q);
-  
-  return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }) as SupportTicket);
+export async function getAllTickets(limit?: number): Promise<SupportTicket[]> {
+  const res = await backendApi.getAllTickets(limit);
+  return (res?.data as SupportTicket[] | undefined) || [];
 }
 
 export async function updateProject(projectId: string, data: Partial<Project>): Promise<void> {
-  const projectRef = doc(db, 'projects', projectId);
-  await updateDoc(projectRef, {
+  await backendApi.updateProject(projectId, {
     ...data,
     updatedAt: new Date().toISOString(),
-  });
+  } as Record<string, unknown>);
 } 

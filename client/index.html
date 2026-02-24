@@ -124,26 +124,71 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    <!-- Replit dev banner (solo en dev) -->
-    <script
-      type="text/javascript"
-      src="https://replit.com/public/js/replit-dev-banner.js"
-    ></script>
-    <!-- GTM: Cargado después del bundle principal para no bloquear renderizado inicial -->
-    <script
-      async
-      defer
-      src="https://www.googletagmanager.com/gtag/js?id=G-WX19N0LCCC"
-    ></script>
-    <script defer>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-      gtag("config", "G-WX19N0LCCC");
+    <script>
+      (function () {
+        var gtagLoaded = false;
+        var adsenseLoaded = false;
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = window.gtag || function () {
+          window.dataLayer.push(arguments);
+        };
+
+        function loadScript(src, attrs) {
+          var script = document.createElement("script");
+          script.src = src;
+          script.async = true;
+          if (attrs) {
+            Object.keys(attrs).forEach(function (key) {
+              script.setAttribute(key, attrs[key]);
+            });
+          }
+          document.head.appendChild(script);
+          return script;
+        }
+
+        function loadAnalyticsAndAds() {
+          if (!gtagLoaded) {
+            gtagLoaded = true;
+            loadScript("https://www.googletagmanager.com/gtag/js?id=G-WX19N0LCCC");
+            window.gtag("js", new Date());
+            window.gtag("config", "G-WX19N0LCCC");
+          }
+
+          if (!adsenseLoaded) {
+            adsenseLoaded = true;
+            loadScript(
+              "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4693865721377675",
+              { crossorigin: "anonymous" },
+            );
+          }
+        }
+
+        function scheduleDeferredLoad() {
+          if ("requestIdleCallback" in window) {
+            window.requestIdleCallback(loadAnalyticsAndAds, { timeout: 4000 });
+          } else {
+            setTimeout(loadAnalyticsAndAds, 2500);
+          }
+        }
+
+        var events = ["pointerdown", "keydown", "scroll", "visibilitychange"];
+        var triggered = false;
+
+        function triggerLoad() {
+          if (triggered) return;
+          triggered = true;
+          events.forEach(function (eventName) {
+            window.removeEventListener(eventName, triggerLoad, { passive: true });
+          });
+          loadAnalyticsAndAds();
+        }
+
+        events.forEach(function (eventName) {
+          window.addEventListener(eventName, triggerLoad, { passive: true, once: true });
+        });
+
+        scheduleDeferredLoad();
+      })();
     </script>
-    <!-- Google AdSense: cargado aquí para no bloquear el LCP -->
-    <script async defer src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4693865721377675" crossorigin="anonymous"></script>
   </body>
 </html>

@@ -1,0 +1,28 @@
+version: '3.9'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+      - ALLOWED_ORIGINS=http://localhost:8080,http://localhost:5173,http://localhost:3000
+    ports:
+      - '5000:5000'
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+      args:
+        VITE_API_URL: http://localhost:5000
+    depends_on:
+      - backend
+    ports:
+      - '8080:80'
+    restart: unless-stopped

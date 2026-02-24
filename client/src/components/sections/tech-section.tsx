@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useIntersectionObserver } from '@/hooks/use-intersection-observer';
-import AnimatedShape from '../ui/animated-shape';
+
 import { SiReact, SiNextdotjs, SiVite, SiTailwindcss, SiNodedotjs, SiExpress, SiShopify, SiWoocommerce, SiStripe } from 'react-icons/si';
 
 interface TechItemProps {

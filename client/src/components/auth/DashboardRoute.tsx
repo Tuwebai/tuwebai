@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuthState } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 
@@ -8,7 +8,7 @@ interface DashboardRouteProps {
 }
 
 export default function DashboardRoute({ children }: DashboardRouteProps) {
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user } = useAuthState();
   const navigate = useNavigate();
   const { toast } = useToast();
 

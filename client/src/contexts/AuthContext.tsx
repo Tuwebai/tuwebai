@@ -1,14 +1,22 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
-import type {
-  User as FirebaseUser,
-} from 'firebase/auth';
-import type {
-  User as FirestoreUser,
-  UserPreferences
-} from '@/services/firestore';
+import React, { createContext, useState, useContext, useEffect, useMemo, useCallback } from 'react';
+import type { User as FirebaseUser } from 'firebase/auth';
+import type { User as FirestoreUser, UserPreferences } from '@/services/firestore';
 import { useToast } from '@/hooks/use-toast';
+import { 
+  useUserPreferencesQuery
+} from '@/hooks/use-auth-queries';
+import {
+  useLoginMutation,
+  useGoogleLoginMutation,
+  useLogoutMutation,
+  useRegisterMutation,
+  useUpdateProfileMutation,
+  useUpdatePreferencesMutation,
+  useChangePasswordMutation,
+  useResetPasswordMutation
+} from '@/hooks/use-auth-mutations';
 
-// Helper properties para cargar dinámicamente librerías pesadas (Firebase) solo cuando se necesiten, no en boot
+// Helper properties para cargar dinámicamente librerías pesadas solo en boot if needed
 let firebasePromise: Promise<any> | null = null;
 let fireauthPromise: Promise<any> | null = null;
 let firestorePromise: Promise<any> | null = null;
@@ -38,7 +46,7 @@ export interface PasswordInfo {
   daysSinceChange: number | null;
 }
 
-interface AuthContextType {
+interface AuthState {
   user: User | null;
   userPreferences: UserPreferences;
   passwordInfo: PasswordInfo;
@@ -46,8 +54,12 @@ interface AuthContextType {
   isLoadingPreferences: boolean;
   isLoadingPasswordInfo: boolean;
   isAuthenticated: boolean;
+  error: string | null;
+}
+
+interface AuthActions {
   login: (email: string, password: string, remember?: boolean) => Promise<void>;
-  loginWithGoogle: () => void;
+  loginWithGoogle: () => Promise<void>;
   logout: () => Promise<void>;
   register: (userData: RegisterData) => Promise<void>;
   requestPasswordReset: (email: string) => Promise<void>;
@@ -58,63 +70,78 @@ interface AuthContextType {
   fetchUserPreferences: () => Promise<void>;
   fetchPasswordInfo: () => Promise<void>;
   uploadProfileImage: (imageFile: File) => Promise<void>;
-  error: string | null;
   clearError: () => void;
   setUserImage: (imageUrl: string) => void;
 }
 
-const AuthContext = createContext<AuthContextType>({
-  user: null,
-  userPreferences: {
-    emailNotifications: false,
-    newsletter: false,
-    darkMode: false,
-    language: 'es'
-  },
-  passwordInfo: {
-    changedAt: null,
-    daysSinceChange: null
-  },
-  isLoading: true,
-  isLoadingPreferences: false,
-  isLoadingPasswordInfo: false,
-  isAuthenticated: false,
-  login: async () => {},
-  loginWithGoogle: () => {},
-  logout: async () => {},
-  register: async () => {},
-  requestPasswordReset: async () => {},
-  resetPassword: async () => {},
-  updateUserProfile: async () => {},
-  updateUserPreferences: async () => {},
-  changePassword: async () => {},
-  fetchUserPreferences: async () => {},
-  fetchPasswordInfo: async () => {},
-  uploadProfileImage: async () => {},
-  error: null,
-  clearError: () => {},
-  setUserImage: () => {},
-});
+const DEFAULT_PREFS: UserPreferences = {
+  emailNotifications: false,
+  newsletter: false,
+  darkMode: false,
+  language: 'es'
+};
 
-export const useAuth = () => useContext(AuthContext);
+const AuthStateContext = createContext<AuthState | undefined>(undefined);
+const AuthActionsContext = createContext<AuthActions | undefined>(undefined);
+
+export const useAuthState = () => {
+  const context = useContext(AuthStateContext);
+  if (context === undefined) {
+    throw new Error('useAuthState must be used within an AuthProvider');
+  }
+  return context;
+};
+
+export const useAuthActions = () => {
+  const context = useContext(AuthActionsContext);
+  if (context === undefined) {
+    throw new Error('useAuthActions must be used within an AuthProvider');
+  }
+  return context;
+};
+
+export const useAuth = () => {
+  const state = useAuthState();
+  const actions = useAuthActions();
+  return useMemo(() => ({ ...state, ...actions }), [state, actions]);
+};
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUserState] = useState<User | null>(null);
-  const [userPreferences, setUserPreferencesState] = useState<UserPreferences>({
-    emailNotifications: false,
-    newsletter: false,
-    darkMode: false,
-    language: 'es'
-  });
+  const [isLoadingAuth, setIsLoadingAuth] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const { toast } = useToast();
+
   const [passwordInfo, setPasswordInfo] = useState<PasswordInfo>({
     changedAt: null,
     daysSinceChange: null
   });
-  const [isLoading, setIsLoading] = useState(true);
-  const [isLoadingPreferences, setIsLoadingPreferences] = useState(false);
   const [isLoadingPasswordInfo, setIsLoadingPasswordInfo] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const { toast } = useToast();
+
+  // Queries
+  const { data: userPreferencesData, isLoading: isLoadingPreferencesQuery, refetch: refetchPrefs } = useUserPreferencesQuery(user?.uid);
+  
+  // Mutations
+  const loginMutation = useLoginMutation();
+  const googleLoginMutation = useGoogleLoginMutation();
+  const logoutMutation = useLogoutMutation();
+  const registerMutation = useRegisterMutation();
+  const updateProfileMutation = useUpdateProfileMutation();
+  const updatePreferencesMutation = useUpdatePreferencesMutation();
+  const changePasswordMutation = useChangePasswordMutation();
+  const resetPasswordMutation = useResetPasswordMutation();
+
+  // Estado consolidado de carga
+  const isAnyMutationPending = 
+    loginMutation.isPending || 
+    googleLoginMutation.isPending || 
+    logoutMutation.isPending || 
+    registerMutation.isPending || 
+    updateProfileMutation.isPending || 
+    changePasswordMutation.isPending || 
+    resetPasswordMutation.isPending;
+    
+  const isLoading = isLoadingAuth || isAnyMutationPending;
 
   // Escuchar cambios de autenticación
   useEffect(() => {
@@ -125,16 +152,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       try {
         const { auth } = await getFirebase();
         const { onAuthStateChanged } = await getFirebaseAuth();
-        const { getUser } = await getFirestoreService();
+        const { getUser, setUser } = await getFirestoreService();
 
         const unsubscribe = onAuthStateChanged(auth, async (firebaseUser: FirebaseUser | null) => {
-          if (!isMounted) return; // Prevent state updates if component unmounted
-          setIsLoading(true);
+          if (!isMounted) return;
+          setIsLoadingAuth(true);
+          
           if (firebaseUser) {
-            // Obtener datos del usuario desde Firestore
             let dbUser = await getUser(firebaseUser.uid);
             if (!dbUser) {
-              const { setUser } = await getFirestoreService();
               dbUser = {
                 uid: firebaseUser.uid,
                 email: firebaseUser.email || '',
@@ -143,33 +169,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 image: firebaseUser.photoURL || '',
                 isActive: true,
                 createdAt: new Date().toISOString(),
-                updatedAt: new Date().toISOString(), // Added missing updatedAt
+                updatedAt: new Date().toISOString(),
               };
               await setUser(dbUser);
             }
-            if (isMounted) {
-              setUserState(dbUser);
-              fetchUserPreferences(); // Call fetchUserPreferences without uid, it will use the user state
-            }
+            if (isMounted) setUserState(dbUser);
           } else {
-            if (isMounted) {
-              setUserState(null);
-              setUserPreferencesState({
-                emailNotifications: false,
-                newsletter: false,
-                darkMode: false,
-                language: 'es'
-              });
-            }
+            if (isMounted) setUserState(null);
           }
-          if (isMounted) setIsLoading(false);
+          if (isMounted) setIsLoadingAuth(false);
         });
         
         if (isMounted) unsubscribeFn = unsubscribe;
-        else unsubscribe(); // If component unmounted before unsubscribeFn is set, unsubscribe immediately
-      } catch (error) {
-        console.error("Error inicializando Auth:", error);
-        if (isMounted) setIsLoading(false);
+        else unsubscribe();
+      } catch (err) {
+        console.error("Error inicializando Auth:", err);
+        if (isMounted) setIsLoadingAuth(false);
       }
     };
 
@@ -177,266 +192,128 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     return () => {
       isMounted = false;
-      if (unsubscribeFn) unsubscribeFn();
+      if (unsubscribeFn) {
+        unsubscribeFn();
+      }
     };
   }, []);
 
-  // Login con email y contraseña
-  const login = async (email: string, password: string) => {
-    setIsLoading(true);
+  const login = useCallback(async (email: string, password: string) => {
     setError(null);
     try {
-      const { auth } = await getFirebase();
-      const { signInWithEmailAndPassword } = await getFirebaseAuth();
-      await signInWithEmailAndPassword(auth, email, password);
-      // El listener de onAuthStateChanged se encarga del resto
-      toast({ title: 'Sesión iniciada', description: 'Has iniciado sesión correctamente.' });
+      await loginMutation.mutateAsync({ email, password });
     } catch (err: any) {
       setError(err.message || 'Error al iniciar sesión');
-      toast({ title: 'Error', description: err.message || 'Error al iniciar sesión', variant: 'destructive' });
       throw err;
-    } finally {
-      setIsLoading(false);
     }
-  };
+  }, [loginMutation]);
 
-  // Login con Google
-  const loginWithGoogle = async () => {
-    setIsLoading(true);
+  const loginWithGoogle = useCallback(async () => {
     setError(null);
     try {
-      const { auth, googleProvider } = await getFirebase();
-      const { signInWithPopup } = await getFirebaseAuth();
-      const { getUser, setUser } = await getFirestoreService();
-
-      const result = await signInWithPopup(auth, googleProvider);
-      const firebaseUser = result.user;
-      let dbUser = await getUser(firebaseUser.uid);
-      if (!dbUser) {
-        dbUser = {
-          uid: firebaseUser.uid,
-          email: firebaseUser.email || '',
-          username: firebaseUser.displayName || '',
-          name: firebaseUser.displayName || '',
-          image: firebaseUser.photoURL || '',
-          isActive: true,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        };
-        await setUser(dbUser);
-      }
+      const { dbUser } = await googleLoginMutation.mutateAsync();
       setUserState(dbUser);
-      toast({
-        title: "Inicio de sesión exitoso",
-        description: `Bienvenido${result.user.displayName ? `, ${result.user.displayName}` : ''}!`,
-      });
     } catch (err: any) {
       setError(err.message || 'Error al iniciar sesión con Google');
-      toast({ title: 'Error', description: err.message || 'Error al iniciar sesión con Google', variant: 'destructive' });
       throw err;
-    } finally {
-      setIsLoading(false);
     }
-  };
+  }, [googleLoginMutation]);
 
-  // Logout
-  const logout = async () => {
-    setIsLoading(true);
+  const logout = useCallback(async () => {
     setError(null);
     try {
-      const { auth } = await getFirebase();
-      const { signOut } = await getFirebaseAuth();
-      await signOut(auth);
+      await logoutMutation.mutateAsync();
       setUserState(null);
-      setUserPreferencesState({
-        emailNotifications: false,
-        newsletter: false,
-        darkMode: false,
-        language: 'es'
-      });
-      toast({ title: 'Sesión cerrada', description: 'Has cerrado sesión correctamente.' });
     } catch (err: any) {
       setError(err.message || 'Error al cerrar sesión');
-      toast({ title: 'Error', description: err.message || 'Error al cerrar sesión', variant: 'destructive' });
       throw err;
-    } finally {
-      setIsLoading(false);
     }
-  };
+  }, [logoutMutation]);
 
-  // Registro
-  const register = async (userData: RegisterData) => {
-    setIsLoading(true);
+  const register = useCallback(async (userData: RegisterData) => {
     setError(null);
     try {
-      const { auth } = await getFirebase();
-      const { createUserWithEmailAndPassword, updateProfile } = await getFirebaseAuth();
-      const { setUser } = await getFirestoreService();
-
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        userData.email,
-        userData.password
-      );
-
-      // Update Auth Profile
-      await updateProfile(userCredential.user, {
-        displayName: userData.name || userData.username,
-      });
-
-      // Save user to Firestore directly
-      const newUser: User = {
-        uid: userCredential.user.uid,
-        email: userData.email,
-        username: userData.username,
-        name: userData.name || userData.username,
-        image: userCredential.user.photoURL || '', // Use photoURL from firebaseUser if available
-        isActive: true,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      };
-      
-      await setUser(newUser);
-      setUserState(newUser); // Set the user state after successful registration and Firestore save
-      
-      toast({ title: 'Registro exitoso', description: 'Por favor, verifica tu email para activar tu cuenta.' });
+      const newUser = await registerMutation.mutateAsync(userData);
+      setUserState(newUser);
     } catch (err: any) {
       setError(err.message || 'Error al registrar usuario');
-      toast({ title: 'Error', description: err.message || 'Error al registrar usuario', variant: 'destructive' });
       throw err;
-    } finally {
-      setIsLoading(false);
     }
-  };
+  }, [registerMutation]);
 
-  // Solicitar restablecimiento de contraseña
-  const requestPasswordReset = async (email: string) => {
-    setIsLoading(true);
+  const requestPasswordReset = useCallback(async (email: string) => {
     setError(null);
     try {
-      const { auth } = await getFirebase();
-      const { sendPasswordResetEmail } = await getFirebaseAuth();
-      await sendPasswordResetEmail(auth, email);
-      toast({
-        title: "Correo enviado", description: 'Si el email existe, recibirás instrucciones para restablecer tu contraseña.' });
+      await resetPasswordMutation.mutateAsync(email);
     } catch (err: any) {
       setError(err.message || 'Error al solicitar restablecimiento de contraseña');
-      toast({ title: 'Error', description: err.message || 'Error al solicitar restablecimiento', variant: 'destructive' });
       throw err;
-    } finally {
-      setIsLoading(false);
     }
-  };
+  }, [resetPasswordMutation]);
 
-  // Restablecer contraseña (no se usa token en frontend con Firebase)
-  const resetPassword = async (_token: string, _newPassword: string) => {
+  const resetPassword = useCallback(async (_token: string, _newPassword: string) => {
     // Firebase maneja esto por email, no por token manual
     toast({ title: 'Función no soportada', description: 'Usa el enlace enviado por email para restablecer tu contraseña.' });
-  };
+  }, [toast]);
 
-  // Actualizar perfil de usuario
-  const updateUserProfile = async (data: Partial<User>) => {
+  const updateUserProfile = useCallback(async (data: Partial<User>) => {
     if (!user) return;
-    setIsLoading(true);
     setError(null);
     try {
-      const { updateUser } = await getFirestoreService();
-      await updateUser(user.uid, data);
-      // Update local state directly for immediate feedback
+      await updateProfileMutation.mutateAsync({ uid: user.uid, data });
       setUserState(prevUser => prevUser ? { ...prevUser, ...data } : null);
-      toast({ title: 'Perfil actualizado', description: 'Tu información de perfil ha sido actualizada.' });
     } catch (err: any) {
       setError(err.message || 'Error al actualizar perfil');
-      toast({ title: 'Error', description: err.message || 'Error al actualizar perfil', variant: 'destructive' });
       throw err;
-    } finally {
-      setIsLoading(false);
     }
-  };
+  }, [user, updateProfileMutation]);
 
-  // Obtener preferencias del usuario
-  const fetchUserPreferences = async () => {
+  // Alias para retrocompatibilidad
+  const fetchUserPreferences = useCallback(async () => {
     if (!user) return;
-    setIsLoadingPreferences(true);
+    await refetchPrefs();
+  }, [user, refetchPrefs]);
+
+  const updateUserPreferences = useCallback(async (preferences: Partial<UserPreferences>) => {
+    if (!user) return;
     setError(null);
     try {
-      const { getUserPreferences } = await getFirestoreService();
-      const prefs = await getUserPreferences(user.uid);
-      if (prefs) setUserPreferencesState(prefs);
-    } catch (err: any) {
-      setError(err.message || 'Error al obtener preferencias');
-    } finally {
-      setIsLoadingPreferences(false);
-    }
-  };
-
-  // Actualizar preferencias del usuario
-  const updateUserPreferences = async (preferences: Partial<UserPreferences>) => {
-    if (!user) return;
-    setIsLoadingPreferences(true);
-    setError(null);
-    try {
-      const { setUserPreferences } = await getFirestoreService();
-      await setUserPreferences(user.uid, preferences);
-      setUserPreferencesState(prev => ({ ...prev, ...preferences }));
-      toast({ title: 'Preferencias actualizadas', description: 'Tus preferencias han sido actualizadas.' });
+      await updatePreferencesMutation.mutateAsync({ uid: user.uid, preferences });
     } catch (err: any) {
       setError(err.message || 'Error al actualizar preferencias');
-      toast({ title: 'Error', description: err.message || 'Error al actualizar preferencias', variant: 'destructive' });
       throw err;
-    } finally {
-      setIsLoadingPreferences(false);
     }
-  };
+  }, [user, updatePreferencesMutation]);
 
-  // Obtener información de la contraseña (no disponible en Firebase, se simula)
-  const fetchPasswordInfo = async () => {
+  const fetchPasswordInfo = useCallback(async () => {
     setIsLoadingPasswordInfo(true);
     setPasswordInfo({ changedAt: null, daysSinceChange: null });
     setIsLoadingPasswordInfo(false);
-  };
+  }, []);
 
-  // Cambiar contraseña
-  const changePassword = async (_currentPassword: string, newPassword: string) => {
-    if (!user) return; // Ensure user is logged in
-    setIsLoading(true);
+  const changePassword = useCallback(async (_currentPassword: string, newPassword: string) => {
+    if (!user) return;
     setError(null);
     try {
-      const { auth } = await getFirebase();
-      const { updatePassword } = await getFirebaseAuth();
-      if (auth.currentUser) {
-        await updatePassword(auth.currentUser, newPassword);
-        toast({
-          title: "Contraseña actualizada", description: 'Tu contraseña ha sido actualizada.' });
-      } else {
-        throw new Error("No hay usuario autenticado para cambiar la contraseña.");
-      }
+      await changePasswordMutation.mutateAsync({ currentPassword: _currentPassword, newPassword });
     } catch (err: any) {
       setError(err.message || 'Error al cambiar contraseña');
-      toast({ title: 'Error', description: err.message || 'Error al cambiar contraseña', variant: 'destructive' });
       throw err;
-    } finally {
-      setIsLoading(false);
     }
-  };
+  }, [user, changePasswordMutation]);
 
-  // Subir imagen de perfil (solo se guarda la URL, para Storage implementar aparte)
-  const uploadProfileImage = async (imageFile: File) => {
+  const uploadProfileImage = useCallback(async (imageFile: File) => {
     if (!user) return;
-    setIsLoading(true);
     setError(null);
     try {
-      // Convertir imagen a base64 (solo para demo, en producción usar Firebase Storage)
       const reader = new FileReader();
       const imageData = await new Promise<string>((resolve, reject) => {
         reader.onload = () => resolve(reader.result as string);
         reader.onerror = reject;
         reader.readAsDataURL(imageFile);
       });
-      const { updateUser, getUser } = await getFirestoreService();
-      await updateUser(user.uid, { image: imageData });
-      const updated = await getUser(user.uid);
-      setUserState(updated);
+      await updateProfileMutation.mutateAsync({ uid: user.uid, data: { image: imageData } });
+      setUserState(prevUser => prevUser ? { ...prevUser, image: imageData } : null);
       if (typeof window !== 'undefined') {
         localStorage.setItem('userImage', imageData);
       }
@@ -445,31 +322,41 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setError(err.message || 'Error al subir imagen');
       toast({ title: 'Error', description: err.message || 'Error al subir imagen', variant: 'destructive' });
       throw err;
-    } finally {
-      setIsLoading(false);
     }
-  };
+  }, [user, updateProfileMutation, toast]);
 
-  // Actualizar la imagen del usuario en el estado
-  const setUserImage = (imageUrl: string) => {
+  const setUserImage = useCallback((imageUrl: string) => {
     if (user) {
       setUserState(prevUser => prevUser ? { ...prevUser, image: imageUrl } : null);
       if (typeof window !== 'undefined') {
         localStorage.setItem('userImage', imageUrl);
       }
     }
-  };
+  }, [user]);
 
-  const clearError = () => setError(null);
+  const clearError = useCallback(() => setError(null), []);
 
-  const value = {
+  const stateValue = useMemo<AuthState>(() => ({
     user,
-    userPreferences,
+    userPreferences: userPreferencesData || DEFAULT_PREFS,
     passwordInfo,
     isLoading,
-    isLoadingPreferences,
+    isLoadingPreferences: isLoadingPreferencesQuery || updatePreferencesMutation.isPending,
     isLoadingPasswordInfo,
     isAuthenticated: !!user,
+    error,
+  }), [
+    user,
+    userPreferencesData,
+    passwordInfo,
+    isLoading,
+    isLoadingPreferencesQuery,
+    updatePreferencesMutation.isPending,
+    isLoadingPasswordInfo,
+    error
+  ]);
+
+  const actionsValue = useMemo<AuthActions>(() => ({
     login,
     loginWithGoogle,
     logout,
@@ -482,10 +369,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     fetchUserPreferences,
     fetchPasswordInfo,
     uploadProfileImage,
-    error,
     clearError,
     setUserImage,
-  };
+  }), [
+    login,
+    loginWithGoogle,
+    logout,
+    register,
+    requestPasswordReset,
+    resetPassword,
+    updateUserProfile,
+    updateUserPreferences,
+    changePassword,
+    fetchUserPreferences,
+    fetchPasswordInfo,
+    uploadProfileImage,
+    clearError,
+    setUserImage,
+  ]);
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthStateContext.Provider value={stateValue}>
+      <AuthActionsContext.Provider value={actionsValue}>
+        {children}
+      </AuthActionsContext.Provider>
+    </AuthStateContext.Provider>
+  );
 };

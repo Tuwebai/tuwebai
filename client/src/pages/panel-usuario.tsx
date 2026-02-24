@@ -16,17 +16,13 @@ import {
   Shield, 
   User, 
   Settings,
-  Upload,
   Check,
   AlertCircle,
   Eye,
   EyeOff,
   Phone,
   MapPin,
-  Calendar,
   Mail,
-  Smartphone,
-  Monitor,
   Palette,
   Languages,
   Info
@@ -41,15 +37,10 @@ export default function PanelUsuario() {
     logout,
     userPreferences,
     passwordInfo,
-    isLoadingPreferences,
-    isLoadingPasswordInfo,
     updateUserPreferences,
     changePassword,
-    fetchUserPreferences,
-    fetchPasswordInfo,
     uploadProfileImage,
-    setUserImage,
-    error
+    setUserImage
   } = useAuth();
   const { toast } = useToast();
   

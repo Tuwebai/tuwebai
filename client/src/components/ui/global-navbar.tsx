@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuthActions, useAuthState } from '@/contexts/AuthContext';
 import { useLoginModal } from '@/hooks/use-login-modal';
 
 interface NavigationLink {
@@ -17,8 +17,10 @@ export default function GlobalNavbar() {
   const [activePage, setActivePage] = useState('');
   const location = useLocation();
   const isMobile = useIsMobile();
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, isAuthenticated } = useAuthState();
+  const { logout } = useAuthActions();
   const { openModal } = useLoginModal();
+  const debugNav = import.meta.env.DEV;
   
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   
@@ -72,12 +74,19 @@ export default function GlobalNavbar() {
   
   // Detecta scroll para cambiar apariencia del navbar
   useEffect(() => {
+    let ticking = false;
+
     const handleScroll = () => {
-      const scrollPosition = window.scrollY;
-      setIsScrolled(scrollPosition > 50);
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(() => {
+        const nextScrolled = window.scrollY > 50;
+        setIsScrolled((prev) => (prev === nextScrolled ? prev : nextScrolled));
+        ticking = false;
+      });
     };
     
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll(); // Verificar estado inicial
     
     return () => window.removeEventListener('scroll', handleScroll);
@@ -100,13 +109,13 @@ export default function GlobalNavbar() {
       (location.pathname === '/' && targetPage?.href === '/') ||
       (activeNavItem?.sections?.some(s => s.id === sectionId))
     ) {
-      console.log("Intentando hacer scroll en la misma página a la sección:", sectionId);
+      if (debugNav) console.debug("Intentando hacer scroll en la misma página a la sección:", sectionId);
       
       // Esperar un momento para asegurar que el DOM esté listo
       setTimeout(() => {
         const section = document.getElementById(sectionId);
         if (section) {
-          console.log("Sección encontrada, haciendo scroll");
+          if (debugNav) console.debug("Sección encontrada, haciendo scroll");
           
           const headerOffset = 100; // Ajuste para el header
           const elementPosition = section.getBoundingClientRect().top;
@@ -125,7 +134,7 @@ export default function GlobalNavbar() {
                 behavior: 'smooth', 
                 block: 'start' 
               });
-              console.log("Método alternativo de scroll aplicado");
+              if (debugNav) console.debug("Método alternativo de scroll aplicado");
             } catch (error) {
               console.error("Error al hacer scroll:", error);
             }
@@ -136,7 +145,7 @@ export default function GlobalNavbar() {
       }, 200);
     } else if (targetPage) {
       // Navegar a otra página con el hash para la sección
-      console.log(`Navegando a ${targetPage.href}#${sectionId}`);
+      if (debugNav) console.debug(`Navegando a ${targetPage.href}#${sectionId}`);
       window.location.href = `${targetPage.href}#${sectionId}`;
     } else {
       console.warn("No se encontró página para la sección:", sectionId);

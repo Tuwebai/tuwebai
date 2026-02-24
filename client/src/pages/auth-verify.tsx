@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuthActions } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import MetaTags from '@/components/seo/meta-tags';
-import { API_URL } from '@/lib/api';
+import { backendApi } from '@/lib/backend-api';
 
 // Verificar si es entorno de desarrollo
-const isDevelopment = process.env.NODE_ENV === 'development';
+const isDevelopment = import.meta.env.DEV;
 
 export default function AuthVerify() {
   const { token } = useParams<{ token: string }>();
@@ -15,7 +15,7 @@ export default function AuthVerify() {
   const action = searchParams.get('action') || 'verify';
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { resetPassword } = useAuth();
+  const { resetPassword } = useAuthActions();
   
   const [isLoading, setIsLoading] = useState(true);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -45,8 +45,7 @@ export default function AuthVerify() {
       }
       
       try {
-        const response = await fetch(`${API_URL}/api/auth/verify/${token}`);
-        const data = await response.json();
+        const data = await backendApi.verifyAuthToken(token);
         
         setIsSuccess(data.success);
         setMessage(data.message);
@@ -134,8 +133,7 @@ export default function AuthVerify() {
     setIsDevVerifying(true);
     
     try {
-      const response = await fetch(`${API_URL}/api/auth/dev-verify/${devEmail}`);
-      const data = await response.json();
+      const data = await backendApi.verifyAuthDevEmail(devEmail);
       
       setIsSuccess(data.success);
       setMessage(data.message);

@@ -1,10 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import AnimatedShape from '../components/ui/animated-shape';
 import { useToast } from '@/hooks/use-toast';
-import { useIsMobile } from '@/hooks/use-mobile';
-
 // Tipo para las categorías de preguntas
 type FAQCategory = 'general' | 'servicios' | 'desarrollo' | 'marketing' | 'precios';
 
@@ -197,7 +195,6 @@ export default function FAQ() {
   const [votedFaqs, setVotedFaqs] = useState<{[key: number]: 'helpful' | 'not-helpful' | null}>({});
   const [showThanks, setShowThanks] = useState<{[key: number]: boolean}>({});
   const { toast } = useToast();
-  const isMobile = useIsMobile();
   
   // Scroll to top on page load
   useEffect(() => {

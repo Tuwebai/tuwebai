@@ -17,11 +17,6 @@ export function useIsMobile() {
       // Comprobación por ancho de pantalla (viewport)
       const mobileByWidth = window.innerWidth < 768;
       
-      // Comprobación por user agent (opcional, puede ser menos fiable)
-      const mobileByUserAgent = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-        navigator.userAgent
-      );
-      
       // Podemos usar ambos o solo el ancho de pantalla
       setIsMobile(mobileByWidth);
     };

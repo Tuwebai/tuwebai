@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuthState } from '../../contexts/AuthContext';
 import { useLoginModal } from '../../hooks/use-login-modal';
 
 interface AdminRouteProps {
@@ -13,7 +13,7 @@ interface AdminRouteProps {
  * Si no cumple, redirige a la página principal o muestra el modal de login
  */
 const AdminRoute: React.FC<AdminRouteProps> = ({ children }) => {
-  const { isAuthenticated, user, isLoading } = useAuth();
+  const { isAuthenticated, user, isLoading } = useAuthState();
   const { openModal } = useLoginModal();
   const location = useLocation();
 

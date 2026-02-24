@@ -59,13 +59,8 @@ export const trackConsultationRequest = () => {
   })
 }
 
-// Declare gtag on window
 declare global {
   interface Window {
-    gtag: (
-      command: 'config' | 'event',
-      targetId: string,
-      config?: Record<string, any>
-    ) => void
+    gtag?: (...args: unknown[]) => void
   }
 }

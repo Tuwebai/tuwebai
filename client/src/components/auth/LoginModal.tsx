@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuthActions, useAuthState } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import PasswordStrength from './PasswordStrength';
 import { Link } from 'react-router-dom'; // Added Link import
@@ -32,7 +32,8 @@ export default function LoginModal({
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
-  const { login, register, requestPasswordReset, error: authError, clearError, loginWithGoogle, user } = useAuth();
+  const { user, error: authError } = useAuthState();
+  const { login, register, requestPasswordReset, clearError, loginWithGoogle } = useAuthActions();
   const { toast } = useToast();
 
   // Reset form when modal is opened/closed or mode changes

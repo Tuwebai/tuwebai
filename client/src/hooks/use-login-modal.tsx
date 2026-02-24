@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useState } from 'react';
-import LoginModal from '@/components/auth/LoginModal';
+import React, { createContext, useContext, useState, lazy, Suspense } from 'react';
+
+const LoginModal = lazy(() => import('@/components/auth/LoginModal'));
 
 interface LoginModalContextType {
   isOpen: boolean;
@@ -36,12 +37,16 @@ export const LoginModalProvider: React.FC<{ children: React.ReactNode }> = ({
   return (
     <LoginModalContext.Provider value={{ isOpen, openModal, closeModal }}>
       {children}
-      <LoginModal 
-        isOpen={isOpen} 
-        onClose={closeModal} 
-        redirectUrl={redirectUrl}
-        defaultMode={defaultMode}
-      />
+      {isOpen ? (
+        <Suspense fallback={null}>
+          <LoginModal 
+            isOpen={isOpen} 
+            onClose={closeModal} 
+            redirectUrl={redirectUrl}
+            defaultMode={defaultMode}
+          />
+        </Suspense>
+      ) : null}
     </LoginModalContext.Provider>
   );
 };

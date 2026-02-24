@@ -14,26 +14,34 @@ export default function NavDots({ sections }: NavDotsProps) {
   const [activeSection, setActiveSection] = useState('intro');
 
   useEffect(() => {
+    let ticking = false;
+
     const handleScroll = () => {
-      const scrollPosition = window.scrollY + window.innerHeight / 2;
+      if (ticking) return;
+      ticking = true;
 
-      for (const section of sections) {
-        const element = document.getElementById(section.id);
-        if (!element) continue;
+      window.requestAnimationFrame(() => {
+        const scrollPosition = window.scrollY + window.innerHeight / 2;
 
-        const { offsetTop, offsetHeight } = element;
-        
-        if (
-          scrollPosition >= offsetTop &&
-          scrollPosition < offsetTop + offsetHeight
-        ) {
-          setActiveSection(section.id);
-          break;
+        for (const section of sections) {
+          const element = document.getElementById(section.id);
+          if (!element) continue;
+
+          const { offsetTop, offsetHeight } = element;
+
+          if (
+            scrollPosition >= offsetTop &&
+            scrollPosition < offsetTop + offsetHeight
+          ) {
+            setActiveSection((prev) => (prev === section.id ? prev : section.id));
+            break;
+          }
         }
-      }
+        ticking = false;
+      });
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll(); // Initial check
 
     return () => window.removeEventListener('scroll', handleScroll);

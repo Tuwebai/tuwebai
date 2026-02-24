@@ -3,7 +3,8 @@ import { motion } from 'framer-motion';
 import { useIntersectionObserver } from '@/hooks/use-intersection-observer';
 import AnimatedShape from '../ui/animated-shape';
 import { useToast } from '@/hooks/use-toast';
-import { API_URL } from '@/lib/api';
+import { backendApi } from '@/lib/backend-api';
+import { ApiError, getUiErrorMessage } from '@/lib/http-client';
 
 interface ContactFormProps {
   delay: number;
@@ -75,40 +76,12 @@ function ContactForm({ delay }: ContactFormProps) {
     setIsSubmitting(true);
     
     try {
-      // Envío del formulario mediante fetch
-      const response = await fetch(`${API_URL}/contact`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: formState.name,
-          email: formState.email,
-          message: formState.message,
-          source: 'sitio_web_principal',  // Identificar la fuente del contacto
-        })
+      await backendApi.submitContact({
+        name: formState.name,
+        email: formState.email,
+        message: formState.message,
+        source: 'sitio_web_principal',
       });
-      
-      const data = await response.json();
-      
-      if (!response.ok) {
-        // Si hay errores de validación del servidor
-        if (data.errors && Array.isArray(data.errors)) {
-          const serverErrors: {[key: string]: string} = {};
-          data.errors.forEach((err: any) => {
-            if (err.path && err.message) {
-              serverErrors[err.path] = err.message;
-            }
-          });
-          
-          if (Object.keys(serverErrors).length > 0) {
-            setErrors(serverErrors);
-            throw new Error('Por favor corrige los errores en el formulario');
-          }
-        }
-        
-        throw new Error(data.message || 'Error al enviar el formulario');
-      }
       
       // Limpiar formulario tras éxito
       setFormState({ name: '', email: '', message: '' });
@@ -125,11 +98,31 @@ function ContactForm({ delay }: ContactFormProps) {
         });
       }
       
-    } catch (error) {
+    } catch (error: unknown) {
+      // Si hay errores de validación del servidor
+      if (error instanceof ApiError) {
+        const payload = error.payload as any;
+        if (payload?.errors && Array.isArray(payload.errors)) {
+          const serverErrors: {[key: string]: string} = {};
+          payload.errors.forEach((err: any) => {
+            if (err.path && err.message) {
+              serverErrors[err.path] = err.message;
+            }
+          });
+          
+          if (Object.keys(serverErrors).length > 0) {
+            setErrors(serverErrors);
+            throw new Error('Por favor corrige los errores en el formulario');
+          }
+        }
+      }
       console.error('Error al enviar el formulario:', error);
       toast({
         title: "Error al enviar",
-        description: error instanceof Error ? error.message : "Ha ocurrido un problema al enviar tu mensaje. Por favor, inténtalo de nuevo.",
+        description: getUiErrorMessage(
+          error,
+          "Ha ocurrido un problema al enviar tu mensaje. Por favor, inténtalo de nuevo."
+        ),
         variant: "destructive",
       });
     } finally {

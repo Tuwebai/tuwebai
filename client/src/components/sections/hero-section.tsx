@@ -1,6 +1,5 @@
-import { useRef, useEffect, useState } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import TypeWriterEffect from 'react-typewriter-effect';
+import { useRef, useEffect, useState, type ComponentType, type CSSProperties } from 'react';
+import { motion } from 'framer-motion';
 import { Link } from 'react-scroll';
 
 interface HeroSectionProps {
@@ -8,17 +7,22 @@ interface HeroSectionProps {
   children?: React.ReactNode;
 }
 
+interface TypewriterEffectProps {
+  textStyle: CSSProperties;
+  startDelay: number;
+  cursorColor: string;
+  multiText: string[];
+  multiTextDelay: number;
+  typeSpeed: number;
+  multiTextLoop: boolean;
+}
+
 export default function HeroSection({ setRef, children }: HeroSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const [isReady, setIsReady] = useState(false);
-  
-  // Efecto de parallax en scroll
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end start"]
-  });
-  
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const [heroOpacity, setHeroOpacity] = useState(1);
+  const [TypewriterEffectComponent, setTypewriterEffectComponent] =
+    useState<ComponentType<TypewriterEffectProps> | null>(null);
   
   // Set the ref for the parent component
   useEffect(() => {
@@ -32,6 +36,58 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
     return () => clearTimeout(timer);
   }, [setRef]);
 
+  useEffect(() => {
+    let ticking = false;
+
+    const handleScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(() => {
+        const section = sectionRef.current;
+        if (!section) {
+          ticking = false;
+          return;
+        }
+        const rect = section.getBoundingClientRect();
+        const sectionHeight = Math.max(section.offsetHeight, 1);
+        const progress = Math.min(Math.max((-rect.top) / sectionHeight, 0), 1);
+        const nextOpacity = Math.max(0, 1 - progress * 2);
+        setHeroOpacity((prev) => (Math.abs(prev - nextOpacity) < 0.001 ? prev : nextOpacity));
+        ticking = false;
+      });
+    };
+
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadTypewriterEffect = () => {
+      import('react-typewriter-effect')
+        .then((module) => {
+          if (isMounted) {
+            setTypewriterEffectComponent(() => module.default as ComponentType<TypewriterEffectProps>);
+          }
+        })
+        .catch(() => {
+          // Si falla la carga diferida, se mantiene texto estático.
+        });
+    };
+
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(loadTypewriterEffect, { timeout: 3000 });
+    } else {
+      setTimeout(loadTypewriterEffect, 1200);
+    }
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   return (
     <section 
       id="intro" 
@@ -41,7 +97,7 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
       
       <motion.div 
         className="container mx-auto px-4 text-center z-10"
-        style={{ opacity }}
+        style={{ opacity: heroOpacity }}
       >
         <motion.div 
           className="mb-6 inline-block"
@@ -66,8 +122,8 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          {isReady && (
-            <TypeWriterEffect
+          {isReady && TypewriterEffectComponent ? (
+            <TypewriterEffectComponent
               textStyle={{
                 fontFamily: 'Rajdhani, sans-serif',
                 color: '#d1d5db',
@@ -87,6 +143,10 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
               typeSpeed={70}
               multiTextLoop
             />
+          ) : (
+            <span className="inline-block text-gray-300">
+              Asesoría Comercial Digital para Empresas de Alto Rendimiento
+            </span>
           )}
         </motion.div>
         

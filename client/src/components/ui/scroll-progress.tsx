@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 
 interface ScrollProgressProps {
   color?: string;
@@ -15,21 +14,29 @@ export default function ScrollProgress({
   
   // Usamos un enfoque alternativo basado en eventos de scroll
   useEffect(() => {
+    let ticking = false;
+
     const handleScroll = () => {
-      // Calcular el progreso del scroll (0-1)
-      const totalHeight = document.body.scrollHeight - window.innerHeight;
-      const currentProgress = totalHeight > 0 ? window.scrollY / totalHeight : 0;
-      
-      // Actualizar visibilidad y progreso
-      setIsVisible(window.scrollY > 100);
-      setScrollProgress(currentProgress);
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(() => {
+        // Calcular el progreso del scroll (0-1)
+        const totalHeight = document.body.scrollHeight - window.innerHeight;
+        const currentProgress = totalHeight > 0 ? window.scrollY / totalHeight : 0;
+        const nextVisible = window.scrollY > 100;
+
+        // Actualizar visibilidad y progreso evitando renders redundantes
+        setIsVisible((prev) => (prev === nextVisible ? prev : nextVisible));
+        setScrollProgress((prev) => (Math.abs(prev - currentProgress) < 0.001 ? prev : currentProgress));
+        ticking = false;
+      });
     };
     
     // Llamada inicial para establecer el estado correcto
     handleScroll();
     
     // Añadir event listener
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     
     // Limpiar al desmontar
     return () => window.removeEventListener('scroll', handleScroll);

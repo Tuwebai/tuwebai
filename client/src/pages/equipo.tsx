@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import AnimatedShape from '../components/ui/animated-shape';
-import { useIsMobile } from '@/hooks/use-mobile';
-import { getAllTestimonials, Testimonial as TestimonialType } from '@/services/testimonials';
+import { getAllTestimonials } from '@/services/testimonials';
 
 
 // Tipo para miembros del equipo
@@ -73,16 +72,12 @@ const featuredProjects: FeaturedProject[] = [
   }
 ];
 
-// Testimonios (se cargarán desde la base de datos)
-const testimonials: Testimonial[] = [];
-
 export default function Equipo() {
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
   const [testimonialIndex, setTestimonialIndex] = useState(0);
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [loadingTestimonials, setLoadingTestimonials] = useState(true);
   const testimonialRef = useRef<HTMLDivElement>(null);
-  const isMobile = useIsMobile();
 
   // Scroll to top on page load
   useEffect(() => {

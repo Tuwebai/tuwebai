@@ -1,18 +1,17 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Alert } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
 import WhatsAppButton from "@/components/ui/whatsapp-button";
-import { useIsMobile } from "@/hooks/use-mobile";
 import analytics from "@/lib/analytics";
-import { API_URL } from '@/lib/api';
+import { backendApi } from '@/lib/backend-api';
+import { getUiErrorMessage } from '@/lib/http-client';
 
 const formSchema = z.object({
   nombre: z.string().min(2, { message: "El nombre es requerido" }),
@@ -126,8 +125,6 @@ export default function Consulta() {
   const [submitted, setSubmitted] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const [showEstimador, setShowEstimador] = useState(false);
-  const isMobile = useIsMobile();
-  const navigate = useNavigate();
   
   // Estado para detalles de servicios
   const [serviciosDisponibles, setServiciosDisponibles] = useState<string[]>([]);
@@ -139,7 +136,7 @@ export default function Consulta() {
     handleSubmit,
     watch,
     setValue,
-    formState: { errors, isValid },
+    formState: { errors },
     reset,
     trigger,
   } = useForm<FormValues>({
@@ -245,18 +242,7 @@ export default function Consulta() {
       };
 
       // Envío real del formulario a la API
-      const response = await fetch(`${API_URL}/api/propuesta`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(propuestaData)
-      });
-      
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || 'Error al enviar el formulario');
-      }
+      await backendApi.submitProposal(propuestaData);
       
       setSubmitted(true);
       
@@ -284,7 +270,10 @@ export default function Consulta() {
       console.error('Error al enviar formulario:', error);
       toast({
         title: "Error al enviar",
-        description: "Ha ocurrido un problema al procesar tu solicitud. Por favor, inténtalo de nuevo.",
+        description: getUiErrorMessage(
+          error,
+          "Ha ocurrido un problema al procesar tu solicitud. Por favor, intentalo de nuevo."
+        ),
         variant: "destructive",
       });
     } finally {

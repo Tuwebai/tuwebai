@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useToast } from '@/hooks/use-toast';
-import { API_URL } from '@/lib/api';
+import { backendApi } from '@/lib/backend-api';
+import { getUiErrorMessage } from '@/lib/http-client';
 
 interface NewsletterFormProps {
   source?: string;
@@ -10,7 +11,7 @@ interface NewsletterFormProps {
   buttonText?: string;
 }
 
-export default function NewsletterForm({ 
+export default function NewsletterForm({
   source = 'website',
   theme = 'dark',
   className = '',
@@ -23,67 +24,50 @@ export default function NewsletterForm({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Validación básica
+
     if (!email.trim() || !/\S+@\S+\.\S+/.test(email)) {
-      setError('Por favor, introduce un email válido');
+      setError('Por favor, introduce un email valido');
       return;
     }
-    
+
     setError(null);
     setIsSubmitting(true);
-    
+
     try {
-      const response = await fetch(`${API_URL}/newsletter`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, source })
-      });
-      
-      const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.message || 'Error al procesar la suscripción');
-      }
-      
-      // Limpiar formulario tras éxito
+      await backendApi.subscribeNewsletter({ email, source });
+
       setEmail('');
-      
-      // Mostrar mensaje de éxito
+
       toast({
-        title: "Suscripción exitosa",
-        description: "¡Gracias por suscribirte a nuestro newsletter!",
+        title: 'Suscripcion exitosa',
+        description: 'Gracias por suscribirte a nuestro newsletter.',
       });
-      
-      // Registrar evento de analítica (opcional)
+
       if (typeof window !== 'undefined' && (window as any).gtag) {
         (window as any).gtag('event', 'newsletter_signup', {
-          'event_category': 'engagement',
-          'event_label': source
+          event_category: 'engagement',
+          event_label: source,
         });
       }
-      
-    } catch (error) {
-      console.error('Error al procesar la suscripción:', error);
-      
-      // Mostrar mensaje de error
+    } catch (submitError) {
+      console.error('Error al procesar la suscripcion:', submitError);
       toast({
-        title: "Error al suscribirse",
-        description: error instanceof Error ? error.message : "Ha ocurrido un problema al procesar tu suscripción. Por favor, inténtalo de nuevo.",
-        variant: "destructive",
+        title: 'Error al suscribirse',
+        description: getUiErrorMessage(
+          submitError,
+          'Ha ocurrido un problema al procesar tu suscripcion. Por favor, intentalo de nuevo.'
+        ),
+        variant: 'destructive',
       });
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  // Clases según el tema
-  const inputClasses = theme === 'dark' 
+  const inputClasses = theme === 'dark'
     ? 'bg-[#0a0a0f]/70 border-gray-700 text-white placeholder-gray-400 focus:ring-[#00CCFF]'
     : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:ring-blue-500';
-  
+
   const buttonClasses = theme === 'dark'
     ? 'bg-gradient-to-r from-[#00CCFF] to-[#9933FF] text-white'
     : 'bg-blue-600 hover:bg-blue-700 text-white';
@@ -102,7 +86,7 @@ export default function NewsletterForm({
           />
           {error && <p className="absolute -bottom-6 left-0 text-red-500 text-xs">{error}</p>}
         </div>
-        
+
         <motion.button
           type="submit"
           disabled={isSubmitting}
@@ -122,9 +106,9 @@ export default function NewsletterForm({
           ) : buttonText}
         </motion.button>
       </div>
-      
+
       <p className="text-gray-500 text-xs mt-3 text-center">
-        Al suscribirte, aceptas nuestra política de privacidad.
+        Al suscribirte, aceptas nuestra politica de privacidad.
       </p>
     </form>
   );
