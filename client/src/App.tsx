@@ -6,7 +6,7 @@ import { LazyRoute } from './components/route-wrapper';
 import analytics from '@/lib/analytics';
 import { SkipLink } from '@/components/a11y';
 import { ResourcePreload, MemoryManager } from '@/components/performance';
-import { AuthProvider } from './contexts/AuthContext';
+import { AuthProvider } from '@/features/auth/context/AuthContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { LoginModalProvider } from '@/features/auth/hooks/use-login-modal';
 
