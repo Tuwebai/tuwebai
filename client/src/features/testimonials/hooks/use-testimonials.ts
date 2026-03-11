@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/shared/ui/use-toast';
 import { getUiErrorMessage } from '@/lib/http-client';
 import { createTestimonial, getAllTestimonials } from '../services/testimonials.service';
 import type { TestimonialsListItem } from '../types';

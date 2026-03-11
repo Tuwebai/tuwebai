@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/shared/ui/use-toast';
 import {
   getNewsletterErrorMessage,
   subscribeToNewsletter,

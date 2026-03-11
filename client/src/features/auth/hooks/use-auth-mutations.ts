@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/shared/ui/use-toast';
 import type { User, RegisterData, UserPreferences } from '../types';
 
 let firebasePromise: Promise<any> | null = null;

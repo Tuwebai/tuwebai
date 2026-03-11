@@ -128,6 +128,7 @@ Estado:
 
 - ✅ corregido: `client/src/services/firestore.ts` eliminado tras quedar sin consumidores runtime directos
 - ✅ corregido parcialmente: no quedan consumidores runtime de `client/src/services/testimonials.ts`
+- ✅ corregido parcialmente: `client/src/hooks/use-toast.ts` eliminado tras redirigir todos sus consumidores a `client/src/shared/ui/use-toast`
 
 Objetivo:
 
@@ -188,6 +189,7 @@ La limpieza final queda habilitada solo si:
 - `rg "@/contexts/AuthContext"` no devuelve consumidores runtime
 - `rg "@/hooks/use-auth-"` no devuelve consumidores runtime
 - `rg "@/services/firestore"` no devuelve consumidores runtime
+- `rg "@/hooks/use-toast"` no devuelve consumidores runtime
 - `rg "export { default } from '@/components"` no devuelve reexports en `features/`
 - `rg "public.routes"` no devuelve imports activos
 
@@ -196,6 +198,7 @@ Resultado actual de la re-auditoría:
 - ✅ `@/contexts/AuthContext` sin consumidores runtime
 - ✅ `@/hooks/use-auth-*` sin consumidores runtime
 - ✅ `@/services/firestore` sin consumidores runtime
+- ✅ `@/hooks/use-toast` sin consumidores runtime
 - ✅ `public.routes` sin imports activos
 - ✅ los wrappers invertidos `components/* -> features/*` ya fueron retirados
 - ❌ `client/src/App.tsx` y páginas activas siguen montando `pages/*` y `components/*`

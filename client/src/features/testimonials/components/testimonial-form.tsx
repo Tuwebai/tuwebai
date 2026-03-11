@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/shared/ui/use-toast';
 import { useCreateTestimonial } from '@/features/testimonials/hooks/use-testimonials';
 
 interface TestimonialFormProps {

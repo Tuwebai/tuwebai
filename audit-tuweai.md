@@ -344,6 +344,7 @@ Hay imports directos de `backendApi` en componentes/páginas, por ejemplo:
 - [`client/src/pages/consulta.tsx`](./client/src/pages/consulta.tsx) ✅ corregido parcialmente: API directa movida a `features/proposals/services`
 - [`client/src/pages/auth-verify.tsx`](./client/src/pages/auth-verify.tsx)
 - [`client/src/components/ui/newsletter-form.tsx`](./client/src/components/ui/newsletter-form.tsx) ✅ corregido parcialmente: API directa movida a `features/newsletter/services`
+- [`client/src/hooks/use-toast.ts`](./client/src/hooks/use-toast.ts) ✅ corregido: eliminado tras redirigir sus consumidores a `shared/ui/use-toast`
 - [`client/src/components/sections/pricing-section.tsx`](./client/src/components/sections/pricing-section.tsx) ✅ corregido: runtime migrado a `features/payments/components/pricing-section.tsx`
 - [`client/src/components/sections/contact-section.tsx`](./client/src/components/sections/contact-section.tsx) ✅ corregido: runtime migrado a `features/contact/components/contact-section.tsx`
 - [`client/src/components/payment/payment-return-view.tsx`](./client/src/components/payment/payment-return-view.tsx) ✅ corregido: runtime migrado a `features/payments/components/payment-return-view.tsx`

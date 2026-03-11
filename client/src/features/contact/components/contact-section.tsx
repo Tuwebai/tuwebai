@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useIntersectionObserver } from '@/hooks/use-intersection-observer';
 import AnimatedShape from '@/components/ui/animated-shape';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/shared/ui/use-toast';
 import {
   getContactErrorMessage,
   getContactFieldErrors,

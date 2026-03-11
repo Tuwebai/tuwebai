@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/shared/ui/use-toast";
 import WhatsAppButton from "@/components/ui/whatsapp-button";
 import analytics from "@/lib/analytics";
 import { getProposalErrorMessage, submitProposal } from '@/features/proposals/services/proposals.service';

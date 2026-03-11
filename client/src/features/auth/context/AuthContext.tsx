@@ -1,6 +1,6 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import type { User as FirebaseUser } from 'firebase/auth';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/shared/ui/use-toast';
 import {
   useChangePasswordMutation,
   useGoogleLoginMutation,
