@@ -33,9 +33,9 @@ Regla de esta fase:
 | `client/src/components/ui/input-otp.tsx` | `client/src/shared/ui/input-otp.tsx` | `shared/ui` | Bajo | primitive reusable |
 | `client/src/components/ui/card.tsx` | `client/src/shared/ui/card.tsx` | `shared/ui` | Bajo | contenedor reusable ✅ corregido parcialmente |
 | `client/src/components/ui/badge.tsx` | `client/src/shared/ui/badge.tsx` | `shared/ui` | Bajo | UI reusable ✅ corregido parcialmente |
-| `client/src/components/ui/avatar.tsx` | `client/src/shared/ui/avatar.tsx` | `shared/ui` | Bajo | UI reusable |
+| `client/src/components/ui/avatar.tsx` | `client/src/shared/ui/avatar.tsx` | `shared/ui` | Bajo | UI reusable ✅ corregido parcialmente |
 | `client/src/components/ui/alert.tsx` | `client/src/shared/ui/alert.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
-| `client/src/components/ui/alert-dialog.tsx` | `client/src/shared/ui/alert-dialog.tsx` | `shared/ui` | Bajo | primitive reusable |
+| `client/src/components/ui/alert-dialog.tsx` | `client/src/shared/ui/alert-dialog.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
 | `client/src/components/ui/dialog.tsx` | `client/src/shared/ui/dialog.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
 | `client/src/components/ui/drawer.tsx` | `client/src/shared/ui/drawer.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
 | `client/src/components/ui/sheet.tsx` | `client/src/shared/ui/sheet.tsx` | `shared/ui` | Bajo | primitive reusable |
@@ -51,9 +51,9 @@ Regla de esta fase:
 | `client/src/components/ui/toggle.tsx` | `client/src/shared/ui/toggle.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
 | `client/src/components/ui/toggle-group.tsx` | `client/src/shared/ui/toggle-group.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
 | `client/src/components/ui/tooltip.tsx` | `client/src/shared/ui/tooltip.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
-| `client/src/components/ui/breadcrumb.tsx` | `client/src/shared/ui/breadcrumb.tsx` | `shared/ui` | Bajo | reusable navigation helper |
-| `client/src/components/ui/pagination.tsx` | `client/src/shared/ui/pagination.tsx` | `shared/ui` | Bajo | reusable navigation helper |
-| `client/src/components/ui/table.tsx` | `client/src/shared/ui/table.tsx` | `shared/ui` | Bajo | reusable data UI |
+| `client/src/components/ui/breadcrumb.tsx` | `client/src/shared/ui/breadcrumb.tsx` | `shared/ui` | Bajo | reusable navigation helper ✅ corregido parcialmente |
+| `client/src/components/ui/pagination.tsx` | `client/src/shared/ui/pagination.tsx` | `shared/ui` | Bajo | reusable navigation helper ✅ corregido parcialmente |
+| `client/src/components/ui/table.tsx` | `client/src/shared/ui/table.tsx` | `shared/ui` | Bajo | reusable data UI ✅ corregido parcialmente |
 | `client/src/components/ui/chart.tsx` | `client/src/shared/ui/chart.tsx` | `shared/ui` | Medio | reusable pero revisar dependencias visuales |
 | `client/src/components/ui/carousel.tsx` | `client/src/shared/ui/carousel.tsx` | `shared/ui` | Medio | reusable con comportamiento visual |
 | `client/src/components/ui/calendar.tsx` | `client/src/shared/ui/calendar.tsx` | `shared/ui` | Medio | reusable con dependencia externa |
@@ -64,7 +64,7 @@ Regla de esta fase:
 | `client/src/components/ui/progress.tsx` | `client/src/shared/ui/progress.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
 | `client/src/components/ui/separator.tsx` | `client/src/shared/ui/separator.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
 | `client/src/components/ui/skeleton.tsx` | `client/src/shared/ui/skeleton.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
-| `client/src/components/ui/loading-spinner.tsx` | `client/src/shared/ui/loading-spinner.tsx` | `shared/ui` | Bajo | visual helper reusable |
+| `client/src/components/ui/loading-spinner.tsx` | `client/src/shared/ui/loading-spinner.tsx` | `shared/ui` | Bajo | visual helper reusable ✅ corregido parcialmente |
 | `client/src/components/ui/toast.tsx` | `client/src/shared/ui/toast.tsx` | `shared/ui` | Bajo | sistema UI transversal |
 | `client/src/components/ui/toaster.tsx` | `client/src/shared/ui/toaster.tsx` | `shared/ui` | Bajo | sistema UI transversal |
 | `client/src/components/ui/use-toast/index.ts` | `client/src/shared/ui/use-toast/index.ts` | `shared/ui` | Medio | hook visual transversal, requiere movimiento coordinado |

@@ -143,6 +143,8 @@ Estado:
 - componentes movidos: `popover`, `sheet`, `dropdown-menu`, `context-menu`, `navigation-menu`, `menubar`
 - ✅ corregido parcialmente: lote 6 movido a `shared/ui`
 - componentes movidos: `collapsible`, `toggle`, `toggle-group`, `slider`, `progress`, `resizable`
+- ✅ corregido parcialmente: lote 7 movido a `shared/ui`
+- componentes movidos: `alert-dialog`, `avatar`, `breadcrumb`, `pagination`, `table`, `loading-spinner`
 
 Objetivo:
 
