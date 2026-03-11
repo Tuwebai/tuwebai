@@ -223,7 +223,7 @@ Regla:
 
 - ningún componente en `pages/` o `components/` debe importar runtime desde `lib/api`
 
-### Fase 5. Consolidación de config duplicada
+### Fase 5. Consolidación de config duplicada ✅ corregido
 
 Objetivo:
 
@@ -311,7 +311,7 @@ Checklist:
 10. Migrar `contact/newsletter`. ✅ corregido
 11. Migrar `payments`. ✅ corregido
 12. Migrar `support/projects/user`. ✅ corregido
-13. Consolidar config duplicada.
+13. Consolidar config duplicada. ✅ corregido
 14. Eliminar compatibilidad temporal.
 
 ## Riesgos de Regresión
@@ -386,6 +386,6 @@ No ejecutar un move masivo.
 El siguiente paso correcto es:
 
 1. cerrar remanentes fuera del plan por dominio
-2. abrir Fase 5 de consolidación de config duplicada
+2. abrir Fase 6 de limpieza final de compatibilidad
 3. mover un solo frente por vez
 4. validar `npm run check`, `npm run lint`, `npm run build`, `npm run smoke`

@@ -65,8 +65,8 @@ Eso eleva el costo de mantenimiento, debilita la gobernanza y deja riesgos concr
 
 - No es un monorepo gobernado; es un repositorio único con múltiples stacks mezclados.
 - Hay dos backends potenciales para varias capacidades: `server/` y `api/`. ✅ corregido parcialmente: PHP movido a `legacy/`
-- Hay dos centros de configuración frontend: [`vite.config.ts`](./vite.config.ts) y [`client/vite.config.ts`](./client/vite.config.ts).
-- Hay dos configuraciones Netlify: [`netlify.toml`](./netlify.toml) y [`client/netlify.toml`](./client/netlify.toml).
+- Hay dos centros de configuración frontend: [`vite.config.ts`](./vite.config.ts) y [`client/vite.config.ts`](./client/vite.config.ts). ✅ corregido parcialmente: raíz definida como source of truth; `client/` marcado deprecated
+- Hay dos configuraciones Netlify: [`netlify.toml`](./netlify.toml) y [`client/netlify.toml`](./client/netlify.toml). ✅ corregido parcialmente: raíz definida como source of truth; `client/` marcado deprecated
 - El frontend usa una mezcla de `contexts`, `hooks`, `services` y acceso directo a API desde componentes/páginas. ✅ corregido parcialmente: frontera `app/core/features/shared` preparada, migración de consumers pendiente
 - El backend concentra demasiada responsabilidad en [`server/src/controllers/public.controller.ts`](./server/src/controllers/public.controller.ts). ✅ corregido parcialmente: dominios extraídos a `server/src/modules/` con facade temporal
 
@@ -198,9 +198,9 @@ Esto no solo es deuda técnica: es **riesgo activo** si ese código sigue desple
 - `firebase-functions-contacto/functions/lib/`
   - build compilado dentro de subproyecto ✅ corregido
 - `client/vite.config.ts`
-  - configuración duplicada respecto a raíz
+  - configuración duplicada respecto a raíz ✅ corregido parcialmente: marcada deprecated
 - `client/netlify.toml`
-  - configuración duplicada respecto a raíz
+  - configuración duplicada respecto a raíz ✅ corregido parcialmente: marcada deprecated
 - `tuweb-ai.com-20260305T235948.json`
   - reporte Lighthouse puntual; útil solo si se versiona deliberadamente ✅ corregido parcialmente: patrón ahora ignorado
 - `.replit`
@@ -373,6 +373,8 @@ No hay separación por dominio ni capa de servicios de negocio consistente. ✅ 
 - dos `netlify.toml`
 - backend Node + backend PHP + Cloud Function
 - lógica Firebase en Node y en PHP
+
+Estado: ✅ corregido parcialmente: `vite.config.ts`, `netlify.toml`, `tailwind.config.ts` y `postcss.config.js` de raíz definidos como fuentes oficiales; duplicados de `client/` documentados como deprecated
 
 Esto complica onboarding, incidentes y despliegue.
 
@@ -548,7 +550,7 @@ server/
 1. Particionar `public.controller.ts` por dominios. ✅ corregido parcialmente
 2. Mover acceso a API fuera de `pages/` y `components/`. ✅ corregido parcialmente: `testimonials`, `auth`, `contact`, `newsletter`, `payments`, `support`, `projects` y `users` ya migrados; quedan pantallas puntuales fuera del plan por dominio
 3. Depurar scripts rotos y remover `deploy` basado en `git add .`.
-4. Consolidar `vite.config` y `netlify.toml`.
+4. Consolidar `vite.config` y `netlify.toml`. ✅ corregido parcialmente: source of truth documentada y configs duplicadas marcadas deprecated
 5. Revisar dependencias posiblemente no usadas y podar.
 
 ### Baja prioridad

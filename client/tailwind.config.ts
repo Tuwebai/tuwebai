@@ -1,3 +1,10 @@
+/*
+DEPRECATED CONFIG
+
+Este archivo no es la fuente oficial de Tailwind.
+La configuración vigente vive en ../../tailwind.config.ts desde la raíz del repositorio.
+Se conserva solo por compatibilidad y trazabilidad histórica.
+*/
 import type { Config } from 'tailwindcss';
 
 export default {

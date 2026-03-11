@@ -1,3 +1,10 @@
+/*
+DEPRECATED CONFIG
+
+Este archivo no es la fuente oficial de build.
+La configuración vigente vive en ../../vite.config.ts desde la raíz del repositorio.
+Se conserva solo por compatibilidad y trazabilidad histórica.
+*/
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
