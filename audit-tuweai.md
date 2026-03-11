@@ -357,6 +357,7 @@ Las páginas `pago-exitoso`, `pago-fallido` y `pago-pendiente` ya no forman part
 La página `contacto` ya no forma parte estructural del router; el runtime consume directamente `features/contact/components/support-contact-page` y `client/src/pages/contacto.tsx` quedó como bridge mínimo temporal. ✅ corregido parcialmente
 La página `auth-verify` ya no forma parte estructural del router; el runtime consume directamente `features/auth/components/auth-verify-page` y `client/src/pages/auth-verify.tsx` quedó como bridge mínimo temporal. ✅ corregido parcialmente
 La página `consulta` ya no forma parte estructural del router; el runtime consume directamente `features/proposals/components/proposal-request-page` y `client/src/pages/consulta.tsx` quedó como bridge mínimo temporal. ✅ corregido parcialmente
+La página `panel-usuario` ya no forma parte estructural del router ni del prefetch; el runtime consume directamente `features/users/components/user-dashboard-page` y `client/src/pages/panel-usuario.tsx` quedó como bridge mínimo temporal. ✅ corregido parcialmente
 La página `home` sigue siendo runtime estructural del landing; hoy mezcla composición, scroll orchestration y lazy loading de sections temporales, por lo que no corresponde adelgazarla en Fase 4 sin definir antes el target final de `marketing-home`. ✅ corregido parcialmente
 La página `panel-usuario` sigue concentrando orquestación funcional de perfil, seguridad, preferencias e imagen; no corresponde adelgazarla en Fase 4 sin separar antes ese flujo por dominio. ✅ corregido parcialmente
 

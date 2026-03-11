@@ -3,7 +3,7 @@ type PrefetchLoader = () => Promise<unknown>;
 const routeLoaders: Record<string, PrefetchLoader> = {
   '/consulta': () => import('@/pages/consulta'),
   '/vacantes': () => import('@/pages/vacantes'),
-  '/panel': () => import('@/pages/panel-usuario'),
+  '/panel': () => import('@/features/users/components/user-dashboard-page'),
 };
 
 const inFlightPrefetch = new Map<string, Promise<unknown>>();
