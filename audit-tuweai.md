@@ -347,6 +347,7 @@ Hay imports directos de `backendApi` en componentes/páginas, por ejemplo:
 - [`client/src/hooks/use-toast.ts`](./client/src/hooks/use-toast.ts) ✅ corregido: eliminado tras redirigir sus consumidores a `shared/ui/use-toast`
 - [`client/src/hooks/use-mobile.tsx`](./client/src/hooks/use-mobile.tsx) ✅ corregido: eliminado tras redirigir sus consumidores a `core/hooks/use-mobile`
 - [`client/src/hooks/use-intersection-observer.tsx`](./client/src/hooks/use-intersection-observer.tsx) ✅ corregido: eliminado tras redirigir sus consumidores a `core/hooks/use-intersection-observer`
+- [`client/src/contexts/ThemeContext.tsx`](./client/src/contexts/ThemeContext.tsx) ✅ corregido: eliminado tras redirigir su consumidor a `core/theme/ThemeContext`
 - [`client/src/components/sections/pricing-section.tsx`](./client/src/components/sections/pricing-section.tsx) ✅ corregido: runtime migrado a `features/payments/components/pricing-section.tsx`
 - [`client/src/components/sections/contact-section.tsx`](./client/src/components/sections/contact-section.tsx) ✅ corregido: runtime migrado a `features/contact/components/contact-section.tsx`
 - [`client/src/components/payment/payment-return-view.tsx`](./client/src/components/payment/payment-return-view.tsx) ✅ corregido: runtime migrado a `features/payments/components/payment-return-view.tsx`
