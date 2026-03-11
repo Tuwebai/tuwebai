@@ -548,7 +548,7 @@ server/
 ### Media prioridad
 
 1. Particionar `public.controller.ts` por dominios. ✅ corregido parcialmente
-2. Mover acceso a API fuera de `pages/` y `components/`. ✅ corregido parcialmente: `testimonials`, `auth`, `contact`, `newsletter`, `payments`, `support`, `projects`, `users` y `proposals` ya migrados; wrappers legacy de auth y services ya no tienen consumidores runtime directos
+2. Mover acceso a API fuera de `pages/` y `components/`. ✅ corregido parcialmente: `testimonials`, `auth`, `contact`, `newsletter`, `payments`, `support`, `projects`, `users` y `proposals` ya migrados; wrappers legacy de auth y services ya fueron retirados o quedaron fuera del runtime directo
 3. Depurar scripts rotos y remover `deploy` basado en `git add .`.
 4. Consolidar `vite.config` y `netlify.toml`. ✅ corregido parcialmente: source of truth documentada y configs duplicadas marcadas deprecated
 5. Revisar dependencias posiblemente no usadas y podar.

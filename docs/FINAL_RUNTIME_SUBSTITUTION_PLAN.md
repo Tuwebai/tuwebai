@@ -52,7 +52,7 @@ Entradas activas:
 - `client/src/hooks/use-auth-queries.ts` ✅ corregido: eliminado tras quedar sin consumidores runtime directos
 - `client/src/hooks/use-auth-mutations.ts` ✅ corregido: eliminado tras quedar sin consumidores runtime directos
 - `client/src/hooks/use-testimonials.ts` ✅ corregido: eliminado tras quedar sin consumidores runtime directos
-- `client/src/services/firestore.ts` ✅ corregido parcialmente: sin consumidores runtime directos
+- `client/src/services/firestore.ts` ✅ corregido: eliminado tras quedar sin consumidores runtime directos
 - `client/src/services/testimonials.ts` ✅ corregido: eliminado tras quedar sin consumidores runtime directos
 
 ### Backend con fachada legacy
@@ -98,7 +98,7 @@ Estado:
 - ✅ corregido parcialmente: `client/src/App.tsx`, `client/src/components/ui/global-navbar.tsx` y `client/src/components/auth/AdminRoute.tsx` ya consumen `features/auth/hooks/use-login-modal`
 - ✅ corregido parcialmente: `client/src/App.tsx` ya consume `features/auth/context/AuthContext`
 - ✅ corregido parcialmente: no quedan consumidores runtime de `@/contexts/AuthContext` ni `@/hooks/use-auth-*`
-- pendientes wrappers legacy mínimos de `services/firestore.ts`
+- pendientes wrappers legacy mínimos de bajo impacto fuera del runtime principal
 
 Objetivo:
 
@@ -121,7 +121,7 @@ Resultado esperado:
 
 Estado:
 
-- ✅ corregido parcialmente: no quedan consumidores runtime de `client/src/services/firestore.ts`
+- ✅ corregido: `client/src/services/firestore.ts` eliminado tras quedar sin consumidores runtime directos
 - ✅ corregido parcialmente: no quedan consumidores runtime de `client/src/services/testimonials.ts`
 
 Objetivo:
