@@ -39,7 +39,7 @@ Entradas activas:
 ### Reexports temporales en features
 
 - `client/src/features/auth/components/LoginModal.tsx`
-- `client/src/features/contact/components/contact-section.tsx`
+- `client/src/features/contact/components/contact-section.tsx` ✅ corregido
 - `client/src/features/newsletter/components/newsletter-form.tsx`
 - `client/src/features/payments/components/payment-return-view.tsx`
 - `client/src/features/payments/components/pricing-section.tsx`
@@ -147,7 +147,8 @@ Orden:
 2. `payments` runtime
 3. `contact/newsletter/testimonials` runtime
    - `testimonials` ✅ corregido
-   - `contact/newsletter` pendientes
+   - `contact` ✅ corregido
+   - `newsletter` pendiente
 4. `shared/ui` base
 5. `services` legacy restantes
 6. `public.routes.ts`
