@@ -151,6 +151,10 @@ Regla:
 
 ### Fase 3. Reducir `home.tsx` a shell del landing
 
+Estado:
+
+- ✅ corregido parcialmente: la composición principal del landing fue extraída a `client/src/features/marketing-home/components/marketing-home-page.tsx` y `client/src/pages/home.tsx` quedó reducido a shell de SEO + composición
+
 Objetivo:
 
 - dejar `home.tsx` como página delgada

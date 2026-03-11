@@ -597,3 +597,5 @@ Si se corrigen primero seguridad, gobernanza de repo y consolidación de stack, 
 Nota de seguimiento:
 
 - ✅ corregido parcialmente: client/index.html ya no carga Google Analytics ni AdSense en localhost, evitando pausas del runtime por excepciones de dsbygoogle.js durante desarrollo local.
+
+- ✅ corregido parcialmente: `client/src/pages/home.tsx` ya fue reducido a shell de SEO y composición; la composición principal del landing ahora vive en `features/marketing-home/components/marketing-home-page`.
