@@ -122,6 +122,7 @@ Estado:
 - ✅ corregido parcialmente: `philosophy-section` ya vive en `client/src/features/marketing-home/components/philosophy-section.tsx`; `home.tsx` consume esa implementación y `components/sections/philosophy-section.tsx` quedó como wrapper temporal
 - ✅ corregido parcialmente: `services-section` ya vive en `client/src/features/marketing-home/components/services-section.tsx`; `home.tsx` consume esa implementación y `components/sections/services-section.tsx` quedó como wrapper temporal
 - ✅ corregido parcialmente: `process-section` ya vive en `client/src/features/marketing-home/components/process-section.tsx`; `home.tsx` consume esa implementación y `components/sections/process-section.tsx` quedó como wrapper temporal
+- ✅ corregido parcialmente: `tech-section` ya vive en `client/src/features/marketing-home/components/tech-section.tsx`; `home.tsx` consume esa implementación y `components/sections/tech-section.tsx` quedó como wrapper temporal
 
 Objetivo:
 

@@ -9,7 +9,7 @@ const ScrollProgress = lazy(() => import('@/components/ui/scroll-progress'));
 const PhilosophySection = lazy(() => import('@/features/marketing-home/components/philosophy-section'));
 const ServicesSection = lazy(() => import('@/features/marketing-home/components/services-section'));
 const ProcessSection = lazy(() => import('@/features/marketing-home/components/process-section'));
-const TechSection = lazy(() => import('@/components/sections/tech-section'));
+const TechSection = lazy(() => import('@/features/marketing-home/components/tech-section'));
 const ImpactSection = lazy(() => import('@/components/sections/impact-section'));
 const TestimonialsSection = lazy(() => import('@/features/testimonials/components/testimonials-section'));
 const ContactSection = lazy(() => import('@/features/contact/components/contact-section'));
