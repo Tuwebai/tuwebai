@@ -116,6 +116,10 @@ Regla:
 
 ### Fase 2. Crear feature `marketing-home`
 
+Estado:
+
+- ✅ corregido parcialmente: `hero-section` ya vive en `client/src/features/marketing-home/components/hero-section.tsx`; `home.tsx` consume esa implementación y `components/sections/hero-section.tsx` quedó como wrapper temporal
+
 Objetivo:
 
 - crear `client/src/features/marketing-home/components/`

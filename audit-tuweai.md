@@ -366,6 +366,7 @@ La página `home` sigue siendo runtime estructural del landing; hoy mezcla compo
 `client/src/App.tsx` ya quedó como bridge controlado hacia `app/App`, pero el router todavía depende de páginas institucionales y el landing sigue bloqueando la Fase 6 por su composición temporal en `components/sections/*`. ✅ corregido parcialmente
 Se auditó `marketing-home` y quedó trazado el mapa `responsabilidad -> destino`; `home.tsx` sigue siendo shell estructural del landing y las sections temporales quedaron clasificadas para migración por slices, no para limpieza directa. ✅ corregido parcialmente
 La navegación del landing (`location.search`, `location.hash`, `sectionRefs` y fallback scrolling) ya fue extraída desde `client/src/pages/home.tsx` hacia `features/marketing-home/hooks/use-home-section-navigation`, reduciendo acoplamiento sin alterar la UX del home. ✅ corregido parcialmente
+La `hero-section` del landing ya fue movida a `features/marketing-home/components/hero-section`; `home.tsx` consume la implementación final y `components/sections/hero-section.tsx` quedó solo como wrapper temporal de compatibilidad. ✅ corregido parcialmente
 La página `panel-usuario` sigue concentrando orquestación funcional de perfil, seguridad, preferencias e imagen; no corresponde adelgazarla en Fase 4 sin separar antes ese flujo por dominio. ✅ corregido parcialmente
 
 ### 3. Backend tipo “God controller”

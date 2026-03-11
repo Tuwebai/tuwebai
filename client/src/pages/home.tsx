@@ -2,7 +2,7 @@ import { Suspense, lazy } from 'react';
 import MetaTags from '@/components/seo/meta-tags';
 import { useHomeSectionNavigation } from '@/features/marketing-home/hooks/use-home-section-navigation';
 
-const HeroSection = lazy(() => import('@/components/sections/hero-section'));
+const HeroSection = lazy(() => import('@/features/marketing-home/components/hero-section'));
 const NavDots = lazy(() => import('@/components/ui/nav-dots'));
 const WhatsAppButton = lazy(() => import('@/components/ui/whatsapp-button'));
 const ScrollProgress = lazy(() => import('@/components/ui/scroll-progress'));
