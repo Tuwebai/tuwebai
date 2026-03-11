@@ -145,6 +145,8 @@ Estado:
 - componentes movidos: `collapsible`, `toggle`, `toggle-group`, `slider`, `progress`, `resizable`
 - ✅ corregido parcialmente: lote 7 movido a `shared/ui`
 - componentes movidos: `alert-dialog`, `avatar`, `breadcrumb`, `pagination`, `table`, `loading-spinner`
+- ✅ corregido parcialmente: lote 8 movido a `shared/ui`
+- componentes movidos: `toast`, `toaster`, `use-toast/index`, `page-banner`, `animated-shape`, `whatsapp-button`
 
 Objetivo:
 

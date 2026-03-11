@@ -65,15 +65,15 @@ Regla de esta fase:
 | `client/src/components/ui/separator.tsx` | `client/src/shared/ui/separator.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
 | `client/src/components/ui/skeleton.tsx` | `client/src/shared/ui/skeleton.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
 | `client/src/components/ui/loading-spinner.tsx` | `client/src/shared/ui/loading-spinner.tsx` | `shared/ui` | Bajo | visual helper reusable ✅ corregido parcialmente |
-| `client/src/components/ui/toast.tsx` | `client/src/shared/ui/toast.tsx` | `shared/ui` | Bajo | sistema UI transversal |
-| `client/src/components/ui/toaster.tsx` | `client/src/shared/ui/toaster.tsx` | `shared/ui` | Bajo | sistema UI transversal |
-| `client/src/components/ui/use-toast/index.ts` | `client/src/shared/ui/use-toast/index.ts` | `shared/ui` | Medio | hook visual transversal, requiere movimiento coordinado |
-| `client/src/components/ui/animated-shape.tsx` | `client/src/shared/ui/animated-shape.tsx` | `shared/ui` | Bajo | visual decorativo reusable |
-| `client/src/components/ui/page-banner.tsx` | `client/src/shared/ui/page-banner.tsx` | `shared/ui` | Bajo | reusable de páginas internas |
+| `client/src/components/ui/toast.tsx` | `client/src/shared/ui/toast.tsx` | `shared/ui` | Bajo | sistema UI transversal ✅ corregido parcialmente |
+| `client/src/components/ui/toaster.tsx` | `client/src/shared/ui/toaster.tsx` | `shared/ui` | Bajo | sistema UI transversal ✅ corregido parcialmente |
+| `client/src/components/ui/use-toast/index.ts` | `client/src/shared/ui/use-toast/index.ts` | `shared/ui` | Medio | hook visual transversal, requiere movimiento coordinado ✅ corregido parcialmente |
+| `client/src/components/ui/animated-shape.tsx` | `client/src/shared/ui/animated-shape.tsx` | `shared/ui` | Bajo | visual decorativo reusable ✅ corregido parcialmente |
+| `client/src/components/ui/page-banner.tsx` | `client/src/shared/ui/page-banner.tsx` | `shared/ui` | Bajo | reusable de páginas internas ✅ corregido parcialmente |
 | `client/src/components/ui/scroll-progress.tsx` | `client/src/shared/ui/scroll-progress.tsx` | `shared/ui` | Bajo | helper visual global |
 | `client/src/components/ui/nav-dots.tsx` | `client/src/shared/ui/nav-dots.tsx` | `shared/ui` | Medio | reusable pero acoplado al home por props/scroll |
 | `client/src/components/ui/particle-effect.tsx` | `client/src/shared/ui/particle-effect.tsx` | `shared/ui` | Bajo | decorativo reusable |
-| `client/src/components/ui/whatsapp-button.tsx` | `client/src/shared/ui/whatsapp-button.tsx` | `shared/ui` | Bajo | CTA transversal |
+| `client/src/components/ui/whatsapp-button.tsx` | `client/src/shared/ui/whatsapp-button.tsx` | `shared/ui` | Bajo | CTA transversal ✅ corregido parcialmente |
 | `client/src/components/ui/company-logo-slider.tsx` | `client/src/shared/ui/company-logo-slider.tsx` | `shared/ui` | Medio | reusable visual, revisar coupling de assets |
 | `client/src/components/ui/footer.tsx` | `client/src/shared/ui/footer.tsx` | `shared/ui` | Medio | layout global, mover junto con shell |
 | `client/src/components/ui/global-navbar.tsx` | `client/src/app/layout/global-navbar.tsx` | `app` | Alto | shell global del runtime, no es shared genérico |
