@@ -69,6 +69,10 @@ Entradas activas:
 
 ### Fase A. Sustituir runtime frontend
 
+Estado:
+
+- ✅ corregido
+
 Objetivo:
 
 - que `App.tsx` y las páginas activas consuman `features/` o `shared/`
@@ -86,6 +90,11 @@ Resultado esperado:
 - pasa a ser `pages -> features`
 
 ### Fase B. Sustituir providers y hooks legacy
+
+Estado:
+
+- ✅ corregido parcialmente: `client/src/hooks/use-login-modal.tsx` ya carga `features/auth/components/LoginModal`
+- pendientes `App.tsx`, `panel-usuario.tsx`, `global-navbar.tsx`, `AdminRoute.tsx`, `DashboardRoute.tsx` y wrappers de auth/context legacy
 
 Objetivo:
 

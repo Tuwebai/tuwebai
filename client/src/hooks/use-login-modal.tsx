@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, lazy, Suspense } from 'react';
 
-const LoginModal = lazy(() => import('@/components/auth/LoginModal'));
+const LoginModal = lazy(() => import('@/features/auth/components/LoginModal'));
 
 interface LoginModalContextType {
   isOpen: boolean;
