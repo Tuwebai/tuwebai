@@ -209,7 +209,7 @@ Orden recomendado:
 3. `contact` ✅ corregido
 4. `newsletter` ✅ corregido
 5. `payments` ✅ corregido
-6. `support`
+6. `support` ✅ corregido
 7. `projects/user`
 
 Cada dominio debe quedar con:
@@ -307,10 +307,10 @@ Checklist:
 6. Extraer backend `contact/newsletter/propuesta/applications`. ✅ corregido
 7. Crear estructura `client/src/app|core|features|shared`. ✅ corregido
 8. Migrar `testimonials` en frontend. ✅ corregido
-9. Migrar `auth`.
-10. Migrar `contact/newsletter`.
-11. Migrar `payments`.
-12. Migrar `support/projects/user`.
+9. Migrar `auth`. ✅ corregido
+10. Migrar `contact/newsletter`. ✅ corregido
+11. Migrar `payments`. ✅ corregido
+12. Migrar `support/projects/user`. ✅ corregido parcialmente: `support` ya migrado; restan `projects/user`
 13. Consolidar config duplicada.
 14. Eliminar compatibilidad temporal.
 
@@ -385,7 +385,7 @@ No ejecutar un move masivo.
 
 El siguiente paso correcto es:
 
-1. abrir Fase 4 de migración frontend por dominio
-2. empezar por `testimonials`
+1. continuar Fase 4 de migración frontend por dominio
+2. migrar `projects/user`
 3. mover un solo dominio
 4. validar `npm run check`, `npm run lint`, `npm run build`, `npm run smoke`

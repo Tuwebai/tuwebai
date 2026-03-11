@@ -1,4 +1,12 @@
 import { backendApi } from '@/lib/backend-api';
+import {
+  addTicketResponse as addSupportTicketResponse,
+  createTicket as createSupportTicket,
+  getAllTickets as getAllSupportTickets,
+  getUserTickets as getSupportUserTickets,
+  updateTicket as updateSupportTicket,
+} from '@/features/support/services/support.service';
+import type { SupportTicket, TicketResponse } from '@/features/support/types';
 
 export interface User {
   uid: string;
@@ -73,25 +81,7 @@ export interface Payment {
   invoiceUrl?: string;
 }
 
-export interface SupportTicket {
-  id: string;
-  userId: string;
-  subject: string;
-  message: string;
-  status: 'open' | 'in-progress' | 'resolved';
-  priority: 'low' | 'medium' | 'high';
-  createdAt: string;
-  updatedAt: string;
-  responses?: TicketResponse[];
-}
-
-export interface TicketResponse {
-  id: string;
-  message: string;
-  author: string;
-  authorType: 'client' | 'admin';
-  createdAt: string;
-}
+export type { SupportTicket, TicketResponse } from '@/features/support/types';
 
 // Funciones existentes
 export async function getUser(uid: string): Promise<User | null> {
@@ -142,49 +132,19 @@ export async function getUserPayments(userId: string, limit?: number): Promise<P
 }
 
 export async function getUserTickets(userId: string, limit?: number): Promise<SupportTicket[]> {
-  const res = await backendApi.getUserTickets(userId, limit);
-  return (res?.data as SupportTicket[] | undefined) || [];
+  return getSupportUserTickets(userId, limit);
 }
 
 export async function createTicket(ticket: Omit<SupportTicket, 'id'>): Promise<string> {
-  const response = await backendApi.createTicket(ticket.userId, {
-    ...ticket,
-    status: ticket.status || 'open',
-    priority: ticket.priority || 'medium',
-    responses: ticket.responses || [],
-  });
-  return response.id;
+  return createSupportTicket(ticket);
 }
 
 export async function updateTicket(ticketId: string, data: Partial<SupportTicket>): Promise<void> {
-  let uid = data.userId;
-  if (!uid) {
-    const ticket = await backendApi.getTicketById(ticketId);
-    uid = ticket?.data?.userId as string | undefined;
-  }
-
-  if (!uid) {
-    throw new Error('No se pudo determinar el usuario del ticket');
-  }
-
-  await backendApi.updateTicket(uid, ticketId, {
-    ...data,
-    updatedAt: new Date().toISOString(),
-  } as Record<string, unknown>);
+  return updateSupportTicket(ticketId, data);
 }
 
 export async function addTicketResponse(ticketId: string, response: Omit<TicketResponse, 'id'>): Promise<void> {
-  const ticket = await backendApi.getTicketById(ticketId);
-  const uid = ticket?.data?.userId as string | undefined;
-  if (!uid) {
-    throw new Error('No se pudo determinar el usuario del ticket');
-  }
-  await backendApi.addTicketResponse(uid, ticketId, {
-    message: response.message,
-    author: response.author,
-    authorType: response.authorType,
-    createdAt: response.createdAt,
-  });
+  return addSupportTicketResponse(ticketId, response);
 }
 
 // Funciones para admin
@@ -194,8 +154,7 @@ export async function getAllProjects(limit?: number): Promise<Project[]> {
 }
 
 export async function getAllTickets(limit?: number): Promise<SupportTicket[]> {
-  const res = await backendApi.getAllTickets(limit);
-  return (res?.data as SupportTicket[] | undefined) || [];
+  return getAllSupportTickets(limit);
 }
 
 export async function updateProject(projectId: string, data: Partial<Project>): Promise<void> {
