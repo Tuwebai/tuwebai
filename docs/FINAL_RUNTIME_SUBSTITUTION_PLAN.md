@@ -57,7 +57,7 @@ Entradas activas:
 
 ### Backend con fachada legacy
 
-- `server/src/routes/public.routes.ts` ✅ corregido parcialmente: sin imports activos en runtime
+- `server/src/routes/public.routes.ts` ✅ corregido: eliminado tras quedar sin imports activos en runtime
 
 ## Clasificación
 
@@ -142,7 +142,7 @@ Resultado esperado:
 
 Estado:
 
-- ✅ corregido parcialmente: `rg "public.routes" server` ya no devuelve imports activos
+- ✅ corregido: `server/src/routes/public.routes.ts` eliminado tras quedar sin imports activos
 
 Objetivo:
 
