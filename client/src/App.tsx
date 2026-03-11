@@ -8,7 +8,7 @@ import { SkipLink } from '@/components/a11y';
 import { ResourcePreload, MemoryManager } from '@/components/performance';
 import { AuthProvider } from './contexts/AuthContext';
 import { ThemeProvider } from './contexts/ThemeContext';
-import { LoginModalProvider } from './hooks/use-login-modal';
+import { LoginModalProvider } from '@/features/auth/hooks/use-login-modal';
 
 // Carga inmediata para la página principal para mejor experiencia de usuario
 import Home from './pages/home';
