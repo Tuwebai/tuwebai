@@ -150,6 +150,7 @@ Estado:
 - ✅ corregido parcialmente: lote 9 movido a `shared/ui`
 - componentes movidos: `scroll-progress`, `particle-effect`, `company-logo-slider`, `nav-dots`, `sidebar`
 - ✅ corregido parcialmente: `footer` movido a `shared/ui`
+- ✅ corregido parcialmente: `global-navbar` movido a `client/src/app/layout/`
 
 Objetivo:
 

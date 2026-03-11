@@ -13,7 +13,7 @@ import { LoginModalProvider } from '@/features/auth/hooks/use-login-modal';
 // Carga inmediata para la página principal para mejor experiencia de usuario
 import Home from './pages/home';
 import NotFound from './pages/not-found';
-const GlobalNavbar = lazy(() => import('./components/ui/global-navbar'));
+const GlobalNavbar = lazy(() => import('@/app/layout/global-navbar'));
 const Toaster = lazy(() => import('@/components/ui/toaster').then((module) => ({ default: module.Toaster })));
 
 // Importaciones lazy para reducir el tamaño del bundle inicial
