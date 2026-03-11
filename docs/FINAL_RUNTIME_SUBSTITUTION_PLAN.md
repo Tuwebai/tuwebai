@@ -213,6 +213,7 @@ Resultado actual de la re-auditoría:
 - ❌ `client/src/App.tsx` ya quedó como bridge, pero `client/src/app/router/AppRoutes.tsx` todavía monta `pages/*` activas del sitio institucional
 - ❌ `client/src/pages/home.tsx` sigue siendo runtime estructural del landing y depende de `components/sections/*` temporales
 - ❌ `client/src/components/sections/*` sigue conteniendo ensamblado activo de `marketing-home` (`hero`, `services`, `process`, `tech`, `impact`, `comparison`, `showroom`)
+- ✅ siguiente paso definido: `docs/MARKETING_HOME_FINALIZATION_PLAN.md`
 
 ## Validación Obligatoria
 

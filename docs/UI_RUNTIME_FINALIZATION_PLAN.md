@@ -286,6 +286,7 @@ Precondiciones:
 - `App.tsx` ya está reubicado
 - `pages/*` ya no son runtime estructural legacy
 - re-auditoría actual: esta fase sigue bloqueada por `home.tsx` y por `components/sections/*` temporales del landing hasta definir el target final de `marketing-home`
+- plan específico abierto en `docs/MARKETING_HOME_FINALIZATION_PLAN.md`
 
 Ahora sí:
 
