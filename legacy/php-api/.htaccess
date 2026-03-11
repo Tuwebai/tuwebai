@@ -1,0 +1,80 @@
+RewriteEngine On
+
+# Permitir CORS preflight
+RewriteCond %{REQUEST_METHOD} OPTIONS
+RewriteRule ^(.*)$ $1 [R=200,L]
+
+# Redirigir /api/payments/{email} a payments/{email}.php
+RewriteRule ^payments/([^/]+)$ payments/$1.php [L,QSA]
+
+# Redirigir /api/webhooks/mercadopago a webhooks/mercadopago.php
+RewriteRule ^webhooks/mercadopago$ webhooks/mercadopago.php [L,QSA]
+
+# Configuración de seguridad
+<Files "*.php">
+    # Prevenir acceso directo a archivos de configuración
+    <FilesMatch "^(database|auth|mercadopago)\.php$">
+        Order Deny,Allow
+        Deny from all
+    </FilesMatch>
+    
+    # Permitir acceso solo a endpoints específicos
+    <FilesMatch "^(payments|webhooks)/.*\.php$">
+        Order Allow,Deny
+        Allow from all
+    </FilesMatch>
+</Files>
+
+# Configuración de CORS
+Header always set Access-Control-Allow-Origin "*"
+Header always set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+Header always set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With"
+Header always set Access-Control-Allow-Credentials "true"
+
+# Configuración de seguridad adicional
+Header always set X-Content-Type-Options "nosniff"
+Header always set X-Frame-Options "DENY"
+Header always set X-XSS-Protection "1; mode=block"
+Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+# Configuración de caché para archivos estáticos
+<FilesMatch "\.(css|js|png|jpg|jpeg|gif|ico|svg)$">
+    Header set Cache-Control "max-age=31536000, public"
+</FilesMatch>
+
+# Configuración de logs
+<FilesMatch "\.log$">
+    Order Deny,Allow
+    Deny from all
+</FilesMatch>
+
+# Configuración de archivos de configuración
+<FilesMatch "\.(env|config|ini)$">
+    Order Deny,Allow
+    Deny from all
+</FilesMatch>
+
+# Configuración de directorios
+<DirectoryMatch "^/api/(config|utils|logs|cache)/">
+    Order Deny,Allow
+    Deny from all
+</DirectoryMatch>
+
+# Manejo de errores
+ErrorDocument 404 /api/error/404.php
+ErrorDocument 500 /api/error/500.php
+
+# Configuración de PHP
+php_value upload_max_filesize 10M
+php_value post_max_size 10M
+php_value max_execution_time 30
+php_value memory_limit 256M
+
+# Configuración de sesiones
+php_value session.cookie_httponly 1
+php_value session.cookie_secure 1
+php_value session.use_strict_mode 1
+php_value session.cookie_samesite "Strict"
+
+# Configuración de timezone
+php_value date.timezone "America/Argentina/Buenos_Aires" 

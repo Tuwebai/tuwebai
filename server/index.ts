@@ -7,6 +7,7 @@ import { env } from "./src/config/env.config";
 import express from "express";
 import session from "express-session";
 import MemoryStore from "memorystore";
+import fs from "fs";
 import path from "path";
 import passport from "passport";
 import { fileURLToPath } from "url";
@@ -26,6 +27,16 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
+
+const resolveStaticAssetsDir = (): string | null => {
+  const candidates = [
+    path.resolve(__dirname, "../dist"),
+    path.resolve(__dirname, "../client/public"),
+    path.resolve(__dirname, "../public"),
+  ];
+
+  return candidates.find((candidate) => fs.existsSync(candidate)) ?? null;
+};
 
 // Render / proxies
 app.set("trust proxy", 1);
@@ -155,7 +166,7 @@ app.use(
 );
 
 // Headers extra (ok)
-app.use((req, res, next) => {
+app.use((_req, res, next) => {
   res.setHeader("X-Frame-Options", "SAMEORIGIN");
   res.setHeader("X-Content-Type-Options", "nosniff");
   res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
@@ -268,7 +279,7 @@ app.use((req, res, next) => {
 });
 
 // Health
-app.get("/api/health", (req, res) => {
+app.get("/api/health", (_req, res) => {
   res.json({
     status: "OK",
     message: "Servidor funcionando correctamente",
@@ -278,7 +289,7 @@ app.get("/api/health", (req, res) => {
 });
 
 // Test endpoints
-app.get("/test", requireInternalApiKey, (req, res) => {
+app.get("/test", requireInternalApiKey, (_req, res) => {
   res.json({
     status: "OK",
     message: "Test endpoint funcionando",
@@ -299,11 +310,32 @@ app.post("/test", requireInternalApiKey, (req, res) => {
   });
 });
 
-// Favicon/static
-app.get("/favicon.ico", (req, res) => {
-  res.sendFile(path.join(__dirname, "../public/favicon.ico"));
-});
-app.use(express.static(path.join(__dirname, "../public")));
+// Static assets se sirven solo si existe un directorio real.
+const staticAssetsDir = resolveStaticAssetsDir();
+const faviconPath = staticAssetsDir ? path.join(staticAssetsDir, "favicon.ico") : null;
+
+if (staticAssetsDir) {
+  appLogger.info("static.assets_enabled", { directory: staticAssetsDir });
+
+  app.get("/favicon.ico", (_req, res) => {
+    if (faviconPath && fs.existsSync(faviconPath)) {
+      return res.sendFile(faviconPath);
+    }
+    return res.sendStatus(204);
+  });
+
+  app.use(express.static(staticAssetsDir));
+} else {
+  appLogger.warn("static.assets_missing", {
+    candidates: [
+      path.resolve(__dirname, "../dist"),
+      path.resolve(__dirname, "../client/public"),
+      path.resolve(__dirname, "../public"),
+    ],
+  });
+
+  app.get("/favicon.ico", (_req, res) => res.sendStatus(204));
+}
 
 // API routes
 app.use(contactRoutes);

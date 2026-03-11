@@ -6,6 +6,8 @@ import { storeSubmission } from '../utils/submission-store';
 import { getAdminFirestore } from '../config/firebase-admin';
 
 const MAX_LIST_LIMIT = 100;
+const isSoftDeleted = (data: Record<string, unknown> | undefined): boolean =>
+  Boolean(data?.deletedAt || data?.isDeleted === true || data?.status === 'deleted');
 
 const resolveOptionalLimit = (value: unknown): number | null => {
   if (typeof value !== 'string' || value.trim().length === 0) return null;
@@ -365,12 +367,22 @@ export const handleAddTicketResponse = async (req: Request, res: Response) => {
   try {
     const { ticketId } = req.params;
     const ref = db.collection('support_tickets').doc(ticketId);
-    const snapshot = await ref.get();
-    if (!snapshot.exists) {
+    const preloadedResource = res.locals.resourceDocument as
+      | { data?: Record<string, unknown> }
+      | undefined;
+    const currentData =
+      preloadedResource?.data ||
+      (() => {
+        return null;
+      })();
+
+    const snapshot = currentData ? null : await ref.get();
+    if (!currentData && !snapshot?.exists) {
       return res.status(404).json({ success: false, message: 'Ticket no encontrado' });
     }
 
-    const currentResponses = (snapshot.data()?.responses || []) as Array<Record<string, unknown>>;
+    const sourceData = currentData || ((snapshot?.data() || {}) as Record<string, unknown>);
+    const currentResponses = (sourceData.responses || []) as Array<Record<string, unknown>>;
     const newResponse = {
       id: Date.now().toString(),
       ...req.body,
@@ -528,7 +540,9 @@ export const handleGetTestimonials = async (_req: Request, res: Response) => {
   try {
     const limit = resolveOptionalLimit(_req.query?.limit);
     const snap = await db.collection('testimonials').get();
-    let data = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+    let data = snap.docs
+      .map((d) => ({ id: d.id, ...d.data() }))
+      .filter((testimonial) => !isSoftDeleted(testimonial));
     data.sort((a: any, b: any) => String(b.createdAt || '').localeCompare(String(a.createdAt || '')));
     if (limit !== null) {
       data = data.slice(0, limit);
@@ -547,8 +561,11 @@ export const handleGetTestimonialById = async (req: Request, res: Response) => {
   try {
     const { testimonialId } = req.params;
     const snap = await db.collection('testimonials').doc(testimonialId).get();
-    if (!snap.exists) return res.status(404).json({ success: false, message: 'Testimonio no encontrado' });
-    return res.json({ success: true, data: { id: snap.id, ...snap.data() } });
+    const data = snap.data() as Record<string, unknown> | undefined;
+    if (!snap.exists || isSoftDeleted(data)) {
+      return res.status(404).json({ success: false, message: 'Testimonio no encontrado' });
+    }
+    return res.json({ success: true, data: { id: snap.id, ...data } });
   } catch (error: any) {
     appLogger.error('public.get_testimonial_by_id_failed', {
       error: error?.message,
@@ -587,7 +604,29 @@ export const handleDeleteTestimonial = async (req: Request, res: Response) => {
 
   try {
     const { testimonialId } = req.params;
-    await db.collection('testimonials').doc(testimonialId).delete();
+    const testimonialRef = db.collection('testimonials').doc(testimonialId);
+    const snapshot = await testimonialRef.get();
+
+    if (!snapshot.exists) {
+      return res.status(404).json({ success: false, message: 'Testimonio no encontrado' });
+    }
+
+    await testimonialRef.set(
+      {
+        deletedAt: new Date().toISOString(),
+        deletedBy: 'internal_api',
+        isDeleted: true,
+        status: 'deleted',
+        updatedAt: new Date().toISOString(),
+      },
+      { merge: true }
+    );
+
+    appLogger.info('public.delete_testimonial_soft_deleted', {
+      testimonialId,
+      requestId: res.locals.requestId,
+    });
+
     return res.json({ success: true });
   } catch (error: any) {
     appLogger.error('public.delete_testimonial_failed', {

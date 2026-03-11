@@ -249,6 +249,53 @@ const run = async () => {
         const { response } = await request('/api/users/smoke-user-1/tickets');
         assert(response.status === 401, `Expected 401, got ${response.status}`);
       });
+
+      await runCase('tickets.by_id.401_without_token_when_auth_enforced', async () => {
+        const { response } = await request('/api/tickets/smoke-ticket-1');
+        assert(response.status === 401, `Expected 401, got ${response.status}`);
+      });
+
+      await runCase('projects.list.401_without_token_when_auth_enforced', async () => {
+        const { response } = await request('/api/projects');
+        assert(response.status === 401, `Expected 401, got ${response.status}`);
+      });
+
+      await runCase('tickets.list.401_without_token_when_auth_enforced', async () => {
+        const { response } = await request('/api/tickets');
+        assert(response.status === 401, `Expected 401, got ${response.status}`);
+      });
+
+      await runCase('projects.update.401_without_token_when_auth_enforced', async () => {
+        const { response } = await request('/api/projects/smoke-project-1', {
+          method: 'PUT',
+          body: JSON.stringify({
+            status: 'active',
+          }),
+        });
+        assert(response.status === 401, `Expected 401, got ${response.status}`);
+      });
+
+      await runCase('tickets.update.401_without_token_when_auth_enforced', async () => {
+        const { response } = await request('/api/users/smoke-user-1/tickets/smoke-ticket-1', {
+          method: 'PUT',
+          body: JSON.stringify({
+            status: 'resolved',
+          }),
+        });
+        assert(response.status === 401, `Expected 401, got ${response.status}`);
+      });
+
+      await runCase('tickets.responses.401_without_token_when_auth_enforced', async () => {
+        const { response } = await request('/api/users/smoke-user-1/tickets/smoke-ticket-1/responses', {
+          method: 'POST',
+          body: JSON.stringify({
+            message: 'respuesta smoke',
+            author: 'smoke',
+            authorType: 'client',
+          }),
+        });
+        assert(response.status === 401, `Expected 401, got ${response.status}`);
+      });
     } else {
       await runCase('users.get.null_or_firestore_unavailable', async () => {
         const { response, data } = await request('/api/users/smoke-user-1');
@@ -281,17 +328,19 @@ const run = async () => {
       });
     }
 
-    await runCase('projects.list_or_firestore_unavailable', async () => {
-      const { response, data } = await request('/api/projects');
-      assertFirestoreOrOk(response.status);
-      if (response.status === 200) assert(data?.success === true, 'Expected success=true');
-    });
+    if (!ENFORCE_AUTH_MODE) {
+      await runCase('projects.list_or_firestore_unavailable', async () => {
+        const { response, data } = await request('/api/projects');
+        assertFirestoreOrOk(response.status);
+        if (response.status === 200) assert(data?.success === true, 'Expected success=true');
+      });
 
-    await runCase('tickets.list_or_firestore_unavailable', async () => {
-      const { response, data } = await request('/api/tickets');
-      assertFirestoreOrOk(response.status);
-      if (response.status === 200) assert(data?.success === true, 'Expected success=true');
-    });
+      await runCase('tickets.list_or_firestore_unavailable', async () => {
+        const { response, data } = await request('/api/tickets');
+        assertFirestoreOrOk(response.status);
+        if (response.status === 200) assert(data?.success === true, 'Expected success=true');
+      });
+    }
 
     await runCase('testimonials.list_or_firestore_unavailable', async () => {
       const { response, data } = await request('/api/testimonials');

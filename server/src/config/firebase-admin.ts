@@ -1,16 +1,39 @@
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
 import admin from 'firebase-admin';
 import { env } from './env.config';
 import { appLogger } from '../utils/app-logger';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 let firestoreInstance: admin.firestore.Firestore | null = null;
 let initAttempted = false;
 let appInitialized = false;
+
+type FirebaseServiceAccountJson = {
+  project_id?: string;
+  client_email?: string;
+  private_key?: string;
+  projectId?: string;
+  clientEmail?: string;
+  privateKey?: string;
+};
+
+const normalizeServiceAccount = (
+  rawAccount: FirebaseServiceAccountJson
+): admin.ServiceAccount | null => {
+  const projectId = rawAccount.projectId ?? rawAccount.project_id;
+  const clientEmail = rawAccount.clientEmail ?? rawAccount.client_email;
+  const privateKey = rawAccount.privateKey ?? rawAccount.private_key;
+
+  if (!projectId || !clientEmail || !privateKey) {
+    return null;
+  }
+
+  return {
+    projectId,
+    clientEmail,
+    privateKey,
+  };
+};
 
 const resolveServiceAccountFromFile = (): admin.ServiceAccount | null => {
   const configuredPath = env.FIREBASE_SERVICE_ACCOUNT_KEY?.trim();
@@ -27,11 +50,11 @@ const resolveServiceAccountFromFile = (): admin.ServiceAccount | null => {
 
   try {
     const raw = fs.readFileSync(absolutePath, 'utf8');
-    return JSON.parse(raw);
-  } catch (error: any) {
+    return normalizeServiceAccount(JSON.parse(raw) as FirebaseServiceAccountJson);
+  } catch (error: unknown) {
     appLogger.error('firebase_admin.service_account_parse_failed', {
       path: absolutePath,
-      error: error?.message,
+      error: error instanceof Error ? error.message : String(error),
     });
     return null;
   }
@@ -41,10 +64,10 @@ const resolveServiceAccount = (): admin.ServiceAccount | null => {
   const inlineJson = env.FIREBASE_SERVICE_ACCOUNT_JSON?.trim();
   if (inlineJson) {
     try {
-      return JSON.parse(inlineJson);
-    } catch (error: any) {
+      return normalizeServiceAccount(JSON.parse(inlineJson) as FirebaseServiceAccountJson);
+    } catch (error: unknown) {
       appLogger.error('firebase_admin.service_account_inline_parse_failed', {
-        error: error?.message,
+        error: error instanceof Error ? error.message : String(error),
       });
     }
   }
@@ -62,7 +85,7 @@ const ensureAppInitialized = (): boolean => {
       if (serviceAccount) {
         admin.initializeApp({
           credential: admin.credential.cert(serviceAccount),
-          projectId: env.FIREBASE_PROJECT_ID || serviceAccount.project_id,
+          projectId: env.FIREBASE_PROJECT_ID || serviceAccount.projectId,
         });
       } else {
         // Fallback to application default credentials when available.
@@ -74,9 +97,9 @@ const ensureAppInitialized = (): boolean => {
     }
     appInitialized = true;
     return true;
-  } catch (error: any) {
+  } catch (error: unknown) {
     appLogger.warn('firebase_admin.unavailable', {
-      error: error?.message,
+      error: error instanceof Error ? error.message : String(error),
       hint: 'Idempotencia distribuida usara fallback local',
     });
     return false;
@@ -89,13 +112,14 @@ const ensureInitialized = (): admin.firestore.Firestore | null => {
 
   try {
     firestoreInstance = admin.firestore();
+    const adminApp = admin.app();
     appLogger.info('firebase_admin.initialized', {
-      projectId: env.FIREBASE_PROJECT_ID || firestoreInstance.app.options.projectId,
+      projectId: env.FIREBASE_PROJECT_ID || adminApp.options.projectId,
     });
     return firestoreInstance;
-  } catch (error: any) {
+  } catch (error: unknown) {
     appLogger.warn('firebase_admin.unavailable', {
-      error: error?.message,
+      error: error instanceof Error ? error.message : String(error),
       hint: 'Idempotencia distribuida usara fallback local',
     });
     return null;

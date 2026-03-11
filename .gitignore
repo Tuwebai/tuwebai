@@ -14,6 +14,7 @@ yarn-error.log*
 
 # Build outputs
 dist/
+dist-server/
 build/
 .next/
 out/
@@ -21,6 +22,7 @@ out/
 # Logs
 logs
 *.log
+ts_errors*.log
 
 # Runtime data
 pids
@@ -78,3 +80,16 @@ test-webhook-local.js
 # Firebase Admin credentials
 firebase-service-account.json
 *firebase-adminsdk*.json
+!.env.example
+
+# Repo hygiene
+.firebase/
+firebase-functions-contacto/functions/lib/
+php-temp/
+tuweb-ai.com-*.json
+
+# Non-production documentation / generated audits
+audit-*.md
+docs/*_AUDIT.md
+docs/AUTH_ACCESS_MATRIX.md
+docs/LEGACY_PHP_ISOLATION.md

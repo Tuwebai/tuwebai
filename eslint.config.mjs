@@ -6,7 +6,7 @@ export default [
     ignores: ['dist/**', 'dist-server/**', 'node_modules/**'],
   },
   {
-    files: ['client/src/**/*.{ts,tsx}'],
+    files: ['client/src/**/*.{ts,tsx}', 'server/**/*.ts'],
     languageOptions: {
       parser: tseslintParser,
       parserOptions: {
