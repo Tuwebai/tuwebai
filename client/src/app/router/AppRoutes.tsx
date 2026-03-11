@@ -9,7 +9,7 @@ import NotFound from '@/pages/not-found';
 const Corporativos = lazy(() => import('@/pages/corporativos'));
 const UXUI = lazy(() => import('@/pages/uxui'));
 const Ecommerce = lazy(() => import('@/pages/ecommerce'));
-const Consulta = lazy(() => import('@/pages/consulta'));
+const ProposalRequestPage = lazy(() => import('@/features/proposals/components/proposal-request-page'));
 
 const ConsultoriaEstrategica = lazy(() => import('@/pages/servicios/consultoria-estrategica'));
 const DesarrolloWeb = lazy(() => import('@/pages/servicios/desarrollo-web'));
@@ -40,7 +40,7 @@ export default function AppRoutes() {
       <Route path="/corporativos" element={<LazyRoute><Corporativos /></LazyRoute>} />
       <Route path="/uxui" element={<LazyRoute><UXUI /></LazyRoute>} />
       <Route path="/ecommerce" element={<LazyRoute><Ecommerce /></LazyRoute>} />
-      <Route path="/consulta" element={<LazyRoute><Consulta /></LazyRoute>} />
+      <Route path="/consulta" element={<LazyRoute><ProposalRequestPage /></LazyRoute>} />
 
       <Route path="/servicios/consultoria-estrategica" element={<LazyRoute><ConsultoriaEstrategica /></LazyRoute>} />
       <Route path="/servicios/desarrollo-web" element={<LazyRoute><DesarrolloWeb /></LazyRoute>} />

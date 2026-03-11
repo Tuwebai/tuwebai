@@ -356,6 +356,7 @@ La tabla de rutas del runtime frontend ya fue extraída a `client/src/app/router
 Las páginas `pago-exitoso`, `pago-fallido` y `pago-pendiente` ya no forman parte estructural del router; el runtime consume directamente `features/payments/components/payment-return-view` y esas páginas quedan como entrypoints mínimos temporales. ✅ corregido parcialmente
 La página `contacto` ya no forma parte estructural del router; el runtime consume directamente `features/contact/components/support-contact-page` y `client/src/pages/contacto.tsx` quedó como bridge mínimo temporal. ✅ corregido parcialmente
 La página `auth-verify` ya no forma parte estructural del router; el runtime consume directamente `features/auth/components/auth-verify-page` y `client/src/pages/auth-verify.tsx` quedó como bridge mínimo temporal. ✅ corregido parcialmente
+La página `consulta` ya no forma parte estructural del router; el runtime consume directamente `features/proposals/components/proposal-request-page` y `client/src/pages/consulta.tsx` quedó como bridge mínimo temporal. ✅ corregido parcialmente
 
 ### 3. Backend tipo “God controller”
 
