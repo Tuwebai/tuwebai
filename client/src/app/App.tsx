@@ -5,12 +5,10 @@ import { SkipLink } from '@/components/a11y';
 import { ResourcePreload, MemoryManager } from '@/components/performance';
 import { LazyRoute } from '@/components/route-wrapper';
 import Footer from '@/components/ui/footer';
-import { ThemeProvider } from '@/contexts/ThemeContext';
-import { AuthProvider } from '@/features/auth/context/AuthContext';
-import { LoginModalProvider } from '@/features/auth/hooks/use-login-modal';
 import analytics from '@/lib/analytics';
 import Home from '@/pages/home';
 import NotFound from '@/pages/not-found';
+import AppProviders from '@/app/providers/AppProviders';
 
 const GlobalNavbar = lazy(() => import('@/app/layout/global-navbar'));
 const Toaster = lazy(() => import('@/components/ui/toaster').then((module) => ({ default: module.Toaster })));
@@ -63,63 +61,59 @@ export default function App() {
   }, [location]);
 
   return (
-    <ThemeProvider>
-      <AuthProvider>
-        <LoginModalProvider>
-          <>
-            <MemoryManager thresholdMB={150} debug={false} />
-            <ResourcePreload resources={[]} />
+    <AppProviders>
+      <>
+        <MemoryManager thresholdMB={150} debug={false} />
+        <ResourcePreload resources={[]} />
 
-            <SkipLink />
-            {shouldUseGlobalNav && (
-              <Suspense fallback={<div className="h-16" />}>
-                <GlobalNavbar />
-              </Suspense>
-            )}
+        <SkipLink />
+        {shouldUseGlobalNav && (
+          <Suspense fallback={<div className="h-16" />}>
+            <GlobalNavbar />
+          </Suspense>
+        )}
 
-            <Routes>
-              <Route path="/" element={<Home />} />
+        <Routes>
+          <Route path="/" element={<Home />} />
 
-              <Route path="/corporativos" element={<LazyRoute><Corporativos /></LazyRoute>} />
-              <Route path="/uxui" element={<LazyRoute><UXUI /></LazyRoute>} />
-              <Route path="/ecommerce" element={<LazyRoute><Ecommerce /></LazyRoute>} />
-              <Route path="/consulta" element={<LazyRoute><Consulta /></LazyRoute>} />
+          <Route path="/corporativos" element={<LazyRoute><Corporativos /></LazyRoute>} />
+          <Route path="/uxui" element={<LazyRoute><UXUI /></LazyRoute>} />
+          <Route path="/ecommerce" element={<LazyRoute><Ecommerce /></LazyRoute>} />
+          <Route path="/consulta" element={<LazyRoute><Consulta /></LazyRoute>} />
 
-              <Route path="/servicios/consultoria-estrategica" element={<LazyRoute><ConsultoriaEstrategica /></LazyRoute>} />
-              <Route path="/servicios/desarrollo-web" element={<LazyRoute><DesarrolloWeb /></LazyRoute>} />
-              <Route path="/servicios/posicionamiento-marketing" element={<LazyRoute><PosicionamientoMarketing /></LazyRoute>} />
-              <Route path="/servicios/automatizacion-marketing" element={<LazyRoute><AutomatizacionMarketing /></LazyRoute>} />
+          <Route path="/servicios/consultoria-estrategica" element={<LazyRoute><ConsultoriaEstrategica /></LazyRoute>} />
+          <Route path="/servicios/desarrollo-web" element={<LazyRoute><DesarrolloWeb /></LazyRoute>} />
+          <Route path="/servicios/posicionamiento-marketing" element={<LazyRoute><PosicionamientoMarketing /></LazyRoute>} />
+          <Route path="/servicios/automatizacion-marketing" element={<LazyRoute><AutomatizacionMarketing /></LazyRoute>} />
 
-              <Route path="/faq" element={<LazyRoute><FAQ /></LazyRoute>} />
-              <Route path="/equipo" element={<LazyRoute><Equipo /></LazyRoute>} />
-              <Route path="/vacantes" element={<LazyRoute><Vacantes /></LazyRoute>} />
-              <Route path="/tecnologias" element={<LazyRoute><Tecnologias /></LazyRoute>} />
+          <Route path="/faq" element={<LazyRoute><FAQ /></LazyRoute>} />
+          <Route path="/equipo" element={<LazyRoute><Equipo /></LazyRoute>} />
+          <Route path="/vacantes" element={<LazyRoute><Vacantes /></LazyRoute>} />
+          <Route path="/tecnologias" element={<LazyRoute><Tecnologias /></LazyRoute>} />
 
-              <Route path="/estudio" element={<LazyRoute><Estudio /></LazyRoute>} />
+          <Route path="/estudio" element={<LazyRoute><Estudio /></LazyRoute>} />
 
-              <Route path="/auth/verify/:token" element={<LazyRoute><AuthVerify /></LazyRoute>} />
-              <Route path="/auth/reset-password" element={<LazyRoute><AuthVerify /></LazyRoute>} />
-              <Route path="/panel" element={<LazyRoute><PanelUsuario /></LazyRoute>} />
+          <Route path="/auth/verify/:token" element={<LazyRoute><AuthVerify /></LazyRoute>} />
+          <Route path="/auth/reset-password" element={<LazyRoute><AuthVerify /></LazyRoute>} />
+          <Route path="/panel" element={<LazyRoute><PanelUsuario /></LazyRoute>} />
 
-              <Route path="/pago-exitoso" element={<LazyRoute><PagoExitoso /></LazyRoute>} />
-              <Route path="/pago-fallido" element={<LazyRoute><PagoFallido /></LazyRoute>} />
-              <Route path="/pago-pendiente" element={<LazyRoute><PagoPendiente /></LazyRoute>} />
-              <Route path="/contacto" element={<LazyRoute><Contacto /></LazyRoute>} />
+          <Route path="/pago-exitoso" element={<LazyRoute><PagoExitoso /></LazyRoute>} />
+          <Route path="/pago-fallido" element={<LazyRoute><PagoFallido /></LazyRoute>} />
+          <Route path="/pago-pendiente" element={<LazyRoute><PagoPendiente /></LazyRoute>} />
+          <Route path="/contacto" element={<LazyRoute><Contacto /></LazyRoute>} />
 
-              <Route path="/terminos-condiciones" element={<LazyRoute><TerminosCondiciones /></LazyRoute>} />
-              <Route path="/politica-privacidad" element={<LazyRoute><PoliticaPrivacidad /></LazyRoute>} />
-              <Route path="/politica-cookies" element={<LazyRoute><PoliticaCookies /></LazyRoute>} />
+          <Route path="/terminos-condiciones" element={<LazyRoute><TerminosCondiciones /></LazyRoute>} />
+          <Route path="/politica-privacidad" element={<LazyRoute><PoliticaPrivacidad /></LazyRoute>} />
+          <Route path="/politica-cookies" element={<LazyRoute><PoliticaCookies /></LazyRoute>} />
 
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+          <Route path="*" element={<NotFound />} />
+        </Routes>
 
-            <Footer />
-            <Suspense fallback={null}>
-              <Toaster />
-            </Suspense>
-          </>
-        </LoginModalProvider>
-      </AuthProvider>
-    </ThemeProvider>
+        <Footer />
+        <Suspense fallback={null}>
+          <Toaster />
+        </Suspense>
+      </>
+    </AppProviders>
   );
 }
