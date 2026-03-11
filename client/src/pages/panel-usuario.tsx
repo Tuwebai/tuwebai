@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Navigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/features/auth/context/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import WhatsAppButton from '@/components/ui/whatsapp-button';
 import MetaTags from '@/components/seo/meta-tags';

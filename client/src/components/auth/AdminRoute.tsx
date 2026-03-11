@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { useAuthState } from '../../contexts/AuthContext';
+import { useAuthState } from '@/features/auth/context/AuthContext';
 import { useLoginModal } from '../../hooks/use-login-modal';
 
 interface AdminRouteProps {

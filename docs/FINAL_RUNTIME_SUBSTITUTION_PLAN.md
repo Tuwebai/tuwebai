@@ -94,7 +94,8 @@ Resultado esperado:
 Estado:
 
 - ✅ corregido parcialmente: `client/src/hooks/use-login-modal.tsx` ya carga `features/auth/components/LoginModal`
-- pendientes `App.tsx`, `panel-usuario.tsx`, `global-navbar.tsx`, `AdminRoute.tsx`, `DashboardRoute.tsx` y wrappers de auth/context legacy
+- ✅ corregido parcialmente: `client/src/pages/panel-usuario.tsx`, `client/src/components/auth/AdminRoute.tsx` y `client/src/components/auth/DashboardRoute.tsx` ya consumen `features/auth/context/AuthContext`
+- pendientes `App.tsx`, `global-navbar.tsx` y wrappers de auth/context legacy
 
 Objetivo:
 
