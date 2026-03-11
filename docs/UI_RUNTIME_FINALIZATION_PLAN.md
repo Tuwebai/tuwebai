@@ -185,6 +185,7 @@ Estado:
 
 - ✅ corregido parcialmente: `contact` ya consume `client/src/features/contact/components/contact-section.tsx` desde `home.tsx`
 - ✅ corregido parcialmente: `testimonials` ya consume `client/src/features/testimonials/components/testimonials-section.tsx` desde `home.tsx`
+- ✅ corregido parcialmente: `payments` ya consume `client/src/features/payments/components/pricing-section.tsx` desde `home.tsx` y `client/src/features/payments/components/payment-return-view.tsx` desde `pages/pago-*`
 
 Objetivo:
 

@@ -344,9 +344,9 @@ Hay imports directos de `backendApi` en componentes/páginas, por ejemplo:
 - [`client/src/pages/consulta.tsx`](./client/src/pages/consulta.tsx) ✅ corregido parcialmente: API directa movida a `features/proposals/services`
 - [`client/src/pages/auth-verify.tsx`](./client/src/pages/auth-verify.tsx)
 - [`client/src/components/ui/newsletter-form.tsx`](./client/src/components/ui/newsletter-form.tsx) ✅ corregido parcialmente: API directa movida a `features/newsletter/services`
-- [`client/src/components/sections/pricing-section.tsx`](./client/src/components/sections/pricing-section.tsx) ✅ corregido parcialmente: checkout movido a `features/payments/services`
+- [`client/src/components/sections/pricing-section.tsx`](./client/src/components/sections/pricing-section.tsx) ✅ corregido: runtime migrado a `features/payments/components/pricing-section.tsx`
 - [`client/src/components/sections/contact-section.tsx`](./client/src/components/sections/contact-section.tsx) ✅ corregido: runtime migrado a `features/contact/components/contact-section.tsx`
-- [`client/src/components/payment/payment-return-view.tsx`](./client/src/components/payment/payment-return-view.tsx) ✅ corregido parcialmente: lookup de estado movido a `features/payments/hooks`
+- [`client/src/components/payment/payment-return-view.tsx`](./client/src/components/payment/payment-return-view.tsx) ✅ corregido: runtime migrado a `features/payments/components/payment-return-view.tsx`
 
 Esto rompe el patrón indicado por la gobernanza del repo y acopla UI con transporte. ✅ corregido parcialmente: `testimonials`, `auth`, `contact`, `newsletter`, `payments`, `support`, `projects`, `users` y `proposals` ya migrados a `features/`; quedan remanentes legacy de composición/UI
 
