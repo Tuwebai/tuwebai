@@ -257,6 +257,8 @@ Estado:
 - ✅ corregido parcialmente: `contacto` dejó de ser dependencia estructural del router; `AppRoutes` ya consume `features/contact/components/support-contact-page`
 - ✅ corregido parcialmente: `auth-verify` dejó de ser dependencia estructural del router; `AppRoutes` ya consume `features/auth/components/auth-verify-page`
 - ✅ corregido parcialmente: `consulta` dejó de ser dependencia estructural del router; `AppRoutes` ya consume `features/proposals/components/proposal-request-page`
+- ✅ corregido parcialmente: re-auditoría completada; `home` sigue siendo runtime estructural del landing y no corresponde moverlo en Fase 4 sin definir antes el target final de `marketing-home`
+- ✅ corregido parcialmente: re-auditoría completada; `panel-usuario` sigue concentrando orquestación funcional y no corresponde adelgazarlo en esta fase sin separar antes su flujo por dominio
 
 Objetivo:
 
