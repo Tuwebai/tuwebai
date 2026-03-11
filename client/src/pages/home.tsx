@@ -15,7 +15,7 @@ const TestimonialsSection = lazy(() => import('@/features/testimonials/component
 const ContactSection = lazy(() => import('@/features/contact/components/contact-section'));
 const PricingSection = lazy(() => import('@/features/payments/components/pricing-section'));
 const ComparisonSection = lazy(() => import('@/features/marketing-home/components/comparison-section'));
-const ShowroomSection = lazy(() => import('@/components/sections/showroom-section'));
+const ShowroomSection = lazy(() => import('@/features/marketing-home/components/showroom-section'));
 const CompanyLogoSlider = lazy(() => import('@/components/ui/company-logo-slider'));
 
 export default function Home() {

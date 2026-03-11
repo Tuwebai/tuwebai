@@ -125,6 +125,7 @@ Estado:
 - ✅ corregido parcialmente: `tech-section` ya vive en `client/src/features/marketing-home/components/tech-section.tsx`; `home.tsx` consume esa implementación y `components/sections/tech-section.tsx` quedó como wrapper temporal
 - ✅ corregido parcialmente: `impact-section` ya vive en `client/src/features/marketing-home/components/impact-section.tsx`; `home.tsx` consume esa implementación y `components/sections/impact-section.tsx` quedó como wrapper temporal
 - ✅ corregido parcialmente: `comparison-section` ya vive en `client/src/features/marketing-home/components/comparison-section.tsx`; `home.tsx` consume esa implementación y `components/sections/comparison-section.tsx` quedó como wrapper temporal
+- ✅ corregido parcialmente: `showroom-section` ya vive en `client/src/features/marketing-home/components/showroom-section.tsx`; `home.tsx` consume esa implementación y `components/sections/showroom-section.tsx` quedó como wrapper temporal
 
 Objetivo:
 
