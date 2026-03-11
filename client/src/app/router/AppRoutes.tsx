@@ -23,7 +23,7 @@ const Tecnologias = lazy(() => import('@/pages/tecnologias'));
 
 const Estudio = lazy(() => import('@/pages/estudio'));
 
-const AuthVerify = lazy(() => import('@/pages/auth-verify'));
+const AuthVerifyPage = lazy(() => import('@/features/auth/components/auth-verify-page'));
 const PanelUsuario = lazy(() => import('@/pages/panel-usuario'));
 
 const SupportContactPage = lazy(() => import('@/features/contact/components/support-contact-page'));
@@ -54,8 +54,8 @@ export default function AppRoutes() {
 
       <Route path="/estudio" element={<LazyRoute><Estudio /></LazyRoute>} />
 
-      <Route path="/auth/verify/:token" element={<LazyRoute><AuthVerify /></LazyRoute>} />
-      <Route path="/auth/reset-password" element={<LazyRoute><AuthVerify /></LazyRoute>} />
+      <Route path="/auth/verify/:token" element={<LazyRoute><AuthVerifyPage /></LazyRoute>} />
+      <Route path="/auth/reset-password" element={<LazyRoute><AuthVerifyPage /></LazyRoute>} />
       <Route path="/panel" element={<LazyRoute><PanelUsuario /></LazyRoute>} />
 
       <Route
