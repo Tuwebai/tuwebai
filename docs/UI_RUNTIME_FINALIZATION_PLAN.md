@@ -141,6 +141,8 @@ Estado:
 - componentes movidos: `dialog`, `drawer`, `tabs`, `tooltip`, `hover-card`, `scroll-area`
 - ✅ corregido parcialmente: lote 5 movido a `shared/ui`
 - componentes movidos: `popover`, `sheet`, `dropdown-menu`, `context-menu`, `navigation-menu`, `menubar`
+- ✅ corregido parcialmente: lote 6 movido a `shared/ui`
+- componentes movidos: `collapsible`, `toggle`, `toggle-group`, `slider`, `progress`, `resizable`
 
 Objetivo:
 

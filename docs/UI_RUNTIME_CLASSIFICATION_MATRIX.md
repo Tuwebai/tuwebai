@@ -29,7 +29,7 @@ Regla de esta fase:
 | `client/src/components/ui/radio-group.tsx` | `client/src/shared/ui/radio-group.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
 | `client/src/components/ui/select.tsx` | `client/src/shared/ui/select.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
 | `client/src/components/ui/switch.tsx` | `client/src/shared/ui/switch.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
-| `client/src/components/ui/slider.tsx` | `client/src/shared/ui/slider.tsx` | `shared/ui` | Bajo | primitive reusable |
+| `client/src/components/ui/slider.tsx` | `client/src/shared/ui/slider.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
 | `client/src/components/ui/input-otp.tsx` | `client/src/shared/ui/input-otp.tsx` | `shared/ui` | Bajo | primitive reusable |
 | `client/src/components/ui/card.tsx` | `client/src/shared/ui/card.tsx` | `shared/ui` | Bajo | contenedor reusable ✅ corregido parcialmente |
 | `client/src/components/ui/badge.tsx` | `client/src/shared/ui/badge.tsx` | `shared/ui` | Bajo | UI reusable ✅ corregido parcialmente |
@@ -46,10 +46,10 @@ Regla de esta fase:
 | `client/src/components/ui/navigation-menu.tsx` | `client/src/shared/ui/navigation-menu.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
 | `client/src/components/ui/menubar.tsx` | `client/src/shared/ui/menubar.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
 | `client/src/components/ui/accordion.tsx` | `client/src/shared/ui/accordion.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
-| `client/src/components/ui/collapsible.tsx` | `client/src/shared/ui/collapsible.tsx` | `shared/ui` | Bajo | primitive reusable |
+| `client/src/components/ui/collapsible.tsx` | `client/src/shared/ui/collapsible.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
 | `client/src/components/ui/tabs.tsx` | `client/src/shared/ui/tabs.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
-| `client/src/components/ui/toggle.tsx` | `client/src/shared/ui/toggle.tsx` | `shared/ui` | Bajo | primitive reusable |
-| `client/src/components/ui/toggle-group.tsx` | `client/src/shared/ui/toggle-group.tsx` | `shared/ui` | Bajo | primitive reusable |
+| `client/src/components/ui/toggle.tsx` | `client/src/shared/ui/toggle.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
+| `client/src/components/ui/toggle-group.tsx` | `client/src/shared/ui/toggle-group.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
 | `client/src/components/ui/tooltip.tsx` | `client/src/shared/ui/tooltip.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
 | `client/src/components/ui/breadcrumb.tsx` | `client/src/shared/ui/breadcrumb.tsx` | `shared/ui` | Bajo | reusable navigation helper |
 | `client/src/components/ui/pagination.tsx` | `client/src/shared/ui/pagination.tsx` | `shared/ui` | Bajo | reusable navigation helper |
@@ -59,9 +59,9 @@ Regla de esta fase:
 | `client/src/components/ui/calendar.tsx` | `client/src/shared/ui/calendar.tsx` | `shared/ui` | Medio | reusable con dependencia externa |
 | `client/src/components/ui/form.tsx` | `client/src/shared/ui/form.tsx` | `shared/ui` | Medio | shared pero muy conectado al sistema de forms |
 | `client/src/components/ui/command.tsx` | `client/src/shared/ui/command.tsx` | `shared/ui` | Medio | shared con composición compleja |
-| `client/src/components/ui/resizable.tsx` | `client/src/shared/ui/resizable.tsx` | `shared/ui` | Bajo | primitive reusable |
+| `client/src/components/ui/resizable.tsx` | `client/src/shared/ui/resizable.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
 | `client/src/components/ui/scroll-area.tsx` | `client/src/shared/ui/scroll-area.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
-| `client/src/components/ui/progress.tsx` | `client/src/shared/ui/progress.tsx` | `shared/ui` | Bajo | primitive reusable |
+| `client/src/components/ui/progress.tsx` | `client/src/shared/ui/progress.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
 | `client/src/components/ui/separator.tsx` | `client/src/shared/ui/separator.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
 | `client/src/components/ui/skeleton.tsx` | `client/src/shared/ui/skeleton.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
 | `client/src/components/ui/loading-spinner.tsx` | `client/src/shared/ui/loading-spinner.tsx` | `shared/ui` | Bajo | visual helper reusable |
