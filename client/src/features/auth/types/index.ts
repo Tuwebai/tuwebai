@@ -1,6 +1,6 @@
-import type { User as FirestoreUser, UserPreferences } from '@/services/firestore';
+import type { User as AppUser, UserPreferences } from '@/features/users/types';
 
-export interface User extends FirestoreUser {}
+export interface User extends AppUser {}
 
 export interface RegisterData {
   username: string;

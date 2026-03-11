@@ -4,7 +4,7 @@ import type { User, RegisterData, UserPreferences } from '../types';
 
 let firebasePromise: Promise<any> | null = null;
 let fireauthPromise: Promise<any> | null = null;
-let firestorePromise: Promise<any> | null = null;
+let usersServicePromise: Promise<any> | null = null;
 
 const getFirebase = () => {
   if (!firebasePromise) firebasePromise = import('@/lib/firebase');
@@ -16,9 +16,9 @@ const getFirebaseAuth = () => {
   return fireauthPromise;
 };
 
-const getFirestoreService = () => {
-  if (!firestorePromise) firestorePromise = import('@/services/firestore');
-  return firestorePromise;
+const getUsersService = () => {
+  if (!usersServicePromise) usersServicePromise = import('@/features/users/services/users.service');
+  return usersServicePromise;
 };
 
 export const useLoginMutation = () => {
@@ -46,7 +46,7 @@ export const useGoogleLoginMutation = () => {
     mutationFn: async () => {
       const { auth, googleProvider } = await getFirebase();
       const { signInWithPopup } = await getFirebaseAuth();
-      const { getUser, setUser } = await getFirestoreService();
+      const { getUser, setUser } = await getUsersService();
 
       const result = await signInWithPopup(auth, googleProvider);
       const firebaseUser = result.user;
@@ -105,7 +105,7 @@ export const useRegisterMutation = () => {
     mutationFn: async (userData: RegisterData) => {
       const { auth } = await getFirebase();
       const { createUserWithEmailAndPassword, updateProfile } = await getFirebaseAuth();
-      const { setUser } = await getFirestoreService();
+      const { setUser } = await getUsersService();
 
       const userCredential = await createUserWithEmailAndPassword(auth, userData.email, userData.password);
 
@@ -141,7 +141,7 @@ export const useUpdateProfileMutation = () => {
 
   return useMutation({
     mutationFn: async ({ uid, data }: { uid: string; data: Partial<User> }) => {
-      const { updateUser } = await getFirestoreService();
+      const { updateUser } = await getUsersService();
       await updateUser(uid, data);
       return data;
     },
@@ -160,7 +160,7 @@ export const useUpdatePreferencesMutation = () => {
 
   return useMutation({
     mutationFn: async ({ uid, preferences }: { uid: string; preferences: Partial<UserPreferences> }) => {
-      const { setUserPreferences } = await getFirestoreService();
+      const { setUserPreferences } = await getUsersService();
       await setUserPreferences(uid, preferences);
       return preferences;
     },

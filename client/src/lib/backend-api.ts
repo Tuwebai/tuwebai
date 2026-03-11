@@ -1,5 +1,5 @@
 import { apiFetch } from '@/lib/http-client';
-import type { User, UserPreferences } from '@/services/firestore';
+import type { User, UserPreferences } from '@/features/users/types';
 
 export type PaymentPlan = 'esencial' | 'avanzado' | 'premium';
 

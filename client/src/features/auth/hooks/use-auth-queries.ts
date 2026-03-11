@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import type { UserPreferences } from '../types';
 
-let firestorePromise: Promise<any> | null = null;
+let usersServicePromise: Promise<any> | null = null;
 
-const getFirestoreService = () => {
-  if (!firestorePromise) firestorePromise = import('@/services/firestore');
-  return firestorePromise;
+const getUsersService = () => {
+  if (!usersServicePromise) usersServicePromise = import('@/features/users/services/users.service');
+  return usersServicePromise;
 };
 
 export const useUserPreferencesQuery = (uid: string | undefined) => {
@@ -13,7 +13,7 @@ export const useUserPreferencesQuery = (uid: string | undefined) => {
     queryKey: ['userPreferences', uid],
     queryFn: async () => {
       if (!uid) return null;
-      const { getUserPreferences } = await getFirestoreService();
+      const { getUserPreferences } = await getUsersService();
       const prefs = await getUserPreferences(uid);
       return prefs || null;
     },

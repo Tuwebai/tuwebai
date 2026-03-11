@@ -200,7 +200,7 @@ Compatibilidad temporal:
 - `pages/` y `components/` pueden coexistir mientras se migran consumidores
 - no se borran carpetas legacy hasta que no queden imports activos
 
-### Fase 4. Frontend: migrar por dominios ✅ corregido parcialmente
+### Fase 4. Frontend: migrar por dominios ✅ corregido
 
 Orden recomendado:
 
@@ -210,7 +210,7 @@ Orden recomendado:
 4. `newsletter` ✅ corregido
 5. `payments` ✅ corregido
 6. `support` ✅ corregido
-7. `projects/user`
+7. `projects/user` ✅ corregido
 
 Cada dominio debe quedar con:
 
@@ -310,7 +310,7 @@ Checklist:
 9. Migrar `auth`. ✅ corregido
 10. Migrar `contact/newsletter`. ✅ corregido
 11. Migrar `payments`. ✅ corregido
-12. Migrar `support/projects/user`. ✅ corregido parcialmente: `support` ya migrado; restan `projects/user`
+12. Migrar `support/projects/user`. ✅ corregido
 13. Consolidar config duplicada.
 14. Eliminar compatibilidad temporal.
 
@@ -385,7 +385,7 @@ No ejecutar un move masivo.
 
 El siguiente paso correcto es:
 
-1. continuar Fase 4 de migración frontend por dominio
-2. migrar `projects/user`
-3. mover un solo dominio
+1. cerrar remanentes fuera del plan por dominio
+2. abrir Fase 5 de consolidación de config duplicada
+3. mover un solo frente por vez
 4. validar `npm run check`, `npm run lint`, `npm run build`, `npm run smoke`
