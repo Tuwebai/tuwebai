@@ -26,7 +26,7 @@ const Estudio = lazy(() => import('@/pages/estudio'));
 const AuthVerify = lazy(() => import('@/pages/auth-verify'));
 const PanelUsuario = lazy(() => import('@/pages/panel-usuario'));
 
-const Contacto = lazy(() => import('@/pages/contacto'));
+const SupportContactPage = lazy(() => import('@/features/contact/components/support-contact-page'));
 
 const TerminosCondiciones = lazy(() => import('@/pages/terminos-condiciones'));
 const PoliticaPrivacidad = lazy(() => import('@/pages/politica-privacidad'));
@@ -97,7 +97,7 @@ export default function AppRoutes() {
           </LazyRoute>
         }
       />
-      <Route path="/contacto" element={<LazyRoute><Contacto /></LazyRoute>} />
+      <Route path="/contacto" element={<LazyRoute><SupportContactPage /></LazyRoute>} />
 
       <Route path="/terminos-condiciones" element={<LazyRoute><TerminosCondiciones /></LazyRoute>} />
       <Route path="/politica-privacidad" element={<LazyRoute><PoliticaPrivacidad /></LazyRoute>} />

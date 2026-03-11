@@ -354,6 +354,7 @@ El runtime principal ya fue reubicado a `client/src/app/App.tsx` y `client/src/A
 Los providers globales del runtime frontend ya fueron extraídos a `client/src/app/providers/AppProviders.tsx`, reduciendo acoplamiento en `App`. ✅ corregido parcialmente
 La tabla de rutas del runtime frontend ya fue extraída a `client/src/app/router/AppRoutes.tsx`, manteniendo paths y lazy loading sin cambios funcionales. ✅ corregido parcialmente
 Las páginas `pago-exitoso`, `pago-fallido` y `pago-pendiente` ya no forman parte estructural del router; el runtime consume directamente `features/payments/components/payment-return-view` y esas páginas quedan como entrypoints mínimos temporales. ✅ corregido parcialmente
+La página `contacto` ya no forma parte estructural del router; el runtime consume directamente `features/contact/components/support-contact-page` y `client/src/pages/contacto.tsx` quedó como bridge mínimo temporal. ✅ corregido parcialmente
 
 ### 3. Backend tipo “God controller”
 

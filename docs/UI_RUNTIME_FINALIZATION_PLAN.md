@@ -254,6 +254,7 @@ Definition of Done:
 Estado:
 
 - ✅ corregido parcialmente: `pago-exitoso`, `pago-fallido` y `pago-pendiente` dejaron de ser dependencia estructural del router; `AppRoutes` ya consume `features/payments/components/payment-return-view`
+- ✅ corregido parcialmente: `contacto` dejó de ser dependencia estructural del router; `AppRoutes` ya consume `features/contact/components/support-contact-page`
 
 Objetivo:
 
