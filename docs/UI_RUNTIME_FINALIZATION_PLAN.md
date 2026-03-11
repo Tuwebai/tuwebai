@@ -216,6 +216,7 @@ Estado:
 - ✅ corregido parcialmente: implementación principal movida a `client/src/app/App.tsx`
 - ✅ corregido parcialmente: `client/src/App.tsx` quedó como bridge temporal controlado
 - ✅ corregido parcialmente: providers globales extraídos a `client/src/app/providers/AppProviders.tsx`
+- ✅ corregido parcialmente: tabla de rutas extraída a `client/src/app/router/AppRoutes.tsx`
 
 Objetivo:
 

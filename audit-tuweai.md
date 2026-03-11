@@ -352,6 +352,7 @@ Esto rompe el patrón indicado por la gobernanza del repo y acopla UI con transp
 Las `sections` restantes del landing (`hero`, `philosophy`, `services`, `process`, `tech`, `impact`, `comparison`, `showroom`) fueron re-auditadas y siguen temporales por formar parte del runtime estructural del home; no conviene moverlas antes de `Runtime shell` y `Pages finalization`. ✅ corregido parcialmente
 El runtime principal ya fue reubicado a `client/src/app/App.tsx` y `client/src/App.tsx` quedó como bridge temporal controlado. ✅ corregido parcialmente
 Los providers globales del runtime frontend ya fueron extraídos a `client/src/app/providers/AppProviders.tsx`, reduciendo acoplamiento en `App`. ✅ corregido parcialmente
+La tabla de rutas del runtime frontend ya fue extraída a `client/src/app/router/AppRoutes.tsx`, manteniendo paths y lazy loading sin cambios funcionales. ✅ corregido parcialmente
 
 ### 3. Backend tipo “God controller”
 
