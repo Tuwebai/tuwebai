@@ -135,6 +135,8 @@ Estado:
 - componentes movidos: `button`, `input`, `textarea`, `label`
 - ✅ corregido parcialmente: lote 2 movido a `shared/ui`
 - componentes movidos: `checkbox`, `select`, `radio-group`, `switch`
+- ✅ corregido parcialmente: lote 3 movido a `shared/ui`
+- componentes movidos: `accordion`, `alert`, `badge`, `card`, `separator`, `skeleton`
 
 Objetivo:
 

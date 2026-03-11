@@ -31,10 +31,10 @@ Regla de esta fase:
 | `client/src/components/ui/switch.tsx` | `client/src/shared/ui/switch.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
 | `client/src/components/ui/slider.tsx` | `client/src/shared/ui/slider.tsx` | `shared/ui` | Bajo | primitive reusable |
 | `client/src/components/ui/input-otp.tsx` | `client/src/shared/ui/input-otp.tsx` | `shared/ui` | Bajo | primitive reusable |
-| `client/src/components/ui/card.tsx` | `client/src/shared/ui/card.tsx` | `shared/ui` | Bajo | contenedor reusable |
-| `client/src/components/ui/badge.tsx` | `client/src/shared/ui/badge.tsx` | `shared/ui` | Bajo | UI reusable |
+| `client/src/components/ui/card.tsx` | `client/src/shared/ui/card.tsx` | `shared/ui` | Bajo | contenedor reusable ✅ corregido parcialmente |
+| `client/src/components/ui/badge.tsx` | `client/src/shared/ui/badge.tsx` | `shared/ui` | Bajo | UI reusable ✅ corregido parcialmente |
 | `client/src/components/ui/avatar.tsx` | `client/src/shared/ui/avatar.tsx` | `shared/ui` | Bajo | UI reusable |
-| `client/src/components/ui/alert.tsx` | `client/src/shared/ui/alert.tsx` | `shared/ui` | Bajo | primitive reusable |
+| `client/src/components/ui/alert.tsx` | `client/src/shared/ui/alert.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
 | `client/src/components/ui/alert-dialog.tsx` | `client/src/shared/ui/alert-dialog.tsx` | `shared/ui` | Bajo | primitive reusable |
 | `client/src/components/ui/dialog.tsx` | `client/src/shared/ui/dialog.tsx` | `shared/ui` | Bajo | primitive reusable |
 | `client/src/components/ui/drawer.tsx` | `client/src/shared/ui/drawer.tsx` | `shared/ui` | Bajo | primitive reusable |
@@ -45,7 +45,7 @@ Regla de esta fase:
 | `client/src/components/ui/context-menu.tsx` | `client/src/shared/ui/context-menu.tsx` | `shared/ui` | Bajo | primitive reusable |
 | `client/src/components/ui/navigation-menu.tsx` | `client/src/shared/ui/navigation-menu.tsx` | `shared/ui` | Bajo | primitive reusable |
 | `client/src/components/ui/menubar.tsx` | `client/src/shared/ui/menubar.tsx` | `shared/ui` | Bajo | primitive reusable |
-| `client/src/components/ui/accordion.tsx` | `client/src/shared/ui/accordion.tsx` | `shared/ui` | Bajo | primitive reusable |
+| `client/src/components/ui/accordion.tsx` | `client/src/shared/ui/accordion.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
 | `client/src/components/ui/collapsible.tsx` | `client/src/shared/ui/collapsible.tsx` | `shared/ui` | Bajo | primitive reusable |
 | `client/src/components/ui/tabs.tsx` | `client/src/shared/ui/tabs.tsx` | `shared/ui` | Bajo | primitive reusable |
 | `client/src/components/ui/toggle.tsx` | `client/src/shared/ui/toggle.tsx` | `shared/ui` | Bajo | primitive reusable |
@@ -62,8 +62,8 @@ Regla de esta fase:
 | `client/src/components/ui/resizable.tsx` | `client/src/shared/ui/resizable.tsx` | `shared/ui` | Bajo | primitive reusable |
 | `client/src/components/ui/scroll-area.tsx` | `client/src/shared/ui/scroll-area.tsx` | `shared/ui` | Bajo | primitive reusable |
 | `client/src/components/ui/progress.tsx` | `client/src/shared/ui/progress.tsx` | `shared/ui` | Bajo | primitive reusable |
-| `client/src/components/ui/separator.tsx` | `client/src/shared/ui/separator.tsx` | `shared/ui` | Bajo | primitive reusable |
-| `client/src/components/ui/skeleton.tsx` | `client/src/shared/ui/skeleton.tsx` | `shared/ui` | Bajo | primitive reusable |
+| `client/src/components/ui/separator.tsx` | `client/src/shared/ui/separator.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
+| `client/src/components/ui/skeleton.tsx` | `client/src/shared/ui/skeleton.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
 | `client/src/components/ui/loading-spinner.tsx` | `client/src/shared/ui/loading-spinner.tsx` | `shared/ui` | Bajo | visual helper reusable |
 | `client/src/components/ui/toast.tsx` | `client/src/shared/ui/toast.tsx` | `shared/ui` | Bajo | sistema UI transversal |
 | `client/src/components/ui/toaster.tsx` | `client/src/shared/ui/toaster.tsx` | `shared/ui` | Bajo | sistema UI transversal |
