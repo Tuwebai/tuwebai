@@ -372,6 +372,7 @@ La `services-section` del landing ya fue movida a `features/marketing-home/compo
 La `process-section` del landing ya fue movida a `features/marketing-home/components/process-section`; `home.tsx` consume la implementación final y `components/sections/process-section.tsx` quedó solo como wrapper temporal de compatibilidad. ✅ corregido parcialmente
 La `tech-section` del landing ya fue movida a `features/marketing-home/components/tech-section`; `home.tsx` consume la implementación final y `components/sections/tech-section.tsx` quedó solo como wrapper temporal de compatibilidad. ✅ corregido parcialmente
 La `impact-section` del landing ya fue movida a `features/marketing-home/components/impact-section`; `home.tsx` consume la implementación final y `components/sections/impact-section.tsx` quedó solo como wrapper temporal de compatibilidad. ✅ corregido parcialmente
+La `comparison-section` del landing ya fue movida a `features/marketing-home/components/comparison-section`; `home.tsx` consume la implementación final y `components/sections/comparison-section.tsx` quedó solo como wrapper temporal de compatibilidad. ✅ corregido parcialmente
 La página `panel-usuario` sigue concentrando orquestación funcional de perfil, seguridad, preferencias e imagen; no corresponde adelgazarla en Fase 4 sin separar antes ese flujo por dominio. ✅ corregido parcialmente
 
 ### 3. Backend tipo “God controller”

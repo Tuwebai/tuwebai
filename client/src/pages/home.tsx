@@ -14,7 +14,7 @@ const ImpactSection = lazy(() => import('@/features/marketing-home/components/im
 const TestimonialsSection = lazy(() => import('@/features/testimonials/components/testimonials-section'));
 const ContactSection = lazy(() => import('@/features/contact/components/contact-section'));
 const PricingSection = lazy(() => import('@/features/payments/components/pricing-section'));
-const ComparisonSection = lazy(() => import('@/components/sections/comparison-section'));
+const ComparisonSection = lazy(() => import('@/features/marketing-home/components/comparison-section'));
 const ShowroomSection = lazy(() => import('@/components/sections/showroom-section'));
 const CompanyLogoSlider = lazy(() => import('@/components/ui/company-logo-slider'));
 
