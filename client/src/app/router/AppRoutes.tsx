@@ -2,6 +2,7 @@ import { lazy } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 import { LazyRoute } from '@/components/route-wrapper';
+import PaymentReturnView from '@/features/payments/components/payment-return-view';
 import Home from '@/pages/home';
 import NotFound from '@/pages/not-found';
 
@@ -25,9 +26,6 @@ const Estudio = lazy(() => import('@/pages/estudio'));
 const AuthVerify = lazy(() => import('@/pages/auth-verify'));
 const PanelUsuario = lazy(() => import('@/pages/panel-usuario'));
 
-const PagoExitoso = lazy(() => import('@/pages/pago-exitoso'));
-const PagoFallido = lazy(() => import('@/pages/pago-fallido'));
-const PagoPendiente = lazy(() => import('@/pages/pago-pendiente'));
 const Contacto = lazy(() => import('@/pages/contacto'));
 
 const TerminosCondiciones = lazy(() => import('@/pages/terminos-condiciones'));
@@ -60,9 +58,45 @@ export default function AppRoutes() {
       <Route path="/auth/reset-password" element={<LazyRoute><AuthVerify /></LazyRoute>} />
       <Route path="/panel" element={<LazyRoute><PanelUsuario /></LazyRoute>} />
 
-      <Route path="/pago-exitoso" element={<LazyRoute><PagoExitoso /></LazyRoute>} />
-      <Route path="/pago-fallido" element={<LazyRoute><PagoFallido /></LazyRoute>} />
-      <Route path="/pago-pendiente" element={<LazyRoute><PagoPendiente /></LazyRoute>} />
+      <Route
+        path="/pago-exitoso"
+        element={
+          <LazyRoute>
+            <PaymentReturnView
+              variant="success"
+              title="Pago realizado con exito"
+              description="Tu pago fue procesado correctamente. En breve recibiras la confirmacion por email."
+              ctaLabel="Volver al inicio"
+            />
+          </LazyRoute>
+        }
+      />
+      <Route
+        path="/pago-fallido"
+        element={
+          <LazyRoute>
+            <PaymentReturnView
+              variant="failure"
+              title="Pago fallido"
+              description="No pudimos procesar tu pago. Revisa tus datos y vuelve a intentarlo."
+              ctaLabel="Volver e intentar"
+            />
+          </LazyRoute>
+        }
+      />
+      <Route
+        path="/pago-pendiente"
+        element={
+          <LazyRoute>
+            <PaymentReturnView
+              variant="pending"
+              title="Pago pendiente"
+              description="Tu pago esta en proceso de acreditacion. Te notificaremos por email cuando se confirme."
+              ctaLabel="Volver al inicio"
+            />
+          </LazyRoute>
+        }
+      />
       <Route path="/contacto" element={<LazyRoute><Contacto /></LazyRoute>} />
 
       <Route path="/terminos-condiciones" element={<LazyRoute><TerminosCondiciones /></LazyRoute>} />

@@ -251,6 +251,10 @@ Definition of Done:
 
 ### Fase 4. Pages finalization
 
+Estado:
+
+- ✅ corregido parcialmente: `pago-exitoso`, `pago-fallido` y `pago-pendiente` dejaron de ser dependencia estructural del router; `AppRoutes` ya consume `features/payments/components/payment-return-view`
+
 Objetivo:
 
 - reducir `client/src/pages/*` a entrypoints mínimos o moverlas al router/app si corresponde
