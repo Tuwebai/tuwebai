@@ -567,3 +567,7 @@ server/
 Tuwebai no está en estado caótico total, pero sí en una zona peligrosa: funciona por acumulación de soluciones, no por una arquitectura consolidada. La prioridad no debería ser agregar más features; debería ser **consolidar el sistema vigente, cerrar superficies expuestas y separar definitivamente lo activo de lo legacy**.
 
 Si se corrigen primero seguridad, gobernanza de repo y consolidación de stack, el proyecto puede pasar de **Riesgoso** a **Aceptable** relativamente rápido. Si no se hace, cualquier crecimiento va a aumentar tanto el costo de mantenimiento como la probabilidad de incidentes.
+
+Nota de seguimiento:
+
+- ✅ corregido parcialmente: client/index.html ya no carga Google Analytics ni AdSense en localhost, evitando pausas del runtime por excepciones de dsbygoogle.js durante desarrollo local.
