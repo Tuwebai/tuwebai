@@ -349,6 +349,7 @@ Hay imports directos de `backendApi` en componentes/páginas, por ejemplo:
 - [`client/src/components/payment/payment-return-view.tsx`](./client/src/components/payment/payment-return-view.tsx) ✅ corregido: runtime migrado a `features/payments/components/payment-return-view.tsx`
 
 Esto rompe el patrón indicado por la gobernanza del repo y acopla UI con transporte. ✅ corregido parcialmente: `testimonials`, `auth`, `contact`, `newsletter`, `payments`, `support`, `projects`, `users` y `proposals` ya migrados a `features/`; quedan remanentes legacy de composición/UI
+Las `sections` restantes del landing (`hero`, `philosophy`, `services`, `process`, `tech`, `impact`, `comparison`, `showroom`) fueron re-auditadas y siguen temporales por formar parte del runtime estructural del home; no conviene moverlas antes de `Runtime shell` y `Pages finalization`. ✅ corregido parcialmente
 
 ### 3. Backend tipo “God controller”
 
