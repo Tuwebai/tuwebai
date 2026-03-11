@@ -133,6 +133,8 @@ Estado:
 
 - ✅ corregido parcialmente: lote 1 movido a `shared/ui`
 - componentes movidos: `button`, `input`, `textarea`, `label`
+- ✅ corregido parcialmente: lote 2 movido a `shared/ui`
+- componentes movidos: `checkbox`, `select`, `radio-group`, `switch`
 
 Objetivo:
 

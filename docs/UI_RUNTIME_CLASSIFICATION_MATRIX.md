@@ -25,10 +25,10 @@ Regla de esta fase:
 | `client/src/components/ui/input.tsx` | `client/src/shared/ui/input.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
 | `client/src/components/ui/textarea.tsx` | `client/src/shared/ui/textarea.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
 | `client/src/components/ui/label.tsx` | `client/src/shared/ui/label.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
-| `client/src/components/ui/checkbox.tsx` | `client/src/shared/ui/checkbox.tsx` | `shared/ui` | Bajo | primitive reusable |
-| `client/src/components/ui/radio-group.tsx` | `client/src/shared/ui/radio-group.tsx` | `shared/ui` | Bajo | primitive reusable |
-| `client/src/components/ui/select.tsx` | `client/src/shared/ui/select.tsx` | `shared/ui` | Bajo | primitive reusable |
-| `client/src/components/ui/switch.tsx` | `client/src/shared/ui/switch.tsx` | `shared/ui` | Bajo | primitive reusable |
+| `client/src/components/ui/checkbox.tsx` | `client/src/shared/ui/checkbox.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
+| `client/src/components/ui/radio-group.tsx` | `client/src/shared/ui/radio-group.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
+| `client/src/components/ui/select.tsx` | `client/src/shared/ui/select.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
+| `client/src/components/ui/switch.tsx` | `client/src/shared/ui/switch.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
 | `client/src/components/ui/slider.tsx` | `client/src/shared/ui/slider.tsx` | `shared/ui` | Bajo | primitive reusable |
 | `client/src/components/ui/input-otp.tsx` | `client/src/shared/ui/input-otp.tsx` | `shared/ui` | Bajo | primitive reusable |
 | `client/src/components/ui/card.tsx` | `client/src/shared/ui/card.tsx` | `shared/ui` | Bajo | contenedor reusable |
