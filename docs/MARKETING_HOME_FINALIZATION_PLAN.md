@@ -93,6 +93,10 @@ Entregable:
 
 ### Fase 1. Extraer hook de navegación del landing
 
+Estado:
+
+- ✅ corregido parcialmente: la lógica de navegación y scroll de `home.tsx` fue extraída a `client/src/features/marketing-home/hooks/use-home-section-navigation.ts`
+
 Objetivo:
 
 - sacar de `home.tsx` toda la lógica de:
