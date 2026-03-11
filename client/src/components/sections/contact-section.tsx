@@ -3,8 +3,11 @@ import { motion } from 'framer-motion';
 import { useIntersectionObserver } from '@/hooks/use-intersection-observer';
 import AnimatedShape from '../ui/animated-shape';
 import { useToast } from '@/hooks/use-toast';
-import { backendApi } from '@/lib/backend-api';
-import { ApiError, getUiErrorMessage } from '@/lib/http-client';
+import {
+  getContactErrorMessage,
+  getContactFieldErrors,
+  submitContactForm,
+} from '@/features/contact/services/contact.service';
 
 interface ContactFormProps {
   delay: number;
@@ -82,7 +85,7 @@ function ContactForm({ delay }: ContactFormProps) {
       setSubmitState('idle');
     }, 4000);
 
-    void backendApi.submitContact({
+    void submitContactForm({
       name: snapshot.name,
       email: snapshot.email,
       message: snapshot.message,
@@ -97,25 +100,15 @@ function ContactForm({ delay }: ContactFormProps) {
         }
       })
       .catch((error: unknown) => {
-        if (error instanceof ApiError) {
-          const payload = error.payload as any;
-          if (payload?.errors && Array.isArray(payload.errors)) {
-            const serverErrors: {[key: string]: string} = {};
-            payload.errors.forEach((err: any) => {
-              if (err.path && err.message) {
-                serverErrors[err.path] = err.message;
-              }
-            });
-            if (Object.keys(serverErrors).length > 0) {
-              setErrors(serverErrors);
-            }
-          }
+        const serverErrors = getContactFieldErrors(error);
+        if (Object.keys(serverErrors).length > 0) {
+          setErrors(serverErrors);
         }
         setFormState(snapshot);
         setSubmitState('idle');
         toast({
           title: "Error al enviar",
-          description: getUiErrorMessage(
+          description: getContactErrorMessage(
             error,
             "Ha ocurrido un problema al enviar tu mensaje. Por favor, inténtalo de nuevo."
           ),

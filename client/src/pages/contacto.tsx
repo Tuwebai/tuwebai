@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { backendApi } from '@/lib/backend-api';
-import { getUiErrorMessage } from '@/lib/http-client';
+import { getContactErrorMessage, submitContactForm } from '@/features/contact/services/contact.service';
 
 const Contacto: React.FC = () => {
   const [form, setForm] = useState({ name: '', email: '', title: '', message: '' });
@@ -27,11 +26,11 @@ const Contacto: React.FC = () => {
       setSubmitState('idle');
     }, 4000);
 
-    void backendApi.submitContact(snapshot)
+    void submitContactForm(snapshot)
       .catch((err) => {
         setAlert({
           type: 'error',
-          message: getUiErrorMessage(err, 'No se pudo enviar el mensaje. Intenta de nuevo.'),
+          message: getContactErrorMessage(err, 'No se pudo enviar el mensaje. Intenta de nuevo.'),
         });
         setForm(snapshot);
         setSubmitState('idle');
