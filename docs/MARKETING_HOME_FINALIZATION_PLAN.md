@@ -75,6 +75,11 @@ client/src/
 
 ### Fase 0. Auditoría de responsabilidades
 
+Estado:
+
+- ✅ corregido
+- mapa entregado en `docs/MARKETING_HOME_RESPONSIBILITY_MAP.md`
+
 Objetivo:
 
 - separar qué parte de `home.tsx` es:
