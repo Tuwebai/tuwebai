@@ -70,14 +70,14 @@ Regla de esta fase:
 | `client/src/components/ui/use-toast/index.ts` | `client/src/shared/ui/use-toast/index.ts` | `shared/ui` | Medio | hook visual transversal, requiere movimiento coordinado ✅ corregido parcialmente |
 | `client/src/components/ui/animated-shape.tsx` | `client/src/shared/ui/animated-shape.tsx` | `shared/ui` | Bajo | visual decorativo reusable ✅ corregido parcialmente |
 | `client/src/components/ui/page-banner.tsx` | `client/src/shared/ui/page-banner.tsx` | `shared/ui` | Bajo | reusable de páginas internas ✅ corregido parcialmente |
-| `client/src/components/ui/scroll-progress.tsx` | `client/src/shared/ui/scroll-progress.tsx` | `shared/ui` | Bajo | helper visual global |
-| `client/src/components/ui/nav-dots.tsx` | `client/src/shared/ui/nav-dots.tsx` | `shared/ui` | Medio | reusable pero acoplado al home por props/scroll |
-| `client/src/components/ui/particle-effect.tsx` | `client/src/shared/ui/particle-effect.tsx` | `shared/ui` | Bajo | decorativo reusable |
+| `client/src/components/ui/scroll-progress.tsx` | `client/src/shared/ui/scroll-progress.tsx` | `shared/ui` | Bajo | helper visual global ✅ corregido parcialmente |
+| `client/src/components/ui/nav-dots.tsx` | `client/src/shared/ui/nav-dots.tsx` | `shared/ui` | Medio | reusable pero acoplado al home por props/scroll ✅ corregido parcialmente |
+| `client/src/components/ui/particle-effect.tsx` | `client/src/shared/ui/particle-effect.tsx` | `shared/ui` | Bajo | decorativo reusable ✅ corregido parcialmente |
 | `client/src/components/ui/whatsapp-button.tsx` | `client/src/shared/ui/whatsapp-button.tsx` | `shared/ui` | Bajo | CTA transversal ✅ corregido parcialmente |
-| `client/src/components/ui/company-logo-slider.tsx` | `client/src/shared/ui/company-logo-slider.tsx` | `shared/ui` | Medio | reusable visual, revisar coupling de assets |
+| `client/src/components/ui/company-logo-slider.tsx` | `client/src/shared/ui/company-logo-slider.tsx` | `shared/ui` | Medio | reusable visual, revisar coupling de assets ✅ corregido parcialmente |
 | `client/src/components/ui/footer.tsx` | `client/src/shared/ui/footer.tsx` | `shared/ui` | Medio | layout global, mover junto con shell |
 | `client/src/components/ui/global-navbar.tsx` | `client/src/app/layout/global-navbar.tsx` | `app` | Alto | shell global del runtime, no es shared genérico |
-| `client/src/components/ui/sidebar.tsx` | `client/src/shared/ui/sidebar.tsx` | `shared/ui` | Medio | UI reusable, revisar dependencias internas |
+| `client/src/components/ui/sidebar.tsx` | `client/src/shared/ui/sidebar.tsx` | `shared/ui` | Medio | UI reusable, revisar dependencias internas ✅ corregido parcialmente |
 
 ## Clasificación `components/sections`
 
