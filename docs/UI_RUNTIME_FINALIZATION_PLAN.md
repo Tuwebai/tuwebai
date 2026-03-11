@@ -149,6 +149,7 @@ Estado:
 - componentes movidos: `toast`, `toaster`, `use-toast/index`, `page-banner`, `animated-shape`, `whatsapp-button`
 - ✅ corregido parcialmente: lote 9 movido a `shared/ui`
 - componentes movidos: `scroll-progress`, `particle-effect`, `company-logo-slider`, `nav-dots`, `sidebar`
+- ✅ corregido parcialmente: `footer` movido a `shared/ui`
 
 Objetivo:
 

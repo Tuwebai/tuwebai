@@ -75,7 +75,7 @@ Regla de esta fase:
 | `client/src/components/ui/particle-effect.tsx` | `client/src/shared/ui/particle-effect.tsx` | `shared/ui` | Bajo | decorativo reusable ✅ corregido parcialmente |
 | `client/src/components/ui/whatsapp-button.tsx` | `client/src/shared/ui/whatsapp-button.tsx` | `shared/ui` | Bajo | CTA transversal ✅ corregido parcialmente |
 | `client/src/components/ui/company-logo-slider.tsx` | `client/src/shared/ui/company-logo-slider.tsx` | `shared/ui` | Medio | reusable visual, revisar coupling de assets ✅ corregido parcialmente |
-| `client/src/components/ui/footer.tsx` | `client/src/shared/ui/footer.tsx` | `shared/ui` | Medio | layout global, mover junto con shell |
+| `client/src/components/ui/footer.tsx` | `client/src/shared/ui/footer.tsx` | `shared/ui` | Medio | layout global, mover junto con shell ✅ corregido parcialmente |
 | `client/src/components/ui/global-navbar.tsx` | `client/src/app/layout/global-navbar.tsx` | `app` | Alto | shell global del runtime, no es shared genérico |
 | `client/src/components/ui/sidebar.tsx` | `client/src/shared/ui/sidebar.tsx` | `shared/ui` | Medio | UI reusable, revisar dependencias internas ✅ corregido parcialmente |
 
