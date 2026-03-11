@@ -7,7 +7,7 @@ const NavDots = lazy(() => import('@/components/ui/nav-dots'));
 const WhatsAppButton = lazy(() => import('@/components/ui/whatsapp-button'));
 const ScrollProgress = lazy(() => import('@/components/ui/scroll-progress'));
 const PhilosophySection = lazy(() => import('@/features/marketing-home/components/philosophy-section'));
-const ServicesSection = lazy(() => import('@/components/sections/services-section'));
+const ServicesSection = lazy(() => import('@/features/marketing-home/components/services-section'));
 const ProcessSection = lazy(() => import('@/components/sections/process-section'));
 const TechSection = lazy(() => import('@/components/sections/tech-section'));
 const ImpactSection = lazy(() => import('@/components/sections/impact-section'));
