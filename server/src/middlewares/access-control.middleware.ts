@@ -1,6 +1,6 @@
 import { type NextFunction, type Request, type Response } from 'express';
 import { env } from '../config/env.config';
-import { getAdminFirestore } from '../config/firebase-admin';
+import { getFirestore as getAdminFirestore } from '../infrastructure/firebase/firestore';
 import { appLogger } from '../utils/app-logger';
 import {
   accessPolicy,

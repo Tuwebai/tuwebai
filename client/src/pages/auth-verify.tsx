@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { useAuthActions } from '@/contexts/AuthContext';
+import { useAuthActions } from '@/features/auth/context/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import MetaTags from '@/components/seo/meta-tags';
-import { backendApi } from '@/lib/backend-api';
+import { verifyAuthDevEmail, verifyAuthToken } from '@/features/auth/services/auth.service';
 
 // Verificar si es entorno de desarrollo
 const isDevelopment = import.meta.env.DEV;
@@ -45,7 +45,7 @@ export default function AuthVerify() {
       }
       
       try {
-        const data = await backendApi.verifyAuthToken(token);
+        const data = await verifyAuthToken(token);
         
         setIsSuccess(data.success);
         setMessage(data.message);
@@ -133,7 +133,7 @@ export default function AuthVerify() {
     setIsDevVerifying(true);
     
     try {
-      const data = await backendApi.verifyAuthDevEmail(devEmail);
+      const data = await verifyAuthDevEmail(devEmail);
       
       setIsSuccess(data.success);
       setMessage(data.message);

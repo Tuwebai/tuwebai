@@ -5,7 +5,7 @@ import AnimatedShape from '../ui/animated-shape';
 import TestimonialForm from '../ui/testimonial-form';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
-import { useTestimonials } from '@/hooks/use-testimonials';
+import { useTestimonials } from '@/features/testimonials/hooks/use-testimonials';
 
 interface TestimonialCardProps {
   name: string;

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useToast } from '@/hooks/use-toast';
-import { useCreateTestimonial } from '@/hooks/use-testimonials';
+import { useCreateTestimonial } from '@/features/testimonials/hooks/use-testimonials';
 
 interface TestimonialFormProps {
   onSuccess?: () => void;

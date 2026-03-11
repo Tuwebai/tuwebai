@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { useAuthActions, useAuthState } from '@/contexts/AuthContext';
+import { useAuthActions, useAuthState } from '@/features/auth/context/AuthContext';
 import { useLoginModal } from '@/hooks/use-login-modal';
 import { prefetchRoute } from '@/lib/route-prefetch';
 

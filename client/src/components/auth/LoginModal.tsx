@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useAuthActions, useAuthState } from '@/contexts/AuthContext';
+import { useAuthActions, useAuthState } from '@/features/auth/context/AuthContext';
 import PasswordStrength from './PasswordStrength';
 import { Link } from 'react-router-dom'; // Added Link import
 

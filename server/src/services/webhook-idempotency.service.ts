@@ -1,7 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { getAdminFirestore } from '../config/firebase-admin';
+import { getFirestore as getAdminFirestore } from '../infrastructure/firebase/firestore';
 import { appLogger } from '../utils/app-logger';
 
 const __filename = fileURLToPath(import.meta.url);

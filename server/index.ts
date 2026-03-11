@@ -14,8 +14,6 @@ import { fileURLToPath } from "url";
 import cors, { CorsOptions } from "cors";
 import helmet from "helmet";
 
-import contactRoutes from "./src/routes/contact.routes";
-import paymentRoutes from "./src/routes/payment.routes";
 import publicRoutes from "./src/routes/public.routes";
 
 import { globalErrorHandler } from "./src/middlewares/error.middleware";
@@ -338,8 +336,6 @@ if (staticAssetsDir) {
 }
 
 // API routes
-app.use(contactRoutes);
-app.use(paymentRoutes);
 app.use(publicRoutes);
 
 // Error handler (al final)

@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { env } from '../config/env.config';
-import { getAdminAuth } from '../config/firebase-admin';
+import { getAuth as getAdminAuth } from '../infrastructure/firebase/auth';
 import { appLogger } from '../utils/app-logger';
 
 type DecodedToken = {

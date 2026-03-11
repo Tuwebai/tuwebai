@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import AnimatedShape from '../components/ui/animated-shape';
-import { getAllTestimonials } from '@/services/testimonials';
+import { getAllTestimonials } from '@/features/testimonials/services/testimonials.service';
 
 
 // Tipo para miembros del equipo
