@@ -48,7 +48,7 @@ Entradas activas:
 
 ### Wrappers legacy aún vivos
 
-- `client/src/contexts/AuthContext.tsx` ✅ corregido parcialmente: sin consumidores runtime directos
+- `client/src/contexts/AuthContext.tsx` ✅ corregido: eliminado tras quedar sin consumidores runtime directos
 - `client/src/hooks/use-auth-queries.ts` ✅ corregido parcialmente: sin consumidores runtime directos
 - `client/src/hooks/use-auth-mutations.ts` ✅ corregido parcialmente: sin consumidores runtime directos
 - `client/src/hooks/use-testimonials.ts`
@@ -98,7 +98,7 @@ Estado:
 - ✅ corregido parcialmente: `client/src/App.tsx`, `client/src/components/ui/global-navbar.tsx` y `client/src/components/auth/AdminRoute.tsx` ya consumen `features/auth/hooks/use-login-modal`
 - ✅ corregido parcialmente: `client/src/App.tsx` ya consume `features/auth/context/AuthContext`
 - ✅ corregido parcialmente: no quedan consumidores runtime de `@/contexts/AuthContext` ni `@/hooks/use-auth-*`
-- pendientes wrappers de auth/context legacy ya desacoplados del runtime
+- pendientes wrappers legacy de `hooks/use-auth-*`
 
 Objetivo:
 

@@ -230,7 +230,7 @@ Esto no solo es deuda técnica: es **riesgo activo** si ese código sigue desple
   - línea 422 devuelve una fecha hardcodeada: `12 de julio de 2025`
 - [`client/src/pages/auth-verify.tsx`](./client/src/pages/auth-verify.tsx) ✅ corregido parcialmente: API directa movida a `features/auth/services`
   - muestra flujo de reset, pero termina llamando a un stub no soportado
-- [`client/src/contexts/AuthContext.tsx`](./client/src/contexts/AuthContext.tsx) ✅ corregido parcialmente: quedó como wrapper legacy sin consumidores runtime directos
+- [`client/src/contexts/AuthContext.tsx`](./client/src/contexts/AuthContext.tsx) ✅ corregido: eliminado tras quedar sin consumidores runtime directos
   - línea 256 define `resetPassword` que solo muestra toast: no implementa el caso esperado por la UI
 
 ### Deuda de tipado / limpieza
