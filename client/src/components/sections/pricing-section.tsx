@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useIntersectionObserver } from '@/hooks/use-intersection-observer';
-import { backendApi, type PaymentPlan } from '@/lib/backend-api';
-import { getUiErrorMessage } from '@/lib/http-client';
 import { useToast } from '@/hooks/use-toast';
 import PaymentErrorDialog from '@/components/payment/payment-error-dialog';
-
-const CHECKOUT_TIMEOUT_MS = 9000;
-const CHECKOUT_MAX_ATTEMPTS = 2;
+import {
+  createPreferenceWithRetry,
+  getPaymentsErrorMessage,
+} from '@/features/payments/services/payments.service';
+import type { PaymentPlan } from '@/features/payments/types';
 
 interface PricingTierProps {
   title: string;
@@ -156,24 +156,6 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
     visible: { opacity: 1, y: 0, transition: { duration: 0.8, delay: 0.2 } }
   };
 
-  const createPreferenceWithRetry = async (plan: PaymentPlan) => {
-    for (let attempt = 1; attempt <= CHECKOUT_MAX_ATTEMPTS; attempt += 1) {
-      try {
-        return await Promise.race([
-          backendApi.createPaymentPreference(plan),
-          new Promise<never>((_, reject) =>
-            setTimeout(() => reject(new Error('Timeout al generar preferencia de pago')), CHECKOUT_TIMEOUT_MS)
-          )
-        ]);
-      } catch (error: unknown) {
-        if (attempt >= CHECKOUT_MAX_ATTEMPTS) {
-          throw error;
-        }
-      }
-    }
-    throw new Error('No se pudo generar preferencia de pago');
-  };
-
   const handleCheckout = async (plan: PaymentPlan) => {
     try {
       setSubmittingPlan(plan);
@@ -184,7 +166,7 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
         throw new Error('Mercado Pago no devolvio un link de checkout');
       }
     } catch (err: any) {
-      const errorMessage = getUiErrorMessage(err, 'Error al conectar con Mercado Pago');
+      const errorMessage = getPaymentsErrorMessage(err, 'Error al conectar con Mercado Pago');
       if (useStrictPaymentErrorDialog) {
         setFailedPlan(plan);
         setErrorCheckout(errorMessage);

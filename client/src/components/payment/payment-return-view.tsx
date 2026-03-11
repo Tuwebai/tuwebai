@@ -1,7 +1,6 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { backendApi } from '@/lib/backend-api';
-import { getUiErrorMessage } from '@/lib/http-client';
+import { usePaymentStatus } from '@/features/payments/hooks/use-payment-status';
 
 type Variant = 'success' | 'failure' | 'pending';
 
@@ -10,13 +9,6 @@ interface PaymentReturnViewProps {
   title: string;
   description: string;
   ctaLabel: string;
-}
-
-interface PaymentStatusPayload {
-  status?: string;
-  status_detail?: string;
-  transaction_amount?: number;
-  currency_id?: string;
 }
 
 const variantStyles: Record<Variant, { bg: string; card: string; icon: string; button: string; title: string }> = {
@@ -68,46 +60,12 @@ const iconByVariant: Record<Variant, JSX.Element> = {
 export default function PaymentReturnView({ variant, title, description, ctaLabel }: PaymentReturnViewProps) {
   const styles = variantStyles[variant];
   const [searchParams] = useSearchParams();
-  const [isRefreshingStatus, setIsRefreshingStatus] = useState(false);
-  const [status, setStatus] = useState<PaymentStatusPayload | null>(null);
-  const [statusError, setStatusError] = useState<string | null>(null);
 
   const paymentId = useMemo(
     () => searchParams.get('payment_id') || searchParams.get('collection_id') || searchParams.get('paymentId'),
     [searchParams]
   );
-
-  useEffect(() => {
-    if (!paymentId) return;
-
-    let cancelled = false;
-    const loadStatus = async () => {
-      setIsRefreshingStatus(true);
-      setStatusError(null);
-      try {
-        const data = await backendApi.getPaymentStatus(paymentId);
-        if (!data?.success) {
-          throw new Error('No se pudo validar el estado del pago');
-        }
-        if (!cancelled) {
-          setStatus(data.data ?? null);
-        }
-      } catch (error: unknown) {
-        if (!cancelled) {
-          setStatusError(getUiErrorMessage(error, 'No se pudo validar el estado del pago'));
-        }
-      } finally {
-        if (!cancelled) {
-          setIsRefreshingStatus(false);
-        }
-      }
-    };
-
-    loadStatus();
-    return () => {
-      cancelled = true;
-    };
-  }, [paymentId]);
+  const { isRefreshingStatus, status, statusError } = usePaymentStatus(paymentId);
 
   return (
     <div className={`min-h-screen flex flex-col items-center justify-center p-4 ${styles.bg}`}>

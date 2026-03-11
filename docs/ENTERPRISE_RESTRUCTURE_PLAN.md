@@ -208,7 +208,7 @@ Orden recomendado:
 2. `auth` ✅ corregido
 3. `contact` ✅ corregido
 4. `newsletter` ✅ corregido
-5. `payments`
+5. `payments` ✅ corregido
 6. `support`
 7. `projects/user`
 

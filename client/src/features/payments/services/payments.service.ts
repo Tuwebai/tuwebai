@@ -1,0 +1,36 @@
+import { backendApi } from '@/lib/backend-api';
+import { getUiErrorMessage } from '@/lib/http-client';
+import type { PaymentPlan, PaymentStatusPayload } from '../types';
+
+const CHECKOUT_TIMEOUT_MS = 9000;
+const CHECKOUT_MAX_ATTEMPTS = 2;
+
+export const createPaymentPreference = (plan: PaymentPlan) => backendApi.createPaymentPreference(plan);
+
+export const getPaymentStatus = async (paymentId: string): Promise<PaymentStatusPayload | null> => {
+  const data = await backendApi.getPaymentStatus(paymentId);
+  if (!data?.success) {
+    throw new Error('No se pudo validar el estado del pago');
+  }
+  return data.data ?? null;
+};
+
+export const getPaymentsErrorMessage = (error: unknown, fallback: string) => getUiErrorMessage(error, fallback);
+
+export const createPreferenceWithRetry = async (plan: PaymentPlan) => {
+  for (let attempt = 1; attempt <= CHECKOUT_MAX_ATTEMPTS; attempt += 1) {
+    try {
+      return await Promise.race([
+        createPaymentPreference(plan),
+        new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error('Timeout al generar preferencia de pago')), CHECKOUT_TIMEOUT_MS)
+        ),
+      ]);
+    } catch (error: unknown) {
+      if (attempt >= CHECKOUT_MAX_ATTEMPTS) {
+        throw error;
+      }
+    }
+  }
+  throw new Error('No se pudo generar preferencia de pago');
+};
