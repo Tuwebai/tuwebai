@@ -16,7 +16,7 @@ import type { PasswordInfo, RegisterData, User, UserPreferences } from '../types
 
 let firebasePromise: Promise<any> | null = null;
 let fireauthPromise: Promise<any> | null = null;
-let firestorePromise: Promise<any> | null = null;
+let usersServicePromise: Promise<any> | null = null;
 
 const getFirebase = () => {
   if (!firebasePromise) firebasePromise = import('@/lib/firebase');
@@ -28,9 +28,9 @@ const getFirebaseAuth = () => {
   return fireauthPromise;
 };
 
-const getFirestoreService = () => {
-  if (!firestorePromise) firestorePromise = import('@/services/firestore');
-  return firestorePromise;
+const getUsersService = () => {
+  if (!usersServicePromise) usersServicePromise = import('@/features/users/services/users.service');
+  return usersServicePromise;
 };
 
 interface AuthState {
@@ -137,7 +137,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       try {
         const { auth } = await getFirebase();
         const { onAuthStateChanged } = await getFirebaseAuth();
-        const { getUser, setUser } = await getFirestoreService();
+        const { getUser, setUser } = await getUsersService();
 
         const unsubscribe = onAuthStateChanged(auth, async (firebaseUser: FirebaseUser | null) => {
           if (!isMounted) return;

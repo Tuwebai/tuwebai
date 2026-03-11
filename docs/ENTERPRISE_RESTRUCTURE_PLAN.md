@@ -247,6 +247,10 @@ Recién ahí:
 - borrar rutas/capas obsoletas
 - actualizar documentación final
 
+Precondición operacional:
+
+- antes de ejecutar limpieza final, desacoplar runtime legacy restante en `server/index.ts`, `features/auth/context/AuthContext.tsx` y `pages/consulta.tsx` ✅ corregido
+
 ## Mapa Actual -> Objetivo
 
 ### Backend

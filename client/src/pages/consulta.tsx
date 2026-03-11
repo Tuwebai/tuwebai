@@ -10,8 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import WhatsAppButton from "@/components/ui/whatsapp-button";
 import analytics from "@/lib/analytics";
-import { backendApi } from '@/lib/backend-api';
-import { getUiErrorMessage } from '@/lib/http-client';
+import { getProposalErrorMessage, submitProposal } from '@/features/proposals/services/proposals.service';
 
 const formSchema = z.object({
   nombre: z.string().min(2, { message: "El nombre es requerido" }),
@@ -254,7 +253,7 @@ export default function Consulta() {
       setSubmitted(false);
     }, 10000);
 
-    void backendApi.submitProposal(propuestaData)
+    void submitProposal(propuestaData)
       .then(() => {
         toast({
           title: "Solicitud recibida",
@@ -269,7 +268,7 @@ export default function Consulta() {
         console.error('Error al enviar formulario:', error);
         toast({
           title: "Error al enviar",
-          description: getUiErrorMessage(
+          description: getProposalErrorMessage(
             error,
             "Ha ocurrido un problema al procesar tu solicitud. Por favor, intentalo de nuevo."
           ),

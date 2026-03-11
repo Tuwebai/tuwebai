@@ -14,7 +14,7 @@ import { fileURLToPath } from "url";
 import cors, { CorsOptions } from "cors";
 import helmet from "helmet";
 
-import publicRoutes from "./src/routes/public.routes";
+import appRoutes from "./src/app/routes";
 
 import { globalErrorHandler } from "./src/middlewares/error.middleware";
 import { appLogger } from "./src/utils/app-logger";
@@ -336,7 +336,7 @@ if (staticAssetsDir) {
 }
 
 // API routes
-app.use(publicRoutes);
+app.use(appRoutes);
 
 // Error handler (al final)
 app.use(globalErrorHandler);
