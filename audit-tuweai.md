@@ -363,6 +363,7 @@ La página `auth-verify` ya no forma parte estructural del router; el runtime co
 La página `consulta` ya no forma parte estructural del router; el runtime consume directamente `features/proposals/components/proposal-request-page` y `client/src/pages/consulta.tsx` quedó como bridge mínimo temporal. ✅ corregido parcialmente
 La página `panel-usuario` ya no forma parte estructural del router ni del prefetch; el runtime consume directamente `features/users/components/user-dashboard-page` y `client/src/pages/panel-usuario.tsx` quedó como bridge mínimo temporal. ✅ corregido parcialmente
 La página `home` sigue siendo runtime estructural del landing; hoy mezcla composición, scroll orchestration y lazy loading de sections temporales, por lo que no corresponde adelgazarla en Fase 4 sin definir antes el target final de `marketing-home`. ✅ corregido parcialmente
+`client/src/App.tsx` ya quedó como bridge controlado hacia `app/App`, pero el router todavía depende de páginas institucionales y el landing sigue bloqueando la Fase 6 por su composición temporal en `components/sections/*`. ✅ corregido parcialmente
 La página `panel-usuario` sigue concentrando orquestación funcional de perfil, seguridad, preferencias e imagen; no corresponde adelgazarla en Fase 4 sin separar antes ese flujo por dominio. ✅ corregido parcialmente
 
 ### 3. Backend tipo “God controller”

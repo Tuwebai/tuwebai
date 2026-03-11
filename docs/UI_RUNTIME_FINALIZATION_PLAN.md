@@ -285,6 +285,7 @@ Precondiciones:
 - `components/sections` no contiene sections de negocio activas
 - `App.tsx` ya está reubicado
 - `pages/*` ya no son runtime estructural legacy
+- re-auditoría actual: esta fase sigue bloqueada por `home.tsx` y por `components/sections/*` temporales del landing hasta definir el target final de `marketing-home`
 
 Ahora sí:
 

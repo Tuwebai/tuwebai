@@ -210,7 +210,9 @@ Resultado actual de la re-auditoría:
 - ✅ `@/contexts/ThemeContext` sin consumidores runtime
 - ✅ `public.routes` sin imports activos
 - ✅ los wrappers invertidos `components/* -> features/*` ya fueron retirados
-- ❌ `client/src/App.tsx` y páginas activas siguen montando `pages/*` y `components/*`
+- ❌ `client/src/App.tsx` ya quedó como bridge, pero `client/src/app/router/AppRoutes.tsx` todavía monta `pages/*` activas del sitio institucional
+- ❌ `client/src/pages/home.tsx` sigue siendo runtime estructural del landing y depende de `components/sections/*` temporales
+- ❌ `client/src/components/sections/*` sigue conteniendo ensamblado activo de `marketing-home` (`hero`, `services`, `process`, `tech`, `impact`, `comparison`, `showroom`)
 
 ## Validación Obligatoria
 
