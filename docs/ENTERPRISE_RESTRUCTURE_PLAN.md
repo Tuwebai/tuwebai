@@ -207,7 +207,7 @@ Orden recomendado:
 1. `testimonials` ✅ corregido
 2. `auth` ✅ corregido
 3. `contact` ✅ corregido
-4. `newsletter`
+4. `newsletter` ✅ corregido
 5. `payments`
 6. `support`
 7. `projects/user`

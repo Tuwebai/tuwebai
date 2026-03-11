@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useToast } from '@/hooks/use-toast';
-import { backendApi } from '@/lib/backend-api';
-import { getUiErrorMessage } from '@/lib/http-client';
+import {
+  getNewsletterErrorMessage,
+  subscribeToNewsletter,
+} from '@/features/newsletter/services/newsletter.service';
 
 interface NewsletterFormProps {
   source?: string;
@@ -39,7 +41,7 @@ export default function NewsletterForm({
       setSubmitState('idle');
     }, 3000);
 
-    void backendApi.subscribeNewsletter({ email: emailSnapshot, source })
+    void subscribeToNewsletter({ email: emailSnapshot, source })
       .then(() => {
         if (typeof window !== 'undefined' && (window as any).gtag) {
           (window as any).gtag('event', 'newsletter_signup', {
@@ -54,7 +56,7 @@ export default function NewsletterForm({
         setSubmitState('idle');
         toast({
           title: 'Error al suscribirse',
-          description: getUiErrorMessage(
+          description: getNewsletterErrorMessage(
             submitError,
             'Ha ocurrido un problema al procesar tu suscripcion. Por favor, intentalo de nuevo.'
           ),

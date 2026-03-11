@@ -343,12 +343,12 @@ Hay imports directos de `backendApi` en componentes/páginas, por ejemplo:
 - [`client/src/pages/contacto.tsx`](./client/src/pages/contacto.tsx) ✅ corregido parcialmente: API directa movida a `features/contact/services`
 - [`client/src/pages/consulta.tsx`](./client/src/pages/consulta.tsx)
 - [`client/src/pages/auth-verify.tsx`](./client/src/pages/auth-verify.tsx)
-- [`client/src/components/ui/newsletter-form.tsx`](./client/src/components/ui/newsletter-form.tsx)
+- [`client/src/components/ui/newsletter-form.tsx`](./client/src/components/ui/newsletter-form.tsx) ✅ corregido parcialmente: API directa movida a `features/newsletter/services`
 - [`client/src/components/sections/pricing-section.tsx`](./client/src/components/sections/pricing-section.tsx)
 - [`client/src/components/sections/contact-section.tsx`](./client/src/components/sections/contact-section.tsx)
 - [`client/src/components/payment/payment-return-view.tsx`](./client/src/components/payment/payment-return-view.tsx)
 
-Esto rompe el patrón indicado por la gobernanza del repo y acopla UI con transporte. ✅ corregido parcialmente: `testimonials`, `auth` y `contact` ya migrados a `features/`; quedan dominios pendientes
+Esto rompe el patrón indicado por la gobernanza del repo y acopla UI con transporte. ✅ corregido parcialmente: `testimonials`, `auth`, `contact` y `newsletter` ya migrados a `features/`; quedan dominios pendientes
 
 ### 3. Backend tipo “God controller”
 
@@ -546,7 +546,7 @@ server/
 ### Media prioridad
 
 1. Particionar `public.controller.ts` por dominios. ✅ corregido parcialmente
-2. Mover acceso a API fuera de `pages/` y `components/`. ✅ corregido parcialmente: `testimonials`, `auth` y `contact` ya migrados; restan `newsletter`, `payments`, `support`, `projects/users`
+2. Mover acceso a API fuera de `pages/` y `components/`. ✅ corregido parcialmente: `testimonials`, `auth`, `contact` y `newsletter` ya migrados; restan `payments`, `support`, `projects/users`
 3. Depurar scripts rotos y remover `deploy` basado en `git add .`.
 4. Consolidar `vite.config` y `netlify.toml`.
 5. Revisar dependencias posiblemente no usadas y podar.
