@@ -48,16 +48,16 @@ Entradas activas:
 
 ### Wrappers legacy aún vivos
 
-- `client/src/contexts/AuthContext.tsx`
-- `client/src/hooks/use-auth-queries.ts`
-- `client/src/hooks/use-auth-mutations.ts`
+- `client/src/contexts/AuthContext.tsx` ✅ corregido parcialmente: sin consumidores runtime directos
+- `client/src/hooks/use-auth-queries.ts` ✅ corregido parcialmente: sin consumidores runtime directos
+- `client/src/hooks/use-auth-mutations.ts` ✅ corregido parcialmente: sin consumidores runtime directos
 - `client/src/hooks/use-testimonials.ts`
-- `client/src/services/firestore.ts`
-- `client/src/services/testimonials.ts`
+- `client/src/services/firestore.ts` ✅ corregido parcialmente: sin consumidores runtime directos
+- `client/src/services/testimonials.ts` ✅ corregido parcialmente: sin consumidores runtime directos
 
 ### Backend con fachada legacy
 
-- `server/src/routes/public.routes.ts`
+- `server/src/routes/public.routes.ts` ✅ corregido parcialmente: sin imports activos en runtime
 
 ## Clasificación
 
@@ -97,7 +97,8 @@ Estado:
 - ✅ corregido parcialmente: `client/src/pages/panel-usuario.tsx`, `client/src/components/auth/AdminRoute.tsx` y `client/src/components/auth/DashboardRoute.tsx` ya consumen `features/auth/context/AuthContext`
 - ✅ corregido parcialmente: `client/src/App.tsx`, `client/src/components/ui/global-navbar.tsx` y `client/src/components/auth/AdminRoute.tsx` ya consumen `features/auth/hooks/use-login-modal`
 - ✅ corregido parcialmente: `client/src/App.tsx` ya consume `features/auth/context/AuthContext`
-- pendientes wrappers de auth/context legacy
+- ✅ corregido parcialmente: no quedan consumidores runtime de `@/contexts/AuthContext` ni `@/hooks/use-auth-*`
+- pendientes wrappers de auth/context legacy ya desacoplados del runtime
 
 Objetivo:
 
@@ -118,6 +119,11 @@ Resultado esperado:
 
 ### Fase C. Sustituir servicios legacy
 
+Estado:
+
+- ✅ corregido parcialmente: no quedan consumidores runtime de `client/src/services/firestore.ts`
+- ✅ corregido parcialmente: no quedan consumidores runtime de `client/src/services/testimonials.ts`
+
 Objetivo:
 
 - vaciar dependencia activa de `services/firestore.ts` y `services/testimonials.ts`
@@ -133,6 +139,10 @@ Resultado esperado:
 - no existan imports activos desde `client/src/services/*` legacy
 
 ### Fase D. Sustituir fachada backend
+
+Estado:
+
+- ✅ corregido parcialmente: `rg "public.routes" server` ya no devuelve imports activos
 
 Objetivo:
 
