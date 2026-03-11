@@ -1,6 +1,6 @@
 import { useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useIntersectionObserver } from '@/hooks/use-intersection-observer';
+import { useIntersectionObserver } from '@/core/hooks/use-intersection-observer';
 import AnimatedShape from '@/components/ui/animated-shape';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';

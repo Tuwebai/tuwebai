@@ -130,6 +130,7 @@ Estado:
 - ✅ corregido parcialmente: no quedan consumidores runtime de `client/src/services/testimonials.ts`
 - ✅ corregido parcialmente: `client/src/hooks/use-toast.ts` eliminado tras redirigir todos sus consumidores a `client/src/shared/ui/use-toast`
 - ✅ corregido parcialmente: `client/src/hooks/use-mobile.tsx` eliminado tras redirigir sus consumidores a `client/src/core/hooks/use-mobile`
+- ✅ corregido parcialmente: `client/src/hooks/use-intersection-observer.tsx` eliminado tras redirigir sus consumidores a `client/src/core/hooks/use-intersection-observer`
 
 Objetivo:
 
@@ -192,6 +193,7 @@ La limpieza final queda habilitada solo si:
 - `rg "@/services/firestore"` no devuelve consumidores runtime
 - `rg "@/hooks/use-toast"` no devuelve consumidores runtime
 - `rg "@/hooks/use-mobile"` no devuelve consumidores runtime
+- `rg "@/hooks/use-intersection-observer"` no devuelve consumidores runtime
 - `rg "export { default } from '@/components"` no devuelve reexports en `features/`
 - `rg "public.routes"` no devuelve imports activos
 
@@ -202,6 +204,7 @@ Resultado actual de la re-auditoría:
 - ✅ `@/services/firestore` sin consumidores runtime
 - ✅ `@/hooks/use-toast` sin consumidores runtime
 - ✅ `@/hooks/use-mobile` sin consumidores runtime
+- ✅ `@/hooks/use-intersection-observer` sin consumidores runtime
 - ✅ `public.routes` sin imports activos
 - ✅ los wrappers invertidos `components/* -> features/*` ya fueron retirados
 - ❌ `client/src/App.tsx` y páginas activas siguen montando `pages/*` y `components/*`

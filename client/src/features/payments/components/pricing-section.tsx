@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { useIntersectionObserver } from '@/hooks/use-intersection-observer';
+import { useIntersectionObserver } from '@/core/hooks/use-intersection-observer';
 import { useToast } from '@/shared/ui/use-toast';
 import PaymentErrorDialog from '@/features/payments/components/payment-error-dialog';
 import {
