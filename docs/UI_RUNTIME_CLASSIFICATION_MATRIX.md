@@ -42,9 +42,9 @@ Regla de esta fase:
 | `client/src/components/ui/popover.tsx` | `client/src/shared/ui/popover.tsx` | `shared/ui` | Bajo | primitive reusable |
 | `client/src/components/ui/hover-card.tsx` | `client/src/shared/ui/hover-card.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
 | `client/src/components/ui/dropdown-menu.tsx` | `client/src/shared/ui/dropdown-menu.tsx` | `shared/ui` | Bajo | primitive reusable |
-| `client/src/components/ui/context-menu.tsx` | `client/src/shared/ui/context-menu.tsx` | `shared/ui` | Bajo | primitive reusable |
-| `client/src/components/ui/navigation-menu.tsx` | `client/src/shared/ui/navigation-menu.tsx` | `shared/ui` | Bajo | primitive reusable |
-| `client/src/components/ui/menubar.tsx` | `client/src/shared/ui/menubar.tsx` | `shared/ui` | Bajo | primitive reusable |
+| `client/src/components/ui/context-menu.tsx` | `client/src/shared/ui/context-menu.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
+| `client/src/components/ui/navigation-menu.tsx` | `client/src/shared/ui/navigation-menu.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
+| `client/src/components/ui/menubar.tsx` | `client/src/shared/ui/menubar.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
 | `client/src/components/ui/accordion.tsx` | `client/src/shared/ui/accordion.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |
 | `client/src/components/ui/collapsible.tsx` | `client/src/shared/ui/collapsible.tsx` | `shared/ui` | Bajo | primitive reusable |
 | `client/src/components/ui/tabs.tsx` | `client/src/shared/ui/tabs.tsx` | `shared/ui` | Bajo | primitive reusable ✅ corregido parcialmente |

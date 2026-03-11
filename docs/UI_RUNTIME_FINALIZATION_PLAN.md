@@ -139,6 +139,8 @@ Estado:
 - componentes movidos: `accordion`, `alert`, `badge`, `card`, `separator`, `skeleton`
 - ✅ corregido parcialmente: lote 4 movido a `shared/ui`
 - componentes movidos: `dialog`, `drawer`, `tabs`, `tooltip`, `hover-card`, `scroll-area`
+- ✅ corregido parcialmente: lote 5 movido a `shared/ui`
+- componentes movidos: `popover`, `sheet`, `dropdown-menu`, `context-menu`, `navigation-menu`, `menubar`
 
 Objetivo:
 
