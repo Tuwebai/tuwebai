@@ -40,7 +40,7 @@ Entradas activas:
 
 - `client/src/features/auth/components/LoginModal.tsx`
 - `client/src/features/contact/components/contact-section.tsx` ✅ corregido
-- `client/src/features/newsletter/components/newsletter-form.tsx`
+- `client/src/features/newsletter/components/newsletter-form.tsx` ✅ corregido
 - `client/src/features/payments/components/payment-return-view.tsx`
 - `client/src/features/payments/components/pricing-section.tsx`
 - `client/src/features/testimonials/components/testimonial-form.tsx` ✅ corregido
@@ -148,7 +148,7 @@ Orden:
 3. `contact/newsletter/testimonials` runtime
    - `testimonials` ✅ corregido
    - `contact` ✅ corregido
-   - `newsletter` pendiente
+   - `newsletter` ✅ corregido
 4. `shared/ui` base
 5. `services` legacy restantes
 6. `public.routes.ts`
