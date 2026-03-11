@@ -14,7 +14,7 @@ const ServicesSection = lazy(() => import('@/components/sections/services-sectio
 const ProcessSection = lazy(() => import('@/components/sections/process-section'));
 const TechSection = lazy(() => import('@/components/sections/tech-section'));
 const ImpactSection = lazy(() => import('@/components/sections/impact-section'));
-const TestimonialsSection = lazy(() => import('@/components/sections/testimonials-section'));
+const TestimonialsSection = lazy(() => import('@/features/testimonials/components/testimonials-section'));
 const ContactSection = lazy(() => import('@/components/sections/contact-section'));
 const PricingSection = lazy(() => import('@/components/sections/pricing-section'));
 const ComparisonSection = lazy(() => import('@/components/sections/comparison-section'));

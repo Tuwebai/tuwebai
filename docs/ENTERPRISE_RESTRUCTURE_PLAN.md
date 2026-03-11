@@ -250,6 +250,7 @@ Recién ahí:
 Precondición operacional:
 
 - antes de ejecutar limpieza final, desacoplar runtime legacy restante en `server/index.ts`, `features/auth/context/AuthContext.tsx` y `pages/consulta.tsx` ✅ corregido
+- además debe completarse la sustitución final de runtime documentada en `docs/FINAL_RUNTIME_SUBSTITUTION_PLAN.md`
 
 ## Mapa Actual -> Objetivo
 
