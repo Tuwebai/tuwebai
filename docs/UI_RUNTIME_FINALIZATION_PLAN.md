@@ -211,6 +211,11 @@ Definition of Done:
 
 ### Fase 3. Runtime shell
 
+Estado:
+
+- ✅ corregido parcialmente: implementación principal movida a `client/src/app/App.tsx`
+- ✅ corregido parcialmente: `client/src/App.tsx` quedó como bridge temporal controlado
+
 Objetivo:
 
 - mover el shell de aplicación a la estructura final
