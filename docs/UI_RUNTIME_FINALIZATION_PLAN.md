@@ -181,6 +181,11 @@ Definition of Done:
 
 ### Fase 2. Sections por dominio
 
+Estado:
+
+- ✅ corregido parcialmente: `contact` ya consume `client/src/features/contact/components/contact-section.tsx` desde `home.tsx`
+- ✅ corregido parcialmente: `testimonials` ya consume `client/src/features/testimonials/components/testimonials-section.tsx` desde `home.tsx`
+
 Objetivo:
 
 - mover secciones acopladas a negocio desde `components/sections` a `features/*/components`
