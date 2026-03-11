@@ -1,4 +1,4 @@
-import PaymentReturnView from '@/components/payment/payment-return-view';
+import PaymentReturnView from '@/features/payments/components/payment-return-view';
 
 export default function PagoExitoso() {
   return (

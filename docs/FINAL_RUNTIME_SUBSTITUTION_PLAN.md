@@ -41,8 +41,8 @@ Entradas activas:
 - `client/src/features/auth/components/LoginModal.tsx`
 - `client/src/features/contact/components/contact-section.tsx` ✅ corregido
 - `client/src/features/newsletter/components/newsletter-form.tsx` ✅ corregido
-- `client/src/features/payments/components/payment-return-view.tsx`
-- `client/src/features/payments/components/pricing-section.tsx`
+- `client/src/features/payments/components/payment-return-view.tsx` ✅ corregido
+- `client/src/features/payments/components/pricing-section.tsx` ✅ corregido
 - `client/src/features/testimonials/components/testimonial-form.tsx` ✅ corregido
 - `client/src/features/testimonials/components/testimonials-section.tsx` ✅ corregido
 
@@ -144,7 +144,7 @@ Orden:
 ## Orden Recomendado de Ejecución
 
 1. `auth` runtime
-2. `payments` runtime
+2. `payments` runtime ✅ corregido
 3. `contact/newsletter/testimonials` runtime
    - `testimonials` ✅ corregido
    - `contact` ✅ corregido

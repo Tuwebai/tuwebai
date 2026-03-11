@@ -16,7 +16,7 @@ const TechSection = lazy(() => import('@/components/sections/tech-section'));
 const ImpactSection = lazy(() => import('@/components/sections/impact-section'));
 const TestimonialsSection = lazy(() => import('@/features/testimonials/components/testimonials-section'));
 const ContactSection = lazy(() => import('@/features/contact/components/contact-section'));
-const PricingSection = lazy(() => import('@/components/sections/pricing-section'));
+const PricingSection = lazy(() => import('@/features/payments/components/pricing-section'));
 const ComparisonSection = lazy(() => import('@/components/sections/comparison-section'));
 const ShowroomSection = lazy(() => import('@/components/sections/showroom-section'));
 const CompanyLogoSlider = lazy(() => import('@/components/ui/company-logo-slider'));
