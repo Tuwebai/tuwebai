@@ -24,6 +24,7 @@ Conclusion:
 - `darkMode` y `language` ya no son frentes de implementacion
 - ambos quedaron descartados por decision de producto
 - la expansion de tabs y toggles sin efecto real ya quedo congelada como criterio operativo
+- la vieja tab de `Preferencias` ya no debe volver como contenedor generico; los controles sensibles pasan a `Privacidad`
 - la deuda real del panel queda concentrada en comunicaciones (`newsletter`, `emailNotifications`) y en sincerar claramente que se guarda vs que hoy se aplica
 
 ## Flujo Auditado
@@ -244,7 +245,29 @@ Recomendacion:
 - primero sincerar el comportamiento
 - despues integrar con backend/comunicaciones en un plan separado
 
-### Fase 4. Corregir copy y estados de guardado
+### Fase 4. Reubicar semantica del panel en tabs coherentes
+
+Objetivo:
+
+- evitar que `Privacidad` quede escondida dentro de una tab generica
+
+Cambios esperados:
+
+- reemplazar `Preferencias` por `Privacidad`
+- dejar el shell de `Privacidad` con copy honesto
+- reservar futuras preferencias blandas para un frente separado solo si aparece wiring real
+
+Estado:
+
+- cerrada
+
+Resultado real:
+
+- la vieja tab de `Preferencias` fue reemplazada en runtime por `Privacidad`
+- el panel ya no usa una etiqueta generica para controles sensibles
+- futuras preferencias blandas quedan condicionadas a un frente separado con wiring real
+
+### Fase 5. Corregir copy y estados de guardado
 
 Objetivo:
 
@@ -257,7 +280,7 @@ Cambios esperados:
 - mostrar que las preferencias de comunicaciones quedan preparadas para integracion global
 - si Firestore no esta disponible, mostrar error mas especifico
 
-### Fase 5. Endurecer consistencia de preferencias vivas
+### Fase 6. Endurecer consistencia de preferencias vivas
 
 Objetivo:
 
@@ -273,9 +296,10 @@ Direccion target:
 
 1. Fase 1 cerrada por decision de producto
 2. Fase 2 cerrada por decision de producto
-3. Fase 4 copy y estados UX
-4. Fase 3 comunicaciones reales o sinceramiento definitivo de toggles
-5. Fase 5 consolidacion
+3. Fase 4 reubicar semantica del panel
+4. Fase 5 copy y estados UX
+5. Fase 3 comunicaciones reales o sinceramiento definitivo de toggles
+6. Fase 6 consolidacion
 
 ## Riesgos
 

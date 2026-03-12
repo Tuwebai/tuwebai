@@ -17,7 +17,7 @@ El `/panel` ya tiene una separacion base razonable:
 
 - `Perfil`
 - `Seguridad`
-- `Preferencias`
+- `Privacidad`
 - `Integraciones`
 
 El problema actual no es falta de tabs, sino que `Preferencias` venia cargando configuraciones sin efecto real.
@@ -25,7 +25,8 @@ El problema actual no es falta de tabs, sino que `Preferencias` venia cargando c
 Conclusion:
 
 - no conviene seguir agregando toggles decorativos
-- `Preferencias` debe quedar limitada a configuracion personal de experiencia, privacidad y accesibilidad
+- `Privacidad` debe vivir como tab propia para controles sensibles
+- una futura tab de `Preferencias` solo se justifica si aparecen ajustes reales de experiencia o accesibilidad
 - una nueva tab solo se justifica si expone informacion operativa real, no promesas futuras
 
 ## Flujo Auditado
@@ -40,7 +41,7 @@ Estado auditado:
 
 - `profile`
 - `security`
-- `preferences`
+- `privacy`
 - `integrations`
 
 ### 2. Responsabilidad real por tab
@@ -71,18 +72,19 @@ Lectura:
 - esta tab tambien esta bien delimitada
 - cualquier configuracion de sesiones o alertas de acceso deberia vivir aca, no en `Preferencias`
 
-#### `Preferencias`
+#### `Privacidad`
 
 Estado actual:
 
-- ya no contiene tema ni idioma
-- quedo reducida a comunicaciones
+- reemplaza a la vieja `Preferencias`
+- hoy funciona como shell honesto, sin toggles fake
+- queda reservada para controles sensibles con efecto verificable
 
 Lectura:
 
-- esta mejor que antes
-- pero todavia no esta cerrada
-- hoy sigue sosteniendo toggles que persisten pero no gobiernan comportamiento real
+- semantica correcta para consentimiento, visibilidad y control de datos
+- no conviene mezclarla con experiencia visual ni accesibilidad
+- necesita implementacion real antes de poblarla
 
 #### `Integraciones`
 
@@ -98,11 +100,11 @@ Lectura:
 
 ## Hallazgos
 
-### Hallazgo 1. `Preferencias` debe ser una capa personal, no una mezcla de dominio
+### Hallazgo 1. `Privacidad` debe ser una capa personal, no una mezcla de dominio
 
 Nivel: alto
 
-Una tab de preferencias enterprise no deberia incluir:
+Una tab de privacidad enterprise no deberia incluir:
 
 - integraciones
 - seguridad
@@ -111,30 +113,32 @@ Una tab de preferencias enterprise no deberia incluir:
 
 Porque eso ya tiene fronteras mejores en otras tabs.
 
-### Hallazgo 2. `Comunicaciones` sigue siendo un frente debil
+### Hallazgo 2. La vieja `Preferencias` ya no debe seguir existiendo como tab generica
 
 Nivel: alto
 
-Hoy `newsletter` y `emailNotifications`:
+Una tab generica de preferencias:
 
-- persisten
-- pero no gobiernan un comportamiento global visible y confiable
+- tiende a mezclar controles blandos con configuraciones sensibles
+- invita a volver a meter toggles decorativos
+- queda semanticamente mas debil que una tab explicita de `Privacidad`
 
 Conclusion:
 
-- no son una base fuerte para sostener por si solas toda la tab de `Preferencias`
+- conviene reemplazar `Preferencias` por `Privacidad`
+- experiencia y accesibilidad deben evaluarse aparte, no forzarse dentro de una tab vacia
 
-### Hallazgo 3. Falta una seccion de preferencias con efecto visible real
+### Hallazgo 3. Las preferencias blandas deben esperar a tener efecto visible real
 
 Nivel: alto
 
-Si `Preferencias` no controla:
+Si la app todavia no controla:
 
 - tema
 - idioma
 - comunicaciones reales
 
-entonces necesita un nuevo nucleo funcional que si tenga efecto verificable.
+entonces no conviene abrir una tab nueva solo para llenarla.
 
 ### Hallazgo 4. No hace falta sumar tabs nuevas si todavia no existe un caso operativo claro
 
@@ -148,11 +152,11 @@ Una tab nueva solo se justifica si:
 - evita mezclar responsabilidades
 - tiene datos o acciones verificables
 
-## Criterio Enterprise para `Preferencias`
+## Criterio Enterprise para `Privacidad`
 
-`Preferencias` deberia contener solo configuracion personal de experiencia del usuario dentro del panel y de la app.
+`Privacidad` deberia contener solo configuracion personal sensible vinculada a visibilidad, consentimiento y control de datos.
 
-Eso deja tres familias correctas:
+Eso deja una familia correcta:
 
 ### 1. Privacidad
 
@@ -165,56 +169,29 @@ Ejemplos viables:
 
 Ventaja:
 
-- pertenece a configuracion personal
+- pertenece a configuracion personal sensible
 - no duplica `Seguridad`
 - puede tener semantica clara y persistencia limpia
 
-### 2. Experiencia
-
-Ejemplos viables:
-
-- recordar ultima tab abierta del panel
-- densidad de interfaz
-- reducir animaciones
-- mostrar u ocultar modulos secundarios del dashboard
-
-Ventaja:
-
-- efecto visible real
-- no rompe branding
-- se puede implementar en slices chicos y medibles
-
-### 3. Accesibilidad
-
-Ejemplos viables:
-
-- reducir motion
-- contraste reforzado
-- tamano de texto
-
-Ventaja:
-
-- es una familia legitima de preferencias
-- tiene impacto real de UX
-- no compite con `Seguridad` ni `Integraciones`
-
 ## Recomendacion de Arquitectura
 
-### Estructura recomendada de `Preferencias`
+### Estructura recomendada de tabs del panel
 
 Orden sugerido:
 
-1. `Privacidad`
-2. `Experiencia`
-3. `Accesibilidad`
+1. `Perfil`
+2. `Seguridad`
+3. `Privacidad`
+4. `Integraciones`
 
-No recomendaria dejar:
+No recomendaria dejar hoy:
 
+- `Preferencias` como tab generica
 - `Tema`
 - `Idioma`
-- `Comunicaciones` sola
+- `Comunicaciones`
 
-porque hoy o ya fueron descartadas por producto, o todavia no tienen wiring real.
+porque hoy ya fueron descartadas por producto o todavia no tienen wiring real.
 
 ## Tabs nuevas: cuando si y cuando no
 
@@ -287,15 +264,16 @@ Resultado real:
 - `Preferencias` tampoco conserva UI residual de esas decisiones descartadas
 - cualquier nueva tab o configuracion queda condicionada a tener dominio operativo real antes de entrar al runtime
 
-### Fase 1. Vaciar `Preferencias` de configuracion debil
+### Fase 1. Retirar `Preferencias` como tab generica
 
 Objetivo:
 
-- retirar `Comunicaciones` si sigue sin wiring real
+- reemplazar la vieja tab de `Preferencias` por `Privacidad`
 
 Resultado esperado:
 
-- `Preferencias` deja de depender de toggles que hoy no gobiernan nada
+- el panel deja de mezclar ajustes blandos con controles sensibles
+- la navegacion refleja mejor la semantica real del producto
 
 Estado:
 
@@ -304,26 +282,36 @@ Estado:
 Resultado real:
 
 - `Comunicaciones` fue retirada del runtime del panel
-- `Preferencias` quedo sin toggles fake ni persistencia nominal expuesta como configuracion real
-- el espacio queda listo para ser reconstruido con semantica enterprise en fases posteriores
+- la vieja semantica de `Preferencias` quedo descartada
+- la tab ya quedo renombrada a `Privacidad` y funciona como shell honesto hasta tener controles reales
 
-### Fase 2. Introducir `Privacidad`
+### Fase 2. Consolidar `Privacidad` como tab propia
 
 Objetivo:
 
-- darle a `Preferencias` un primer bloque con semantica enterprise real
+- materializar `Privacidad` como tab separada y dejar su shell alineado a controles sensibles
 
 Slice minimo recomendado:
 
-- una o dos opciones claras
-- persistidas en `users.preferences`
-- con copy honesto
+- renombrar la tab y su contenido
+- mantener copy honesto
+- no introducir toggles hasta tener wiring real
 
-### Fase 3. Introducir `Experiencia`
+Estado:
+
+- cerrada
+
+Resultado real:
+
+- `Preferencias` fue reemplazada en el runtime por la tab `Privacidad`
+- la navegacion del panel ya no usa una etiqueta generica para controles sensibles
+- `Privacidad` queda como shell honesto mientras se define wiring real para visibilidad, consentimiento y control de datos
+
+### Fase 3. Evaluar una futura tab de `Preferencias`
 
 Objetivo:
 
-- sumar una preferencia con efecto visible real en el panel
+- decidir si experiencia y accesibilidad justifican volver a abrir una tab separada
 
 Slice minimo recomendado:
 
@@ -331,11 +319,11 @@ Slice minimo recomendado:
 o
 - reducir animaciones del panel
 
-### Fase 4. Introducir `Accesibilidad`
+### Fase 4. Evaluar `Accesibilidad`
 
 Objetivo:
 
-- consolidar `Preferencias` como espacio legitimo de configuracion personal
+- decidir si accesibilidad merece sub-bloque o tab propia segun alcance real
 
 Slice minimo recomendado:
 
@@ -358,14 +346,14 @@ Condicion:
 1. Fase 0 congelar expansion innecesaria
 2. Fase 0 cerrada
 3. Fase 1 cerrada
-4. Fase 2 introducir `Privacidad`
-5. Fase 3 introducir `Experiencia`
-6. Fase 4 introducir `Accesibilidad`
+4. Fase 2 consolidar `Privacidad`
+5. Fase 3 evaluar futura tab de `Preferencias`
+6. Fase 4 evaluar `Accesibilidad`
 7. Fase 5 evaluar `Actividad`
 
 ## Riesgos
 
-- volver a inflar `Preferencias` con configuraciones fake
+- volver a abrir `Preferencias` como cajon de sastre
 - abrir tabs nuevas sin dominio real
 - mezclar seguridad, integraciones y preferencias personales
 - meter una capa visual bonita pero sin efecto funcional
@@ -374,7 +362,7 @@ Condicion:
 
 Este frente se considera bien encaminado cuando:
 
-- `Preferencias` contiene solo configuracion personal real
+- `Privacidad` existe como tab propia y coherente
 - no quedan toggles sin efecto verificable
 - no se agregan tabs decorativas
 - cualquier nueva tab responde a un dominio claro y operativo

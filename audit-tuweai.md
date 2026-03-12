@@ -692,3 +692,4 @@ Nota de seguimiento:
 - ✅ corregido: la Fase 0 de `docs/PANEL_INFORMATION_ARCHITECTURE_PLAN.md` quedo cerrada; el `/panel` ya no acepta expansion de tabs o toggles sin efecto real y el siguiente frente util queda acotado a reemplazar `Comunicaciones` por preferencias con semantica operativa verdadera.
 
 - ✅ corregido: la Fase 1 del plan de arquitectura del `/panel` ya quedo cerrada; `Comunicaciones` fue retirada del runtime porque solo exponia persistencia nominal sin comportamiento real y `Preferencias` deja de mostrar toggles fake.
+- ✅ corregido: la Fase 2 del plan de arquitectura del `/panel` ya quedo cerrada; la tab generica `Preferencias` fue reemplazada en runtime por `Privacidad`, alineando la navegacion con controles sensibles reales y evitando mezclar ajustes decorativos con configuraciones de datos personales.

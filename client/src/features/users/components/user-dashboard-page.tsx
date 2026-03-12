@@ -16,7 +16,6 @@ import {
   Globe, 
   Shield, 
   User, 
-  Settings,
   Check,
   AlertCircle,
   Eye,
@@ -40,7 +39,7 @@ export default function PanelUsuario() {
   } = useAuth();
   const { toast } = useToast();
   
-  const [activeTab, setActiveTab] = useState<'profile' | 'security' | 'preferences' | 'integrations'>('profile');
+  const [activeTab, setActiveTab] = useState<'profile' | 'security' | 'privacy' | 'integrations'>('profile');
   const [isEditing, setIsEditing] = useState(false);
   const [isSavingProfile, setIsSavingProfile] = useState(false);
   const [isSavingPassword, setIsSavingPassword] = useState(false);
@@ -422,15 +421,15 @@ export default function PanelUsuario() {
                       Seguridad
                     </button>
                     <button
-                      onClick={() => setActiveTab('preferences')}
+                      onClick={() => setActiveTab('privacy')}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                        activeTab === 'preferences'
+                        activeTab === 'privacy'
                     ? 'bg-blue-500 text-white shadow-lg' 
                     : 'text-gray-300 hover:bg-white/10 hover:text-white'
                       }`}
                     >
-                <Settings className="w-4 h-4" />
-                      Preferencias
+                <Eye className="w-4 h-4" />
+                      Privacidad
                     </button>
               <button 
                 onClick={() => setActiveTab('integrations')} 
@@ -813,19 +812,19 @@ export default function PanelUsuario() {
                 </div>
               )}
               
-              {/* Tab: Preferencias */}
-              {activeTab === 'preferences' && (
+              {/* Tab: Privacidad */}
+              {activeTab === 'privacy' && (
                 <div className="space-y-6">
                   <h2 className="text-xl font-semibold text-white flex items-center gap-2 mb-6">
-                    <Settings className="w-5 h-5" />
-                    Preferencias de Usuario
+                    <Eye className="w-5 h-5" />
+                    Privacidad
                     </h2>
                   <div className="grid grid-cols-1 gap-6">
                     <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-                      <p className="text-white font-medium">No hay preferencias configurables activas en este momento.</p>
+                      <p className="text-white font-medium">Todavia no hay controles de privacidad activos en tu cuenta.</p>
                       <p className="mt-2 text-sm text-gray-400">
-                        La siguiente etapa del panel va a reintroducir este espacio con preferencias reales de privacidad,
-                        experiencia y accesibilidad.
+                        Esta tab queda reservada para configuraciones reales de visibilidad, consentimiento
+                        y control de datos cuando tengan soporte operativo completo.
                       </p>
                     </div>
                   </div>
