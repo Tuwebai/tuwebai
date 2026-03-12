@@ -152,6 +152,7 @@ Estado:
 - ✅ corregido parcialmente: `form`, `calendar` y `carousel` movidos a `shared/ui`
 - ✅ corregido: `client/src/components/ui/{command,form,calendar,carousel}.tsx` fueron retirados tras quedar sin consumidores internos; sus implementaciones finales viven en `client/src/shared/ui/*`
 - ✅ corregido: `client/src/components/ui/{global-navbar,chart,aspect-ratio,input-otp}.tsx` fueron retirados tras confirmar ausencia de consumidores internos; no correspondía mantenerlos como compatibilidad activa
+- ✅ corregido: `client/src/components/ui/{button,input,textarea,label,toast,toaster}` y `client/src/components/ui/use-toast/*` fueron retirados tras confirmar ausencia de consumidores internos; `client/src/shared/ui/*` quedó como destino final
 
 Objetivo:
 
@@ -310,6 +311,7 @@ Precondiciones:
 - `components/performance` quedó re-auditado como instrumentacion de runtime de `app`; no corresponde mover `ResourcePreload` ni `MemoryManager` a `shared/ui`
 - `components/ui` ya no necesita compatibilidad para `command`, `form`, `calendar` ni `carousel`
 - `components/ui` ya no necesita conservar `global-navbar`, `chart`, `aspect-ratio` ni `input-otp` tras la re-auditoria de consumidores
+- `components/ui` ya no necesita conservar compatibilidad para `button`, `input`, `textarea`, `label`, `toast`, `toaster` ni `use-toast`
 - ✅ corregido parcialmente: el bloqueo por `components/sections/*` temporales del landing ya fue removido; `marketing-home` quedó consolidado en `features/marketing-home` y la re-auditoría de Fase 6 queda pendiente solo por las páginas institucionales activas restantes
 - plan específico abierto en `docs/MARKETING_HOME_FINALIZATION_PLAN.md`
 
