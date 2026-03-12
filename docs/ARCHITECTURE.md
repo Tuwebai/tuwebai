@@ -15,6 +15,16 @@ El repositorio queda dividido conceptualmente en tres zonas:
 
 ## Frontend
 
+## Criterio Visual
+
+Para trabajos de UI/UX en el frontend activo:
+
+- la carpeta `ui-ux-pro-max-skill/` se considera referencia de diseno premium y criterio visual reutilizable
+- sus guias, templates y reglas pueden usarse para revisar o implementar ajustes visuales
+- no forma parte del runtime ni del build del producto principal
+- cualquier mejora visual debe respetar primero la identidad de TuWeb.ai, especialmente su paleta base y su lenguaje visual ya establecido
+- cuando exista tension entre una recomendacion generica del skill y la identidad actual de TuWeb.ai, prevalece TuWeb.ai
+
 ### Capa `app/`
 
 Responsabilidad:
