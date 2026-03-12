@@ -10,7 +10,7 @@ El proyecto tiene una base funcional y un frontend con bastante trabajo visual y
 - un backend Express/TypeScript en `server/`
 - un stack PHP legacy en `api/` ✅ corregido: aislado en `legacy/php-api/`; `api/` hoy aparece solo como residuo local vacío sin archivos versionados
 - una Cloud Function separada en `firebase-functions-contacto/`
-- artefactos compilados, binarios, reportes, logs y credenciales en raíz ✅ corregido parcialmente: builds/reportes/logs generados y tooling local heredado ya fueron limpiados del workspace; persisten solo secretos locales sensibles
+- artefactos compilados, binarios, reportes, logs y credenciales en raíz ✅ corregido parcialmente: builds/reportes/logs generados, tooling local heredado y el secreto local Firebase Admin ya fueron limpiados del workspace; persisten solo variables sensibles en `.env`
 
 Eso eleva el costo de mantenimiento, debilita la gobernanza y deja riesgos concretos de seguridad, despliegue y escalabilidad.
 
@@ -146,14 +146,14 @@ Eso deja tres riesgos:
 
 **Impacto:** A - Crítico
 
-Existe [`firebase-service-account.json`](./firebase-service-account.json) en raíz. ✅ corregido parcialmente: sigue local, pero fuera del versionado y protegido por `.gitignore`; ya no es requisito arquitectónico porque el server soporta credencial inline y `applicationDefault()`
+Existe [`firebase-service-account.json`](./firebase-service-account.json) en raíz. ✅ corregido: retirado del workspace tras confirmar que el server ya opera con credencial inline y `applicationDefault()` sin depender del archivo físico local
 
 Además, el stack PHP legacy usa fallback explícito al archivo local: ✅ corregido parcialmente al aislarse el stack en `legacy/`
 
 - [`legacy/php-api/config/firebase.php`](./legacy/php-api/config/firebase.php) línea 28
 - [`legacy/php-api/config/firebase.php`](./legacy/php-api/config/firebase.php) línea 284
 
-Aunque `.gitignore` lo ignora, su presencia física en el repo de trabajo es una mala práctica de alto riesgo y fomenta dependencia operativa en secretos locales. ✅ corregido parcialmente
+Aunque `.gitignore` lo ignora, su presencia física en el repo de trabajo es una mala práctica de alto riesgo y fomenta dependencia operativa en secretos locales. ✅ corregido
 
 ### 5. ✅ Código legacy PHP con prácticas inseguras sigue coexistiendo
 
@@ -566,7 +566,7 @@ server/
 - separar frontend por `features` ✅ corregido parcialmente: estructura preparada
 - encapsular acceso a backend solo en hooks/services
 - crear contratos tipados compartidos o al menos DTOs por módulo
-- sacar artefactos, binarios, reportes y secretos fuera del repo ✅ corregido parcialmente: builds/reportes/logs locales y tooling heredado ya fueron limpiados; siguen pendientes secretos locales sensibles
+- sacar artefactos, binarios, reportes y secretos fuera del repo ✅ corregido parcialmente: builds/reportes/logs locales, tooling heredado y el archivo local de Firebase Admin ya fueron limpiados; siguen pendientes secretos sensibles dentro de `.env`
 
 ---
 

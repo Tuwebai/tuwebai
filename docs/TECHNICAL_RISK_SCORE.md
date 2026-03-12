@@ -61,8 +61,7 @@ Este score se calculo sobre el estado real del repo auditado localmente, tomando
 - `firebase-functions-contacto/` no participa del runtime ni de CI/CD principal, pero sigue siendo un subproyecto versionado con deploy manual propio.
 - siguen presentes artefactos o residuos operativos en workspace:
   - `node_modules/`
-  - `firebase-service-account.json`
-- el archivo `firebase-service-account.json` puede seguir existiendo fisicamente en raiz como excepcion local ignorada, pero ya no es requerido por la arquitectura actual porque el server soporta `FIREBASE_SERVICE_ACCOUNT_JSON` y `applicationDefault()`.
+- el archivo `firebase-service-account.json` ya fue retirado del workspace; la arquitectura actual no lo requiere porque el server soporta `FIREBASE_SERVICE_ACCOUNT_JSON` y `applicationDefault()`.
 - `.replit` y `php-temp/` ya fueron retirados del workspace tras confirmarse como tooling local legado sin consumidores ni integraciÃ³n operativa.
 
 ### Gobernanza operativa y dependencias
@@ -133,7 +132,7 @@ Razon del score:
 Riesgo residual:
 
 - siguen existiendo piezas del repo todavia no clasificadas definitivamente fuera del runtime principal
-- queda deuda de limpieza en secretos locales y dependencias restantes
+- queda deuda de limpieza en variables sensibles locales y dependencias restantes
 - persisten superficies legacy versionadas fuera del runtime principal que requieren cierre o aislamiento final
 - el stack `legacy/php-api` ya fue endurecido en puntos críticos, pero sigue siendo superficie heredada fuera de la gobernanza principal
 
@@ -164,8 +163,7 @@ Razon del score:
 - ya fueron retirados scripts inexistentes y el `deploy` inseguro
 - ya fueron retirados cuatro lotes de dependencias sin referencias en repo principal
 - todavia hay dependencias sospechosas, redundantes o con uso incierto
-- la presencia fisica de secretos locales en workspace sigue siendo una mala señal de gobernanza, aunque ya no bloquee el runtime principal
-- aunque ya no quedan secretos EmailJS hardcodeados en `firebase-functions-contacto`, siguen existiendo secretos locales en workspace y subproyectos paralelos con gobernanza separada
+- aunque ya no quedan secretos físicos locales en workspace ni secretos EmailJS hardcodeados en `firebase-functions-contacto`, siguen existiendo variables sensibles locales y subproyectos paralelos con gobernanza separada
 
 Lectura:
 
@@ -178,12 +176,12 @@ Estado general:
 - el proyecto ya no esta en rojo arquitectonico
 - el trabajo grueso de reorganizacion ya se hizo
 - el mayor riesgo actual ya no viene de `pages/` ni del router
-- el mayor riesgo viene de stacks paralelos, secretos locales y gobernanza de dependencias restantes
+- el mayor riesgo viene de stacks paralelos, variables sensibles locales y gobernanza de dependencias restantes
 
 Prioridades para bajar el score real:
 
 1. seguir podando dependencias dudosas con auditoria de uso real
-2. revisar secretos locales sensibles que siguen presentes en raiz
+2. revisar variables sensibles locales y terminar de externalizarlas a secret managers donde corresponda
 3. consolidar o aislar stacks paralelos (`legacy/`, `firebase-functions-contacto/`)
 4. seguir reduciendo usos de `any`
 5. consolidar la documentacion operativa final
