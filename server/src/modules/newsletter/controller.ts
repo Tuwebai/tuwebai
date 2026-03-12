@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { env } from '../../config/env.config';
 import { queueContactEmail } from '../../infrastructure/mail/email.service';
+import { getErrorMessage } from '../../shared/utils/error-message';
 import { appLogger } from '../../utils/app-logger';
 import { storeSubmission } from '../../utils/submission-store';
 
@@ -27,9 +28,9 @@ export const handleNewsletter = async (req: Request, res: Response) => {
       success: true,
       message: 'Suscripcion registrada. Procesaremos la confirmacion en breve.',
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     appLogger.error('public.newsletter_failed', {
-      error: error?.message,
+      error: getErrorMessage(error, 'unknown_newsletter_error'),
       route: req.path,
       method: req.method,
     });
@@ -37,7 +38,7 @@ export const handleNewsletter = async (req: Request, res: Response) => {
     return res.status(500).json({
       success: false,
       message: 'No se pudo procesar la suscripcion en este momento.',
-      details: env.NODE_ENV === 'development' ? error?.message : undefined,
+      details: env.NODE_ENV === 'development' ? getErrorMessage(error, 'unknown_newsletter_error') : undefined,
     });
   }
 };
