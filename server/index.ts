@@ -62,6 +62,7 @@ const allowedOrigins: string[] = Array.isArray(env.ALLOWED_ORIGINS)
  */
 const PATHS_ALLOWED_WITHOUT_ORIGIN = [
   "/api/health",
+  "/api/users/avatar",
   "/webhook/mercadopago/health",
   "/webhook/mercadopago",
 ] as const;
