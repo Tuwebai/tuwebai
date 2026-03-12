@@ -78,7 +78,7 @@ client/src/
 Estado:
 
 - ✅ corregido
-- mapa entregado en `docs/MARKETING_HOME_RESPONSIBILITY_MAP.md`
+- mapa histórico ya retirado del flujo operativo por quedar 100% materializado
 
 Objetivo:
 
