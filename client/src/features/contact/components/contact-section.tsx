@@ -1,8 +1,8 @@
 import { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useIntersectionObserver } from '@/core/hooks/use-intersection-observer';
-import AnimatedShape from '@/components/ui/animated-shape';
 import { useToast } from '@/shared/ui/use-toast';
+import AnimatedShape from '@/shared/ui/animated-shape';
 import {
   getContactErrorMessage,
   getContactFieldErrors,

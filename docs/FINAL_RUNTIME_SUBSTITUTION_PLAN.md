@@ -223,6 +223,7 @@ Resultado actual de la re-auditoría:
 - ✅ corregido: `client/src/components/route-wrapper.tsx` dejó de formar parte del runtime estructural; `client/src/app/router/AppRoutes.tsx` consume `client/src/app/router/lazy-route.tsx` y el wrapper legacy fue retirado
 - ✅ corregido: `client/src/app/App.tsx` y `client/src/app/router/lazy-route.tsx` ya consumen `client/src/shared/ui/{footer,toaster,skeleton}`; los wrappers equivalentes en `client/src/components/ui/*` quedaron fuera del runtime estructural
 - ✅ corregido: `client/src/app/router/solutions/*`, `client/src/features/proposals/components/proposal-request-page.tsx` y `client/src/features/contact/components/support-contact-page.tsx` ya consumen `client/src/shared/ui/{button,input,textarea,scroll-progress,whatsapp-button}`; los wrappers equivalentes en `client/src/components/ui/*` quedaron fuera de ese runtime activo
+- ✅ corregido: `client/src/features/contact/components/contact-section.tsx`, `client/src/features/testimonials/components/testimonials-section.tsx` y `client/src/features/payments/components/payment-error-dialog.tsx` ya consumen `client/src/shared/ui/{animated-shape,alert-dialog}`; los wrappers equivalentes en `client/src/components/ui/*` quedaron fuera de ese runtime activo
 
 ## Validación Obligatoria
 

@@ -1,9 +1,9 @@
 import { useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useIntersectionObserver } from '@/core/hooks/use-intersection-observer';
-import AnimatedShape from '@/components/ui/animated-shape';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
+import AnimatedShape from '@/shared/ui/animated-shape';
 import { useTestimonials } from '@/features/testimonials/hooks/use-testimonials';
 import TestimonialForm from '@/features/testimonials/components/testimonial-form';
 
