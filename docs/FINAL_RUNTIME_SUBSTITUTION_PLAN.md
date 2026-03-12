@@ -242,6 +242,7 @@ Resultado actual de la re-auditoría:
 - ✅ corregido: `client/src/app/App.tsx` dejó de depender de `client/src/components/performance/*`; `ResourcePreload` y `MemoryManager` fueron reclasificados a `client/src/app/performance/*` como instrumentación propia del runtime de aplicación
 - ✅ corregido: `client/src/components/a11y/*` fue retirado tras confirmar ausencia de consumidores internos; `SkipLink` quedó consolidado en `client/src/shared/ui/skip-link.tsx` y el resto del paquete no participaba del runtime activo
 - ✅ corregido: `client/src/components/performance/*` fue retirado tras confirmar ausencia de consumidores internos; `ResourcePreload` y `MemoryManager` ya quedaron consolidados en `client/src/app/performance/*` y `DeferredContent`/`OptimizedImage` no participaban del runtime activo
+- ✅ corregido: `client/src/components/auth/{AdminRoute,DashboardRoute}.tsx` fue retirado tras confirmar ausencia de consumidores internos; la protección efectiva quedó resuelta en `features/*` y el paquete legacy dejó de participar del runtime frontend
 
 Estado de re-auditoría de `client/src/components/ui`:
 
