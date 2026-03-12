@@ -297,6 +297,16 @@ Resultado esperado:
 
 - `Preferencias` deja de depender de toggles que hoy no gobiernan nada
 
+Estado:
+
+- cerrada
+
+Resultado real:
+
+- `Comunicaciones` fue retirada del runtime del panel
+- `Preferencias` quedo sin toggles fake ni persistencia nominal expuesta como configuracion real
+- el espacio queda listo para ser reconstruido con semantica enterprise en fases posteriores
+
 ### Fase 2. Introducir `Privacidad`
 
 Objetivo:
@@ -347,7 +357,7 @@ Condicion:
 
 1. Fase 0 congelar expansion innecesaria
 2. Fase 0 cerrada
-3. Fase 1 retirar `Comunicaciones` si sigue sin wiring real
+3. Fase 1 cerrada
 4. Fase 2 introducir `Privacidad`
 5. Fase 3 introducir `Experiencia`
 6. Fase 4 introducir `Accesibilidad`

@@ -228,6 +228,11 @@ Objetivo:
 
 - dejar de vender toggles que no gobiernan nada y definir su rol real
 
+Estado actual:
+
+- los toggles ya fueron retirados de `/panel`
+- este frente queda pendiente solo si en el futuro se decide implementar comunicaciones reales
+
 Opciones:
 
 - conectar `newsletter` a una suscripcion real y a un flujo de opt-in/opt-out
@@ -283,6 +288,6 @@ Direccion target:
 Este frente se considera cerrado cuando:
 
 - `darkMode` y `language` quedan formalmente descartados como preferencias activas del panel
-- `newsletter` y `emailNotifications` tienen comportamiento real o copy sincerado
+- `newsletter` y `emailNotifications` tienen comportamiento real o quedaron retirados del panel con copy sincerado
 - el panel deja de afirmar cosas que el runtime no cumple
 - `check`, `lint`, `build` y `smoke` siguen en verde

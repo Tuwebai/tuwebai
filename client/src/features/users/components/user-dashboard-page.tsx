@@ -13,7 +13,6 @@ import {
   Save, 
   X, 
   Lock, 
-  Bell, 
   Globe, 
   Shield, 
   User, 
@@ -35,9 +34,7 @@ export default function PanelUsuario() {
     isAuthenticated, 
     updateUserProfile, 
     logout,
-    userPreferences,
     passwordInfo,
-    updateUserPreferences,
     changePassword,
     uploadProfileImage
   } = useAuth();
@@ -47,7 +44,6 @@ export default function PanelUsuario() {
   const [isEditing, setIsEditing] = useState(false);
   const [isSavingProfile, setIsSavingProfile] = useState(false);
   const [isSavingPassword, setIsSavingPassword] = useState(false);
-  const [isSavingPreferences, setIsSavingPreferences] = useState(false);
   const [isChangingPassword, setIsChangingPassword] = useState(false);
   const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -90,27 +86,6 @@ export default function PanelUsuario() {
       });
     }
   }, [user]);
-  
-  const handleUpdatePreferences = async (newPreferences: Partial<typeof userPreferences>) => {
-    setIsSavingPreferences(true);
-    try {
-      await updateUserPreferences(newPreferences);
-      
-      toast({
-        title: "✅ Preferencias actualizadas",
-        description: "Tus preferencias han sido actualizadas correctamente.",
-      });
-    } catch (error: unknown) {
-      console.error('Error al actualizar preferencias:', error);
-      toast({
-        title: "❌ Error",
-        description: getErrorMessage(error, "Ha ocurrido un error al actualizar tus preferencias."),
-        variant: "destructive",
-      });
-    } finally {
-      setIsSavingPreferences(false);
-    }
-  };
   
   const handleProfileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -845,52 +820,15 @@ export default function PanelUsuario() {
                     <Settings className="w-5 h-5" />
                     Preferencias de Usuario
                     </h2>
-                    
                   <div className="grid grid-cols-1 gap-6">
-                    {/* Notificaciones */}
                     <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-                      <h3 className="text-lg font-medium text-white mb-4 flex items-center gap-2">
-                        <Bell className="w-5 h-5" />
-                        Comunicaciones
-                      </h3>
-                      <div className="space-y-4">
-                      <div className="flex items-center justify-between">
-                        <div>
-                            <label className="text-gray-300 font-medium">Notificaciones por email</label>
-                            <p className="text-sm text-gray-500">Guarda tu preferencia de contacto para futuras automatizaciones.</p>
-                        </div>
-                        <label className="relative inline-flex items-center cursor-pointer">
-                          <input 
-                            type="checkbox" 
-                              checked={userPreferences?.emailNotifications ?? true} 
-                              onChange={e => handleUpdatePreferences({ emailNotifications: e.target.checked })} 
-                              disabled={isSavingPreferences}
-                            className="sr-only peer" 
-                          />
-                            <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
-                        </label>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <div>
-                            <label className="text-gray-300 font-medium">Newsletter</label>
-                            <p className="text-sm text-gray-500">Mantiene tu opt-in listo para cuando activemos el flujo global.</p>
-                        </div>
-                        <label className="relative inline-flex items-center cursor-pointer">
-                          <input 
-                            type="checkbox" 
-                              checked={userPreferences?.newsletter ?? true} 
-                              onChange={e => handleUpdatePreferences({ newsletter: e.target.checked })} 
-                              disabled={isSavingPreferences}
-                            className="sr-only peer" 
-                          />
-                            <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
-                        </label>
-                        </div>
-                      </div>
+                      <p className="text-white font-medium">No hay preferencias configurables activas en este momento.</p>
+                      <p className="mt-2 text-sm text-gray-400">
+                        La siguiente etapa del panel va a reintroducir este espacio con preferencias reales de privacidad,
+                        experiencia y accesibilidad.
+                      </p>
                     </div>
-                    
-                    </div>
-                    
+                  </div>
                   {/* Información adicional */}
                   <div className="bg-blue-500/10 rounded-xl p-6 border border-blue-500/20">
                     <h3 className="text-lg font-medium text-blue-400 mb-2 flex items-center gap-2">
@@ -898,8 +836,8 @@ export default function PanelUsuario() {
                       Información
                       </h3>
                     <p className="text-blue-300 text-sm">
-                      Tus preferencias se guardan automáticamente. Esta sección queda enfocada solo
-                      en comunicaciones mientras terminamos su integración global.
+                      Retiramos las configuraciones de comunicaciones porque todavía no gobernaban un
+                      comportamiento global real. Este espacio queda reservado para preferencias con efecto verificable.
                           </p>
                         </div>
                 </div>
@@ -1012,3 +950,6 @@ export default function PanelUsuario() {
     </div>
   );
 }
+
+
+
