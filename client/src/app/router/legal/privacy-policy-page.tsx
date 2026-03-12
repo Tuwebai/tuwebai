@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet';
 import PageBanner from '@/shared/ui/page-banner';
+import { TUWEBAI_WHATSAPP_DISPLAY } from '@/shared/constants/contact';
 
 export default function PoliticaPrivacidad() {
   return (
@@ -29,7 +30,7 @@ export default function PoliticaPrivacidad() {
             <h3>1. Responsable del Tratamiento</h3>
             <p>
               El responsable del tratamiento de los datos personales que facilites a través de este sitio web es <strong>TuWeb.ai</strong>, 
-              con correo electrónico tuwebai@gmail.com y teléfono +54 357 141 6044.
+              con correo electrónico tuwebai@gmail.com y teléfono {TUWEBAI_WHATSAPP_DISPLAY}.
             </p>
 
             <h3>2. Finalidad del Tratamiento</h3>
