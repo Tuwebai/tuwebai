@@ -20,7 +20,7 @@ export const resolveAuthAvatar = (firebaseUser: FirebaseUser | null, persistedIm
   const storedPhoto = persistedImage?.trim() || '';
 
   if (isGoogleAuthUser(firebaseUser)) {
-    return providerPhoto;
+    return providerPhoto || storedPhoto;
   }
 
   return storedPhoto || providerPhoto;
