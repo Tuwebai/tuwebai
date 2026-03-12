@@ -2,6 +2,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { getFirestore as getAdminFirestore } from '../infrastructure/firebase/firestore';
+import { getErrorMessage } from '../shared/utils/error-message';
 import { appLogger } from '../utils/app-logger';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -14,6 +15,19 @@ const ensureProcessedDir = async () => {
 
 const normalizePaymentId = (paymentId: string | number): string =>
   String(paymentId).replace(/[^a-zA-Z0-9_-]/g, '_');
+
+const getErrorCode = (error: unknown): string | number | undefined => {
+  if (typeof error !== 'object' || error === null || !('code' in error)) {
+    return undefined;
+  }
+
+  const { code } = error as { code?: unknown };
+  if (typeof code === 'string' || typeof code === 'number') {
+    return code;
+  }
+
+  return undefined;
+};
 
 const registerProcessedPaymentFirestore = async (
   paymentId: string | number,
@@ -33,13 +47,14 @@ const registerProcessedPaymentFirestore = async (
       ...metadata,
     });
     return true;
-  } catch (error: any) {
-    if (error?.code === 6 || error?.code === 'already-exists') {
+  } catch (error: unknown) {
+    const errorCode = getErrorCode(error);
+    if (errorCode === 6 || errorCode === 'already-exists') {
       return false;
     }
     appLogger.warn('idempotency.firestore_create_failed', {
       paymentId: String(paymentId),
-      error: error?.message,
+      error: getErrorMessage(error, 'unknown_firestore_idempotency_error'),
     });
     return null;
   }
@@ -84,8 +99,8 @@ export const registerProcessedPayment = async (
     );
     await handle.close();
     return true;
-  } catch (error: any) {
-    if (error?.code === 'EEXIST') {
+  } catch (error: unknown) {
+    if (getErrorCode(error) === 'EEXIST') {
       return false;
     }
     throw error;
