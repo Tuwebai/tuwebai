@@ -56,7 +56,6 @@ Este score se calculo sobre el estado real del repo auditado localmente, tomando
 ### Estado estructural del backend y repo
 
 - sigue coexistiendo codigo legacy y multistack en el repo:
-  - `api/`
   - `legacy/`
   - `firebase-functions-contacto/`
 - siguen presentes artefactos o residuos operativos en workspace:
@@ -100,7 +99,7 @@ Razon del score:
 
 Riesgo residual:
 
-- siguen coexistiendo `api/`, `legacy/` y `firebase-functions-contacto/`
+- siguen coexistiendo `legacy/` y `firebase-functions-contacto/`
 - no toda la frontera final `app/core/features/shared` esta cerrada
 
 Lectura:
@@ -184,6 +183,6 @@ Prioridades para bajar el score real:
 
 1. seguir podando dependencias dudosas con auditoria de uso real
 2. revisar artefactos sensibles y ruido operativo en raiz
-3. consolidar o aislar stacks paralelos (`api/`, `legacy/`, `firebase-functions-contacto/`)
+3. consolidar o aislar stacks paralelos (`legacy/`, `firebase-functions-contacto/`)
 4. seguir reduciendo usos de `any`
 5. consolidar la documentacion operativa final
