@@ -99,7 +99,7 @@ Nivel: cerrado
 Estado actual:
 
 - `client/src/core/theme/ThemeContext.tsx` fija `dark` como tema canonico global
-- `/panel` ya no expone un switch de claro/oscuro
+- `/panel` ya no expone UI de apariencia ni switch de claro/oscuro
 
 Conclusion:
 
@@ -113,7 +113,7 @@ Nivel: cerrado
 Estado actual:
 
 - la app mantiene idioma fijo a nivel producto
-- `/panel` ya no debe exponer selector de idioma
+- `/panel` ya no expone selector ni bloque visual de idioma
 - `MetaTags` y providers deben mantenerse en idioma estable del producto
 
 Conclusion:
@@ -213,7 +213,7 @@ Objetivo:
 
 Resultado esperado:
 
-- `/panel` no expone selector de idioma
+- `/panel` no expone selector de idioma ni UI residual asociada
 - `MetaTags` y runtime vuelven a idioma estable del producto
 - no queda wiring parcial ni deuda de UX por una preferencia que no se quiere soportar
 

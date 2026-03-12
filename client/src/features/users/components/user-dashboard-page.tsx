@@ -25,7 +25,6 @@ import {
   Phone,
   MapPin,
   Mail,
-  Palette,
   Info
 } from 'lucide-react';
 
@@ -847,12 +846,12 @@ export default function PanelUsuario() {
                     Preferencias de Usuario
                     </h2>
                     
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 gap-6">
                     {/* Notificaciones */}
                     <div className="bg-white/5 rounded-xl p-6 border border-white/10">
                       <h3 className="text-lg font-medium text-white mb-4 flex items-center gap-2">
                         <Bell className="w-5 h-5" />
-                        Notificaciones
+                        Comunicaciones
                       </h3>
                       <div className="space-y-4">
                       <div className="flex items-center justify-between">
@@ -890,24 +889,6 @@ export default function PanelUsuario() {
                       </div>
                     </div>
                     
-                    {/* Apariencia */}
-                    <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-                      <h3 className="text-lg font-medium text-white mb-4 flex items-center gap-2">
-                        <Palette className="w-5 h-5" />
-                        Apariencia
-                      </h3>
-                      <div className="space-y-4">
-                        <div className="rounded-lg border border-blue-500/20 bg-blue-500/10 p-4">
-                          <label className="text-gray-300 font-medium">Tema visual</label>
-                          <p className="mt-1 text-sm text-blue-300">
-                            TuWeb.ai usa tema oscuro fijo para mantener coherencia visual en toda la app.
-                          </p>
-                        </div>
-                        <p className="text-sm text-gray-400">
-                          El idioma de la app queda fijo para mantener consistencia de producto y contenido.
-                        </p>
-                      </div>
-                    </div>
                     </div>
                     
                   {/* Información adicional */}
@@ -917,9 +898,8 @@ export default function PanelUsuario() {
                       Información
                       </h3>
                     <p className="text-blue-300 text-sm">
-                      Tus preferencias se guardan automáticamente. El tema visual y el idioma ya
-                      quedaron definidos a nivel producto; las preferencias de comunicaciones siguen
-                      preparadas para su integración global.
+                      Tus preferencias se guardan automáticamente. Esta sección queda enfocada solo
+                      en comunicaciones mientras terminamos su integración global.
                           </p>
                         </div>
                 </div>
