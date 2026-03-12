@@ -611,3 +611,4 @@ Nota de seguimiento:
 - ✅ corregido: `client/src/pages/home.tsx` fue retirado tras mover el shell SEO y composición a `client/src/app/router/home/home-page.tsx`; la composición principal del landing vive en `features/marketing-home/components/marketing-home-page`.
 - ✅ corregido: `client/src/pages/*` dejó de ser runtime activo y `client/src/app/router/` quedó normalizado por dominios semánticos (`home`, `errors`, `company`, `knowledge`, `legal`, `services`, `solutions`).
 - ✅ corregido: `client/src/components/route-wrapper.tsx` dejó de ser dependencia estructural del runtime; `AppRoutes` consume `client/src/app/router/lazy-route.tsx` y el wrapper legacy fue retirado.
+- ✅ corregido: `client/src/app/App.tsx` y `client/src/app/router/lazy-route.tsx` ya consumen `client/src/shared/ui/{footer,toaster,skeleton}` como runtime final; dejaron de depender de wrappers equivalentes en `client/src/components/ui/*`.

@@ -5,11 +5,11 @@ import AppProviders from '@/app/providers/AppProviders';
 import AppRoutes from '@/app/router/AppRoutes';
 import { SkipLink } from '@/components/a11y';
 import { ResourcePreload, MemoryManager } from '@/components/performance';
-import Footer from '@/components/ui/footer';
 import analytics from '@/lib/analytics';
+import Footer from '@/shared/ui/footer';
 
 const GlobalNavbar = lazy(() => import('@/app/layout/global-navbar'));
-const Toaster = lazy(() => import('@/components/ui/toaster').then((module) => ({ default: module.Toaster })));
+const Toaster = lazy(() => import('@/shared/ui/toaster').then((module) => ({ default: module.Toaster })));
 
 export default function App() {
   const location = useLocation();
