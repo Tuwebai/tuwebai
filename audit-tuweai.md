@@ -620,3 +620,4 @@ Nota de seguimiento:
 - ✅ corregido: `client/src/app/App.tsx` ya consume `client/src/shared/ui/skip-link.tsx`; `client/src/components/a11y/skip-link.tsx` quedó reducido a wrapper temporal de compatibilidad.
 - ✅ corregido parcialmente: `client/src/shared/ui/command.tsx` ya concentra la implementación real; `client/src/components/ui/command.tsx` quedó reducido a wrapper temporal de compatibilidad.
 - ✅ corregido parcialmente: `client/src/shared/ui/{form,calendar,carousel}.tsx` ya concentran la implementación real; `client/src/components/ui/{form,calendar,carousel}.tsx` quedaron reducidos a wrappers temporales de compatibilidad.
+- ✅ corregido: `client/src/components/ui/{command,form,calendar,carousel}.tsx` fueron retirados tras confirmar ausencia de consumidores internos; `client/src/shared/ui/*` quedó como implementación final.

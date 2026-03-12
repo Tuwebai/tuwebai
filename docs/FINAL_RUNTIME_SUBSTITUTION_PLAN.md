@@ -230,11 +230,12 @@ Resultado actual de la re-auditoría:
 - ✅ corregido: `client/src/app/App.tsx` ya consume `client/src/shared/ui/skip-link.tsx`; `client/src/components/a11y/skip-link.tsx` quedó como wrapper temporal de compatibilidad
 - ✅ corregido parcialmente: `client/src/shared/ui/command.tsx` ya concentra la implementación real; `client/src/components/ui/command.tsx` quedó reducido a wrapper de compatibilidad
 - ✅ corregido parcialmente: `client/src/shared/ui/{form,calendar,carousel}.tsx` ya concentran la implementación real; `client/src/components/ui/{form,calendar,carousel}.tsx` quedaron reducidos a wrappers de compatibilidad
+- ✅ corregido: `client/src/components/ui/{command,form,calendar,carousel}.tsx` fueron retirados tras confirmar ausencia de consumidores internos; `client/src/shared/ui/*` quedó como destino final
 
 Estado de re-auditoría de `client/src/components/ui`:
 
 - no corresponde borrar la carpeta en bloque todavía
-- no quedan remanentes equivalentes en `components/ui` para `command`, `form`, `calendar` ni `carousel`; esos paths ya quedaron como compatibilidad hacia `shared/ui`
+- no quedan remanentes equivalentes en `components/ui` para `command`, `form`, `calendar` ni `carousel`; esos wrappers ya fueron retirados
 - `client/src/components/performance/*` no es `shared/ui`; su destino final debe resolverse como instrumentacion de `app` en un slice especifico, no mezclado con esta limpieza
 - la limpieza final debe hacerse archivo por archivo, no por borrado masivo
 
