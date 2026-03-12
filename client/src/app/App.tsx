@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 
 import AppProviders from '@/app/providers/AppProviders';
 import AppRoutes from '@/app/router/AppRoutes';
-import { ResourcePreload, MemoryManager } from '@/components/performance';
+import { ResourcePreload, MemoryManager } from '@/app/performance';
 import analytics from '@/lib/analytics';
 import Footer from '@/shared/ui/footer';
 import { SkipLink } from '@/shared/ui/skip-link';
