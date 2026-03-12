@@ -1,6 +1,18 @@
 import { z } from 'zod';
 import { PAYMENT_PLAN_VALUES } from '../constants/payment-plans';
 
+const ticketResponseItemSchema = z
+  .object({
+    id: z.string().min(1).max(128).optional(),
+    message: z.string().min(2).max(5000).optional(),
+    author: z.string().min(1).max(120).optional(),
+    authorType: z.enum(['client', 'admin']).optional(),
+    createdAt: z.string().optional(),
+  })
+  .passthrough();
+
+const projectPhaseSchema = z.record(z.unknown());
+
 export const contactSchema = z.object({
   body: z.object({
     name: z.string({ required_error: 'El nombre es requerido' }).min(2, 'El nombre debe tener al menos 2 caracteres'),
@@ -121,7 +133,7 @@ export const ticketCreateSchema = z.object({
     message: z.string().min(2).max(5000),
     status: z.enum(['open', 'in-progress', 'resolved']).optional().default('open'),
     priority: z.enum(['low', 'medium', 'high']).optional().default('medium'),
-    responses: z.array(z.any()).optional().default([]),
+    responses: z.array(ticketResponseItemSchema).optional().default([]),
   }),
 });
 
@@ -131,7 +143,7 @@ export const ticketUpdateSchema = z.object({
     message: z.string().min(2).max(5000).optional(),
     status: z.enum(['open', 'in-progress', 'resolved']).optional(),
     priority: z.enum(['low', 'medium', 'high']).optional(),
-    responses: z.array(z.any()).optional(),
+    responses: z.array(ticketResponseItemSchema).optional(),
   }),
 });
 
@@ -153,7 +165,7 @@ export const projectUpdateSchema = z.object({
     estimatedEndDate: z.string().optional(),
     overallProgress: z.number().min(0).max(100).optional(),
     status: z.enum(['active', 'completed', 'on-hold']).optional(),
-    phases: z.array(z.any()).optional(),
+    phases: z.array(projectPhaseSchema).optional(),
   }),
 });
 

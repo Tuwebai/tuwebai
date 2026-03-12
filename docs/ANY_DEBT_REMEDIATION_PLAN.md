@@ -45,7 +45,7 @@ Patrones auditados:
 - Estado despues del decimocuarto slice: `9` ocurrencias de `any` explicito en runtime activo y soporte del repo.
 - Estado despues del decimoquinto slice: `8` ocurrencias de `any` explicito en runtime activo y soporte del repo.
 - Estado despues del decimosexto slice: `0` ocurrencias de `any` explicito en runtime activo y soporte del repo.
-- Adicionalmente hay `3` usos de `z.any()` en `server/src/schemas/api.schemas.ts`, que no son deuda de tipado TypeScript pura pero si deuda de contrato.
+- Adicionalmente habia `3` usos de `z.any()` en `server/src/schemas/api.schemas.ts`, que no eran deuda de tipado TypeScript pura pero si deuda de contrato. ✅ corregido
 - Ya no quedan concentraciones activas de `any` explicito en runtime; la deuda remanente quedo acotada a `z.any()` en schemas HTTP.
 - `tsconfig.json` y `tsconfig.server.json` ya corren en `strict`, por lo que el problema actual no es falta de strict mode sino uso explicito de `any`.
 - `eslint.config.mjs` ya expone `@typescript-eslint/no-explicit-any` en modo `warn`, por lo que la deuda nueva ya no entra silenciosamente.
@@ -110,10 +110,9 @@ Patrones auditados:
 
 ### P3 - Prioridad baja: contratos amplios, shims y tipos externos
 
-- `3` - `server/src/schemas/api.schemas.ts`
-  - `z.array(z.any())`
-  - `z.array(z.any())`
-  - `z.array(z.any())`
+- `0` - `server/src/schemas/api.schemas.ts`
+  - `ticket.responses` quedo tipado con un objeto abierto y consistente con el runtime real
+  - `project.phases` quedo validado como arreglo de objetos abiertos (`Record<string, unknown>`) sin inventar un contrato mas estricto del soportado hoy
 
 ## Clasificacion por patron
 
@@ -294,7 +293,7 @@ Objetivo:
 
 Slices:
 
-1. reemplazar `z.any()` por esquemas especificos o `z.unknown()` si el shape sigue siendo variable
+1. reemplazar `z.any()` por esquemas especificos o `z.unknown()` si el shape sigue siendo variable ✅ completado
 2. subir `@typescript-eslint/no-explicit-any` de `warn` a `error`
 3. re-auditar score tecnico y auditoria principal
 
@@ -353,6 +352,6 @@ La ruta enterprise correcta es:
 Estado actual:
 
 - no quedan usos explicitos de `any` en `client/`, `server/`, `scripts/`, `legacy/` ni `firebase-functions-contacto/`
-- la deuda de tipado remanente ya no es TypeScript `any`, sino `3` usos de `z.any()` en `server/src/schemas/api.schemas.ts`
+- ya no quedan `any` explicitos ni `z.any()` en el repo auditado; el siguiente cierre de Fase 5 es endurecer `@typescript-eslint/no-explicit-any` de `warn` a `error`
 
 Ese orden da mejor retorno tecnico con menor riesgo de regresion.

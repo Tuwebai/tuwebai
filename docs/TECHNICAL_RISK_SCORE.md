@@ -73,7 +73,7 @@ Este score se calculo sobre el estado real del repo auditado localmente, tomando
 ### Señales de deuda tecnica en codigo
 
 - ya no quedan usos explicitos de `any` en runtime frontend/backend ni en soporte tipado auditado del repo.
-- la deuda de tipado remanente visible esta concentrada en `z.any()` dentro de `server/src/schemas/api.schemas.ts`, que sigue siendo deuda contractual y no de TypeScript puro.
+- ya no quedan usos de `any` explicito ni `z.any()` en el codigo auditado del repo.
 - siguen existiendo superficies legacy y compatibilidades temporales documentadas.
 
 ## Analisis por dimension
@@ -120,7 +120,7 @@ La mantenibilidad mejoro mucho, pero todavia exige contexto experto para tocar c
 Razon del score:
 
 - hay deuda residual relevante, aunque ya no sea caotica
-- ya no quedan `any` explicitos en runtime activo, pero persisten residuos legacy, `z.any()` contractuales y deuda de gobernanza operativa fuera del runtime principal
+- ya no quedan `any` explicitos ni `z.any()` en runtime activo, pero persisten residuos legacy y deuda de gobernanza operativa fuera del runtime principal
 
 Riesgo residual:
 
