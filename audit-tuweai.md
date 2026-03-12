@@ -10,7 +10,7 @@ El proyecto tiene una base funcional y un frontend con bastante trabajo visual y
 - un backend Express/TypeScript en `server/`
 - un stack PHP legacy en `api/` ✅ corregido: aislado en `legacy/php-api/`; `api/` hoy aparece solo como residuo local vacío sin archivos versionados
 - una Cloud Function separada en `firebase-functions-contacto/`
-- artefactos compilados, binarios, reportes, logs y credenciales en raíz ✅ corregido parcialmente: builds/binarios/caches fuera del versionado; secretos locales aún presentes en workspace
+- artefactos compilados, binarios, reportes, logs y credenciales en raíz ✅ corregido parcialmente: builds/reportes/logs generados ya fueron limpiados del workspace; secretos locales y tooling heredado aún presentes
 
 Eso eleva el costo de mantenimiento, debilita la gobernanza y deja riesgos concretos de seguridad, despliegue y escalabilidad.
 
@@ -54,11 +54,11 @@ Eso eleva el costo de mantenimiento, debilita la gobernanza y deja riesgos concr
 ├─ firebase-functions-contacto/    # Cloud Function separada
 ├─ scripts/                        # Smoke/log scripts
 ├─ docs/                           # Auditorías y documentación
-├─ dist/                           # Build frontend versionado
-├─ dist-server/                    # Build backend versionado ✅ corregido: removido del versionado
+├─ dist/                           # Build frontend versionado ✅ corregido: ya no persistido en workspace tras validaciones
+├─ dist-server/                    # Build backend versionado ✅ corregido: removido del versionado y limpiado del workspace
 ├─ node_modules/                   # Dependencias instaladas dentro del repo
 ├─ php-temp/                       # Runtime PHP completo dentro del repo ✅ corregido: removido del versionado
-└─ raíz                            # Configs, imágenes, reportes, secrets, logs ✅ corregido parcialmente
+└─ raíz                            # Configs, imágenes, reports, secrets ✅ corregido parcialmente
 ```
 
 ### Lectura arquitectónica
@@ -179,15 +179,15 @@ Esto no solo es deuda técnica: es **riesgo activo** si ese código sigue desple
 - `generated-icon.png`
   - sin referencias detectadas
 - `ts_errors.log`
-  - sin referencias detectadas ✅ corregido parcialmente: sigue siendo local/ignorado
+  - sin referencias detectadas ✅ corregido: limpiado del workspace
 - `dist/`
-  - artefacto compilado ✅ corregido parcialmente: ya estaba fuera del versionado
+  - artefacto compilado ✅ corregido: limpiado del workspace
 - `dist-server/`
-  - artefacto compilado ✅ corregido
+  - artefacto compilado ✅ corregido: limpiado del workspace
 - `node_modules/`
   - dependencia instalada, no debe vivir en repo
 - `logs/`
-  - datos operativos locales ✅ corregido parcialmente: patrón protegido por `.gitignore`
+  - datos operativos locales ✅ corregido: patrón protegido por `.gitignore` y artefactos locales limpiados
 - `php-temp/`
   - runtime/binarios de PHP, no corresponde versionarlo ✅ corregido
 
@@ -202,7 +202,7 @@ Esto no solo es deuda técnica: es **riesgo activo** si ese código sigue desple
 - `client/netlify.toml`
   - configuración duplicada respecto a raíz ✅ corregido parcialmente: marcada deprecated
 - `tuweb-ai.com-20260305T235948.json`
-  - reporte Lighthouse puntual; útil solo si se versiona deliberadamente ✅ corregido parcialmente: patrón ahora ignorado
+  - reporte Lighthouse puntual; útil solo si se versiona deliberadamente ✅ corregido: patrón ignorado y artefacto local limpiado
 - `.replit`
   - resto de entorno anterior; no integra con el stack vigente
 - imágenes duplicadas en raíz y `client/public/`
@@ -566,7 +566,7 @@ server/
 - separar frontend por `features` ✅ corregido parcialmente: estructura preparada
 - encapsular acceso a backend solo en hooks/services
 - crear contratos tipados compartidos o al menos DTOs por módulo
-- sacar artefactos, binarios, reportes y secretos fuera del repo ✅ corregido parcialmente
+- sacar artefactos, binarios, reportes y secretos fuera del repo ✅ corregido parcialmente: builds/reportes/logs locales ya fueron limpiados; siguen pendientes secretos locales y tooling heredado
 
 ---
 
@@ -645,3 +645,4 @@ Nota de seguimiento:
 - ✅ corregido: `legacy/php-api/webhooks/mercadopago.php` ahora valida el webhook con `validateMercadoPagoWebhook(...)` antes de procesarlo; el stack PHP legacy deja de aceptar notificaciones sin validación cuando existe `MERCADOPAGO_WEBHOOK_SECRET`.
 - ✅ corregido: `legacy/php-api/config/firebase.php` ya no desactiva verificación TLS en cURL y dejó de caer a `VITE_FIREBASE_API_KEY` como bearer token para Firestore; el acceso legacy ahora falla cerrado si no puede obtener credenciales válidas.
 - ✅ corregido: la re-auditoría arquitectónica confirmó que `legacy/` y `firebase-functions-contacto/` no participan del runtime ni de CI/CD principal; quedaron formalizados como superficies heredadas aisladas y congeladas fuera del stack Node activo.
+- ✅ corregido: el workspace dejó de arrastrar artefactos generados ignorados (`dist/`, `dist-server/`, `logs/`, `.firebase/`, `client/dist`, `firebase-functions-contacto/functions/lib`, `ts_errors*.log`, reporte Lighthouse local); ya no suman ruido operativo sobre el estado real del repo.

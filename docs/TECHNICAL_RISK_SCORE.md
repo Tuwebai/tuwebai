@@ -60,9 +60,6 @@ Este score se calculo sobre el estado real del repo auditado localmente, tomando
   - `firebase-functions-contacto/`
 - `firebase-functions-contacto/` no participa del runtime ni de CI/CD principal, pero sigue siendo un subproyecto versionado con deploy manual propio.
 - siguen presentes artefactos o residuos operativos en workspace:
-  - `dist/`
-  - `dist-server/`
-  - `logs/`
   - `node_modules/`
   - `php-temp/`
   - `firebase-service-account.json`
@@ -136,7 +133,7 @@ Razon del score:
 Riesgo residual:
 
 - siguen existiendo piezas del repo todavia no clasificadas definitivamente fuera del runtime principal
-- queda deuda de limpieza en artefactos, secretos locales y dependencias restantes
+- queda deuda de limpieza en secretos locales, tooling heredado y dependencias restantes
 - persisten superficies legacy versionadas fuera del runtime principal que requieren cierre o aislamiento final
 - el stack `legacy/php-api` ya fue endurecido en puntos críticos, pero sigue siendo superficie heredada fuera de la gobernanza principal
 
@@ -181,12 +178,12 @@ Estado general:
 - el proyecto ya no esta en rojo arquitectonico
 - el trabajo grueso de reorganizacion ya se hizo
 - el mayor riesgo actual ya no viene de `pages/` ni del router
-- el mayor riesgo viene de stacks paralelos, artefactos operativos y gobernanza de dependencias restantes
+- el mayor riesgo viene de stacks paralelos, secretos locales y gobernanza de dependencias restantes
 
 Prioridades para bajar el score real:
 
 1. seguir podando dependencias dudosas con auditoria de uso real
-2. revisar artefactos sensibles y ruido operativo en raiz
+2. revisar secretos locales y tooling heredado en raiz
 3. consolidar o aislar stacks paralelos (`legacy/`, `firebase-functions-contacto/`)
 4. seguir reduciendo usos de `any`
 5. consolidar la documentacion operativa final
