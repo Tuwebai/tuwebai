@@ -16,7 +16,7 @@ export function ensureLogDirectory() {
 }
 
 // Función para escribir logs
-export function writeLog(data: any) {
+export function writeLog(data: unknown) {
   try {
     const logDir = ensureLogDirectory();
     const today = new Date().toISOString().split('T')[0];
