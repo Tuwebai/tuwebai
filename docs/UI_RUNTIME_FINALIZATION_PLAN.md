@@ -154,6 +154,7 @@ Estado:
 - ✅ corregido: `client/src/components/ui/{global-navbar,chart,aspect-ratio,input-otp}.tsx` fueron retirados tras confirmar ausencia de consumidores internos; no correspondía mantenerlos como compatibilidad activa
 - ✅ corregido: `client/src/components/ui/{button,input,textarea,label,toast,toaster}` y `client/src/components/ui/use-toast/*` fueron retirados tras confirmar ausencia de consumidores internos; `client/src/shared/ui/*` quedó como destino final
 - ✅ corregido: `client/src/components/ui/{accordion,alert,alert-dialog,badge,card,checkbox}.tsx` fueron retirados tras confirmar ausencia de consumidores internos; `client/src/shared/ui/*` quedó como implementación final
+- ✅ corregido: `client/src/components/ui/{dialog,drawer,dropdown-menu,context-menu,popover,hover-card}.tsx` fueron retirados tras confirmar ausencia de consumidores internos; `client/src/shared/ui/*` quedó como implementación final
 
 Objetivo:
 
@@ -314,6 +315,7 @@ Precondiciones:
 - `components/ui` ya no necesita conservar `global-navbar`, `chart`, `aspect-ratio` ni `input-otp` tras la re-auditoria de consumidores
 - `components/ui` ya no necesita conservar compatibilidad para `button`, `input`, `textarea`, `label`, `toast`, `toaster` ni `use-toast`
 - `components/ui` ya no necesita conservar compatibilidad para `accordion`, `alert`, `alert-dialog`, `badge`, `card` ni `checkbox`
+- `components/ui` ya no necesita conservar compatibilidad para `dialog`, `drawer`, `dropdown-menu`, `context-menu`, `popover` ni `hover-card`
 - ✅ corregido parcialmente: el bloqueo por `components/sections/*` temporales del landing ya fue removido; `marketing-home` quedó consolidado en `features/marketing-home` y la re-auditoría de Fase 6 queda pendiente solo por las páginas institucionales activas restantes
 - plan específico abierto en `docs/MARKETING_HOME_FINALIZATION_PLAN.md`
 
