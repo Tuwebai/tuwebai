@@ -326,6 +326,16 @@ Criterio:
 - copy honesto
 - responsive intacto
 
+Estado:
+
+- cerrada
+
+Resultado real:
+
+- `client/src/features/users/components/privacy-tab.tsx` ya expone controles reales de visibilidad para el resumen del panel
+- `client/src/features/users/components/user-dashboard-page.tsx` ya consume `profileEmailVisible` y `profileStatusVisible` desde el dominio `privacy`
+- el encabezado del `/panel` ya oculta o muestra email y badge de estado en funcion de la configuracion persistida
+
 ### Fase 3. Implementar consentimientos reales basicos
 
 Objetivo:

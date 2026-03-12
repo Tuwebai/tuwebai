@@ -7,6 +7,9 @@ import MetaTags from '@/shared/ui/meta-tags';
 import { UserAvatar } from '@/shared/ui/user-avatar';
 import WhatsAppButton from '@/shared/ui/whatsapp-button';
 import { getErrorMessage } from '@/shared/utils/error-message';
+import { useUpdateUserPrivacyMutation, useUserPrivacyQuery } from '@/features/users/hooks/use-privacy-settings';
+import { DEFAULT_USER_PRIVACY_SETTINGS } from '@/features/users/types/privacy';
+import { PrivacyTab } from '@/features/users/components/privacy-tab';
 import { 
   Camera, 
   Edit3, 
@@ -22,8 +25,7 @@ import {
   EyeOff,
   Phone,
   MapPin,
-  Mail,
-  Info
+  Mail
 } from 'lucide-react';
 
 export default function PanelUsuario() {
@@ -38,6 +40,11 @@ export default function PanelUsuario() {
     uploadProfileImage
   } = useAuth();
   const { toast } = useToast();
+  const {
+    data: privacySettings = DEFAULT_USER_PRIVACY_SETTINGS,
+    isLoading: isLoadingPrivacy,
+  } = useUserPrivacyQuery(user?.uid);
+  const updatePrivacyMutation = useUpdateUserPrivacyMutation(user?.uid);
   
   const [activeTab, setActiveTab] = useState<'profile' | 'security' | 'privacy' | 'integrations'>('profile');
   const [isEditing, setIsEditing] = useState(false);
@@ -294,6 +301,25 @@ export default function PanelUsuario() {
       });
     }
   };
+
+  const handleSavePrivacy = async (payload: {
+    profileEmailVisible?: boolean;
+    profileStatusVisible?: boolean;
+  }) => {
+    try {
+      await updatePrivacyMutation.mutateAsync(payload);
+      toast({
+        title: 'Privacidad actualizada',
+        description: 'La visibilidad del encabezado ya refleja tu nueva configuracion.',
+      });
+    } catch (error: unknown) {
+      toast({
+        title: 'Error',
+        description: getErrorMessage(error, 'No se pudo actualizar la configuracion de privacidad.'),
+        variant: 'destructive',
+      });
+    }
+  };
   
   if (isLoading) {
     return (
@@ -356,7 +382,7 @@ export default function PanelUsuario() {
                 <div className="w-full min-w-0">
                   <div className="mb-2 flex flex-wrap items-center justify-center gap-3 sm:justify-start">
                     <h1 className="text-2xl font-bold text-white">{user?.name || user?.username}</h1>
-                    {user?.isActive ? (
+                    {privacySettings.profileStatusVisible && (user?.isActive ? (
                       <span className="px-3 py-1 text-xs rounded-full bg-green-500/20 text-green-400 border border-green-500/30 flex items-center gap-1">
                         <Check className="w-3 h-3" />
                         Verificada
@@ -366,9 +392,13 @@ export default function PanelUsuario() {
                         <AlertCircle className="w-3 h-3" />
                         Pendiente
                     </span>
-                  )}
+                  ))}
                 </div>
-                  <p className="break-all text-gray-400 sm:break-normal">{user?.email}</p>
+                  {privacySettings.profileEmailVisible ? (
+                    <p className="break-all text-gray-400 sm:break-normal">{user?.email}</p>
+                  ) : (
+                    <p className="text-sm text-slate-500">Email oculto en el resumen de tu panel</p>
+                  )}
                   <p className="text-sm text-gray-500">
                     Miembro desde {(() => {
                       if (user?.createdAt) {
@@ -814,32 +844,12 @@ export default function PanelUsuario() {
               
               {/* Tab: Privacidad */}
               {activeTab === 'privacy' && (
-                <div className="space-y-6">
-                  <h2 className="text-xl font-semibold text-white flex items-center gap-2 mb-6">
-                    <Eye className="w-5 h-5" />
-                    Privacidad
-                    </h2>
-                  <div className="grid grid-cols-1 gap-6">
-                    <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-                      <p className="text-white font-medium">Todavia no hay controles de privacidad activos en tu cuenta.</p>
-                      <p className="mt-2 text-sm text-gray-400">
-                        Esta tab queda reservada para configuraciones reales de visibilidad, consentimiento
-                        y control de datos cuando tengan soporte operativo completo.
-                      </p>
-                    </div>
-                  </div>
-                  {/* Información adicional */}
-                  <div className="bg-blue-500/10 rounded-xl p-6 border border-blue-500/20">
-                    <h3 className="text-lg font-medium text-blue-400 mb-2 flex items-center gap-2">
-                      <Info className="w-5 h-5" />
-                      Información
-                      </h3>
-                    <p className="text-blue-300 text-sm">
-                      Retiramos las configuraciones de comunicaciones porque todavía no gobernaban un
-                      comportamiento global real. Este espacio queda reservado para preferencias con efecto verificable.
-                          </p>
-                        </div>
-                </div>
+                <PrivacyTab
+                  settings={privacySettings}
+                  isLoading={isLoadingPrivacy}
+                  isSaving={updatePrivacyMutation.isPending}
+                  onSave={handleSavePrivacy}
+                />
               )}
 
               {/* Tab: Integraciones */}
