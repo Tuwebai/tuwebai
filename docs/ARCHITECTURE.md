@@ -2,16 +2,16 @@
 
 ## Estado
 
-Documento de referencia arquitectónica para la Fase 0.  
+Documento de referencia arquitectonica para la Fase 0.  
 No introduce cambios funcionales.
 
 ## Frontera General
 
 El repositorio queda dividido conceptualmente en tres zonas:
 
-- código activo frontend en `client/`
-- código activo backend en `server/`
-- código legacy aislado en `legacy/`
+- codigo activo frontend en `client/`
+- codigo activo backend en `server/`
+- codigo legacy aislado en `legacy/`
 
 ## Frontend
 
@@ -19,14 +19,14 @@ El repositorio queda dividido conceptualmente en tres zonas:
 
 Responsabilidad:
 
-- bootstrap de aplicación
+- bootstrap de aplicacion
 - providers globales
 - router
-- composición de entrada
+- composicion de entrada
 
 Regla:
 
-- no contiene lógica de dominio
+- no contiene logica de dominio
 - no contiene acceso directo a API
 
 ### Capa `core/`
@@ -41,17 +41,17 @@ Responsabilidad:
 
 Regla:
 
-- reusable a múltiples features
+- reusable a multiples features
 - no contiene UI de negocio
 
 ### Capa `features/`
 
 Responsabilidad:
 
-- implementación por dominio
+- implementacion por dominio
 - hooks
 - services
-- components específicos
+- components especificos
 - schemas y tipos de dominio
 
 Dominios esperados:
@@ -84,14 +84,14 @@ Regla:
 
 Responsabilidad:
 
-- composición del servidor
+- composicion del servidor
 - registro global de middlewares
-- composición central de rutas
+- composicion central de rutas
 - arranque de proceso
 
 Regla:
 
-- no contiene lógica de dominio
+- no contiene logica de dominio
 
 ### Capa `core/`
 
@@ -105,8 +105,8 @@ Responsabilidad:
 
 Regla:
 
-- reusable por todos los módulos
-- no contiene reglas de negocio de un dominio específico
+- reusable por todos los modulos
+- no contiene reglas de negocio de un dominio especifico
 
 ### Capa `modules/`
 
@@ -129,13 +129,13 @@ Dominios esperados:
 
 Regla:
 
-- cada módulo expone solo lo necesario para ser montado desde `app/routes.ts`
+- cada modulo expone solo lo necesario para ser montado desde `app/routes.ts`
 
 ### Capa `infrastructure/`
 
 Responsabilidad:
 
-- integración con Firebase
+- integracion con Firebase
 - mail
 - Mercado Pago
 
@@ -150,7 +150,7 @@ Responsabilidad:
 
 - helpers neutrales
 - tipos transversales
-- utilidades sin acoplamiento a un módulo concreto
+- utilidades sin acoplamiento a un modulo concreto
 
 ## Frontera con Infraestructura
 
@@ -162,38 +162,38 @@ La infraestructura externa debe quedar aislada en:
 
 Regla:
 
-- controllers y rutas no deben hablar directamente con múltiples integraciones externas sin pasar por capa de módulo/servicio
+- controllers y rutas no deben hablar directamente con multiples integraciones externas sin pasar por capa de modulo o servicio
 
 ## Frontera con Legacy
 
-El código en `legacy/`:
+El codigo en `legacy/`:
 
 - no es backend activo
-- no debe recibir código nuevo
+- no debe recibir codigo nuevo
 - no debe ser importado desde `client/` ni `server/`
-- solo se conserva como referencia o material de migración
+- solo se conserva como referencia o material de migracion
 - no participa del runtime principal ni de los workflows CI/CD del stack Node actual
 
-Subárboles:
+Subarboles:
 
 - `legacy/php-api/`
 - `legacy/firebase/`
 
-Fuera de `legacy/` existe además `firebase-functions-contacto/`, que hoy se considera un subproyecto heredado separado:
+Fuera de `legacy/` existe ademas `firebase-functions-contacto/`, que hoy se considera un subproyecto heredado separado:
 
 - no participa del runtime principal
 - no participa de CI/CD principal
-- solo debe mantenerse congelado o auditarse explícitamente antes de cualquier reuse
+- solo debe mantenerse congelado o auditarse explicitamente antes de cualquier reuse
 
 ## Reglas de Compatibilidad
 
-Durante la reestructuración:
+Durante la reestructuracion:
 
 - no cambiar rutas HTTP
 - no cambiar payloads de request/response
-- no eliminar exports públicos activos
+- no eliminar exports publicos activos
 - no romper imports existentes sin wrapper o reexport temporal
 
 ## Objetivo de la Fase 0
 
-Dejar explícita la arquitectura target sin mover archivos existentes.
+Dejar explicita la arquitectura target sin mover archivos existentes.

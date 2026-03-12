@@ -62,7 +62,7 @@ Este score se calculo sobre el estado real del repo auditado localmente, tomando
 - siguen presentes artefactos o residuos operativos en workspace:
   - `node_modules/`
 - el archivo `firebase-service-account.json` ya fue retirado del workspace; la arquitectura actual no lo requiere porque el server soporta `FIREBASE_SERVICE_ACCOUNT_JSON` y `applicationDefault()`.
-- `.replit` y `php-temp/` ya fueron retirados del workspace tras confirmarse como tooling local legado sin consumidores ni integraciÃ³n operativa.
+- `.replit` y `php-temp/` ya fueron retirados del workspace tras confirmarse como tooling local legado sin consumidores ni integracion operativa.
 
 ### Gobernanza operativa y dependencias
 

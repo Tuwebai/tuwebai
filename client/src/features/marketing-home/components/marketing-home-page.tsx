@@ -43,7 +43,7 @@ export default function MarketingHomePage() {
                   <span className="gradient-text">TuWeb.ai</span>
                 </h1>
                 <p className="font-rajdhani text-xl md:text-3xl text-gray-300 mb-12">
-                  AsesorÃ­a Comercial Digital para Empresas de Alto Rendimiento
+                  Asesoria Comercial Digital para Empresas de Alto Rendimiento
                 </p>
               </div>
             </section>

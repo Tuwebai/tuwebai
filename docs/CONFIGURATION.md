@@ -1,8 +1,8 @@
-# Configuración del Proyecto
+# Configuracion del Proyecto
 
 ## Estado
 
-Documento de consolidación de configuración.
+Documento de consolidacion de configuracion.
 
 Resultado de Fase 5 del `ENTERPRISE_RESTRUCTURE_PLAN`:
 
@@ -25,7 +25,7 @@ Motivo:
 - `npm run dev:frontend`
 - `Dockerfile.frontend`
 
-usan la configuración raíz y resuelven `client/` como `root` del frontend.
+usan la configuracion raiz y resuelven `client/` como `root` del frontend.
 
 ### Deploy Netlify
 
@@ -35,8 +35,8 @@ Fuente oficial:
 
 Motivo:
 
-- Netlify detecta por defecto el archivo en la raíz del repositorio
-- el build oficial del proyecto se ejecuta desde raíz
+- Netlify detecta por defecto el archivo en la raiz del repositorio
+- el build oficial del proyecto se ejecuta desde raiz
 - el publish oficial apunta a `dist/`, que es el outdir generado por `vite.config.ts`
 
 ### Tailwind
@@ -62,9 +62,9 @@ Los siguientes archivos quedan deprecados y no deben usarse como referencia prin
 
 Estado:
 
-- se mantienen solo por compatibilidad y trazabilidad histórica
+- se mantienen solo por compatibilidad y trazabilidad historica
 - no deben recibir cambios funcionales nuevos
-- cualquier ajuste futuro debe partir de la configuración raíz
+- cualquier ajuste futuro debe partir de la configuracion raiz
 
 ## Variables de Entorno Relevantes
 
@@ -106,7 +106,7 @@ Regla recomendada para Firebase Admin:
 
 - preferir `FIREBASE_SERVICE_ACCOUNT_JSON` en CI/CD, deploy y secret managers
 - usar `FIREBASE_SERVICE_ACCOUNT_KEY` solo como fallback local apuntando a un archivo ignorado por Git
-- el archivo `firebase-service-account.json` en raíz no es requerido por la arquitectura actual; es solo una conveniencia local opcional
+- el archivo `firebase-service-account.json` en raiz no es requerido por la arquitectura actual; es solo una conveniencia local opcional
 
 Variables operativas de smoke:
 
@@ -117,8 +117,8 @@ Variables operativas de smoke:
 
 Comportamiento por defecto:
 
-- `npm run smoke` aísla Firebase Admin y SMTP aunque el `.env` local tenga credenciales cargadas
-- solo usa infraestructura real si se habilita explícitamente con las variables `SMOKE_USE_REAL_*`
+- `npm run smoke` aisla Firebase Admin y SMTP aunque el `.env` local tenga credenciales cargadas
+- solo usa infraestructura real si se habilita explicitamente con las variables `SMOKE_USE_REAL_*`
 
 ## Reglas Operativas
 
@@ -130,7 +130,7 @@ Comportamiento por defecto:
 
 ## Notas de Compatibilidad
 
-- Esta fase no modifica parámetros de build ni deploy.
+- Esta fase no modifica parametros de build ni deploy.
 - Esta fase no elimina archivos duplicados.
 - Esta fase no cambia variables de entorno.
 - Si en el futuro se decide eliminar configuraciones legacy, primero debe verificarse que no existan pipelines externos apuntando a `client/`.
