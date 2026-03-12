@@ -240,6 +240,7 @@ Resultado actual de la re-auditoría:
 - ✅ corregido: `client/src/components/ui/{collapsible,menubar,navigation-menu,radio-group,select,sheet}.tsx` fueron retirados tras confirmar ausencia de consumidores internos; `client/src/shared/ui/*` quedó como implementación final
 - ✅ corregido: `client/src/components/ui/{resizable,scroll-area,sidebar,slider,switch,table,tabs,toggle-group,toggle,tooltip,whatsapp-button}.tsx` fueron retirados tras confirmar ausencia de consumidores internos; `client/src/shared/ui/*` quedó como implementación final y `client/src/components/ui/*` dejó de participar del runtime frontend
 - ✅ corregido: `client/src/app/App.tsx` dejó de depender de `client/src/components/performance/*`; `ResourcePreload` y `MemoryManager` fueron reclasificados a `client/src/app/performance/*` como instrumentación propia del runtime de aplicación
+- ✅ corregido: `client/src/components/a11y/*` fue retirado tras confirmar ausencia de consumidores internos; `SkipLink` quedó consolidado en `client/src/shared/ui/skip-link.tsx` y el resto del paquete no participaba del runtime activo
 
 Estado de re-auditoría de `client/src/components/ui`:
 
