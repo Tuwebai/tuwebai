@@ -24,6 +24,22 @@ require_once __DIR__ . '/../utils/logger.php';
 // Inicializar logger
 $logger = new Logger('mercadopago_webhook');
 
+function getRequestHeadersSafe() {
+    if (function_exists('getallheaders')) {
+        return getallheaders();
+    }
+
+    $headers = [];
+    foreach ($_SERVER as $key => $value) {
+        if (strpos($key, 'HTTP_') === 0) {
+            $normalized = str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($key, 5)))));
+            $headers[$normalized] = $value;
+        }
+    }
+
+    return $headers;
+}
+
 try {
     // Validar método HTTP
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -52,6 +68,10 @@ try {
 
     if (!isset($data['data']['id'])) {
         throw new Exception('ID de pago no encontrado', 400);
+    }
+
+    if (!validateMercadoPagoWebhook($data, getRequestHeadersSafe())) {
+        throw new Exception('Webhook de Mercado Pago invalido', 401);
     }
 
     $paymentId = $data['data']['id'];

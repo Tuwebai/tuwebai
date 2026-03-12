@@ -138,6 +138,7 @@ Riesgo residual:
 - siguen existiendo piezas del repo todavia no clasificadas definitivamente fuera del runtime principal
 - queda deuda de limpieza en artefactos, secretos locales y dependencias restantes
 - persisten superficies legacy versionadas fuera del runtime principal que requieren cierre o aislamiento final
+- el stack `legacy/php-api` ya fue endurecido en puntos críticos, pero sigue siendo superficie heredada fuera de la gobernanza principal
 
 Lectura:
 

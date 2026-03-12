@@ -25,7 +25,7 @@ $firebaseConfig = [
     'messaging_sender_id' => getenv('VITE_FIREBASE_MESSAGING_SENDER_ID'),
     'app_id' => getenv('VITE_FIREBASE_APP_ID'),
     'measurement_id' => getenv('VITE_FIREBASE_MEASUREMENT_ID'),
-    'service_account_key' => getenv('FIREBASE_SERVICE_ACCOUNT_KEY') ?: __DIR__ . '/../../firebase-service-account.json'
+    'service_account_key' => getenv('FIREBASE_SERVICE_ACCOUNT_KEY') ?: null
 ];
 
 /**
@@ -85,8 +85,8 @@ function getLogsCollection() {
  * Configurar opciones comunes de cURL
  */
 function configureCurl($ch) {
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
     curl_setopt($ch, CURLOPT_TIMEOUT, 30);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 }
@@ -281,9 +281,9 @@ function getFirebaseAccessToken() {
     // Para simplificar, usamos un token de acceso fijo o generamos uno
     // En producción, deberías usar Firebase Admin SDK o generar tokens JWT
     
-    $serviceAccountKey = getenv('FIREBASE_SERVICE_ACCOUNT_KEY') ?: __DIR__ . '/../../firebase-service-account.json';
+    $serviceAccountKey = getenv('FIREBASE_SERVICE_ACCOUNT_KEY') ?: null;
     
-    if (file_exists($serviceAccountKey)) {
+    if ($serviceAccountKey && file_exists($serviceAccountKey)) {
         $serviceAccount = json_decode(file_get_contents($serviceAccountKey), true);
         
         // Generar JWT token
@@ -337,7 +337,7 @@ function getFirebaseAccessToken() {
     }
     
     // Fallback: usar API key pública (limitado)
-    return getenv('VITE_FIREBASE_API_KEY');
+    throw new Exception('No se pudo obtener access token de Firebase para stack legacy.');
 }
 
 /**

@@ -14,6 +14,8 @@ Este directorio contiene el stack PHP legacy aislado del runtime principal Node/
 - No integrar código nuevo contra este stack
 - No desplegarlo junto al backend Node salvo decisión explícita y auditada
 - Tratarlo como material de referencia o migración, no como sistema activo
+- No versionar secretos dentro de `legacy/`; cualquier credencial debe venir por entorno
+- Si se reusa excepcionalmente, debe operar fail-closed y con validación explícita de webhooks/credenciales
 
 ## Motivo del aislamiento
 
