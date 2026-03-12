@@ -8,10 +8,15 @@
 3. Logueate y seleccioná el proyecto:
    firebase login
    firebase use --add
-4. Build y deploy:
+4. Configurá EmailJS por entorno antes del deploy:
+   EMAILJS_SERVICE_ID=...
+   EMAILJS_TEMPLATE_ID=...
+   EMAILJS_PRIVATE_KEY=...
+   No dejar secretos hardcodeados en `functions/src/index.ts`.
+5. Build y deploy:
    npm run build
    npm run deploy
-5. Cambiá la URL del fetch en tu frontend:
+6. Cambiá la URL del fetch en tu frontend:
    https://us-central1-TU_ID_PROYECTO_FIREBASE.cloudfunctions.net/contacto
 
 Listo. Los mensajes se guardan en Firestore. 

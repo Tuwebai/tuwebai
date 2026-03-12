@@ -8,10 +8,12 @@ admin.initializeApp();
 const db = admin.firestore();
 const cors = corsLib({ origin: ["https://tuweb-ai.com", "https://www.tuweb-ai.com"], credentials: true });
 
-// Configuración de EmailJS
-const EMAILJS_SERVICE_ID = "service_9s9hqqn";
-const EMAILJS_TEMPLATE_ID = "template_8pxfpyh";
-const EMAILJS_PRIVATE_KEY = "JwEzBkL2LmY4a6WRkkodX";
+const EMAILJS_SERVICE_ID = process.env.EMAILJS_SERVICE_ID?.trim() || "";
+const EMAILJS_TEMPLATE_ID = process.env.EMAILJS_TEMPLATE_ID?.trim() || "";
+const EMAILJS_PRIVATE_KEY = process.env.EMAILJS_PRIVATE_KEY?.trim() || "";
+
+const isEmailJsConfigured = (): boolean =>
+  Boolean(EMAILJS_SERVICE_ID && EMAILJS_TEMPLATE_ID && EMAILJS_PRIVATE_KEY);
 
 export const contacto = functions.https.onRequest((req: Request, res: Response) => {
   cors(req, res, async () => {
@@ -23,6 +25,11 @@ export const contacto = functions.https.onRequest((req: Request, res: Response) 
       return res.status(400).json({ message: "Datos inválidos" });
     }
     try {
+      if (!isEmailJsConfigured()) {
+        console.error("EmailJS no configurado en firebase-functions-contacto");
+        return res.status(500).json({ message: "EmailJS no configurado" });
+      }
+
       // Guardar en Firestore
       await db.collection("contactos").add({
         name,

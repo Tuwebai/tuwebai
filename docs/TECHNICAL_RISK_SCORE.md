@@ -58,6 +58,7 @@ Este score se calculo sobre el estado real del repo auditado localmente, tomando
 - sigue coexistiendo codigo legacy y multistack en el repo:
   - `legacy/`
   - `firebase-functions-contacto/`
+- `firebase-functions-contacto/` no participa del runtime ni de CI/CD principal, pero sigue siendo un subproyecto versionado con deploy manual propio.
 - siguen presentes artefactos o residuos operativos en workspace:
   - `dist/`
   - `dist-server/`
@@ -136,6 +137,7 @@ Riesgo residual:
 
 - siguen existiendo piezas del repo todavia no clasificadas definitivamente fuera del runtime principal
 - queda deuda de limpieza en artefactos, secretos locales y dependencias restantes
+- persisten superficies legacy versionadas fuera del runtime principal que requieren cierre o aislamiento final
 
 Lectura:
 
@@ -165,6 +167,7 @@ Razon del score:
 - ya fueron retirados cuatro lotes de dependencias sin referencias en repo principal
 - todavia hay dependencias sospechosas, redundantes o con uso incierto
 - la presencia fisica de secretos locales en workspace sigue siendo una mala señal de gobernanza
+- aunque ya no quedan secretos EmailJS hardcodeados en `firebase-functions-contacto`, siguen existiendo secretos locales en workspace y subproyectos paralelos con gobernanza separada
 
 Lectura:
 

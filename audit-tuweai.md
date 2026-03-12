@@ -49,7 +49,7 @@ Eso eleva el costo de mantenimiento, debilita la gobernanza y deja riesgos concr
 /
 ├─ client/                         # Frontend React/Vite
 ├─ server/                         # Backend Express/TypeScript
-├─ api/                            # Residuo local vacío sin archivos versionados ✅ corregido: ya no representa backend activo del repo
+├─ api/                            # Residuo local vacío sin archivos versionados ✅ corregido: removido del versionado
 ├─ firebase/                       # Reglas/config Firestore
 ├─ firebase-functions-contacto/    # Cloud Function separada
 ├─ scripts/                        # Smoke/log scripts
@@ -641,3 +641,4 @@ Nota de seguimiento:
 - ✅ corregido: `package.json` dejó de declarar dependencias backend/infra sin consumidores detectables (`serve-static`, `passport-local`, `passport-google-oauth20`, `uuid`, `nanoid`, `sharp`, `ws`) junto con sus tipos asociados; se retiraron tras auditoría de uso real en código y configuración.
 - ✅ corregido: `package.json` dejó de declarar dependencias sin consumidores detectables ni en runtime ni en configuración (`@sendgrid/mail` y `@jridgewell/trace-mapping`); se retiraron tras auditoría fina de código, scripts y configuración para seguir bajando riesgo de gobernanza.
 - ✅ corregido: `scripts/smoke.mjs` dejó de heredar por defecto SMTP y Firebase Admin reales desde `.env`; ahora fuerza aislamiento con `DISABLE_SMTP_DELIVERY=true` y `DISABLE_FIREBASE_ADMIN=true`, con escape explícito vía `SMOKE_USE_REAL_SMTP=1` y `SMOKE_USE_REAL_FIREBASE=1` solo cuando se quiera probar infraestructura real.
+- ✅ corregido: `firebase-functions-contacto/functions/src/index.ts` dejó de exponer `EMAILJS_SERVICE_ID`, `EMAILJS_TEMPLATE_ID` y `EMAILJS_PRIVATE_KEY` hardcodeados; ahora exige configuración por entorno y queda explícito que ese subproyecto no debe versionar secretos en código.
