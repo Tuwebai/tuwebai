@@ -635,3 +635,4 @@ Nota de seguimiento:
 - ✅ corregido: `client/src/components/auth/{AdminRoute,DashboardRoute}.tsx` fue retirado tras confirmar ausencia de consumidores internos; la protección efectiva quedó resuelta en `features/*` y el paquete legacy dejó de participar del runtime frontend.
 - ✅ corregido: la precondición de Fase 6 quedó satisfecha y la limpieza final de compatibilidad del runtime frontend quedó materializada sin consumidores legacy residuales.
 - ✅ corregido: `package.json` dejó de exponer los scripts rotos `check-oauth`, `fix-oauth` y `setup:mp`; todos apuntaban a archivos inexistentes y agregaban ruido operativo sin valor de runtime.
+- ✅ corregido: `package.json` dejó de exponer el script `deploy`, que mezclaba build con `git add/commit/push`; se retiró por no cumplir gobernanza enterprise ni trazabilidad operativa segura.

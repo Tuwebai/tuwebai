@@ -30,8 +30,7 @@
     "docker:build": "docker compose build",
     "docker:up": "docker compose up -d",
     "docker:down": "docker compose down",
-    "deploy:rules": "npx firebase-tools deploy --only firestore:rules --project tuwebai-db",
-    "deploy": "npm run build && git add . && git commit -m 'Deploy' && git push"
+    "deploy:rules": "npx firebase-tools deploy --only firestore:rules --project tuwebai-db"
   },
   "dependencies": {
     "@emailjs/nodejs": "^5.0.2",
