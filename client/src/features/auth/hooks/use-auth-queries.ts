@@ -1,7 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import type { UserPreferences } from '../types';
 
-let usersServicePromise: Promise<any> | null = null;
+type UsersServiceModule = typeof import('@/features/users/services/users.service');
+
+let usersServicePromise: Promise<UsersServiceModule> | null = null;
 
 const getUsersService = () => {
   if (!usersServicePromise) usersServicePromise = import('@/features/users/services/users.service');

@@ -28,14 +28,15 @@ Patrones auditados:
 
 ## Hallazgos ejecutivos
 
-- Se detectaron `77` ocurrencias de `any` explicito en runtime activo y soporte del repo.
+- Baseline inicial: `77` ocurrencias de `any` explicito en runtime activo y soporte del repo.
+- Estado despues del primer slice: `52` ocurrencias de `any` explicito en runtime activo y soporte del repo.
 - Adicionalmente hay `3` usos de `z.any()` en `server/src/schemas/api.schemas.ts`, que no son deuda de tipado TypeScript pura pero si deuda de contrato.
 - La mayor concentracion esta en:
   - `client/src/features/auth/*`
   - `server/src/modules/*/controller.ts`
   - `server/src/middlewares/firebase-auth.middleware.ts`
 - `tsconfig.json` y `tsconfig.server.json` ya corren en `strict`, por lo que el problema actual no es falta de strict mode sino uso explicito de `any`.
-- `eslint.config.mjs` hoy no tiene ninguna regla activa contra `any`, por lo que la deuda puede seguir entrando sin friccion automatica.
+- `eslint.config.mjs` ya expone `@typescript-eslint/no-explicit-any` en modo `warn`, por lo que la deuda nueva ya no entra silenciosamente.
 
 ## Inventario por archivo
 
@@ -186,14 +187,14 @@ Objetivo:
 
 Slices:
 
-1. documentar este inventario como baseline
-2. agregar una regla de lint para `@typescript-eslint/no-explicit-any` en modo `warn`
+1. documentar este inventario como baseline ✅ completado
+2. agregar una regla de lint para `@typescript-eslint/no-explicit-any` en modo `warn` ✅ completado
 3. excluir temporalmente solo los archivos ya inventariados si hace falta para evitar ruido masivo
 
 Resultado esperado:
 
 - deuda congelada
-- cualquier `any` nuevo aparece explicitamente en lint
+- cualquier `any` nuevo aparece explicitamente en lint ✅ logrado
 
 ## Fase 1 - Auth frontend
 
@@ -203,14 +204,14 @@ Objetivo:
 
 Slices:
 
-1. tipar imports lazy en `AuthContext.tsx` con `typeof import(...)`
-2. crear helper comun para normalizar errores de auth y reemplazar `err: any`
-3. tipar `use-auth-mutations.ts` y eliminar `oldData: any` usando `UserPreferences | undefined`
-4. tipar `use-auth-queries.ts` para lazy import de `users.service`
+1. tipar imports lazy en `AuthContext.tsx` con `typeof import(...)` ✅ completado
+2. crear helper comun para normalizar errores de auth y reemplazar `err: any` ✅ completado
+3. tipar `use-auth-mutations.ts` y eliminar `oldData: any` usando `UserPreferences | undefined` ✅ completado mediante `DEFAULT_USER_PREFERENCES`
+4. tipar `use-auth-queries.ts` para lazy import de `users.service` ✅ completado
 
 Resultado esperado:
 
-- `client/src/features/auth/*` sin `any` explicitos
+- `client/src/features/auth/*` sin `any` explicitos en `AuthContext.tsx`, `use-auth-mutations.ts` y `use-auth-queries.ts` ✅ logrado en el primer slice
 
 ## Fase 2 - Auth backend y session boundaries
 

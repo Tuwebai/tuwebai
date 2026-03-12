@@ -11,12 +11,18 @@ import {
   useUpdatePreferencesMutation,
   useUpdateProfileMutation,
 } from '../hooks/use-auth-mutations';
+import { getAuthErrorMessage } from '../services/auth-error';
 import { useUserPreferencesQuery } from '../hooks/use-auth-queries';
+import { DEFAULT_USER_PREFERENCES } from '../types';
 import type { PasswordInfo, RegisterData, User, UserPreferences } from '../types';
 
-let firebasePromise: Promise<any> | null = null;
-let fireauthPromise: Promise<any> | null = null;
-let usersServicePromise: Promise<any> | null = null;
+type FirebaseModule = typeof import('@/lib/firebase');
+type FirebaseAuthModule = typeof import('firebase/auth');
+type UsersServiceModule = typeof import('@/features/users/services/users.service');
+
+let firebasePromise: Promise<FirebaseModule> | null = null;
+let fireauthPromise: Promise<FirebaseAuthModule> | null = null;
+let usersServicePromise: Promise<UsersServiceModule> | null = null;
 
 const getFirebase = () => {
   if (!firebasePromise) firebasePromise = import('@/lib/firebase');
@@ -61,13 +67,6 @@ interface AuthActions {
   clearError: () => void;
   setUserImage: (imageUrl: string) => void;
 }
-
-const DEFAULT_PREFS: UserPreferences = {
-  emailNotifications: false,
-  newsletter: false,
-  darkMode: false,
-  language: 'es',
-};
 
 const AuthStateContext = createContext<AuthState | undefined>(undefined);
 const AuthActionsContext = createContext<AuthActions | undefined>(undefined);
@@ -188,9 +187,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setError(null);
     try {
       await loginMutation.mutateAsync({ email, password });
-    } catch (err: any) {
-      setError(err.message || 'Error al iniciar sesión');
-      throw err;
+    } catch (error: unknown) {
+      setError(getAuthErrorMessage(error, 'Error al iniciar sesión'));
+      throw error;
     }
   }, [loginMutation]);
 
@@ -199,9 +198,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       const { dbUser } = await googleLoginMutation.mutateAsync();
       setUserState(dbUser);
-    } catch (err: any) {
-      setError(err.message || 'Error al iniciar sesión con Google');
-      throw err;
+    } catch (error: unknown) {
+      setError(getAuthErrorMessage(error, 'Error al iniciar sesión con Google'));
+      throw error;
     }
   }, [googleLoginMutation]);
 
@@ -210,9 +209,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       await logoutMutation.mutateAsync();
       setUserState(null);
-    } catch (err: any) {
-      setError(err.message || 'Error al cerrar sesión');
-      throw err;
+    } catch (error: unknown) {
+      setError(getAuthErrorMessage(error, 'Error al cerrar sesión'));
+      throw error;
     }
   }, [logoutMutation]);
 
@@ -221,9 +220,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       const newUser = await registerMutation.mutateAsync(userData);
       setUserState(newUser);
-    } catch (err: any) {
-      setError(err.message || 'Error al registrar usuario');
-      throw err;
+    } catch (error: unknown) {
+      setError(getAuthErrorMessage(error, 'Error al registrar usuario'));
+      throw error;
     }
   }, [registerMutation]);
 
@@ -231,9 +230,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setError(null);
     try {
       await resetPasswordMutation.mutateAsync(email);
-    } catch (err: any) {
-      setError(err.message || 'Error al solicitar restablecimiento de contraseña');
-      throw err;
+    } catch (error: unknown) {
+      setError(getAuthErrorMessage(error, 'Error al solicitar restablecimiento de contraseña'));
+      throw error;
     }
   }, [resetPasswordMutation]);
 
@@ -247,9 +246,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       await updateProfileMutation.mutateAsync({ uid: user.uid, data });
       setUserState((prevUser) => (prevUser ? { ...prevUser, ...data } : null));
-    } catch (err: any) {
-      setError(err.message || 'Error al actualizar perfil');
-      throw err;
+    } catch (error: unknown) {
+      setError(getAuthErrorMessage(error, 'Error al actualizar perfil'));
+      throw error;
     }
   }, [user, updateProfileMutation]);
 
@@ -263,9 +262,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setError(null);
     try {
       await updatePreferencesMutation.mutateAsync({ uid: user.uid, preferences });
-    } catch (err: any) {
-      setError(err.message || 'Error al actualizar preferencias');
-      throw err;
+    } catch (error: unknown) {
+      setError(getAuthErrorMessage(error, 'Error al actualizar preferencias'));
+      throw error;
     }
   }, [user, updatePreferencesMutation]);
 
@@ -280,9 +279,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setError(null);
     try {
       await changePasswordMutation.mutateAsync({ currentPassword, newPassword });
-    } catch (err: any) {
-      setError(err.message || 'Error al cambiar contraseña');
-      throw err;
+    } catch (error: unknown) {
+      setError(getAuthErrorMessage(error, 'Error al cambiar contraseña'));
+      throw error;
     }
   }, [user, changePasswordMutation]);
 
@@ -302,10 +301,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         localStorage.setItem('userImage', imageData);
       }
       toast({ title: 'Imagen actualizada', description: 'Tu foto de perfil ha sido actualizada.' });
-    } catch (err: any) {
-      setError(err.message || 'Error al subir imagen');
-      toast({ title: 'Error', description: err.message || 'Error al subir imagen', variant: 'destructive' });
-      throw err;
+    } catch (error: unknown) {
+      const message = getAuthErrorMessage(error, 'Error al subir imagen');
+      setError(message);
+      toast({ title: 'Error', description: message, variant: 'destructive' });
+      throw error;
     }
   }, [user, updateProfileMutation, toast]);
 
@@ -322,7 +322,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const stateValue = useMemo<AuthState>(() => ({
     user,
-    userPreferences: userPreferencesData || DEFAULT_PREFS,
+    userPreferences: userPreferencesData || DEFAULT_USER_PREFERENCES,
     passwordInfo,
     isLoading,
     isMutatingAuth,

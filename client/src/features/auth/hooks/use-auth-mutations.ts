@@ -1,10 +1,16 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useToast } from '@/shared/ui/use-toast';
+import { DEFAULT_USER_PREFERENCES } from '../types';
 import type { User, RegisterData, UserPreferences } from '../types';
+import { getAuthErrorMessage } from '../services/auth-error';
 
-let firebasePromise: Promise<any> | null = null;
-let fireauthPromise: Promise<any> | null = null;
-let usersServicePromise: Promise<any> | null = null;
+type FirebaseModule = typeof import('@/lib/firebase');
+type FirebaseAuthModule = typeof import('firebase/auth');
+type UsersServiceModule = typeof import('@/features/users/services/users.service');
+
+let firebasePromise: Promise<FirebaseModule> | null = null;
+let fireauthPromise: Promise<FirebaseAuthModule> | null = null;
+let usersServicePromise: Promise<UsersServiceModule> | null = null;
 
 const getFirebase = () => {
   if (!firebasePromise) firebasePromise = import('@/lib/firebase');
@@ -33,8 +39,8 @@ export const useLoginMutation = () => {
     onSuccess: () => {
       toast({ title: 'Sesión iniciada', description: 'Has iniciado sesión correctamente.' });
     },
-    onError: (err: any) => {
-      toast({ title: 'Error', description: err.message || 'Error al iniciar sesión', variant: 'destructive' });
+    onError: (error: unknown) => {
+      toast({ title: 'Error', description: getAuthErrorMessage(error, 'Error al iniciar sesión'), variant: 'destructive' });
     },
   });
 };
@@ -72,8 +78,8 @@ export const useGoogleLoginMutation = () => {
         description: `Bienvenido${data.firebaseUser.displayName ? `, ${data.firebaseUser.displayName}` : ''}!`,
       });
     },
-    onError: (err: any) => {
-      toast({ title: 'Error', description: err.message || 'Error al iniciar sesión con Google', variant: 'destructive' });
+    onError: (error: unknown) => {
+      toast({ title: 'Error', description: getAuthErrorMessage(error, 'Error al iniciar sesión con Google'), variant: 'destructive' });
     },
   });
 };
@@ -92,8 +98,8 @@ export const useLogoutMutation = () => {
       queryClient.clear();
       toast({ title: 'Sesión cerrada', description: 'Has cerrado sesión correctamente.' });
     },
-    onError: (err: any) => {
-      toast({ title: 'Error', description: err.message || 'Error al cerrar sesión', variant: 'destructive' });
+    onError: (error: unknown) => {
+      toast({ title: 'Error', description: getAuthErrorMessage(error, 'Error al cerrar sesión'), variant: 'destructive' });
     },
   });
 };
@@ -130,8 +136,8 @@ export const useRegisterMutation = () => {
     onSuccess: () => {
       toast({ title: 'Registro exitoso', description: 'Por favor, verifica tu email para activar tu cuenta.' });
     },
-    onError: (err: any) => {
-      toast({ title: 'Error', description: err.message || 'Error al registrar usuario', variant: 'destructive' });
+    onError: (error: unknown) => {
+      toast({ title: 'Error', description: getAuthErrorMessage(error, 'Error al registrar usuario'), variant: 'destructive' });
     },
   });
 };
@@ -148,8 +154,8 @@ export const useUpdateProfileMutation = () => {
     onSuccess: () => {
       toast({ title: 'Perfil actualizado', description: 'Tu información de perfil ha sido actualizada.' });
     },
-    onError: (err: any) => {
-      toast({ title: 'Error', description: err.message || 'Error al actualizar perfil', variant: 'destructive' });
+    onError: (error: unknown) => {
+      toast({ title: 'Error', description: getAuthErrorMessage(error, 'Error al actualizar perfil'), variant: 'destructive' });
     },
   });
 };
@@ -165,13 +171,14 @@ export const useUpdatePreferencesMutation = () => {
       return preferences;
     },
     onSuccess: (data, variables) => {
-      queryClient.setQueryData(['userPreferences', variables.uid], (oldData: any) => {
-        return oldData ? { ...oldData, ...data } : data;
+      queryClient.setQueryData<UserPreferences | null>(['userPreferences', variables.uid], (oldData) => {
+        const basePreferences = oldData ?? DEFAULT_USER_PREFERENCES;
+        return { ...basePreferences, ...data };
       });
       toast({ title: 'Preferencias actualizadas', description: 'Tus preferencias han sido actualizadas.' });
     },
-    onError: (err: any) => {
-      toast({ title: 'Error', description: err.message || 'Error al actualizar preferencias', variant: 'destructive' });
+    onError: (error: unknown) => {
+      toast({ title: 'Error', description: getAuthErrorMessage(error, 'Error al actualizar preferencias'), variant: 'destructive' });
     },
   });
 };
@@ -192,8 +199,8 @@ export const useChangePasswordMutation = () => {
     onSuccess: () => {
       toast({ title: 'Contraseña actualizada', description: 'Tu contraseña ha sido actualizada.' });
     },
-    onError: (err: any) => {
-      toast({ title: 'Error', description: err.message || 'Error al cambiar contraseña', variant: 'destructive' });
+    onError: (error: unknown) => {
+      toast({ title: 'Error', description: getAuthErrorMessage(error, 'Error al cambiar contraseña'), variant: 'destructive' });
     },
   });
 };
@@ -210,8 +217,8 @@ export const useResetPasswordMutation = () => {
     onSuccess: () => {
       toast({ title: 'Correo enviado', description: 'Si el email existe, recibirás instrucciones para restablecer tu contraseña.' });
     },
-    onError: (err: any) => {
-      toast({ title: 'Error', description: err.message || 'Error al solicitar restablecimiento', variant: 'destructive' });
+    onError: (error: unknown) => {
+      toast({ title: 'Error', description: getAuthErrorMessage(error, 'Error al solicitar restablecimiento'), variant: 'destructive' });
     },
   });
 };

@@ -14,4 +14,11 @@ export interface PasswordInfo {
   daysSinceChange: number | null;
 }
 
+export const DEFAULT_USER_PREFERENCES: UserPreferences = {
+  emailNotifications: false,
+  newsletter: false,
+  darkMode: false,
+  language: 'es',
+};
+
 export type { UserPreferences };
