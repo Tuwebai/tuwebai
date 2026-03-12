@@ -32,6 +32,7 @@ Patrones auditados:
 - Estado despues del primer slice: `52` ocurrencias de `any` explicito en runtime activo y soporte del repo.
 - Estado despues del segundo slice: `47` ocurrencias de `any` explicito en runtime activo y soporte del repo.
 - Estado despues del tercer slice: `41` ocurrencias de `any` explicito en runtime activo y soporte del repo.
+- Estado despues del cuarto slice: `34` ocurrencias de `any` explicito en runtime activo y soporte del repo.
 - Adicionalmente hay `3` usos de `z.any()` en `server/src/schemas/api.schemas.ts`, que no son deuda de tipado TypeScript pura pero si deuda de contrato.
 - La mayor concentracion esta en:
   - `client/src/features/auth/*`
@@ -242,7 +243,7 @@ Orden recomendado:
 
 1. `server/src/modules/users/controller.ts` ✅ completado
 2. `server/src/modules/support/controller.ts` ✅ completado
-3. `server/src/modules/testimonials/controller.ts`
+3. `server/src/modules/testimonials/controller.ts` ✅ completado
 4. `server/src/modules/projects/controller.ts`
 5. `server/src/modules/contact/controller.ts`
 6. `server/src/modules/newsletter/controller.ts`
@@ -304,7 +305,7 @@ Resultado esperado:
 5. `server/index.ts`
 6. `server/src/modules/users/controller.ts`
 7. `server/src/modules/support/controller.ts` ✅ completado
-8. `server/src/modules/testimonials/controller.ts`
+8. `server/src/modules/testimonials/controller.ts` ✅ completado
 
 ## Criterios de aceptacion por slice
 

@@ -2,9 +2,24 @@ import { Request, Response } from 'express';
 import { env } from '../../config/env.config';
 import { getFirestore as getAdminFirestore } from '../../infrastructure/firebase/firestore';
 import { queueContactEmail } from '../../infrastructure/mail/email.service';
+import { getErrorMessage } from '../../shared/utils/error-message';
 import { appLogger } from '../../utils/app-logger';
 import { storeSubmission } from '../../utils/submission-store';
 import { resolveOptionalLimit } from '../../shared/utils/list-limit';
+
+type TestimonialDocument = {
+  id?: string;
+  name?: string;
+  company?: string;
+  testimonial?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  deletedAt?: string;
+  deletedBy?: string;
+  isDeleted?: boolean;
+  status?: string;
+  source?: string;
+} & Record<string, unknown>;
 
 const isSoftDeleted = (data: Record<string, unknown> | undefined): boolean =>
   Boolean(data?.deletedAt || data?.isDeleted === true || data?.status === 'deleted');
@@ -35,9 +50,9 @@ export const handleTestimonialSubmission = async (req: Request, res: Response) =
       success: true,
       message: 'Testimonio recibido y pendiente de revision.',
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     appLogger.error('public.testimonial_submission_failed', {
-      error: error?.message,
+      error: getErrorMessage(error, 'unknown_testimonial_submission_error'),
       route: req.path,
       method: req.method,
     });
@@ -45,7 +60,7 @@ export const handleTestimonialSubmission = async (req: Request, res: Response) =
     return res.status(500).json({
       success: false,
       message: 'No se pudo registrar el testimonio.',
-      details: env.NODE_ENV === 'development' ? error?.message : undefined,
+      details: env.NODE_ENV === 'development' ? getErrorMessage(error, 'unknown_testimonial_submission_error') : undefined,
     });
   }
 };
@@ -57,16 +72,18 @@ export const handleGetTestimonials = async (req: Request, res: Response) => {
   try {
     const limit = resolveOptionalLimit(req.query?.limit);
     const snap = await db.collection('testimonials').get();
-    let data = snap.docs
-      .map((d) => ({ id: d.id, ...d.data() }))
+    let data: TestimonialDocument[] = snap.docs
+      .map((doc) => ({ id: doc.id, ...(doc.data() as Record<string, unknown>) }))
       .filter((testimonial) => !isSoftDeleted(testimonial));
-    data.sort((a: any, b: any) => String(b.createdAt || '').localeCompare(String(a.createdAt || '')));
+    data.sort((a, b) => String(b.createdAt || '').localeCompare(String(a.createdAt || '')));
     if (limit !== null) {
       data = data.slice(0, limit);
     }
     return res.json({ success: true, data });
-  } catch (error: any) {
-    appLogger.error('public.get_testimonials_failed', { error: error?.message });
+  } catch (error: unknown) {
+    appLogger.error('public.get_testimonials_failed', {
+      error: getErrorMessage(error, 'unknown_get_testimonials_error'),
+    });
     return res.status(500).json({ success: false, message: 'No se pudieron obtener testimonios' });
   }
 };
@@ -83,9 +100,9 @@ export const handleGetTestimonialById = async (req: Request, res: Response) => {
       return res.status(404).json({ success: false, message: 'Testimonio no encontrado' });
     }
     return res.json({ success: true, data: { id: snap.id, ...data } });
-  } catch (error: any) {
+  } catch (error: unknown) {
     appLogger.error('public.get_testimonial_by_id_failed', {
-      error: error?.message,
+      error: getErrorMessage(error, 'unknown_get_testimonial_by_id_error'),
       testimonialId: req.params?.testimonialId,
     });
     return res.status(500).json({ success: false, message: 'No se pudo obtener el testimonio' });
@@ -98,17 +115,18 @@ export const handleUpdateTestimonial = async (req: Request, res: Response) => {
 
   try {
     const { testimonialId } = req.params;
+    const payload = (req.body ?? {}) as Partial<TestimonialDocument>;
     await db.collection('testimonials').doc(testimonialId).set(
       {
-        ...req.body,
+        ...payload,
         updatedAt: new Date().toISOString(),
       },
       { merge: true }
     );
     return res.json({ success: true });
-  } catch (error: any) {
+  } catch (error: unknown) {
     appLogger.error('public.update_testimonial_failed', {
-      error: error?.message,
+      error: getErrorMessage(error, 'unknown_update_testimonial_error'),
       testimonialId: req.params?.testimonialId,
     });
     return res.status(500).json({ success: false, message: 'No se pudo actualizar el testimonio' });
@@ -145,9 +163,9 @@ export const handleDeleteTestimonial = async (req: Request, res: Response) => {
     });
 
     return res.json({ success: true });
-  } catch (error: any) {
+  } catch (error: unknown) {
     appLogger.error('public.delete_testimonial_failed', {
-      error: error?.message,
+      error: getErrorMessage(error, 'unknown_delete_testimonial_error'),
       testimonialId: req.params?.testimonialId,
     });
     return res.status(500).json({ success: false, message: 'No se pudo eliminar el testimonio' });
