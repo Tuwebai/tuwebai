@@ -149,6 +149,7 @@ Estado:
 - ✅ corregido parcialmente: `footer` movido a `shared/ui`
 - ✅ corregido parcialmente: `global-navbar` movido a `client/src/app/layout/`
 - ✅ corregido parcialmente: `command` movido a `shared/ui`
+- ✅ corregido parcialmente: `form`, `calendar` y `carousel` movidos a `shared/ui`
 
 Objetivo:
 
@@ -306,6 +307,7 @@ Precondiciones:
 - `components/ui` sigue mezclando wrappers de compatibilidad con implementación real (`command`, `form`, `calendar`, `carousel`), por lo que no corresponde borrarlo en bloque todavía
 - `components/performance` quedó re-auditado como instrumentacion de runtime de `app`; no corresponde mover `ResourcePreload` ni `MemoryManager` a `shared/ui`
 - `client/src/components/ui/command.tsx` ya quedó reducido a wrapper de compatibilidad; `client/src/shared/ui/command.tsx` es la implementación real
+- `client/src/components/ui/form.tsx`, `client/src/components/ui/calendar.tsx` y `client/src/components/ui/carousel.tsx` ya quedaron reducidos a wrappers de compatibilidad; sus implementaciones reales viven en `client/src/shared/ui/*`
 - ✅ corregido parcialmente: el bloqueo por `components/sections/*` temporales del landing ya fue removido; `marketing-home` quedó consolidado en `features/marketing-home` y la re-auditoría de Fase 6 queda pendiente solo por las páginas institucionales activas restantes
 - plan específico abierto en `docs/MARKETING_HOME_FINALIZATION_PLAN.md`
 

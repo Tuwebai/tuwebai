@@ -229,11 +229,12 @@ Resultado actual de la re-auditoría:
 - ✅ corregido: `client/src/hooks/use-vacancies.ts` ya consume `client/src/shared/ui/use-toast`; `client/src/components/ui/use-toast/*` quedó fuera del runtime activo directo
 - ✅ corregido: `client/src/app/App.tsx` ya consume `client/src/shared/ui/skip-link.tsx`; `client/src/components/a11y/skip-link.tsx` quedó como wrapper temporal de compatibilidad
 - ✅ corregido parcialmente: `client/src/shared/ui/command.tsx` ya concentra la implementación real; `client/src/components/ui/command.tsx` quedó reducido a wrapper de compatibilidad
+- ✅ corregido parcialmente: `client/src/shared/ui/{form,calendar,carousel}.tsx` ya concentran la implementación real; `client/src/components/ui/{form,calendar,carousel}.tsx` quedaron reducidos a wrappers de compatibilidad
 
 Estado de re-auditoría de `client/src/components/ui`:
 
 - no corresponde borrar la carpeta en bloque todavía
-- siguen existiendo remanentes de implementación real o compatibilidad interna (`form`, `calendar`, `carousel`)
+- no quedan remanentes equivalentes en `components/ui` para `command`, `form`, `calendar` ni `carousel`; esos paths ya quedaron como compatibilidad hacia `shared/ui`
 - `client/src/components/performance/*` no es `shared/ui`; su destino final debe resolverse como instrumentacion de `app` en un slice especifico, no mezclado con esta limpieza
 - la limpieza final debe hacerse archivo por archivo, no por borrado masivo
 
