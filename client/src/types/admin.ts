@@ -46,15 +46,6 @@ export interface User {
   isVerified: boolean;
 }
 
-export interface UserPreferences {
-  id: number;
-  userId: number;
-  darkMode: boolean;
-  emailNotifications: boolean;
-  language: string;
-  newsletter: boolean;
-}
-
 export interface DashboardStats {
   totalUsers: number;
   totalContacts: number;

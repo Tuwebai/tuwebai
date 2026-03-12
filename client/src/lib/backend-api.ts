@@ -1,5 +1,5 @@
 import { apiFetch } from '@/lib/http-client';
-import type { User, UserPreferences } from '@/features/users/types';
+import type { User } from '@/features/users/types';
 
 export type PaymentPlan = 'esencial' | 'avanzado' | 'premium';
 
@@ -27,15 +27,6 @@ export const backendApi = {
 
   upsertUser: (uid: string, payload: Partial<User>) =>
     apiFetch<{ success: boolean }>(`/api/users/${encodeURIComponent(uid)}`, {
-      method: 'PUT',
-      body: payload as Record<string, unknown>,
-    }),
-
-  getUserPreferences: (uid: string) =>
-    apiFetch<{ success: boolean; data?: UserPreferences | null }>(`/api/users/${encodeURIComponent(uid)}/preferences`),
-
-  setUserPreferences: (uid: string, payload: Partial<UserPreferences>) =>
-    apiFetch<{ success: boolean }>(`/api/users/${encodeURIComponent(uid)}/preferences`, {
       method: 'PUT',
       body: payload as Record<string, unknown>,
     }),

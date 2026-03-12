@@ -1,4 +1,4 @@
-import type { User as AppUser, UserPreferences } from '@/features/users/types';
+import type { User as AppUser } from '@/features/users/types';
 
 export interface User extends AppUser {}
 
@@ -13,12 +13,3 @@ export interface PasswordInfo {
   changedAt: string | null;
   daysSinceChange: number | null;
 }
-
-export const DEFAULT_USER_PREFERENCES: UserPreferences = {
-  emailNotifications: false,
-  newsletter: false,
-  darkMode: false,
-  language: 'es',
-};
-
-export type { UserPreferences };

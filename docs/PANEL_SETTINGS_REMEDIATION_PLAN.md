@@ -25,7 +25,8 @@ Conclusion:
 - ambos quedaron descartados por decision de producto
 - la expansion de tabs y toggles sin efecto real ya quedo congelada como criterio operativo
 - la vieja tab de `Preferencias` ya no debe volver como contenedor generico; los controles sensibles pasan a `Privacidad`
-- la deuda real del panel queda concentrada en comunicaciones (`newsletter`, `emailNotifications`) y en sincerar claramente que se guarda vs que hoy se aplica
+- el runtime frontend ya no debe conservar infraestructura viva del viejo modelo `userPreferences`
+- cualquier continuidad de `/api/users/:uid/preferences` debe tratarse aparte, como contrato legacy estable, no como base del panel actual
 
 ## Flujo Auditado
 
@@ -35,7 +36,7 @@ Archivo:
 
 - `client/src/features/users/components/user-dashboard-page.tsx`
 
-La pantalla llama:
+La pantalla llamaba:
 
 - `handleUpdatePreferences(...)`
 - `updateUserPreferences(...)` desde `AuthContext`
@@ -47,10 +48,10 @@ Archivos:
 - `client/src/features/auth/context/AuthContext.tsx`
 - `client/src/features/auth/hooks/use-auth-mutations.ts`
 
-La mutation:
+La mutation hacia:
 
-- llama `setUserPreferences(uid, preferences)`
-- actualiza cache React Query de `['userPreferences', uid]`
+- llamar `setUserPreferences(uid, preferences)`
+- actualizar cache React Query de `['userPreferences', uid]`
 
 ### 3. Servicio frontend
 
@@ -58,7 +59,7 @@ Archivo:
 
 - `client/src/features/users/services/users.service.ts`
 
-La preferencia se manda a:
+La preferencia se mandaba a:
 
 - `PUT /api/users/:uid/preferences`
 
@@ -123,27 +124,22 @@ Conclusion:
 - no corresponde abrir un frente i18n para una preferencia descartada
 - cualquier wiring parcial de idioma debe retirarse para evitar falsa expectativa
 
-### Hallazgo 4. `newsletter` y `emailNotifications` no tienen consumidores operativos reales
+### Hallazgo 4. El modelo frontend de `userPreferences` quedo obsoleto
 
 Nivel: alto
 
-No se encontraron consumidores reales fuera del panel para:
+No se encontraron consumidores reales en frontend para:
 
-- `userPreferences.newsletter`
-- `userPreferences.emailNotifications`
-
-El alta de newsletter publica sigue yendo por:
-
-- `client/src/features/newsletter/services/newsletter.service.ts`
-- `POST /newsletter`
-
-sin consultar esas preferencias.
+- `AuthContext.userPreferences`
+- `updateUserPreferences(...)`
+- `fetchUserPreferences(...)`
+- query/mutation/services asociados a `/api/users/:uid/preferences`
 
 Impacto:
 
-- se guarda un booleano
-- pero no gobierna suscripcion real ni envio de comunicaciones
-- el usuario cree haber configurado algo operativo que hoy no controla nada
+- sostener ese modelo en cliente agrega deuda tecnica
+- invita a reusar un contrato descartado por producto
+- mezcla panel actual con persistencia legacy que ya no gobierna UX real
 
 ### Hallazgo 5. El copy del panel debia sincerarse
 
@@ -186,8 +182,9 @@ Impacto:
 La causa raiz no es "el panel guarda mal" sino esta:
 
 - el panel mezclaba preferencias persistidas con decisiones de producto ya cerradas
-- el repo no tiene una capa de aplicacion efectiva para las preferencias de comunicaciones
-- Firestore guarda el dato, pero la app casi no lo consume como source of truth operacional
+- el repo no tiene una capa de aplicacion efectiva para preferencias reales del panel
+- el frontend seguia cargando query/mutation/servicios sobre un contrato sin consumidores
+- Firestore puede conservar ese dato por compatibilidad, pero ya no debe condicionar la arquitectura actual del panel
 
 ## Plan Enterprise de Correccion
 
@@ -266,6 +263,18 @@ Resultado real:
 - la vieja tab de `Preferencias` fue reemplazada en runtime por `Privacidad`
 - el panel ya no usa una etiqueta generica para controles sensibles
 - futuras preferencias blandas quedan condicionadas a un frente separado con wiring real
+
+### Fase 4.1. Barrer residuos frontend del modelo descartado
+
+Objetivo:
+
+- retirar del cliente la infraestructura vieja de `userPreferences`
+
+Resultado esperado:
+
+- `AuthContext` deja de exponer preferencias muertas
+- se eliminan query, mutation, servicio y tipos zombie asociados al panel descartado
+- el backend conserva el endpoint solo por estabilidad contractual hasta decidir su retiro
 
 ### Fase 5. Corregir copy y estados de guardado
 

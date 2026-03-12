@@ -10,10 +10,3 @@ export interface User {
   createdAt?: string;
   updatedAt?: string;
 }
-
-export interface UserPreferences {
-  emailNotifications: boolean;
-  newsletter: boolean;
-  darkMode: boolean;
-  language: string;
-}

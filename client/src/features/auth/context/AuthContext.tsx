@@ -8,14 +8,11 @@ import {
   useLogoutMutation,
   useRegisterMutation,
   useResetPasswordMutation,
-  useUpdatePreferencesMutation,
   useUpdateProfileMutation,
 } from '../hooks/use-auth-mutations';
 import { isGoogleAuthUser, mergeFirebaseUserData } from '../services/auth-avatar';
 import { getAuthErrorMessage } from '../services/auth-error';
-import { useUserPreferencesQuery } from '../hooks/use-auth-queries';
-import { DEFAULT_USER_PREFERENCES } from '../types';
-import type { PasswordInfo, RegisterData, User, UserPreferences } from '../types';
+import type { PasswordInfo, RegisterData, User } from '../types';
 
 type FirebaseModule = typeof import('@/lib/firebase');
 type FirebaseAuthModule = typeof import('firebase/auth');
@@ -42,11 +39,9 @@ const getUsersService = () => {
 
 interface AuthState {
   user: User | null;
-  userPreferences: UserPreferences;
   passwordInfo: PasswordInfo;
   isLoading: boolean;
   isMutatingAuth: boolean;
-  isLoadingPreferences: boolean;
   isLoadingPasswordInfo: boolean;
   isAuthenticated: boolean;
   error: string | null;
@@ -60,9 +55,7 @@ interface AuthActions {
   requestPasswordReset: (email: string) => Promise<void>;
   resetPassword: (token: string, newPassword: string) => Promise<void>;
   updateUserProfile: (data: Partial<User>) => Promise<void>;
-  updateUserPreferences: (preferences: Partial<UserPreferences>) => Promise<void>;
   changePassword: (currentPassword: string, newPassword: string) => Promise<void>;
-  fetchUserPreferences: () => Promise<void>;
   fetchPasswordInfo: () => Promise<void>;
   uploadProfileImage: (imageFile: File) => Promise<void>;
   clearError: () => void;
@@ -106,14 +99,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   });
   const [isLoadingPasswordInfo, setIsLoadingPasswordInfo] = useState(false);
 
-  const { data: userPreferencesData, isLoading: isLoadingPreferencesQuery, refetch: refetchPrefs } = useUserPreferencesQuery(user?.uid);
-
   const loginMutation = useLoginMutation();
   const googleLoginMutation = useGoogleLoginMutation();
   const logoutMutation = useLogoutMutation();
   const registerMutation = useRegisterMutation();
   const updateProfileMutation = useUpdateProfileMutation();
-  const updatePreferencesMutation = useUpdatePreferencesMutation();
   const changePasswordMutation = useChangePasswordMutation();
   const resetPasswordMutation = useResetPasswordMutation();
 
@@ -261,22 +251,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, [user, updateProfileMutation]);
 
-  const fetchUserPreferences = useCallback(async () => {
-    if (!user) return;
-    await refetchPrefs();
-  }, [user, refetchPrefs]);
-
-  const updateUserPreferences = useCallback(async (preferences: Partial<UserPreferences>) => {
-    if (!user) return;
-    setError(null);
-    try {
-      await updatePreferencesMutation.mutateAsync({ uid: user.uid, preferences });
-    } catch (error: unknown) {
-      setError(getAuthErrorMessage(error, 'Error al actualizar preferencias'));
-      throw error;
-    }
-  }, [user, updatePreferencesMutation]);
-
   const fetchPasswordInfo = useCallback(async () => {
     setIsLoadingPasswordInfo(true);
     setPasswordInfo({ changedAt: null, daysSinceChange: null });
@@ -325,22 +299,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const stateValue = useMemo<AuthState>(() => ({
     user,
-    userPreferences: userPreferencesData || DEFAULT_USER_PREFERENCES,
     passwordInfo,
     isLoading,
     isMutatingAuth,
-    isLoadingPreferences: isLoadingPreferencesQuery || updatePreferencesMutation.isPending,
     isLoadingPasswordInfo,
     isAuthenticated: !!user,
     error,
   }), [
     user,
-    userPreferencesData,
     passwordInfo,
     isLoading,
     isMutatingAuth,
-    isLoadingPreferencesQuery,
-    updatePreferencesMutation.isPending,
     isLoadingPasswordInfo,
     error,
   ]);
@@ -353,9 +322,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     requestPasswordReset,
     resetPassword,
     updateUserProfile,
-    updateUserPreferences,
     changePassword,
-    fetchUserPreferences,
     fetchPasswordInfo,
     uploadProfileImage,
     clearError,
@@ -368,9 +335,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     requestPasswordReset,
     resetPassword,
     updateUserProfile,
-    updateUserPreferences,
     changePassword,
-    fetchUserPreferences,
     fetchPasswordInfo,
     uploadProfileImage,
     clearError,

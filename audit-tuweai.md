@@ -693,3 +693,4 @@ Nota de seguimiento:
 
 - ✅ corregido: la Fase 1 del plan de arquitectura del `/panel` ya quedo cerrada; `Comunicaciones` fue retirada del runtime porque solo exponia persistencia nominal sin comportamiento real y `Preferencias` deja de mostrar toggles fake.
 - ✅ corregido: la Fase 2 del plan de arquitectura del `/panel` ya quedo cerrada; la tab generica `Preferencias` fue reemplazada en runtime por `Privacidad`, alineando la navegacion con controles sensibles reales y evitando mezclar ajustes decorativos con configuraciones de datos personales.
+- ✅ corregido: el frontend ya no conserva infraestructura viva del viejo modelo `userPreferences`; `AuthContext`, query, mutation, servicios y tipos del cliente asociados a `/api/users/:uid/preferences` fueron retirados tras confirmar ausencia total de consumidores reales desde que el panel dejo de usar preferencias fake.

@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useToast } from '@/shared/ui/use-toast';
-import { DEFAULT_USER_PREFERENCES } from '../types';
-import type { User, RegisterData, UserPreferences } from '../types';
+import type { User, RegisterData } from '../types';
 import { mergeFirebaseUserData } from '../services/auth-avatar';
 import { getAuthErrorMessage } from '../services/auth-error';
 
@@ -162,29 +161,6 @@ export const useUpdateProfileMutation = () => {
     },
     onError: (error: unknown) => {
       toast({ title: 'Error', description: getAuthErrorMessage(error, 'Error al actualizar perfil'), variant: 'destructive' });
-    },
-  });
-};
-
-export const useUpdatePreferencesMutation = () => {
-  const queryClient = useQueryClient();
-  const { toast } = useToast();
-
-  return useMutation({
-    mutationFn: async ({ uid, preferences }: { uid: string; preferences: Partial<UserPreferences> }) => {
-      const { setUserPreferences } = await getUsersService();
-      await setUserPreferences(uid, preferences);
-      return preferences;
-    },
-    onSuccess: (data, variables) => {
-      queryClient.setQueryData<UserPreferences | null>(['userPreferences', variables.uid], (oldData) => {
-        const basePreferences = oldData ?? DEFAULT_USER_PREFERENCES;
-        return { ...basePreferences, ...data };
-      });
-      toast({ title: 'Preferencias actualizadas', description: 'Tus preferencias han sido actualizadas.' });
-    },
-    onError: (error: unknown) => {
-      toast({ title: 'Error', description: getAuthErrorMessage(error, 'Error al actualizar preferencias'), variant: 'destructive' });
     },
   });
 };
