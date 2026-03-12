@@ -228,11 +228,12 @@ Resultado actual de la re-auditoría:
 - ✅ corregido: `client/src/features/users/components/user-dashboard-page.tsx` ya consume `client/src/shared/ui/whatsapp-button.tsx`; el wrapper equivalente en `client/src/components/ui/whatsapp-button.tsx` quedó fuera de ese runtime activo
 - ✅ corregido: `client/src/hooks/use-vacancies.ts` ya consume `client/src/shared/ui/use-toast`; `client/src/components/ui/use-toast/*` quedó fuera del runtime activo directo
 - ✅ corregido: `client/src/app/App.tsx` ya consume `client/src/shared/ui/skip-link.tsx`; `client/src/components/a11y/skip-link.tsx` quedó como wrapper temporal de compatibilidad
+- ✅ corregido parcialmente: `client/src/shared/ui/command.tsx` ya concentra la implementación real; `client/src/components/ui/command.tsx` quedó reducido a wrapper de compatibilidad
 
 Estado de re-auditoría de `client/src/components/ui`:
 
 - no corresponde borrar la carpeta en bloque todavía
-- siguen existiendo remanentes de implementación real o compatibilidad interna (`command`, `form`, `calendar`, `carousel`)
+- siguen existiendo remanentes de implementación real o compatibilidad interna (`form`, `calendar`, `carousel`)
 - `client/src/components/performance/*` no es `shared/ui`; su destino final debe resolverse como instrumentacion de `app` en un slice especifico, no mezclado con esta limpieza
 - la limpieza final debe hacerse archivo por archivo, no por borrado masivo
 
