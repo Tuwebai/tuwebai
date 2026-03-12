@@ -269,6 +269,7 @@ Estado:
 - ✅ corregido: `client/src/pages/*` dejó de ser runtime activo; `AppRoutes` quedó normalizado con entrypoints agrupados por dominios semánticos en `app/router/{home,errors,company,knowledge,legal,services,solutions}`
 - ✅ corregido: `client/src/components/route-wrapper.tsx` dejó de formar parte del runtime estructural; `AppRoutes` consume `client/src/app/router/lazy-route.tsx` y el wrapper legacy fue retirado
 - ✅ corregido: el runtime base en `client/src/app/App.tsx` y `client/src/app/router/lazy-route.tsx` ya consume `client/src/shared/ui/{footer,toaster,skeleton}`; los wrappers equivalentes en `client/src/components/ui/*` dejaron de ser dependencia estructural
+- ✅ corregido: `client/src/app/router/solutions/*`, `features/proposals/components/proposal-request-page.tsx` y `features/contact/components/support-contact-page.tsx` ya consumen `client/src/shared/ui/{button,input,textarea,scroll-progress,whatsapp-button}`; los wrappers equivalentes en `client/src/components/ui/*` quedaron fuera de ese runtime activo
 - ✅ corregido parcialmente: re-auditoría completada; `panel-usuario` sigue concentrando orquestación funcional y no corresponde adelgazarlo en esta fase sin separar antes su flujo por dominio
 
 Objetivo:

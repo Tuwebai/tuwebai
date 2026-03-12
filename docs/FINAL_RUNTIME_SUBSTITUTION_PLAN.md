@@ -222,6 +222,7 @@ Resultado actual de la re-auditoría:
 - ✅ corregido: `client/src/pages/*` dejó de ser runtime activo y `client/src/app/router/` quedó agrupado por dominios semánticos (`home`, `errors`, `company`, `knowledge`, `legal`, `services`, `solutions`)
 - ✅ corregido: `client/src/components/route-wrapper.tsx` dejó de formar parte del runtime estructural; `client/src/app/router/AppRoutes.tsx` consume `client/src/app/router/lazy-route.tsx` y el wrapper legacy fue retirado
 - ✅ corregido: `client/src/app/App.tsx` y `client/src/app/router/lazy-route.tsx` ya consumen `client/src/shared/ui/{footer,toaster,skeleton}`; los wrappers equivalentes en `client/src/components/ui/*` quedaron fuera del runtime estructural
+- ✅ corregido: `client/src/app/router/solutions/*`, `client/src/features/proposals/components/proposal-request-page.tsx` y `client/src/features/contact/components/support-contact-page.tsx` ya consumen `client/src/shared/ui/{button,input,textarea,scroll-progress,whatsapp-button}`; los wrappers equivalentes en `client/src/components/ui/*` quedaron fuera de ese runtime activo
 
 ## Validación Obligatoria
 

@@ -2,8 +2,8 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useIsMobile } from "@/core/hooks/use-mobile";
-import WhatsAppButton from "@/components/ui/whatsapp-button";
-import ScrollProgress from "@/components/ui/scroll-progress";
+import ScrollProgress from "@/shared/ui/scroll-progress";
+import WhatsAppButton from "@/shared/ui/whatsapp-button";
 
 // Tipos para proyectos UX/UI
 interface UXUIProject {

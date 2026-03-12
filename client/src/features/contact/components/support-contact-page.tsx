@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { getContactErrorMessage, submitContactForm } from '@/features/contact/services/contact.service';
+import { Button } from '@/shared/ui/button';
+import { Input } from '@/shared/ui/input';
+import { Textarea } from '@/shared/ui/textarea';
 
 export default function SupportContactPage() {
   const [form, setForm] = useState({ name: '', email: '', title: '', message: '' });

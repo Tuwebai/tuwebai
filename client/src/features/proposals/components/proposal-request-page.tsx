@@ -4,11 +4,11 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/shared/ui/button";
+import { Input } from "@/shared/ui/input";
+import { Textarea } from "@/shared/ui/textarea";
 import { useToast } from "@/shared/ui/use-toast";
-import WhatsAppButton from "@/components/ui/whatsapp-button";
+import WhatsAppButton from "@/shared/ui/whatsapp-button";
 import analytics from "@/lib/analytics";
 import { getProposalErrorMessage, submitProposal } from '@/features/proposals/services/proposals.service';
 

@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import WhatsAppButton from "@/components/ui/whatsapp-button";
+import WhatsAppButton from "@/shared/ui/whatsapp-button";
 
 export default function Ecommerce() {
   return (
