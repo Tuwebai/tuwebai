@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useToast } from '@/shared/ui/use-toast';
 import { DEFAULT_USER_PREFERENCES } from '../types';
 import type { User, RegisterData, UserPreferences } from '../types';
+import { resolveAuthAvatar } from '../services/auth-avatar';
 import { getAuthErrorMessage } from '../services/auth-error';
 
 type FirebaseModule = typeof import('@/lib/firebase');
@@ -51,23 +52,33 @@ export const useGoogleLoginMutation = () => {
   return useMutation({
     mutationFn: async () => {
       const { auth, googleProvider } = await getFirebase();
-      const { signInWithPopup } = await getFirebaseAuth();
+      const { signInWithPopup, reload } = await getFirebaseAuth();
       const { getUser, setUser } = await getUsersService();
 
       const result = await signInWithPopup(auth, googleProvider);
-      const firebaseUser = result.user;
+      try {
+        await reload(result.user);
+      } catch {
+        // Si Google no refresca metadata en este instante, usamos el snapshot disponible.
+      }
+      const firebaseUser = auth.currentUser ?? result.user;
       let dbUser = await getUser(firebaseUser.uid);
+      const resolvedImage = resolveAuthAvatar(firebaseUser, dbUser?.image);
+
       if (!dbUser) {
         dbUser = {
           uid: firebaseUser.uid,
           email: firebaseUser.email || '',
           username: firebaseUser.displayName || '',
           name: firebaseUser.displayName || '',
-          image: firebaseUser.photoURL || '',
+          image: resolvedImage,
           isActive: true,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
         };
+        await setUser(dbUser);
+      } else if (resolvedImage && resolvedImage !== dbUser.image) {
+        dbUser = { ...dbUser, image: resolvedImage };
         await setUser(dbUser);
       }
       return { firebaseUser, dbUser };

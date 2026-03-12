@@ -40,8 +40,7 @@ export default function PanelUsuario() {
     passwordInfo,
     updateUserPreferences,
     changePassword,
-    uploadProfileImage,
-    setUserImage
+    uploadProfileImage
   } = useAuth();
   const { toast } = useToast();
   
@@ -92,16 +91,6 @@ export default function PanelUsuario() {
       });
     }
   }, [user]);
-  
-  // Cargar imagen guardada en localStorage al iniciar
-  useEffect(() => {
-    if (user && typeof window !== 'undefined') {
-      const savedImage = localStorage.getItem('userImage');
-      if (savedImage && !user.image) {
-        setUserImage(savedImage);
-      }
-    }
-  }, [user, setUserImage]);
   
   const handleUpdatePreferences = async (newPreferences: Partial<typeof userPreferences>) => {
     setIsSavingPreferences(true);
