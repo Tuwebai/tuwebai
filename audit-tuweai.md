@@ -664,3 +664,4 @@ Nota de seguimiento:
 - ✅ corregido parcialmente: `server/src/utils/logger.ts` ya no usa `writeLog(data: any)`; el utilitario acepta `unknown`, manteniendo intacta la serialización JSON y el contrato operativo de logging.
 - ✅ corregido parcialmente: `client/src/features/users/components/user-dashboard-page.tsx` ya no usa `catch (error: any)`; el panel normaliza errores con `unknown` y `getErrorMessage(...)` sin alterar flujos de perfil, contraseña, preferencias, imagen ni logout.
 - ✅ corregido parcialmente: `client/src/app/performance/memory-manager.tsx` ya no usa `window.performance as any`; el runtime tipa la API de memoria del navegador con una extensión local mínima sin alterar el monitoreo existente.
+- ✅ corregido parcialmente: `client/src/app/router/solutions/uxui-page.tsx` ya no usa `window as any` para `isUsingGlobalNav`; la página tipa esa bandera con una extensión mínima de `Window` sin alterar el runtime del navbar.

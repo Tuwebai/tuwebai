@@ -35,6 +35,10 @@ interface UXUIProcess {
   icon: React.ReactNode;
 }
 
+type WindowWithGlobalNav = Window & {
+  isUsingGlobalNav?: boolean;
+};
+
 export default function UXUI() {
   const [activeTab, setActiveTab] = useState<string>("servicios");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -291,7 +295,7 @@ export default function UXUI() {
   );
 
   // Verificar si se está utilizando el navbar global
-  const isUsingGlobalNav = (window as any).isUsingGlobalNav !== false;
+  const isUsingGlobalNav = (window as WindowWithGlobalNav).isUsingGlobalNav !== false;
   
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white">
