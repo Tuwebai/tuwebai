@@ -272,6 +272,7 @@ Estado:
 - ✅ corregido: `client/src/app/router/solutions/*`, `features/proposals/components/proposal-request-page.tsx` y `features/contact/components/support-contact-page.tsx` ya consumen `client/src/shared/ui/{button,input,textarea,scroll-progress,whatsapp-button}`; los wrappers equivalentes en `client/src/components/ui/*` quedaron fuera de ese runtime activo
 - ✅ corregido: `features/contact/components/contact-section.tsx`, `features/testimonials/components/testimonials-section.tsx` y `features/payments/components/payment-error-dialog.tsx` ya consumen `client/src/shared/ui/{animated-shape,alert-dialog}`; los wrappers equivalentes en `client/src/components/ui/*` quedaron fuera de ese runtime activo
 - ✅ corregido: `app/router/home/home-page.tsx`, `app/router/company/studio-page.tsx`, `features/users/components/user-dashboard-page.tsx` y `features/auth/components/auth-verify-page.tsx` ya consumen `client/src/shared/ui/meta-tags.tsx`; `client/src/components/seo/meta-tags.tsx` quedó fuera del runtime activo
+- ✅ corregido: `features/users/components/user-dashboard-page.tsx` ya consume `client/src/shared/ui/whatsapp-button.tsx`; el wrapper equivalente en `client/src/components/ui/whatsapp-button.tsx` quedó fuera de ese runtime activo
 - ✅ corregido parcialmente: re-auditoría completada; `panel-usuario` sigue concentrando orquestación funcional y no corresponde adelgazarlo en esta fase sin separar antes su flujo por dominio
 
 Objetivo:

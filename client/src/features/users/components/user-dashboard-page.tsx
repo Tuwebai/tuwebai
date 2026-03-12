@@ -3,8 +3,8 @@ import { Navigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '@/features/auth/context/AuthContext';
 import { useToast } from '@/shared/ui/use-toast';
-import WhatsAppButton from '@/components/ui/whatsapp-button';
 import MetaTags from '@/shared/ui/meta-tags';
+import WhatsAppButton from '@/shared/ui/whatsapp-button';
 import { 
   Camera, 
   Edit3, 
