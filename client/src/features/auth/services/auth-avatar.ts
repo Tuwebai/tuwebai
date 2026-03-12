@@ -1,4 +1,5 @@
 import type { User as FirebaseUser, UserInfo } from 'firebase/auth';
+import type { User } from '@/features/users/types';
 
 const GOOGLE_PROVIDER_ID = 'google.com';
 
@@ -24,3 +25,16 @@ export const resolveAuthAvatar = (firebaseUser: FirebaseUser | null, persistedIm
 
   return storedPhoto || providerPhoto;
 };
+
+export const mergeFirebaseUserData = (firebaseUser: FirebaseUser, persistedUser?: Partial<User> | null): User => ({
+  uid: firebaseUser.uid,
+  email: firebaseUser.email || persistedUser?.email || '',
+  username: persistedUser?.username || firebaseUser.displayName || '',
+  name: persistedUser?.name || firebaseUser.displayName || '',
+  image: resolveAuthAvatar(firebaseUser, persistedUser?.image),
+  role: persistedUser?.role,
+  isActive: persistedUser?.isActive ?? true,
+  projectId: persistedUser?.projectId,
+  createdAt: persistedUser?.createdAt || new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
+});

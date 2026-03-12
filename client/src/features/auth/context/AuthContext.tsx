@@ -11,7 +11,7 @@ import {
   useUpdatePreferencesMutation,
   useUpdateProfileMutation,
 } from '../hooks/use-auth-mutations';
-import { isGoogleAuthUser, resolveAuthAvatar } from '../services/auth-avatar';
+import { isGoogleAuthUser, mergeFirebaseUserData } from '../services/auth-avatar';
 import { getAuthErrorMessage } from '../services/auth-error';
 import { useUserPreferencesQuery } from '../hooks/use-auth-queries';
 import { DEFAULT_USER_PREFERENCES } from '../types';
@@ -150,22 +150,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
               // Si el refresh de Firebase falla, preservamos la sesión con el snapshot actual.
             }
             const currentFirebaseUser = auth.currentUser ?? firebaseUser;
-            let dbUser = await getUser(firebaseUser.uid);
-            const resolvedImage = resolveAuthAvatar(currentFirebaseUser, dbUser?.image);
-            if (!dbUser) {
-              dbUser = {
-                uid: currentFirebaseUser.uid,
-                email: currentFirebaseUser.email || '',
-                username: currentFirebaseUser.displayName || '',
-                name: currentFirebaseUser.displayName || '',
-                image: resolvedImage,
-                isActive: true,
-                createdAt: new Date().toISOString(),
-                updatedAt: new Date().toISOString(),
-              };
+            const persistedUser = await getUser(currentFirebaseUser.uid);
+            let dbUser = mergeFirebaseUserData(currentFirebaseUser, persistedUser);
+            if (!persistedUser) {
               await setUser(dbUser);
-            } else if (isGoogleAuthUser(currentFirebaseUser) && resolvedImage && resolvedImage !== dbUser.image) {
-              dbUser = { ...dbUser, image: resolvedImage };
+            } else if (
+              isGoogleAuthUser(currentFirebaseUser) &&
+              (
+                dbUser.uid !== persistedUser.uid ||
+                dbUser.email !== persistedUser.email ||
+                dbUser.name !== persistedUser.name ||
+                dbUser.username !== persistedUser.username ||
+                dbUser.image !== persistedUser.image
+              )
+            ) {
               await setUser(dbUser);
             }
             if (isMounted) setUserState(dbUser);

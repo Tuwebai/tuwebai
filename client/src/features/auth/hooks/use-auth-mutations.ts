@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useToast } from '@/shared/ui/use-toast';
 import { DEFAULT_USER_PREFERENCES } from '../types';
 import type { User, RegisterData, UserPreferences } from '../types';
-import { resolveAuthAvatar } from '../services/auth-avatar';
+import { mergeFirebaseUserData } from '../services/auth-avatar';
 import { getAuthErrorMessage } from '../services/auth-error';
 
 type FirebaseModule = typeof import('@/lib/firebase');
@@ -62,23 +62,18 @@ export const useGoogleLoginMutation = () => {
         // Si Google no refresca metadata en este instante, usamos el snapshot disponible.
       }
       const firebaseUser = auth.currentUser ?? result.user;
-      let dbUser = await getUser(firebaseUser.uid);
-      const resolvedImage = resolveAuthAvatar(firebaseUser, dbUser?.image);
+      const persistedUser = await getUser(firebaseUser.uid);
+      const dbUser = mergeFirebaseUserData(firebaseUser, persistedUser);
 
-      if (!dbUser) {
-        dbUser = {
-          uid: firebaseUser.uid,
-          email: firebaseUser.email || '',
-          username: firebaseUser.displayName || '',
-          name: firebaseUser.displayName || '',
-          image: resolvedImage,
-          isActive: true,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        };
+      if (!persistedUser) {
         await setUser(dbUser);
-      } else if (resolvedImage && resolvedImage !== dbUser.image) {
-        dbUser = { ...dbUser, image: resolvedImage };
+      } else if (
+        dbUser.uid !== persistedUser.uid ||
+        dbUser.email !== persistedUser.email ||
+        dbUser.name !== persistedUser.name ||
+        dbUser.username !== persistedUser.username ||
+        dbUser.image !== persistedUser.image
+      ) {
         await setUser(dbUser);
       }
       return { firebaseUser, dbUser };
