@@ -241,7 +241,7 @@ Objetivo:
 Orden recomendado:
 
 1. `server/src/modules/users/controller.ts` ✅ completado
-2. `server/src/modules/support/controller.ts`
+2. `server/src/modules/support/controller.ts` ✅ completado
 3. `server/src/modules/testimonials/controller.ts`
 4. `server/src/modules/projects/controller.ts`
 5. `server/src/modules/contact/controller.ts`
@@ -303,7 +303,7 @@ Resultado esperado:
 4. `server/src/middlewares/firebase-auth.middleware.ts`
 5. `server/index.ts`
 6. `server/src/modules/users/controller.ts`
-7. `server/src/modules/support/controller.ts`
+7. `server/src/modules/support/controller.ts` ✅ completado
 8. `server/src/modules/testimonials/controller.ts`
 
 ## Criterios de aceptacion por slice
