@@ -3,7 +3,7 @@
 ## Estado
 
 Documento de planificación.  
-Estado actual: Fase 0, Fase 1, Fase 2 y Fase 3 ejecutadas. ✅ corregido  
+Estado actual: Fase 0, Fase 1, Fase 2, Fase 3, Fase 4, Fase 5 y Fase 6 ejecutadas. ✅ corregido  
 No ejecuta movimientos de carpetas ni cambios de contrato.
 
 ## Objetivo
@@ -233,7 +233,7 @@ Objetivo:
 
 Esto se hace al final, no al principio, para evitar mezclar riesgos.
 
-### Fase 6. Limpieza final de compatibilidad
+### Fase 6. Limpieza final de compatibilidad ✅ corregido
 
 Solo cuando:
 
@@ -250,7 +250,7 @@ Recién ahí:
 Precondición operacional:
 
 - antes de ejecutar limpieza final, desacoplar runtime legacy restante en `server/index.ts`, `features/auth/context/AuthContext.tsx`, `pages/consulta.tsx` y el bridge `client/src/App.tsx` ✅ corregido
-- además debe completarse la sustitución final de runtime documentada en `docs/FINAL_RUNTIME_SUBSTITUTION_PLAN.md`
+- además debe completarse la sustitución final de runtime documentada en `docs/FINAL_RUNTIME_SUBSTITUTION_PLAN.md` ✅ corregido
 
 ## Mapa Actual -> Objetivo
 

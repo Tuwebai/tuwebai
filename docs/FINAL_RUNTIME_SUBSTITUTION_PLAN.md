@@ -6,13 +6,13 @@ Documento operativo para desbloquear la limpieza final de compatibilidad.
 
 Re-auditoría de precondiciones de Fase 6:
 
-- ❌ todavía no habilitada
-- motivo: `pages/` ya salió del runtime y el bootstrap de `App` ya quedó finalizado, pero siguen existiendo remanentes activos en `client/src/components/*` y compatibilidades legacy fuera del runtime principal
+- ✅ habilitada
+- motivo: `pages/`, `components/*`, `contexts/*`, `hooks/*` y la fachada `public.routes` ya quedaron fuera del runtime activo o fueron retirados tras quedar sin consumidores
 
 Motivo:
 
-- la Fase 6 no puede ejecutarse todavía sin riesgo de regresión
-- siguen existiendo imports activos desde `components/`, `contexts/`, `hooks/` y fachadas de compatibilidad
+- la sustitución previa ya quedó completada sin regresiones
+- la limpieza final de compatibilidad pasó de bloqueada a ejecutable y luego materializada
 
 ## Objetivo
 
@@ -27,14 +27,13 @@ Esta fase no elimina todavía:
 
 Primero sustituye consumo activo; recién después habilita limpieza final.
 
-## Bloqueos Confirmados
+## Bloqueos Confirmados ✅ corregido
 
-### Frontend runtime aún depende de `components/`
+### Frontend runtime aún depende de `components/` ✅ corregido
 
 Entradas activas:
 
-- `client/src/app/App.tsx`
-- `client/src/app/router/home/home-page.tsx`
+- no quedan
 
 ### Reexports temporales en features
 
@@ -243,6 +242,7 @@ Resultado actual de la re-auditoría:
 - ✅ corregido: `client/src/components/a11y/*` fue retirado tras confirmar ausencia de consumidores internos; `SkipLink` quedó consolidado en `client/src/shared/ui/skip-link.tsx` y el resto del paquete no participaba del runtime activo
 - ✅ corregido: `client/src/components/performance/*` fue retirado tras confirmar ausencia de consumidores internos; `ResourcePreload` y `MemoryManager` ya quedaron consolidados en `client/src/app/performance/*` y `DeferredContent`/`OptimizedImage` no participaban del runtime activo
 - ✅ corregido: `client/src/components/auth/{AdminRoute,DashboardRoute}.tsx` fue retirado tras confirmar ausencia de consumidores internos; la protección efectiva quedó resuelta en `features/*` y el paquete legacy dejó de participar del runtime frontend
+- ✅ corregido: la precondición de Fase 6 quedó satisfecha y la limpieza final de compatibilidad del runtime frontend quedó materializada sin consumidores legacy residuales
 
 Estado de re-auditoría de `client/src/components/ui`:
 
