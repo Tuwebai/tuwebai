@@ -23,6 +23,7 @@ Conclusion:
 
 - `darkMode` y `language` ya no son frentes de implementacion
 - ambos quedaron descartados por decision de producto
+- la expansion de tabs y toggles sin efecto real ya quedo congelada como criterio operativo
 - la deuda real del panel queda concentrada en comunicaciones (`newsletter`, `emailNotifications`) y en sincerar claramente que se guarda vs que hoy se aplica
 
 ## Flujo Auditado

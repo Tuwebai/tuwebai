@@ -689,4 +689,5 @@ Nota de seguimiento:
 - ✅ corregido: `/panel` ya no expone selector de idioma ni wiring parcial asociado; `client/src/app/providers/AppProviders.tsx` y `client/src/shared/ui/meta-tags.tsx` volvieron a idioma estable del producto para no reabrir una preferencia descartada.
 - ✅ corregido: `/panel` ya no conserva UI residual de `Apariencia`; el tab de preferencias quedo reducido al frente real de comunicaciones y deja de mostrar contenido basura de tema/idioma ya descartados.
 - ✅ corregido: la arquitectura de informacion del `/panel` ya quedo auditada en `docs/PANEL_INFORMATION_ARCHITECTURE_PLAN.md`; `Preferencias` se redefine como espacio de privacidad/experiencia/accesibilidad y cualquier nueva tab queda condicionada a dominio operativo real.
+- ✅ corregido: la Fase 0 de `docs/PANEL_INFORMATION_ARCHITECTURE_PLAN.md` quedo cerrada; el `/panel` ya no acepta expansion de tabs o toggles sin efecto real y el siguiente frente util queda acotado a reemplazar `Comunicaciones` por preferencias con semantica operativa verdadera.
 

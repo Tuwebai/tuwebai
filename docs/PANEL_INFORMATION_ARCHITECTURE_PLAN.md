@@ -277,6 +277,16 @@ Accion:
 
 - usar este documento como criterio de filtro antes de cualquier nuevo cambio en `/panel`
 
+Estado:
+
+- cerrada
+
+Resultado real:
+
+- `Preferencias` ya no expone tema ni idioma
+- `Preferencias` tampoco conserva UI residual de esas decisiones descartadas
+- cualquier nueva tab o configuracion queda condicionada a tener dominio operativo real antes de entrar al runtime
+
 ### Fase 1. Vaciar `Preferencias` de configuracion debil
 
 Objetivo:
@@ -336,11 +346,12 @@ Condicion:
 ## Orden Recomendado
 
 1. Fase 0 congelar expansion innecesaria
-2. Fase 1 retirar `Comunicaciones` si sigue sin wiring real
-3. Fase 2 introducir `Privacidad`
-4. Fase 3 introducir `Experiencia`
-5. Fase 4 introducir `Accesibilidad`
-6. Fase 5 evaluar `Actividad`
+2. Fase 0 cerrada
+3. Fase 1 retirar `Comunicaciones` si sigue sin wiring real
+4. Fase 2 introducir `Privacidad`
+5. Fase 3 introducir `Experiencia`
+6. Fase 4 introducir `Accesibilidad`
+7. Fase 5 evaluar `Actividad`
 
 ## Riesgos
 
