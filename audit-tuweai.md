@@ -636,3 +636,4 @@ Nota de seguimiento:
 - ✅ corregido: la precondición de Fase 6 quedó satisfecha y la limpieza final de compatibilidad del runtime frontend quedó materializada sin consumidores legacy residuales.
 - ✅ corregido: `package.json` dejó de exponer los scripts rotos `check-oauth`, `fix-oauth` y `setup:mp`; todos apuntaban a archivos inexistentes y agregaban ruido operativo sin valor de runtime.
 - ✅ corregido: `package.json` dejó de exponer el script `deploy`, que mezclaba build con `git add/commit/push`; se retiró por no cumplir gobernanza enterprise ni trazabilidad operativa segura.
+- ✅ corregido: `package.json` dejó de declarar dependencias sin referencias en el repo principal (`@emailjs/nodejs`, `@replit/vite-plugin-shadcn-theme-json`, `archiver`, `emailjs-com`, `extract-zip`, `highlight.js`, `image-size`, `input-otp`, `react-ga4`, `recharts`, `websocket`); se retiraron tras auditoría de uso real para reducir ruido y deuda de gobernanza.
