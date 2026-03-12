@@ -23,7 +23,7 @@ Este score se calculo sobre el estado real del repo auditado localmente, tomando
 | Mantenibilidad | 5/10 | Riesgo medio |
 | Deuda tecnica | 6/10 | Riesgo medio |
 | Escalabilidad | 6/10 | Riesgo medio |
-| Gobernanza de dependencias | 7/10 | Riesgo medio-alto |
+| Gobernanza de dependencias | 6/10 | Riesgo medio |
 
 ## Evidencia auditada
 
@@ -73,8 +73,7 @@ Este score se calculo sobre el estado real del repo auditado localmente, tomando
 - los scripts rotos `check-oauth`, `fix-oauth` y `setup:mp` ya fueron retirados.
 - el script `deploy` inseguro ya fue retirado.
 - siguen declaradas dependencias con gobernanza debil o sospecha de uso dudoso:
-  - `express-static`
-  - siguen quedando dependencias para revisar con auditoria fina, pero ya se retiro un lote sin referencias en repo principal
+  - siguen quedando dependencias para revisar con auditoria fina, pero ya se retiraron dos lotes sin referencias en repo principal
 
 ### Señales de deuda tecnica en codigo
 
@@ -161,12 +160,13 @@ Lectura:
 
 Puede crecer, pero todavia con riesgo de fragilidad operativa y de onboarding.
 
-### 5. Gobernanza de dependencias — 8/10
+### 5. Gobernanza de dependencias — 6/10
 
 Razon del score:
 
 - sigue siendo la dimension mas debil
 - ya fueron retirados scripts inexistentes y el `deploy` inseguro
+- ya fueron retirados dos lotes de dependencias sin referencias en repo principal
 - todavia hay dependencias sospechosas, redundantes o con uso incierto
 - la presencia fisica de secretos locales en workspace sigue siendo una mala señal de gobernanza
 
