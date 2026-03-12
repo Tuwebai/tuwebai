@@ -89,6 +89,8 @@ Usadas por server, smoke o deploy backend:
 - `NODE_ENV`
 - `PORT`
 - `ENFORCE_FIREBASE_AUTH`
+- `DISABLE_FIREBASE_ADMIN`
+- `DISABLE_SMTP_DELIVERY`
 - `SMTP_HOST`
 - `SMTP_PORT`
 - `SMTP_USER`
@@ -98,6 +100,18 @@ Usadas por server, smoke o deploy backend:
 - `MERCADOPAGO_WEBHOOK_SECRET`
 - `FIREBASE_PROJECT_ID`
 - credenciales Firebase Admin asociadas
+
+Variables operativas de smoke:
+
+- `SMOKE_USE_REAL_FIREBASE=1`
+  - opt-in para permitir que `npm run smoke` use Firebase Admin real
+- `SMOKE_USE_REAL_SMTP=1`
+  - opt-in para permitir que `npm run smoke` use SMTP real
+
+Comportamiento por defecto:
+
+- `npm run smoke` aísla Firebase Admin y SMTP aunque el `.env` local tenga credenciales cargadas
+- solo usa infraestructura real si se habilita explícitamente con las variables `SMOKE_USE_REAL_*`
 
 ## Reglas Operativas
 

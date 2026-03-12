@@ -1,5 +1,5 @@
 import { env } from '../../config/env.config';
-import { transporter, isMailerConfigured } from './mailer';
+import { transporter, isMailerConfigured, isSmtpDeliveryDisabled } from './mailer';
 import { generateEmailTemplate } from './templates';
 import { appLogger } from '../../utils/app-logger';
 
@@ -77,6 +77,11 @@ interface BackgroundEmailOptions {
 }
 
 export const queueContactEmail = (data: EmailData, options: BackgroundEmailOptions): void => {
+  if (isSmtpDeliveryDisabled()) {
+    appLogger.info(`${options.event}.smtp_disabled`, options.meta || {});
+    return;
+  }
+
   if (!isMailerConfigured()) {
     appLogger.warn(`${options.event}.smtp_not_configured`, options.meta || {});
     return;

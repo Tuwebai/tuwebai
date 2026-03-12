@@ -22,7 +22,7 @@ Este score se calculo sobre el estado real del repo auditado localmente, tomando
 | Arquitectura | 4/10 | Riesgo medio-bajo controlado |
 | Mantenibilidad | 5/10 | Riesgo medio |
 | Deuda tecnica | 6/10 | Riesgo medio |
-| Escalabilidad | 6/10 | Riesgo medio |
+| Escalabilidad | 5/10 | Riesgo medio controlado |
 | Gobernanza de dependencias | 4/10 | Riesgo medio-bajo controlado |
 
 ## Evidencia auditada
@@ -33,7 +33,7 @@ Este score se calculo sobre el estado real del repo auditado localmente, tomando
 - `npm run lint` paso correctamente.
 - `npm run build` paso correctamente.
 - `npm run smoke` paso correctamente en las corridas mas recientes.
-- el smoke sigue tocando Firebase y SMTP reales, con warnings de credenciales SMTP invalidas.
+- el smoke ya corre aislado por defecto de Firebase Admin y SMTP reales; solo usa infraestructura real con opt-in explicito.
 
 ### Estado estructural del frontend
 
@@ -142,22 +142,21 @@ Lectura:
 
 La deuda ya esta identificada y cercada, pero todavia pesa operativamente.
 
-### 4. Escalabilidad — 6/10
+### 4. Escalabilidad — 5/10
 
 Razon del score:
 
 - el sistema esta bastante mejor preparado para crecer en estructura que antes
-- la evidencia operativa mejoro, pero el smoke sigue dependiendo de infraestructura real
+- la evidencia operativa mejoro y el smoke ya no depende por defecto de infraestructura real
 
 Riesgo residual:
 
-- dependencia de Firebase y SMTP reales en pruebas de smoke
+- todavia faltan pruebas mas aisladas por dominio mas alla del smoke
 - repo aun multistack
-- faltan pruebas mas aisladas por dominio
 
 Lectura:
 
-Puede crecer, pero todavia con riesgo de fragilidad operativa y de onboarding.
+Puede crecer con menos fragilidad operativa que antes, aunque el repo todavia exige limpieza estructural adicional.
 
 ### 5. Gobernanza de dependencias — 4/10
 
@@ -179,12 +178,12 @@ Estado general:
 - el proyecto ya no esta en rojo arquitectonico
 - el trabajo grueso de reorganizacion ya se hizo
 - el mayor riesgo actual ya no viene de `pages/` ni del router
-- el mayor riesgo viene de pruebas operativas no aisladas, stacks paralelos y gobernanza de dependencias restantes
+- el mayor riesgo viene de stacks paralelos, artefactos operativos y gobernanza de dependencias restantes
 
 Prioridades para bajar el score real:
 
-1. estabilizar y aislar `smoke`
-2. seguir podando dependencias dudosas con auditoria de uso real
-3. revisar artefactos sensibles y ruido operativo en raiz
-4. consolidar o aislar stacks paralelos (`api/`, `legacy/`, `firebase-functions-contacto/`)
-5. seguir reduciendo usos de `any`
+1. seguir podando dependencias dudosas con auditoria de uso real
+2. revisar artefactos sensibles y ruido operativo en raiz
+3. consolidar o aislar stacks paralelos (`api/`, `legacy/`, `firebase-functions-contacto/`)
+4. seguir reduciendo usos de `any`
+5. consolidar la documentacion operativa final

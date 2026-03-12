@@ -7,6 +7,8 @@ const ORIGIN = process.env.SMOKE_ORIGIN ?? 'http://localhost:5173';
 const NO_SPAWN = process.env.SMOKE_NO_SPAWN === '1';
 const ENABLE_LOG_SINK = process.env.SMOKE_ENABLE_LOG_SINK === '1';
 const ENFORCE_AUTH_MODE = process.env.SMOKE_ENFORCE_FIREBASE_AUTH === '1';
+const USE_REAL_SMTP = process.env.SMOKE_USE_REAL_SMTP === '1';
+const USE_REAL_FIREBASE = process.env.SMOKE_USE_REAL_FIREBASE === '1';
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -58,6 +60,8 @@ const run = async () => {
           PORT,
           SESSION_SECRET: process.env.SESSION_SECRET || 'smoke-session-secret-123456',
           ALLOWED_ORIGINS: process.env.ALLOWED_ORIGINS || ORIGIN,
+          DISABLE_SMTP_DELIVERY: USE_REAL_SMTP ? (process.env.DISABLE_SMTP_DELIVERY || 'false') : 'true',
+          DISABLE_FIREBASE_ADMIN: USE_REAL_FIREBASE ? (process.env.DISABLE_FIREBASE_ADMIN || 'false') : 'true',
           ENFORCE_FIREBASE_AUTH: ENFORCE_AUTH_MODE ? 'true' : (process.env.ENFORCE_FIREBASE_AUTH || 'false'),
           LOG_SINK_URL: ENABLE_LOG_SINK ? process.env.LOG_SINK_URL : undefined,
           LOG_SINK_API_KEY: ENABLE_LOG_SINK ? process.env.LOG_SINK_API_KEY : undefined,

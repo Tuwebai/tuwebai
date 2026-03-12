@@ -23,6 +23,10 @@ const envSchema = z
       .string()
       .optional()
       .transform((v) => v !== 'false'),
+    DISABLE_SMTP_DELIVERY: z
+      .string()
+      .optional()
+      .transform((v) => v === 'true'),
     MERCADOPAGO_ACCESS_TOKEN: z
       .string()
       .min(1, 'MERCADOPAGO_ACCESS_TOKEN es requerido para produccion')
@@ -34,6 +38,10 @@ const envSchema = z
     FIREBASE_PROJECT_ID: z.string().optional(),
     FIREBASE_SERVICE_ACCOUNT_KEY: z.string().optional(),
     FIREBASE_SERVICE_ACCOUNT_JSON: z.string().optional(),
+    DISABLE_FIREBASE_ADMIN: z
+      .string()
+      .optional()
+      .transform((v) => v === 'true'),
     ENFORCE_FIREBASE_AUTH: z
       .string()
       .optional()

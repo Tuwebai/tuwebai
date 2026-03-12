@@ -79,6 +79,13 @@ const ensureAppInitialized = (): boolean => {
   if (initAttempted) return false;
   initAttempted = true;
 
+  if (env.DISABLE_FIREBASE_ADMIN) {
+    appLogger.info('firebase_admin.disabled_by_env', {
+      reason: 'DISABLE_FIREBASE_ADMIN=true',
+    });
+    return false;
+  }
+
   try {
     if (admin.apps.length === 0) {
       const serviceAccount = resolveServiceAccount();
