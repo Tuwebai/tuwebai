@@ -57,45 +57,45 @@ export function PrivacyTab({ settings, isLoading, isSaving, onSave }: PrivacyTab
           Privacidad
         </h2>
         <p className="max-w-2xl text-sm leading-6 text-slate-300">
-          Controla que datos visibles se muestran en el resumen superior de tu panel. Los cambios se guardan en tu cuenta y se aplican sin tocar el contrato legacy de preferencias.
+          Gestiona como se muestran tus datos en el panel y registra tus decisiones de privacidad desde un solo lugar.
         </p>
       </div>
 
       <Tabs
         value={activeSection}
         onValueChange={(value) => setActiveSection(value as 'visibility' | 'consent')}
-        className="grid gap-6 lg:grid-cols-[240px_minmax(0,1fr)]"
+        className="grid gap-5 min-[1440px]:grid-cols-[240px_minmax(0,1fr)]"
       >
         <aside className="rounded-2xl border border-white/10 bg-slate-950/35 p-3">
           <div className="mb-4 px-2 pt-1">
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300/80">Secciones</p>
             <p className="mt-2 text-sm leading-6 text-slate-400">
-              Abre una sola vista a la vez para trabajar privacidad sin ruido visual.
+              Elige la seccion que quieres revisar.
             </p>
           </div>
 
-          <TabsList className="flex h-auto w-full flex-col gap-2 bg-transparent p-0">
+          <TabsList className="grid h-auto w-full grid-cols-1 gap-2 bg-transparent p-0 sm:grid-cols-2 xl:grid-cols-1">
             <TabsTrigger
               value="visibility"
-              className="w-full justify-start rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-left text-slate-300 data-[state=active]:border-cyan-400/40 data-[state=active]:bg-cyan-500/15 data-[state=active]:text-white data-[state=active]:shadow-none"
+              className="min-h-[72px] w-full justify-start whitespace-normal rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-left text-slate-300 data-[state=active]:border-cyan-400/40 data-[state=active]:bg-cyan-500/15 data-[state=active]:text-white data-[state=active]:shadow-none"
             >
-              <span className="flex items-start gap-3">
+              <span className="flex min-w-0 items-start gap-3">
                 <Eye className="mt-0.5 h-4 w-4 text-cyan-300" />
-                <span className="space-y-1">
+                <span className="min-w-0 space-y-1">
                   <span className="block text-sm font-medium">Visibilidad</span>
-                  <span className="block text-xs leading-5 text-slate-400">Controla email y estado del encabezado.</span>
+                  <span className="block break-words text-xs leading-5 text-slate-400">Define que datos aparecen en tu resumen.</span>
                 </span>
               </span>
             </TabsTrigger>
             <TabsTrigger
               value="consent"
-              className="w-full justify-start rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-left text-slate-300 data-[state=active]:border-cyan-400/40 data-[state=active]:bg-cyan-500/15 data-[state=active]:text-white data-[state=active]:shadow-none"
+              className="min-h-[72px] w-full justify-start whitespace-normal rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-left text-slate-300 data-[state=active]:border-cyan-400/40 data-[state=active]:bg-cyan-500/15 data-[state=active]:text-white data-[state=active]:shadow-none"
             >
-              <span className="flex items-start gap-3">
+              <span className="flex min-w-0 items-start gap-3">
                 <Shield className="mt-0.5 h-4 w-4 text-cyan-300" />
-                <span className="space-y-1">
+                <span className="min-w-0 space-y-1">
                   <span className="block text-sm font-medium">Consentimientos</span>
-                  <span className="block text-xs leading-5 text-slate-400">Registra decisiones comerciales y analiticas.</span>
+                  <span className="block break-words text-xs leading-5 text-slate-400">Administra tus autorizaciones registradas.</span>
                 </span>
               </span>
             </TabsTrigger>
@@ -107,7 +107,7 @@ export function PrivacyTab({ settings, isLoading, isSaving, onSave }: PrivacyTab
             <div>
               <h3 className="text-lg font-medium text-white">Visibilidad del resumen</h3>
               <p className="mt-1 text-sm leading-6 text-slate-400">
-                Estos controles gobiernan solo el encabezado de tu panel para mantener una experiencia clara y consistente.
+                Decide que informacion aparece en la parte superior de tu panel.
               </p>
             </div>
 
@@ -152,7 +152,7 @@ export function PrivacyTab({ settings, isLoading, isSaving, onSave }: PrivacyTab
             <div>
               <h3 className="text-lg font-medium text-white">Consentimientos</h3>
               <p className="mt-1 text-sm leading-6 text-slate-400">
-                Estos consentimientos quedan registrados en tu cuenta y alinean el panel con nuestras politicas de privacidad y cookies. Todavia no activan automatizaciones fuera del panel.
+                Revisa y actualiza las autorizaciones que quedan asociadas a tu cuenta.
               </p>
             </div>
 
@@ -207,10 +207,10 @@ export function PrivacyTab({ settings, isLoading, isSaving, onSave }: PrivacyTab
           </TabsContent>
 
           <div className="mt-6 flex flex-col gap-3 border-t border-white/10 pt-5 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-start gap-2 text-sm leading-6 text-slate-400">
-            <Info className="mt-0.5 h-4 w-4 shrink-0 text-cyan-300" />
-            <span>La previsualizacion real la ves en el encabezado superior apenas guardas los cambios.</span>
-          </div>
+            <div className="flex items-start gap-2 text-sm leading-6 text-slate-400">
+              <Info className="mt-0.5 h-4 w-4 shrink-0 text-cyan-300" />
+              <span>Los cambios se reflejan en tu panel apenas los guardas.</span>
+            </div>
           <Button
             type="button"
             onClick={handleSubmit}
