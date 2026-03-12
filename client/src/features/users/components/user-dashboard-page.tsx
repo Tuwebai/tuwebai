@@ -346,7 +346,7 @@ export default function PanelUsuario() {
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
       <MetaTags title="Panel de Usuario | TuWeb.ai" description="Gestiona tu cuenta, preferencias y seguridad en TuWeb.ai." />
       
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 pb-8 pt-28 sm:pb-10 sm:pt-32">
         <motion.div 
           initial={{ opacity: 0, y: 20 }} 
           animate={{ opacity: 1, y: 0 }} 
@@ -354,9 +354,9 @@ export default function PanelUsuario() {
           className="max-w-6xl mx-auto"
         >
           {/* Header del Panel */}
-          <div className="bg-white/5 backdrop-blur-lg rounded-2xl p-6 mb-8 border border-white/10">
-            <div className="flex flex-col lg:flex-row items-center justify-between">
-              <div className="flex items-center space-x-6 mb-6 lg:mb-0">
+          <div className="bg-white/5 backdrop-blur-lg rounded-2xl border border-white/10 p-5 sm:p-6 mb-6 sm:mb-8">
+            <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+              <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:items-center sm:gap-6 sm:text-left">
                 {/* Avatar con funcionalidad de cambio */}
                 <div className="relative group">
                   <div className="w-20 h-20 rounded-full overflow-hidden bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-2xl text-white font-bold">
@@ -395,8 +395,8 @@ export default function PanelUsuario() {
                   />
                 </div>
                 
-                <div>
-                  <div className="flex items-center gap-3 mb-2">
+                <div className="w-full min-w-0">
+                  <div className="mb-2 flex flex-wrap items-center justify-center gap-3 sm:justify-start">
                     <h1 className="text-2xl font-bold text-white">{user?.name || user?.username}</h1>
                     {user?.isActive ? (
                       <span className="px-3 py-1 text-xs rounded-full bg-green-500/20 text-green-400 border border-green-500/30 flex items-center gap-1">
@@ -410,7 +410,7 @@ export default function PanelUsuario() {
                     </span>
                   )}
                 </div>
-                  <p className="text-gray-400">{user?.email}</p>
+                  <p className="break-all text-gray-400 sm:break-normal">{user?.email}</p>
                   <p className="text-sm text-gray-500">
                     Miembro desde {(() => {
                       if (user?.createdAt) {
@@ -426,10 +426,10 @@ export default function PanelUsuario() {
                 </div>
               </div>
               
-              <div className="flex items-center gap-3">
+              <div className="flex w-full items-center justify-center gap-3 lg:w-auto lg:justify-end">
                 <button
                   onClick={handleLogout}
-                  className="px-4 py-2 text-gray-300 hover:text-white transition-colors"
+                  className="w-full rounded-lg border border-white/10 px-4 py-2 text-gray-300 transition-colors hover:border-white/20 hover:text-white sm:w-auto"
                 >
                   Cerrar sesión
                 </button>
