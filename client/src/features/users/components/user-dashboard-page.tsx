@@ -5,6 +5,7 @@ import { useAuth } from '@/features/auth/context/AuthContext';
 import { useToast } from '@/shared/ui/use-toast';
 import MetaTags from '@/shared/ui/meta-tags';
 import WhatsAppButton from '@/shared/ui/whatsapp-button';
+import { getErrorMessage } from '@/shared/utils/error-message';
 import { 
   Camera, 
   Edit3, 
@@ -111,11 +112,11 @@ export default function PanelUsuario() {
         title: "✅ Preferencias actualizadas",
         description: "Tus preferencias han sido actualizadas correctamente.",
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error al actualizar preferencias:', error);
       toast({
         title: "❌ Error",
-        description: error.message || "Ha ocurrido un error al actualizar tus preferencias.",
+        description: getErrorMessage(error, "Ha ocurrido un error al actualizar tus preferencias."),
         variant: "destructive",
       });
     } finally {
@@ -219,11 +220,11 @@ export default function PanelUsuario() {
         title: "✅ Perfil actualizado",
         description: "Tu información de perfil ha sido actualizada correctamente.",
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error al actualizar perfil:', error);
       toast({
         title: "❌ Error",
-        description: error.message || "Ha ocurrido un error al actualizar tu perfil.",
+        description: getErrorMessage(error, "Ha ocurrido un error al actualizar tu perfil."),
         variant: "destructive",
       });
     } finally {
@@ -255,11 +256,11 @@ export default function PanelUsuario() {
         title: "✅ Contraseña actualizada",
         description: "Tu contraseña ha sido actualizada correctamente.",
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error al cambiar contraseña:', error);
       toast({
         title: "❌ Error",
-        description: error.message || "Ha ocurrido un error al cambiar tu contraseña.",
+        description: getErrorMessage(error, "Ha ocurrido un error al cambiar tu contraseña."),
         variant: "destructive",
       });
     } finally {
@@ -299,11 +300,11 @@ export default function PanelUsuario() {
         title: "✅ Imagen actualizada",
         description: "Tu foto de perfil ha sido actualizada correctamente.",
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error al subir imagen:', error);
       toast({
         title: "❌ Error",
-        description: error.message || "Ha ocurrido un error al subir la imagen.",
+        description: getErrorMessage(error, "Ha ocurrido un error al subir la imagen."),
         variant: "destructive",
       });
     } finally {
@@ -322,11 +323,11 @@ export default function PanelUsuario() {
         title: "👋 Sesión cerrada",
         description: "Has cerrado sesión correctamente.",
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error al cerrar sesión:', error);
       toast({
         title: "❌ Error",
-        description: error.message || "Ha ocurrido un error al cerrar sesión.",
+        description: getErrorMessage(error, "Ha ocurrido un error al cerrar sesión."),
         variant: "destructive",
       });
     }
