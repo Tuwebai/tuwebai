@@ -1,14 +1,11 @@
 import React, { Suspense } from 'react';
+
 import { Skeleton } from '@/components/ui/skeleton';
 
 interface LazyRouteProps {
   children: React.ReactNode;
 }
 
-/**
- * Componente wrapper para rutas con lazy loading.
- * Proporciona una visualización de carga coherente en toda la aplicación.
- */
 export const LazyRoute: React.FC<LazyRouteProps> = ({ children }) => {
   return (
     <Suspense

@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet';
-import PageBanner from '../components/ui/page-banner';
+import PageBanner from '@/shared/ui/page-banner';
 
 export default function PoliticaPrivacidad() {
   return (

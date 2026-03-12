@@ -6,7 +6,7 @@ Desbloquear la Fase 6 sin romper el landing actual.
 
 Este plan existe porque el bloqueo real ya no está en wrappers legacy ni en runtime transversal, sino en la composición activa de:
 
-- `client/src/pages/home.tsx`
+- `client/src/app/router/home/home-page.tsx`
 - `client/src/components/sections/*`
 
 ## Estado actual auditado
@@ -30,7 +30,7 @@ Además, todavía consume secciones temporales en:
 
 Conclusión:
 
-- no corresponde ejecutar Fase 6 mientras el landing siga orquestado desde `pages/home.tsx`
+- no corresponde ejecutar Fase 6 mientras el landing siga orquestado desde un shell legacy fuera de `app/router`
 - primero hay que definir un target estable para `marketing-home`
 
 ## Arquitectura objetivo
@@ -118,14 +118,14 @@ Regla:
 
 Estado:
 
-- ✅ corregido parcialmente: `hero-section` ya vive en `client/src/features/marketing-home/components/hero-section.tsx`; `home.tsx` consume esa implementación y `components/sections/hero-section.tsx` quedó como wrapper temporal
-- ✅ corregido parcialmente: `philosophy-section` ya vive en `client/src/features/marketing-home/components/philosophy-section.tsx`; `home.tsx` consume esa implementación y `components/sections/philosophy-section.tsx` quedó como wrapper temporal
-- ✅ corregido parcialmente: `services-section` ya vive en `client/src/features/marketing-home/components/services-section.tsx`; `home.tsx` consume esa implementación y `components/sections/services-section.tsx` quedó como wrapper temporal
-- ✅ corregido parcialmente: `process-section` ya vive en `client/src/features/marketing-home/components/process-section.tsx`; `home.tsx` consume esa implementación y `components/sections/process-section.tsx` quedó como wrapper temporal
-- ✅ corregido parcialmente: `tech-section` ya vive en `client/src/features/marketing-home/components/tech-section.tsx`; `home.tsx` consume esa implementación y `components/sections/tech-section.tsx` quedó como wrapper temporal
-- ✅ corregido parcialmente: `impact-section` ya vive en `client/src/features/marketing-home/components/impact-section.tsx`; `home.tsx` consume esa implementación y `components/sections/impact-section.tsx` quedó como wrapper temporal
-- ✅ corregido parcialmente: `comparison-section` ya vive en `client/src/features/marketing-home/components/comparison-section.tsx`; `home.tsx` consume esa implementación y `components/sections/comparison-section.tsx` quedó como wrapper temporal
-- ✅ corregido parcialmente: `showroom-section` ya vive en `client/src/features/marketing-home/components/showroom-section.tsx`; `home.tsx` consume esa implementación y `components/sections/showroom-section.tsx` quedó como wrapper temporal
+- ✅ corregido: `hero-section` ya vive en `client/src/features/marketing-home/components/hero-section.tsx`; `home.tsx` consume esa implementación y el wrapper temporal en `components/sections/hero-section.tsx` fue retirado tras quedar sin consumidores
+- ✅ corregido: `philosophy-section` ya vive en `client/src/features/marketing-home/components/philosophy-section.tsx`; `home.tsx` consume esa implementación y el wrapper temporal en `components/sections/philosophy-section.tsx` fue retirado tras quedar sin consumidores
+- ✅ corregido: `services-section` ya vive en `client/src/features/marketing-home/components/services-section.tsx`; `home.tsx` consume esa implementación y el wrapper temporal en `components/sections/services-section.tsx` fue retirado tras quedar sin consumidores
+- ✅ corregido: `process-section` ya vive en `client/src/features/marketing-home/components/process-section.tsx`; `home.tsx` consume esa implementación y el wrapper temporal en `components/sections/process-section.tsx` fue retirado tras quedar sin consumidores
+- ✅ corregido: `tech-section` ya vive en `client/src/features/marketing-home/components/tech-section.tsx`; `home.tsx` consume esa implementación y el wrapper temporal en `components/sections/tech-section.tsx` fue retirado tras quedar sin consumidores
+- ✅ corregido: `impact-section` ya vive en `client/src/features/marketing-home/components/impact-section.tsx`; `home.tsx` consume esa implementación y el wrapper temporal en `components/sections/impact-section.tsx` fue retirado tras quedar sin consumidores
+- ✅ corregido: `comparison-section` ya vive en `client/src/features/marketing-home/components/comparison-section.tsx`; `home.tsx` consume esa implementación y el wrapper temporal en `components/sections/comparison-section.tsx` fue retirado tras quedar sin consumidores
+- ✅ corregido: `showroom-section` ya vive en `client/src/features/marketing-home/components/showroom-section.tsx`; `home.tsx` consume esa implementación y el wrapper temporal en `components/sections/showroom-section.tsx` fue retirado tras quedar sin consumidores
 
 Objetivo:
 
@@ -146,14 +146,14 @@ Orden recomendado:
 Regla:
 
 - cada section se mueve en un slice separado
-- `pages/home.tsx` pasa a consumir la feature
-- `components/sections/*` queda como wrapper temporal si hace falta
+- el shell del home en `app/router/home/home-page.tsx` pasa a consumir la feature
+- ✅ corregido: `components/sections/*` ya no requiere wrapper temporal para las sections de `marketing-home`
 
 ### Fase 3. Reducir `home.tsx` a shell del landing
 
 Estado:
 
-- ✅ corregido parcialmente: la composición principal del landing fue extraída a `client/src/features/marketing-home/components/marketing-home-page.tsx` y `client/src/pages/home.tsx` quedó reducido a shell de SEO + composición
+- ✅ corregido: la composición principal del landing fue extraída a `client/src/features/marketing-home/components/marketing-home-page.tsx` y el shell SEO + composición ya vive en `client/src/app/router/home/home-page.tsx`
 
 Objetivo:
 
@@ -174,7 +174,7 @@ Verificar:
 
 - no quedan imports activos desde `components/sections/*`
 - `home.tsx` ya no contiene orchestration compleja
-- `App.tsx` sigue como bridge controlado
+- `client/src/main.tsx` consume `client/src/app/App.tsx` como bootstrap final y `client/src/App.tsx` ya no existe
 - el landing ya responde al target final
 
 Si todo eso cumple:

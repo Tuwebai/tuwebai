@@ -21,15 +21,12 @@ Estado actual del repo:
 
 - la compatibilidad legacy de auth, services y backend façade ya fue retirada o desacoplada
 - ya no quedan wrappers invertidos `components/* -> features/*`
-- el bloqueo restante no es de compatibilidad muerta, sino de runtime activo todavía montado desde:
-  - `client/src/App.tsx`
-  - `client/src/pages/*`
-  - `client/src/components/ui/*`
-  - `client/src/components/sections/*`
+- el bloqueo restante ya no está en `pages/` ni en el bootstrap de `App`; hoy se concentra en remanentes activos dentro de `client/src/components/*`
 
 Conclusión:
 
-- no corresponde borrar `pages/` ni `components/` todavía
+- `pages/` ya salió del runtime
+- no corresponde borrar `components/` todavía
 - primero hay que reclasificar qué es `shared` y qué es `feature`
 
 ## Principios
@@ -186,7 +183,7 @@ Estado:
 - ✅ corregido parcialmente: `contact` ya consume `client/src/features/contact/components/contact-section.tsx` desde `home.tsx`
 - ✅ corregido parcialmente: `testimonials` ya consume `client/src/features/testimonials/components/testimonials-section.tsx` desde `home.tsx`
 - ✅ corregido parcialmente: `payments` ya consume `client/src/features/payments/components/pricing-section.tsx` desde `home.tsx` y `client/src/features/payments/components/payment-return-view.tsx` desde `pages/pago-*`
-- ✅ corregido parcialmente: el resto de `components/sections/*` fue re-auditado y permanece `temporal`; no corresponde moverlo en Fase 2 sin definir antes `marketing-home` o el target final del landing
+- ✅ corregido: el bloque restante de `components/sections/*` asociado a `marketing-home` ya fue absorbido por `client/src/features/marketing-home/components/*`; los wrappers temporales fueron retirados tras la re-auditoría
 
 Objetivo:
 
@@ -213,8 +210,8 @@ Definition of Done:
 
 Estado:
 
-- ✅ corregido parcialmente: implementación principal movida a `client/src/app/App.tsx`
-- ✅ corregido parcialmente: `client/src/App.tsx` quedó como bridge temporal controlado
+- ✅ corregido: implementación principal movida a `client/src/app/App.tsx`
+- ✅ corregido: `client/src/main.tsx` ya consume `client/src/app/App.tsx` como bootstrap final y `client/src/App.tsx` fue retirado tras quedar sin consumidores
 - ✅ corregido parcialmente: providers globales extraídos a `client/src/app/providers/AppProviders.tsx`
 - ✅ corregido parcialmente: tabla de rutas extraída a `client/src/app/router/AppRoutes.tsx`
 
@@ -242,7 +239,7 @@ Regla crítica:
 
 Compatibilidad:
 
-- `client/src/App.tsx` puede quedar como wrapper temporal hacia `client/src/app/App.tsx` hasta cerrar migración
+- la compatibilidad temporal vía `client/src/App.tsx` ya fue retirada; el bootstrap real ya entra directo por `client/src/app/App.tsx`
 
 Definition of Done:
 
@@ -253,12 +250,24 @@ Definition of Done:
 
 Estado:
 
-- ✅ corregido parcialmente: `pago-exitoso`, `pago-fallido` y `pago-pendiente` dejaron de ser dependencia estructural del router; `AppRoutes` ya consume `features/payments/components/payment-return-view`
-- ✅ corregido parcialmente: `contacto` dejó de ser dependencia estructural del router; `AppRoutes` ya consume `features/contact/components/support-contact-page`
-- ✅ corregido parcialmente: `auth-verify` dejó de ser dependencia estructural del router; `AppRoutes` ya consume `features/auth/components/auth-verify-page`
-- ✅ corregido parcialmente: `consulta` dejó de ser dependencia estructural del router; `AppRoutes` ya consume `features/proposals/components/proposal-request-page`
-- ✅ corregido parcialmente: `panel-usuario` dejó de ser dependencia estructural del router y del prefetch; `AppRoutes` y `route-prefetch` ya consumen `features/users/components/user-dashboard-page`
-- ✅ corregido parcialmente: re-auditoría completada; `home` sigue siendo runtime estructural del landing y no corresponde moverlo en Fase 4 sin definir antes el target final de `marketing-home`
+- ✅ corregido: `pago-exitoso`, `pago-fallido` y `pago-pendiente` dejaron de ser dependencia estructural del router; `AppRoutes` consume `features/payments/components/payment-return-view` y los entrypoints legacy fueron retirados
+- ✅ corregido: `contacto` dejó de ser dependencia estructural del router; `AppRoutes` consume `features/contact/components/support-contact-page` y el bridge legacy fue retirado
+- ✅ corregido: `auth-verify` dejó de ser dependencia estructural del router; `AppRoutes` consume `features/auth/components/auth-verify-page` y el bridge legacy fue retirado
+- ✅ corregido: `consulta` dejó de ser dependencia estructural del router; `AppRoutes` y `route-prefetch` consumen `features/proposals/components/proposal-request-page` y el bridge legacy fue retirado
+- ✅ corregido: `panel-usuario` dejó de ser dependencia estructural del router y del prefetch; `AppRoutes` y `route-prefetch` consumen `features/users/components/user-dashboard-page` y el bridge legacy fue retirado
+- ✅ corregido: `not-found` dejó de depender de `pages/`; `AppRoutes` consume `client/src/app/router/errors/not-found-page.tsx` como runtime final y el entrypoint legacy fue retirado
+- ✅ corregido: `home` dejó de depender de `pages/`; `AppRoutes` consume `client/src/app/router/home/home-page.tsx`, que mantiene el shell SEO del landing y delega la composición a `features/marketing-home/components/marketing-home-page`
+- ✅ corregido: las páginas legales `terminos-condiciones`, `politica-privacidad` y `politica-cookies` dejaron de depender de `pages/`; `AppRoutes` consume `client/src/app/router/legal/*` y los entrypoints legacy fueron retirados
+- ✅ corregido: las páginas de servicios `consultoria-estrategica`, `desarrollo-web`, `posicionamiento-marketing` y `automatizacion-marketing` dejaron de depender de `pages/`; `AppRoutes` consume `client/src/app/router/services/*` y los entrypoints legacy fueron retirados
+- ✅ corregido: `vacantes` dejó de depender de `pages/`; `AppRoutes` y `route-prefetch` consumen `client/src/app/router/company/vacancies-page.tsx` y el entrypoint legacy fue retirado
+- ✅ corregido: `corporativos` y `ecommerce` dejaron de depender de `pages/`; `AppRoutes` consume `client/src/app/router/solutions/*` y los entrypoints legacy fueron retirados
+- ✅ corregido: `uxui` dejó de depender de `pages/`; `AppRoutes` consume `client/src/app/router/solutions/uxui-page.tsx` y el entrypoint legacy fue retirado
+- ✅ corregido: `equipo` dejó de depender de `pages/`; `AppRoutes` consume `client/src/app/router/company/team-page.tsx` y el entrypoint legacy fue retirado
+- ✅ corregido: `estudio` dejó de depender de `pages/`; `AppRoutes` consume `client/src/app/router/company/studio-page.tsx` y el entrypoint legacy fue retirado
+- ✅ corregido: `faq` dejó de depender de `pages/`; `AppRoutes` consume `client/src/app/router/knowledge/faq-page.tsx` y el entrypoint legacy fue retirado
+- ✅ corregido: `tecnologias` dejó de depender de `pages/`; `AppRoutes` consume `client/src/app/router/knowledge/technologies-page.tsx` y el entrypoint legacy fue retirado
+- ✅ corregido: `client/src/pages/*` dejó de ser runtime activo; `AppRoutes` quedó normalizado con entrypoints agrupados por dominios semánticos en `app/router/{home,errors,company,knowledge,legal,services,solutions}`
+- ✅ corregido: `client/src/components/route-wrapper.tsx` dejó de formar parte del runtime estructural; `AppRoutes` consume `client/src/app/router/lazy-route.tsx` y el wrapper legacy fue retirado
 - ✅ corregido parcialmente: re-auditoría completada; `panel-usuario` sigue concentrando orquestación funcional y no corresponde adelgazarlo en esta fase sin separar antes su flujo por dominio
 
 Objetivo:
@@ -275,6 +284,7 @@ Definition of Done:
 
 - `pages/*` deja de contener lógica relevante
 - las páginas quedan como shell mínimo o desaparecen si ya no tienen consumidores
+- `app/router` queda agrupado por dominios semánticos, sin entrypoints sueltos fuera de `AppRoutes.tsx`
 
 ### Fase 5. Fase 6 real
 
@@ -285,7 +295,7 @@ Precondiciones:
 - `components/sections` no contiene sections de negocio activas
 - `App.tsx` ya está reubicado
 - `pages/*` ya no son runtime estructural legacy
-- re-auditoría actual: esta fase sigue bloqueada por `home.tsx` y por `components/sections/*` temporales del landing hasta definir el target final de `marketing-home`
+- ✅ corregido parcialmente: el bloqueo por `components/sections/*` temporales del landing ya fue removido; `marketing-home` quedó consolidado en `features/marketing-home` y la re-auditoría de Fase 6 queda pendiente solo por las páginas institucionales activas restantes
 - plan específico abierto en `docs/MARKETING_HOME_FINALIZATION_PLAN.md`
 
 Ahora sí:
@@ -323,7 +333,7 @@ Mitigación:
 
 Mitigación:
 
-- usar `client/src/App.tsx` como puente temporal
+- bootstrap frontend ya consolidado en `client/src/app/App.tsx` sin puente legacy intermedio
 - mover providers y routes en pasos separados
 
 ## Orden exacto recomendado
@@ -343,7 +353,7 @@ Mitigación:
 Se puede pasar a Fase 6 real solo si:
 
 - `rg "components/auth/LoginModal|components/sections/contact-section|components/ui/newsletter-form"` no devuelve consumidores
-- `rg "client/src/App.tsx"` muestra solo bridge o runtime final controlado
+- `rg "client/src/App.tsx" client/src` no devuelve consumidores runtime
 - `rg "client/src/pages/" client/src` ya no muestra dependencia estructural legacy relevante
 
 ### No-Go
@@ -351,7 +361,7 @@ Se puede pasar a Fase 6 real solo si:
 No ejecutar Fase 6 real si:
 
 - `pages/*` sigue siendo el punto principal de orquestación
-- `components/sections/*` sigue conteniendo dominio activo
+- `components/sections/*` sigue conteniendo dominio activo fuera de los slices ya finalizados
 - `components/ui/*` mezcla shared real con wrappers temporales
 
 ## Resultado Esperado

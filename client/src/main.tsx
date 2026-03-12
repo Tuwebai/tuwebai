@@ -2,7 +2,7 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { QueryClientProvider } from "@tanstack/react-query";
-import App from "./App";
+import App from "@/app/App";
 import { queryClient } from "@/lib/queryClient";
 import { startWebVitalsTracking } from "@/lib/performance";
 import "./index.css";

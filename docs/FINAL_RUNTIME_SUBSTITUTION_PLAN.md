@@ -7,12 +7,12 @@ Documento operativo para desbloquear la limpieza final de compatibilidad.
 Re-auditoría de precondiciones de Fase 6:
 
 - ❌ todavía no habilitada
-- motivo: siguen existiendo `pages/` y `components/` como runtime activo, además de wrappers invertidos en `client/src/components/*`
+- motivo: `pages/` ya salió del runtime y el bootstrap de `App` ya quedó finalizado, pero siguen existiendo remanentes activos en `client/src/components/*` y compatibilidades legacy fuera del runtime principal
 
 Motivo:
 
 - la Fase 6 no puede ejecutarse todavía sin riesgo de regresión
-- siguen existiendo imports activos desde `pages/`, `components/`, `contexts/`, `hooks/` y fachadas de compatibilidad
+- siguen existiendo imports activos desde `components/`, `contexts/`, `hooks/` y fachadas de compatibilidad
 
 ## Objetivo
 
@@ -20,7 +20,6 @@ Eliminar dependencias runtime legacy antes de borrar carpetas o wrappers.
 
 Esta fase no elimina todavía:
 
-- `pages/`
 - `components/`
 - `contexts/`
 - `hooks/`
@@ -30,16 +29,12 @@ Primero sustituye consumo activo; recién después habilita limpieza final.
 
 ## Bloqueos Confirmados
 
-### Frontend runtime aún depende de `pages/` y `components/`
+### Frontend runtime aún depende de `components/`
 
 Entradas activas:
 
-- `client/src/App.tsx`
-- `client/src/pages/home.tsx`
-- `client/src/pages/panel-usuario.tsx`
-- `client/src/pages/pago-exitoso.tsx`
-- `client/src/pages/pago-fallido.tsx`
-- `client/src/pages/pago-pendiente.tsx`
+- `client/src/app/App.tsx`
+- `client/src/app/router/home/home-page.tsx`
 
 ### Reexports temporales en features
 
@@ -99,9 +94,9 @@ Resultado esperado:
 Estado:
 
 - ✅ corregido parcialmente: `client/src/hooks/use-login-modal.tsx` ya carga `features/auth/components/LoginModal`
-- ✅ corregido parcialmente: `client/src/pages/panel-usuario.tsx`, `client/src/components/auth/AdminRoute.tsx` y `client/src/components/auth/DashboardRoute.tsx` ya consumen `features/auth/context/AuthContext`
-- ✅ corregido parcialmente: `client/src/App.tsx`, `client/src/components/ui/global-navbar.tsx` y `client/src/components/auth/AdminRoute.tsx` ya consumen `features/auth/hooks/use-login-modal`
-- ✅ corregido parcialmente: `client/src/App.tsx` ya consume `features/auth/context/AuthContext`
+- ✅ corregido: `client/src/components/auth/AdminRoute.tsx` y `client/src/components/auth/DashboardRoute.tsx` ya consumen `features/auth/context/AuthContext`; `client/src/pages/panel-usuario.tsx` fue retirado tras quedar fuera del runtime
+- ✅ corregido parcialmente: `client/src/app/App.tsx`, `client/src/components/ui/global-navbar.tsx` y `client/src/components/auth/AdminRoute.tsx` ya consumen `features/auth/hooks/use-login-modal`
+- ✅ corregido parcialmente: `client/src/app/App.tsx` ya consume `features/auth/context/AuthContext`
 - ✅ corregido parcialmente: no quedan consumidores runtime de `@/contexts/AuthContext` ni `@/hooks/use-auth-*`
 - pendientes wrappers legacy mínimos de bajo impacto fuera del runtime principal
 
@@ -210,10 +205,22 @@ Resultado actual de la re-auditoría:
 - ✅ `@/contexts/ThemeContext` sin consumidores runtime
 - ✅ `public.routes` sin imports activos
 - ✅ los wrappers invertidos `components/* -> features/*` ya fueron retirados
-- ❌ `client/src/App.tsx` ya quedó como bridge, pero `client/src/app/router/AppRoutes.tsx` todavía monta `pages/*` activas del sitio institucional
-- ❌ `client/src/pages/home.tsx` sigue siendo runtime estructural del landing y depende de `components/sections/*` temporales
-- ❌ `client/src/components/sections/*` sigue conteniendo ensamblado activo de `marketing-home` (`hero`, `services`, `process`, `tech`, `impact`, `comparison`, `showroom`)
+- ✅ corregido: `client/src/main.tsx` ya consume `client/src/app/App.tsx` como bootstrap final y `client/src/App.tsx` fue retirado tras quedar sin consumidores
+- ✅ corregido: `client/src/app/router/home/home-page.tsx` es el entrypoint estructural del landing; mantiene el shell SEO y delega la composición a `features/marketing-home/components/marketing-home-page`
+- ✅ corregido: `client/src/pages/not-found.tsx` ya no forma parte del runtime; `client/src/app/router/AppRoutes.tsx` consume `client/src/app/router/errors/not-found-page.tsx`
+- ✅ corregido: `client/src/pages/terminos-condiciones.tsx`, `client/src/pages/politica-privacidad.tsx` y `client/src/pages/politica-cookies.tsx` ya no forman parte del runtime; `client/src/app/router/AppRoutes.tsx` consume `client/src/app/router/legal/*`
+- ✅ corregido: `client/src/pages/servicios/*` ya no forma parte del runtime; `client/src/app/router/AppRoutes.tsx` consume `client/src/app/router/services/*`
+- ✅ corregido: `client/src/pages/vacantes.tsx` ya no forma parte del runtime ni del prefetch; `client/src/app/router/AppRoutes.tsx` y `client/src/lib/route-prefetch.ts` consumen `client/src/app/router/company/vacancies-page.tsx`
+- ✅ corregido: `client/src/pages/corporativos.tsx` y `client/src/pages/ecommerce.tsx` ya no forman parte del runtime; `client/src/app/router/AppRoutes.tsx` consume `client/src/app/router/solutions/*`
+- ✅ corregido: `client/src/pages/uxui.tsx` ya no forma parte del runtime; `client/src/app/router/AppRoutes.tsx` consume `client/src/app/router/solutions/uxui-page.tsx`
+- ✅ corregido: `client/src/pages/equipo.tsx` ya no forma parte del runtime; `client/src/app/router/AppRoutes.tsx` consume `client/src/app/router/company/team-page.tsx`
+- ✅ corregido: `client/src/pages/estudio.tsx` ya no forma parte del runtime; `client/src/app/router/AppRoutes.tsx` consume `client/src/app/router/company/studio-page.tsx`
+- ✅ corregido: `client/src/pages/faq.tsx` ya no forma parte del runtime; `client/src/app/router/AppRoutes.tsx` consume `client/src/app/router/knowledge/faq-page.tsx`
+- ✅ corregido: `client/src/pages/tecnologias.tsx` ya no forma parte del runtime; `client/src/app/router/AppRoutes.tsx` consume `client/src/app/router/knowledge/technologies-page.tsx`
+- ✅ corregido: `client/src/components/sections/*` ya no contiene ensamblado activo de `marketing-home`; los wrappers temporales (`hero`, `philosophy`, `services`, `process`, `tech`, `impact`, `comparison`, `showroom`) fueron retirados tras quedar sin consumidores
 - ✅ siguiente paso definido: `docs/MARKETING_HOME_FINALIZATION_PLAN.md`
+- ✅ corregido: `client/src/pages/*` dejó de ser runtime activo y `client/src/app/router/` quedó agrupado por dominios semánticos (`home`, `errors`, `company`, `knowledge`, `legal`, `services`, `solutions`)
+- ✅ corregido: `client/src/components/route-wrapper.tsx` dejó de formar parte del runtime estructural; `client/src/app/router/AppRoutes.tsx` consume `client/src/app/router/lazy-route.tsx` y el wrapper legacy fue retirado
 
 ## Validación Obligatoria
 

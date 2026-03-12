@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import AnimatedShape from '../../components/ui/animated-shape';
+import AnimatedShape from '@/shared/ui/animated-shape';
 
 export default function DesarrolloWeb() {
   const [activeTab, setActiveTab] = useState<number>(1);

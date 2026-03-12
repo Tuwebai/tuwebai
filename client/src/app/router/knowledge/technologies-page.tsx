@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import AnimatedShape from '../components/ui/animated-shape';
-import { technologies } from '../data/technologies';
-import { Technology } from '../types/technologies';
+import AnimatedShape from '@/shared/ui/animated-shape';
+import { technologies } from '@/data/technologies';
+import { Technology } from '@/types/technologies';
 import { FaStar, FaExternalLinkAlt, FaSearch } from 'react-icons/fa';
 
 export default function Tecnologias() {

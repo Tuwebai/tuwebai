@@ -249,7 +249,7 @@ Recién ahí:
 
 Precondición operacional:
 
-- antes de ejecutar limpieza final, desacoplar runtime legacy restante en `server/index.ts`, `features/auth/context/AuthContext.tsx` y `pages/consulta.tsx` ✅ corregido
+- antes de ejecutar limpieza final, desacoplar runtime legacy restante en `server/index.ts`, `features/auth/context/AuthContext.tsx`, `pages/consulta.tsx` y el bridge `client/src/App.tsx` ✅ corregido
 - además debe completarse la sustitución final de runtime documentada en `docs/FINAL_RUNTIME_SUBSTITUTION_PLAN.md`
 
 ## Mapa Actual -> Objetivo
@@ -270,7 +270,7 @@ Precondición operacional:
 ### Frontend
 
 - `client/src/pages/*`
-  - quedan como capa de entrada/ruteo, no de acceso a datos ✅ pendiente de migración
+  - dejaron de ser runtime activo; `AppRoutes` ya consume entrypoints finales agrupados en `client/src/app/router/{home,errors,company,knowledge,legal,services,solutions}` ✅ corregido
 - `client/src/components/*`
   - lo reutilizable va a `shared/ui/`
   - lo de dominio va a `features/*/components/` ✅ pendiente de migración

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import AnimatedShape from '../components/ui/animated-shape';
+import AnimatedShape from '@/shared/ui/animated-shape';
 import { getAllTestimonials } from '@/features/testimonials/services/testimonials.service';
 
 
