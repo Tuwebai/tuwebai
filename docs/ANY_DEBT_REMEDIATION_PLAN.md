@@ -30,6 +30,7 @@ Patrones auditados:
 
 - Baseline inicial: `77` ocurrencias de `any` explicito en runtime activo y soporte del repo.
 - Estado despues del primer slice: `52` ocurrencias de `any` explicito en runtime activo y soporte del repo.
+- Estado despues del segundo slice: `47` ocurrencias de `any` explicito en runtime activo y soporte del repo.
 - Adicionalmente hay `3` usos de `z.any()` en `server/src/schemas/api.schemas.ts`, que no son deuda de tipado TypeScript pura pero si deuda de contrato.
 - La mayor concentracion esta en:
   - `client/src/features/auth/*`
@@ -221,13 +222,14 @@ Objetivo:
 
 Slices:
 
-1. tipar `decoded.admin` usando el tipo correcto devuelto por Firebase Admin
-2. reemplazar `catch (error: any)` por narrowing con `unknown`
-3. tipar `req.session` con interfaz minima para `userId` y `userEmail`
+1. tipar `decoded.admin` usando el tipo correcto devuelto por Firebase Admin ✅ completado
+2. reemplazar `catch (error: any)` por narrowing con `unknown` ✅ completado
+3. tipar `req.session` con interfaz minima para `userId` y `userEmail` ✅ completado
 
 Resultado esperado:
 
 - middleware y bootstrap auth sin casts inseguros
+- middleware y bootstrap auth sin casts inseguros ✅ logrado en `firebase-auth.middleware.ts` y `server/index.ts`
 
 ## Fase 3 - Controllers backend por dominio
 

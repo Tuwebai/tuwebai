@@ -1,6 +1,7 @@
 import { type NextFunction, type Request, type Response } from 'express';
 import { env } from '../config/env.config';
 import { getFirestore as getAdminFirestore } from '../infrastructure/firebase/firestore';
+import type { AuthUser } from '../shared/types/auth-user';
 import { appLogger } from '../utils/app-logger';
 import {
   accessPolicy,
@@ -8,12 +9,6 @@ import {
   type AccessRole,
   type ResourceType,
 } from '../security/access-policy';
-
-type AuthUser = {
-  uid: string;
-  email?: string;
-  admin?: boolean;
-};
 
 type ResourceDocument = {
   id: string;

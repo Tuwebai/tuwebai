@@ -212,8 +212,8 @@ app.use((req, res, next) => {
       method: req.method,
       path: req.path,
       sessionId: req.sessionID,
-      userId: (req.session as any)?.userId,
-      userEmail: (req.session as any)?.userEmail,
+      userId: req.session?.userId,
+      userEmail: req.session?.userEmail,
     });
   }
   next();

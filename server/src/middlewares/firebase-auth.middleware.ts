@@ -1,13 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
+import type { DecodedIdToken } from 'firebase-admin/auth';
 import { env } from '../config/env.config';
 import { getAuth as getAdminAuth } from '../infrastructure/firebase/auth';
+import type { AuthUser } from '../shared/types/auth-user';
+import { getErrorMessage } from '../shared/utils/error-message';
 import { appLogger } from '../utils/app-logger';
-
-type DecodedToken = {
-  uid: string;
-  email?: string;
-  admin?: boolean;
-};
 
 const shouldEnforceFirebaseAuth = (): boolean => env.NODE_ENV === 'production' || env.ENFORCE_FIREBASE_AUTH;
 
@@ -39,7 +36,11 @@ const parseBearerToken = (authorizationHeader?: string): string | null => {
   return token.trim();
 };
 
-const getDecodedToken = async (req: Request): Promise<DecodedToken | null> => {
+const getAdminClaim = (decoded: DecodedIdToken): boolean => {
+  return decoded.admin === true;
+};
+
+const getDecodedToken = async (req: Request): Promise<AuthUser | null> => {
   if (!shouldEnforceFirebaseAuth()) return null;
 
   const token = parseBearerToken(req.headers.authorization);
@@ -54,7 +55,7 @@ const getDecodedToken = async (req: Request): Promise<DecodedToken | null> => {
   return {
     uid: decoded.uid,
     email: decoded.email,
-    admin: Boolean((decoded as any).admin),
+    admin: getAdminClaim(decoded),
   };
 };
 
@@ -73,8 +74,9 @@ export const requireFirebaseAuth = async (req: Request, res: Response, next: Nex
 
     res.locals.authUser = decoded;
     return next();
-  } catch (error: any) {
-    if (error?.message === 'firebase_admin_auth_unavailable') {
+  } catch (error: unknown) {
+    const errorMessage = getErrorMessage(error, 'unknown_auth_error');
+    if (errorMessage === 'firebase_admin_auth_unavailable') {
       logAuthRejected(req, res, {
         statusCode: 503,
         reason: 'firebase_admin_auth_unavailable',
@@ -84,7 +86,7 @@ export const requireFirebaseAuth = async (req: Request, res: Response, next: Nex
     appLogger.warn('auth.firebase_verify_failed', {
       path: req.path,
       method: req.method,
-      error: error?.message,
+      error: errorMessage,
     });
     return res.status(401).json({ success: false, message: 'Token de autenticacion invalido' });
   }
@@ -120,8 +122,9 @@ export const requireFirebaseAuthForUidParam = async (req: Request, res: Response
 
     res.locals.authUser = decoded;
     return next();
-  } catch (error: any) {
-    if (error?.message === 'firebase_admin_auth_unavailable') {
+  } catch (error: unknown) {
+    const errorMessage = getErrorMessage(error, 'unknown_auth_error');
+    if (errorMessage === 'firebase_admin_auth_unavailable') {
       logAuthRejected(req, res, {
         statusCode: 503,
         reason: 'firebase_admin_auth_unavailable',
@@ -131,7 +134,7 @@ export const requireFirebaseAuthForUidParam = async (req: Request, res: Response
     appLogger.warn('auth.firebase_verify_failed', {
       path: req.path,
       method: req.method,
-      error: error?.message,
+      error: errorMessage,
     });
     return res.status(401).json({ success: false, message: 'Token de autenticacion invalido' });
   }
