@@ -26,7 +26,6 @@ import {
   MapPin,
   Mail,
   Palette,
-  Languages,
   Info
 } from 'lucide-react';
 
@@ -859,7 +858,7 @@ export default function PanelUsuario() {
                       <div className="flex items-center justify-between">
                         <div>
                             <label className="text-gray-300 font-medium">Notificaciones por email</label>
-                            <p className="text-sm text-gray-500">Recibir actualizaciones importantes</p>
+                            <p className="text-sm text-gray-500">Guarda tu preferencia de contacto para futuras automatizaciones.</p>
                         </div>
                         <label className="relative inline-flex items-center cursor-pointer">
                           <input 
@@ -875,7 +874,7 @@ export default function PanelUsuario() {
                       <div className="flex items-center justify-between">
                         <div>
                             <label className="text-gray-300 font-medium">Newsletter</label>
-                            <p className="text-sm text-gray-500">Recibir contenido exclusivo</p>
+                            <p className="text-sm text-gray-500">Mantiene tu opt-in listo para cuando activemos el flujo global.</p>
                         </div>
                         <label className="relative inline-flex items-center cursor-pointer">
                           <input 
@@ -904,23 +903,9 @@ export default function PanelUsuario() {
                             TuWeb.ai usa tema oscuro fijo para mantener coherencia visual en toda la app.
                           </p>
                         </div>
-                        <div>
-                          <label className="block text-gray-300 font-medium mb-2 flex items-center gap-2">
-                            <Languages className="w-4 h-4" />
-                        Idioma
-                          </label>
-                      <select 
-                            value={userPreferences?.language || 'es'} 
-                            onChange={e => handleUpdatePreferences({ language: e.target.value })} 
-                            disabled={isSavingPreferences}
-                            className="w-full px-4 py-3 rounded-lg bg-white/5 text-white border border-white/20 focus:border-blue-500 transition-all"
-                      >
-                        <option value="es">Español</option>
-                        <option value="en">English</option>
-                            <option value="fr">Français</option>
-                            <option value="de">Deutsch</option>
-                      </select>
-                        </div>
+                        <p className="text-sm text-gray-400">
+                          El idioma de la app queda fijo para mantener consistencia de producto y contenido.
+                        </p>
                       </div>
                     </div>
                     </div>
@@ -932,8 +917,9 @@ export default function PanelUsuario() {
                       Información
                       </h3>
                     <p className="text-blue-300 text-sm">
-                      Tus preferencias se guardan automáticamente. Algunas opciones del panel siguen
-                      siendo informativas mientras terminamos su aplicación global.
+                      Tus preferencias se guardan automáticamente. El tema visual y el idioma ya
+                      quedaron definidos a nivel producto; las preferencias de comunicaciones siguen
+                      preparadas para su integración global.
                           </p>
                         </div>
                 </div>

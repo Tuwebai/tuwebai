@@ -6,26 +6,26 @@ Auditoria del flujo de ajustes de `/panel`.
 
 Objetivo:
 
-- confirmar si las preferencias persisten
-- confirmar si realmente se aplican fuera del panel
-- definir un plan de correccion chico, verificable y sin romper contratos
+- confirmar que preferencias persisten de verdad
+- distinguir que preferencias siguen vivas vs cuales ya quedaron descartadas por producto
+- definir el siguiente frente util sin abrir trabajo innecesario
 
 ## Resumen Ejecutivo
 
-El problema principal no es solo de persistencia.
+El problema principal del panel no era solo de persistencia.
 
-Hoy el sistema tiene dos estados distintos:
+Hoy existen dos grupos distintos:
 
-- un estado persistido de preferencias en `users.preferences` dentro de Firestore
-- un estado efectivo de aplicacion repartido entre `ThemeProvider`, defaults locales y ausencia de consumidores reales
+- preferencias que el backend puede guardar en `users.preferences`
+- decisiones de producto ya cerradas que no deben seguir expuestas como configurables
 
 Conclusion:
 
-- `newsletter`, `emailNotifications` y `language` si pueden persistirse en backend cuando Firestore esta disponible
-- pero solo una parte menor de esas preferencias se refleja realmente en la experiencia de usuario
-- la UI del panel afirma que "se aplican en tiempo real", y hoy eso no es verdad para la mayoria de los casos
+- `darkMode` y `language` ya no son frentes de implementacion
+- ambos quedaron descartados por decision de producto
+- la deuda real del panel queda concentrada en comunicaciones (`newsletter`, `emailNotifications`) y en sincerar claramente que se guarda vs que hoy se aplica
 
-## Flujo Auditadado
+## Flujo Auditado
 
 ### 1. Escritura desde `/panel`
 
@@ -90,52 +90,38 @@ Si Firestore Admin no esta disponible:
 Impacto:
 
 - las preferencias no persisten en ese escenario
-- el panel hoy no distingue claramente entre "guardado local UI" y "persistencia real no disponible"
+- el panel todavia no distingue claramente entre "guardado local UI" y "persistencia real no disponible"
 
-### Hallazgo 2. `darkMode` no gobierna el tema real de la app
+### Hallazgo 2. `darkMode` ya no es una preferencia activa del producto
 
-Nivel: alto
+Nivel: cerrado
 
-Archivos:
+Estado actual:
 
-- `client/src/core/theme/ThemeContext.tsx`
-- `client/src/app/providers/AppProviders.tsx`
-- `client/src/features/auth/context/AuthContext.tsx`
+- `client/src/core/theme/ThemeContext.tsx` fija `dark` como tema canonico global
+- `/panel` ya no expone un switch de claro/oscuro
 
-El `ThemeProvider` toma su source of truth de:
+Conclusion:
 
-- `localStorage.theme`
-- `prefers-color-scheme`
+- no corresponde invertir mas trabajo en cablear `darkMode`
+- este frente queda descartado por decision de producto
 
-No consume:
+### Hallazgo 3. `language` ya no es una preferencia activa del producto
 
-- `userPreferences.darkMode`
+Nivel: cerrado
 
-Impacto:
+Estado actual:
 
-- el switch de "Modo oscuro" puede persistirse
-- pero no cambia el tema real del sitio
-- la preferencia persistida y el tema aplicado pueden divergir
+- la app mantiene idioma fijo a nivel producto
+- `/panel` ya no debe exponer selector de idioma
+- `MetaTags` y providers deben mantenerse en idioma estable del producto
 
-### Hallazgo 3. `language` persiste pero no controla idioma global
+Conclusion:
 
-Nivel: alto
+- no corresponde abrir un frente i18n para una preferencia descartada
+- cualquier wiring parcial de idioma debe retirarse para evitar falsa expectativa
 
-No existe wiring real entre:
-
-- `userPreferences.language`
-- `document.documentElement.lang`
-- textos de UI
-- `MetaTags`
-- capa i18n o locale transversal
-
-Impacto:
-
-- el selector de idioma guarda un valor
-- pero la app no cambia de idioma
-- la preferencia no tiene efecto funcional visible
-
-### Hallazgo 4. `newsletter` y `emailNotifications` no tienen consumidores operativos
+### Hallazgo 4. `newsletter` y `emailNotifications` no tienen consumidores operativos reales
 
 Nivel: alto
 
@@ -157,7 +143,7 @@ Impacto:
 - pero no gobierna suscripcion real ni envio de comunicaciones
 - el usuario cree haber configurado algo operativo que hoy no controla nada
 
-### Hallazgo 5. El copy del panel sobrepromete comportamiento
+### Hallazgo 5. El copy del panel debia sincerarse
 
 Nivel: medio
 
@@ -165,16 +151,10 @@ Archivo:
 
 - `client/src/features/users/components/user-dashboard-page.tsx`
 
-Texto actual:
+Problema real:
 
-- "Tus preferencias se guardan automaticamente y se aplican en tiempo real."
-
-Esto hoy no es exacto para:
-
-- `darkMode`
-- `language`
-- `newsletter`
-- `emailNotifications`
+- el panel mezclaba preferencias descartadas por producto con preferencias que siguen vivas
+- ademas sobreprometia aplicacion global inmediata
 
 Impacto:
 
@@ -182,18 +162,16 @@ Impacto:
 - expectativa rota
 - falsa confirmacion funcional
 
-### Hallazgo 6. Falta una capa de sincronizacion de preferencias aplicadas
+### Hallazgo 6. Falta una capa de sincronizacion solo para preferencias que siguen vivas
 
 Nivel: alto
 
-No existe un effect o adaptador global que observe:
+No existe un adaptador global que observe:
 
 - `userPreferences`
 
-y aplique side effects de UI como:
+y aplique side effects utiles para:
 
-- tema
-- idioma HTML
 - banderas de comunicacion
 
 Impacto:
@@ -205,65 +183,49 @@ Impacto:
 
 La causa raiz no es "el panel guarda mal" sino esta:
 
-- el panel mezcla preferencias persistidas con promesas de comportamiento global
-- el repo no tiene una capa de aplicacion efectiva de preferencias de usuario
+- el panel mezclaba preferencias persistidas con decisiones de producto ya cerradas
+- el repo no tiene una capa de aplicacion efectiva para las preferencias de comunicaciones
 - Firestore guarda el dato, pero la app casi no lo consume como source of truth operacional
 
 ## Plan Enterprise de Correccion
 
-### Fase 1. Alinear source of truth de preferencias visuales
+### Fase 1. Cerrar `darkMode` como frente descartado
 
 Objetivo:
 
-- hacer que `darkMode` gobierne el tema real
+- formalizar que el tema ya quedo resuelto por decision de producto
 
-Slice:
+Resultado esperado:
 
-- conectar `AuthContext.userPreferences.darkMode` con `ThemeProvider`
-- definir precedencia:
-  - usuario autenticado con preferencia persistida
-  - luego `localStorage.theme` solo como fallback
-  - luego `prefers-color-scheme`
+- `ThemeContext` mantiene `dark` como source of truth unico
+- `/panel` no promete cambio de tema
+- `darkMode` deja de ser deuda funcional del panel
 
-Archivos probables:
+Estado:
 
-- `client/src/core/theme/ThemeContext.tsx`
-- `client/src/app/providers/AppProviders.tsx`
-- `client/src/features/auth/context/AuthContext.tsx`
+- cerrada y descartada por decision de producto
 
-Validacion:
-
-- cambiar switch en `/panel`
-- ver cambio inmediato de clase `dark`/`light`
-- recargar y confirmar persistencia real
-
-### Fase 2. Alinear idioma con preferencia persistida
+### Fase 2. Cerrar `language` como frente descartado
 
 Objetivo:
 
-- que `language` tenga efecto real minimo y verificable
+- retirar la expectativa de cambio de idioma del panel y del runtime
 
-Slice minimo:
+Resultado esperado:
 
-- sincronizar `userPreferences.language` con `document.documentElement.lang`
-- alinear `MetaTags` y cualquier metadata global donde aplique
+- `/panel` no expone selector de idioma
+- `MetaTags` y runtime vuelven a idioma estable del producto
+- no queda wiring parcial ni deuda de UX por una preferencia que no se quiere soportar
 
-Nota:
+Estado:
 
-- no implica introducir un sistema i18n completo en este slice
-- primero se corrige la preferencia como estado global observable
-
-Validacion:
-
-- cambiar idioma en `/panel`
-- confirmar cambio de `lang` en `<html>`
-- recargar y confirmar persistencia
+- cerrada y descartada por decision de producto
 
 ### Fase 3. Reconciliar preferencias de comunicaciones con comportamiento real
 
 Objetivo:
 
-- dejar de vender toggles que no gobiernan nada
+- dejar de vender toggles que no gobiernan nada y definir su rol real
 
 Opciones:
 
@@ -284,11 +246,12 @@ Objetivo:
 
 Cambios esperados:
 
-- ajustar texto de "se aplican en tiempo real"
-- mostrar diferencia entre "guardado" y "aplicado"
+- ajustar textos de guardado vs aplicado
+- dejar claro que tema e idioma ya quedaron definidos por producto
+- mostrar que las preferencias de comunicaciones quedan preparadas para integracion global
 - si Firestore no esta disponible, mostrar error mas especifico
 
-### Fase 5. Endurecer consistencia de preferencias
+### Fase 5. Endurecer consistencia de preferencias vivas
 
 Objetivo:
 
@@ -296,31 +259,29 @@ Objetivo:
 
 Direccion target:
 
-- `AuthContext` o un adaptador global expone preferencias
-- una capa transversal aplica side effects de UI
+- `AuthContext` o un adaptador global expone preferencias vivas
+- una capa transversal aplica side effects de comunicaciones cuando existan
 - el panel solo edita, no define comportamiento por si mismo
 
 ## Orden Recomendado
 
-1. Fase 1 `darkMode`
-2. Fase 2 `language`
+1. Fase 1 cerrada por decision de producto
+2. Fase 2 cerrada por decision de producto
 3. Fase 4 copy y estados UX
-4. Fase 3 comunicaciones reales o sinceramiento de toggles
+4. Fase 3 comunicaciones reales o sinceramiento definitivo de toggles
 5. Fase 5 consolidacion
 
 ## Riesgos
 
-- mezclar correccion de tema con rediseño visual
-- introducir i18n completo antes de resolver el wiring minimo
+- reabrir tema o idioma despues de haberlos fijado como decisiones de producto
 - prometer integraciones de newsletter/notificaciones sin backend operativo real
-- dejar `localStorage.theme` y `userPreferences.darkMode` peleando entre si
+- dejar persistencia de comunicaciones sin semantica clara para el usuario
 
 ## Criterio de Cierre
 
 Este frente se considera cerrado cuando:
 
-- `darkMode` persiste y gobierna el tema real
-- `language` persiste y modifica al menos el `lang` global de la app
+- `darkMode` y `language` quedan formalmente descartados como preferencias activas del panel
 - `newsletter` y `emailNotifications` tienen comportamiento real o copy sincerado
 - el panel deja de afirmar cosas que el runtime no cumple
 - `check`, `lint`, `build` y `smoke` siguen en verde
