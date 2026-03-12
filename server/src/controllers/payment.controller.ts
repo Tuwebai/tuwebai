@@ -3,6 +3,7 @@ import { env } from '../config/env.config';
 import { createPaymentPreference, verifyWebhookSignature, getPaymentDetails } from '../services/payment.service';
 import { registerProcessedPayment } from '../services/webhook-idempotency.service';
 import { type PaymentPlan } from '../constants/payment-plans';
+import { getErrorMessage } from '../shared/utils/error-message';
 import { writeLog } from '../utils/logger';
 import { appLogger } from '../utils/app-logger';
 
@@ -12,14 +13,14 @@ export const handleCreatePreference = async (req: Request, res: Response) => {
 
     const mpRes = await createPaymentPreference(plan);
     return res.json({ init_point: mpRes.init_point });
-  } catch (error: any) {
+  } catch (error: unknown) {
     appLogger.error('payment.preference_failed', {
-      error: error?.message,
+      error: getErrorMessage(error, 'unknown_payment_preference_error'),
       route: req.path,
       method: req.method,
     });
 
-    if (error?.message === 'Plan invalido') {
+    if (getErrorMessage(error, 'unknown_payment_preference_error') === 'Plan invalido') {
       return res.status(400).json({ error: 'Plan invalido' });
     }
     return res.status(500).json({ error: 'Error al crear preferencia de pago' });
@@ -55,10 +56,10 @@ export const handleGetPaymentStatus = async (req: Request, res: Response) => {
         payment_method_id: paymentDetails.payment_method_id,
       },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     appLogger.warn('payment.status_lookup_failed', {
       paymentId: req.params?.paymentId,
-      error: error?.message,
+      error: getErrorMessage(error, 'unknown_payment_status_lookup_error'),
     });
 
     return res.status(404).json({
@@ -176,29 +177,29 @@ export const handleWebhook = async (req: Request, res: Response) => {
         processing_time_ms: Date.now() - startTime,
         orderData,
       });
-    } catch (apiError: any) {
+    } catch (apiError: unknown) {
       appLogger.error('payment.webhook_mp_lookup_failed', {
         paymentId,
-        error: apiError?.message,
+        error: getErrorMessage(apiError, 'unknown_payment_webhook_lookup_error'),
       });
 
       writeLog({
         event: 'webhook_mp_lookup_failed',
         timestamp: new Date().toISOString(),
         payment_id: paymentId,
-        error: apiError?.message ?? String(apiError),
+        error: getErrorMessage(apiError, 'unknown_payment_webhook_lookup_error'),
       });
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     appLogger.error('payment.webhook_unhandled_error', {
-      error: error?.message,
-      stack: error?.stack,
+      error: getErrorMessage(error, 'unknown_payment_webhook_error'),
+      stack: error instanceof Error ? error.stack : undefined,
     });
 
     writeLog({
       event: 'webhook_unhandled_error',
       timestamp: new Date().toISOString(),
-      error: error?.message ?? String(error),
+      error: getErrorMessage(error, 'unknown_payment_webhook_error'),
     });
   }
 };
