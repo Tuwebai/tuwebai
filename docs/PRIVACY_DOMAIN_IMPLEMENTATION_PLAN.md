@@ -85,20 +85,19 @@ Hallazgos:
 
 ## Diagnostico
 
-### Hallazgo 1. El dominio de privacidad no existe todavia
+### Hallazgo 1. El dominio de privacidad ya existe a nivel tecnico, pero aun no gobierna la UI
 
 Nivel: alto
 
-Hoy hay:
+Hoy ya hay:
 
 - shell visual
 - documentos legales
-- algunos datos personales visibles en panel
+- contrato backend propio
+- servicio, hook y tipos dedicados en frontend
 
-Pero no hay:
+Pero todavia no hay:
 
-- modelo de dominio
-- endpoint dedicado
 - side effects reales
 - auditoria de consentimiento
 
@@ -388,7 +387,7 @@ Solo si hay negocio real detras:
 ## Orden Recomendado
 
 1. Fase 0 cerrada
-2. Fase 1 crear dominio tecnico
+2. Fase 1 cerrada
 3. Fase 2 visibilidad del panel
 4. Fase 3 consentimientos basicos
 5. Fase 4 enforcement minimo
