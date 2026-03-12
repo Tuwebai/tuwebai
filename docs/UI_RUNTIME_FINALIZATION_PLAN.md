@@ -158,6 +158,7 @@ Estado:
 - ✅ corregido: `client/src/components/ui/{animated-shape,avatar,breadcrumb,company-logo-slider,footer,loading-spinner}.tsx` fueron retirados tras confirmar ausencia de consumidores internos; `client/src/shared/ui/*` y `client/src/app/layout/*` quedaron como implementación final
 - ✅ corregido: `client/src/components/ui/{nav-dots,page-banner,pagination,particle-effect,progress,scroll-progress,separator,skeleton}.tsx` fueron retirados tras confirmar ausencia de consumidores internos; `client/src/shared/ui/*` quedó como implementación final
 - ✅ corregido: `client/src/components/ui/{collapsible,menubar,navigation-menu,radio-group,select,sheet}.tsx` fueron retirados tras confirmar ausencia de consumidores internos; `client/src/shared/ui/*` quedó como implementación final
+- ✅ corregido: `client/src/components/ui/{resizable,scroll-area,sidebar,slider,switch,table,tabs,toggle-group,toggle,tooltip,whatsapp-button}.tsx` fueron retirados tras confirmar ausencia de consumidores internos; `client/src/shared/ui/*` quedó como implementación final y `client/src/components/ui/*` dejó de participar del runtime frontend
 
 Objetivo:
 
