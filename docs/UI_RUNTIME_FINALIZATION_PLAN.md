@@ -26,7 +26,7 @@ Estado actual del repo:
 Conclusión:
 
 - `pages/` ya salió del runtime
-- no corresponde borrar `components/` todavía
+- `client/src/components/*` ya no participa del runtime y la limpieza final de compatibilidad quedó materializada
 - primero hay que reclasificar qué es `shared` y qué es `feature`
 
 ## Principios
@@ -317,7 +317,7 @@ Precondiciones:
 - `components/sections` no contiene sections de negocio activas
 - `App.tsx` ya está reubicado
 - `pages/*` ya no son runtime estructural legacy
-- `components/ui` sigue mezclando wrappers de compatibilidad con implementación real (`command`, `form`, `calendar`, `carousel`), por lo que no corresponde borrarlo en bloque todavía
+- `components/ui` ya fue retirado tras consolidar `shared/ui` y confirmar ausencia de consumidores internos
 - `components/performance` quedó re-auditado como instrumentacion de runtime de `app`; no corresponde mover `ResourcePreload` ni `MemoryManager` a `shared/ui`
 - `components/ui` ya no necesita compatibilidad para `command`, `form`, `calendar` ni `carousel`
 - `components/ui` ya no necesita conservar `global-navbar`, `chart`, `aspect-ratio` ni `input-otp` tras la re-auditoria de consumidores

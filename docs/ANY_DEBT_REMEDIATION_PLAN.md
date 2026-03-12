@@ -46,9 +46,9 @@ Patrones auditados:
 - Estado despues del decimoquinto slice: `8` ocurrencias de `any` explicito en runtime activo y soporte del repo.
 - Estado despues del decimosexto slice: `0` ocurrencias de `any` explicito en runtime activo y soporte del repo.
 - Adicionalmente habia `3` usos de `z.any()` en `server/src/schemas/api.schemas.ts`, que no eran deuda de tipado TypeScript pura pero si deuda de contrato. ✅ corregido
-- Ya no quedan concentraciones activas de `any` explicito en runtime; la deuda remanente quedo acotada a `z.any()` en schemas HTTP.
+- Ya no quedan concentraciones activas de `any` explicito ni `z.any()` en runtime o bordes HTTP del repo auditado.
 - `tsconfig.json` y `tsconfig.server.json` ya corren en `strict`, por lo que el problema actual no es falta de strict mode sino uso explicito de `any`.
-- `eslint.config.mjs` ya expone `@typescript-eslint/no-explicit-any` en modo `warn`, por lo que la deuda nueva ya no entra silenciosamente.
+- `eslint.config.mjs` ya expone `@typescript-eslint/no-explicit-any` en modo `error`, por lo que la deuda nueva queda bloqueada en lint.
 
 ## Inventario por archivo
 
@@ -294,7 +294,7 @@ Objetivo:
 Slices:
 
 1. reemplazar `z.any()` por esquemas especificos o `z.unknown()` si el shape sigue siendo variable ✅ completado
-2. subir `@typescript-eslint/no-explicit-any` de `warn` a `error`
+2. subir `@typescript-eslint/no-explicit-any` de `warn` a `error` ✅ completado
 3. re-auditar score tecnico y auditoria principal
 
 Resultado esperado:
@@ -352,6 +352,8 @@ La ruta enterprise correcta es:
 Estado actual:
 
 - no quedan usos explicitos de `any` en `client/`, `server/`, `scripts/`, `legacy/` ni `firebase-functions-contacto/`
-- ya no quedan `any` explicitos ni `z.any()` en el repo auditado; el siguiente cierre de Fase 5 es endurecer `@typescript-eslint/no-explicit-any` de `warn` a `error`
+- ya no quedan `any` explicitos ni `z.any()` en el repo auditado
+- `@typescript-eslint/no-explicit-any` ya quedó endurecido a `error`
+- la auditoria de deuda de `any` puede considerarse cerrada
 
 Ese orden da mejor retorno tecnico con menor riesgo de regresion.

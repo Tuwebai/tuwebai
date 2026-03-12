@@ -277,15 +277,15 @@ Precondición operacional:
 - `client/src/pages/*`
   - dejaron de ser runtime activo; `AppRoutes` ya consume entrypoints finales agrupados en `client/src/app/router/{home,errors,company,knowledge,legal,services,solutions}` ✅ corregido
 - `client/src/components/*`
-  - lo reutilizable va a `shared/ui/`
-  - lo de dominio va a `features/*/components/` ✅ pendiente de migración
+  - lo reutilizable fue consolidado en `shared/ui/`
+  - lo de dominio fue reclasificado a `features/*/components/` o retirado tras quedar sin consumidores ✅ corregido
 - `client/src/lib/backend-api.ts`
-  - queda como transporte, no como dependencia directa de UI ✅ pendiente de migración
+  - quedó como transporte, no como dependencia directa de UI ✅ corregido
 - `client/src/services/*`
-  - se redistribuye por dominio en `features/*/services/` ✅ pendiente de migración
+  - fue redistribuido por dominio en `features/*/services/` o retirado tras quedar sin consumidores ✅ corregido
 - `client/src/hooks/*`
   - lo transversal queda en `core/` o `shared/`
-  - lo de dominio se mueve a `features/*/hooks/` ✅ pendiente de migración
+  - lo de dominio fue movido a `features/*/hooks/` o retirado tras quedar sin consumidores ✅ corregido
 
 ## Compatibilidad Temporal
 
@@ -398,9 +398,8 @@ Estado materializado adicional:
 
 No ejecutar un move masivo.
 
-El siguiente paso correcto es:
+Estado de cierre:
 
-1. cerrar remanentes fuera del plan por dominio
-2. abrir Fase 6 de limpieza final de compatibilidad
-3. mover un solo frente por vez
-4. validar `npm run check`, `npm run lint`, `npm run build`, `npm run smoke`
+1. las fases estructurales del plan ya quedaron materializadas
+2. la limpieza final de compatibilidad ya fue ejecutada
+3. los frentes abiertos del repo ya no pertenecen a esta reestructuración base sino a hardening y gobernanza continua

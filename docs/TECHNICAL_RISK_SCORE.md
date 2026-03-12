@@ -74,6 +74,7 @@ Este score se calculo sobre el estado real del repo auditado localmente, tomando
 
 - ya no quedan usos explicitos de `any` en runtime frontend/backend ni en soporte tipado auditado del repo.
 - ya no quedan usos de `any` explicito ni `z.any()` en el codigo auditado del repo.
+- `@typescript-eslint/no-explicit-any` ya quedó en modo `error`, por lo que la deuda de tipado cerrada ya no puede reingresar silenciosamente.
 - siguen existiendo superficies legacy y compatibilidades temporales documentadas.
 
 ## Analisis por dimension
@@ -176,5 +177,5 @@ Prioridades para bajar el score real:
 1. seguir podando dependencias dudosas con auditoria de uso real
 2. revisar variables sensibles locales y terminar de externalizarlas a secret managers donde corresponda
 3. consolidar o aislar stacks paralelos (`legacy/`, `firebase-functions-contacto/`)
-4. cerrar los `z.any()` remanentes en schemas HTTP
+4. sostener el enforcement de `no-explicit-any` y evitar regresión de tipado
 5. consolidar la documentacion operativa final

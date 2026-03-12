@@ -18,7 +18,7 @@ export default [
       '@typescript-eslint': tseslintPlugin,
     },
     rules: {
-      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-explicit-any': 'error',
       'no-alert': 'error',
       'no-restricted-globals': ['error', 'alert', 'confirm', 'prompt'],
     },

@@ -2,7 +2,7 @@
 
 ## Estado
 
-Documento operativo para desbloquear la limpieza final de compatibilidad.
+Documento operativo materializado. La sustitucion previa ya quedo ejecutada y este plan puede considerarse cerrado.
 
 Re-auditoría de precondiciones de Fase 6:
 
@@ -97,7 +97,7 @@ Estado:
 - ✅ corregido parcialmente: `client/src/app/App.tsx`, `client/src/components/ui/global-navbar.tsx` y `client/src/components/auth/AdminRoute.tsx` ya consumen `features/auth/hooks/use-login-modal`
 - ✅ corregido parcialmente: `client/src/app/App.tsx` ya consume `features/auth/context/AuthContext`
 - ✅ corregido parcialmente: no quedan consumidores runtime de `@/contexts/AuthContext` ni `@/hooks/use-auth-*`
-- pendientes wrappers legacy mínimos de bajo impacto fuera del runtime principal
+- no quedan wrappers legacy mínimos con impacto sobre el runtime principal
 
 Objetivo:
 
@@ -217,7 +217,7 @@ Resultado actual de la re-auditoría:
 - ✅ corregido: `client/src/pages/faq.tsx` ya no forma parte del runtime; `client/src/app/router/AppRoutes.tsx` consume `client/src/app/router/knowledge/faq-page.tsx`
 - ✅ corregido: `client/src/pages/tecnologias.tsx` ya no forma parte del runtime; `client/src/app/router/AppRoutes.tsx` consume `client/src/app/router/knowledge/technologies-page.tsx`
 - ✅ corregido: `client/src/components/sections/*` ya no contiene ensamblado activo de `marketing-home`; los wrappers temporales (`hero`, `philosophy`, `services`, `process`, `tech`, `impact`, `comparison`, `showroom`) fueron retirados tras quedar sin consumidores
-- ✅ siguiente paso definido: `docs/MARKETING_HOME_FINALIZATION_PLAN.md`
+- ✅ corregido: `docs/MARKETING_HOME_FINALIZATION_PLAN.md` ya quedó ejecutado y cerrado
 - ✅ corregido: `client/src/pages/*` dejó de ser runtime activo y `client/src/app/router/` quedó agrupado por dominios semánticos (`home`, `errors`, `company`, `knowledge`, `legal`, `services`, `solutions`)
 - ✅ corregido: `client/src/components/route-wrapper.tsx` dejó de formar parte del runtime estructural; `client/src/app/router/AppRoutes.tsx` consume `client/src/app/router/lazy-route.tsx` y el wrapper legacy fue retirado
 - ✅ corregido: `client/src/app/App.tsx` y `client/src/app/router/lazy-route.tsx` ya consumen `client/src/shared/ui/{footer,toaster,skeleton}`; los wrappers equivalentes en `client/src/components/ui/*` quedaron fuera del runtime estructural
@@ -246,7 +246,7 @@ Resultado actual de la re-auditoría:
 
 Estado de re-auditoría de `client/src/components/ui`:
 
-- no corresponde borrar la carpeta en bloque todavía
+- `client/src/components/*` ya quedó retirado del runtime y sus remanentes legacy fueron eliminados
 - no quedan remanentes equivalentes en `components/ui` para `command`, `form`, `calendar` ni `carousel`; esos wrappers ya fueron retirados
 - tampoco quedan consumidores internos para `global-navbar`, `chart`, `aspect-ratio` ni `input-otp`; esos archivos muertos ya fueron retirados
 - tampoco quedan consumidores internos para `button`, `input`, `textarea`, `label`, `toast`, `toaster` ni `use-toast`; esos wrappers ya fueron retirados
