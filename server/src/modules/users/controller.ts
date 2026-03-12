@@ -4,6 +4,12 @@ import { getFirestore as getAdminFirestore } from '../../infrastructure/firebase
 import { getErrorMessage } from '../../shared/utils/error-message';
 import { appLogger } from '../../utils/app-logger';
 import { resolveOptionalLimit } from '../../shared/utils/list-limit';
+const GOOGLE_AVATAR_TIMEOUT_MS = 8000;
+
+const isAllowedAvatarHost = (host: string) =>
+  host === 'lh3.googleusercontent.com' ||
+  host.endsWith('.googleusercontent.com') ||
+  host.endsWith('.ggpht.com');
 
 type UserPreferencesDocument = {
   emailNotifications?: boolean;
@@ -52,6 +58,65 @@ export const handleAuthDevVerify = (req: Request, res: Response) => {
     success: true,
     message: `Verificacion de desarrollo simulada para ${email}.`,
   });
+};
+
+export const handleAvatarProxy = async (req: Request, res: Response) => {
+  const src = typeof req.query.src === 'string' ? req.query.src.trim() : '';
+
+  if (!src) {
+    return res.status(400).json({ success: false, message: 'src requerido' });
+  }
+
+  let url: URL;
+  try {
+    url = new URL(src);
+  } catch {
+    return res.status(400).json({ success: false, message: 'src invalido' });
+  }
+
+  if (url.protocol !== 'https:' || !isAllowedAvatarHost(url.hostname)) {
+    return res.status(400).json({ success: false, message: 'src no permitido' });
+  }
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), GOOGLE_AVATAR_TIMEOUT_MS);
+
+  try {
+    const response = await fetch(url.toString(), {
+      method: 'GET',
+      headers: {
+        Accept: 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8',
+        'User-Agent': 'TuWeb.ai Avatar Proxy/1.0',
+      },
+      redirect: 'follow',
+      signal: controller.signal,
+    });
+
+    if (!response.ok) {
+      appLogger.warn('users.avatar_proxy_upstream_failed', {
+        status: response.status,
+        host: url.hostname,
+      });
+      return res.status(502).json({ success: false, message: 'No se pudo obtener el avatar remoto' });
+    }
+
+    const contentType = response.headers.get('content-type') || 'image/jpeg';
+    const cacheControl = response.headers.get('cache-control');
+    const buffer = Buffer.from(await response.arrayBuffer());
+
+    res.setHeader('Content-Type', contentType);
+    res.setHeader('Cache-Control', cacheControl || 'public, max-age=3600, s-maxage=3600');
+    res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+    return res.send(buffer);
+  } catch (error: unknown) {
+    appLogger.warn('users.avatar_proxy_failed', {
+      error: getErrorMessage(error, 'unknown_avatar_proxy_error'),
+      host: url.hostname,
+    });
+    return res.status(502).json({ success: false, message: 'No se pudo obtener el avatar remoto' });
+  } finally {
+    clearTimeout(timeout);
+  }
 };
 
 export const handleGetUser = async (req: Request, res: Response) => {

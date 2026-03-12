@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '@/features/auth/context/AuthContext';
 import { useToast } from '@/shared/ui/use-toast';
 import MetaTags from '@/shared/ui/meta-tags';
+import { UserAvatar } from '@/shared/ui/user-avatar';
 import WhatsAppButton from '@/shared/ui/whatsapp-button';
 import { getErrorMessage } from '@/shared/utils/error-message';
 import { 
@@ -348,17 +349,13 @@ export default function PanelUsuario() {
               <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:items-center sm:gap-6 sm:text-left">
                 {/* Avatar con funcionalidad de cambio */}
                 <div className="relative group">
-                  <div className="w-20 h-20 rounded-full overflow-hidden bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-2xl text-white font-bold">
-                    {user?.image ? (
-                      <img 
-                        src={user.image} 
-                        alt="Profile" 
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      user?.name?.charAt(0) || user?.username?.charAt(0) || 'U'
-                    )}
-                  </div>
+                  <UserAvatar
+                    image={user?.image}
+                    name={user?.name}
+                    username={user?.username}
+                    className="w-20 h-20 rounded-full overflow-hidden bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-2xl text-white font-bold"
+                    textClassName="text-white"
+                  />
                   
                   {/* Overlay para cambiar imagen */}
                   <div 

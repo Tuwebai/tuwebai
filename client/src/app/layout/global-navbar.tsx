@@ -6,6 +6,7 @@ import { useIsMobile } from '@/core/hooks/use-mobile';
 import { useAuthActions, useAuthState } from '@/features/auth/context/AuthContext';
 import { useLoginModal } from '@/features/auth/hooks/use-login-modal';
 import { prefetchRoute } from '@/lib/route-prefetch';
+import { UserAvatar } from '@/shared/ui/user-avatar';
 
 interface NavigationLink {
   name: string;
@@ -234,13 +235,12 @@ export default function GlobalNavbar() {
                         onClick={() => setShowProfileMenu(!showProfileMenu)}
                         className="flex items-center gap-2 py-1.5 px-3 rounded-md hover:bg-gray-800/50 transition-colors"
                       >
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] flex items-center justify-center text-white font-medium overflow-hidden border-2 border-white/20">
-                          {user?.image ? (
-                            <img src={user.image} alt="Profile" className="w-full h-full object-cover rounded-full" />
-                          ) : (
-                            user?.name?.charAt(0) || user?.username?.charAt(0) || 'U'
-                          )}
-                        </div>
+                        <UserAvatar
+                          image={user?.image}
+                          name={user?.name}
+                          username={user?.username}
+                          className="w-8 h-8 rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] flex items-center justify-center text-white font-medium overflow-hidden border-2 border-white/20"
+                        />
                         <span className="text-sm text-gray-300">{user?.name || user?.username}</span>
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -442,13 +442,12 @@ export default function GlobalNavbar() {
                 ) : (
                   <div className="border-t border-gray-800 my-4 pt-4">
                     <div className="flex items-center gap-3 mb-3">
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] flex items-center justify-center text-white font-medium">
-                        {user?.image ? (
-                          <img src={user.image} alt="Profile" className="w-full h-full object-cover rounded-full" />
-                        ) : (
-                          user?.name?.charAt(0) || user?.username?.charAt(0) || 'U'
-                        )}
-                      </div>
+                      <UserAvatar
+                        image={user?.image}
+                        name={user?.name}
+                        username={user?.username}
+                        className="w-10 h-10 rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] flex items-center justify-center text-white font-medium overflow-hidden"
+                      />
                       <div>
                         <div className="text-white font-medium">{user?.name || user?.username}</div>
                         <div className="text-sm text-gray-400">{user?.email}</div>
