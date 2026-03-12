@@ -688,4 +688,5 @@ Nota de seguimiento:
 - ✅ corregido: `docs/PANEL_SETTINGS_REMEDIATION_PLAN.md` ya refleja el estado real del producto; `darkMode` e `language` quedaron cerrados como frentes descartados por decision de producto y el siguiente frente util del panel pasa a ser comunicaciones/copy.
 - ✅ corregido: `/panel` ya no expone selector de idioma ni wiring parcial asociado; `client/src/app/providers/AppProviders.tsx` y `client/src/shared/ui/meta-tags.tsx` volvieron a idioma estable del producto para no reabrir una preferencia descartada.
 - ✅ corregido: `/panel` ya no conserva UI residual de `Apariencia`; el tab de preferencias quedo reducido al frente real de comunicaciones y deja de mostrar contenido basura de tema/idioma ya descartados.
+- ✅ corregido: la arquitectura de informacion del `/panel` ya quedo auditada en `docs/PANEL_INFORMATION_ARCHITECTURE_PLAN.md`; `Preferencias` se redefine como espacio de privacidad/experiencia/accesibilidad y cualquier nueva tab queda condicionada a dominio operativo real.
 
