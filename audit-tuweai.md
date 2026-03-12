@@ -665,3 +665,4 @@ Nota de seguimiento:
 - ✅ corregido parcialmente: `client/src/features/users/components/user-dashboard-page.tsx` ya no usa `catch (error: any)`; el panel normaliza errores con `unknown` y `getErrorMessage(...)` sin alterar flujos de perfil, contraseña, preferencias, imagen ni logout.
 - ✅ corregido parcialmente: `client/src/app/performance/memory-manager.tsx` ya no usa `window.performance as any`; el runtime tipa la API de memoria del navegador con una extensión local mínima sin alterar el monitoreo existente.
 - ✅ corregido parcialmente: `client/src/app/router/solutions/uxui-page.tsx` ya no usa `window as any` para `isUsingGlobalNav`; la página tipa esa bandera con una extensión mínima de `Window` sin alterar el runtime del navbar.
+- ✅ corregido parcialmente: `client/src/lib/performance.ts` ya no usa `entry: any` para CLS; el tracking tipa `layout-shift` con una extensión mínima de `PerformanceEntry` sin alterar las métricas reportadas.

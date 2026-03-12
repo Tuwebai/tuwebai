@@ -3,6 +3,11 @@
  */
 const isDev = import.meta.env.DEV;
 
+type LayoutShiftEntry = PerformanceEntry & {
+  hadRecentInput?: boolean;
+  value?: number;
+};
+
 /**
  * Detecta si el navegador es compatible con las APIs modernas de rendimiento
  * @returns Un objeto con la disponibilidad de diferentes APIs
@@ -83,9 +88,10 @@ export function startWebVitalsTracking(): void {
   try {
     let clsValue = 0;
     const clsObserver = new PerformanceObserver((entryList) => {
-      entryList.getEntries().forEach((entry: any) => {
-        if (!entry.hadRecentInput) {
-          clsValue += entry.value;
+      entryList.getEntries().forEach((entry) => {
+        const layoutShiftEntry = entry as LayoutShiftEntry;
+        if (!layoutShiftEntry.hadRecentInput) {
+          clsValue += layoutShiftEntry.value ?? 0;
         }
       });
     });
