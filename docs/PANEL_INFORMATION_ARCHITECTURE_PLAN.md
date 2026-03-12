@@ -79,6 +79,7 @@ Estado actual:
 - reemplaza a la vieja `Preferencias`
 - hoy funciona como shell honesto, sin toggles fake
 - queda reservada para controles sensibles con efecto verificable
+- el plan de dominio dedicado vive en `docs/PRIVACY_DOMAIN_IMPLEMENTATION_PLAN.md`
 
 Lectura:
 
