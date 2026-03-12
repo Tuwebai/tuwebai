@@ -146,7 +146,7 @@ Eso deja tres riesgos:
 
 **Impacto:** A - Crítico
 
-Existe [`firebase-service-account.json`](./firebase-service-account.json) en raíz. ✅ corregido parcialmente: sigue local, pero fuera del versionado y protegido por `.gitignore`
+Existe [`firebase-service-account.json`](./firebase-service-account.json) en raíz. ✅ corregido parcialmente: sigue local, pero fuera del versionado y protegido por `.gitignore`; ya no es requisito arquitectónico porque el server soporta credencial inline y `applicationDefault()`
 
 Además, el stack PHP legacy usa fallback explícito al archivo local: ✅ corregido parcialmente al aislarse el stack en `legacy/`
 

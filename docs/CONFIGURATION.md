@@ -99,7 +99,14 @@ Usadas por server, smoke o deploy backend:
 - `MERCADOPAGO_ACCESS_TOKEN`
 - `MERCADOPAGO_WEBHOOK_SECRET`
 - `FIREBASE_PROJECT_ID`
-- credenciales Firebase Admin asociadas
+- `FIREBASE_SERVICE_ACCOUNT_JSON`
+- `FIREBASE_SERVICE_ACCOUNT_KEY`
+
+Regla recomendada para Firebase Admin:
+
+- preferir `FIREBASE_SERVICE_ACCOUNT_JSON` en CI/CD, deploy y secret managers
+- usar `FIREBASE_SERVICE_ACCOUNT_KEY` solo como fallback local apuntando a un archivo ignorado por Git
+- el archivo `firebase-service-account.json` en raíz no es requerido por la arquitectura actual; es solo una conveniencia local opcional
 
 Variables operativas de smoke:
 

@@ -62,7 +62,7 @@ Este score se calculo sobre el estado real del repo auditado localmente, tomando
 - siguen presentes artefactos o residuos operativos en workspace:
   - `node_modules/`
   - `firebase-service-account.json`
-- el archivo `firebase-service-account.json` sigue existiendo fisicamente en raiz, aunque este protegido por ignore.
+- el archivo `firebase-service-account.json` puede seguir existiendo fisicamente en raiz como excepcion local ignorada, pero ya no es requerido por la arquitectura actual porque el server soporta `FIREBASE_SERVICE_ACCOUNT_JSON` y `applicationDefault()`.
 - `.replit` y `php-temp/` ya fueron retirados del workspace tras confirmarse como tooling local legado sin consumidores ni integraciÃ³n operativa.
 
 ### Gobernanza operativa y dependencias
@@ -164,7 +164,7 @@ Razon del score:
 - ya fueron retirados scripts inexistentes y el `deploy` inseguro
 - ya fueron retirados cuatro lotes de dependencias sin referencias en repo principal
 - todavia hay dependencias sospechosas, redundantes o con uso incierto
-- la presencia fisica de secretos locales en workspace sigue siendo una mala señal de gobernanza
+- la presencia fisica de secretos locales en workspace sigue siendo una mala señal de gobernanza, aunque ya no bloquee el runtime principal
 - aunque ya no quedan secretos EmailJS hardcodeados en `firebase-functions-contacto`, siguen existiendo secretos locales en workspace y subproyectos paralelos con gobernanza separada
 
 Lectura:
