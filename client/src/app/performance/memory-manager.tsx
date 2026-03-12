@@ -5,6 +5,14 @@ interface MemoryManagerProps {
   debug?: boolean;
 }
 
+type BrowserMemoryInfo = {
+  usedJSHeapSize: number;
+};
+
+type PerformanceWithMemory = Performance & {
+  memory?: BrowserMemoryInfo;
+};
+
 const MemoryManager: React.FC<MemoryManagerProps> = ({
   thresholdMB = 150,
   debug = false,
@@ -14,7 +22,8 @@ const MemoryManager: React.FC<MemoryManagerProps> = ({
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    const isMemoryAPIAvailable = 'performance' in window && 'memory' in (window.performance as any);
+    const performanceWithMemory = window.performance as PerformanceWithMemory;
+    const isMemoryAPIAvailable = typeof performanceWithMemory.memory?.usedJSHeapSize === 'number';
 
     if (!isMemoryAPIAvailable) {
       if (debug) console.warn('MemoryManager: API de memoria no disponible en este navegador');
@@ -22,7 +31,8 @@ const MemoryManager: React.FC<MemoryManagerProps> = ({
     }
 
     const checkMemory = () => {
-      const memory = (window.performance as any).memory;
+      const memory = performanceWithMemory.memory;
+      if (!memory) return;
       const usedJSHeapSize = memory.usedJSHeapSize / (1024 * 1024);
 
       if (debug) console.debug(`MemoryManager: uso JS heap ${usedJSHeapSize.toFixed(2)} MB`);
