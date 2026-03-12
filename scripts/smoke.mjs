@@ -239,6 +239,21 @@ const run = async () => {
         assert(response.status === 401, `Expected 401, got ${response.status}`);
       });
 
+      await runCase('users.privacy.get.401_without_token_when_auth_enforced', async () => {
+        const { response } = await request('/api/users/smoke-user-1/privacy');
+        assert(response.status === 401, `Expected 401, got ${response.status}`);
+      });
+
+      await runCase('users.privacy.put.401_without_token_when_auth_enforced', async () => {
+        const { response } = await request('/api/users/smoke-user-1/privacy', {
+          method: 'PUT',
+          body: JSON.stringify({
+            profileEmailVisible: false,
+          }),
+        });
+        assert(response.status === 401, `Expected 401, got ${response.status}`);
+      });
+
       await runCase('users.project.get.401_without_token_when_auth_enforced', async () => {
         const { response } = await request('/api/users/smoke-user-1/project');
         assert(response.status === 401, `Expected 401, got ${response.status}`);
@@ -309,6 +324,24 @@ const run = async () => {
 
       await runCase('users.preferences.get_or_firestore_unavailable', async () => {
         const { response, data } = await request('/api/users/smoke-user-1/preferences');
+        assertFirestoreOrOk(response.status);
+        if (response.status === 200) assert(data?.success === true, 'Expected success=true');
+      });
+
+      await runCase('users.privacy.get_or_firestore_unavailable', async () => {
+        const { response, data } = await request('/api/users/smoke-user-1/privacy');
+        assertFirestoreOrOk(response.status);
+        if (response.status === 200) assert(data?.success === true, 'Expected success=true');
+      });
+
+      await runCase('users.privacy.put_or_firestore_unavailable', async () => {
+        const { response, data } = await request('/api/users/smoke-user-1/privacy', {
+          method: 'PUT',
+          body: JSON.stringify({
+            profileEmailVisible: false,
+            profileStatusVisible: false,
+          }),
+        });
         assertFirestoreOrOk(response.status);
         if (response.status === 200) assert(data?.success === true, 'Expected success=true');
       });
