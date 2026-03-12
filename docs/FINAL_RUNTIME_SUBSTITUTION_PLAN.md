@@ -231,11 +231,13 @@ Resultado actual de la re-auditoría:
 - ✅ corregido parcialmente: `client/src/shared/ui/command.tsx` ya concentra la implementación real; `client/src/components/ui/command.tsx` quedó reducido a wrapper de compatibilidad
 - ✅ corregido parcialmente: `client/src/shared/ui/{form,calendar,carousel}.tsx` ya concentran la implementación real; `client/src/components/ui/{form,calendar,carousel}.tsx` quedaron reducidos a wrappers de compatibilidad
 - ✅ corregido: `client/src/components/ui/{command,form,calendar,carousel}.tsx` fueron retirados tras confirmar ausencia de consumidores internos; `client/src/shared/ui/*` quedó como destino final
+- ✅ corregido: `client/src/components/ui/{global-navbar,chart,aspect-ratio,input-otp}.tsx` fueron retirados tras confirmar ausencia de consumidores internos; no existía runtime activo ni compatibilidad necesaria para esos paths
 
 Estado de re-auditoría de `client/src/components/ui`:
 
 - no corresponde borrar la carpeta en bloque todavía
 - no quedan remanentes equivalentes en `components/ui` para `command`, `form`, `calendar` ni `carousel`; esos wrappers ya fueron retirados
+- tampoco quedan consumidores internos para `global-navbar`, `chart`, `aspect-ratio` ni `input-otp`; esos archivos muertos ya fueron retirados
 - `client/src/components/performance/*` no es `shared/ui`; su destino final debe resolverse como instrumentacion de `app` en un slice especifico, no mezclado con esta limpieza
 - la limpieza final debe hacerse archivo por archivo, no por borrado masivo
 
