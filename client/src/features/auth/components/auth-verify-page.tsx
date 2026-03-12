@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 
-import MetaTags from '@/components/seo/meta-tags';
 import { useAuthActions } from '@/features/auth/context/AuthContext';
 import { verifyAuthDevEmail, verifyAuthToken } from '@/features/auth/services/auth.service';
+import MetaTags from '@/shared/ui/meta-tags';
 import { useToast } from '@/shared/ui/use-toast';
 
 const isDevelopment = import.meta.env.DEV;

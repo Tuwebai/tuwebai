@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '@/features/auth/context/AuthContext';
 import { useToast } from '@/shared/ui/use-toast';
 import WhatsAppButton from '@/components/ui/whatsapp-button';
-import MetaTags from '@/components/seo/meta-tags';
+import MetaTags from '@/shared/ui/meta-tags';
 import { 
   Camera, 
   Edit3, 

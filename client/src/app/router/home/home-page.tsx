@@ -1,5 +1,5 @@
-import MetaTags from '@/components/seo/meta-tags';
 import MarketingHomePage from '@/features/marketing-home/components/marketing-home-page';
+import MetaTags from '@/shared/ui/meta-tags';
 
 export default function HomePage() {
   return (

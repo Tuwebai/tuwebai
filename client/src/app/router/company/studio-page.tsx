@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useAnimation } from 'framer-motion';
-import MetaTags from '@/components/seo/meta-tags';
+import MetaTags from '@/shared/ui/meta-tags';
 
 type ProjectCategory = 'todos' | 'branding' | 'diseño-web' | 'ilustracion' | 'editorial';
 
