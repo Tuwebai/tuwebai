@@ -108,6 +108,11 @@ legacy/
   firebase/
 ```
 
+Nota operativa actual:
+
+- `legacy/` ya quedó efectivamente aislado del runtime principal
+- `firebase-functions-contacto/` permanece como subproyecto heredado separado, fuera del runtime y fuera de CI/CD principal
+
 ## Principios de Migración
 
 1. No mover múltiples dominios a la vez.
@@ -383,6 +388,11 @@ El plan se considera listo para ejecución cuando:
 - existe orden de fases
 - existe estrategia de compatibilidad
 - existen riesgos y mitigaciones
+
+Estado materializado adicional:
+
+- el runtime principal ya no depende de `legacy/`
+- `firebase-functions-contacto/` no forma parte de los builds, deploys ni quality gates del stack principal
 
 ## Siguiente Paso Recomendado
 

@@ -172,11 +172,18 @@ El código en `legacy/`:
 - no debe recibir código nuevo
 - no debe ser importado desde `client/` ni `server/`
 - solo se conserva como referencia o material de migración
+- no participa del runtime principal ni de los workflows CI/CD del stack Node actual
 
 Subárboles:
 
 - `legacy/php-api/`
 - `legacy/firebase/`
+
+Fuera de `legacy/` existe además `firebase-functions-contacto/`, que hoy se considera un subproyecto heredado separado:
+
+- no participa del runtime principal
+- no participa de CI/CD principal
+- solo debe mantenerse congelado o auditarse explícitamente antes de cualquier reuse
 
 ## Reglas de Compatibilidad
 
