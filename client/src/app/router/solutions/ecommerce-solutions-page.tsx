@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import WhatsAppButton from "@/shared/ui/whatsapp-button";
+import { TUWEBAI_WHATSAPP_URL } from '@/shared/constants/contact';
 
 export default function Ecommerce() {
   return (
@@ -209,7 +210,7 @@ export default function Ecommerce() {
                 Solicitá tu e-commerce
               </Link>
               <a 
-                href="https://wa.me/543571416044?text=Hola,%20estoy%20interesado%20en%20sus%20servicios%20de%20e-commerce"
+                href={`${TUWEBAI_WHATSAPP_URL}?text=Hola,%20estoy%20interesado%20en%20sus%20servicios%20de%20e-commerce`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-block px-8 py-4 border border-[#9933FF] rounded-full text-[#9933FF] font-medium hover:bg-[#9933FF]/10 transition-all"

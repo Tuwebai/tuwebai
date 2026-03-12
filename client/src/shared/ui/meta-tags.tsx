@@ -1,5 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
+import { TUWEBAI_WHATSAPP_TEL, TUWEBAI_WHATSAPP_URL } from '@/shared/constants/contact';
 
 interface MetaTagsProps {
   title: string;
@@ -91,12 +92,12 @@ const MetaTags: React.FC<MetaTagsProps> = ({
           },
           "contactPoint": {
             "@type": "ContactPoint",
-            "telephone": "+54-357-141-6044",
+            "telephone": TUWEBAI_WHATSAPP_TEL,
             "contactType": "customer service",
             "email": "tuwebai@gmail.com"
           },
           "sameAs": [
-            "https://wa.me/543571416044"
+            TUWEBAI_WHATSAPP_URL
           ]
         })}
       </script>
