@@ -901,22 +901,12 @@ export default function PanelUsuario() {
                         Apariencia
                       </h3>
                       <div className="space-y-4">
-                      <div className="flex items-center justify-between">
-                        <div>
-                            <label className="text-gray-300 font-medium">Modo oscuro</label>
-                            <p className="text-sm text-gray-500">Interfaz con tema oscuro</p>
+                        <div className="rounded-lg border border-blue-500/20 bg-blue-500/10 p-4">
+                          <label className="text-gray-300 font-medium">Tema visual</label>
+                          <p className="mt-1 text-sm text-blue-300">
+                            TuWeb.ai usa tema oscuro fijo para mantener coherencia visual en toda la app.
+                          </p>
                         </div>
-                        <label className="relative inline-flex items-center cursor-pointer">
-                          <input 
-                            type="checkbox" 
-                              checked={userPreferences?.darkMode ?? false} 
-                              onChange={e => handleUpdatePreferences({ darkMode: e.target.checked })} 
-                              disabled={isSavingPreferences}
-                            className="sr-only peer" 
-                          />
-                            <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
-                        </label>
-                      </div>
                         <div>
                           <label className="block text-gray-300 font-medium mb-2 flex items-center gap-2">
                             <Languages className="w-4 h-4" />
@@ -945,8 +935,8 @@ export default function PanelUsuario() {
                       Información
                       </h3>
                     <p className="text-blue-300 text-sm">
-                      Tus preferencias se guardan automáticamente y se aplican en tiempo real. 
-                      Puedes cambiar estas configuraciones en cualquier momento.
+                      Tus preferencias se guardan automáticamente. Algunas opciones del panel siguen
+                      siendo informativas mientras terminamos su aplicación global.
                           </p>
                         </div>
                 </div>

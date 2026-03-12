@@ -21,7 +21,7 @@ Hoy el sistema tiene dos estados distintos:
 
 Conclusion:
 
-- `newsletter`, `emailNotifications`, `darkMode` y `language` si pueden persistirse en backend cuando Firestore esta disponible
+- `newsletter`, `emailNotifications` y `language` si pueden persistirse en backend cuando Firestore esta disponible
 - pero solo una parte menor de esas preferencias se refleja realmente en la experiencia de usuario
 - la UI del panel afirma que "se aplican en tiempo real", y hoy eso no es verdad para la mayoria de los casos
 
