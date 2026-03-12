@@ -20,8 +20,8 @@ Este score se calculo sobre el estado real del repo auditado localmente, tomando
 | Dimension | Score | Lectura |
 | --- | --- | --- |
 | Arquitectura | 4/10 | Riesgo medio-bajo controlado |
-| Mantenibilidad | 5/10 | Riesgo medio |
-| Deuda tecnica | 6/10 | Riesgo medio |
+| Mantenibilidad | 4/10 | Riesgo medio-bajo controlado |
+| Deuda tecnica | 5/10 | Riesgo medio controlado |
 | Escalabilidad | 5/10 | Riesgo medio controlado |
 | Gobernanza de dependencias | 4/10 | Riesgo medio-bajo controlado |
 
@@ -42,16 +42,7 @@ Este score se calculo sobre el estado real del repo auditado localmente, tomando
 - `client/src/app/router/` ya esta agrupado por dominios semanticos.
 - `client/src/components/*` ya no participa del runtime frontend; `ui`, `a11y`, `performance` y `auth` fueron retirados tras quedar sin consumidores.
 - `client/src/app/App.tsx` ya consume `@/app/performance` y `@/shared/ui/skip-link` como destino final.
-- ya fueron retirados wrappers muertos en `client/src/components/ui/`:
-  - `command`
-  - `form`
-  - `calendar`
-  - `carousel`
-  - `global-navbar`
-  - `chart`
-  - `aspect-ratio`
-  - `input-otp`
-- ya no quedan imports internos a `@/components/ui/*` detectados en `client/src`
+- ya no quedan imports internos a `@/components/ui/*` detectados en `client/src`.
 
 ### Estado estructural del backend y repo
 
@@ -59,8 +50,7 @@ Este score se calculo sobre el estado real del repo auditado localmente, tomando
   - `legacy/`
   - `firebase-functions-contacto/`
 - `firebase-functions-contacto/` no participa del runtime ni de CI/CD principal, pero sigue siendo un subproyecto versionado con deploy manual propio.
-- siguen presentes artefactos o residuos operativos en workspace:
-  - `node_modules/`
+- en workspace siguen presentes artefactos locales esperables como `node_modules/`.
 - el archivo `firebase-service-account.json` ya fue retirado del workspace; la arquitectura actual no lo requiere porque el server soporta `FIREBASE_SERVICE_ACCOUNT_JSON` y `applicationDefault()`.
 - `.replit` y `php-temp/` ya fueron retirados del workspace tras confirmarse como tooling local legado sin consumidores ni integracion operativa.
 
@@ -68,73 +58,74 @@ Este score se calculo sobre el estado real del repo auditado localmente, tomando
 
 - los scripts rotos `check-oauth`, `fix-oauth` y `setup:mp` ya fueron retirados.
 - el script `deploy` inseguro ya fue retirado.
-- siguen quedando dependencias para revisar con auditoria fina, pero ya se retiraron cuatro lotes sin referencias en repo principal
+- se retiraron varios lotes de dependencias sin referencias en repo principal.
+- todavia quedan dependencias para revisar con auditoria fina antes de considerar la gobernanza cerrada.
 
-### Señales de deuda tecnica en codigo
+### Senales de deuda tecnica en codigo
 
 - ya no quedan usos explicitos de `any` en runtime frontend/backend ni en soporte tipado auditado del repo.
 - ya no quedan usos de `any` explicito ni `z.any()` en el codigo auditado del repo.
-- `@typescript-eslint/no-explicit-any` ya quedó en modo `error`, por lo que la deuda de tipado cerrada ya no puede reingresar silenciosamente.
-- siguen existiendo superficies legacy y compatibilidades temporales documentadas.
+- `@typescript-eslint/no-explicit-any` ya quedo en modo `error`, por lo que la deuda de tipado cerrada ya no puede reingresar silenciosamente.
+- siguen existiendo superficies legacy y compatibilidades temporales documentadas fuera del runtime principal.
 
 ## Analisis por dimension
 
-### 1. Arquitectura — 4/10
+### 1. Arquitectura - 4/10
 
 Razon del score:
 
 - la direccion arquitectonica ya es correcta
 - el runtime principal ya no depende de `pages/`
 - `app/router` ya esta consolidado por dominios
-- `shared/ui` ya absorbio gran parte del UI comun
+- `shared/ui` ya absorbio la UI comun relevante
 
 Riesgo residual:
 
 - siguen coexistiendo `legacy/` y `firebase-functions-contacto/`
-- no toda la frontera final `app/core/features/shared` esta cerrada
+- no toda la frontera final `app/core/features/shared` esta cerrada como arquitectura documental consolidada
 
 Lectura:
 
 No esta en zona critica, pero tampoco esta completamente cerrada.
 
-### 2. Mantenibilidad — 5/10
+### 2. Mantenibilidad - 4/10
 
 Razon del score:
 
 - hay bastante mas orden que al inicio del rediseño
 - los paths estructurales principales ya son mas legibles
 - existe trazabilidad documental fuerte
+- `README.md`, `ARCHITECTURE.md` y `CONFIGURATION.md` ya quedaron legibles y utilizables como base operativa
 
 Riesgo residual:
 
-- ya no quedan remanentes activos en `components/*`, pero el repo todavia conserva ruido operativo y stacks paralelos
-- el repo mantiene ruido operativo en raiz
-- hay naming mixto, encoding inconsistente y partes con acoplamiento historico
-- la documentacion operativa es amplia, pero todavia requiere consolidacion final
+- el repo todavia conserva stacks paralelos y algo de ruido operativo en raiz
+- sigue habiendo naming mixto y acoplamiento historico en zonas no criticas
+- la documentacion operativa aun puede consolidarse mejor
 
 Lectura:
 
-La mantenibilidad mejoro mucho, pero todavia exige contexto experto para tocar ciertas zonas sin riesgo.
+La mantenibilidad ya no esta en zona media-alta; hoy el principal costo viene de superficies heredadas y no del runtime principal.
 
-### 3. Deuda tecnica — 6/10
+### 3. Deuda tecnica - 5/10
 
 Razon del score:
 
-- hay deuda residual relevante, aunque ya no sea caotica
-- ya no quedan `any` explicitos ni `z.any()` en runtime activo, pero persisten residuos legacy y deuda de gobernanza operativa fuera del runtime principal
+- la deuda residual sigue siendo real, aunque ya no es caotica
+- la limpieza estructural gruesa ya quedo ejecutada y el runtime principal ya no arrastra compatibilidad legacy activa
+- la deuda de tipado explicita ya quedo cerrada
 
 Riesgo residual:
 
-- siguen existiendo piezas del repo todavia no clasificadas definitivamente fuera del runtime principal
+- siguen existiendo piezas del repo fuera del runtime principal que requieren cierre o aislamiento final
 - queda deuda de limpieza en variables sensibles locales y dependencias restantes
-- persisten superficies legacy versionadas fuera del runtime principal que requieren cierre o aislamiento final
-- el stack `legacy/php-api` ya fue endurecido en puntos críticos, pero sigue siendo superficie heredada fuera de la gobernanza principal
+- el stack `legacy/php-api` ya fue endurecido en puntos criticos, pero sigue siendo superficie heredada fuera de la gobernanza principal
 
 Lectura:
 
-La deuda ya esta identificada y cercada, pero todavia pesa operativamente.
+La deuda ya esta identificada y cercada, pero todavia pesa operativamente por el multistack y la gobernanza restante.
 
-### 4. Escalabilidad — 5/10
+### 4. Escalabilidad - 5/10
 
 Razon del score:
 
@@ -144,24 +135,28 @@ Razon del score:
 Riesgo residual:
 
 - todavia faltan pruebas mas aisladas por dominio mas alla del smoke
-- repo aun multistack
+- el repo sigue siendo multistack
 
 Lectura:
 
-Puede crecer con menos fragilidad operativa que antes, aunque el repo todavia exige limpieza estructural adicional.
+Puede crecer con menos fragilidad operativa que antes, aunque todavia requiere limpieza estructural adicional.
 
-### 5. Gobernanza de dependencias — 4/10
+### 5. Gobernanza de dependencias - 4/10
 
 Razon del score:
 
 - ya fueron retirados scripts inexistentes y el `deploy` inseguro
-- ya fueron retirados cuatro lotes de dependencias sin referencias en repo principal
-- todavia hay dependencias sospechosas, redundantes o con uso incierto
-- aunque ya no quedan secretos físicos locales en workspace ni secretos EmailJS hardcodeados en `firebase-functions-contacto`, siguen existiendo variables sensibles locales y subproyectos paralelos con gobernanza separada
+- ya fueron retirados varios lotes de dependencias sin referencias en repo principal
+- la gobernanza mejoro de forma visible frente al estado inicial
+
+Riesgo residual:
+
+- todavia hay dependencias sospechosas o con uso incierto que merecen auditoria fina
+- siguen existiendo variables sensibles locales y subproyectos paralelos con gobernanza separada
 
 Lectura:
 
-No significa que el runtime este roto, pero si que la disciplina operativa del repo todavia no esta al nivel enterprise final.
+La gobernanza ya no esta en zona roja, pero tampoco quedo cerrada.
 
 ## Conclusiones
 
@@ -169,7 +164,7 @@ Estado general:
 
 - el proyecto ya no esta en rojo arquitectonico
 - el trabajo grueso de reorganizacion ya se hizo
-- el mayor riesgo actual ya no viene de `pages/` ni del router
+- el mayor riesgo actual ya no viene de `pages/`, `components/` ni de la deuda de tipado
 - el mayor riesgo viene de stacks paralelos, variables sensibles locales y gobernanza de dependencias restantes
 
 Prioridades para bajar el score real:
@@ -177,5 +172,5 @@ Prioridades para bajar el score real:
 1. seguir podando dependencias dudosas con auditoria de uso real
 2. revisar variables sensibles locales y terminar de externalizarlas a secret managers donde corresponda
 3. consolidar o aislar stacks paralelos (`legacy/`, `firebase-functions-contacto/`)
-4. sostener el enforcement de `no-explicit-any` y evitar regresión de tipado
-5. consolidar la documentacion operativa final
+4. consolidar la documentacion operativa e historica final
+5. sostener el enforcement de `no-explicit-any` y evitar regresion de tipado
