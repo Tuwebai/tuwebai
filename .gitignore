@@ -87,6 +87,7 @@ firebase-service-account.json
 firebase-functions-contacto/functions/lib/
 php-temp/
 tuweb-ai.com-*.json
+ui-ux-pro-max-skill/
 
 # Non-production documentation / generated audits
 audit-*.md
