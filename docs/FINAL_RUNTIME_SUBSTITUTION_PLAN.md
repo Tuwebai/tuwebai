@@ -233,6 +233,7 @@ Resultado actual de la re-auditoría:
 - ✅ corregido: `client/src/components/ui/{command,form,calendar,carousel}.tsx` fueron retirados tras confirmar ausencia de consumidores internos; `client/src/shared/ui/*` quedó como destino final
 - ✅ corregido: `client/src/components/ui/{global-navbar,chart,aspect-ratio,input-otp}.tsx` fueron retirados tras confirmar ausencia de consumidores internos; no existía runtime activo ni compatibilidad necesaria para esos paths
 - ✅ corregido: `client/src/components/ui/{button,input,textarea,label,toast,toaster}` y `client/src/components/ui/use-toast/*` fueron retirados tras confirmar ausencia de consumidores internos; `client/src/shared/ui/*` quedó como implementación final
+- ✅ corregido: `client/src/components/ui/{accordion,alert,alert-dialog,badge,card,checkbox}.tsx` fueron retirados tras confirmar ausencia de consumidores internos; `client/src/shared/ui/*` quedó como implementación final
 
 Estado de re-auditoría de `client/src/components/ui`:
 
@@ -240,6 +241,7 @@ Estado de re-auditoría de `client/src/components/ui`:
 - no quedan remanentes equivalentes en `components/ui` para `command`, `form`, `calendar` ni `carousel`; esos wrappers ya fueron retirados
 - tampoco quedan consumidores internos para `global-navbar`, `chart`, `aspect-ratio` ni `input-otp`; esos archivos muertos ya fueron retirados
 - tampoco quedan consumidores internos para `button`, `input`, `textarea`, `label`, `toast`, `toaster` ni `use-toast`; esos wrappers ya fueron retirados
+- tampoco quedan consumidores internos para `accordion`, `alert`, `alert-dialog`, `badge`, `card` ni `checkbox`; esos wrappers ya fueron retirados
 - `client/src/components/performance/*` no es `shared/ui`; su destino final debe resolverse como instrumentacion de `app` en un slice especifico, no mezclado con esta limpieza
 - la limpieza final debe hacerse archivo por archivo, no por borrado masivo
 
