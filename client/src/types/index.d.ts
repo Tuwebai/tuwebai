@@ -9,7 +9,7 @@ declare module 'react-slick' {
     afterChange?(currentSlide: number): void;
     appendDots?(dots: React.ReactNode): JSX.Element;
     arrows?: boolean;
-    asNavFor?: any;
+    asNavFor?: Slider | null;
     autoplay?: boolean;
     autoplaySpeed?: number;
     beforeChange?(currentSlide: number, nextSlide: number): void;

@@ -44,11 +44,9 @@ Patrones auditados:
 - Estado despues del decimotercer slice: `10` ocurrencias de `any` explicito en runtime activo y soporte del repo.
 - Estado despues del decimocuarto slice: `9` ocurrencias de `any` explicito en runtime activo y soporte del repo.
 - Estado despues del decimoquinto slice: `8` ocurrencias de `any` explicito en runtime activo y soporte del repo.
+- Estado despues del decimosexto slice: `0` ocurrencias de `any` explicito en runtime activo y soporte del repo.
 - Adicionalmente hay `3` usos de `z.any()` en `server/src/schemas/api.schemas.ts`, que no son deuda de tipado TypeScript pura pero si deuda de contrato.
-- La mayor concentracion esta en:
-  - `client/src/features/auth/*`
-  - `server/src/modules/*/controller.ts`
-  - `server/src/middlewares/firebase-auth.middleware.ts`
+- Ya no quedan concentraciones activas de `any` explicito en runtime; la deuda remanente quedo acotada a `z.any()` en schemas HTTP.
 - `tsconfig.json` y `tsconfig.server.json` ya corren en `strict`, por lo que el problema actual no es falta de strict mode sino uso explicito de `any`.
 - `eslint.config.mjs` ya expone `@typescript-eslint/no-explicit-any` en modo `warn`, por lo que la deuda nueva ya no entra silenciosamente.
 
@@ -112,8 +110,6 @@ Patrones auditados:
 
 ### P3 - Prioridad baja: contratos amplios, shims y tipos externos
 
-- `1` - `client/src/types/index.d.ts`
-  - `asNavFor?: any` en tipado de libreria externa
 - `3` - `server/src/schemas/api.schemas.ts`
   - `z.array(z.any())`
   - `z.array(z.any())`
@@ -280,15 +276,15 @@ Objetivo:
 
 Slices:
 
-1. `user-dashboard-page.tsx`
-2. `memory-manager.tsx`
-3. `lib/performance.ts`
-4. `uxui-page.tsx`
-5. `types/index.d.ts`
+1. `user-dashboard-page.tsx` ✅ completado
+2. `memory-manager.tsx` ✅ completado
+3. `lib/performance.ts` ✅ completado
+4. `uxui-page.tsx` ✅ completado
+5. `types/index.d.ts` ✅ completado
 
 Resultado esperado:
 
-- runtime frontend principal sin escapes innecesarios a `any`
+- runtime frontend principal sin escapes innecesarios a `any` ✅ logrado
 
 ## Fase 5 - Schemas y enforcement final
 
@@ -330,6 +326,7 @@ Resultado esperado:
 17. `client/src/app/performance/memory-manager.tsx` ✅ completado
 18. `client/src/app/router/solutions/uxui-page.tsx` ✅ completado
 19. `client/src/lib/performance.ts` ✅ completado
+20. `client/src/types/index.d.ts` ✅ completado
 
 ## Criterios de aceptacion por slice
 
@@ -351,6 +348,11 @@ La ruta enterprise correcta es:
 - congelar ingreso de deuda nueva
 - cerrar auth primero
 - despues backend activo por dominio
-- dejar los shims de plataforma y `z.any()` para el final
+- dejar `z.any()` para el final
+
+Estado actual:
+
+- no quedan usos explicitos de `any` en `client/`, `server/`, `scripts/`, `legacy/` ni `firebase-functions-contacto/`
+- la deuda de tipado remanente ya no es TypeScript `any`, sino `3` usos de `z.any()` en `server/src/schemas/api.schemas.ts`
 
 Ese orden da mejor retorno tecnico con menor riesgo de regresion.

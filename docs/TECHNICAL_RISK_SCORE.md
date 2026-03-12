@@ -72,15 +72,8 @@ Este score se calculo sobre el estado real del repo auditado localmente, tomando
 
 ### Señales de deuda tecnica en codigo
 
-- siguen existiendo usos de `any` en frontend y backend.
-- ejemplos detectados:
-  - `server/src/utils/logger.ts`
-  - `server/src/middlewares/firebase-auth.middleware.ts`
-  - `server/src/modules/users/controller.ts`
-  - `server/src/modules/testimonials/controller.ts`
-  - `client/src/features/auth/context/AuthContext.tsx`
-  - `client/src/features/auth/hooks/use-auth-mutations.ts`
-  - `client/src/features/users/components/user-dashboard-page.tsx`
+- ya no quedan usos explicitos de `any` en runtime frontend/backend ni en soporte tipado auditado del repo.
+- la deuda de tipado remanente visible esta concentrada en `z.any()` dentro de `server/src/schemas/api.schemas.ts`, que sigue siendo deuda contractual y no de TypeScript puro.
 - siguen existiendo superficies legacy y compatibilidades temporales documentadas.
 
 ## Analisis por dimension
@@ -127,7 +120,7 @@ La mantenibilidad mejoro mucho, pero todavia exige contexto experto para tocar c
 Razon del score:
 
 - hay deuda residual relevante, aunque ya no sea caotica
-- siguen existiendo `any`, residuos legacy y deuda de gobernanza operativa fuera del runtime principal
+- ya no quedan `any` explicitos en runtime activo, pero persisten residuos legacy, `z.any()` contractuales y deuda de gobernanza operativa fuera del runtime principal
 
 Riesgo residual:
 
@@ -183,5 +176,5 @@ Prioridades para bajar el score real:
 1. seguir podando dependencias dudosas con auditoria de uso real
 2. revisar variables sensibles locales y terminar de externalizarlas a secret managers donde corresponda
 3. consolidar o aislar stacks paralelos (`legacy/`, `firebase-functions-contacto/`)
-4. seguir reduciendo usos de `any`
+4. cerrar los `z.any()` remanentes en schemas HTTP
 5. consolidar la documentacion operativa final
