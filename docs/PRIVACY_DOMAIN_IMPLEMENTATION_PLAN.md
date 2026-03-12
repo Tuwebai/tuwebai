@@ -353,6 +353,16 @@ Criterio:
 
 - no prometer mas de lo que hoy aplica el runtime
 
+Estado:
+
+- cerrada
+
+Resultado real:
+
+- `client/src/features/users/components/privacy-tab.tsx` ya expone `marketingConsent` y `analyticsConsent` como controles persistidos dentro del dominio `privacy`
+- la UI del panel ya alinea esos toggles con copy legal honesto y enlaces directos a `Politica de Privacidad` y `Politica de Cookies`
+- el panel no promete enforcement fuera de la cuenta mientras Fase 4 siga pendiente
+
 ### Fase 4. Conectar enforcement minimo
 
 Objetivo:
