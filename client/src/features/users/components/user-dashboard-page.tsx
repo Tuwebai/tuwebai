@@ -8,6 +8,7 @@ import { UserAvatar } from '@/shared/ui/user-avatar';
 import WhatsAppButton from '@/shared/ui/whatsapp-button';
 import { getErrorMessage } from '@/shared/utils/error-message';
 import { useUpdateUserPrivacyMutation, useUserPrivacyQuery } from '@/features/users/hooks/use-privacy-settings';
+import type { UpdateUserPrivacyPayload } from '@/features/users/types/privacy';
 import { DEFAULT_USER_PRIVACY_SETTINGS } from '@/features/users/types/privacy';
 import { PrivacyTab } from '@/features/users/components/privacy-tab';
 import { 
@@ -302,15 +303,12 @@ export default function PanelUsuario() {
     }
   };
 
-  const handleSavePrivacy = async (payload: {
-    profileEmailVisible?: boolean;
-    profileStatusVisible?: boolean;
-  }) => {
+  const handleSavePrivacy = async (payload: UpdateUserPrivacyPayload) => {
     try {
       await updatePrivacyMutation.mutateAsync(payload);
       toast({
         title: 'Privacidad actualizada',
-        description: 'La visibilidad del encabezado ya refleja tu nueva configuracion.',
+        description: 'Tus cambios de visibilidad y consentimiento ya quedaron registrados en la cuenta.',
       });
     } catch (error: unknown) {
       toast({

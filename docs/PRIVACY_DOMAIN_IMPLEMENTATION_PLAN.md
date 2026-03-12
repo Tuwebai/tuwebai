@@ -12,7 +12,7 @@ Objetivo:
 
 ## Resumen Ejecutivo
 
-Hoy `Privacidad` existe en UI solo como tab shell.
+Hoy `Privacidad` ya existe como dominio tecnico y como tab funcional del `/panel`.
 
 La auditoria muestra que:
 
@@ -40,7 +40,7 @@ Archivos revisados:
 
 Hallazgos:
 
-- la tab `Privacidad` hoy es solo un shell honesto
+- la tab `Privacidad` ya tiene wiring real de visibilidad y consentimientos
 - el panel ya no conserva consumers del viejo modelo `userPreferences`
 - el perfil visible del usuario en panel hoy expone:
   - avatar
@@ -335,6 +335,7 @@ Resultado real:
 - `client/src/features/users/components/privacy-tab.tsx` ya expone controles reales de visibilidad para el resumen del panel
 - `client/src/features/users/components/user-dashboard-page.tsx` ya consume `profileEmailVisible` y `profileStatusVisible` desde el dominio `privacy`
 - el encabezado del `/panel` ya oculta o muestra email y badge de estado en funcion de la configuracion persistida
+- la tab ya usa un layout con sidebar interno de secciones para evitar apilar bloques sensibles en una sola columna larga
 
 ### Fase 3. Implementar consentimientos reales basicos
 
