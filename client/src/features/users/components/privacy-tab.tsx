@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Eye, EyeOff, Info, Loader2, Mail, Shield } from 'lucide-react';
+import { Cookie, Eye, EyeOff, FileText, Info, Loader2, Mail, Shield } from 'lucide-react';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/shared/ui/accordion';
 import { Button } from '@/shared/ui/button';
 import { Switch } from '@/shared/ui/switch';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/tabs';
 import type { UpdateUserPrivacyPayload, UserPrivacySettings } from '../types/privacy';
 
 interface PrivacyTabProps {
@@ -61,49 +61,95 @@ export function PrivacyTab({ settings, isLoading, isSaving, onSave }: PrivacyTab
         </p>
       </div>
 
-      <Tabs
-        value={activeSection}
-        onValueChange={(value) => setActiveSection(value as 'visibility' | 'consent')}
-        className="grid gap-5 min-[1440px]:grid-cols-[240px_minmax(0,1fr)]"
-      >
+      <div className="grid gap-5 min-[1440px]:grid-cols-[280px_minmax(0,1fr)]">
         <aside className="rounded-2xl border border-white/10 bg-slate-950/35 p-3">
-          <div className="mb-4 px-2 pt-1">
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300/80">Secciones</p>
-            <p className="mt-2 text-sm leading-6 text-slate-400">
-              Elige la seccion que quieres revisar.
-            </p>
+          <div className="mb-3 rounded-xl border border-white/10 bg-white/5 px-4 py-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300/80">Centro de privacidad</p>
+            <h3 className="mt-2 text-lg font-semibold leading-tight text-white">Configura la visibilidad y los consentimientos de tu cuenta.</h3>
           </div>
 
-          <TabsList className="grid h-auto w-full grid-cols-1 gap-2 bg-transparent p-0 sm:grid-cols-2 xl:grid-cols-1">
-            <TabsTrigger
-              value="visibility"
-              className="min-h-[72px] w-full justify-start whitespace-normal rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-left text-slate-300 data-[state=active]:border-cyan-400/40 data-[state=active]:bg-cyan-500/15 data-[state=active]:text-white data-[state=active]:shadow-none"
-            >
-              <span className="flex min-w-0 items-start gap-3">
-                <Eye className="mt-0.5 h-4 w-4 text-cyan-300" />
-                <span className="min-w-0 space-y-1">
-                  <span className="block text-sm font-medium">Visibilidad</span>
-                  <span className="block break-words text-xs leading-5 text-slate-400">Define que datos aparecen en tu resumen.</span>
+          <Accordion type="single" collapsible defaultValue="controls" className="space-y-2">
+            <AccordionItem value="controls" className="overflow-hidden rounded-xl border border-white/10 bg-white/5">
+              <AccordionTrigger className="px-4 py-3 text-sm font-medium text-white hover:no-underline">
+                <span className="flex items-center gap-3">
+                  <Shield className="h-4 w-4 text-cyan-300" />
+                  Controles de cuenta
                 </span>
-              </span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="consent"
-              className="min-h-[72px] w-full justify-start whitespace-normal rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-left text-slate-300 data-[state=active]:border-cyan-400/40 data-[state=active]:bg-cyan-500/15 data-[state=active]:text-white data-[state=active]:shadow-none"
-            >
-              <span className="flex min-w-0 items-start gap-3">
-                <Shield className="mt-0.5 h-4 w-4 text-cyan-300" />
-                <span className="min-w-0 space-y-1">
-                  <span className="block text-sm font-medium">Consentimientos</span>
-                  <span className="block break-words text-xs leading-5 text-slate-400">Administra tus autorizaciones registradas.</span>
+              </AccordionTrigger>
+              <AccordionContent className="px-2 pb-2">
+                <nav className="space-y-2">
+                  <button
+                    type="button"
+                    onClick={() => setActiveSection('visibility')}
+                    className={`flex w-full items-start gap-3 rounded-lg px-3 py-3 text-left transition-colors ${
+                      activeSection === 'visibility'
+                        ? 'bg-cyan-500/15 text-white'
+                        : 'text-slate-300 hover:bg-white/5 hover:text-white'
+                    }`}
+                  >
+                    <Eye className="mt-0.5 h-4 w-4 shrink-0 text-cyan-300" />
+                    <span className="min-w-0">
+                      <span className="block text-sm font-medium">Visibilidad</span>
+                      <span className="mt-1 block text-xs leading-5 text-slate-400">Controla que datos aparecen en tu resumen.</span>
+                    </span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setActiveSection('consent')}
+                    className={`flex w-full items-start gap-3 rounded-lg px-3 py-3 text-left transition-colors ${
+                      activeSection === 'consent'
+                        ? 'bg-cyan-500/15 text-white'
+                        : 'text-slate-300 hover:bg-white/5 hover:text-white'
+                    }`}
+                  >
+                    <Mail className="mt-0.5 h-4 w-4 shrink-0 text-cyan-300" />
+                    <span className="min-w-0">
+                      <span className="block text-sm font-medium">Consentimientos</span>
+                      <span className="mt-1 block text-xs leading-5 text-slate-400">Administra tus autorizaciones registradas.</span>
+                    </span>
+                  </button>
+                </nav>
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="legal" className="overflow-hidden rounded-xl border border-white/10 bg-white/5">
+              <AccordionTrigger className="px-4 py-3 text-sm font-medium text-white hover:no-underline">
+                <span className="flex items-center gap-3">
+                  <FileText className="h-4 w-4 text-cyan-300" />
+                  Textos legales
                 </span>
-              </span>
-            </TabsTrigger>
-          </TabsList>
+              </AccordionTrigger>
+              <AccordionContent className="px-2 pb-2">
+                <div className="space-y-2">
+                  <a
+                    href="/politica-privacidad"
+                    className="flex items-start gap-3 rounded-lg px-3 py-3 text-left text-slate-300 transition-colors hover:bg-white/5 hover:text-white"
+                  >
+                    <Shield className="mt-0.5 h-4 w-4 shrink-0 text-cyan-300" />
+                    <span className="min-w-0">
+                      <span className="block text-sm font-medium">Politica de privacidad</span>
+                      <span className="mt-1 block text-xs leading-5 text-slate-400">Consulta el detalle de tratamiento y control de datos.</span>
+                    </span>
+                  </a>
+                  <a
+                    href="/politica-cookies"
+                    className="flex items-start gap-3 rounded-lg px-3 py-3 text-left text-slate-300 transition-colors hover:bg-white/5 hover:text-white"
+                  >
+                    <Cookie className="mt-0.5 h-4 w-4 shrink-0 text-cyan-300" />
+                    <span className="min-w-0">
+                      <span className="block text-sm font-medium">Politica de cookies</span>
+                      <span className="mt-1 block text-xs leading-5 text-slate-400">Revisa como tratamos preferencias y medicion del sitio.</span>
+                    </span>
+                  </a>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </aside>
 
         <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-          <TabsContent value="visibility" className="mt-0 space-y-5">
+          {activeSection === 'visibility' && (
+            <div className="space-y-5">
             <div>
               <h3 className="text-lg font-medium text-white">Visibilidad del resumen</h3>
               <p className="mt-1 text-sm leading-6 text-slate-400">
@@ -146,9 +192,11 @@ export function PrivacyTab({ settings, isLoading, isSaving, onSave }: PrivacyTab
                 />
               </div>
             </div>
-          </TabsContent>
+            </div>
+          )}
 
-          <TabsContent value="consent" className="mt-0 space-y-5">
+          {activeSection === 'consent' && (
+            <div className="space-y-5">
             <div>
               <h3 className="text-lg font-medium text-white">Consentimientos</h3>
               <p className="mt-1 text-sm leading-6 text-slate-400">
@@ -191,20 +239,8 @@ export function PrivacyTab({ settings, isLoading, isSaving, onSave }: PrivacyTab
                 />
               </div>
             </div>
-
-            <div className="rounded-xl border border-cyan-500/20 bg-cyan-500/10 px-4 py-4 text-sm leading-6 text-cyan-100">
-              <p>
-                Puedes revisar el detalle legal en{' '}
-                <a href="/politica-privacidad" className="font-medium text-cyan-300 hover:text-cyan-200">
-                  Politica de Privacidad
-                </a>{' '}
-                y{' '}
-                <a href="/politica-cookies" className="font-medium text-cyan-300 hover:text-cyan-200">
-                  Politica de Cookies
-                </a>.
-              </p>
             </div>
-          </TabsContent>
+          )}
 
           <div className="mt-6 flex flex-col gap-3 border-t border-white/10 pt-5 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-start gap-2 text-sm leading-6 text-slate-400">
@@ -231,7 +267,7 @@ export function PrivacyTab({ settings, isLoading, isSaving, onSave }: PrivacyTab
           </Button>
           </div>
         </div>
-      </Tabs>
+      </div>
     </div>
   );
 }
