@@ -17,8 +17,6 @@
     "lint:client": "eslint client/src --ext .ts,.tsx",
     "lint:server": "eslint server --ext .ts",
     "lint:no-native-dialogs": "eslint client/src --ext .ts,.tsx --max-warnings=0",
-    "check-oauth": "node scripts/check-google-oauth.js",
-    "fix-oauth": "node scripts/fix-google-oauth.js",
     "db:push": "drizzle-kit push",
     "dev": "tsx server/index.ts",
     "dev:backend": "tsx server/index.ts",
@@ -33,7 +31,6 @@
     "docker:up": "docker compose up -d",
     "docker:down": "docker compose down",
     "deploy:rules": "npx firebase-tools deploy --only firestore:rules --project tuwebai-db",
-    "setup:mp": "node setup-mercado-pago.js",
     "deploy": "npm run build && git add . && git commit -m 'Deploy' && git push"
   },
   "dependencies": {
