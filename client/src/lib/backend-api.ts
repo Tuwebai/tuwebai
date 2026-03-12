@@ -1,5 +1,6 @@
 import { apiFetch } from '@/lib/http-client';
 import type { User } from '@/features/users/types';
+import type { UserPrivacySettings, UpdateUserPrivacyPayload } from '@/features/users/types/privacy';
 
 export type PaymentPlan = 'esencial' | 'avanzado' | 'premium';
 
@@ -27,6 +28,15 @@ export const backendApi = {
 
   upsertUser: (uid: string, payload: Partial<User>) =>
     apiFetch<{ success: boolean }>(`/api/users/${encodeURIComponent(uid)}`, {
+      method: 'PUT',
+      body: payload as Record<string, unknown>,
+    }),
+
+  getUserPrivacy: (uid: string) =>
+    apiFetch<{ success: boolean; data?: UserPrivacySettings }>(`/api/users/${encodeURIComponent(uid)}/privacy`),
+
+  setUserPrivacy: (uid: string, payload: UpdateUserPrivacyPayload) =>
+    apiFetch<{ success: boolean; data?: UserPrivacySettings }>(`/api/users/${encodeURIComponent(uid)}/privacy`, {
       method: 'PUT',
       body: payload as Record<string, unknown>,
     }),

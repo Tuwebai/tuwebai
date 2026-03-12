@@ -298,6 +298,17 @@ Criterio:
 
 - sin tocar el contrato legacy `/preferences`
 
+Estado:
+
+- cerrada
+
+Resultado real:
+
+- `server/src/modules/users/routes.ts` ya expone `GET/PUT /api/users/:uid/privacy`
+- `server/src/modules/users/controller.ts` persiste el subobjeto `users/{uid}.privacy` sin tocar el contrato legacy `/preferences`
+- `server/src/schemas/api.schemas.ts` ya valida el payload de privacidad con schema propio
+- `client/src/features/users/types/privacy.ts`, `services/privacy.service.ts` y `hooks/use-privacy-settings.ts` ya definen la frontera tecnica nueva del cliente sin reabrir la UI del panel
+
 ### Fase 2. Implementar visibilidad del panel
 
 Objetivo:

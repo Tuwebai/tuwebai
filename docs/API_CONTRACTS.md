@@ -67,6 +67,8 @@ Payloads actuales:
 
 - `GET /api/users/:uid`
 - `PUT /api/users/:uid`
+- `GET /api/users/:uid/privacy`
+- `PUT /api/users/:uid/privacy`
 - `GET /api/users/:uid/preferences`
 - `PUT /api/users/:uid/preferences`
 - `GET /api/users/:uid/project`
@@ -79,7 +81,7 @@ Payloads actuales:
 Payloads actuales:
 
 - params basados en `userUidParamsSchema` o `ticketIdParamsSchema`
-- updates basados en `userUpdateSchema`, `userPreferencesUpdateSchema`, `ticketCreateSchema`, `ticketUpdateSchema`, `ticketResponseSchema`
+- updates basados en `userUpdateSchema`, `userPrivacyUpdateSchema`, `userPreferencesUpdateSchema`, `ticketCreateSchema`, `ticketUpdateSchema`, `ticketResponseSchema`
 
 ### Recursos Globales Protegidos
 

@@ -5,7 +5,9 @@ import {
   handleAuthVerify,
   handleGetUser,
   handleGetUserPayments,
+  handleGetUserPrivacy,
   handleGetUserPreferences,
+  handleSetUserPrivacy,
   handleSetUserPreferences,
   handleUpsertUser,
 } from './controller';
@@ -15,6 +17,7 @@ import { requireFirebaseAuthForUidParam } from '../../middlewares/firebase-auth.
 import {
   authDevVerifyParamsSchema,
   authVerifyParamsSchema,
+  userPrivacyUpdateSchema,
   userPreferencesUpdateSchema,
   userUidParamsSchema,
   userUpdateSchema,
@@ -34,6 +37,21 @@ router.put(
   validatePayload(userUidParamsSchema),
   validatePayload(userUpdateSchema),
   handleUpsertUser
+);
+router.get(
+  '/api/users/:uid/privacy',
+  apiLimiter,
+  requireFirebaseAuthForUidParam,
+  validatePayload(userUidParamsSchema),
+  handleGetUserPrivacy
+);
+router.put(
+  '/api/users/:uid/privacy',
+  strictApiLimiter,
+  requireFirebaseAuthForUidParam,
+  validatePayload(userUidParamsSchema),
+  validatePayload(userPrivacyUpdateSchema),
+  handleSetUserPrivacy
 );
 router.get(
   '/api/users/:uid/preferences',

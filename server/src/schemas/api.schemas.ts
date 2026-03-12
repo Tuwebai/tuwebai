@@ -107,6 +107,15 @@ export const userPreferencesUpdateSchema = z.object({
   }),
 });
 
+export const userPrivacyUpdateSchema = z.object({
+  body: z.object({
+    marketingConsent: z.boolean().optional(),
+    analyticsConsent: z.boolean().optional(),
+    profileEmailVisible: z.boolean().optional(),
+    profileStatusVisible: z.boolean().optional(),
+  }),
+});
+
 export const ticketIdParamsSchema = z.object({
   params: z.object({
     uid: z.string().min(1).max(128),

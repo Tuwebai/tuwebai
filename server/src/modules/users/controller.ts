@@ -19,6 +19,24 @@ type UserPreferencesDocument = {
   updatedAt?: string;
 };
 
+type UserPrivacyDocument = {
+  marketingConsent?: boolean;
+  analyticsConsent?: boolean;
+  profileEmailVisible?: boolean;
+  profileStatusVisible?: boolean;
+  updatedAt?: string;
+  updatedBy?: 'self';
+};
+
+const DEFAULT_USER_PRIVACY_SETTINGS: Required<
+  Pick<UserPrivacyDocument, 'marketingConsent' | 'analyticsConsent' | 'profileEmailVisible' | 'profileStatusVisible'>
+> = {
+  marketingConsent: false,
+  analyticsConsent: false,
+  profileEmailVisible: true,
+  profileStatusVisible: true,
+};
+
 type UserDocument = {
   uid?: string;
   email?: string;
@@ -31,6 +49,7 @@ type UserDocument = {
   createdAt?: string;
   updatedAt?: string;
   preferences?: UserPreferencesDocument;
+  privacy?: UserPrivacyDocument;
 };
 
 type PaymentDocument = {
@@ -220,6 +239,73 @@ export const handleSetUserPreferences = async (req: Request, res: Response) => {
       uid: req.params?.uid,
     });
     return res.status(500).json({ success: false, message: 'No se pudieron actualizar preferencias' });
+  }
+};
+
+export const handleGetUserPrivacy = async (req: Request, res: Response) => {
+  const db = getAdminFirestore();
+  if (!db) {
+    return res.status(503).json({ success: false, message: 'Firestore admin no disponible' });
+  }
+
+  try {
+    const { uid } = req.params;
+    const snapshot = await db.collection('users').doc(uid).get();
+    const data = snapshot.exists ? ((snapshot.data() as UserDocument | undefined) ?? null) : null;
+    const privacy = data?.privacy ?? {};
+
+    return res.json({
+      success: true,
+      data: {
+        ...DEFAULT_USER_PRIVACY_SETTINGS,
+        ...privacy,
+      },
+    });
+  } catch (error: unknown) {
+    appLogger.error('public.get_user_privacy_failed', {
+      error: getErrorMessage(error, 'unknown_get_user_privacy_error'),
+      uid: req.params?.uid,
+    });
+    return res.status(500).json({ success: false, message: 'No se pudo obtener la privacidad del usuario' });
+  }
+};
+
+export const handleSetUserPrivacy = async (req: Request, res: Response) => {
+  const db = getAdminFirestore();
+  if (!db) {
+    return res.status(503).json({ success: false, message: 'Firestore admin no disponible' });
+  }
+
+  try {
+    const { uid } = req.params;
+    const incoming = (req.body ?? {}) as Partial<UserPrivacyDocument>;
+    const ref = db.collection('users').doc(uid);
+    const current = await ref.get();
+    const currentData = (current.data() as UserDocument | undefined) ?? null;
+    const currentPrivacy = currentData?.privacy ?? {};
+    const nextPrivacy: UserPrivacyDocument = {
+      ...DEFAULT_USER_PRIVACY_SETTINGS,
+      ...currentPrivacy,
+      ...incoming,
+      updatedAt: new Date().toISOString(),
+      updatedBy: 'self',
+    };
+
+    await ref.set(
+      {
+        uid,
+        privacy: nextPrivacy,
+        updatedAt: new Date().toISOString(),
+      },
+      { merge: true }
+    );
+    return res.json({ success: true, data: nextPrivacy });
+  } catch (error: unknown) {
+    appLogger.error('public.set_user_privacy_failed', {
+      error: getErrorMessage(error, 'unknown_set_user_privacy_error'),
+      uid: req.params?.uid,
+    });
+    return res.status(500).json({ success: false, message: 'No se pudo actualizar la privacidad del usuario' });
   }
 };
 
