@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { toast } from '@/components/ui/use-toast';
+import { toast } from '@/shared/ui/use-toast';
 import { backendApi } from '@/lib/backend-api';
 import { getUiErrorMessage } from '@/lib/http-client';
 
