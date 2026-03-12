@@ -10,7 +10,7 @@ El proyecto tiene una base funcional y un frontend con bastante trabajo visual y
 - un backend Express/TypeScript en `server/`
 - un stack PHP legacy en `api/` ✅ corregido: aislado en `legacy/php-api/`; `api/` hoy aparece solo como residuo local vacío sin archivos versionados
 - una Cloud Function separada en `firebase-functions-contacto/`
-- artefactos compilados, binarios, reportes, logs y credenciales en raíz ✅ corregido parcialmente: builds/reportes/logs generados ya fueron limpiados del workspace; secretos locales y tooling heredado aún presentes
+- artefactos compilados, binarios, reportes, logs y credenciales en raíz ✅ corregido parcialmente: builds/reportes/logs generados y tooling local heredado ya fueron limpiados del workspace; persisten solo secretos locales sensibles
 
 Eso eleva el costo de mantenimiento, debilita la gobernanza y deja riesgos concretos de seguridad, despliegue y escalabilidad.
 
@@ -204,7 +204,7 @@ Esto no solo es deuda técnica: es **riesgo activo** si ese código sigue desple
 - `tuweb-ai.com-20260305T235948.json`
   - reporte Lighthouse puntual; útil solo si se versiona deliberadamente ✅ corregido: patrón ignorado y artefacto local limpiado
 - `.replit`
-  - resto de entorno anterior; no integra con el stack vigente
+  - resto de entorno anterior; no integra con el stack vigente ✅ corregido: retirado tras confirmar ausencia de consumidores en el repo actual
 - imágenes duplicadas en raíz y `client/public/`
   - `dashboardtuwebai.png`, `safespot.png`, `trading-tuwebai.png`, `image_perfil.jpg`
 
@@ -566,7 +566,7 @@ server/
 - separar frontend por `features` ✅ corregido parcialmente: estructura preparada
 - encapsular acceso a backend solo en hooks/services
 - crear contratos tipados compartidos o al menos DTOs por módulo
-- sacar artefactos, binarios, reportes y secretos fuera del repo ✅ corregido parcialmente: builds/reportes/logs locales ya fueron limpiados; siguen pendientes secretos locales y tooling heredado
+- sacar artefactos, binarios, reportes y secretos fuera del repo ✅ corregido parcialmente: builds/reportes/logs locales y tooling heredado ya fueron limpiados; siguen pendientes secretos locales sensibles
 
 ---
 
@@ -646,3 +646,5 @@ Nota de seguimiento:
 - ✅ corregido: `legacy/php-api/config/firebase.php` ya no desactiva verificación TLS en cURL y dejó de caer a `VITE_FIREBASE_API_KEY` como bearer token para Firestore; el acceso legacy ahora falla cerrado si no puede obtener credenciales válidas.
 - ✅ corregido: la re-auditoría arquitectónica confirmó que `legacy/` y `firebase-functions-contacto/` no participan del runtime ni de CI/CD principal; quedaron formalizados como superficies heredadas aisladas y congeladas fuera del stack Node activo.
 - ✅ corregido: el workspace dejó de arrastrar artefactos generados ignorados (`dist/`, `dist-server/`, `logs/`, `.firebase/`, `client/dist`, `firebase-functions-contacto/functions/lib`, `ts_errors*.log`, reporte Lighthouse local); ya no suman ruido operativo sobre el estado real del repo.
+- ✅ corregido: `.replit` fue retirado tras confirmar que solo describía workflows obsoletos de Replit y no tenía consumidores en código, scripts ni documentación operativa del stack actual.
+- ✅ corregido: `php-temp/` fue retirado del workspace tras confirmar que era solo tooling local heredado sin integración con el runtime, CI/CD ni scripts activos del repo principal.
