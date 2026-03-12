@@ -3,10 +3,10 @@ import { useLocation } from 'react-router-dom';
 
 import AppProviders from '@/app/providers/AppProviders';
 import AppRoutes from '@/app/router/AppRoutes';
-import { SkipLink } from '@/components/a11y';
 import { ResourcePreload, MemoryManager } from '@/components/performance';
 import analytics from '@/lib/analytics';
 import Footer from '@/shared/ui/footer';
+import { SkipLink } from '@/shared/ui/skip-link';
 
 const GlobalNavbar = lazy(() => import('@/app/layout/global-navbar'));
 const Toaster = lazy(() => import('@/shared/ui/toaster').then((module) => ({ default: module.Toaster })));
