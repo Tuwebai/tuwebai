@@ -1,6 +1,7 @@
-import { useRef, useEffect, useState, type ComponentType, type CSSProperties } from 'react';
+import { useEffect, useRef, useState, type CSSProperties, type ComponentType } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-scroll';
+import { Link as RouterLink } from 'react-router-dom';
+import { Link as ScrollLink } from 'react-scroll';
 
 interface HeroSectionProps {
   setRef: (ref: HTMLElement | null) => void;
@@ -40,6 +41,7 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
     const handleScroll = () => {
       if (ticking) return;
       ticking = true;
+
       window.requestAnimationFrame(() => {
         const section = sectionRef.current;
         if (!section) {
@@ -98,27 +100,38 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
         style={{ opacity: heroOpacity }}
       >
         <motion.div
-          className="mb-6 inline-block"
+          className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-gray-300 backdrop-blur-sm"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <h1 className="font-rajdhani font-bold text-5xl md:text-7xl mb-2">
-            <span className="gradient-text">TuWeb.ai</span>
-          </h1>
-          <motion.div
-            className="h-1 w-24 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] mx-auto"
-            initial={{ width: 0 }}
-            animate={{ width: '6rem' }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-          />
+          <span className="h-2 w-2 rounded-full bg-[#00CCFF] shadow-[0_0_10px_rgba(0,204,255,0.8)]" />
+          <span className="font-medium">Disenamos el futuro de tu negocio</span>
         </motion.div>
 
         <motion.div
-          className="font-rajdhani text-lg md:text-3xl text-gray-300 mb-12 min-h-[4.5rem] md:min-h-[3rem] max-w-4xl mx-auto"
+          className="mb-6"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
+          transition={{ duration: 0.8, delay: 0.15 }}
+        >
+          <div className="mb-4">
+            <span className="gradient-text font-rajdhani font-semibold text-lg md:text-xl tracking-[0.22em] uppercase">
+              TuWeb.ai
+            </span>
+          </div>
+
+          <h1 className="font-rajdhani font-bold text-4xl md:text-6xl xl:text-7xl leading-tight max-w-5xl mx-auto">
+            <span className="text-white">Desarrollo web profesional para negocios que quieren </span>
+            <span className="gradient-text">vender mejor online</span>
+          </h1>
+        </motion.div>
+
+        <motion.div
+          className="font-rajdhani text-lg md:text-2xl text-gray-300 mb-10 min-h-[5rem] md:min-h-[3.5rem] max-w-4xl mx-auto"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
         >
           {isReady && TypewriterEffectComponent ? (
             <TypewriterEffectComponent
@@ -126,34 +139,70 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
                 fontFamily: 'Rajdhani, sans-serif',
                 color: '#d1d5db',
                 fontWeight: 500,
-                fontSize: '1.5rem',
+                fontSize: '1.25rem',
                 textAlign: 'center',
               }}
-              startDelay={1000}
+              startDelay={700}
               cursorColor="#00CCFF"
               multiText={[
-                'Desarrollo web profesional para negocios que quieren vender mejor online',
-                'Sitios web, e-commerce y sistemas web pensados para crecer',
-                'Presencia digital profesional para marcas que necesitan transmitir confianza',
-                'Diseñamos el futuro de tu negocio',
+                'Creamos sitios web, e-commerce y sistemas web que transmiten confianza y ayudan a convertir visitas en oportunidades reales.',
+                'Tu negocio necesita una presencia digital seria, rapida y preparada para crecer.',
+                'Trabajamos con foco en negocio, rendimiento y una experiencia web profesional de punta a punta.',
               ]}
-              multiTextDelay={2000}
-              typeSpeed={80}
+              multiTextDelay={2600}
+              typeSpeed={40}
               multiTextLoop
             />
           ) : (
             <span className="inline-block text-gray-300">
-              Desarrollo web profesional para negocios que quieren vender mejor online
+              Creamos sitios web, e-commerce y sistemas web que transmiten confianza y ayudan a convertir visitas en oportunidades reales.
             </span>
           )}
         </motion.div>
 
         <motion.div
+          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.45 }}
+        >
+          <RouterLink
+            to="/consulta"
+            className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-7 py-3 text-white font-semibold shadow-[0_10px_30px_rgba(0,204,255,0.22)] transition-transform duration-300 hover:scale-[1.02]"
+          >
+            Solicitar diagnostico gratuito
+          </RouterLink>
+
+          <ScrollLink
+            to="showroom"
+            spy={true}
+            smooth={true}
+            offset={-70}
+            duration={1000}
+            className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-7 py-3 text-gray-200 font-medium backdrop-blur-sm transition-colors duration-300 hover:border-[#00CCFF]/50 hover:text-white cursor-pointer"
+          >
+            Ver proyectos reales
+          </ScrollLink>
+        </motion.div>
+
+        <motion.div
+          className="flex flex-wrap items-center justify-center gap-3 text-sm text-gray-300"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
         >
-          <Link
+          <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2">Sitios corporativos</span>
+          <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2">E-commerce</span>
+          <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2">Sistemas web</span>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.75 }}
+          className="mt-10"
+        >
+          <ScrollLink
             to="philosophy"
             spy={true}
             smooth={true}
@@ -167,7 +216,7 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
               animate={{ y: [0, 5, 0] }}
               transition={{ duration: 2, repeat: Infinity }}
             >
-              Descubrir
+              Descubrir mas
             </motion.span>
             <motion.svg
               xmlns="http://www.w3.org/2000/svg"
@@ -180,7 +229,7 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
             </motion.svg>
-          </Link>
+          </ScrollLink>
         </motion.div>
       </motion.div>
 

@@ -67,6 +67,10 @@ Bajo.
 
 ## Fase 2. Rediseñar hero para conversion
 
+Estado:
+
+- ✅ cerrada: el hero ya prioriza headline comercial, submensaje orientado a resultado, CTA principal a consulta, CTA secundario a proyectos y microseñales de confianza arriba del fold
+
 ### Objetivo
 
 Convertir el hero en una pieza de venta clara y orientada a negocio.
@@ -86,12 +90,18 @@ Medio-bajo.
 - [hero-section.tsx](c:\Users\juan\Documents\Proyectos\Tuwebai\client\src\features\marketing-home\components\hero-section.tsx)
 - [marketing-home-page.tsx](c:\Users\juan\Documents\Proyectos\Tuwebai\client\src\features\marketing-home\components\marketing-home-page.tsx)
 
-### Trabajo previsto
+### Resultado implementado
 
-- cambiar typewriter por mensaje mas estable o menos disperso
-- incorporar problema + resultado
-- alinear CTA principal y CTA secundario
-- sumar microprueba social o dato de confianza arriba del fold
+- el hero paso de una presentacion institucional a una pieza de venta mas clara
+- la jerarquia ahora prioriza servicio, resultado y siguiente paso
+- los CTA ya distinguen cierre (`Solicitar diagnostico gratuito`) y exploracion (`Ver proyectos reales`)
+- se agregaron microseñales de foco de oferta (`Sitios corporativos`, `E-commerce`, `Sistemas web`)
+- el typewriter se mantuvo, pero con menos dispersion y mensajes alineados al posicionamiento actual
+
+### Lo que sigue
+
+- Fase 3 debe tomar este hero como base para simplificar la arquitectura de oferta
+- no conviene tocar `nav-dots` antes de revisar servicios y CTA del home
 
 ## Fase 3. Reestructurar servicios
 
@@ -248,12 +258,11 @@ Medio-bajo.
 
 Orden recomendado de ejecucion:
 
-1. Fase 2
-2. Fase 3
-3. Fase 4
-4. Fase 5
-5. Fase 6
-6. Fase 7
+1. Fase 3
+2. Fase 4
+3. Fase 5
+4. Fase 6
+5. Fase 7
 
 ## KPI cualitativos a vigilar
 
