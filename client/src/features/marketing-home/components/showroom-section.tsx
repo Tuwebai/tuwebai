@@ -129,6 +129,9 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
       title: "LH Decants",
       category: "e-commerce",
       description: "Explora el arte del perfume sin comprar a ciegas: decants 100% originales para descubrir fragancias exclusivas por mililitro.",
+      clientNeed: "Vender fragancias premium con una experiencia clara, elegante y confiable para usuarios que necesitan decidir sin probar el perfume fisicamente.",
+      solutionSummary: "Disenamos un e-commerce enfocado en confianza, catalogo premium y claridad de compra para decants 100% originales.",
+      valueSummary: "La solucion mejora conversion, transmite autenticidad y facilita explorar una oferta exclusiva sin friccion innecesaria.",
       features: [
         "Decants 100% originales",
         "Fragancias exclusivas del mundo",
@@ -150,6 +153,9 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
       title: "TuWeb.ai Dashboard",
       category: "saas",
       description: "Panel de gestion para clientes TuWeb.ai: seguimiento de proyectos, tickets de soporte, pagos y estado operativo en una interfaz unificada.",
+      clientNeed: "Centralizar soporte, seguimiento y estado operativo sin depender de mensajes dispersos o procesos manuales.",
+      solutionSummary: "Construimos un dashboard SaaS para reunir proyectos, tickets, pagos y visibilidad operativa en un mismo lugar.",
+      valueSummary: "La plataforma reduce friccion de soporte, mejora el seguimiento y ordena la relacion operativa con cada cliente.",
       features: [
         "Autenticacion segura por usuario",
         "Seguimiento de proyectos en tiempo real",
@@ -171,6 +177,9 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
       title: "SafeSpot",
       category: "seguridad-ciudadana",
       description: "Plataforma de seguridad ciudadana para reportar objetos robados, generar alertas y conectar a la comunidad en tiempo real.",
+      clientNeed: "Dar a la comunidad una herramienta concreta para reportar, alertar y seguir casos de seguridad sin depender de canales fragmentados.",
+      solutionSummary: "Creamos una plataforma web para reportes geolocalizados, alertas y seguimiento comunitario en tiempo real.",
+      valueSummary: "La solucion mejora la velocidad de respuesta, ordena la informacion critica y fortalece la colaboracion entre usuarios.",
       features: [
         "Reportes de objetos robados geolocalizados",
         "Busqueda por categoria, zona y descripcion",
@@ -192,6 +201,9 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
       title: "Trading TuWeb.ai",
       category: "saas",
       description: "Dashboard de trading para monitoreo de mercado, gestion de operaciones y seguimiento de rendimiento en tiempo real.",
+      clientNeed: "Tomar decisiones con datos visibles y seguimiento continuo, sin dashboards confusos ni informacion fragmentada.",
+      solutionSummary: "Desarrollamos un panel de trading con monitoreo de mercado, operaciones y rendimiento en una sola interfaz.",
+      valueSummary: "El sistema mejora claridad operativa, velocidad de lectura y control diario sobre balances, riesgo y movimientos.",
       features: [
         "Panel de mercado con metricas en vivo",
         "Seguimiento de operaciones y posiciones",

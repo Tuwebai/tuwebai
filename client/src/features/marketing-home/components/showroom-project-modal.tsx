@@ -15,17 +15,17 @@ export default function ShowroomProjectModal({
 }: ShowroomProjectModalProps) {
   return (
     <div
-      className="fixed inset-0 z-50 bg-black/80 p-4 backdrop-blur-sm md:p-6"
+      className="fixed inset-0 z-50 bg-[#05070f]/35 p-4 backdrop-blur-md md:p-6"
       onClick={onClose}
     >
       <motion.div
-        className="mx-auto flex h-full w-full max-w-6xl items-center justify-center"
+        className="mx-auto flex h-full w-full max-w-6xl items-center justify-center py-4 md:py-8"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
       >
         <motion.div
-          className="relative w-full overflow-hidden rounded-2xl border border-white/10 bg-[#121217] shadow-[0_24px_80px_rgba(0,0,0,0.45)]"
+          className="relative w-full overflow-hidden rounded-[28px] border border-white/10 bg-[#121217]/96 shadow-[0_30px_90px_rgba(0,0,0,0.5)]"
           initial={{ opacity: 0, scale: 0.96, y: 12 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 0.24, ease: 'easeOut' }}
@@ -42,14 +42,43 @@ export default function ShowroomProjectModal({
             </svg>
           </button>
 
-          <div className="grid max-h-[88vh] overflow-y-auto lg:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)]">
-            <div className="border-b border-white/10 bg-[#0d1016] lg:border-b-0 lg:border-r">
+          <div className="grid max-h-[88vh] overflow-y-auto xl:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)]">
+            <div className="border-b border-white/10 bg-[#0d1016] xl:border-b-0 xl:border-r">
               <div className="aspect-[16/10] overflow-hidden">
                 <img
                   src={project.image}
                   alt={project.title}
                   className="h-full w-full object-cover"
                 />
+              </div>
+
+              <div className="grid gap-3 border-t border-white/10 p-4 sm:p-5">
+                <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-4">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#00CCFF]">
+                    Que necesitaba el cliente
+                  </p>
+                  <p className="mt-2 text-sm leading-6 text-gray-200">
+                    {project.clientNeed}
+                  </p>
+                </div>
+
+                <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-4">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#9933FF]">
+                    Que resolvimos
+                  </p>
+                  <p className="mt-2 text-sm leading-6 text-gray-200">
+                    {project.solutionSummary}
+                  </p>
+                </div>
+
+                <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-4">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#00CCFF]">
+                    Que aporta la solucion
+                  </p>
+                  <p className="mt-2 text-sm leading-6 text-gray-200">
+                    {project.valueSummary}
+                  </p>
+                </div>
               </div>
             </div>
 
@@ -59,20 +88,6 @@ export default function ShowroomProjectModal({
                   <span className="rounded-full border border-[#00CCFF]/30 bg-[#00CCFF]/10 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.18em] text-[#00CCFF]">
                     {categoryLabel}
                   </span>
-                  {project.externalUrl && (
-                    <a
-                      href={project.externalUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 text-sm text-gray-300 transition-colors hover:text-white"
-                    >
-                      <span>Ver online</span>
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 3h7m0 0v7m0-7L10 14" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5v14h14" />
-                      </svg>
-                    </a>
-                  )}
                 </div>
 
                 <h3 className="font-rajdhani text-3xl font-bold text-white sm:text-4xl">
@@ -87,7 +102,7 @@ export default function ShowroomProjectModal({
                 <section className="rounded-2xl border border-white/8 bg-white/[0.03] p-4 sm:p-5">
                   <div className="mb-3">
                     <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#00CCFF]">
-                      Resumen
+                      Lo que incluye
                     </p>
                   </div>
                   <ul className="grid gap-3">
@@ -110,21 +125,23 @@ export default function ShowroomProjectModal({
                       Impacto
                     </p>
                   </div>
-                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
                     {project.results.map((result) => (
                       <div
                         key={`${project.id}-${result.label}`}
-                        className="rounded-xl border border-white/8 bg-[#171b24] px-4 py-4 text-center"
+                        className="rounded-xl border border-white/8 bg-[#171b24] px-4 py-4 text-left"
                       >
-                        <div className="text-2xl font-bold text-[#00CCFF] sm:text-3xl">{result.value}</div>
-                        <div className="mt-1 text-xs uppercase tracking-[0.14em] text-gray-400">{result.label}</div>
+                        <div className="break-words text-2xl font-bold leading-none text-[#00CCFF] sm:text-3xl">{result.value}</div>
+                        <div className="mt-2 text-[11px] uppercase tracking-[0.14em] text-gray-400">
+                          {result.label}
+                        </div>
                       </div>
                     ))}
                   </div>
                 </section>
               </div>
 
-              <div className="mt-6 flex flex-col gap-3 border-t border-white/10 pt-5 sm:flex-row sm:items-center sm:justify-between">
+              <div className="mt-6 flex flex-col gap-4 border-t border-white/10 pt-5">
                 <p className="max-w-md text-sm leading-6 text-gray-400">
                   Si buscas una solucion con este nivel de claridad, rendimiento y foco comercial, podemos ayudarte a definir el mejor camino.
                 </p>
@@ -134,14 +151,14 @@ export default function ShowroomProjectModal({
                     href={project.externalUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-6 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(0,204,255,0.22)] transition-transform duration-300 hover:scale-[1.02]"
+                    className="inline-flex w-full items-center justify-center rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-6 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(0,204,255,0.22)] transition-transform duration-300 hover:scale-[1.02] sm:w-auto sm:self-start"
                   >
                     Ver proyecto online
                   </a>
                 ) : (
                   <Link
                     to={project.detailsUrl}
-                    className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-6 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(0,204,255,0.22)] transition-transform duration-300 hover:scale-[1.02]"
+                    className="inline-flex w-full items-center justify-center rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-6 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(0,204,255,0.22)] transition-transform duration-300 hover:scale-[1.02] sm:w-auto sm:self-start"
                   >
                     Ver proyecto completo
                   </Link>
