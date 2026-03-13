@@ -11,21 +11,17 @@ import type { UpdateUserPrivacyPayload } from '@/features/users/types/privacy';
 import { DEFAULT_USER_PRIVACY_SETTINGS } from '@/features/users/types/privacy';
 import { PrivacyTab } from '@/features/users/components/privacy-tab';
 import { UserDashboardHeader } from '@/features/users/components/user-dashboard-header';
+import { UserProfileTab } from '@/features/users/components/user-profile-tab';
 import { UserDashboardTabsNav, type UserDashboardTab } from '@/features/users/components/user-dashboard-tabs-nav';
 import { 
-  Edit3, 
   Save, 
   X, 
   Globe,
   Lock, 
   Shield, 
-  User, 
   AlertCircle,
   Eye,
   EyeOff,
-  Phone,
-  MapPin,
-  Mail
 } from 'lucide-react';
 
 export default function PanelUsuario() {
@@ -359,175 +355,26 @@ export default function PanelUsuario() {
               transition={{ duration: 0.3 }}
               className="bg-white/5 backdrop-blur-lg rounded-2xl p-8 border border-white/10"
             >
-              {/* Tab: Perfil */}
               {activeTab === 'profile' && (
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-xl font-semibold text-white flex items-center gap-2">
-                      <User className="w-5 h-5" />
-                      Información Personal
-                    </h2>
-                    {!isEditing && (
-                      <button
-                        onClick={() => setIsEditing(true)}
-                        className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium transition-all"
-                      >
-                        <Edit3 className="w-4 h-4" />
-                        Editar perfil
-                      </button>
-                    )}
-                  </div>
-                  
-                  <form onSubmit={handleSaveProfile} className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div>
-                        <label className="block text-gray-300 text-sm font-medium mb-2 flex items-center gap-2">
-                          <User className="w-4 h-4" />
-                          Nombre completo
-                        </label>
-                        <input
-                          type="text"
-                          name="name"
-                          value={profileForm.name}
-                          onChange={handleProfileChange}
-                          className={`w-full px-4 py-3 rounded-lg bg-white/5 text-white border transition-all ${
-                            errors.name ? 'border-red-500' : 'border-white/20 focus:border-blue-500'
-                          } ${!isEditing ? 'opacity-50 cursor-not-allowed' : ''}`}
-                          disabled={!isEditing}
-                        />
-                        {errors.name && <span className="text-red-400 text-sm mt-1 flex items-center gap-1">
-                          <AlertCircle className="w-3 h-3" />
-                          {errors.name}
-                        </span>}
-                      </div>
-                      
-                      <div>
-                        <label className="block text-gray-300 text-sm font-medium mb-2 flex items-center gap-2">
-                          <User className="w-4 h-4" />
-                          Nombre de usuario
-                        </label>
-                        <input
-                          type="text"
-                          name="username"
-                          value={profileForm.username}
-                          onChange={handleProfileChange}
-                          className={`w-full px-4 py-3 rounded-lg bg-white/5 text-white border transition-all ${
-                            errors.username ? 'border-red-500' : 'border-white/20 focus:border-blue-500'
-                          } ${!isEditing ? 'opacity-50 cursor-not-allowed' : ''}`}
-                          disabled={!isEditing}
-                        />
-                        {errors.username && <span className="text-red-400 text-sm mt-1 flex items-center gap-1">
-                          <AlertCircle className="w-3 h-3" />
-                          {errors.username}
-                        </span>}
-                      </div>
-                      
-                      <div>
-                        <label className="block text-gray-300 text-sm font-medium mb-2 flex items-center gap-2">
-                          <Mail className="w-4 h-4" />
-                          Email
-                        </label>
-                        <input
-                          type="email"
-                          name="email"
-                          value={profileForm.email}
-                          onChange={handleProfileChange}
-                          className={`w-full px-4 py-3 rounded-lg bg-white/5 text-white border transition-all ${
-                            errors.email ? 'border-red-500' : 'border-white/20 focus:border-blue-500'
-                          } ${!isEditing ? 'opacity-50 cursor-not-allowed' : ''}`}
-                          disabled={!isEditing}
-                        />
-                        {errors.email && <span className="text-red-400 text-sm mt-1 flex items-center gap-1">
-                          <AlertCircle className="w-3 h-3" />
-                          {errors.email}
-                        </span>}
-                      </div>
-                      
-                      <div>
-                        <label className="block text-gray-300 text-sm font-medium mb-2 flex items-center gap-2">
-                          <Phone className="w-4 h-4" />
-                          Teléfono (opcional)
-                        </label>
-                        <input 
-                          type="tel" 
-                          name="phone" 
-                          value={profileForm.phone} 
-                          onChange={handleProfileChange} 
-                          placeholder="+34 600 000 000"
-                          className={`w-full px-4 py-3 rounded-lg bg-white/5 text-white border transition-all ${
-                            errors.phone ? 'border-red-500' : 'border-white/20 focus:border-blue-500'
-                          } ${!isEditing ? 'opacity-50 cursor-not-allowed' : ''}`}
-                          disabled={!isEditing}
-                        />
-                        {errors.phone && <span className="text-red-400 text-sm mt-1 flex items-center gap-1">
-                          <AlertCircle className="w-3 h-3" />
-                          {errors.phone}
-                        </span>}
-                      </div>
-
-                      <div className="md:col-span-2">
-                        <label className="block text-gray-300 text-sm font-medium mb-2 flex items-center gap-2">
-                          <MapPin className="w-4 h-4" />
-                          Dirección (opcional)
-                        </label>
-                        <input 
-                          type="text" 
-                          name="address" 
-                          value={profileForm.address} 
-                          onChange={handleProfileChange} 
-                          placeholder="Calle, Ciudad, País"
-                          className={`w-full px-4 py-3 rounded-lg bg-white/5 text-white border transition-all ${
-                            errors.address ? 'border-red-500' : 'border-white/20 focus:border-blue-500'
-                          } ${!isEditing ? 'opacity-50 cursor-not-allowed' : ''}`}
-                          disabled={!isEditing}
-                        />
-                        {errors.address && <span className="text-red-400 text-sm mt-1 flex items-center gap-1">
-                          <AlertCircle className="w-3 h-3" />
-                          {errors.address}
-                        </span>}
-                      </div>
-                    </div>
-
-                    {isEditing && (
-                      <div className="flex gap-3 pt-4">
-                        <button
-                          type="submit"
-                          disabled={isSavingProfile}
-                          className="flex items-center gap-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium transition-all disabled:opacity-60"
-                        >
-                          {isSavingProfile ? (
-                            <>
-                              <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white"></div>
-                              Guardando...
-                            </>
-                          ) : (
-                            <>
-                              <Save className="w-4 h-4" />
-                              Guardar cambios
-                            </>
-                          )}
-                        </button>
-                      <button
-                          type="button" 
-                        onClick={() => {
-                            setIsEditing(false); 
-                            setProfileForm({ 
-                              name: user?.name || '', 
-                              username: user?.username || '', 
-                              email: user?.email || '',
-                              phone: '',
-                              address: ''
-                            }); 
-                          }} 
-                          className="flex items-center gap-2 px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white rounded-lg font-medium transition-all"
-                        >
-                          <X className="w-4 h-4" />
-                        Cancelar
-                      </button>
-                      </div>
-                    )}
-                  </form>
-                  </div>
+                <UserProfileTab
+                  profileForm={profileForm}
+                  errors={errors}
+                  isEditing={isEditing}
+                  isSavingProfile={isSavingProfile}
+                  onEdit={() => setIsEditing(true)}
+                  onCancel={() => {
+                    setIsEditing(false);
+                    setProfileForm({
+                      name: user?.name || '',
+                      username: user?.username || '',
+                      email: user?.email || '',
+                      phone: '',
+                      address: '',
+                    });
+                  }}
+                  onSubmit={handleSaveProfile}
+                  onProfileChange={handleProfileChange}
+                />
               )}
 
               {/* Tab: Seguridad */}

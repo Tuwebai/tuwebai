@@ -41,6 +41,9 @@ Archivo principal:
 Componentes ya extraidos:
 
 - `client/src/features/users/components/privacy-tab.tsx`
+- `client/src/features/users/components/user-dashboard-header.tsx`
+- `client/src/features/users/components/user-dashboard-tabs-nav.tsx`
+- `client/src/features/users/components/user-profile-tab.tsx`
 
 Responsabilidades detectadas:
 
@@ -185,6 +188,10 @@ Beneficio:
 - baja tamaño del archivo sin tocar formularios
 - desacopla layout general de contenido por tab
 
+Estado:
+
+- cerrada
+
 ### Fase 2. Extraer `Perfil`
 
 Objetivo:
@@ -200,6 +207,10 @@ Incluye:
 - inputs de perfil
 - errores de perfil
 - botones de editar/guardar/cancelar
+
+Estado:
+
+- cerrada
 
 ### Fase 3. Extraer `Seguridad`
 
