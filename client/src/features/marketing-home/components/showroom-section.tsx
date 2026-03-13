@@ -48,23 +48,6 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
     };
   }, [selectedProject]);
 
-  // Manejador de teclas para cerrar modal con Escape
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && selectedProject) {
-        setSelectedProject(null);
-      }
-    };
-
-    if (selectedProject) {
-      document.addEventListener('keydown', handleKeyDown);
-    }
-
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [selectedProject]);
-  
   // Set the ref for the parent component
   if (sectionRef.current && !sectionRef.current.hasAttribute('data-ref-set')) {
     setRef(sectionRef.current);
@@ -211,6 +194,45 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
     ? projects 
     : projects.filter(project => project.category === activeCategory);
 
+  const selectedProjectIndex = selectedProject
+    ? filteredProjects.findIndex((project) => project.id === selectedProject.id)
+    : -1;
+
+  // Manejador de teclas para cerrar modal con Escape y navegar entre casos con flechas.
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (!selectedProject) {
+        return;
+      }
+
+      if (event.key === 'Escape') {
+        setSelectedProject(null);
+        return;
+      }
+
+      if (event.key === 'ArrowLeft' && selectedProjectIndex > 0) {
+        setSelectedProject(filteredProjects[selectedProjectIndex - 1]);
+        return;
+      }
+
+      if (
+        event.key === 'ArrowRight' &&
+        selectedProjectIndex >= 0 &&
+        selectedProjectIndex < filteredProjects.length - 1
+      ) {
+        setSelectedProject(filteredProjects[selectedProjectIndex + 1]);
+      }
+    };
+
+    if (selectedProject) {
+      document.addEventListener('keydown', handleKeyDown);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [filteredProjects, selectedProject, selectedProjectIndex]);
+
   // Categorías únicas para filtrado
   const categories = ['all', ...Array.from(new Set(projects.map(project => project.category)))];
 
@@ -232,6 +254,18 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
   // Manejador de navegación para proyectos
   const handleProjectClick = (project: ShowroomProject) => {
     setSelectedProject(project);
+  };
+
+  const handlePrevProject = () => {
+    if (selectedProjectIndex > 0) {
+      setSelectedProject(filteredProjects[selectedProjectIndex - 1]);
+    }
+  };
+
+  const handleNextProject = () => {
+    if (selectedProjectIndex >= 0 && selectedProjectIndex < filteredProjects.length - 1) {
+      setSelectedProject(filteredProjects[selectedProjectIndex + 1]);
+    }
   };
 
   // Manejador para visitar página web externa
@@ -363,6 +397,18 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
           <ShowroomProjectModal
             project={selectedProject}
             categoryLabel={categoryNames[selectedProject.category] || selectedProject.category}
+            currentIndex={selectedProjectIndex}
+            totalProjects={filteredProjects.length}
+            hasPrev={selectedProjectIndex > 0}
+            hasNext={selectedProjectIndex >= 0 && selectedProjectIndex < filteredProjects.length - 1}
+            prevLabel={selectedProjectIndex > 0 ? filteredProjects[selectedProjectIndex - 1].title : undefined}
+            nextLabel={
+              selectedProjectIndex >= 0 && selectedProjectIndex < filteredProjects.length - 1
+                ? filteredProjects[selectedProjectIndex + 1].title
+                : undefined
+            }
+            onPrev={handlePrevProject}
+            onNext={handleNextProject}
             onClose={() => setSelectedProject(null)}
           />
         )}
