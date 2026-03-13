@@ -233,6 +233,10 @@ Bajo.
 
 ## Fase 5. Fortalecer showroom, ejemplos y prueba social
 
+Estado:
+
+- ✅ cerrada: `showroom` y `testimonials` ya dejaron de sonar a portafolio decorativo y pasaron a reforzar credibilidad con lenguaje mas orientado a negocio, contexto y confianza.
+
 ### Objetivo
 
 Convertir portfolio y testimonios en evidencia de venta, no solo en contenido bonito.
@@ -259,6 +263,18 @@ Bajo.
 - reemplazar metricas vagas por resultados mas creibles
 - fortalecer testimonios con contexto
 - sumar prueba social institucional si existe
+
+### Resultado implementado
+
+- `showroom-section` ya no presenta los proyectos como una galeria generica; ahora se explica mejor el valor de negocio y el contexto de cada caso.
+- el modal de casos ya organiza la informacion como `Contexto del proyecto`, `Lo que construimos` y `Valor que aporta`, acercando el bloque a una logica de caso real.
+- `testimonials-section` ya no usa un titulo y subtitulo genéricos; ahora introduce los testimonios como prueba de confianza vinculada a crecimiento, claridad y profesionalismo.
+- los estados vacios de testimonios dejaron de pedir accion artificial y ahora comunican el estado real sin sonar a placeholder de producto.
+
+### Lo que sigue
+
+- Fase 6 debe revisar si `pricing` ayuda o distrae respecto al recorrido comercial actual.
+- no conviene reabrir servicios ni hero antes de decidir la posicion de la oferta comercial final.
 
 ## Fase 6. Revisar pricing y oferta comercial
 
@@ -322,9 +338,8 @@ Medio-bajo.
 
 Orden recomendado de ejecucion:
 
-1. Fase 5
-2. Fase 6
-3. Fase 7
+1. Fase 6
+2. Fase 7
 
 ## KPI cualitativos a vigilar
 

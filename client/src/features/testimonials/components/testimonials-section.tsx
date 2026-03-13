@@ -169,11 +169,11 @@ export default function TestimonialsSection({ setRef }: TestimonialsSectionProps
           variants={titleVariants}
         >
           <h2 className="font-rajdhani font-bold text-3xl md:text-5xl mb-6">
-            <span className="gradient-text gradient-border inline-block pb-2">Testimonios de Nuestros Clientes</span>
+            <span className="gradient-text gradient-border inline-block pb-2">Lo que valoran quienes trabajan con TuWeb.ai</span>
           </h2>
 
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            Lo Que Dicen Quienes Ya Han Confiado en Nosotros
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+            Experiencias reales de clientes que necesitaban una presencia digital mas clara, mas profesional y mejor preparada para crecer.
           </p>
         </motion.div>
 
@@ -184,8 +184,8 @@ export default function TestimonialsSection({ setRef }: TestimonialsSectionProps
             </div>
           ) : testimonials.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-gray-400 text-lg">Aun no hay testimonios publicados.</p>
-              <p className="text-gray-500 text-sm mt-2">Se el primero en compartir tu experiencia.</p>
+              <p className="text-gray-400 text-lg">Todavia no hay testimonios publicados.</p>
+              <p className="text-gray-500 text-sm mt-2">Cuando empecemos a recibir mas historias reales, las vas a ver aca.</p>
             </div>
           ) : (
             <Slider {...settings} ref={sliderRef}>
@@ -235,8 +235,8 @@ export default function TestimonialsSection({ setRef }: TestimonialsSectionProps
             </div>
           ) : testimonials.length === 0 ? (
             <div className="col-span-3 text-center py-12">
-              <p className="text-gray-400 text-lg">Aun no hay testimonios publicados.</p>
-              <p className="text-gray-500 text-sm mt-2">Se el primero en compartir tu experiencia.</p>
+              <p className="text-gray-400 text-lg">Todavia no hay testimonios publicados.</p>
+              <p className="text-gray-500 text-sm mt-2">Cuando empecemos a recibir mas historias reales, las vas a ver aca.</p>
             </div>
           ) : (
             <AnimatePresence>

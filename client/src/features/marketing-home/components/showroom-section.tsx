@@ -15,7 +15,6 @@ interface Project {
   detailsUrl: string;
   externalUrl?: string;
 }
-
 interface ShowroomSectionProps {
   setRef: (ref: HTMLElement | null) => void;
 }
@@ -272,7 +271,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
           variants={titleVariants}
         >
           <h2 className="font-rajdhani font-bold text-3xl md:text-5xl mb-4">
-            <span className="gradient-text gradient-border inline-block pb-2">Showroom Virtual</span>
+            <span className="gradient-text gradient-border inline-block pb-2">Casos reales pensados para negocio</span>
           </h2>
         </motion.div>
         
@@ -283,8 +282,8 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
           animate={hasShownSubtitle ? "visible" : "hidden"}
           variants={subtitleVariants}
         >
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            Explora nuestros proyectos destacados y descubre cómo transformamos ideas en experiencias digitales exitosas.
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+            Mira ejemplos de sitios, dashboards y plataformas web donde combinamos claridad comercial, operacion mas ordenada y una experiencia digital profesional.
           </p>
         </motion.div>
         
@@ -416,13 +415,13 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
                 </div>
                 
                 <div className="mb-6">
-                  <h4 className="font-rajdhani font-bold text-xl text-white mb-3">Descripción</h4>
+                  <h4 className="font-rajdhani font-bold text-xl text-white mb-3">Contexto del proyecto</h4>
                   <p className="text-gray-300">{selectedProject.description}</p>
                 </div>
                 
                 <div className="grid md:grid-cols-2 gap-6 mb-6">
                   <div>
-                    <h4 className="font-rajdhani font-bold text-xl text-white mb-3">Características</h4>
+                    <h4 className="font-rajdhani font-bold text-xl text-white mb-3">Lo que construimos</h4>
                     <ul className="space-y-2">
                       {selectedProject.features.map((feature, index) => (
                         <li key={index} className="flex items-start">
@@ -436,7 +435,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
                   </div>
                   
                   <div>
-                    <h4 className="font-rajdhani font-bold text-xl text-white mb-3">Resultados</h4>
+                    <h4 className="font-rajdhani font-bold text-xl text-white mb-3">Valor que aporta</h4>
                     <div className="grid grid-cols-2 gap-4">
                       {selectedProject.results.map((result, index) => (
                         <div key={index} className="bg-[#1a1a23] p-4 rounded-lg text-center">
@@ -475,7 +474,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
         {/* Call to action */}
         <div className="text-center mt-14">
           <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
-            ¿Quieres ver más ejemplos de nuestro trabajo? Contáctanos para acceder a nuestro portafolio completo.
+            Si buscas una solucion similar para tu negocio, podemos ayudarte a definir el mejor enfoque segun tu etapa, tus objetivos y la complejidad real del proyecto.
           </p>
           
           <motion.div whileHover={{ scale: 1.05 }} transition={{ type: "spring", stiffness: 400, damping: 10 }}>
@@ -491,4 +490,5 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
     </section>
   );
 }
+
 
