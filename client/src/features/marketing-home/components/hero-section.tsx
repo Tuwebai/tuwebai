@@ -132,7 +132,7 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
             to="/consulta"
             className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-7 py-3 text-white font-semibold shadow-[0_10px_30px_rgba(0,204,255,0.22)] transition-transform duration-300 hover:scale-[1.02]"
           >
-            Solicitar diagnostico gratuito
+            Contar mi proyecto
           </RouterLink>
 
           <ScrollLink
@@ -178,7 +178,7 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
               animate={{ y: [0, 5, 0] }}
               transition={{ duration: 2, repeat: Infinity }}
             >
-              Descubrir mas
+              Conocer como trabajamos
             </motion.span>
             <motion.svg
               xmlns="http://www.w3.org/2000/svg"

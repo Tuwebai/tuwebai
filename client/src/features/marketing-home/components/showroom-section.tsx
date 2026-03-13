@@ -483,7 +483,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
               to="/consulta"
               className="inline-block px-8 py-4 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-full text-white font-medium shadow-lg hover:shadow-[#00CCFF]/20"
             >
-              Solicitar una consulta
+              Quiero una solucion similar
             </Link>
           </motion.div>
         </div>

@@ -322,7 +322,7 @@ export default function ComparisonSection({ setRef }: ComparisonSectionProps) {
               whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
-              Solicitar propuesta personalizada
+              Pedir propuesta personalizada
             </motion.a>
           </div>
         </motion.div>

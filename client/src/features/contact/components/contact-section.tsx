@@ -124,7 +124,7 @@ function ContactForm({ delay }: ContactFormProps) {
       transition={{ duration: 0.3 }}
     >
       <div className="bg-glass backdrop-blur-md p-8 rounded-xl shadow-xl">
-        <h3 className="font-rajdhani font-bold text-2xl mb-6 text-white">Solicita tu consulta estrategica gratuita</h3>
+        <h3 className="font-rajdhani font-bold text-2xl mb-6 text-white">Contanos tu proyecto</h3>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
@@ -182,7 +182,7 @@ function ContactForm({ delay }: ContactFormProps) {
             whileTap={{ scale: 0.98 }}
             transition={{ duration: 0.2 }}
           >
-            {submitState === 'sent' ? 'Enviado' : 'Solicitar consulta gratuita'}
+            {submitState === 'sent' ? 'Enviado' : 'Quiero una propuesta inicial'}
           </motion.button>
         </form>
       </div>
@@ -248,7 +248,7 @@ function ContactInfo({ delay }: ContactInfoProps) {
         </div>
       </div>
 
-      <h4 className="font-rajdhani font-bold text-xl mb-4 text-white">Que obtendras con tu consulta gratuita?</h4>
+      <h4 className="font-rajdhani font-bold text-xl mb-4 text-white">Que obtenes en esta primera conversacion?</h4>
 
       <ul className="space-y-3">
         <li className="flex items-center space-x-3">
@@ -325,7 +325,7 @@ export default function ContactSection({ setRef }: ContactSectionProps) {
           </h2>
 
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            Agenda Tu Consulta Gratuita y Descubre Como Podemos Ayudarte
+            Contanos que necesitas y te ayudamos a definir el mejor camino para tu proyecto web.
           </p>
         </motion.div>
 

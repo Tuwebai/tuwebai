@@ -186,6 +186,10 @@ Medio.
 
 ## Fase 4. Mejorar CTA y camino a consulta
 
+Estado:
+
+- ✅ cerrada: el landing ya distingue mejor CTA de cierre (`Contar mi proyecto`, `Pedir propuesta personalizada`, `Quiero una propuesta inicial`) y CTA de exploracion (`Ver proyectos reales`, `Conocer como trabajamos`), reduciendo dispersion en el camino hacia `/consulta`
+
 ### Objetivo
 
 Hacer que cada CTA responda a una oferta clara y a una expectativa realista.
@@ -214,6 +218,18 @@ Bajo.
 - separar CTA de exploracion y CTA de cierre
 - mejorar copy de consulta
 - alinear beneficios prometidos con lo que realmente entrega la consulta
+
+### Resultado implementado
+
+- el CTA principal del hero ya no compite con otros cierres ambiguos; ahora abre el recorrido con `Contar mi proyecto`
+- el CTA de scroll del hero ya no usa un verbo generico; ahora orienta mejor la exploracion con `Conocer como trabajamos`
+- showroom, comparativa, contacto y pricing ya empujan hacia una misma narrativa comercial de proyecto, propuesta inicial y solucion a medida
+- se redujo el uso de copy debil o repetitivo como `Solicitar una consulta` y `Consultar planes personalizados`
+
+### Lo que sigue
+
+- Fase 5 debe reforzar credibilidad del recorrido con mejores casos, contexto y prueba social
+- no conviene abrir nuevos CTA antes de consolidar showroom y testimonios
 
 ## Fase 5. Fortalecer showroom, ejemplos y prueba social
 
@@ -306,11 +322,9 @@ Medio-bajo.
 
 Orden recomendado de ejecucion:
 
-1. Fase 3
-2. Fase 4
-3. Fase 5
-4. Fase 6
-5. Fase 7
+1. Fase 5
+2. Fase 6
+3. Fase 7
 
 ## KPI cualitativos a vigilar
 

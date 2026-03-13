@@ -306,7 +306,7 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
             whileHover={{ scale: 1.05 }}
             transition={{ type: 'spring', stiffness: 400, damping: 10 }}
           >
-            Consultar planes personalizados
+            Necesito una propuesta a medida
           </motion.a>
         </div>
       </div>
