@@ -77,15 +77,15 @@ Lectura:
 Estado actual:
 
 - reemplaza a la vieja `Preferencias`
-- hoy funciona como shell honesto, sin toggles fake
-- queda reservada para controles sensibles con efecto verificable
+- hoy ya gobierna visibilidad del resumen, consentimientos y enlaces legales desde un centro de privacidad interno
+- queda consolidada como tab propia para controles sensibles con efecto verificable
 - el plan de dominio dedicado vive en `docs/PRIVACY_DOMAIN_IMPLEMENTATION_PLAN.md`
 
 Lectura:
 
 - semantica correcta para consentimiento, visibilidad y control de datos
 - no conviene mezclarla con experiencia visual ni accesibilidad
-- necesita implementacion real antes de poblarla
+- ya no necesita tab generica contenedora ni toggles fake para justificar su existencia
 
 #### `Integraciones`
 
@@ -284,7 +284,7 @@ Resultado real:
 
 - `Comunicaciones` fue retirada del runtime del panel
 - la vieja semantica de `Preferencias` quedo descartada
-- la tab ya quedo renombrada a `Privacidad` y funciona como shell honesto hasta tener controles reales
+- la tab ya quedo renombrada a `Privacidad` y el panel dejo de depender de una etiqueta generica para controles sensibles
 
 ### Fase 2. Consolidar `Privacidad` como tab propia
 
@@ -306,7 +306,7 @@ Resultado real:
 
 - `Preferencias` fue reemplazada en el runtime por la tab `Privacidad`
 - la navegacion del panel ya no usa una etiqueta generica para controles sensibles
-- `Privacidad` queda como shell honesto mientras se define wiring real para visibilidad, consentimiento y control de datos
+- `Privacidad` ya gobierna visibilidad del resumen, consentimientos persistidos y enlaces legales desde una navegacion interna propia
 
 ### Fase 3. Evaluar una futura tab de `Preferencias`
 
@@ -344,13 +344,12 @@ Condicion:
 
 ## Orden Recomendado
 
-1. Fase 0 congelar expansion innecesaria
-2. Fase 0 cerrada
-3. Fase 1 cerrada
-4. Fase 2 consolidar `Privacidad`
-5. Fase 3 evaluar futura tab de `Preferencias`
-6. Fase 4 evaluar `Accesibilidad`
-7. Fase 5 evaluar `Actividad`
+1. Fase 0 cerrada
+2. Fase 1 cerrada
+3. Fase 2 cerrada
+4. Fase 3 evaluar futura tab de `Preferencias`
+5. Fase 4 evaluar `Accesibilidad`
+6. Fase 5 evaluar `Actividad`
 
 ## Riesgos
 

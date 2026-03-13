@@ -24,6 +24,9 @@ Repositorio principal del stack activo de Tuwebai.
 - `docs/ENTERPRISE_RESTRUCTURE_PLAN.md`
 - `docs/UI_RUNTIME_FINALIZATION_PLAN.md`
 - `docs/FINAL_RUNTIME_SUBSTITUTION_PLAN.md`
+- `docs/PRIVACY_DOMAIN_IMPLEMENTATION_PLAN.md`
+- `docs/PANEL_INFORMATION_ARCHITECTURE_PLAN.md`
+- `docs/USER_DASHBOARD_DECOMPOSITION_PLAN.md`
 - `docs/TECHNICAL_RISK_SCORE.md`
 - `audit-tuweai.md`
 

@@ -286,8 +286,18 @@ Cambios esperados:
 
 - ajustar textos de guardado vs aplicado
 - dejar claro que tema e idioma ya quedaron definidos por producto
-- mostrar que las preferencias de comunicaciones quedan preparadas para integracion global
+- mostrar que las preferencias de comunicaciones fueron retiradas del panel y que el dominio sensible vive en `Privacidad`
 - si Firestore no esta disponible, mostrar error mas especifico
+
+Estado:
+
+- cerrada
+
+Resultado real:
+
+- el panel ya no conserva bloques falsos de apariencia o idioma
+- la tab `Privacidad` ya reemplazo a `Preferencias` como centro de configuracion sensible
+- la UI ya sinceró el alcance real del panel sin prometer toggles de comunicaciones inexistentes
 
 ### Fase 6. Endurecer consistencia de preferencias vivas
 
@@ -301,14 +311,25 @@ Direccion target:
 - una capa transversal aplica side effects de comunicaciones cuando existan
 - el panel solo edita, no define comportamiento por si mismo
 
+Estado:
+
+- diferida
+
+Resultado real:
+
+- el frontend ya retiro el modelo vivo de `userPreferences` del panel
+- el endpoint legacy `/api/users/:uid/preferences` sigue existiendo solo por compatibilidad contractual
+- no corresponde reabrir una capa global de preferencias mientras el producto no tenga nuevas preferencias reales fuera de `Privacidad`
+
 ## Orden Recomendado
 
 1. Fase 1 cerrada por decision de producto
 2. Fase 2 cerrada por decision de producto
-3. Fase 4 reubicar semantica del panel
-4. Fase 5 copy y estados UX
-5. Fase 3 comunicaciones reales o sinceramiento definitivo de toggles
-6. Fase 6 consolidacion
+3. Fase 4 cerrada
+4. Fase 4.1 cerrada
+5. Fase 5 cerrada
+6. Fase 3 diferida hasta que exista dominio real de comunicaciones
+7. Fase 6 diferida hasta que reaparezcan preferencias reales fuera de `Privacidad`
 
 ## Riesgos
 
@@ -324,3 +345,18 @@ Este frente se considera cerrado cuando:
 - `newsletter` y `emailNotifications` tienen comportamiento real o quedaron retirados del panel con copy sincerado
 - el panel deja de afirmar cosas que el runtime no cumple
 - `check`, `lint`, `build` y `smoke` siguen en verde
+
+## Estado final del plan
+
+- Fase 1 cerrada por decision de producto
+- Fase 2 cerrada por decision de producto
+- Fase 3 diferida por ausencia de dominio real de comunicaciones
+- Fase 4 cerrada
+- Fase 4.1 cerrada
+- Fase 5 cerrada
+- Fase 6 diferida
+
+Conclusion:
+
+- el frente original de `settings` del panel puede considerarse cerrado para el estado actual del producto
+- cualquier trabajo futuro ya no debe salir de `preferences` legacy, sino del dominio `Privacidad` o de un dominio nuevo con sustento real
