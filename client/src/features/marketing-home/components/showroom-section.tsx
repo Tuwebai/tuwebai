@@ -10,8 +10,6 @@ interface ShowroomSectionProps {
 
 export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
-  const lockedScrollYRef = useRef(0);
-  const modalWasOpenRef = useRef(false);
   const { ref: titleRef, hasIntersected: titleVisible } = useIntersectionObserver<HTMLDivElement>();
   const { ref: subtitleRef, hasIntersected: subtitleVisible } = useIntersectionObserver<HTMLDivElement>();
   const { ref: projectsRef, hasIntersected: projectsVisible } = useIntersectionObserver<HTMLDivElement>();
@@ -34,38 +32,19 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
     if (projectsVisible) setHasShownProjects(true);
   }, [projectsVisible]);
   
-  // Prevenir scroll del body cuando el modal está abierto
+  // Prevenir scroll del documento mientras el modal está abierto.
   useEffect(() => {
     if (selectedProject) {
-      // Guardar la posición actual del scroll y congelar la página detrás del modal.
-      modalWasOpenRef.current = true;
-      lockedScrollYRef.current = window.scrollY;
-      document.body.style.position = 'fixed';
-      document.body.style.top = `-${lockedScrollYRef.current}px`;
-      document.body.style.left = '0';
-      document.body.style.right = '0';
-      document.body.style.width = '100%';
       document.body.style.overflow = 'hidden';
-    } else if (modalWasOpenRef.current) {
-      // Restaurar solo cuando el modal pasó de abierto a cerrado.
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.left = '';
-      document.body.style.right = '';
-      document.body.style.width = '';
+      document.documentElement.style.overflow = 'hidden';
+    } else {
       document.body.style.overflow = '';
-      window.scrollTo(0, lockedScrollYRef.current);
-      modalWasOpenRef.current = false;
+      document.documentElement.style.overflow = '';
     }
     
-    // Cleanup al desmontar el componente
     return () => {
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.left = '';
-      document.body.style.right = '';
-      document.body.style.width = '';
       document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
     };
   }, [selectedProject]);
 

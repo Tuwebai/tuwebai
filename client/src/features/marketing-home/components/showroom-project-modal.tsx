@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { createPortal } from 'react-dom';
 import type { ShowroomProject } from './showroom-types';
 
 interface ShowroomProjectModalProps {
@@ -13,13 +14,17 @@ export default function ShowroomProjectModal({
   categoryLabel,
   onClose,
 }: ShowroomProjectModalProps) {
-  return (
+  if (typeof document === 'undefined') {
+    return null;
+  }
+
+  return createPortal(
     <div
-      className="fixed inset-0 z-50 overflow-y-auto bg-black/10 p-4 backdrop-blur-[2px] md:p-6"
+      className="fixed inset-0 z-50 overflow-y-auto bg-transparent p-4 md:p-6"
       onClick={onClose}
     >
       <motion.div
-        className="mx-auto flex min-h-full w-full max-w-6xl items-start justify-center py-8 md:py-10"
+        className="mx-auto flex min-h-[calc(100dvh-2rem)] w-full max-w-6xl items-center justify-center md:min-h-[calc(100dvh-3rem)]"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -168,6 +173,7 @@ export default function ShowroomProjectModal({
           </div>
         </motion.div>
       </motion.div>
-    </div>
+    </div>,
+    document.body
   );
 }
