@@ -4,6 +4,7 @@
 
 @layer base {
   :root {
+    --landing-header-offset: 5.5rem;
     --background: 240 14% 10%;
     --foreground: 0 0% 100%;
 
@@ -42,6 +43,7 @@
   html {
     scroll-behavior: smooth;
     scroll-snap-type: y proximity;
+    scroll-padding-top: var(--landing-header-offset);
     @apply overflow-x-hidden;
   }
 
@@ -55,6 +57,11 @@
     scroll-snap-align: start;
     scroll-margin-top: 0px;
     @apply overflow-hidden;
+  }
+
+  .landing-anchor-section {
+    min-height: calc(100svh - var(--landing-header-offset));
+    scroll-margin-top: calc(var(--landing-header-offset) + 0.25rem);
   }
   
   /* Estilos para Slick Carousel */

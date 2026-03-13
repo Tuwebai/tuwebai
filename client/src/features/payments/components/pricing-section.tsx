@@ -200,7 +200,7 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
     <section
       id="pricing"
       ref={sectionRef}
-        className="min-h-screen scroll-mt-28 md:scroll-mt-32 flex items-center justify-center relative bg-gradient-1 py-20"
+        className="landing-anchor-section flex items-center justify-center relative bg-gradient-1 py-20"
     >
       <PaymentErrorDialog
         open={!!errorCheckout}

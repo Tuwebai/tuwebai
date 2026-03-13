@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { scrollToHomeSection } from '@/features/marketing-home/utils/scroll-to-home-section';
 
 interface Section {
   id: string;
@@ -58,14 +59,7 @@ export default function NavDots({ sections }: NavDotsProps) {
 
               const sectionElement = document.getElementById(section.id);
               if (sectionElement) {
-                const headerOffset = 100;
-                const elementPosition = sectionElement.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-                window.scrollTo({
-                  top: offsetPosition,
-                  behavior: 'smooth'
-                });
+                scrollToHomeSection(sectionElement);
 
                 window.history.pushState(null, '', `#${section.id}`);
               }

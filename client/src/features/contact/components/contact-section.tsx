@@ -307,7 +307,7 @@ export default function ContactSection({ setRef }: ContactSectionProps) {
     <section
       id="contact"
       ref={sectionRef}
-        className="min-h-screen scroll-mt-28 md:scroll-mt-32 flex items-center justify-center relative bg-gradient-2"
+        className="landing-anchor-section flex items-center justify-center relative bg-gradient-2"
     >
       <AnimatedShape type={1} className="top-[20%] left-[-150px]" delay={1} />
       <AnimatedShape type={2} className="bottom-[10%] right-[-100px]" delay={2} />

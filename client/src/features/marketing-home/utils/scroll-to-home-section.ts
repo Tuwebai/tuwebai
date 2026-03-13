@@ -1,5 +1,5 @@
-const HOME_SECTION_SCROLL_GAP = 24;
-const FALLBACK_HEADER_OFFSET = 120;
+const HOME_SECTION_SCROLL_GAP = 4;
+const FALLBACK_HEADER_OFFSET = 96;
 
 function getHeaderOffset() {
   const header = document.querySelector('header');
