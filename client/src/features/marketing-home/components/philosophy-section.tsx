@@ -46,34 +46,38 @@ export default function PhilosophySection({ setRef }: PhilosophySectionProps) {
         >
           <h2 className="font-rajdhani font-bold text-3xl md:text-5xl mb-6">
             <span className="gradient-text gradient-border inline-block pb-2">
-              Liderando la Transformación Digital Global
+              Un enfoque web pensado para negocio, no para improvisar
             </span>
           </h2>
 
           <p className="text-lg md:text-xl font-medium mb-6 text-gray-200">
-            TuWeb.ai - Consultoría Digital y Comercial Global para el Éxito Empresarial
+            Disenamos, desarrollamos y optimizamos experiencias web que ayudan a vender mejor,
+            operar con mas claridad y transmitir una imagen profesional.
           </p>
 
           <p className="text-gray-300 mb-4">
-            <strong>Misión:</strong> Impulsamos el crecimiento de empresas con soluciones digitales que generan resultados reales.
+            No trabajamos con recetas genericas ni con sitios que se ven bien pero no
+            acompanan al negocio. Cada proyecto se construye con foco en objetivos reales,
+            estructura clara y rendimiento.
           </p>
 
           <p className="text-gray-300 mb-4">
-            <strong>Visión:</strong> Ser el socio estratégico líder en transformación digital y éxito global para nuestros clientes.
+            El objetivo no es solo publicar una web: es crear una plataforma digital seria,
+            confiable y preparada para crecer con tu empresa.
           </p>
 
           <div className="inline-flex items-center space-x-3 mb-2">
-            <div className="h-1 w-12 bg-[#00CCFF]"></div>
+            <div className="h-1 w-12 bg-[#00CCFF]" />
             <span className="text-gray-400 font-rajdhani uppercase tracking-wider text-sm">
-              Valores
+              Como trabajamos
             </span>
           </div>
 
-          <ul className="mb-4 space-y-1">
-            <li className="text-gray-300">• Innovación</li>
-            <li className="text-gray-300">• Excelencia</li>
-            <li className="text-gray-300">• Resultados</li>
-            <li className="text-gray-300">• Integridad</li>
+          <ul className="mb-4 space-y-3">
+            <li className="text-gray-300">• Estrategia antes que decoracion</li>
+            <li className="text-gray-300">• Desarrollo web alineado al negocio</li>
+            <li className="text-gray-300">• Rendimiento, claridad y confianza</li>
+            <li className="text-gray-300">• Base preparada para escalar</li>
           </ul>
         </motion.div>
 
@@ -85,21 +89,24 @@ export default function PhilosophySection({ setRef }: PhilosophySectionProps) {
         >
           <div className="relative p-1 rounded-lg bg-gradient-to-br from-[#00CCFF] to-[#9933FF]">
             <div className="bg-[#0a0a0f] rounded-lg p-8">
-              <h3 className="font-rajdhani text-2xl mb-6 text-gray-100">Superando los Retos Digitales del Siglo XXI</h3>
-              <h4 className="text-gray-200 mb-4 font-medium">En un entorno digital en constante cambio, incluso las grandes empresas enfrentan obstáculos que frenan su crecimiento y competitividad.</h4>
-              <ul className="mb-4 space-y-2">
-                <li className="text-gray-300">• Estrategias digitales ineficaces</li>
-                <li className="text-gray-300">• Falta de visión y adaptación</li>
-                <li className="text-gray-300">• Tecnología sin alineación al negocio</li>
-                <li className="text-gray-300">• Procesos lentos y resistencia</li>
-                <li className="text-gray-300">• ROI digital poco claro</li>
-                <li className="text-gray-300">• Oportunidades perdidas por falta de anticipación</li>
-                <li className="text-gray-300">• Equipos sin capacitación</li>
-                <li className="text-gray-300">• Ausencia de alianzas globales</li>
+              <h3 className="font-rajdhani text-2xl mb-4 text-gray-100">
+                Lo que resolvemos en proyectos reales
+              </h3>
+              <p className="text-gray-200 mb-5 font-medium">
+                Muchas empresas ya tienen presencia online, pero no una web que realmente
+                acompane ventas, operacion y crecimiento.
+              </p>
+              <ul className="mb-4 space-y-3">
+                <li className="text-gray-300">• Sitios que no transmiten confianza ni profesionalismo</li>
+                <li className="text-gray-300">• Estructuras confusas que dificultan conversion y contacto</li>
+                <li className="text-gray-300">• Herramientas desconectadas del proceso comercial</li>
+                <li className="text-gray-300">• Tecnologia que se vuelve una carga en vez de una ventaja</li>
               </ul>
-              <div className="mt-6">
-                <p className="text-gray-400 text-sm">
-                  En TuWebi, convertimos estos desafíos en oportunidades, impulsando la transformación digital de tu empresa con soluciones a medida, visión estratégica y resultados tangibles.
+              <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-4">
+                <p className="text-gray-300 text-sm leading-relaxed">
+                  Por eso trabajamos con una logica simple: entender el negocio, definir
+                  prioridades y construir una solucion web clara, rapida y lista para
+                  sostener crecimiento real.
                 </p>
               </div>
             </div>

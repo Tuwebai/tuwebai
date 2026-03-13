@@ -103,6 +103,43 @@ Medio-bajo.
 - Fase 3 debe tomar este hero como base para simplificar la arquitectura de oferta
 - no conviene tocar `nav-dots` antes de revisar servicios y CTA del home
 
+## Fase 2.5. Reestructurar la seccion de filosofia
+
+Estado:
+
+- ✅ cerrada: `philosophy-section` ya no funciona como bloque abstracto de consultoria global; ahora conecta hero y servicios con un mensaje de enfoque, criterio de trabajo y problemas reales que TuWebAI resuelve.
+
+### Objetivo
+
+Convertir la seccion de filosofia en un puente de confianza entre el hero comercial y la oferta concreta de servicios.
+
+### Impacto esperado
+
+- menos dispersion narrativa despues del hero
+- mas continuidad entre propuesta de valor y oferta
+- mayor sensacion de criterio profesional antes de llegar a servicios
+
+### Riesgo de regresion
+
+Bajo.
+
+### Archivos potencialmente afectados
+
+- [philosophy-section.tsx](c:\Users\juan\Documents\Proyectos\Tuwebai\client\src\features\marketing-home\components\philosophy-section.tsx)
+- [COPY_GROWTH_PLAN.md](c:\Users\juan\Documents\Proyectos\Tuwebai\docs\COPY_GROWTH_PLAN.md)
+
+### Resultado implementado
+
+- se retiro el discurso abstracto de "transformacion digital global", "mision", "vision" y "valores" genericos
+- la seccion ahora explica como trabaja TuWebAI y por que ese enfoque le sirve a un negocio real
+- el bloque derecho ya no enumera obstaculos vagos; ahora presenta problemas concretos que una web profesional ayuda a resolver
+- el mensaje de la seccion refuerza confianza y prepara mejor el paso hacia servicios
+
+### Lo que sigue
+
+- Fase 3 debe tomar esta nueva seccion como puente narrativo entre hero y oferta
+- con hero + filosofia ya alineados, el siguiente frente correcto es simplificar servicios
+
 ## Fase 3. Reestructurar servicios
 
 ### Objetivo
