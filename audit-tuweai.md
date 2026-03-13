@@ -65,8 +65,8 @@ Eso eleva el costo de mantenimiento, debilita la gobernanza y deja riesgos concr
 
 - No es un monorepo gobernado; es un repositorio único con múltiples stacks mezclados.
 - Hay dos backends potenciales para varias capacidades: `server/` y `api/`. ✅ corregido: PHP movido a `legacy/` y `api/` quedó reducido a residuo local vacío sin archivos versionados ni uso operativo
-- Hay dos centros de configuración frontend: [`vite.config.ts`](./vite.config.ts) y [`client/vite.config.ts`](./client/vite.config.ts). ✅ corregido parcialmente: raíz definida como source of truth; `client/` marcado deprecated
-- Hay dos configuraciones Netlify: [`netlify.toml`](./netlify.toml) y [`client/netlify.toml`](./client/netlify.toml). ✅ corregido parcialmente: raíz definida como source of truth; `client/` marcado deprecated
+- Hay dos centros de configuración frontend: [`vite.config.ts`](./vite.config.ts) y el antiguo `client/vite.config.ts`. ✅ corregido: la configuración duplicada de `client/` fue retirada y la raíz quedó como única fuente oficial
+- Hay dos configuraciones Netlify: [`netlify.toml`](./netlify.toml) y el antiguo `client/netlify.toml`. ✅ corregido: la configuración duplicada de `client/` fue retirada y la raíz quedó como única fuente oficial
 - El frontend usa una mezcla de `contexts`, `hooks`, `services` y acceso directo a API desde componentes/páginas. ✅ corregido parcialmente: frontera `app/core/features/shared` preparada, migración de consumers pendiente
 - El backend concentraba demasiada responsabilidad en `server/src/controllers/public.controller.ts`. ✅ corregido: dominios extraídos a `server/src/modules/` y la fachada temporal fue retirada tras quedar sin consumidores
 
@@ -198,9 +198,9 @@ Esto no solo es deuda técnica: es **riesgo activo** si ese código sigue desple
 - `firebase-functions-contacto/functions/lib/`
   - build compilado dentro de subproyecto ✅ corregido
 - `client/vite.config.ts`
-  - configuración duplicada respecto a raíz ✅ corregido parcialmente: marcada deprecated
+  - configuración duplicada respecto a raíz ✅ corregido: retirada tras confirmar ausencia de consumidores
 - `client/netlify.toml`
-  - configuración duplicada respecto a raíz ✅ corregido parcialmente: marcada deprecated
+  - configuración duplicada respecto a raíz ✅ corregido: retirada tras confirmar ausencia de consumidores
 - `tuweb-ai.com-20260305T235948.json`
   - reporte Lighthouse puntual; útil solo si se versiona deliberadamente ✅ corregido: patrón ignorado y artefacto local limpiado
 - `.replit`
@@ -355,8 +355,8 @@ Hay imports directos de `backendApi` en componentes/páginas, por ejemplo:
 Esto rompe el patrón indicado por la gobernanza del repo y acopla UI con transporte. ✅ corregido parcialmente: `testimonials`, `auth`, `contact`, `newsletter`, `payments`, `support`, `projects`, `users` y `proposals` ya migrados a `features/`; quedan remanentes legacy de composición/UI
 Las `sections` restantes del landing (`hero`, `philosophy`, `services`, `process`, `tech`, `impact`, `comparison`, `showroom`) fueron re-auditadas y siguen temporales por formar parte del runtime estructural del home; no conviene moverlas antes de `Runtime shell` y `Pages finalization`. ✅ corregido parcialmente
 El runtime principal ya fue reubicado a `client/src/app/App.tsx`; `client/src/main.tsx` consume esa implementación final y `client/src/App.tsx` fue retirado tras quedar sin consumidores. ✅ corregido
-Los providers globales del runtime frontend ya fueron extraídos a `client/src/app/providers/AppProviders.tsx`, reduciendo acoplamiento en `App`. ✅ corregido parcialmente
-La tabla de rutas del runtime frontend ya fue extraída a `client/src/app/router/AppRoutes.tsx`, manteniendo paths y lazy loading sin cambios funcionales. ✅ corregido parcialmente
+Los providers globales del runtime frontend ya fueron extraídos a `client/src/app/providers/AppProviders.tsx`, reduciendo acoplamiento en `App`. ✅ corregido
+La tabla de rutas del runtime frontend ya fue extraída a `client/src/app/router/AppRoutes.tsx`, manteniendo paths y lazy loading sin cambios funcionales. ✅ corregido
 Las páginas `pago-exitoso`, `pago-fallido` y `pago-pendiente` ya no forman parte estructural del router; el runtime consume directamente `features/payments/components/payment-return-view` y esos entrypoints legacy fueron retirados tras quedar sin consumidores. ✅ corregido
 La página `contacto` ya no forma parte estructural del router; el runtime consume directamente `features/contact/components/support-contact-page` y `client/src/pages/contacto.tsx` fue retirada tras quedar sin consumidores. ✅ corregido
 La página `auth-verify` ya no forma parte estructural del router; el runtime consume directamente `features/auth/components/auth-verify-page` y `client/src/pages/auth-verify.tsx` fue retirada tras quedar sin consumidores. ✅ corregido
@@ -384,7 +384,7 @@ La `tech-section` del landing ya fue movida a `features/marketing-home/component
 La `impact-section` del landing ya fue movida a `features/marketing-home/components/impact-section`; `home.tsx` consume la implementación final y `components/sections/impact-section.tsx` fue retirado tras quedar sin consumidores. ✅ corregido
 La `comparison-section` del landing ya fue movida a `features/marketing-home/components/comparison-section`; `home.tsx` consume la implementación final y `components/sections/comparison-section.tsx` fue retirado tras quedar sin consumidores. ✅ corregido
 La `showroom-section` del landing ya fue movida a `features/marketing-home/components/showroom-section`; `home.tsx` consume la implementación final y `components/sections/showroom-section.tsx` fue retirado tras quedar sin consumidores. ✅ corregido
-La página `panel-usuario` sigue concentrando orquestación funcional de perfil, seguridad, preferencias e imagen; no corresponde adelgazarla en Fase 4 sin separar antes ese flujo por dominio. ✅ corregido parcialmente
+La página `panel-usuario` concentraba orquestación funcional de perfil, seguridad, preferencias e imagen; ese frente ya quedó resuelto mediante descomposición y `user-dashboard-page.tsx` hoy funciona como orquestador con tabs y helpers extraídos. ✅ corregido
 
 ### 3. Backend tipo “God controller”
 
@@ -474,7 +474,7 @@ En [`package.json`](./package.json):
 Bloqueantes:
 
 - páginas monolíticas
-- controller backend monolítico ✅ corregido parcialmente
+- controller backend monolítico ✅ corregido
 - duplicación de stacks
 - falta de frontera clara por dominio ✅ corregido parcialmente
 
