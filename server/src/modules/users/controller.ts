@@ -28,6 +28,12 @@ type UserPrivacyDocument = {
   updatedBy?: 'self';
 };
 
+type UserPrivacyField =
+  | 'marketingConsent'
+  | 'analyticsConsent'
+  | 'profileEmailVisible'
+  | 'profileStatusVisible';
+
 const DEFAULT_USER_PRIVACY_SETTINGS: Required<
   Pick<UserPrivacyDocument, 'marketingConsent' | 'analyticsConsent' | 'profileEmailVisible' | 'profileStatusVisible'>
 > = {
@@ -36,6 +42,13 @@ const DEFAULT_USER_PRIVACY_SETTINGS: Required<
   profileEmailVisible: true,
   profileStatusVisible: true,
 };
+
+const PRIVACY_FIELDS: UserPrivacyField[] = [
+  'marketingConsent',
+  'analyticsConsent',
+  'profileEmailVisible',
+  'profileStatusVisible',
+];
 
 type UserDocument = {
   uid?: string;
@@ -283,6 +296,7 @@ export const handleSetUserPrivacy = async (req: Request, res: Response) => {
     const current = await ref.get();
     const currentData = (current.data() as UserDocument | undefined) ?? null;
     const currentPrivacy = currentData?.privacy ?? {};
+    const changedFields = PRIVACY_FIELDS.filter((field) => incoming[field] !== undefined && incoming[field] !== currentPrivacy[field]);
     const nextPrivacy: UserPrivacyDocument = {
       ...DEFAULT_USER_PRIVACY_SETTINGS,
       ...currentPrivacy,
@@ -299,6 +313,16 @@ export const handleSetUserPrivacy = async (req: Request, res: Response) => {
       },
       { merge: true }
     );
+
+    if (changedFields.length > 0) {
+      appLogger.info('users.privacy_updated', {
+        uid,
+        changedFields,
+        updatedAt: nextPrivacy.updatedAt,
+        updatedBy: nextPrivacy.updatedBy,
+      });
+    }
+
     return res.json({ success: true, data: nextPrivacy });
   } catch (error: unknown) {
     appLogger.error('public.set_user_privacy_failed', {

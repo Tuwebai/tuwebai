@@ -405,6 +405,16 @@ Entregables:
 - evento de log estructurado
 - futura integracion con tab `Actividad` si aparece ese dominio
 
+Estado:
+
+- cerrada
+
+Resultado real:
+
+- `server/src/modules/users/controller.ts` ya registra `users.privacy_updated` cuando `PUT /api/users/:uid/privacy` modifica campos efectivos
+- el log estructurado incluye `uid`, `changedFields`, `updatedAt` y `updatedBy` sin exponer valores sensibles
+- la trazabilidad queda acotada al backend y no abre todavia una tab `Actividad` mientras ese dominio no exista
+
 ### Fase 6. Evaluar capacidades avanzadas
 
 Objetivo:
@@ -425,7 +435,7 @@ Solo si hay negocio real detras:
 3. Fase 2 cerrada
 4. Fase 3 cerrada
 5. Fase 4 cerrada
-6. Fase 5 trazabilidad
+6. Fase 5 cerrada
 7. Fase 6 capacidades avanzadas
 
 ## Riesgos
