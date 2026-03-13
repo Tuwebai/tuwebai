@@ -96,7 +96,7 @@ Medio-bajo.
 - la jerarquia ahora prioriza servicio, resultado y siguiente paso
 - los CTA ya distinguen cierre (`Solicitar diagnostico gratuito`) y exploracion (`Ver proyectos reales`)
 - se agregaron microseñales de foco de oferta (`Sitios corporativos`, `E-commerce`, `Sistemas web`)
-- el typewriter se mantuvo, pero con menos dispersion y mensajes alineados al posicionamiento actual
+- la rotacion secundaria del hero ya no usa borrado letra por letra; ahora alterna frases con transicion `fade out / fade in`, manteniendo dinamismo sin castigar lectura ni conversion
 
 ### Lo que sigue
 

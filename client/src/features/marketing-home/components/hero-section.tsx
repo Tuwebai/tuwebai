@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState, type CSSProperties, type ComponentType } from 'react';
-import { motion } from 'framer-motion';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Link as RouterLink } from 'react-router-dom';
 import { Link as ScrollLink } from 'react-scroll';
 
@@ -8,31 +8,24 @@ interface HeroSectionProps {
   children?: React.ReactNode;
 }
 
-interface TypewriterEffectProps {
-  textStyle: CSSProperties;
-  startDelay: number;
-  cursorColor: string;
-  multiText: string[];
-  multiTextDelay: number;
-  typeSpeed: number;
-  multiTextLoop: boolean;
-}
-
 export default function HeroSection({ setRef, children }: HeroSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
-  const [isReady, setIsReady] = useState(false);
   const [heroOpacity, setHeroOpacity] = useState(1);
-  const [TypewriterEffectComponent, setTypewriterEffectComponent] =
-    useState<ComponentType<TypewriterEffectProps> | null>(null);
+  const [activeMessageIndex, setActiveMessageIndex] = useState(0);
+  const heroMessages = useMemo(
+    () => [
+      'Creamos sitios web, e-commerce y sistemas web que transmiten confianza y convierten visitas en oportunidades reales.',
+      'Tu negocio necesita una presencia digital seria, rapida y preparada para crecer sin improvisaciones.',
+      'Trabajamos con foco en negocio, rendimiento y una experiencia web profesional de punta a punta.',
+    ],
+    [],
+  );
 
   useEffect(() => {
     if (sectionRef.current && !sectionRef.current.hasAttribute('data-ref-set')) {
       setRef(sectionRef.current);
       sectionRef.current.setAttribute('data-ref-set', 'true');
     }
-
-    const timer = setTimeout(() => setIsReady(true), 0);
-    return () => clearTimeout(timer);
   }, [setRef]);
 
   useEffect(() => {
@@ -64,30 +57,12 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
   }, []);
 
   useEffect(() => {
-    let isMounted = true;
+    const rotationInterval = window.setInterval(() => {
+      setActiveMessageIndex((currentIndex) => (currentIndex + 1) % heroMessages.length);
+    }, 3200);
 
-    const loadTypewriterEffect = () => {
-      import('react-typewriter-effect')
-        .then((module) => {
-          if (isMounted) {
-            setTypewriterEffectComponent(() => module.default as ComponentType<TypewriterEffectProps>);
-          }
-        })
-        .catch(() => {
-          // Si falla la carga diferida, se mantiene texto estatico.
-        });
-    };
-
-    if ('requestIdleCallback' in window) {
-      window.requestIdleCallback(loadTypewriterEffect, { timeout: 3000 });
-    } else {
-      setTimeout(loadTypewriterEffect, 1200);
-    }
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+    return () => window.clearInterval(rotationInterval);
+  }, [heroMessages.length]);
 
   return (
     <section
@@ -133,31 +108,18 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
         >
-          {isReady && TypewriterEffectComponent ? (
-            <TypewriterEffectComponent
-              textStyle={{
-                fontFamily: 'Rajdhani, sans-serif',
-                color: '#d1d5db',
-                fontWeight: 500,
-                fontSize: '1.25rem',
-                textAlign: 'center',
-              }}
-              startDelay={700}
-              cursorColor="#00CCFF"
-              multiText={[
-                'Creamos sitios web, e-commerce y sistemas web que transmiten confianza y ayudan a convertir visitas en oportunidades reales.',
-                'Tu negocio necesita una presencia digital seria, rapida y preparada para crecer.',
-                'Trabajamos con foco en negocio, rendimiento y una experiencia web profesional de punta a punta.',
-              ]}
-              multiTextDelay={2600}
-              typeSpeed={40}
-              multiTextLoop
-            />
-          ) : (
-            <span className="inline-block text-gray-300">
-              Creamos sitios web, e-commerce y sistemas web que transmiten confianza y ayudan a convertir visitas en oportunidades reales.
-            </span>
-          )}
+          <AnimatePresence mode="wait">
+            <motion.p
+              key={heroMessages[activeMessageIndex]}
+              className="mx-auto max-w-4xl text-gray-300"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.35, ease: 'easeInOut' }}
+            >
+              {heroMessages[activeMessageIndex]}
+            </motion.p>
+          </AnimatePresence>
         </motion.div>
 
         <motion.div
