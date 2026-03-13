@@ -720,4 +720,5 @@ Nota de seguimiento:
 
 - ? corregido: el detalle de proyectos del showroom ya no depende de un modal inline largo y ruidoso dentro de `client/src/features/marketing-home/components/showroom-section.tsx`; ahora usa `client/src/features/marketing-home/components/showroom-project-modal.tsx` y `showroom-types.ts` para presentar cada caso con mejor jerarquia, menos ruido visual y layout responsive mas ejecutivo.
 - ? corregido: el modal de detalle del showroom ya no apaga el fondo con una capa gris pesada ni desperdicia media columna de preview; ahora mantiene backdrop blur mas liviano, presenta `Que necesitaba el cliente / Que resolvimos / Que aporta la solucion` debajo de la imagen, mueve las metricas al espacio util y elimina duplicacion de CTA superior para mejorar claridad y responsive.
+- ? corregido: el modal del showroom ya no usa scroll interno ni card semitransparente; el scroll vuelve al overlay, el card recupera fondo solido y el backdrop deja de lavar la pagina completa, manteniendo un efecto flotante mas consistente con el landing.
 

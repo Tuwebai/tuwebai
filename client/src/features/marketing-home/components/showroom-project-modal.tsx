@@ -15,17 +15,17 @@ export default function ShowroomProjectModal({
 }: ShowroomProjectModalProps) {
   return (
     <div
-      className="fixed inset-0 z-50 bg-[#05070f]/35 p-4 backdrop-blur-md md:p-6"
+      className="fixed inset-0 z-50 overflow-y-auto bg-black/10 p-4 backdrop-blur-[2px] md:p-6"
       onClick={onClose}
     >
       <motion.div
-        className="mx-auto flex h-full w-full max-w-6xl items-center justify-center py-4 md:py-8"
+        className="mx-auto flex min-h-full w-full max-w-6xl items-start justify-center py-8 md:py-10"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
       >
         <motion.div
-          className="relative w-full overflow-hidden rounded-[28px] border border-white/10 bg-[#121217]/96 shadow-[0_30px_90px_rgba(0,0,0,0.5)]"
+          className="relative w-full overflow-hidden rounded-[28px] border border-white/10 bg-[#121217] shadow-[0_34px_90px_rgba(0,0,0,0.55)]"
           initial={{ opacity: 0, scale: 0.96, y: 12 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 0.24, ease: 'easeOut' }}
@@ -42,8 +42,8 @@ export default function ShowroomProjectModal({
             </svg>
           </button>
 
-          <div className="grid max-h-[88vh] overflow-y-auto xl:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)]">
-            <div className="border-b border-white/10 bg-[#0d1016] xl:border-b-0 xl:border-r">
+          <div className="grid lg:grid-cols-[minmax(0,1.04fr)_minmax(320px,0.96fr)]">
+            <div className="border-b border-white/10 bg-[#0d1016] lg:border-b-0 lg:border-r">
               <div className="aspect-[16/10] overflow-hidden">
                 <img
                   src={project.image}
@@ -82,7 +82,7 @@ export default function ShowroomProjectModal({
               </div>
             </div>
 
-            <div className="flex flex-col p-5 sm:p-6 lg:p-8">
+            <div className="flex flex-col p-5 sm:p-6 lg:p-7 xl:p-8">
               <div className="mb-5 border-b border-white/10 pb-5 pr-10">
                 <div className="mb-3 flex flex-wrap items-center gap-2">
                   <span className="rounded-full border border-[#00CCFF]/30 bg-[#00CCFF]/10 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.18em] text-[#00CCFF]">
@@ -98,7 +98,7 @@ export default function ShowroomProjectModal({
                 </p>
               </div>
 
-              <div className="grid gap-5 lg:flex-1">
+              <div className="grid gap-5">
                 <section className="rounded-2xl border border-white/8 bg-white/[0.03] p-4 sm:p-5">
                   <div className="mb-3">
                     <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#00CCFF]">
@@ -125,14 +125,14 @@ export default function ShowroomProjectModal({
                       Impacto
                     </p>
                   </div>
-                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                     {project.results.map((result) => (
                       <div
                         key={`${project.id}-${result.label}`}
                         className="rounded-xl border border-white/8 bg-[#171b24] px-4 py-4 text-left"
                       >
-                        <div className="break-words text-2xl font-bold leading-none text-[#00CCFF] sm:text-3xl">{result.value}</div>
-                        <div className="mt-2 text-[11px] uppercase tracking-[0.14em] text-gray-400">
+                        <div className="text-2xl font-bold leading-none text-[#00CCFF] sm:text-3xl">{result.value}</div>
+                        <div className="mt-2 text-[11px] uppercase tracking-[0.12em] text-gray-400">
                           {result.label}
                         </div>
                       </div>

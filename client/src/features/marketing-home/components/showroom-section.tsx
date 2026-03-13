@@ -142,7 +142,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
       results: [
         { label: "Satisfaccion", value: "98%" },
         { label: "Productos originales", value: "100%" },
-        { label: "Variedad", value: "+200 fragancias" }
+        { label: "Fragancias", value: "+200" }
       ],
       image: "/lhdecant-card.png",
       detailsUrl: "/showroom",
