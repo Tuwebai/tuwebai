@@ -126,17 +126,12 @@
     <script type="module" src="/src/main.tsx"></script>
     <script>
       (function () {
-        var gtagLoaded = false;
         var adsenseLoaded = false;
         var hostname = window.location.hostname;
         var isLocalEnvironment =
           hostname === "localhost" ||
           hostname === "127.0.0.1" ||
           hostname === "[::1]";
-        window.dataLayer = window.dataLayer || [];
-        window.gtag = window.gtag || function () {
-          window.dataLayer.push(arguments);
-        };
 
         function loadScript(src, attrs) {
           var script = document.createElement("script");
@@ -154,13 +149,6 @@
         function loadAnalyticsAndAds() {
           if (isLocalEnvironment) {
             return;
-          }
-
-          if (!gtagLoaded) {
-            gtagLoaded = true;
-            loadScript("https://www.googletagmanager.com/gtag/js?id=G-WX19N0LCCC");
-            window.gtag("js", new Date());
-            window.gtag("config", "G-WX19N0LCCC");
           }
 
           if (!adsenseLoaded) {

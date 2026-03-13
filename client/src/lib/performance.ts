@@ -1,6 +1,8 @@
 /**
  * Utilidades para optimizar el rendimiento de la aplicación
  */
+import analytics from '@/lib/analytics';
+
 const isDev = import.meta.env.DEV;
 
 type LayoutShiftEntry = PerformanceEntry & {
@@ -43,14 +45,7 @@ export function reportPerformanceMetric(metricName: string, value: number): void
   if (isDev) console.debug(`[Performance Metric] ${metricName}: ${value}`);
   
   // Enviar métrica a Google Analytics si está disponible
-  if (window.gtag) {
-    window.gtag('event', 'web_vitals', {
-      event_category: 'Web Vitals',
-      event_label: metricName,
-      value: Math.round(value),
-      non_interaction: true,
-    });
-  }
+  analytics.trackWebVital(metricName, value);
 }
 
 /**

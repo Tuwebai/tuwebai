@@ -229,7 +229,7 @@ export function PrivacyTab({ settings, isLoading, isSaving, onSave }: PrivacyTab
                     Permitir analitica funcional
                   </div>
                   <p className="mt-1 text-sm leading-6 text-slate-400">
-                    Registra tu consentimiento para medicion y mejora del servicio cuando la analitica vuelva a estar activa en el producto.
+                    Controla si TuWeb.ai puede medir uso basico del sitio para mejorar rendimiento y experiencia.
                   </p>
                 </div>
                 <Switch

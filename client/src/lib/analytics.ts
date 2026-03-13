@@ -1,4 +1,11 @@
 const isDev = import.meta.env.DEV;
+const GTAG_SCRIPT_ID = 'tuwebai-gtag-script';
+const isLocalEnvironment = () =>
+  typeof window !== 'undefined' &&
+  ['localhost', '127.0.0.1', '[::1]'].includes(window.location.hostname);
+
+const configuredMeasurementIds = new Set<string>();
+let analyticsConsentGranted = false;
 
 declare global {
   interface Window {
@@ -17,15 +24,63 @@ const ensureGtagQueue = () => {
   }
 };
 
-export const initializeAnalytics = (measurementId: string): void => {
+const applyAnalyticsConsent = () => {
   if (typeof window === 'undefined') return;
   ensureGtagQueue();
-  window.gtag?.('config', measurementId, { debug_mode: isDev });
+  window.gtag?.('consent', 'update', {
+    analytics_storage: analyticsConsentGranted ? 'granted' : 'denied',
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+  });
+};
+
+const loadAnalyticsScript = (measurementId: string) => {
+  if (typeof document === 'undefined' || isLocalEnvironment()) return;
+  if (document.getElementById(GTAG_SCRIPT_ID)) return;
+
+  const script = document.createElement('script');
+  script.id = GTAG_SCRIPT_ID;
+  script.async = true;
+  script.src = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`;
+  document.head.appendChild(script);
+};
+
+export const setAnalyticsConsent = (enabled: boolean): void => {
+  analyticsConsentGranted = enabled;
+
+  if (typeof window === 'undefined') return;
+
+  ensureGtagQueue();
+  applyAnalyticsConsent();
+
+  if (isDev) {
+    console.debug(`Analytics consent ${enabled ? 'enabled' : 'disabled'}`);
+  }
+};
+
+export const isAnalyticsEnabled = (): boolean => analyticsConsentGranted;
+
+export const initializeAnalytics = (measurementId: string): void => {
+  if (typeof window === 'undefined' || !analyticsConsentGranted) return;
+  ensureGtagQueue();
+  loadAnalyticsScript(measurementId);
+
+  if (!configuredMeasurementIds.has(measurementId)) {
+    window.gtag?.('js', new Date());
+    applyAnalyticsConsent();
+    window.gtag?.('config', measurementId, {
+      debug_mode: isDev,
+      anonymize_ip: true,
+    });
+    configuredMeasurementIds.add(measurementId);
+  }
+
   if (isDev) console.debug('Analytics queue initialized');
 };
 
 export const trackPageView = (path: string, title?: string): void => {
-  if (typeof window === 'undefined') return;
+  if (typeof window === 'undefined' || !analyticsConsentGranted) return;
   ensureGtagQueue();
   window.gtag?.('event', 'page_view', {
     page_path: path,
@@ -40,7 +95,7 @@ export const trackEvent = (
   label?: string,
   value?: number
 ): void => {
-  if (typeof window === 'undefined') return;
+  if (typeof window === 'undefined' || !analyticsConsentGranted) return;
   ensureGtagQueue();
   window.gtag?.('event', action, {
     event_category: category,
@@ -56,16 +111,30 @@ export const trackException = (description: string, fatal: boolean = false): voi
 };
 
 export const setUser = (userId: string): void => {
-  if (typeof window === 'undefined') return;
+  if (typeof window === 'undefined' || !analyticsConsentGranted) return;
   ensureGtagQueue();
   window.gtag?.('set', { user_id: userId });
   if (isDev) console.debug(`User set: ${userId}`);
 };
 
+export const trackWebVital = (metricName: string, value: number): void => {
+  if (typeof window === 'undefined' || !analyticsConsentGranted) return;
+  ensureGtagQueue();
+  window.gtag?.('event', 'web_vitals', {
+    event_category: 'Web Vitals',
+    event_label: metricName,
+    value: Math.round(value),
+    non_interaction: true,
+  });
+};
+
 export default {
   initialize: initializeAnalytics,
+  isEnabled: isAnalyticsEnabled,
+  setConsent: setAnalyticsConsent,
   pageview: trackPageView,
   event: trackEvent,
   exception: trackException,
   setUser,
+  trackWebVital,
 };

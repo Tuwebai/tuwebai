@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useIntersectionObserver } from '@/core/hooks/use-intersection-observer';
 import { useToast } from '@/shared/ui/use-toast';
 import AnimatedShape from '@/shared/ui/animated-shape';
+import analytics from '@/lib/analytics';
 import { TUWEBAI_WHATSAPP_DISPLAY, TUWEBAI_WHATSAPP_TEL, TUWEBAI_WHATSAPP_URL } from '@/shared/constants/contact';
 import {
   getContactErrorMessage,
@@ -92,12 +93,7 @@ function ContactForm({ delay }: ContactFormProps) {
       source: 'sitio_web_principal',
     })
       .then(() => {
-        if (typeof window !== 'undefined' && (window as Window & { gtag?: (...args: unknown[]) => void }).gtag) {
-          (window as Window & { gtag: (...args: unknown[]) => void }).gtag('event', 'submit_form', {
-            event_category: 'engagement',
-            event_label: 'contact_form',
-          });
-        }
+        analytics.event('engagement', 'submit_form', 'contact_form');
       })
       .catch((error: unknown) => {
         const serverErrors = getContactFieldErrors(error);

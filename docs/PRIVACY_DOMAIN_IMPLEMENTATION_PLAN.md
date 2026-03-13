@@ -42,6 +42,7 @@ Hallazgos:
 
 - la tab `Privacidad` ya tiene wiring real de visibilidad y consentimientos
 - el panel ya no conserva consumers del viejo modelo `userPreferences`
+- la analitica cliente sigue activa en runtime mediante `client/index.html`, `client/src/app/App.tsx`, formularios y `client/src/lib/performance.ts`
 - el perfil visible del usuario en panel hoy expone:
   - avatar
   - nombre
@@ -380,6 +381,18 @@ Recomendacion:
 - priorizar `analyticsConsent` si el repo vuelve a usar analitica real
 - priorizar `marketingConsent` si entra un dominio real de comunicaciones comerciales
 
+Estado:
+
+- cerrada
+
+Resultado real:
+
+- `client/src/lib/analytics.ts` ahora centraliza consentimiento, carga del script y bloqueo de eventos cuando `analyticsConsent` es `false`
+- `client/src/app/App.tsx` ya gobierna inicializacion, pageviews y eventos de navegacion con el consentimiento persistido del usuario autenticado
+- `client/index.html` ya no auto-inicializa Google Analytics por fuera del dominio de privacidad
+- `client/src/lib/performance.ts`, `client/src/features/contact/components/contact-section.tsx` y `client/src/features/newsletter/components/newsletter-form.tsx` ya consumen la misma frontera centralizada en lugar de disparar `gtag` directo
+- el enforcement actual queda acotado a analitica cliente; `marketingConsent` sigue persistido pero sin side effects adicionales mientras no exista dominio comercial real
+
 ### Fase 5. Trazabilidad y actividad sensible
 
 Objetivo:
@@ -409,9 +422,9 @@ Solo si hay negocio real detras:
 
 1. Fase 0 cerrada
 2. Fase 1 cerrada
-3. Fase 2 visibilidad del panel
-4. Fase 3 consentimientos basicos
-5. Fase 4 enforcement minimo
+3. Fase 2 cerrada
+4. Fase 3 cerrada
+5. Fase 4 cerrada
 6. Fase 5 trazabilidad
 7. Fase 6 capacidades avanzadas
 

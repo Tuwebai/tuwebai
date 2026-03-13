@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useToast } from '@/shared/ui/use-toast';
+import analytics from '@/lib/analytics';
 import {
   getNewsletterErrorMessage,
   subscribeToNewsletter,
@@ -43,12 +44,7 @@ export default function NewsletterForm({
 
     void subscribeToNewsletter({ email: emailSnapshot, source })
       .then(() => {
-        if (typeof window !== 'undefined' && (window as Window & { gtag?: (...args: unknown[]) => void }).gtag) {
-          (window as Window & { gtag: (...args: unknown[]) => void }).gtag('event', 'newsletter_signup', {
-            event_category: 'engagement',
-            event_label: source,
-          });
-        }
+        analytics.event('engagement', 'newsletter_signup', source);
       })
       .catch((submitError: unknown) => {
         console.error('Error al procesar la suscripcion:', submitError);
