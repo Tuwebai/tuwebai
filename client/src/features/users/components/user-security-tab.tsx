@@ -1,11 +1,6 @@
 import type React from 'react';
 import { AlertCircle, Eye, EyeOff, Lock, Save, Shield, X } from 'lucide-react';
-
-type PasswordFormState = {
-  currentPassword: string;
-  newPassword: string;
-  confirmPassword: string;
-};
+import type { UserPasswordFormState } from '@/features/users/utils/user-dashboard-forms';
 
 type PasswordInfo = {
   changedAt: string | null;
@@ -20,7 +15,7 @@ type UserSecurityTabProps = {
   showPassword: boolean;
   showNewPassword: boolean;
   showConfirmPassword: boolean;
-  passwordForm: PasswordFormState;
+  passwordForm: UserPasswordFormState;
   errors: Record<string, string>;
   onStartChangePassword: () => void;
   onPasswordChange: (event: React.ChangeEvent<HTMLInputElement>) => void;

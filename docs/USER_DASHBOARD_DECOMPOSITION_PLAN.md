@@ -47,6 +47,10 @@ Componentes ya extraidos:
 - `client/src/features/users/components/user-security-tab.tsx`
 - `client/src/features/users/components/user-integrations-tab.tsx`
 
+Helpers ya extraidos:
+
+- `client/src/features/users/utils/user-dashboard-forms.ts`
+
 Responsabilidades detectadas:
 
 ### Shell y runtime
@@ -255,6 +259,15 @@ Objetivo:
 - decidir si conviene extraer validaciones y tipos de forms
 
 Solo si el estado restante del contenedor sigue siendo pesado.
+
+Estado:
+
+- cerrada
+
+Resultado:
+
+- los validadores y factories de formularios ya viven en `client/src/features/users/utils/user-dashboard-forms.ts`
+- `user-dashboard-page.tsx` ya no mantiene reglas de validacion embebidas ni estados iniciales duplicados
 
 ### Fase 6. Dejar `user-dashboard-page.tsx` como orquestador
 

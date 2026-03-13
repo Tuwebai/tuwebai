@@ -15,6 +15,12 @@ import { UserIntegrationsTab } from '@/features/users/components/user-integratio
 import { UserProfileTab } from '@/features/users/components/user-profile-tab';
 import { UserSecurityTab } from '@/features/users/components/user-security-tab';
 import { UserDashboardTabsNav, type UserDashboardTab } from '@/features/users/components/user-dashboard-tabs-nav';
+import {
+  createInitialPasswordForm,
+  createInitialProfileForm,
+  validateUserPasswordForm,
+  validateUserProfileForm,
+} from '@/features/users/utils/user-dashboard-forms';
 
 export default function PanelUsuario() {
   const { 
@@ -47,19 +53,9 @@ export default function PanelUsuario() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   // Form states
-  const [profileForm, setProfileForm] = useState({
-    name: user?.name || '',
-    username: user?.username || '',
-    email: user?.email || '',
-    phone: '',
-    address: '',
-  });
+  const [profileForm, setProfileForm] = useState(() => createInitialProfileForm(user));
   
-  const [passwordForm, setPasswordForm] = useState({
-    currentPassword: '',
-    newPassword: '',
-    confirmPassword: '',
-  });
+  const [passwordForm, setPasswordForm] = useState(createInitialPasswordForm);
   
   const [errors, setErrors] = useState<Record<string, string>>({});
   
@@ -71,13 +67,7 @@ export default function PanelUsuario() {
   // Actualizar el formulario cuando cambia el usuario
   useEffect(() => {
     if (user) {
-      setProfileForm({
-        name: user.name || '',
-        username: user.username || '',
-        email: user.email || '',
-        phone: '',
-        address: '',
-      });
+      setProfileForm(createInitialProfileForm(user));
     }
   }, [user]);
   
@@ -110,53 +100,17 @@ export default function PanelUsuario() {
   };
   
   const validateProfileForm = () => {
-    const newErrors: Record<string, string> = {};
-    
-    if (!profileForm.name.trim()) {
-      newErrors.name = 'El nombre es requerido';
-    }
-    
-    if (!profileForm.username.trim()) {
-      newErrors.username = 'El nombre de usuario es requerido';
-    }
-    
-    if (!profileForm.email.trim()) {
-      newErrors.email = 'El email es requerido';
-    } else if (!/\S+@\S+\.\S+/.test(profileForm.email)) {
-      newErrors.email = 'Email no válido';
-    }
-    
-    if (profileForm.phone && !/^[\+]?[0-9\s\-\(\)]{10,}$/.test(profileForm.phone)) {
-      newErrors.phone = 'Número de teléfono no válido';
-    }
-    
+    const newErrors = validateUserProfileForm(profileForm);
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-  
+
   const validatePasswordForm = () => {
-    const newErrors: Record<string, string> = {};
-    
-    if (!passwordForm.currentPassword) {
-      newErrors.currentPassword = 'La contraseña actual es requerida';
-    }
-    
-    if (!passwordForm.newPassword) {
-      newErrors.newPassword = 'La nueva contraseña es requerida';
-    } else if (passwordForm.newPassword.length < 8) {
-      newErrors.newPassword = 'La contraseña debe tener al menos 8 caracteres';
-    } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(passwordForm.newPassword)) {
-      newErrors.newPassword = 'La contraseña debe contener mayúsculas, minúsculas y números';
-    }
-    
-    if (passwordForm.newPassword !== passwordForm.confirmPassword) {
-      newErrors.confirmPassword = 'Las contraseñas no coinciden';
-    }
-    
+    const newErrors = validateUserPasswordForm(passwordForm);
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-  
+
   const handleSaveProfile = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -203,11 +157,7 @@ export default function PanelUsuario() {
       );
       
       setIsChangingPassword(false);
-      setPasswordForm({
-        currentPassword: '',
-        newPassword: '',
-        confirmPassword: '',
-      });
+      setPasswordForm(createInitialPasswordForm());
       
       toast({
         title: "✅ Contraseña actualizada",
@@ -356,13 +306,7 @@ export default function PanelUsuario() {
                   onEdit={() => setIsEditing(true)}
                   onCancel={() => {
                     setIsEditing(false);
-                    setProfileForm({
-                      name: user?.name || '',
-                      username: user?.username || '',
-                      email: user?.email || '',
-                      phone: '',
-                      address: '',
-                    });
+                    setProfileForm(createInitialProfileForm(user));
                   }}
                   onSubmit={handleSaveProfile}
                   onProfileChange={handleProfileChange}
@@ -386,11 +330,7 @@ export default function PanelUsuario() {
                   onSubmit={handleChangePassword}
                   onCancel={() => {
                     setIsChangingPassword(false);
-                    setPasswordForm({
-                      currentPassword: '',
-                      newPassword: '',
-                      confirmPassword: '',
-                    });
+                    setPasswordForm(createInitialPasswordForm());
                   }}
                   onTogglePasswordVisibility={() => setShowPassword((current) => !current)}
                   onToggleNewPasswordVisibility={() => setShowNewPassword((current) => !current)}

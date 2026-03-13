@@ -1,16 +1,9 @@
 import type React from 'react';
 import { AlertCircle, Edit3, Mail, MapPin, Phone, Save, User, X } from 'lucide-react';
-
-type ProfileFormState = {
-  name: string;
-  username: string;
-  email: string;
-  phone: string;
-  address: string;
-};
+import type { UserProfileFormState } from '@/features/users/utils/user-dashboard-forms';
 
 type UserProfileTabProps = {
-  profileForm: ProfileFormState;
+  profileForm: UserProfileFormState;
   errors: Record<string, string>;
   isEditing: boolean;
   isSavingProfile: boolean;
