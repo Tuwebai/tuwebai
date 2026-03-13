@@ -84,7 +84,7 @@ export default function TechSection({ setRef }: TechSectionProps) {
     <section
       id="tech"
       ref={sectionRef}
-      className="min-h-screen flex items-center justify-center relative bg-gradient-1"
+      className="min-h-screen scroll-mt-28 md:scroll-mt-32 flex items-center justify-center relative bg-gradient-1"
     >
       <div className="container mx-auto px-4 py-16 z-10">
         <motion.div

@@ -155,7 +155,7 @@ export default function TestimonialsSection({ setRef }: TestimonialsSectionProps
     <section
       id="testimonials"
       ref={sectionRef}
-      className="min-h-screen flex items-center justify-center relative bg-gradient-1"
+        className="min-h-screen scroll-mt-28 md:scroll-mt-32 flex items-center justify-center relative bg-gradient-1"
     >
       <AnimatedShape type={1} className="top-[20%] right-[-150px]" delay={2} />
       <AnimatedShape type={2} className="bottom-[10%] left-[-100px]" delay={3} />

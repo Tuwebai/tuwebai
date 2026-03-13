@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useIsMobile } from '@/core/hooks/use-mobile';
 import { useAuthActions, useAuthState } from '@/features/auth/context/AuthContext';
 import { useLoginModal } from '@/features/auth/hooks/use-login-modal';
+import { scrollToHomeSection } from '@/features/marketing-home/utils/scroll-to-home-section';
 import { prefetchRoute } from '@/lib/route-prefetch';
 import { UserAvatar } from '@/shared/ui/user-avatar';
 
@@ -113,27 +114,7 @@ export default function GlobalNavbar() {
         const section = document.getElementById(sectionId);
         if (section) {
           if (debugNav) console.debug("Sección encontrada, haciendo scroll");
-
-          const headerOffset = 100;
-          const elementPosition = section.getBoundingClientRect().top;
-          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-          window.scrollTo({
-            top: offsetPosition,
-            behavior: 'smooth'
-          });
-
-          setTimeout(() => {
-            try {
-              section.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-              });
-              if (debugNav) console.debug("Método alternativo de scroll aplicado");
-            } catch (error) {
-              console.error("Error al hacer scroll:", error);
-            }
-          }, 100);
+          scrollToHomeSection(section);
         } else {
           console.warn("Sección no encontrada:", sectionId);
         }

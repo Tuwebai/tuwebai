@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
+import { scrollToHomeSection } from '@/features/marketing-home/utils/scroll-to-home-section';
 
 export interface HomeSectionItem {
   id: string;
@@ -51,10 +52,7 @@ export function useHomeSectionNavigation() {
     const section = sectionRefs.current[sectionId];
     if (section) {
       if (debugScroll) console.debug('Sección encontrada, desplazándose...');
-      window.scrollTo({
-        top: section.offsetTop - 100,
-        behavior: 'smooth',
-      });
+      scrollToHomeSection(section);
     } else if (debugScroll) {
       console.debug('Sección no encontrada en refs:', Object.keys(sectionRefs.current));
     }
@@ -72,28 +70,6 @@ export function useHomeSectionNavigation() {
       setTimeout(() => {
         if (debugScroll) console.debug('Intentando scroll a sección:', targetSection);
         scrollToSection(targetSection);
-
-        setTimeout(() => {
-          const section = document.getElementById(targetSection);
-          if (section) {
-            if (debugScroll) console.debug('Usando método alternativo de scroll');
-
-            const headerOffset = 100;
-            const elementPosition = section.getBoundingClientRect().top;
-            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-            window.scrollTo({
-              top: offsetPosition,
-              behavior: 'smooth',
-            });
-
-            setTimeout(() => {
-              section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 100);
-          } else if (debugScroll) {
-            console.debug('Elemento no encontrado con ID:', targetSection);
-          }
-        }, 100);
       }, 300);
     }
   }, [debugScroll, location]);

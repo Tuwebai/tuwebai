@@ -68,7 +68,7 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
     <section
       id="intro"
       ref={sectionRef}
-      className="min-h-screen flex items-center justify-center relative bg-gradient-1 overflow-hidden"
+      className="min-h-screen scroll-mt-28 md:scroll-mt-32 flex items-center justify-center relative bg-gradient-1 overflow-hidden"
     >
       <motion.div
         className="container mx-auto px-4 text-center z-10"

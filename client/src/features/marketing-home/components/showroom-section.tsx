@@ -260,7 +260,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
     <section 
       id="showroom" 
       ref={sectionRef}
-      className="min-h-screen flex items-center justify-center relative py-20 bg-gradient-1"
+      className="min-h-screen scroll-mt-28 md:scroll-mt-32 flex items-center justify-center relative py-20 bg-gradient-1"
     >
       
       <div className="container mx-auto px-4 z-10">

@@ -237,7 +237,7 @@ export default function ComparisonSection({ setRef }: ComparisonSectionProps) {
     <section 
       id="comparison" 
       ref={sectionRef}
-      className="min-h-screen flex items-center justify-center relative py-20"
+      className="min-h-screen scroll-mt-28 md:scroll-mt-32 flex items-center justify-center relative py-20"
       style={{ background: 'linear-gradient(180deg, #121217 0%, #0a0a0f 100%)' }}
     >
       

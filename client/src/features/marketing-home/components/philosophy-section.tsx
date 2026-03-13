@@ -33,7 +33,7 @@ export default function PhilosophySection({ setRef }: PhilosophySectionProps) {
     <section
       id="philosophy"
       ref={sectionRef}
-      className="min-h-screen flex items-center justify-center relative bg-gradient-2"
+      className="min-h-screen scroll-mt-28 md:scroll-mt-32 flex items-center justify-center relative bg-gradient-2"
     >
       <AnimatedShape type={1} className="top-[30%] left-[-150px]" delay={5} />
 
