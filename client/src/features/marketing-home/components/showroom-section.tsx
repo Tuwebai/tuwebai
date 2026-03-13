@@ -2,19 +2,8 @@ import React, { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useIntersectionObserver } from '@/core/hooks/use-intersection-observer';
-
-
-interface Project {
-  id: number;
-  title: string;
-  category: string;
-  description: string;
-  features: string[];
-  results: { label: string; value: string }[];
-  image: string;
-  detailsUrl: string;
-  externalUrl?: string;
-}
+import ShowroomProjectModal from '@/features/marketing-home/components/showroom-project-modal';
+import type { ShowroomProject } from '@/features/marketing-home/components/showroom-types';
 interface ShowroomSectionProps {
   setRef: (ref: HTMLElement | null) => void;
 }
@@ -28,7 +17,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
   const { ref: projectsRef, hasIntersected: projectsVisible } = useIntersectionObserver<HTMLDivElement>();
   
   const [activeCategory, setActiveCategory] = useState<string>('all');
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [selectedProject, setSelectedProject] = useState<ShowroomProject | null>(null);
   const [hasShownTitle, setHasShownTitle] = useState(false);
   const [hasShownSubtitle, setHasShownSubtitle] = useState(false);
   const [hasShownProjects, setHasShownProjects] = useState(false);
@@ -134,7 +123,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
   };
 
   // Array de proyectos (actualmente vacío - listo para proyectos reales)
-      const projects: Project[] = [
+      const projects: ShowroomProject[] = [
     {
       id: 1,
       title: "LH Decants",
@@ -245,7 +234,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
   };
 
   // Manejador de navegación para proyectos
-  const handleProjectClick = (project: Project) => {
+  const handleProjectClick = (project: ShowroomProject) => {
     setSelectedProject(project);
   };
 
@@ -374,103 +363,14 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
           ))}
         </motion.div>
         
-        {/* Modal de detalle de proyecto */}
         {selectedProject && (
-          <div 
-            className="fixed inset-0 bg-black flex items-center justify-center z-50 p-4 overflow-hidden"
-            onClick={() => setSelectedProject(null)}
-          >
-            <motion.div 
-              className="bg-[#121217] rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto border border-gray-800 shadow-2xl relative"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.3 }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="p-6 flex justify-between items-start border-b border-gray-800">
-                <div>
-                  <h3 className="font-rajdhani font-bold text-2xl text-white mb-1">{selectedProject.title}</h3>
-                  <span className="text-xs px-2 py-1 bg-[#1a1a23] rounded text-gray-400">
-                    {categoryNames[selectedProject.category] || selectedProject.category}
-                  </span>
-                </div>
-                
-                <button 
-                  onClick={() => setSelectedProject(null)}
-                  className="text-gray-400 hover:text-white"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </div>
-              
-              <div className="p-6">
-                <div className="h-64 lg:h-80 rounded-lg overflow-hidden mb-6">
-                  <img 
-                    src={selectedProject.image} 
-                    alt={selectedProject.title}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                
-                <div className="mb-6">
-                  <h4 className="font-rajdhani font-bold text-xl text-white mb-3">Contexto del proyecto</h4>
-                  <p className="text-gray-300">{selectedProject.description}</p>
-                </div>
-                
-                <div className="grid md:grid-cols-2 gap-6 mb-6">
-                  <div>
-                    <h4 className="font-rajdhani font-bold text-xl text-white mb-3">Lo que construimos</h4>
-                    <ul className="space-y-2">
-                      {selectedProject.features.map((feature, index) => (
-                        <li key={index} className="flex items-start">
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#00CCFF] mr-2 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                          </svg>
-                          <span className="text-gray-300">{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  
-                  <div>
-                    <h4 className="font-rajdhani font-bold text-xl text-white mb-3">Valor que aporta</h4>
-                    <div className="grid grid-cols-2 gap-4">
-                      {selectedProject.results.map((result, index) => (
-                        <div key={index} className="bg-[#1a1a23] p-4 rounded-lg text-center">
-                          <div className="text-2xl font-bold text-[#00CCFF] mb-1">{result.value}</div>
-                          <div className="text-sm text-gray-400">{result.label}</div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="flex justify-end pt-4 border-t border-gray-800">
-                  <motion.div whileHover={{ scale: 1.05 }} transition={{ type: "spring", stiffness: 400, damping: 10 }}>
-                    {selectedProject.externalUrl ? (
-                      <button
-                        onClick={() => window.open(selectedProject.externalUrl, '_blank', 'noopener,noreferrer')}
-                        className="inline-block px-6 py-3 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-lg text-white font-medium"
-                      >
-                        Visitar página web
-                      </button>
-                    ) : (
-                    <Link 
-                      to={selectedProject.detailsUrl}
-                      className="inline-block px-6 py-3 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-lg text-white font-medium"
-                    >
-                      Ver página completa
-                    </Link>
-                    )}
-                  </motion.div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
+          <ShowroomProjectModal
+            project={selectedProject}
+            categoryLabel={categoryNames[selectedProject.category] || selectedProject.category}
+            onClose={() => setSelectedProject(null)}
+          />
         )}
-        
+
         {/* Call to action */}
         <div className="text-center mt-14">
           <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
