@@ -89,8 +89,8 @@ export default function ServicesSection({ setRef }: ServicesSectionProps) {
           animate={titleVisible ? 'visible' : 'hidden'}
           variants={titleVariants}
         >
-          <h2 className="font-rajdhani font-bold text-3xl md:text-5xl mb-6">
-            <span className="gradient-text gradient-border inline-block pb-2">
+          <h2 className="font-rajdhani font-bold text-3xl md:text-5xl leading-tight mb-6">
+            <span className="gradient-text gradient-border block max-w-4xl mx-auto pb-2">
               Servicios web pensados para vender, operar y crecer
             </span>
           </h2>
