@@ -51,13 +51,13 @@ export default function PhilosophySection({ setRef }: PhilosophySectionProps) {
           </h2>
 
           <p className="text-lg md:text-xl font-medium mb-6 text-gray-200">
-            Disenamos, desarrollamos y optimizamos experiencias web que ayudan a vender mejor,
-            operar con mas claridad y transmitir una imagen profesional.
+            Diseñamos, desarrollamos y optimizamos experiencias web que ayudan a vender mejor,
+            operar con más claridad y transmitir una imagen profesional.
           </p>
 
           <p className="text-gray-300 mb-4">
-            No trabajamos con recetas genericas ni con sitios que se ven bien pero no
-            acompanan al negocio. Cada proyecto se construye con foco en objetivos reales,
+            No trabajamos con recetas genéricas ni con sitios que se ven bien pero no
+            acompañan al negocio. Cada proyecto se construye con foco en objetivos reales,
             estructura clara y rendimiento.
           </p>
 
@@ -69,12 +69,12 @@ export default function PhilosophySection({ setRef }: PhilosophySectionProps) {
           <div className="inline-flex items-center space-x-3 mb-2">
             <div className="h-1 w-12 bg-[#00CCFF]" />
             <span className="text-gray-400 font-rajdhani uppercase tracking-wider text-sm">
-              Como trabajamos
+              Cómo trabajamos
             </span>
           </div>
 
           <ul className="mb-4 space-y-3">
-            <li className="text-gray-300">• Estrategia antes que decoracion</li>
+            <li className="text-gray-300">• Estrategia antes que decoración</li>
             <li className="text-gray-300">• Desarrollo web alineado al negocio</li>
             <li className="text-gray-300">• Rendimiento, claridad y confianza</li>
             <li className="text-gray-300">• Base preparada para escalar</li>
@@ -94,18 +94,18 @@ export default function PhilosophySection({ setRef }: PhilosophySectionProps) {
               </h3>
               <p className="text-gray-200 mb-5 font-medium">
                 Muchas empresas ya tienen presencia online, pero no una web que realmente
-                acompane ventas, operacion y crecimiento.
+                acompañe ventas, operación y crecimiento.
               </p>
               <ul className="mb-4 space-y-3">
                 <li className="text-gray-300">• Sitios que no transmiten confianza ni profesionalismo</li>
-                <li className="text-gray-300">• Estructuras confusas que dificultan conversion y contacto</li>
+                <li className="text-gray-300">• Estructuras confusas que dificultan conversión y contacto</li>
                 <li className="text-gray-300">• Herramientas desconectadas del proceso comercial</li>
-                <li className="text-gray-300">• Tecnologia que se vuelve una carga en vez de una ventaja</li>
+                <li className="text-gray-300">• Tecnología que se vuelve una carga en vez de una ventaja</li>
               </ul>
               <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-4">
                 <p className="text-gray-300 text-sm leading-relaxed">
-                  Por eso trabajamos con una logica simple: entender el negocio, definir
-                  prioridades y construir una solucion web clara, rapida y lista para
+                  Por eso trabajamos con una lógica simple: entender el negocio, definir
+                  prioridades y construir una solución web clara, rápida y lista para
                   sostener crecimiento real.
                 </p>
               </div>
