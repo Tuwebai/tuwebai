@@ -3,6 +3,11 @@ export interface ShowroomProject {
   title: string;
   category: string;
   description: string;
+  sectionLabels?: {
+    clientNeed?: string;
+    solutionSummary?: string;
+    valueSummary?: string;
+  };
   clientNeed: string;
   solutionSummary: string;
   valueSummary: string;

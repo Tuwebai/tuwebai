@@ -14,6 +14,10 @@ export default function ShowroomProjectModal({
   categoryLabel,
   onClose,
 }: ShowroomProjectModalProps) {
+  const clientNeedLabel = project.sectionLabels?.clientNeed ?? 'Que necesitaba el cliente';
+  const solutionSummaryLabel = project.sectionLabels?.solutionSummary ?? 'Que resolvimos';
+  const valueSummaryLabel = project.sectionLabels?.valueSummary ?? 'Que aporta la solucion';
+
   if (typeof document === 'undefined') {
     return null;
   }
@@ -60,7 +64,7 @@ export default function ShowroomProjectModal({
               <div className="grid gap-3 border-t border-white/10 p-4 sm:p-5">
                 <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-4">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#00CCFF]">
-                    Que necesitaba el cliente
+                    {clientNeedLabel}
                   </p>
                   <p className="mt-2 text-sm leading-6 text-gray-200">
                     {project.clientNeed}
@@ -69,7 +73,7 @@ export default function ShowroomProjectModal({
 
                 <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-4">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#9933FF]">
-                    Que resolvimos
+                    {solutionSummaryLabel}
                   </p>
                   <p className="mt-2 text-sm leading-6 text-gray-200">
                     {project.solutionSummary}
@@ -78,7 +82,7 @@ export default function ShowroomProjectModal({
 
                 <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-4">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#00CCFF]">
-                    Que aporta la solucion
+                    {valueSummaryLabel}
                   </p>
                   <p className="mt-2 text-sm leading-6 text-gray-200">
                     {project.valueSummary}

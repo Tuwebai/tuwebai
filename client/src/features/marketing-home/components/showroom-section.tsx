@@ -132,6 +132,11 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
       title: "TuWeb.ai Dashboard",
       category: "saas",
       description: "Plataforma operativa del ecosistema TuWeb.ai para centralizar proyectos, soporte, pagos y visibilidad interna en una sola interfaz.",
+      sectionLabels: {
+        clientNeed: "Que necesitabamos resolver",
+        solutionSummary: "Que desarrollamos en TuWeb.ai",
+        valueSummary: "Que mejora en la operacion",
+      },
       clientNeed: "Ordenar la operacion diaria de TuWeb.ai con una plataforma propia que unifique seguimiento, soporte y estado de servicio sin depender de procesos dispersos.",
       solutionSummary: "Desarrollamos un dashboard interno para centralizar proyectos, tickets, pagos y trazabilidad operativa dentro del ecosistema TuWeb.ai.",
       valueSummary: "La plataforma reduce friccion interna, mejora la visibilidad del servicio y profesionaliza la gestion operativa de punta a punta.",
