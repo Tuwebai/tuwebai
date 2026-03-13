@@ -44,8 +44,6 @@ function ServiceCard({ title, description, icon, delay }: ServiceCardProps) {
         <h3 className="font-rajdhani font-bold text-xl mb-3 text-white">{title}</h3>
 
         <p className="text-gray-300 flex-grow">{description}</p>
-
-        <div className="mt-6 pt-4 border-t border-gray-700">{/* Botón eliminado si no hay página funcional */}</div>
       </motion.div>
     </motion.div>
   );
@@ -92,18 +90,21 @@ export default function ServicesSection({ setRef }: ServicesSectionProps) {
           variants={titleVariants}
         >
           <h2 className="font-rajdhani font-bold text-3xl md:text-5xl mb-6">
-            <span className="gradient-text gradient-border inline-block pb-2">TuWeb.ai: Soluciones Digitales para tu Éxito</span>
+            <span className="gradient-text gradient-border inline-block pb-2">
+              Servicios web pensados para vender, operar y crecer
+            </span>
           </h2>
 
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            Ofrecemos consultoría digital completa y avanzada, diseñada para maximizar el rendimiento y escalar tu negocio.
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+            Nos enfocamos en tres tipos de soluciones: sitios corporativos, e-commerce
+            y sistemas web para negocios que necesitan una presencia digital profesional.
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8 max-w-6xl mx-auto">
           <ServiceCard
-            title="Consultoría Estratégica"
-            description="Análisis exhaustivo de tu modelo de negocio. Diseño de estrategias digitales adaptadas para optimizar el rendimiento comercial."
+            title="Sitios corporativos"
+            description="Webs profesionales para empresas que necesitan transmitir confianza, presentar mejor su oferta y generar consultas con una imagen seria."
             icon={
               <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
@@ -113,8 +114,8 @@ export default function ServicesSection({ setRef }: ServicesSectionProps) {
           />
 
           <ServiceCard
-            title="Desarrollo Web Profesional"
-            description="Diseño moderno, rápido y optimizado para SEO, conversión y generación de leads con landing pages de alto impacto."
+            title="E-commerce"
+            description="Tiendas online rápidas, claras y preparadas para convertir mejor, facilitar la compra y sostener crecimiento sin fricción técnica."
             icon={
               <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
@@ -124,25 +125,14 @@ export default function ServicesSection({ setRef }: ServicesSectionProps) {
           />
 
           <ServiceCard
-            title="Posicionamiento y Marketing"
-            description="SEO avanzado, campañas SEM en Google, publicidad en Facebook/LinkedIn y optimización de la tasa de conversión (CRO)."
+            title="Sistemas web para negocios"
+            description="Plataformas, paneles y flujos web a medida para organizar procesos, conectar herramientas y operar con más claridad."
             icon={
               <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
             }
             delay={3}
-          />
-
-          <ServiceCard
-            title="Automatización de Marketing"
-            description="Implementación de procesos automatizados e integraciones con plataformas de marketing automation y otras herramientas líderes."
-            icon={
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
-            }
-            delay={4}
           />
         </div>
 
@@ -159,7 +149,7 @@ export default function ServicesSection({ setRef }: ServicesSectionProps) {
             whileHover={{ scale: 1.05 }}
             transition={{ type: 'spring', stiffness: 400, damping: 10 }}
           >
-            Solicitar una Consulta
+            Contar mi proyecto
           </motion.a>
         </motion.div>
       </div>

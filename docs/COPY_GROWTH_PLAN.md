@@ -142,6 +142,10 @@ Bajo.
 
 ## Fase 3. Reestructurar servicios
 
+Estado:
+
+- ✅ cerrada: `services-section` ya no presenta una lista amplia de consultoria, marketing y automatizacion; la oferta del home quedo reducida a sitios corporativos, e-commerce y sistemas web para negocios.
+
 ### Objetivo
 
 Reducir dispersion de oferta y priorizar el core de desarrollo web.
@@ -172,6 +176,13 @@ Medio.
   - e-commerce
   - sistemas web
 - dejar marketing y automatizacion como capacidades secundarias o complementarias
+
+### Resultado implementado
+
+- la seccion del home ya no compite con una oferta dispersa ni mezcla consultoria estrategica, marketing y automatizacion como frentes principales
+- la oferta visible del landing quedo simplificada a tres lineas claras: sitios corporativos, e-commerce y sistemas web para negocios
+- el titulo y subtitulo de la seccion ahora refuerzan foco comercial y continuidad con hero + filosofia
+- el CTA ya no suena generico; ahora empuja a un siguiente paso mas concreto (`Contar mi proyecto`)
 
 ## Fase 4. Mejorar CTA y camino a consulta
 
