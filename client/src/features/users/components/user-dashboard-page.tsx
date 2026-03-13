@@ -11,13 +11,10 @@ import type { UpdateUserPrivacyPayload } from '@/features/users/types/privacy';
 import { DEFAULT_USER_PRIVACY_SETTINGS } from '@/features/users/types/privacy';
 import { PrivacyTab } from '@/features/users/components/privacy-tab';
 import { UserDashboardHeader } from '@/features/users/components/user-dashboard-header';
+import { UserIntegrationsTab } from '@/features/users/components/user-integrations-tab';
 import { UserProfileTab } from '@/features/users/components/user-profile-tab';
 import { UserSecurityTab } from '@/features/users/components/user-security-tab';
 import { UserDashboardTabsNav, type UserDashboardTab } from '@/features/users/components/user-dashboard-tabs-nav';
-import { 
-  AlertCircle,
-  Globe,
-} from 'lucide-react';
 
 export default function PanelUsuario() {
   const { 
@@ -412,103 +409,7 @@ export default function PanelUsuario() {
               )}
 
               {/* Tab: Integraciones */}
-              {activeTab === 'integrations' && (
-                <div className="space-y-6">
-                  <h2 className="text-xl font-semibold text-white flex items-center gap-2 mb-6">
-                    <Globe className="w-5 h-5" />
-                    Integraciones y Conexiones
-                  </h2>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Servicios conectados */}
-                    <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-                      <h3 className="text-lg font-medium text-white mb-4">Servicios conectados</h3>
-                      <div className="space-y-4">
-                        <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
-                          <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 bg-red-500 rounded-lg flex items-center justify-center">
-                              <span className="text-white text-sm font-bold">G</span>
-                    </div>
-                            <div>
-                              <p className="text-white font-medium">Google</p>
-                              <p className="text-sm text-gray-400">No conectado</p>
-                  </div>
-                </div>
-                          <button className="px-3 py-1 text-sm bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-all">
-                            Conectar
-                          </button>
-            </div>
-
-                        <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
-                          <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
-                              <span className="text-white text-sm font-bold">F</span>
-                            </div>
-                            <div>
-                              <p className="text-white font-medium">Facebook</p>
-                              <p className="text-sm text-gray-400">No conectado</p>
-                            </div>
-                          </div>
-                          <button className="px-3 py-1 text-sm bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-all">
-                            Conectar
-                          </button>
-                        </div>
-
-                        <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
-                          <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
-                              <span className="text-white text-sm font-bold">G</span>
-                            </div>
-                            <div>
-                              <p className="text-white font-medium">GitHub</p>
-                              <p className="text-sm text-gray-400">No conectado</p>
-                            </div>
-                          </div>
-                          <button className="px-3 py-1 text-sm bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-all">
-                            Conectar
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* API Keys */}
-                    <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-                      <h3 className="text-lg font-medium text-white mb-4">API Keys</h3>
-                      <div className="space-y-4">
-                        <div className="p-3 bg-white/5 rounded-lg">
-                          <p className="text-gray-300 text-sm mb-2">API Key de desarrollo</p>
-                          <div className="flex items-center gap-2">
-                            <input 
-                              type="password" 
-                              value="••••••••••••••••••••••••••••••••" 
-                              className="flex-1 px-3 py-2 bg-white/5 text-white border border-white/20 rounded-lg text-sm"
-                              readOnly
-                            />
-                            <button className="px-3 py-2 text-sm bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-all">
-                              Copiar
-                            </button>
-                          </div>
-                        </div>
-                        <button className="w-full px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium transition-all">
-                          Generar nueva API Key
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Información de integraciones */}
-                  <div className="bg-yellow-500/10 rounded-xl p-6 border border-yellow-500/20">
-                    <h3 className="text-lg font-medium text-yellow-400 mb-2 flex items-center gap-2">
-                      <AlertCircle className="w-5 h-5" />
-                      Próximamente
-                    </h3>
-                    <p className="text-yellow-300 text-sm">
-                      Las integraciones con servicios externos estarán disponibles próximamente. 
-                      Esto te permitirá conectar tu cuenta con otras plataformas y servicios.
-                    </p>
-                  </div>
-                </div>
-              )}
+              {activeTab === 'integrations' && <UserIntegrationsTab />}
             </motion.div>
           </AnimatePresence>
           </motion.div>

@@ -45,6 +45,7 @@ Componentes ya extraidos:
 - `client/src/features/users/components/user-dashboard-tabs-nav.tsx`
 - `client/src/features/users/components/user-profile-tab.tsx`
 - `client/src/features/users/components/user-security-tab.tsx`
+- `client/src/features/users/components/user-integrations-tab.tsx`
 
 Responsabilidades detectadas:
 
@@ -242,6 +243,10 @@ Objetivo:
 Slice recomendado:
 
 - `user-integrations-tab.tsx`
+
+Estado:
+
+- cerrada
 
 ### Fase 5. Reevaluar helpers y validadores
 
