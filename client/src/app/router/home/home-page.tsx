@@ -5,9 +5,9 @@ export default function HomePage() {
   return (
     <>
       <MetaTags
-        title="TuWeb.ai - Agencia Digital de Desarrollo Web y Marketing Digital en Argentina"
-        description="Desarrollo web profesional, marketing digital y automatizacion para empresas. Especialistas en React, Node.js, SEO y estrategias digitales. Consultoria gratuita disponible."
-        keywords="desarrollo web argentina, marketing digital, diseno web, ecommerce, SEO, agencia digital, React, Node.js, automatizacion marketing, consultoria digital, TuWeb.ai"
+        title="TuWeb.ai - Desarrollo Web Profesional para Negocios en Argentina"
+        description="Desarrollamos sitios web, e-commerce y sistemas web para negocios que necesitan una presencia digital profesional, confiable y preparada para vender."
+        keywords="desarrollo web argentina, desarrollo web profesional, sitios web para negocios, ecommerce argentina, sistemas web, diseno web profesional, React, Node.js, TuWeb.ai"
         ogImage="/logo-tuwebai.png"
         ogType="website"
         twitterCard="summary_large_image"

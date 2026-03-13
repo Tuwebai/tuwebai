@@ -46,6 +46,7 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
           ticking = false;
           return;
         }
+
         const rect = section.getBoundingClientRect();
         const sectionHeight = Math.max(section.offsetHeight, 1);
         const progress = Math.min(Math.max((-rect.top) / sectionHeight, 0), 1);
@@ -71,7 +72,7 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
           }
         })
         .catch(() => {
-          // Si falla la carga diferida, se mantiene texto estático.
+          // Si falla la carga diferida, se mantiene texto estatico.
         });
     };
 
@@ -114,7 +115,7 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
         </motion.div>
 
         <motion.div
-          className="font-rajdhani text-xl md:text-3xl text-gray-300 mb-12 h-12"
+          className="font-rajdhani text-lg md:text-3xl text-gray-300 mb-12 min-h-[4.5rem] md:min-h-[3rem] max-w-4xl mx-auto"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
@@ -131,18 +132,18 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
               startDelay={1000}
               cursorColor="#00CCFF"
               multiText={[
-                'Asesoría Comercial Digital para Empresas de Alto Rendimiento',
-                'Transformamos tu negocio con estrategias comerciales',
-                'Digitalización y automatización de procesos',
-                'Soluciones integrales para tu empresa',
+                'Desarrollo web profesional para negocios que quieren vender mejor online',
+                'Sitios web, e-commerce y sistemas web pensados para crecer',
+                'Presencia digital profesional para marcas que necesitan transmitir confianza',
+                'Diseñamos el futuro de tu negocio',
               ]}
               multiTextDelay={2000}
-              typeSpeed={70}
+              typeSpeed={80}
               multiTextLoop
             />
           ) : (
             <span className="inline-block text-gray-300">
-              Asesoría Comercial Digital para Empresas de Alto Rendimiento
+              Desarrollo web profesional para negocios que quieren vender mejor online
             </span>
           )}
         </motion.div>
