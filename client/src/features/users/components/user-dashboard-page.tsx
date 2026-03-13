@@ -4,23 +4,22 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '@/features/auth/context/AuthContext';
 import { useToast } from '@/shared/ui/use-toast';
 import MetaTags from '@/shared/ui/meta-tags';
-import { UserAvatar } from '@/shared/ui/user-avatar';
 import WhatsAppButton from '@/shared/ui/whatsapp-button';
 import { getErrorMessage } from '@/shared/utils/error-message';
 import { useUpdateUserPrivacyMutation, useUserPrivacyQuery } from '@/features/users/hooks/use-privacy-settings';
 import type { UpdateUserPrivacyPayload } from '@/features/users/types/privacy';
 import { DEFAULT_USER_PRIVACY_SETTINGS } from '@/features/users/types/privacy';
 import { PrivacyTab } from '@/features/users/components/privacy-tab';
+import { UserDashboardHeader } from '@/features/users/components/user-dashboard-header';
+import { UserDashboardTabsNav, type UserDashboardTab } from '@/features/users/components/user-dashboard-tabs-nav';
 import { 
-  Camera, 
   Edit3, 
   Save, 
   X, 
+  Globe,
   Lock, 
-  Globe, 
   Shield, 
   User, 
-  Check,
   AlertCircle,
   Eye,
   EyeOff,
@@ -47,7 +46,7 @@ export default function PanelUsuario() {
   } = useUserPrivacyQuery(user?.uid);
   const updatePrivacyMutation = useUpdateUserPrivacyMutation(user?.uid);
   
-  const [activeTab, setActiveTab] = useState<'profile' | 'security' | 'privacy' | 'integrations'>('profile');
+  const [activeTab, setActiveTab] = useState<UserDashboardTab>('profile');
   const [isEditing, setIsEditing] = useState(false);
   const [isSavingProfile, setIsSavingProfile] = useState(false);
   const [isSavingPassword, setIsSavingPassword] = useState(false);
@@ -339,140 +338,17 @@ export default function PanelUsuario() {
           transition={{ duration: 0.5 }}
           className="max-w-6xl mx-auto"
         >
-          {/* Header del Panel */}
-          <div className="bg-white/5 backdrop-blur-lg rounded-2xl border border-white/10 p-5 sm:p-6 mb-6 sm:mb-8">
-            <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
-              <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:items-center sm:gap-6 sm:text-left">
-                {/* Avatar con funcionalidad de cambio */}
-                <div className="relative group">
-                  <UserAvatar
-                    image={user?.image}
-                    name={user?.name}
-                    username={user?.username}
-                    className="w-20 h-20 rounded-full overflow-hidden bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-2xl text-white font-bold"
-                    textClassName="text-white"
-                  />
-                  
-                  {/* Overlay para cambiar imagen */}
-                  <div 
-                    onClick={triggerImageUpload}
-                    className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
-                  >
-                    <Camera className="w-6 h-6 text-white" />
-          </div>
-                  
-                  {/* Loading overlay */}
-                  {isUploadingImage && (
-                    <div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center">
-                      <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-white"></div>
-        </div>
-                  )}
-                  
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept="image/jpeg,image/jpg,image/png,image/webp"
-                    onChange={handleImageUpload}
-                    className="hidden"
-                  />
-                </div>
-                
-                <div className="w-full min-w-0">
-                  <div className="mb-2 flex flex-wrap items-center justify-center gap-3 sm:justify-start">
-                    <h1 className="text-2xl font-bold text-white">{user?.name || user?.username}</h1>
-                    {privacySettings.profileStatusVisible && (user?.isActive ? (
-                      <span className="px-3 py-1 text-xs rounded-full bg-green-500/20 text-green-400 border border-green-500/30 flex items-center gap-1">
-                        <Check className="w-3 h-3" />
-                        Verificada
-                      </span>
-                    ) : (
-                      <span className="px-3 py-1 text-xs rounded-full bg-yellow-500/20 text-yellow-400 border border-yellow-500/30 flex items-center gap-1">
-                        <AlertCircle className="w-3 h-3" />
-                        Pendiente
-                    </span>
-                  ))}
-                </div>
-                  {privacySettings.profileEmailVisible ? (
-                    <p className="break-all text-gray-400 sm:break-normal">{user?.email}</p>
-                  ) : (
-                    <p className="text-sm text-slate-500">Email oculto en el resumen de tu panel</p>
-                  )}
-                  <p className="text-sm text-gray-500">
-                    Miembro desde {(() => {
-                      if (user?.createdAt) {
-                        const date = new Date(user.createdAt);
-                        if (!isNaN(date.getTime())) {
-                          return date.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
-                        }
-                      }
-                      // Si no hay fecha válida, mostrar "-" o una fecha por defecto
-                      return '12 de julio de 2025';
-                    })()}
-                  </p>
-                </div>
-              </div>
-              
-              <div className="flex w-full items-center justify-center gap-3 lg:w-auto lg:justify-end">
-                <button
-                  onClick={handleLogout}
-                  className="w-full rounded-lg border border-white/10 px-4 py-2 text-gray-300 transition-colors hover:border-white/20 hover:text-white sm:w-auto"
-                >
-                  Cerrar sesión
-                </button>
-              </div>
-            </div>
-          </div>
+          <UserDashboardHeader
+            user={user}
+            privacySettings={privacySettings}
+            isUploadingImage={isUploadingImage}
+            fileInputRef={fileInputRef}
+            onImageUpload={handleImageUpload}
+            onTriggerImageUpload={triggerImageUpload}
+            onLogout={handleLogout}
+          />
 
-          {/* Tabs de Navegación */}
-          <div className="bg-white/5 backdrop-blur-lg rounded-xl p-2 mb-8 border border-white/10">
-            <div className="flex flex-wrap gap-2">
-                    <button
-                      onClick={() => setActiveTab('profile')}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                        activeTab === 'profile'
-                    ? 'bg-blue-500 text-white shadow-lg' 
-                    : 'text-gray-300 hover:bg-white/10 hover:text-white'
-                      }`}
-                    >
-                <User className="w-4 h-4" />
-                      Perfil
-                    </button>
-                    <button
-                      onClick={() => setActiveTab('security')}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                        activeTab === 'security'
-                    ? 'bg-blue-500 text-white shadow-lg' 
-                    : 'text-gray-300 hover:bg-white/10 hover:text-white'
-                      }`}
-                    >
-                <Shield className="w-4 h-4" />
-                      Seguridad
-                    </button>
-                    <button
-                      onClick={() => setActiveTab('privacy')}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                        activeTab === 'privacy'
-                    ? 'bg-blue-500 text-white shadow-lg' 
-                    : 'text-gray-300 hover:bg-white/10 hover:text-white'
-                      }`}
-                    >
-                <Eye className="w-4 h-4" />
-                      Privacidad
-                    </button>
-              <button 
-                onClick={() => setActiveTab('integrations')} 
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                  activeTab === 'integrations' 
-                    ? 'bg-blue-500 text-white shadow-lg' 
-                    : 'text-gray-300 hover:bg-white/10 hover:text-white'
-                }`}
-              >
-                <Globe className="w-4 h-4" />
-                Integraciones
-              </button>
-            </div>
-          </div>
-          
+          <UserDashboardTabsNav activeTab={activeTab} onTabChange={setActiveTab} />
           {/* Contenido de los Tabs */}
           <AnimatePresence mode="wait">
           <motion.div 
