@@ -102,7 +102,7 @@ export async function apiFetch<T>(path: string, options: ApiRequestOptions = {})
     ...rest,
     headers: requestHeaders,
     body: requestBody,
-    credentials: credentials || 'include',
+    credentials: credentials ?? 'same-origin',
   });
 
   const payload = await parseBody(response);

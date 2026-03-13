@@ -299,7 +299,7 @@ Observación:
 
 - [`client/src/pages/auth-verify.tsx`](./client/src/pages/auth-verify.tsx) expone UX de reset que no ejecuta el caso real
 - [`client/src/lib/http-client.ts`](./client/src/lib/http-client.ts) línea 105 fuerza `credentials: 'include'`
-  - puede causar comportamiento inconsistente en CORS/cookies si el backend no usa cookies como mecanismo principal
+  - puede causar comportamiento inconsistente en CORS/cookies si el backend no usa cookies como mecanismo principal ✅ corregido: `http-client.ts` y `queryClient.ts` ya usan `same-origin` por defecto y dejan `credentials` como opt-in explicito
 - [`client/src/pages/contacto.tsx`](./client/src/pages/contacto.tsx) y [`client/src/components/ui/newsletter-form.tsx`](./client/src/components/ui/newsletter-form.tsx)
   - muestran éxito optimista antes de confirmar respuesta del backend
 - [`scripts/smoke.mjs`](./scripts/smoke.mjs)
