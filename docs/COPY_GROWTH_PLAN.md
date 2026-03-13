@@ -31,7 +31,7 @@ Reposicionar TuWebAI como servicio de desarrollo web profesional para negocios, 
 
 Estado:
 
-- ✅ corregido: hero principal, fallback del home y metadata SEO ya fueron alineados al posicionamiento de desarrollo web profesional para negocios
+- ✅ cerrada: hero principal, fallback del home y metadata SEO ya fueron alineados al posicionamiento de desarrollo web profesional para negocios
 
 ### Objetivo
 
@@ -53,12 +53,17 @@ Bajo.
 - [hero-section.tsx](c:\Users\juan\Documents\Proyectos\Tuwebai\client\src\features\marketing-home\components\hero-section.tsx)
 - [meta-tags.tsx](c:\Users\juan\Documents\Proyectos\Tuwebai\client\src\shared\ui\meta-tags.tsx)
 
-### Trabajo previsto
+### Resultado implementado
 
-- redefinir headline principal
-- redefinir subheadline
-- ajustar SEO title y meta description
-- eliminar frases demasiado amplias o consultivas
+- headline principal del home alineado a desarrollo web profesional para negocios
+- fallback del hero alineado al mismo mensaje
+- title, description y keywords SEO del home actualizados al posicionamiento correcto
+- retiro del mensaje excesivamente amplio de "agencia digital", "marketing digital" y "consultoria gratuita" en la metadata principal
+
+### Lo que sigue
+
+- Fase 2 toma este nuevo posicionamiento como base
+- el siguiente frente ya no es definir que vende TuWebAI, sino mejorar la conversion del hero sin volver a abrir dispersion
 
 ## Fase 2. Rediseñar hero para conversion
 
@@ -243,13 +248,12 @@ Medio-bajo.
 
 Orden recomendado de ejecucion:
 
-1. Fase 1
-2. Fase 2
-3. Fase 3
-4. Fase 4
-5. Fase 5
-6. Fase 6
-7. Fase 7
+1. Fase 2
+2. Fase 3
+3. Fase 4
+4. Fase 5
+5. Fase 6
+6. Fase 7
 
 ## KPI cualitativos a vigilar
 
