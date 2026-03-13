@@ -59,7 +59,7 @@ Este score se calculo sobre el estado real del repo auditado localmente, tomando
 - los scripts rotos `check-oauth`, `fix-oauth` y `setup:mp` ya fueron retirados.
 - el script `deploy` inseguro ya fue retirado.
 - se retiraron varios lotes de dependencias sin referencias en repo principal.
-- todavia quedan dependencias para revisar con auditoria fina antes de considerar la gobernanza cerrada.
+- todavia quedan algunas dependencias para revisar con auditoria fina antes de considerar la gobernanza cerrada, pero el lote ambiguo ya siguio bajando con la salida de `ts-node`.
 
 ### Senales de deuda tecnica en codigo
 
@@ -146,7 +146,7 @@ Puede crecer con menos fragilidad operativa que antes, aunque todavia requiere l
 Razon del score:
 
 - ya fueron retirados scripts inexistentes y el `deploy` inseguro
-- ya fueron retirados varios lotes de dependencias sin referencias en repo principal
+- ya fueron retirados varios lotes de dependencias sin referencias en repo principal, incluyendo `ts-node`
 - la gobernanza mejoro de forma visible frente al estado inicial
 
 Riesgo residual:
