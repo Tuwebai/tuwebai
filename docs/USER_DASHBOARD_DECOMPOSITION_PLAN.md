@@ -44,6 +44,7 @@ Componentes ya extraidos:
 - `client/src/features/users/components/user-dashboard-header.tsx`
 - `client/src/features/users/components/user-dashboard-tabs-nav.tsx`
 - `client/src/features/users/components/user-profile-tab.tsx`
+- `client/src/features/users/components/user-security-tab.tsx`
 
 Responsabilidades detectadas:
 
@@ -227,6 +228,10 @@ Incluye:
 - estado de cuenta
 - cambio de password
 - toggles de visibilidad de password
+
+Estado:
+
+- cerrada
 
 ### Fase 4. Extraer `Integraciones`
 

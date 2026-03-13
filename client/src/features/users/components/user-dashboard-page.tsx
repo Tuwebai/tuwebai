@@ -12,16 +12,11 @@ import { DEFAULT_USER_PRIVACY_SETTINGS } from '@/features/users/types/privacy';
 import { PrivacyTab } from '@/features/users/components/privacy-tab';
 import { UserDashboardHeader } from '@/features/users/components/user-dashboard-header';
 import { UserProfileTab } from '@/features/users/components/user-profile-tab';
+import { UserSecurityTab } from '@/features/users/components/user-security-tab';
 import { UserDashboardTabsNav, type UserDashboardTab } from '@/features/users/components/user-dashboard-tabs-nav';
 import { 
-  Save, 
-  X, 
-  Globe,
-  Lock, 
-  Shield, 
   AlertCircle,
-  Eye,
-  EyeOff,
+  Globe,
 } from 'lucide-react';
 
 export default function PanelUsuario() {
@@ -379,190 +374,33 @@ export default function PanelUsuario() {
 
               {/* Tab: Seguridad */}
               {activeTab === 'security' && (
-                <div className="space-y-6">
-                  <h2 className="text-xl font-semibold text-white flex items-center gap-2 mb-6">
-                    <Shield className="w-5 h-5" />
-                    Seguridad de la Cuenta
-                  </h2>
-
-                  {/* Información de la cuenta */}
-                  <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-                    <h3 className="text-lg font-medium text-white mb-4">Estado de la cuenta</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
-                        <span className="text-gray-300">Estado</span>
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          user?.isActive 
-                            ? 'bg-green-500/20 text-green-400 border border-green-500/30' 
-                            : 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
-                        }`}>
-                          {user?.isActive ? 'Activa' : 'En revisión'}
-                              </span>
-                            </div>
-                      {passwordInfo.changedAt && (
-                        <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
-                          <span className="text-gray-300">Último cambio de contraseña</span>
-                          <span className="text-white">
-                            {new Date(passwordInfo.changedAt).toLocaleDateString('es-ES', { 
-                              year: 'numeric', 
-                              month: 'short', 
-                              day: 'numeric'
-                            })}
-                          </span>
-                          </div>
-                      )}
-                      {passwordInfo.daysSinceChange !== null && (
-                        <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
-                          <span className="text-gray-300">Días desde el último cambio</span>
-                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                            passwordInfo.daysSinceChange > 90 
-                              ? 'bg-red-500/20 text-red-400 border border-red-500/30' 
-                              : passwordInfo.daysSinceChange > 60 
-                              ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
-                              : 'bg-green-500/20 text-green-400 border border-green-500/30'
-                          }`}>
-                            {passwordInfo.daysSinceChange} días
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Cambio de contraseña */}
-                  <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-                    <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-lg font-medium text-white">Cambiar contraseña</h3>
-                      {!isChangingPassword && (
-                        <button
-                          onClick={() => setIsChangingPassword(true)}
-                          className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium transition-all"
-                        >
-                          <Lock className="w-4 h-4" />
-                          Cambiar contraseña
-                        </button>
-                      )}
-                    </div>
-
-                    {isChangingPassword && (
-                    <form onSubmit={handleChangePassword} className="space-y-4">
-                      <div>
-                          <label className="block text-gray-300 text-sm font-medium mb-2">Contraseña actual</label>
-                          <div className="relative">
-                        <input
-                              type={showPassword ? "text" : "password"}
-                          name="currentPassword"
-                          value={passwordForm.currentPassword}
-                          onChange={handlePasswordChange}
-                              className={`w-full px-4 py-3 rounded-lg bg-white/5 text-white border transition-all ${
-                                errors.currentPassword ? 'border-red-500' : 'border-white/20 focus:border-blue-500'
-                              }`}
-                            />
-                            <button
-                              type="button"
-                              onClick={() => setShowPassword(!showPassword)}
-                              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
-                            >
-                              {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                            </button>
-                          </div>
-                          {errors.currentPassword && <span className="text-red-400 text-sm mt-1 flex items-center gap-1">
-                            <AlertCircle className="w-3 h-3" />
-                            {errors.currentPassword}
-                          </span>}
-                      </div>
-                      
-                      <div>
-                          <label className="block text-gray-300 text-sm font-medium mb-2">Nueva contraseña</label>
-                          <div className="relative">
-                        <input
-                              type={showNewPassword ? "text" : "password"}
-                          name="newPassword"
-                          value={passwordForm.newPassword}
-                          onChange={handlePasswordChange}
-                              className={`w-full px-4 py-3 rounded-lg bg-white/5 text-white border transition-all ${
-                                errors.newPassword ? 'border-red-500' : 'border-white/20 focus:border-blue-500'
-                              }`}
-                            />
-                            <button
-                              type="button"
-                              onClick={() => setShowNewPassword(!showNewPassword)}
-                              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
-                            >
-                              {showNewPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                            </button>
-                          </div>
-                          {errors.newPassword && <span className="text-red-400 text-sm mt-1 flex items-center gap-1">
-                            <AlertCircle className="w-3 h-3" />
-                            {errors.newPassword}
-                          </span>}
-                      </div>
-                      
-                      <div>
-                          <label className="block text-gray-300 text-sm font-medium mb-2">Confirmar nueva contraseña</label>
-                          <div className="relative">
-                        <input
-                              type={showConfirmPassword ? "text" : "password"}
-                          name="confirmPassword"
-                          value={passwordForm.confirmPassword}
-                          onChange={handlePasswordChange}
-                              className={`w-full px-4 py-3 rounded-lg bg-white/5 text-white border transition-all ${
-                                errors.confirmPassword ? 'border-red-500' : 'border-white/20 focus:border-blue-500'
-                              }`}
-                        />
-                        <button
-                              type="button"
-                              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
-                            >
-                              {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                        </button>
-                      </div>
-                          {errors.confirmPassword && <span className="text-red-400 text-sm mt-1 flex items-center gap-1">
-                            <AlertCircle className="w-3 h-3" />
-                            {errors.confirmPassword}
-                          </span>}
-                      </div>
-                      
-                        <div className="flex gap-3 pt-4">
-                        <button
-                            type="submit" 
-                            disabled={isSavingPassword} 
-                            className="flex items-center gap-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium transition-all disabled:opacity-60"
-                          >
-                            {isSavingPassword ? (
-                              <>
-                                <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white"></div>
-                                Actualizando...
-                              </>
-                            ) : (
-                              <>
-                                <Save className="w-4 h-4" />
-                                Actualizar contraseña
-                              </>
-                            )}
-                        </button>
-                        <button
-                            type="button" 
-                            onClick={() => { 
-                              setIsChangingPassword(false); 
-                              setPasswordForm({
-                                currentPassword: '',
-                                newPassword: '',
-                                confirmPassword: '',
-                              }); 
-                            }} 
-                            className="flex items-center gap-2 px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white rounded-lg font-medium transition-all"
-                          >
-                            <X className="w-4 h-4" />
-                            Cancelar
-                        </button>
-                      </div>
-                      </form>
-                  )}
-                  </div>
-                </div>
+                <UserSecurityTab
+                  isActive={user?.isActive}
+                  passwordInfo={passwordInfo}
+                  isChangingPassword={isChangingPassword}
+                  isSavingPassword={isSavingPassword}
+                  showPassword={showPassword}
+                  showNewPassword={showNewPassword}
+                  showConfirmPassword={showConfirmPassword}
+                  passwordForm={passwordForm}
+                  errors={errors}
+                  onStartChangePassword={() => setIsChangingPassword(true)}
+                  onPasswordChange={handlePasswordChange}
+                  onSubmit={handleChangePassword}
+                  onCancel={() => {
+                    setIsChangingPassword(false);
+                    setPasswordForm({
+                      currentPassword: '',
+                      newPassword: '',
+                      confirmPassword: '',
+                    });
+                  }}
+                  onTogglePasswordVisibility={() => setShowPassword((current) => !current)}
+                  onToggleNewPasswordVisibility={() => setShowNewPassword((current) => !current)}
+                  onToggleConfirmPasswordVisibility={() => setShowConfirmPassword((current) => !current)}
+                />
               )}
-              
+
               {/* Tab: Privacidad */}
               {activeTab === 'privacy' && (
                 <PrivacyTab
