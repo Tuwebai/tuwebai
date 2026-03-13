@@ -19,7 +19,7 @@ La auditoria muestra que:
 - el panel ya no usa `userPreferences` en frontend
 - el backend aun conserva `/api/users/:uid/preferences` por compatibilidad contractual
 - la politica de privacidad y cookies promete consentimientos y tratamiento de datos que no tienen una capa de gestion en runtime
-- el panel no tiene un dominio propio para consentimiento, visibilidad, exportacion o borrado de datos
+- el panel ya resolvio consentimiento, visibilidad y trazabilidad minima, pero no tiene hoy dominio real para exportacion, borrado de cuenta o centro de cookies full stack
 
 Conclusion:
 
@@ -428,6 +428,17 @@ Solo si hay negocio real detras:
 - centro de cookies mas completo
 - historial de actividad de privacidad
 
+Estado:
+
+- diferida
+
+Resultado real:
+
+- la auditoria actual del repo no encontro rutas, componentes, jobs ni contratos que justifiquen abrir exportacion de datos, borrado de cuenta, centro de cookies full stack o historial de actividad detallado
+- `client/src/features/users/components/privacy-tab.tsx` ya cubre el alcance real del producto sin prometer capacidades avanzadas inexistentes
+- `server/src/modules/users/controller.ts` ya resuelve la trazabilidad minima necesaria para el estado actual del producto
+- abrir Fase 6 hoy agregaria deuda tecnica y expectativas falsas, asi que queda formalmente diferida hasta que exista dominio de negocio real
+
 ## Orden Recomendado
 
 1. Fase 0 cerrada
@@ -436,7 +447,7 @@ Solo si hay negocio real detras:
 4. Fase 3 cerrada
 5. Fase 4 cerrada
 6. Fase 5 cerrada
-7. Fase 6 capacidades avanzadas
+7. Fase 6 diferida por decision de producto
 
 ## Riesgos
 
@@ -456,3 +467,20 @@ Este frente se considera bien encaminado cuando:
 - backend y frontend usan el mismo modelo
 - legal, UX y runtime dejan de estar desacoplados
 - `check`, `lint`, `build` y `smoke` siguen en verde
+
+## Estado final del plan
+
+Resultado actual:
+
+- Fase 0 cerrada
+- Fase 1 cerrada
+- Fase 2 cerrada
+- Fase 3 cerrada
+- Fase 4 cerrada
+- Fase 5 cerrada
+- Fase 6 diferida por decision de producto
+
+Conclusion:
+
+- el dominio `Privacidad` queda suficientemente implementado para el alcance real del producto actual
+- no corresponde seguir expandiendolo hasta que exista una necesidad de negocio verificable para capacidades avanzadas
