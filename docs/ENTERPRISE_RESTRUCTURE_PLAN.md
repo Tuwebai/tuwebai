@@ -140,7 +140,7 @@ Resultado esperado:
 
 Origen principal:
 
-- `server/src/controllers/public.controller.ts`
+- `server/src/controllers/public.controller.ts` ✅ corregido: retirado tras quedar sin consumidores
 - `server/src/routes/public.routes.ts`
 
 Target:
@@ -262,7 +262,7 @@ Precondición operacional:
 ### Backend
 
 - `server/src/controllers/public.controller.ts`
-  - se divide en módulos por dominio ✅ corregido parcialmente
+  - se dividio en módulos por dominio y fue retirado tras quedar sin consumidores ✅ corregido
 - `server/src/routes/public.routes.ts`
   - se parte por dominio y luego se compone en `app/routes.ts` ✅ corregido
 - `server/src/config/firebase-admin.ts`

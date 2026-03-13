@@ -68,7 +68,7 @@ Eso eleva el costo de mantenimiento, debilita la gobernanza y deja riesgos concr
 - Hay dos centros de configuración frontend: [`vite.config.ts`](./vite.config.ts) y [`client/vite.config.ts`](./client/vite.config.ts). ✅ corregido parcialmente: raíz definida como source of truth; `client/` marcado deprecated
 - Hay dos configuraciones Netlify: [`netlify.toml`](./netlify.toml) y [`client/netlify.toml`](./client/netlify.toml). ✅ corregido parcialmente: raíz definida como source of truth; `client/` marcado deprecated
 - El frontend usa una mezcla de `contexts`, `hooks`, `services` y acceso directo a API desde componentes/páginas. ✅ corregido parcialmente: frontera `app/core/features/shared` preparada, migración de consumers pendiente
-- El backend concentra demasiada responsabilidad en [`server/src/controllers/public.controller.ts`](./server/src/controllers/public.controller.ts). ✅ corregido parcialmente: dominios extraídos a `server/src/modules/` con facade temporal
+- El backend concentraba demasiada responsabilidad en `server/src/controllers/public.controller.ts`. ✅ corregido: dominios extraídos a `server/src/modules/` y la fachada temporal fue retirada tras quedar sin consumidores
 
 ### Evaluación de escalabilidad
 
@@ -97,7 +97,7 @@ En [`server/src/routes/public.routes.ts`](./server/src/routes/public.routes.ts):
 - línea 124: `GET /api/projects` no exige auth ✅ corregido
 - línea 125: `GET /api/tickets` no exige auth ✅ corregido
 
-Esas rutas delegan directamente a Firestore desde [`server/src/controllers/public.controller.ts`](./server/src/controllers/public.controller.ts), por ejemplo:
+Esas rutas delegaban directamente a Firestore desde el viejo `server/src/controllers/public.controller.ts`, por ejemplo:
 
 - línea 471: `handleGetTicketById`
 - línea 486: `handleGetAllProjects`
@@ -293,7 +293,7 @@ Observación:
 
 - Endpoints sin auth suficiente en backend ✅ corregido
 - `Dockerfile.backend` y `server/index.ts` apuntan a `public/` inexistente ✅ corregido
-- `handleDeleteTestimonial` usa `delete()` hard delete en [`server/src/controllers/public.controller.ts`](./server/src/controllers/public.controller.ts) línea 590, violando la política de soft delete ✅ corregido
+- `handleDeleteTestimonial` usaba `delete()` hard delete en el antiguo `server/src/controllers/public.controller.ts` línea 590, violando la política de soft delete ✅ corregido
 
 ### Medium
 
@@ -327,7 +327,7 @@ Frontend:
 
 Backend:
 
-- `server/src/controllers/public.controller.ts` ✅ corregido parcialmente: descompuesto por dominio con facade temporal
+- `server/src/controllers/public.controller.ts` ✅ corregido: descompuesto por dominio y retirado tras quedar sin consumidores
 
 Esto indica:
 
@@ -388,7 +388,7 @@ La página `panel-usuario` sigue concentrando orquestación funcional de perfil,
 
 ### 3. Backend tipo “God controller”
 
-[`server/src/controllers/public.controller.ts`](./server/src/controllers/public.controller.ts) mezcla: ✅ corregido parcialmente
+El antiguo `server/src/controllers/public.controller.ts` mezclaba: ✅ corregido
 
 - propuestas
 - newsletter
@@ -583,7 +583,7 @@ server/
 
 ### Media prioridad
 
-1. Particionar `public.controller.ts` por dominios. ✅ corregido parcialmente
+1. Particionar `public.controller.ts` por dominios. ✅ corregido
 2. Mover acceso a API fuera de `pages/` y `components/`. ✅ corregido parcialmente: `testimonials`, `auth`, `contact`, `newsletter`, `payments`, `support`, `projects`, `users` y `proposals` ya migrados; wrappers legacy de auth y services ya fueron retirados o quedaron fuera del runtime directo
 3. Depurar scripts rotos y remover `deploy` basado en `git add .`.
 4. Consolidar `vite.config` y `netlify.toml`. ✅ corregido parcialmente: source of truth documentada y configs duplicadas marcadas deprecated
