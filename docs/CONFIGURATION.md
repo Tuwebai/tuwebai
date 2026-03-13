@@ -26,7 +26,7 @@ Motivo:
 - `Dockerfile.frontend`
 
 usan la configuracion raiz y resuelven `client/` como `root` del frontend.
-Ademas, `vite.config.ts` fija `envDir: "."` para que las variables `VITE_*` se lean desde el `.env` de la raiz del repo y no desde `client/`.
+Ademas, `vite.config.ts` fija `envDir: ".."` para que las variables `VITE_*` se lean desde el `.env` de la raiz del repo y no desde `client/`.
 
 ### Deploy Netlify
 

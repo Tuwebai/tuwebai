@@ -310,7 +310,7 @@ Observación:
 - `console.log`/`console.debug` todavía presentes en config y utilidades
 - encoding dañado en múltiples archivos (`Ã³`, `Ã¡`, etc.), síntoma de manejo inconsistente de charset
 - README prácticamente vacío
-- `client/src/lib/firebase.ts` podía disparar `auth/invalid-api-key` cuando `vite.config.ts` leía `VITE_*` desde `client/` en lugar de la raíz del repo ✅ corregido: `vite.config.ts` ahora usa `envDir: "."` y `firebase.ts` valida variables requeridas antes de inicializar Firebase
+- `client/src/lib/firebase.ts` podía disparar `auth/invalid-api-key` cuando `vite.config.ts` leía `VITE_*` desde `client/` en lugar de la raíz del repo ✅ corregido: `vite.config.ts` ahora usa `envDir: ".."` con `root: "./client"` y `firebase.ts` valida variables requeridas antes de inicializar Firebase
 
 ---
 
