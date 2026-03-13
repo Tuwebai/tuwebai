@@ -286,6 +286,8 @@ Precondición operacional:
 - `client/src/hooks/*`
   - lo transversal queda en `core/` o `shared/`
   - lo de dominio fue movido a `features/*/hooks/` o retirado tras quedar sin consumidores ✅ corregido
+- `client/{vite.config.ts,netlify.toml,tailwind.config.ts,postcss.config.js}`
+  - quedaron retirados tras confirmar ausencia de consumidores; la configuración de raíz es la única fuente oficial ✅ corregido
 
 ## Compatibilidad Temporal
 

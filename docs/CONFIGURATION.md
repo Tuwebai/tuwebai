@@ -8,7 +8,7 @@ Resultado de Fase 5 del `ENTERPRISE_RESTRUCTURE_PLAN`:
 
 - build frontend: fuente oficial definida
 - deploy Netlify: fuente oficial definida
-- configuraciones duplicadas: documentadas como deprecated
+- configuraciones duplicadas de `client/`: retiradas
 
 ## Source of Truth
 
@@ -51,9 +51,9 @@ Fuente oficial:
 
 - `postcss.config.js`
 
-## Configuraciones Deprecadas
+## Configuraciones Retiradas
 
-Los siguientes archivos quedan deprecados y no deben usarse como referencia principal:
+Los siguientes archivos legacy de `client/` ya fueron retirados tras confirmar ausencia de consumidores reales:
 
 - `client/vite.config.ts`
 - `client/netlify.toml`
@@ -62,8 +62,7 @@ Los siguientes archivos quedan deprecados y no deben usarse como referencia prin
 
 Estado:
 
-- se mantienen solo por compatibilidad y trazabilidad historica
-- no deben recibir cambios funcionales nuevos
+- la unica fuente de verdad vive en la raiz del repositorio
 - cualquier ajuste futuro debe partir de la configuracion raiz
 
 ## Variables de Entorno Relevantes
@@ -126,11 +125,11 @@ Comportamiento por defecto:
 2. Cambios de deploy Netlify deben hacerse en `netlify.toml`.
 3. Cambios de Tailwind deben hacerse en `tailwind.config.ts`.
 4. Cambios de PostCSS deben hacerse en `postcss.config.js`.
-5. Los archivos deprecados en `client/` no son fuente de verdad.
+5. No deben reintroducirse archivos de configuracion duplicados dentro de `client/`.
 
 ## Notas de Compatibilidad
 
 - Esta fase no modifica parametros de build ni deploy.
-- Esta fase no elimina archivos duplicados.
+- Esta fase ya elimino los archivos duplicados de configuracion en `client/`.
 - Esta fase no cambia variables de entorno.
-- Si en el futuro se decide eliminar configuraciones legacy, primero debe verificarse que no existan pipelines externos apuntando a `client/`.
+- Si algun pipeline externo aun apuntara a `client/`, debe corregirse contra la configuracion raiz antes de reintroducir cualquier compatibilidad.

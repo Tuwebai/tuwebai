@@ -401,16 +401,16 @@ El antiguo `server/src/controllers/public.controller.ts` mezclaba: ✅ corregido
 - projects
 - listados globales
 
-No hay separación por dominio ni capa de servicios de negocio consistente. ✅ corregido parcialmente: módulos y routing central ya creados
+La separacion por dominio del antiguo God controller ya quedo resuelta a nivel de routing y modulos; la evolucion de servicios por dominio sigue siendo mejora continua, no bloqueo estructural de este frente. ✅ corregido
 
 ### 4. Duplicación de stacks y configuración
 
-- dos `vite.config`
-- dos `netlify.toml`
+- dos `vite.config` ✅ corregido
+- dos `netlify.toml` ✅ corregido
 - backend Node + backend PHP + Cloud Function
 - lógica Firebase en Node y en PHP
 
-Estado: ✅ corregido parcialmente: `vite.config.ts`, `netlify.toml`, `tailwind.config.ts` y `postcss.config.js` de raíz definidos como fuentes oficiales; duplicados de `client/` documentados como deprecated
+Estado: ✅ corregido parcialmente: `vite.config.ts`, `netlify.toml`, `tailwind.config.ts` y `postcss.config.js` de raíz quedaron como únicas fuentes oficiales y los duplicados de `client/` fueron retirados; el estado parcial restante responde solo a superficies legacy aisladas (`legacy/` y `firebase-functions-contacto/`), no a configuración activa duplicada
 
 Esto complica onboarding, incidentes y despliegue.
 
