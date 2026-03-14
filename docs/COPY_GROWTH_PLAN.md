@@ -231,7 +231,8 @@ Bajo.
 
 ### Lo que sigue
 
-- antes de pricing, hace falta corregir las secciones que todavia contradicen el posicionamiento actual: proceso, tecnologia, comparativa e impacto
+- Fase 5 sigue pendiente de cierre total porque `impact-section` todavia no fue re-trabajada como bloque de confianza alineado a los casos reales
+- antes de pricing, hace falta corregir las secciones que todavia contradicen el posicionamiento actual: proceso, retiro de tecnologia de la home, comparativa e impacto
 - no conviene reabrir hero ni servicios antes de cerrar esas piezas intermedias del recorrido
 
 ## Fase 6. Reposicionar proceso y retirar tecnologia de la home
