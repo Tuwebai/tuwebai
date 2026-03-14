@@ -333,7 +333,7 @@ Medio.
 
 Estado:
 
-- pendiente
+- ✅ cerrada: `pricing-section` ya no funciona como pseudo-checkout ni como tabla de suscripción mensual; ahora orienta la conversación comercial con rangos de inversión y CTA único a propuesta
 
 ### Objetivo
 
@@ -355,16 +355,17 @@ Medio.
 - [payment-return-view.tsx](c:\Users\juan\Documents\Proyectos\Tuwebai\client\src\features\payments\components\payment-return-view.tsx)
 - [proposal-request-page.tsx](c:\Users\juan\Documents\Proyectos\Tuwebai\client\src\features\proposals\components\proposal-request-page.tsx)
 
-### Hallazgos de re-auditoria
+### Hallazgos de re-auditoría
 
-- `pricing-section` sigue empujando planes cerrados mensuales cuando la home se viene moviendo hacia soluciones web profesionales y propuestas a medida
-- el bloque puede desordenar el recorrido comercial si aparece antes de que el lead entienda bien alcance y encaje del servicio
+- `pricing-section` empujaba una lectura de suscripción y checkout que chocaba con el resto del landing, ya orientado a proyectos web profesionales y propuestas a medida
+- el bloque mezclaba referencia comercial con lógica de compra inmediata, generando ruido en leads B2B
 
-### Trabajo previsto
+### Resultado implementado
 
-- re-evaluar si conviene mostrar precios fijos en home
-- decidir si la home debe vender consulta o checkout
-- separar mejor servicios cerrados de soluciones a medida
+- la home dejó de empujar checkout inmediato desde `pricing-section`
+- el bloque ahora presenta tres rangos consultivos: base web corporativa, proyecto comercial completo y solución a medida
+- la sección explica qué variables mueven la propuesta final y deriva todo el cierre hacia `/consulta`
+- el sistema de pagos real queda desacoplado de la home y no se toca en este slice
 
 ## Fase 9. Optimizar contacto y paginas satelite para consistencia
 
