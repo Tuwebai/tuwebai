@@ -2,50 +2,41 @@ import { useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useIntersectionObserver } from '@/core/hooks/use-intersection-observer';
 
-interface StatCardProps {
-  value: string;
-  label: string;
+interface TrustCardProps {
+  eyebrow: string;
+  title: string;
   description: string;
   delay: number;
 }
 
-function StatCard({ value, label, description, delay }: StatCardProps) {
-  const { ref, hasIntersected } = useIntersectionObserver();
+function TrustCard({ eyebrow, title, description, delay }: TrustCardProps) {
+  const { ref, hasIntersected } = useIntersectionObserver<HTMLDivElement>();
 
   const cardVariants = {
-    hidden: { opacity: 0, scale: 0.9 },
+    hidden: { opacity: 0, y: 24 },
     visible: {
       opacity: 1,
-      scale: 1,
+      y: 0,
       transition: {
-        duration: 0.6,
-        delay: delay * 0.15,
+        duration: 0.5,
+        delay: delay * 0.12,
       },
     },
   };
 
   return (
     <motion.div
-      ref={ref as React.RefObject<HTMLDivElement>}
-      className="bg-[#121217] rounded-lg p-6 border border-gray-800 relative"
+      ref={ref}
       initial="hidden"
       animate={hasIntersected ? 'visible' : 'hidden'}
       variants={cardVariants}
-      whileHover={{ y: -5 }}
-      transition={{ duration: 0.3 }}
+      className="rounded-xl border border-gray-800 bg-[#121217] p-6"
     >
-      <motion.div
-        className="font-rajdhani font-bold text-xl mb-2 text-[#00CCFF]"
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: delay * 0.15 + 0.3 }}
-      >
-        {value}
-      </motion.div>
-
-      <p className="text-gray-200 mb-2 font-medium">{label}</p>
-
-      <p className="text-gray-300 text-sm">• {description}</p>
+      <p className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-[#00CCFF]">
+        {eyebrow}
+      </p>
+      <h3 className="mb-3 font-rajdhani text-2xl font-bold text-white">{title}</h3>
+      <p className="text-sm leading-7 text-gray-300">{description}</p>
     </motion.div>
   );
 }
@@ -56,8 +47,8 @@ interface ImpactSectionProps {
 
 export default function ImpactSection({ setRef }: ImpactSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
-  const { ref: titleRef, hasIntersected: titleVisible } = useIntersectionObserver();
-  const { ref: textRef, hasIntersected: textVisible } = useIntersectionObserver();
+  const { ref: titleRef, hasIntersected: titleVisible } = useIntersectionObserver<HTMLDivElement>();
+  const { ref: textRef, hasIntersected: textVisible } = useIntersectionObserver<HTMLDivElement>();
 
   if (sectionRef.current && !sectionRef.current.hasAttribute('data-ref-set')) {
     setRef(sectionRef.current);
@@ -70,120 +61,88 @@ export default function ImpactSection({ setRef }: ImpactSectionProps) {
   };
 
   const textVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, delay: 0.3 } },
+    hidden: { opacity: 0, y: 24 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.7, delay: 0.2 } },
   };
+
+  const trustCards: TrustCardProps[] = [
+    {
+      eyebrow: 'Claridad comercial',
+      title: 'Webs pensadas para vender mejor',
+      description:
+        'Cada solución se organiza para que un negocio pueda presentar mejor su oferta, generar confianza y llevar al usuario hacia una acción concreta.',
+      delay: 1,
+    },
+    {
+      eyebrow: 'Operación más ordenada',
+      title: 'Menos fricción en el día a día',
+      description:
+        'No trabajamos solo la parte visual. Priorizamos recorridos claros, integraciones útiles y una estructura que simplifique soporte, gestión y seguimiento.',
+      delay: 2,
+    },
+    {
+      eyebrow: 'Base técnica seria',
+      title: 'Soluciones mantenibles y escalables',
+      description:
+        'La tecnología debe sostener el crecimiento, no convertirse en una carga. Por eso buscamos rendimiento, orden técnico y una base lista para evolucionar.',
+      delay: 3,
+    },
+    {
+      eyebrow: 'Acompañamiento real',
+      title: 'Criterio profesional en cada etapa',
+      description:
+        'Desde el planteo inicial hasta la implementación, trabajamos con foco en decisiones útiles para negocio, no en humo ni en promesas infladas.',
+      delay: 4,
+    },
+  ];
 
   return (
     <section
       id="impact"
       ref={sectionRef}
-      className="landing-anchor-section flex items-center justify-center relative bg-gradient-2"
+      className="landing-anchor-section relative flex items-center justify-center bg-gradient-2"
     >
-      <div className="container mx-auto px-4 py-16 z-10">
+      <div className="container relative z-10 mx-auto px-4 py-16">
         <motion.div
-          ref={titleRef as React.RefObject<HTMLDivElement>}
-          className="text-center mb-12"
+          ref={titleRef}
+          className="mx-auto mb-12 max-w-4xl text-center"
           initial="hidden"
           animate={titleVisible ? 'visible' : 'hidden'}
           variants={titleVariants}
         >
-          <h2 className="font-rajdhani font-bold text-3xl md:text-5xl mb-6">
-            <span className="gradient-text gradient-border inline-block pb-2">Casos de Éxito Reales</span>
+          <h2 className="mb-6 font-rajdhani text-3xl font-bold md:text-5xl">
+            <span className="gradient-text gradient-border inline-block pb-2">
+              Lo que sostiene una solución web profesional
+            </span>
           </h2>
 
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-8">
-            Impacto Real en el Mundo Digital
+          <p className="mx-auto max-w-3xl text-xl text-gray-300">
+            Un proyecto serio no depende solo del diseño. Necesita claridad comercial, una experiencia cuidada y una base técnica preparada para crecer con el negocio.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16 max-w-5xl mx-auto">
-          <StatCard
-            value="Caso #1"
-            label="LH Decants - E-commerce Premium"
-            description="Aumento sostenido de ventas online con una tienda premium enfocada en conversión, confianza visual y mejor experiencia de compra."
-            delay={1}
-          />
-          <StatCard
-            value="Caso #2"
-            label="TuWeb.ai Dashboard - Operación Interna"
-            description="Centralización de métricas, clientes y operaciones en un dashboard único para reducir fricción en el trabajo comercial y técnico."
-            delay={2}
-          />
-          <StatCard
-            value="Caso #3"
-            label="SafeSpot - Seguridad Ciudadana"
-            description="Plataforma de reportes de objetos robados con foco en trazabilidad, rapidez de carga y acceso simple para la comunidad."
-            delay={3}
-          />
-          <StatCard
-            value="Caso #4"
-            label="Trading TuWeb.ai - Analítica Financiera"
-            description="Interfaz orientada a decisiones de trading con paneles claros, datos accionables y mejor lectura operativa para usuarios activos."
-            delay={4}
-          />
+        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 md:grid-cols-2">
+          {trustCards.map((card) => (
+            <TrustCard
+              key={card.title}
+              eyebrow={card.eyebrow}
+              title={card.title}
+              description={card.description}
+              delay={card.delay}
+            />
+          ))}
         </div>
 
         <motion.div
-          ref={textRef as React.RefObject<HTMLDivElement>}
-          className="max-w-3xl mx-auto text-center"
+          ref={textRef}
+          className="mx-auto mt-12 max-w-3xl text-center"
           initial="hidden"
           animate={textVisible ? 'visible' : 'hidden'}
           variants={textVariants}
         >
-          <h3 className="font-rajdhani font-bold text-2xl mb-4 text-white">¿Tu Negocio Necesita Resultados Similares?</h3>
-
-          <p className="text-gray-300 text-lg">
-            En TuWeb.ai nos especializamos en crear estrategias digitales que generan resultados medibles.
-            No creamos simplemente sitios web bonitos, desarrollamos herramientas de venta
-            que impulsan el crecimiento real de tu negocio.
+          <p className="text-lg leading-8 text-gray-300">
+            Los casos del showroom muestran cómo esto baja a proyectos reales. Este bloque existe para dejar claro que detrás de cada entrega hay criterio, estructura y una forma de trabajo pensada para sostener resultados.
           </p>
-
-          <motion.div
-            className="mt-10"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
-            <div className="flex flex-col md:flex-row items-center justify-center gap-4">
-              <div className="flex items-center space-x-2 text-[#00CCFF]">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-                <span>Resultados medibles</span>
-              </div>
-
-              <div className="hidden md:block h-4 w-px bg-gray-700"></div>
-
-              <div className="flex items-center space-x-2 text-[#9933FF]">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-                <span>Enfoque en conversiones</span>
-              </div>
-
-              <div className="hidden md:block h-4 w-px bg-gray-700"></div>
-
-              <div className="flex items-center space-x-2 text-[#00CCFF]">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-                <span>Estrategias comprobadas</span>
-              </div>
-            </div>
-          </motion.div>
-
-          <div className="mt-10">
-            <motion.a
-              href="/consulta"
-              className="inline-block px-8 py-4 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-full text-white font-medium shadow-lg hover:shadow-[#00CCFF]/20"
-              whileHover={{ scale: 1.05 }}
-              transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-            >
-              Solicitar consulta gratuita
-            </motion.a>
-          </div>
         </motion.div>
       </div>
     </section>

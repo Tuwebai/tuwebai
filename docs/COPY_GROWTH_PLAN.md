@@ -198,7 +198,7 @@ Bajo.
 
 Estado:
 
-- ✅ cerrada parcialmente: `showroom` y `testimonials` ya mejoraron de forma clara, pero la credibilidad del landing todavia no esta cerrada porque `impact-section` sigue en un estado viejo y redundante respecto a los casos reales
+- ✅ cerrada: `showroom`, `showroom-project-modal`, `testimonials-section` e `impact-section` ya funcionan como una capa de credibilidad mas coherente y menos redundante dentro del landing
 
 ### Objetivo
 
@@ -228,11 +228,11 @@ Bajo.
 - el modal del showroom ya permite navegar entre proyectos sin cerrar y volver a abrir cada detalle, reduciendo friccion real en la exploracion
 - `testimonials-section` ya no usa un titulo y subtitulo genericos; ahora introduce los testimonios como prueba de confianza vinculada a crecimiento, claridad y profesionalismo
 - los estados vacios de testimonios dejaron de pedir accion artificial y ahora comunican el estado real sin sonar a placeholder de producto
+- `impact-section` ya no repite casos del showroom ni usa lenguaje genérico de "casos de éxito"; ahora funciona como bloque de confianza que explica qué sostiene una solución web profesional
 
 ### Lo que sigue
 
-- Fase 5 sigue pendiente de cierre total porque `impact-section` todavia no fue re-trabajada como bloque de confianza alineado a los casos reales
-- antes de pricing, hace falta corregir las secciones que todavia contradicen el posicionamiento actual: proceso, retiro de tecnologia de la home, comparativa e impacto
+- antes de pricing, hace falta corregir las secciones que todavía contradicen el posicionamiento actual: proceso, retiro de tecnología de la home y comparativa
 - no conviene reabrir hero ni servicios antes de cerrar esas piezas intermedias del recorrido
 
 ## Fase 6. Reposicionar proceso y retirar tecnologia de la home
@@ -281,7 +281,7 @@ Medio-bajo.
 - retirar `tech-section` del landing principal y dejar la explicacion tecnica en la pagina `/tecnologias`
 - bajar abstraccion y tecnicismo decorativo
 
-## Fase 7. Reestructurar comparativa e impacto
+## Fase 7. Reestructurar comparativa
 
 Estado:
 
@@ -289,13 +289,13 @@ Estado:
 
 ### Objetivo
 
-Hacer que `comparison-section` e `impact-section` refuercen conversion y diferenciacion sin mezclar marketing generico, automatizacion ni casos duplicados.
+Hacer que `comparison-section` refuerce conversion y diferenciacion sin mezclar marketing generico, automatizacion ni promesas fuera de foco.
 
 ### Impacto esperado
 
 - mejor diferenciacion comercial
-- mas credibilidad
-- menos redundancia entre bloques del landing
+- menos contradiccion con el posicionamiento actual
+- menos ruido en la parte media del landing
 
 ### Riesgo de regresion
 
@@ -304,18 +304,15 @@ Medio.
 ### Archivos potencialmente afectados
 
 - [comparison-section.tsx](c:\Users\juan\Documents\Proyectos\Tuwebai\client\src\features\marketing-home\components\comparison-section.tsx)
-- [impact-section.tsx](c:\Users\juan\Documents\Proyectos\Tuwebai\client\src\features\marketing-home\components\impact-section.tsx)
 
 ### Hallazgos de re-auditoria
 
 - `comparison-section` sigue comparando `websites`, `marketing` y `automation`, reabriendo la dispersion de oferta que ya se habia cerrado en servicios
-- `impact-section` repite casos ya presentes en showroom y usa un lenguaje de "casos de exito" demasiado generico
 
 ### Trabajo previsto
 
 - simplificar `comparison-section` a una comparativa enfocada en claridad, tiempos, mantenimiento y resultados
-- redefinir `impact-section` como bloque de confianza complementario, no como duplicado de showroom
-- evitar repetir los mismos ejemplos en tres lugares distintos
+- evitar reabrir categorias o promesas que el landing ya saco de su foco principal
 
 ## Fase 8. Revisar pricing y oferta comercial
 
@@ -405,13 +402,13 @@ Medio-bajo.
 - `showroom-section`
 - `showroom-project-modal`
 - `testimonials-section`
+- `impact-section`
 
 ### Secciones con trabajo parcial o pendiente
 
 - `process-section`
 - retiro de `tech-section` de la home
 - `comparison-section`
-- `impact-section`
 - `pricing-section`
 - `contact-section`
 

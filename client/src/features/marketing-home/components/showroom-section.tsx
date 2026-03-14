@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+﻿import React, { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useIntersectionObserver } from '@/core/hooks/use-intersection-observer';
@@ -32,7 +32,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
     if (projectsVisible) setHasShownProjects(true);
   }, [projectsVisible]);
   
-  // Prevenir scroll del documento mientras el modal está abierto.
+  // Prevenir scroll del documento mientras el modal estÃ¡ abierto.
   useEffect(() => {
     if (selectedProject) {
       document.body.style.overflow = 'hidden';
@@ -84,16 +84,16 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
     }
   };
 
-  // Array de proyectos (actualmente vacío - listo para proyectos reales)
+  // Array de proyectos (actualmente vacÃ­o - listo para proyectos reales)
       const projects: ShowroomProject[] = [
     {
       id: 1,
       title: "LH Decants",
       category: "e-commerce",
       description: "Explora el arte del perfume sin comprar a ciegas: decants 100% originales para descubrir fragancias exclusivas por mililitro.",
-      clientNeed: "Vender fragancias premium con una experiencia clara, elegante y confiable para usuarios que necesitan decidir sin probar el perfume fisicamente.",
-      solutionSummary: "Disenamos un e-commerce enfocado en confianza, catalogo premium y claridad de compra para decants 100% originales.",
-      valueSummary: "La solucion mejora conversion, transmite autenticidad y facilita explorar una oferta exclusiva sin friccion innecesaria.",
+      clientNeed: "Vender fragancias premium con una experiencia clara, elegante y confiable para usuarios que necesitan decidir sin probar el perfume fÃ­sicamente.",
+      solutionSummary: "DiseÃ±amos un e-commerce enfocado en confianza, catÃ¡logo premium y claridad de compra para decants 100% originales.",
+      valueSummary: "La soluciÃ³n mejora conversiÃ³n, transmite autenticidad y facilita explorar una oferta exclusiva sin fricciÃ³n innecesaria.",
       features: [
         "Decants 100% originales",
         "Fragancias exclusivas del mundo",
@@ -102,7 +102,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
         "Elegancia en su forma mas pura"
       ],
       results: [
-        { label: "Satisfaccion", value: "98%" },
+        { label: "SatisfacciÃ³n", value: "98%" },
         { label: "Productos originales", value: "100%" },
         { label: "Fragancias", value: "+200" }
       ],
@@ -116,13 +116,13 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
       category: "saas",
       description: "Plataforma operativa del ecosistema TuWeb.ai para centralizar proyectos, soporte, pagos y visibilidad interna en una sola interfaz.",
       sectionLabels: {
-        clientNeed: "Que necesitabamos resolver",
-        solutionSummary: "Que desarrollamos en TuWeb.ai",
-        valueSummary: "Que mejora en la operacion",
+        clientNeed: "QuÃ© necesitÃ¡bamos resolver",
+        solutionSummary: "QuÃ© desarrollamos en TuWeb.ai",
+        valueSummary: "QuÃ© mejora en la operaciÃ³n",
       },
-      clientNeed: "Ordenar la operacion diaria de TuWeb.ai con una plataforma propia que unifique seguimiento, soporte y estado de servicio sin depender de procesos dispersos.",
+      clientNeed: "Ordenar la operaciÃ³n diaria de TuWeb.ai con una plataforma propia que unifique seguimiento, soporte y estado de servicio sin depender de procesos dispersos.",
       solutionSummary: "Desarrollamos un dashboard interno para centralizar proyectos, tickets, pagos y trazabilidad operativa dentro del ecosistema TuWeb.ai.",
-      valueSummary: "La plataforma reduce friccion interna, mejora la visibilidad del servicio y profesionaliza la gestion operativa de punta a punta.",
+      valueSummary: "La plataforma reduce fricciÃ³n interna, mejora la visibilidad del servicio y profesionaliza la gestiÃ³n operativa de punta a punta.",
       features: [
         "Acceso seguro por usuario",
         "Seguimiento operativo en tiempo real",
@@ -132,7 +132,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
       ],
       results: [
         { label: "Visibilidad operativa", value: "360°" },
-        { label: "Modulos", value: "4" },
+        { label: "MÃ³dulos", value: "4" },
         { label: "Disponibilidad", value: "24/7" }
       ],
       image: "/dashboardtuwebai.png",
@@ -146,7 +146,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
       description: "Plataforma de seguridad ciudadana para reportar objetos robados, generar alertas y conectar a la comunidad en tiempo real.",
       clientNeed: "Dar a la comunidad una herramienta concreta para reportar, alertar y seguir casos de seguridad sin depender de canales fragmentados.",
       solutionSummary: "Creamos una plataforma web para reportes geolocalizados, alertas y seguimiento comunitario en tiempo real.",
-      valueSummary: "La solucion mejora la velocidad de respuesta, ordena la informacion critica y fortalece la colaboracion entre usuarios.",
+      valueSummary: "La solución mejora la velocidad de respuesta, ordena la información crítica y fortalece la colaboración entre usuarios.",
       features: [
         "Reportes de objetos robados geolocalizados",
         "Busqueda por categoria, zona y descripcion",
@@ -167,8 +167,8 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
       id: 4,
       title: "Trading TuWeb.ai",
       category: "saas",
-      description: "Dashboard de trading para monitoreo de mercado, gestion de operaciones y seguimiento de rendimiento en tiempo real.",
-      clientNeed: "Tomar decisiones con datos visibles y seguimiento continuo, sin dashboards confusos ni informacion fragmentada.",
+      description: "Dashboard de trading para monitoreo de mercado, gestión de operaciones y seguimiento de rendimiento en tiempo real.",
+      clientNeed: "Tomar decisiones con datos visibles y seguimiento continuo, sin dashboards confusos ni información fragmentada.",
       solutionSummary: "Desarrollamos un panel de trading con monitoreo de mercado, operaciones y rendimiento en una sola interfaz.",
       valueSummary: "El sistema mejora claridad operativa, velocidad de lectura y control diario sobre balances, riesgo y movimientos.",
       features: [
@@ -189,7 +189,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
     }
   ];
 
-  // Filtrar proyectos por categoría
+  // Filtrar proyectos por categorÃ­a
   const filteredProjects = activeCategory === 'all' 
     ? projects 
     : projects.filter(project => project.category === activeCategory);
@@ -233,25 +233,25 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
     };
   }, [filteredProjects, selectedProject, selectedProjectIndex]);
 
-  // Categorías únicas para filtrado
+  // CategorÃ­as Ãºnicas para filtrado
   const categories = ['all', ...Array.from(new Set(projects.map(project => project.category)))];
 
-  // Mapeo de categorías a nombres amigables
+  // Mapeo de categorÃ­as a nombres amigables
   const categoryNames: Record<string, string> = {
     all: 'Todos',
     'e-commerce': 'E-commerce',
     saas: 'SaaS',
     'seguridad-ciudadana': 'Seguridad Ciudadana',
-    muebleria: 'Mueblerías',
+    muebleria: 'MueblerÃ­as',
     'tienda-online': 'Tiendas Online',
     'salud-bienestar': 'Salud y Bienestar',
-    'diseno-branding': 'Diseño y Branding',
+    'diseno-branding': 'DiseÃ±o y Branding',
     'turismo-exclusivo': 'Turismo Exclusivo',
-    'educacion': 'Educación',
+    'educacion': 'EducaciÃ³n',
     'mascotas': 'Mascotas'
   };
 
-  // Manejador de navegación para proyectos
+  // Manejador de navegaciÃ³n para proyectos
   const handleProjectClick = (project: ShowroomProject) => {
     setSelectedProject(project);
   };
@@ -268,7 +268,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
     }
   };
 
-  // Manejador para visitar página web externa
+  // Manejador para visitar pÃ¡gina web externa
   const handleVisitWebsite = (url: string, e: React.MouseEvent) => {
     e.stopPropagation();
     window.open(url, '_blank', 'noopener,noreferrer');
@@ -302,7 +302,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
           variants={subtitleVariants}
         >
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Mira ejemplos de sitios, dashboards y plataformas web donde combinamos claridad comercial, operacion mas ordenada y una experiencia digital profesional.
+            Mira ejemplos de sitios, dashboards y plataformas web donde combinamos claridad comercial, operación más ordenada y una experiencia digital profesional.
           </p>
         </motion.div>
         
@@ -353,14 +353,14 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-3">
                   <span className="text-white font-medium text-sm">Vista Previa</span>
                 </div>
-                {/* Botón "Visitar página web" que aparece en hover */}
+                {/* BotÃ³n "Visitar pÃ¡gina web" que aparece en hover */}
                 {project.externalUrl && (
                   <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                     <button
                       onClick={(e) => handleVisitWebsite(project.externalUrl!, e)}
                       className="bg-gradient-to-r from-[#00CCFF] to-[#9933FF] text-white px-4 py-2 rounded-lg font-medium hover:shadow-lg hover:shadow-[#00CCFF]/20 transition-all duration-200 transform hover:scale-105"
                     >
-                      Visitar página web
+                      Visitar pÃ¡gina web
                     </button>
                   </div>
                 )}
@@ -416,7 +416,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
         {/* Call to action */}
         <div className="text-center mt-14">
           <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
-            Si buscas una solucion similar para tu negocio, podemos ayudarte a definir el mejor enfoque segun tu etapa, tus objetivos y la complejidad real del proyecto.
+            Si buscas una solución similar para tu negocio, podemos ayudarte a definir el mejor enfoque según tu etapa, tus objetivos y la complejidad real del proyecto.
           </p>
           
           <motion.div whileHover={{ scale: 1.05 }} transition={{ type: "spring", stiffness: 400, damping: 10 }}>
@@ -424,7 +424,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
               to="/consulta"
               className="inline-block px-8 py-4 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-full text-white font-medium shadow-lg hover:shadow-[#00CCFF]/20"
             >
-              Quiero una solucion similar
+              Quiero una solución similar
             </Link>
           </motion.div>
         </div>
@@ -432,5 +432,6 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
     </section>
   );
 }
+
 
 
