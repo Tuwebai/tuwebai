@@ -32,7 +32,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
     if (projectsVisible) setHasShownProjects(true);
   }, [projectsVisible]);
   
-  // Prevenir scroll del documento mientras el modal estÃ¡ abierto.
+  // Prevenir scroll del documento mientras el modal está abierto.
   useEffect(() => {
     if (selectedProject) {
       document.body.style.overflow = 'hidden';
@@ -84,16 +84,16 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
     }
   };
 
-  // Array de proyectos (actualmente vacÃ­o - listo para proyectos reales)
+  // Array de proyectos (actualmente vacío - listo para proyectos reales)
       const projects: ShowroomProject[] = [
     {
       id: 1,
       title: "LH Decants",
       category: "e-commerce",
       description: "Explora el arte del perfume sin comprar a ciegas: decants 100% originales para descubrir fragancias exclusivas por mililitro.",
-      clientNeed: "Vender fragancias premium con una experiencia clara, elegante y confiable para usuarios que necesitan decidir sin probar el perfume fÃ­sicamente.",
-      solutionSummary: "DiseÃ±amos un e-commerce enfocado en confianza, catÃ¡logo premium y claridad de compra para decants 100% originales.",
-      valueSummary: "La soluciÃ³n mejora conversiÃ³n, transmite autenticidad y facilita explorar una oferta exclusiva sin fricciÃ³n innecesaria.",
+      clientNeed: "Vender fragancias premium con una experiencia clara, elegante y confiable para usuarios que necesitan decidir sin probar el perfume físicamente.",
+      solutionSummary: "Diseñamos un e-commerce enfocado en confianza, catálogo premium y claridad de compra para decants 100% originales.",
+      valueSummary: "La solución mejora conversión, transmite autenticidad y facilita explorar una oferta exclusiva sin fricción innecesaria.",
       features: [
         "Decants 100% originales",
         "Fragancias exclusivas del mundo",
@@ -102,7 +102,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
         "Elegancia en su forma mas pura"
       ],
       results: [
-        { label: "SatisfacciÃ³n", value: "98%" },
+        { label: "Satisfacción", value: "98%" },
         { label: "Productos originales", value: "100%" },
         { label: "Fragancias", value: "+200" }
       ],
@@ -116,13 +116,13 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
       category: "saas",
       description: "Plataforma operativa del ecosistema TuWeb.ai para centralizar proyectos, soporte, pagos y visibilidad interna en una sola interfaz.",
       sectionLabels: {
-        clientNeed: "QuÃ© necesitÃ¡bamos resolver",
-        solutionSummary: "QuÃ© desarrollamos en TuWeb.ai",
-        valueSummary: "QuÃ© mejora en la operaciÃ³n",
+        clientNeed: "Qué necesitábamos resolver",
+        solutionSummary: "Qué desarrollamos en TuWeb.ai",
+        valueSummary: "Qué mejora en la operación",
       },
-      clientNeed: "Ordenar la operaciÃ³n diaria de TuWeb.ai con una plataforma propia que unifique seguimiento, soporte y estado de servicio sin depender de procesos dispersos.",
+      clientNeed: "Ordenar la operación diaria de TuWeb.ai con una plataforma propia que unifique seguimiento, soporte y estado de servicio sin depender de procesos dispersos.",
       solutionSummary: "Desarrollamos un dashboard interno para centralizar proyectos, tickets, pagos y trazabilidad operativa dentro del ecosistema TuWeb.ai.",
-      valueSummary: "La plataforma reduce fricciÃ³n interna, mejora la visibilidad del servicio y profesionaliza la gestiÃ³n operativa de punta a punta.",
+      valueSummary: "La plataforma reduce fricción interna, mejora la visibilidad del servicio y profesionaliza la gestión operativa de punta a punta.",
       features: [
         "Acceso seguro por usuario",
         "Seguimiento operativo en tiempo real",
@@ -132,7 +132,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
       ],
       results: [
         { label: "Visibilidad operativa", value: "360°" },
-        { label: "MÃ³dulos", value: "4" },
+        { label: "Módulos", value: "4" },
         { label: "Disponibilidad", value: "24/7" }
       ],
       image: "/dashboardtuwebai.png",
@@ -189,7 +189,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
     }
   ];
 
-  // Filtrar proyectos por categorÃ­a
+  // Filtrar proyectos por categoría
   const filteredProjects = activeCategory === 'all' 
     ? projects 
     : projects.filter(project => project.category === activeCategory);
@@ -233,25 +233,25 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
     };
   }, [filteredProjects, selectedProject, selectedProjectIndex]);
 
-  // CategorÃ­as Ãºnicas para filtrado
+  // Categorías únicas para filtrado
   const categories = ['all', ...Array.from(new Set(projects.map(project => project.category)))];
 
-  // Mapeo de categorÃ­as a nombres amigables
+  // Mapeo de categorías a nombres amigables
   const categoryNames: Record<string, string> = {
     all: 'Todos',
     'e-commerce': 'E-commerce',
     saas: 'SaaS',
     'seguridad-ciudadana': 'Seguridad Ciudadana',
-    muebleria: 'MueblerÃ­as',
+    muebleria: 'Mueblerías',
     'tienda-online': 'Tiendas Online',
     'salud-bienestar': 'Salud y Bienestar',
-    'diseno-branding': 'DiseÃ±o y Branding',
+    'diseno-branding': 'Diseño y Branding',
     'turismo-exclusivo': 'Turismo Exclusivo',
-    'educacion': 'EducaciÃ³n',
+    'educacion': 'Educación',
     'mascotas': 'Mascotas'
   };
 
-  // Manejador de navegaciÃ³n para proyectos
+  // Manejador de navegación para proyectos
   const handleProjectClick = (project: ShowroomProject) => {
     setSelectedProject(project);
   };
@@ -268,7 +268,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
     }
   };
 
-  // Manejador para visitar pÃ¡gina web externa
+  // Manejador para visitar página web externa
   const handleVisitWebsite = (url: string, e: React.MouseEvent) => {
     e.stopPropagation();
     window.open(url, '_blank', 'noopener,noreferrer');
@@ -353,14 +353,14 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-3">
                   <span className="text-white font-medium text-sm">Vista Previa</span>
                 </div>
-                {/* BotÃ³n "Visitar pÃ¡gina web" que aparece en hover */}
+                {/* Botón "Visitar página web" que aparece en hover */}
                 {project.externalUrl && (
                   <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                     <button
                       onClick={(e) => handleVisitWebsite(project.externalUrl!, e)}
                       className="bg-gradient-to-r from-[#00CCFF] to-[#9933FF] text-white px-4 py-2 rounded-lg font-medium hover:shadow-lg hover:shadow-[#00CCFF]/20 transition-all duration-200 transform hover:scale-105"
                     >
-                      Visitar pÃ¡gina web
+                      Visitar página web
                     </button>
                   </div>
                 )}

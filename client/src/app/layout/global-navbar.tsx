@@ -107,22 +107,22 @@ export default function GlobalNavbar() {
       (location.pathname === '/' && targetPage?.href === '/') ||
       activeNavItem?.sections?.some((section) => section.id === sectionId)
     ) {
-      if (debugNav) console.debug("Intentando hacer scroll en la misma pÃ¡gina a la secciÃ³n:", sectionId);
+      if (debugNav) console.debug("Intentando hacer scroll en la misma página a la sección:", sectionId);
 
       setTimeout(() => {
         const section = document.getElementById(sectionId);
         if (section) {
-          if (debugNav) console.debug("SecciÃ³n encontrada, haciendo scroll");
+          if (debugNav) console.debug("Sección encontrada, haciendo scroll");
           scrollToHomeSection(section);
         } else {
-          console.warn("SecciÃ³n no encontrada:", sectionId);
+          console.warn("Sección no encontrada:", sectionId);
         }
       }, 200);
     } else if (targetPage) {
       if (debugNav) console.debug(`Navegando a ${targetPage.href}#${sectionId}`);
       window.location.href = `${targetPage.href}#${sectionId}`;
     } else {
-      console.warn("No se encontrÃ³ pÃ¡gina para la secciÃ³n:", sectionId);
+      console.warn("No se encontró página para la sección:", sectionId);
     }
   };
 
@@ -145,14 +145,14 @@ export default function GlobalNavbar() {
                   to="/politica-privacidad"
                   className="hover:text-[#00CCFF] transition-colors"
                 >
-                  PolÃ­tica de Privacidad
+                  Política de Privacidad
                 </Link>
-                <span className="text-gray-600">â€¢</span>
+                <span className="text-gray-600">•</span>
                 <Link
                   to="/terminos-condiciones"
                   className="hover:text-[#9933FF] transition-colors"
                 >
-                  TÃ©rminos y Condiciones
+                  Términos y Condiciones
                 </Link>
               </div>
             )}
@@ -200,7 +200,7 @@ export default function GlobalNavbar() {
                         onClick={() => openModal(undefined, 'login')}
                         className="px-4 py-1.5 text-sm font-medium border border-gray-600 hover:border-gray-400 rounded-md text-gray-300 hover:text-white transition-colors"
                       >
-                        Iniciar sesiÃ³n
+                        Iniciar sesión
                       </button>
                       <button
                         onClick={() => openModal(undefined, 'register')}
@@ -277,7 +277,7 @@ export default function GlobalNavbar() {
                               }}
                               className="block w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-[#23232b] hover:text-white rounded-lg transition-colors"
                             >
-                              Cerrar sesiÃ³n
+                              Cerrar sesión
                             </button>
                           </div>
                         </div>
@@ -385,15 +385,15 @@ export default function GlobalNavbar() {
                       className="hover:text-[#00CCFF] transition-colors"
                       onClick={() => setIsMenuOpen(false)}
                     >
-                      PolÃ­tica de Privacidad
+                      Política de Privacidad
                     </Link>
-                    <span className="text-gray-600">â€¢</span>
+                    <span className="text-gray-600">•</span>
                     <Link
                       to="/terminos-condiciones"
                       className="hover:text-[#9933FF] transition-colors"
                       onClick={() => setIsMenuOpen(false)}
                     >
-                      TÃ©rminos y Condiciones
+                      Términos y Condiciones
                     </Link>
                   </div>
                 </div>
@@ -407,7 +407,7 @@ export default function GlobalNavbar() {
                       }}
                       className="flex-1 py-3 border border-gray-700 rounded-lg text-gray-300 font-medium text-center"
                     >
-                      Iniciar sesiÃ³n
+                      Iniciar sesión
                     </button>
                     <button
                       onClick={() => {
@@ -474,7 +474,7 @@ export default function GlobalNavbar() {
                       }}
                       className="block w-full py-2 px-4 text-left rounded-md text-gray-300 hover:bg-gray-800 transition-colors"
                     >
-                      Cerrar sesiÃ³n
+                      Cerrar sesión
                     </button>
                   </div>
                 )}
