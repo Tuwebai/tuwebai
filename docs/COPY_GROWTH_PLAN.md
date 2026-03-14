@@ -232,8 +232,9 @@ Bajo.
 
 ### Lo que sigue
 
-- antes de pricing, hace falta corregir las secciones que todavía contradicen el posicionamiento actual: proceso, retiro de tecnología de la home y comparativa
-- no conviene reabrir hero ni servicios antes de cerrar esas piezas intermedias del recorrido
+- Fase 5 ya quedó cerrada.
+- El siguiente frente del plan ya no pertenece a esta fase: antes de pricing, hace falta corregir proceso, retiro de tecnología de la home y comparativa.
+- No conviene reabrir hero ni servicios antes de cerrar esas piezas intermedias del recorrido.
 
 ## Fase 6. Reposicionar proceso y retirar tecnologia de la home
 
