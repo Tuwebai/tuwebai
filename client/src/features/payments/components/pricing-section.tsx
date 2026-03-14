@@ -196,6 +196,9 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
           <p className="text-xl leading-8 text-gray-300">
             Esta sección no busca empujarte a un checkout. Sirve para ubicar el nivel de proyecto que más se parece a tu necesidad y orientar la conversación comercial con más claridad.
           </p>
+          <p className="mt-4 text-sm leading-6 text-gray-400">
+            Las referencias en USD funcionan como guía de alcance. Para proyectos en Argentina, la propuesta final se cotiza y se cobra en pesos argentinos.
+          </p>
         </motion.div>
 
         <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 lg:grid-cols-[1.15fr_1.15fr_0.9fr]">
@@ -232,6 +235,9 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
             <h3 className="font-rajdhani text-3xl font-bold text-white">Definimos la propuesta correcta</h3>
             <p className="mt-4 text-gray-300">
               Si ya tenés una idea general del tipo de proyecto, el paso lógico es conversar alcance, prioridad y contexto real para bajar una propuesta sólida.
+            </p>
+            <p className="mt-3 text-sm leading-6 text-gray-400">
+              Si tu operación está en Argentina, vas a recibir la propuesta final en ARS. Para proyectos fuera de Argentina, la moneda se define al confirmar alcance y forma de trabajo.
             </p>
 
             <motion.a

@@ -366,6 +366,7 @@ Medio.
 - el bloque ahora presenta tres rangos consultivos: base web corporativa, proyecto comercial completo y solución a medida
 - la sección explica qué variables mueven la propuesta final y deriva todo el cierre hacia `/consulta`
 - el sistema de pagos real queda desacoplado de la home y no se toca en este slice
+- Ruta 2 aplicada: la home mantiene USD como referencia comercial de alcance y `/consulta` ya aclara que, para Argentina, la propuesta final se cotiza y se cobra en pesos argentinos
 
 ## Fase 9. Optimizar contacto y paginas satelite para consistencia
 

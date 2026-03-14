@@ -297,6 +297,9 @@ export default function Consulta() {
             <h1 className="text-4xl md:text-5xl font-rajdhani font-bold mb-4">
               <span className="gradient-text pb-2">Solicitar propuesta personalizada</span>
             </h1>
+            <p className="text-sm text-gray-400 max-w-2xl mx-auto mt-4 leading-6">
+              Si venís desde las referencias de inversión del home, tomalas como guía comercial. Para proyectos en Argentina cotizamos y cobramos en pesos argentinos; para proyectos fuera de Argentina, la moneda se define al confirmar alcance.
+            </p>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto mt-4">
               Completá el formulario y en menos de 48 horas recibirás una propuesta a medida para tu proyecto.
             </p>
