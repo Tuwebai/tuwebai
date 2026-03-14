@@ -293,7 +293,7 @@ Medio-bajo.
 
 Estado:
 
-- pendiente
+- ✅ cerrada: `comparison-section` ya no mezcla desarrollo web, marketing y automatizacion; ahora funciona como una sola comparativa comercial entre solucion generica y proyecto web pensado para negocio
 
 ### Objetivo
 
@@ -321,6 +321,13 @@ Medio.
 
 - simplificar `comparison-section` a una comparativa enfocada en claridad, tiempos, mantenimiento y resultados
 - evitar reabrir categorias o promesas que el landing ya saco de su foco principal
+
+### Resultado implementado
+
+- `comparison-section` ya no usa tabs para `websites`, `marketing` y `automation`
+- la comparativa ahora se concentra en criterios utiles para un negocio: punto de partida, enfoque, implementacion, base para crecer y acompanamiento
+- el bloque dejo de reabrir la dispersion de oferta que ya se habia corregido en servicios y proceso
+- el CTA final conserva el recorrido hacia propuesta personalizada sin prometer categorias que el landing ya saco de foco
 
 ## Fase 8. Revisar pricing y oferta comercial
 

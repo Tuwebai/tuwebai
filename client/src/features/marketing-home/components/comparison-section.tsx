@@ -1,21 +1,50 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useIntersectionObserver } from '@/core/hooks/use-intersection-observer';
 
+interface ComparisonRow {
+  label: string;
+  generic: string;
+  tuwebai: string;
+}
 
 interface ComparisonSectionProps {
   setRef: (ref: HTMLElement | null) => void;
 }
 
+const comparisonRows: ComparisonRow[] = [
+  {
+    label: 'Punto de partida',
+    generic: 'Se arma desde una plantilla o una lógica estándar.',
+    tuwebai: 'Se define desde el negocio, el objetivo y el recorrido que debe resolver.',
+  },
+  {
+    label: 'Enfoque de la web',
+    generic: 'Prioriza verse bien, aunque no siempre ordene la operación o la venta.',
+    tuwebai: 'Busca claridad comercial, confianza y una experiencia útil para el usuario final.',
+  },
+  {
+    label: 'Implementación',
+    generic: 'Suele depender de decisiones rápidas o paquetes cerrados.',
+    tuwebai: 'Se diseña y desarrolla con criterio técnico según el alcance real del proyecto.',
+  },
+  {
+    label: 'Base para crecer',
+    generic: 'Puede quedar limitada cuando el negocio necesita evolucionar.',
+    tuwebai: 'Se entrega una base más ordenada, mantenible y lista para escalar.',
+  },
+  {
+    label: 'Acompañamiento',
+    generic: 'El proyecto termina con la entrega del sitio.',
+    tuwebai: 'Trabajamos para que la solución quede alineada a operación, soporte y próximos pasos.',
+  },
+];
+
 export default function ComparisonSection({ setRef }: ComparisonSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const { ref: titleRef, hasIntersected: titleVisible } = useIntersectionObserver<HTMLDivElement>();
-  const { ref: subtitleRef, hasIntersected: subtitleVisible } = useIntersectionObserver<HTMLDivElement>();
   const { ref: tableRef, hasIntersected: tableVisible } = useIntersectionObserver<HTMLDivElement>();
-  
-  const [activeTab, setActiveTab] = useState<'websites' | 'marketing' | 'automation'>('websites');
-  
-  // Set the ref for the parent component
+
   if (sectionRef.current && !sectionRef.current.hasAttribute('data-ref-set')) {
     setRef(sectionRef.current);
     sectionRef.current.setAttribute('data-ref-set', 'true');
@@ -23,308 +52,105 @@ export default function ComparisonSection({ setRef }: ComparisonSectionProps) {
 
   const titleVariants = {
     hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }
-  };
-
-  const subtitleVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, delay: 0.2 } }
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
   };
 
   const tableVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, delay: 0.3 } }
-  };
-
-  // Función para renderizar contenido específico de cada pestaña
-  const renderTabContent = () => {
-    if (activeTab === 'websites') {
-      return (
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-800">
-            <thead>
-              <tr>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider bg-[#121217] rounded-tl-lg">Características</th>
-                <th className="px-6 py-4 text-center text-xs font-medium text-gray-400 uppercase tracking-wider bg-[#121217]">Agencias tradicionales</th>
-                <th className="px-6 py-4 text-center text-xs font-medium text-[#00CCFF] uppercase tracking-wider bg-[#121217] font-bold rounded-tr-lg">TuWeb.ai</th>
-              </tr>
-            </thead>
-            <tbody className="bg-[#0c0c12] divide-y divide-gray-800">
-              <tr>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 bg-[#0c0c14]">Tiempo de entrega</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-400">8-12 semanas</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-white bg-[#121217]">4-6 semanas</td>
-              </tr>
-              <tr>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 bg-[#0c0c14]">Optimización SEO</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-400">Básica o no incluida</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-white bg-[#121217]">Incluida en todos los planes</td>
-              </tr>
-              <tr>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 bg-[#0c0c14]">Velocidad de carga</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-400">Variable (3-5s)</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-white bg-[#121217]">Optimizada (&lt;2s)</td>
-              </tr>
-              <tr>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 bg-[#0c0c14]">Diseño responsive</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-400">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-white bg-[#121217]">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mx-auto text-[#00CCFF]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                </td>
-              </tr>
-              <tr>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 bg-[#0c0c14]">Panel de administración</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-400">Opcional con costo extra</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-white bg-[#121217]">Incluido sin costo</td>
-              </tr>
-              <tr>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 bg-[#0c0c14]">Certificado SSL</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-400">Pago anual adicional</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-white bg-[#121217]">Incluido gratuitamente</td>
-              </tr>
-              <tr>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 bg-[#0c0c14]">Enfoque en conversión</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-400">Limitado</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-white bg-[#121217]">Prioritario en el diseño</td>
-              </tr>
-              <tr>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 bg-[#0c0c14] rounded-bl-lg">Soporte técnico</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-400">Horario limitado</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-white bg-[#121217] rounded-br-lg">Disponible 24/7</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      );
-    } else if (activeTab === 'marketing') {
-      return (
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-800">
-            <thead>
-              <tr>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider bg-[#121217] rounded-tl-lg">Características</th>
-                <th className="px-6 py-4 text-center text-xs font-medium text-gray-400 uppercase tracking-wider bg-[#121217]">Agencias tradicionales</th>
-                <th className="px-6 py-4 text-center text-xs font-medium text-[#00CCFF] uppercase tracking-wider bg-[#121217] font-bold rounded-tr-lg">TuWeb.ai</th>
-              </tr>
-            </thead>
-            <tbody className="bg-[#0c0c12] divide-y divide-gray-800">
-              <tr>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 bg-[#0c0c14]">Estrategia personalizada</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-400">Genérica por industria</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-white bg-[#121217]">Totalmente personalizada</td>
-              </tr>
-              <tr>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 bg-[#0c0c14]">Análisis de competencia</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-400">Básico</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-white bg-[#121217]">Exhaustivo y detallado</td>
-              </tr>
-              <tr>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 bg-[#0c0c14]">Optimización continua</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-400">Mensual</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-white bg-[#121217]">Semanal</td>
-              </tr>
-              <tr>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 bg-[#0c0c14]">Creación de contenido</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-400">Limitada</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-white bg-[#121217]">Ilimitada en planes premium</td>
-              </tr>
-              <tr>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 bg-[#0c0c14]">Reporting en tiempo real</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-400">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mx-auto text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-white bg-[#121217]">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mx-auto text-[#00CCFF]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                </td>
-              </tr>
-              <tr>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 bg-[#0c0c14]">Reuniones de estrategia</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-400">Mensuales</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-white bg-[#121217]">Semanales o quincenales</td>
-              </tr>
-              <tr>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 bg-[#0c0c14]">Integración multicanal</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-400">Limitada</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-white bg-[#121217]">Completa y sincronizada</td>
-              </tr>
-              <tr>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 bg-[#0c0c14] rounded-bl-lg">Garantía de resultados</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-400">Raramente ofrecida</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-white bg-[#121217] rounded-br-lg">Incluida en todos los planes</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      );
-    } else {
-      return (
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-800">
-            <thead>
-              <tr>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider bg-[#121217] rounded-tl-lg">Características</th>
-                <th className="px-6 py-4 text-center text-xs font-medium text-gray-400 uppercase tracking-wider bg-[#121217]">Soluciones estándar</th>
-                <th className="px-6 py-4 text-center text-xs font-medium text-[#00CCFF] uppercase tracking-wider bg-[#121217] font-bold rounded-tr-lg">TuWeb.ai</th>
-              </tr>
-            </thead>
-            <tbody className="bg-[#0c0c12] divide-y divide-gray-800">
-              <tr>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 bg-[#0c0c14]">Implementación</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-400">Genérica</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-white bg-[#121217]">Personalizada</td>
-              </tr>
-              <tr>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 bg-[#0c0c14]">Integraciones</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-400">Limitadas</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-white bg-[#121217]">Múltiples plataformas</td>
-              </tr>
-              <tr>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 bg-[#0c0c14]">Workflows personalizados</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-400">Básicos</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-white bg-[#121217]">Avanzados y complejos</td>
-              </tr>
-              <tr>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 bg-[#0c0c14]">Segmentación avanzada</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-400">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mx-auto text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-white bg-[#121217]">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mx-auto text-[#00CCFF]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                </td>
-              </tr>
-              <tr>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 bg-[#0c0c14]">Automatización de CRM</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-400">Módulo adicional</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-white bg-[#121217]">Incluido</td>
-              </tr>
-              <tr>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 bg-[#0c0c14]">Email marketing avanzado</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-400">Limitado</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-white bg-[#121217]">Completo</td>
-              </tr>
-              <tr>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 bg-[#0c0c14]">Análisis de rendimiento</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-400">Básico</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-white bg-[#121217]">Detallado con inteligencia artificial</td>
-              </tr>
-              <tr>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 bg-[#0c0c14] rounded-bl-lg">Soporte técnico</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-400">Por email o ticket</td>
-                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-white bg-[#121217] rounded-br-lg">Atención personalizada 24/7</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      );
-    }
+    hidden: { opacity: 0, y: 28 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.75, delay: 0.15 } },
   };
 
   return (
-    <section 
-      id="comparison" 
+    <section
+      id="comparison"
       ref={sectionRef}
-      className="landing-anchor-section flex items-center justify-center relative py-20"
-      style={{ background: 'linear-gradient(180deg, #121217 0%, #0a0a0f 100%)' }}
+      className="landing-anchor-section relative flex items-center justify-center bg-[linear-gradient(180deg,#121217_0%,#0a0a0f_100%)]"
     >
-      
-      <div className="container mx-auto px-4 z-10">
-        <motion.div 
+      <div className="container relative z-10 mx-auto px-4 py-16">
+        <motion.div
           ref={titleRef}
-          className="text-center"
+          className="mx-auto mb-10 max-w-4xl text-center"
           initial="hidden"
-          animate={titleVisible ? "visible" : "hidden"}
+          animate={titleVisible ? 'visible' : 'hidden'}
           variants={titleVariants}
         >
-          <h2 className="font-rajdhani font-bold text-3xl md:text-5xl mb-4">
-            <span className="gradient-text gradient-border inline-block pb-2">¿Por Qué Elegirnos?</span>
+          <h2 className="mb-6 font-rajdhani text-3xl font-bold md:text-5xl">
+            <span className="gradient-text gradient-border inline-block pb-2">
+              La diferencia no es solo visual
+            </span>
           </h2>
-        </motion.div>
-        
-        <motion.div 
-          ref={subtitleRef}
-          className="text-center mb-10"
-          initial="hidden"
-          animate={subtitleVisible ? "visible" : "hidden"}
-          variants={subtitleVariants}
-        >
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            Comparamos nuestras soluciones con las alternativas tradicionales para que puedas ver la diferencia.
+
+          <p className="mx-auto max-w-3xl text-xl text-gray-300">
+            Un proyecto web serio no se mide solo por diseño o velocidad de entrega. También importa cómo resuelve el negocio, cómo se mantiene y qué base deja para crecer.
           </p>
         </motion.div>
-        
-        {/* Tabs de selección */}
-        <div className="flex justify-center mb-8">
-          <div className="inline-flex p-1 bg-[#121217] rounded-full">
-            <button
-              onClick={() => setActiveTab('websites')}
-              className={`px-4 py-2 text-sm rounded-full transition-colors ${
-                activeTab === 'websites' 
-                  ? 'bg-gradient-to-r from-[#00CCFF] to-[#9933FF] text-white' 
-                  : 'text-gray-400 hover:text-white'
-              }`}
-            >
-              Desarrollo Web
-            </button>
-            <button
-              onClick={() => setActiveTab('marketing')}
-              className={`px-4 py-2 text-sm rounded-full transition-colors ${
-                activeTab === 'marketing' 
-                  ? 'bg-gradient-to-r from-[#00CCFF] to-[#9933FF] text-white' 
-                  : 'text-gray-400 hover:text-white'
-              }`}
-            >
-              Marketing Digital
-            </button>
-            <button
-              onClick={() => setActiveTab('automation')}
-              className={`px-4 py-2 text-sm rounded-full transition-colors ${
-                activeTab === 'automation' 
-                  ? 'bg-gradient-to-r from-[#00CCFF] to-[#9933FF] text-white' 
-                  : 'text-gray-400 hover:text-white'
-              }`}
-            >
-              Automatización
-            </button>
-          </div>
-        </div>
-        
-        {/* Tabla comparativa */}
-        <motion.div 
+
+        <motion.div
           ref={tableRef}
-          className="max-w-4xl mx-auto"
+          className="mx-auto max-w-5xl overflow-hidden rounded-2xl border border-gray-800 bg-[#0f1016]/95"
           initial="hidden"
-          animate={tableVisible ? "visible" : "hidden"}
+          animate={tableVisible ? 'visible' : 'hidden'}
           variants={tableVariants}
         >
-          {renderTabContent()}
-          
-          <div className="mt-8 text-center">
-            <p className="text-gray-400 text-sm mb-6">
-              * La comparación se basa en el análisis de servicios similares en el mercado. Los resultados pueden variar según el caso específico.
-            </p>
-            <motion.a 
-              href="/consulta" 
-              className="inline-block px-6 py-3 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-lg text-white font-medium"
-              whileHover={{ scale: 1.05 }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
-            >
-              Pedir propuesta personalizada
-            </motion.a>
+          <div className="hidden grid-cols-[1.1fr_1fr_1fr] border-b border-gray-800 bg-[#121217] md:grid">
+            <div className="px-6 py-5 text-left text-xs font-semibold uppercase tracking-[0.24em] text-gray-400">
+              Criterio
+            </div>
+            <div className="px-6 py-5 text-center text-xs font-semibold uppercase tracking-[0.24em] text-gray-500">
+              Solución genérica
+            </div>
+            <div className="px-6 py-5 text-center text-xs font-semibold uppercase tracking-[0.24em] text-[#00CCFF]">
+              TuWeb.ai
+            </div>
           </div>
+
+          <div className="divide-y divide-gray-800">
+            {comparisonRows.map((row) => (
+              <div key={row.label} className="grid grid-cols-1 md:grid-cols-[1.1fr_1fr_1fr]">
+                <div className="border-b border-gray-800 bg-[#121217]/80 px-6 py-5 md:border-b-0 md:border-r">
+                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#00CCFF] md:hidden">
+                    Criterio
+                  </p>
+                  <p className="font-rajdhani text-xl font-bold text-white">{row.label}</p>
+                </div>
+
+                <div className="border-b border-gray-800 px-6 py-5 md:border-b-0 md:border-r">
+                  <p className="mb-2 text-xs font-semibold uppercase tracking-[0.22em] text-gray-500 md:hidden">
+                    Solución genérica
+                  </p>
+                  <p className="leading-7 text-gray-300">{row.generic}</p>
+                </div>
+
+                <div className="bg-[#121217]/60 px-6 py-5">
+                  <p className="mb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[#00CCFF] md:hidden">
+                    TuWeb.ai
+                  </p>
+                  <p className="leading-7 text-white">{row.tuwebai}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+
+        <motion.div
+          className="mx-auto mt-8 max-w-3xl text-center"
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          <p className="mb-6 text-gray-400">
+            Si estás evaluando opciones, la pregunta no es solo cuánto cuesta una web, sino qué tan bien va a sostener tu negocio cuando empiece a usarse de verdad.
+          </p>
+
+          <motion.a
+            href="/consulta"
+            className="inline-block rounded-lg bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-6 py-3 font-medium text-white"
+            whileHover={{ scale: 1.04 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 12 }}
+          >
+            Pedir propuesta personalizada
+          </motion.a>
         </motion.div>
       </div>
     </section>
