@@ -10,7 +10,7 @@ Reposicionar TuWebAI como servicio de desarrollo web profesional para negocios, 
 
 ### Slogan institucional aprobado
 
-`Diseñamos el futuro de tu negocio`
+`Disenamos el futuro de tu negocio`
 
 ### Criterio de uso
 
@@ -60,16 +60,11 @@ Bajo.
 - title, description y keywords SEO del home actualizados al posicionamiento correcto
 - retiro del mensaje excesivamente amplio de "agencia digital", "marketing digital" y "consultoria gratuita" en la metadata principal
 
-### Lo que sigue
-
-- Fase 2 toma este nuevo posicionamiento como base
-- el siguiente frente ya no es definir que vende TuWebAI, sino mejorar la conversion del hero sin volver a abrir dispersion
-
-## Fase 2. Rediseñar hero para conversion
+## Fase 2. Redisenar hero para conversion
 
 Estado:
 
-- ✅ cerrada: el hero ya prioriza headline comercial, submensaje orientado a resultado, CTA principal a consulta, CTA secundario a proyectos y microseñales de confianza arriba del fold
+- ✅ cerrada: el hero ya prioriza headline comercial, submensaje orientado a resultado, CTA principal a consulta, CTA secundario a proyectos y micro-senales de confianza arriba del fold
 
 ### Objetivo
 
@@ -94,20 +89,15 @@ Medio-bajo.
 
 - el hero paso de una presentacion institucional a una pieza de venta mas clara
 - la jerarquia ahora prioriza servicio, resultado y siguiente paso
-- los CTA ya distinguen cierre (`Solicitar diagnostico gratuito`) y exploracion (`Ver proyectos reales`)
-- se agregaron microseñales de foco de oferta (`Sitios corporativos`, `E-commerce`, `Sistemas web`)
+- los CTA distinguen cierre y exploracion
+- se agregaron micro-senales de foco de oferta (`Sitios corporativos`, `E-commerce`, `Sistemas web`)
 - la rotacion secundaria del hero ya no usa borrado letra por letra; ahora alterna frases con transicion `fade out / fade in`, manteniendo dinamismo sin castigar lectura ni conversion
-
-### Lo que sigue
-
-- Fase 3 debe tomar este hero como base para simplificar la arquitectura de oferta
-- no conviene tocar `nav-dots` antes de revisar servicios y CTA del home
 
 ## Fase 2.5. Reestructurar la seccion de filosofia
 
 Estado:
 
-- ✅ cerrada: `philosophy-section` ya no funciona como bloque abstracto de consultoria global; ahora conecta hero y servicios con un mensaje de enfoque, criterio de trabajo y problemas reales que TuWebAI resuelve.
+- ✅ cerrada: `philosophy-section` ya no funciona como bloque abstracto de consultoria global; ahora conecta hero y servicios con un mensaje de enfoque, criterio de trabajo y problemas reales que TuWebAI resuelve
 
 ### Objetivo
 
@@ -126,7 +116,6 @@ Bajo.
 ### Archivos potencialmente afectados
 
 - [philosophy-section.tsx](c:\Users\juan\Documents\Proyectos\Tuwebai\client\src\features\marketing-home\components\philosophy-section.tsx)
-- [COPY_GROWTH_PLAN.md](c:\Users\juan\Documents\Proyectos\Tuwebai\docs\COPY_GROWTH_PLAN.md)
 
 ### Resultado implementado
 
@@ -135,16 +124,11 @@ Bajo.
 - el bloque derecho ya no enumera obstaculos vagos; ahora presenta problemas concretos que una web profesional ayuda a resolver
 - el mensaje de la seccion refuerza confianza y prepara mejor el paso hacia servicios
 
-### Lo que sigue
-
-- Fase 3 debe tomar esta nueva seccion como puente narrativo entre hero y oferta
-- con hero + filosofia ya alineados, el siguiente frente correcto es simplificar servicios
-
 ## Fase 3. Reestructurar servicios
 
 Estado:
 
-- ✅ cerrada: `services-section` ya no presenta una lista amplia de consultoria, marketing y automatizacion; la oferta del home quedo reducida a sitios corporativos, e-commerce y sistemas web para negocios.
+- ✅ cerrada: `services-section` ya no presenta una lista amplia de consultoria, marketing y automatizacion; la oferta del home quedo reducida a sitios corporativos, e-commerce y sistemas web para negocios
 
 ### Objetivo
 
@@ -168,15 +152,6 @@ Medio.
 - [uxui-page.tsx](c:\Users\juan\Documents\Proyectos\Tuwebai\client\src\app\router\solutions\uxui-page.tsx)
 - [global-navbar.tsx](c:\Users\juan\Documents\Proyectos\Tuwebai\client\src\app\layout\global-navbar.tsx)
 
-### Trabajo previsto
-
-- pasar de lista amplia de servicios a arquitectura de oferta mas simple
-- jerarquizar:
-  - webs corporativas
-  - e-commerce
-  - sistemas web
-- dejar marketing y automatizacion como capacidades secundarias o complementarias
-
 ### Resultado implementado
 
 - la seccion del home ya no compite con una oferta dispersa ni mezcla consultoria estrategica, marketing y automatizacion como frentes principales
@@ -188,7 +163,7 @@ Medio.
 
 Estado:
 
-- ✅ cerrada: el landing ya distingue mejor CTA de cierre (`Contar mi proyecto`, `Pedir propuesta personalizada`, `Quiero una propuesta inicial`) y CTA de exploracion (`Ver proyectos reales`, `Conocer como trabajamos`), reduciendo dispersion en el camino hacia `/consulta`
+- ✅ cerrada: el landing ya distingue mejor CTA de cierre y CTA de exploracion, reduciendo dispersion en el camino hacia `/consulta`
 
 ### Objetivo
 
@@ -212,30 +187,18 @@ Bajo.
 - [contact-section.tsx](c:\Users\juan\Documents\Proyectos\Tuwebai\client\src\features\contact\components\contact-section.tsx)
 - [proposal-request-page.tsx](c:\Users\juan\Documents\Proyectos\Tuwebai\client\src\features\proposals\components\proposal-request-page.tsx)
 
-### Trabajo previsto
-
-- unificar lenguaje de CTA
-- separar CTA de exploracion y CTA de cierre
-- mejorar copy de consulta
-- alinear beneficios prometidos con lo que realmente entrega la consulta
-
 ### Resultado implementado
 
-- el CTA principal del hero ya no compite con otros cierres ambiguos; ahora abre el recorrido con `Contar mi proyecto`
-- el CTA de scroll del hero ya no usa un verbo generico; ahora orienta mejor la exploracion con `Conocer como trabajamos`
-- showroom, comparativa, contacto y pricing ya empujan hacia una misma narrativa comercial de proyecto, propuesta inicial y solucion a medida
-- se redujo el uso de copy debil o repetitivo como `Solicitar una consulta` y `Consultar planes personalizados`
-
-### Lo que sigue
-
-- Fase 5 debe reforzar credibilidad del recorrido con mejores casos, contexto y prueba social
-- no conviene abrir nuevos CTA antes de consolidar showroom y testimonios
+- el CTA principal del hero ya abre el recorrido con `Contar mi proyecto`
+- el CTA de scroll del hero orienta mejor la exploracion con `Conocer como trabajamos`
+- showroom, comparativa, contacto y pricing ya empujan hacia una narrativa comercial mas consistente de proyecto, propuesta inicial y solucion a medida
+- se redujo el uso de copy debil o repetitivo como `Solicitar una consulta`
 
 ## Fase 5. Fortalecer showroom, ejemplos y prueba social
 
 Estado:
 
-- ✅ cerrada: `showroom` y `testimonials` ya dejaron de sonar a portafolio decorativo y pasaron a reforzar credibilidad con lenguaje mas orientado a negocio, contexto y confianza.
+- ✅ cerrada parcialmente: `showroom` y `testimonials` ya mejoraron de forma clara, pero la credibilidad del landing todavia no esta cerrada porque `impact-section` sigue en un estado viejo y redundante respecto a los casos reales
 
 ### Objetivo
 
@@ -254,29 +217,100 @@ Bajo.
 ### Archivos potencialmente afectados
 
 - [showroom-section.tsx](c:\Users\juan\Documents\Proyectos\Tuwebai\client\src\features\marketing-home\components\showroom-section.tsx)
+- [showroom-project-modal.tsx](c:\Users\juan\Documents\Proyectos\Tuwebai\client\src\features\marketing-home\components\showroom-project-modal.tsx)
 - [testimonials-section.tsx](c:\Users\juan\Documents\Proyectos\Tuwebai\client\src\features\testimonials\components\testimonials-section.tsx)
-- [corporate-solutions-page.tsx](c:\Users\juan\Documents\Proyectos\Tuwebai\client\src\app\router\solutions\corporate-solutions-page.tsx)
-
-### Trabajo previsto
-
-- reescribir casos con formato problema -> solucion -> resultado
-- reemplazar metricas vagas por resultados mas creibles
-- fortalecer testimonios con contexto
-- sumar prueba social institucional si existe
+- [impact-section.tsx](c:\Users\juan\Documents\Proyectos\Tuwebai\client\src\features\marketing-home\components\impact-section.tsx)
 
 ### Resultado implementado
 
-- `showroom-section` ya no presenta los proyectos como una galeria generica; ahora se explica mejor el valor de negocio y el contexto de cada caso.
-- el modal de casos ya organiza la informacion como `Contexto del proyecto`, `Lo que construimos` y `Valor que aporta`, acercando el bloque a una logica de caso real.
-- `testimonials-section` ya no usa un titulo y subtitulo genéricos; ahora introduce los testimonios como prueba de confianza vinculada a crecimiento, claridad y profesionalismo.
-- los estados vacios de testimonios dejaron de pedir accion artificial y ahora comunican el estado real sin sonar a placeholder de producto.
+- `showroom-section` ya no presenta los proyectos como una galeria generica; ahora se explica mejor el valor de negocio y el contexto de cada caso
+- el modal de casos ya organiza la informacion como `Que necesitaba el cliente`, `Que resolvimos` y `Que aporta la solucion`
+- el modal del showroom ya permite navegar entre proyectos sin cerrar y volver a abrir cada detalle, reduciendo friccion real en la exploracion
+- `testimonials-section` ya no usa un titulo y subtitulo genericos; ahora introduce los testimonios como prueba de confianza vinculada a crecimiento, claridad y profesionalismo
+- los estados vacios de testimonios dejaron de pedir accion artificial y ahora comunican el estado real sin sonar a placeholder de producto
 
 ### Lo que sigue
 
-- Fase 6 debe revisar si `pricing` ayuda o distrae respecto al recorrido comercial actual.
-- no conviene reabrir servicios ni hero antes de decidir la posicion de la oferta comercial final.
+- antes de pricing, hace falta corregir las secciones que todavia contradicen el posicionamiento actual: proceso, tecnologia, comparativa e impacto
+- no conviene reabrir hero ni servicios antes de cerrar esas piezas intermedias del recorrido
 
-## Fase 6. Revisar pricing y oferta comercial
+## Fase 6. Reposicionar proceso y tecnologia
+
+Estado:
+
+- pendiente
+
+### Objetivo
+
+Convertir `process-section` y `tech-section` en soporte del posicionamiento actual, eliminando mensajes viejos de agencia integral, marketing o vitrina de stack.
+
+### Impacto esperado
+
+- mas continuidad narrativa despues de servicios
+- menos contradiccion entre promesa comercial y bloques intermedios
+- mayor confianza sin tecnicismo innecesario
+
+### Riesgo de regresion
+
+Medio-bajo.
+
+### Archivos potencialmente afectados
+
+- [process-section.tsx](c:\Users\juan\Documents\Proyectos\Tuwebai\client\src\features\marketing-home\components\process-section.tsx)
+- [tech-section.tsx](c:\Users\juan\Documents\Proyectos\Tuwebai\client\src\features\marketing-home\components\tech-section.tsx)
+
+### Hallazgos de re-auditoria
+
+- `process-section` sigue hablando como si TuWebAI vendiera estrategia, marketing digital, SEO y PPC como frente principal
+- `tech-section` sigue funcionando como vidriera de herramientas, no como explicacion de por que la solucion es solida, mantenible o escalable para el negocio
+
+### Trabajo previsto
+
+- reescribir `process-section` como metodo de ejecucion de proyectos web serios
+- traducir `tech-section` a beneficios reales: rendimiento, escalabilidad, integracion y mantenimiento
+- bajar abstraccion y tecnicismo decorativo
+
+## Fase 7. Reestructurar comparativa e impacto
+
+Estado:
+
+- pendiente
+
+### Objetivo
+
+Hacer que `comparison-section` e `impact-section` refuercen conversion y diferenciacion sin mezclar marketing generico, automatizacion ni casos duplicados.
+
+### Impacto esperado
+
+- mejor diferenciacion comercial
+- mas credibilidad
+- menos redundancia entre bloques del landing
+
+### Riesgo de regresion
+
+Medio.
+
+### Archivos potencialmente afectados
+
+- [comparison-section.tsx](c:\Users\juan\Documents\Proyectos\Tuwebai\client\src\features\marketing-home\components\comparison-section.tsx)
+- [impact-section.tsx](c:\Users\juan\Documents\Proyectos\Tuwebai\client\src\features\marketing-home\components\impact-section.tsx)
+
+### Hallazgos de re-auditoria
+
+- `comparison-section` sigue comparando `websites`, `marketing` y `automation`, reabriendo la dispersion de oferta que ya se habia cerrado en servicios
+- `impact-section` repite casos ya presentes en showroom y usa un lenguaje de "casos de exito" demasiado generico
+
+### Trabajo previsto
+
+- simplificar `comparison-section` a una comparativa enfocada en claridad, tiempos, mantenimiento y resultados
+- redefinir `impact-section` como bloque de confianza complementario, no como duplicado de showroom
+- evitar repetir los mismos ejemplos en tres lugares distintos
+
+## Fase 8. Revisar pricing y oferta comercial
+
+Estado:
+
+- pendiente
 
 ### Objetivo
 
@@ -298,17 +332,26 @@ Medio.
 - [payment-return-view.tsx](c:\Users\juan\Documents\Proyectos\Tuwebai\client\src\features\payments\components\payment-return-view.tsx)
 - [proposal-request-page.tsx](c:\Users\juan\Documents\Proyectos\Tuwebai\client\src\features\proposals\components\proposal-request-page.tsx)
 
+### Hallazgos de re-auditoria
+
+- `pricing-section` sigue empujando planes cerrados mensuales cuando la home se viene moviendo hacia soluciones web profesionales y propuestas a medida
+- el bloque puede desordenar el recorrido comercial si aparece antes de que el lead entienda bien alcance y encaje del servicio
+
 ### Trabajo previsto
 
 - re-evaluar si conviene mostrar precios fijos en home
 - decidir si la home debe vender consulta o checkout
 - separar mejor servicios cerrados de soluciones a medida
 
-## Fase 7. Optimizar paginas satelite para consistencia
+## Fase 9. Optimizar contacto y paginas satelite para consistencia
+
+Estado:
+
+- pendiente
 
 ### Objetivo
 
-Alinear paginas de soluciones, FAQ y contacto al mismo posicionamiento.
+Alinear contacto, paginas de soluciones, FAQ y soporte al mismo posicionamiento del landing.
 
 ### Impacto esperado
 
@@ -322,11 +365,17 @@ Medio-bajo.
 
 ### Archivos potencialmente afectados
 
+- [contact-section.tsx](c:\Users\juan\Documents\Proyectos\Tuwebai\client\src\features\contact\components\contact-section.tsx)
 - [corporate-solutions-page.tsx](c:\Users\juan\Documents\Proyectos\Tuwebai\client\src\app\router\solutions\corporate-solutions-page.tsx)
 - [ecommerce-solutions-page.tsx](c:\Users\juan\Documents\Proyectos\Tuwebai\client\src\app\router\solutions\ecommerce-solutions-page.tsx)
 - [uxui-page.tsx](c:\Users\juan\Documents\Proyectos\Tuwebai\client\src\app\router\solutions\uxui-page.tsx)
 - [faq-page.tsx](c:\Users\juan\Documents\Proyectos\Tuwebai\client\src\app\router\knowledge\faq-page.tsx)
 - [support-contact-page.tsx](c:\Users\juan\Documents\Proyectos\Tuwebai\client\src\features\contact\components\support-contact-page.tsx)
+
+### Hallazgos de re-auditoria
+
+- `contact-section` ya mejoro sus CTA, pero todavia no fue re-trabajado completo desde expectativa, tono y cierre comercial
+- las paginas satelite todavia no fueron revisadas de punta a punta bajo el nuevo posicionamiento
 
 ### Trabajo previsto
 
@@ -334,12 +383,35 @@ Medio-bajo.
 - reforzar enfoque en desarrollo web
 - limpiar respuestas y mensajes que abren demasiado el abanico de servicios
 
+## Estado real de cobertura del landing
+
+### Secciones ya re-trabajadas con criterio comercial
+
+- `hero-section`
+- `philosophy-section`
+- `services-section`
+- CTA principales del landing
+- `showroom-section`
+- `showroom-project-modal`
+- `testimonials-section`
+
+### Secciones con trabajo parcial o pendiente
+
+- `process-section`
+- `tech-section`
+- `comparison-section`
+- `impact-section`
+- `pricing-section`
+- `contact-section`
+
 ## Prioridad sugerida
 
 Orden recomendado de ejecucion:
 
 1. Fase 6
 2. Fase 7
+3. Fase 8
+4. Fase 9
 
 ## KPI cualitativos a vigilar
 
