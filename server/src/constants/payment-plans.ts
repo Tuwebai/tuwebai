@@ -6,7 +6,7 @@ export const PAYMENT_PLAN_CONFIG: Record<
   PaymentPlan,
   { title: string; unitPrice: number }
 > = {
-  esencial: { title: 'Plan Basico', unitPrice: 299000 },
-  avanzado: { title: 'Plan Profesional', unitPrice: 499000 },
-  premium: { title: 'Plan Enterprise', unitPrice: 999000 },
+  esencial: { title: 'Base web', unitPrice: 199000 },
+  avanzado: { title: 'Proyecto comercial', unitPrice: 349000 },
+  premium: { title: 'Solucion a medida', unitPrice: 649000 },
 };

@@ -440,6 +440,13 @@ Orden recomendado de ejecucion:
 
 ## KPI cualitativos a vigilar
 
+### Nota operativa sobre Fase 8
+
+- el cierre de pricing ya no debe leerse como "todo va a /consulta"
+- los alcances base del home vuelven a checkout directo con Mercado Pago
+- `Solución a medida` queda como único caso que deriva a propuesta personalizada
+- la moneda visible y el cobro online quedan alineados en ARS para evitar fricción con mercado argentino
+
 - claridad del mensaje principal
 - coherencia entre home y paginas satelite
 - consistencia de CTA
