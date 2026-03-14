@@ -1,84 +1,102 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Check } from 'lucide-react';
 import { useIntersectionObserver } from '@/core/hooks/use-intersection-observer';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/shared/ui/dialog';
 import PaymentErrorDialog from '@/features/payments/components/payment-error-dialog';
 import { createPreferenceWithRetry, getPaymentsErrorMessage } from '@/features/payments/services/payments.service';
 import type { PaymentPlan } from '@/features/payments/types';
 
-interface PricingCardData {
+interface PricingPlan {
+  id: 'plan-1' | 'plan-2' | 'plan-3';
   title: string;
+  intro: string;
   price: string;
-  signal: string;
-  audience: string;
-  deliverables: string[];
-  ctaLabel: string;
-  note: string;
-  plan?: PaymentPlan;
-  highlight?: boolean;
+  includes: string[];
+  delivery?: string;
+  cta: string;
   badge?: string;
-  benefit?: string;
+  highlight?: boolean;
+  plan?: PaymentPlan;
+  checkoutIncludes?: string[];
 }
 
-interface PricingCardProps {
-  card: PricingCardData;
-  delay: number;
-  isProcessing: boolean;
-  onPrimaryAction: (card: PricingCardData) => void;
-}
-
-const pricingCards: PricingCardData[] = [
+const pricingPlans: PricingPlan[] = [
   {
-    title: 'Base web',
-    price: 'ARS 199.000',
-    signal: 'Presencia profesional',
-    audience: 'Ideal para negocios que necesitan salir bien presentados y empezar a recibir consultas.',
-    deliverables: [
-      'Sitio institucional con estructura comercial clara',
-      'Diseño responsive y base técnica lista para lanzar',
-      'Formulario, CTA y contacto ya configurados',
-      'Carga inicial y ajustes básicos de salida',
+    id: 'plan-1',
+    title: 'Presencia Profesional',
+    intro: 'Para negocios que necesitan una web clara para empezar a recibir consultas',
+    price: '$420.000 ARS',
+    includes: [
+      'Sitio institucional optimizado para presentar tu negocio',
+      'Diseño responsive (móvil + desktop)',
+      'Formulario de contacto y CTA configurados',
+      'Base SEO para aparecer en Google',
+      'Entrega estimada: 7 días',
     ],
-    ctaLabel: 'Pagar online esta base',
-    note: 'Pago directo con Mercado Pago para alcances base, sin pasar por otro formulario.',
+    cta: 'Crear mi web base →',
     plan: 'esencial',
+    checkoutIncludes: [
+      'Sitio institucional optimizado para presentar tu negocio',
+      'Diseño responsive (móvil + desktop)',
+      'Formulario de contacto y CTA configurados',
+    ],
   },
   {
-    title: 'Proyecto comercial',
-    price: 'ARS 349.000',
-    signal: 'Más elegida',
-    audience: 'Ideal para negocios que ya venden o quieren una web más sólida para convertir y operar mejor.',
-    deliverables: [
-      'Arquitectura orientada a conversión y recorrido comercial',
-      'Integraciones o módulos base según el alcance',
-      'Mejor base para vender, medir y sostener crecimiento',
-      'Implementación inicial acompañada y ordenada',
+    id: 'plan-2',
+    title: 'Web Comercial',
+    intro: 'Web diseñada para vender y generar clientes',
+    price: '$780.000 ARS',
+    includes: [
+      'Arquitectura web pensada para conversión',
+      'Integración de formularios y automatizaciones',
+      'SEO base + estructura optimizada',
+      'Integración de analytics',
+      'Hosting + dominio profesional por 1 año',
     ],
-    ctaLabel: 'Pagar online esta propuesta',
-    note: 'Si tu proyecto entra en este alcance, podés resolverlo online y avanzar más rápido.',
-    benefit: 'Incluye hosting + dominio profesional por 1 año',
-    badge: 'Recomendada',
-    plan: 'avanzado',
+    delivery: '7–10 días',
+    cta: 'Lanzar mi web comercial →',
+    badge: '⭐ Más elegido por negocios',
     highlight: true,
+    plan: 'avanzado',
+    checkoutIncludes: [
+      'web completa',
+      'hosting + dominio',
+      'SEO base',
+    ],
   },
   {
-    title: 'Solución a medida',
-    price: 'A cotizar',
-    signal: 'Operación propia',
-    audience: 'Ideal para equipos que necesitan flujos, paneles, integraciones o una lógica más específica.',
-    deliverables: [
-      'Alcance funcional y técnico definido según contexto real',
-      'Módulos, paneles o integraciones diseñados a medida',
-      'Base escalable, mantenible y preparada por etapas',
-      'Propuesta personalizada según complejidad y operación',
+    id: 'plan-3',
+    title: 'Sistema a Medida',
+    intro: 'Para proyectos con lógica o funcionalidades personalizadas',
+    price: 'Desde $1.400.000',
+    includes: [
+      'Paneles o módulos personalizados',
+      'Integraciones con sistemas externos',
+      'Arquitectura escalable',
+      'Desarrollo orientado a crecimiento',
     ],
-    ctaLabel: 'Quiero una propuesta',
-    note: 'Cuando el proyecto supera un alcance base, conviene definirlo bien antes de pagar.',
+    cta: 'Solicitar propuesta →',
   },
 ];
 
-function PricingCard({ card, delay, isProcessing, onPrimaryAction }: PricingCardProps) {
+interface PricingCardProps {
+  plan: PricingPlan;
+  delay: number;
+  isProcessing: boolean;
+  onCheckout: (plan: PricingPlan) => void;
+  onProposal: () => void;
+}
+
+function PricingCard({ plan, delay, isProcessing, onCheckout, onProposal }: PricingCardProps) {
   const { ref, hasIntersected } = useIntersectionObserver<HTMLDivElement>();
+
+  const wrapperClasses = plan.highlight
+    ? 'relative flex h-full flex-col rounded-[30px] border border-cyan-400/60 bg-[linear-gradient(180deg,rgba(18,22,34,0.98)_0%,rgba(26,20,40,0.98)_100%)] px-6 py-7 shadow-[0_0_0_1px_rgba(0,204,255,0.16),0_28px_80px_rgba(0,204,255,0.16)] lg:-translate-y-6 lg:scale-[1.04]'
+    : 'relative flex h-full flex-col rounded-[30px] border border-gray-800 bg-[#121217]/96 px-6 py-6';
+
+  const actionClasses = plan.highlight
+    ? 'inline-flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-6 py-4 text-base font-semibold text-white shadow-[0_18px_45px_rgba(0,204,255,0.2)] transition-transform hover:scale-[1.02] disabled:cursor-wait disabled:opacity-70'
+    : 'inline-flex w-full items-center justify-center rounded-xl border border-gray-700 bg-[#181a24] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:border-cyan-400/35 hover:bg-[#1d2030] disabled:cursor-wait disabled:opacity-70';
 
   return (
     <motion.article
@@ -86,72 +104,53 @@ function PricingCard({ card, delay, isProcessing, onPrimaryAction }: PricingCard
       initial={{ opacity: 0, y: 28 }}
       animate={hasIntersected ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
       transition={{ duration: 0.65, delay: delay * 0.12 }}
-      className={
-        card.highlight
-          ? 'relative flex h-full flex-col rounded-[30px] border border-cyan-400/55 bg-[linear-gradient(180deg,rgba(14,18,28,0.98)_0%,rgba(20,16,34,0.98)_100%)] px-6 py-6 shadow-[0_0_0_1px_rgba(0,204,255,0.12),0_26px_70px_rgba(0,204,255,0.12)] lg:-translate-y-4 lg:px-7 lg:py-7'
-          : 'relative flex h-full flex-col rounded-[30px] border border-gray-800 bg-[#121217]/96 px-6 py-6 lg:px-7 lg:py-7'
-      }
+      className={wrapperClasses}
     >
-      {card.highlight && (
-        <>
-          <div className="absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300 to-transparent" />
-          <div className="absolute inset-x-6 -top-3 flex justify-center">
-            <div className="rounded-full border border-cyan-400/35 bg-[linear-gradient(90deg,rgba(0,204,255,0.18)_0%,rgba(153,51,255,0.18)_100%)] px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-cyan-200">
-              {card.badge}
-            </div>
+      {plan.highlight && (
+        <div className="absolute inset-x-6 -top-3 flex justify-center">
+          <div className="rounded-full border border-cyan-400/40 bg-[linear-gradient(90deg,rgba(0,204,255,0.2)_0%,rgba(153,51,255,0.2)_100%)] px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-cyan-200">
+            {plan.badge}
           </div>
-        </>
+        </div>
       )}
 
-      <div className="flex min-h-[190px] flex-col">
-        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300">{card.signal}</p>
-        <h3 className="mt-3 font-rajdhani text-[1.95rem] font-bold leading-none text-white">{card.title}</h3>
-        <p className="mt-4 font-rajdhani text-[2.2rem] font-bold leading-none text-white">{card.price}</p>
-        <p className="mt-4 text-sm leading-6 text-gray-300">{card.audience}</p>
+      <div className="flex min-h-[180px] flex-col">
+        <h3 className="font-rajdhani text-[1.9rem] font-bold leading-tight text-white">{plan.title}</h3>
+        <p className="mt-3 text-sm leading-6 text-gray-300">{plan.intro}</p>
+        <p className="mt-5 font-rajdhani text-[2.15rem] font-bold text-white">{plan.price}</p>
       </div>
 
-      <div
-        className={
-          card.highlight
-            ? 'mt-5 rounded-2xl border border-cyan-500/25 bg-cyan-500/10 px-4 py-3.5'
-            : 'mt-5 rounded-2xl border border-gray-800 bg-[#0d0e14] px-4 py-3.5'
-        }
-      >
-        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">
-          {card.highlight ? 'Beneficio incluido' : 'Referencia'}
-        </p>
-        <p className="mt-2 text-sm leading-6 text-white/90">{card.benefit ?? card.note}</p>
-      </div>
-
-      <div className="mt-6 flex-1">
-        <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">Qué incluye</p>
-        <ul className="space-y-3">
-          {card.deliverables.map((item) => (
+      <div className="mt-5 flex-1">
+        <ul className="space-y-3 text-sm text-gray-300">
+          {plan.includes.map((item) => (
             <li key={item} className="flex items-start gap-3">
-              <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-cyan-400/14 text-cyan-300">
-                <Check className="h-3.5 w-3.5" />
-              </span>
-              <span className="text-sm leading-6 text-gray-300">{item}</span>
+              <span className="mt-1 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-cyan-300" />
+              <span className="leading-6">{item}</span>
             </li>
           ))}
         </ul>
       </div>
 
-      <div className="mt-7 border-t border-white/8 pt-5">
+      {plan.delivery && (
+        <div className="mt-5 rounded-2xl border border-gray-800 bg-[#0d0e14] px-4 py-3">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300">Entrega estimada</p>
+          <p className="mt-2 text-sm text-white">{plan.delivery}</p>
+        </div>
+      )}
+
+      <div className="mt-6">
         <button
           type="button"
-          onClick={() => onPrimaryAction(card)}
+          onClick={() => (plan.plan ? onCheckout(plan) : onProposal())}
           disabled={isProcessing}
-          className={
-            card.highlight
-              ? 'inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-6 py-3.5 font-medium text-white shadow-[0_16px_35px_rgba(0,204,255,0.16)] transition-transform hover:scale-[1.01] disabled:cursor-wait disabled:opacity-70'
-              : 'inline-flex w-full items-center justify-center gap-2 rounded-xl border border-gray-700 bg-[#181a24] px-6 py-3.5 font-medium text-white transition-colors hover:border-cyan-400/35 hover:bg-[#1d2030] disabled:cursor-wait disabled:opacity-70'
-          }
+          className={actionClasses}
         >
-          {isProcessing ? 'Preparando checkout...' : card.ctaLabel}
-          {!isProcessing && <ArrowRight className="h-4 w-4" />}
+          {isProcessing ? 'Preparando checkout...' : plan.cta}
         </button>
-        <p className="mt-3 text-sm leading-6 text-gray-400">{card.note}</p>
+        <div className="mt-3 text-xs uppercase tracking-[0.18em] text-gray-400">
+          <p>Pago seguro con MercadoPago</p>
+          <p>Tarjeta o transferencia</p>
+        </div>
       </div>
     </motion.article>
   );
@@ -169,6 +168,7 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
   const [retryPlan, setRetryPlan] = useState<PaymentPlan | null>(null);
   const [paymentError, setPaymentError] = useState<string | null>(null);
   const [errorOpen, setErrorOpen] = useState(false);
+  const [checkoutPlan, setCheckoutPlan] = useState<PricingPlan | null>(null);
 
   useEffect(() => {
     if (sectionRef.current && !sectionRef.current.hasAttribute('data-ref-set')) {
@@ -196,14 +196,24 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
     }
   };
 
-  const handleCardAction = (card: PricingCardData) => {
-    if (card.plan) {
-      void openCheckout(card.plan);
-      return;
-    }
+  const handleCheckoutRequest = (plan: PricingPlan) => {
+    setCheckoutPlan(plan);
+  };
 
+  const handleProposal = () => {
     window.location.assign('/consulta');
   };
+
+  const checkoutSummary = useMemo(() => {
+    if (!checkoutPlan) return null;
+    return {
+      title: 'Estás contratando',
+      plan: checkoutPlan.title,
+      price: checkoutPlan.price,
+      delivery: checkoutPlan.delivery ?? '',
+      includes: checkoutPlan.checkoutIncludes ?? checkoutPlan.includes.slice(0, 3),
+    };
+  }, [checkoutPlan]);
 
   return (
     <section
@@ -219,9 +229,10 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
           transition={{ duration: 0.8 }}
           className="mx-auto max-w-4xl text-center"
         >
-          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-cyan-300">Planes base para empezar</p>
-          <h2 className="mb-4 font-rajdhani text-3xl font-bold md:text-5xl">
-            <span className="gradient-text gradient-border inline-block pb-2">Elegí el punto de partida correcto</span>
+          <h2 className="font-rajdhani text-3xl font-bold md:text-5xl">
+            <span className="gradient-text gradient-border inline-block pb-2">
+              Planes para lanzar o escalar tu presencia web
+            </span>
           </h2>
         </motion.div>
 
@@ -233,71 +244,75 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
           className="mx-auto mb-14 max-w-3xl text-center"
         >
           <p className="text-xl leading-8 text-gray-300">
-            Si tu proyecto encaja en un alcance base, podés avanzar directo con checkout online. Si necesitás algo más específico, te armamos la propuesta a medida.
-          </p>
-          <p className="mt-4 text-sm leading-6 text-gray-400">
-            Los pagos online se procesan en pesos argentinos con Mercado Pago. Para proyectos fuera de Argentina, la moneda se define al confirmar alcance y forma de trabajo.
+            Elegí el nivel de desarrollo que necesita tu negocio.
+            <br />
+            Podés pagar online y comenzar hoy mismo.
           </p>
         </motion.div>
 
         <div className="mx-auto grid max-w-6xl auto-rows-fr grid-cols-1 gap-6 lg:grid-cols-3">
-          {pricingCards.map((card, index) => (
+          {pricingPlans.map((plan, index) => (
             <PricingCard
-              key={card.title}
-              card={card}
+              key={plan.id}
+              plan={plan}
               delay={index + 1}
-              isProcessing={processingPlan === card.plan}
-              onPrimaryAction={handleCardAction}
+              isProcessing={processingPlan === plan.plan}
+              onCheckout={handleCheckoutRequest}
+              onProposal={handleProposal}
             />
           ))}
         </div>
-
-        <div className="mx-auto mt-10 grid max-w-6xl gap-6 lg:grid-cols-[1.15fr_0.85fr]">
-          <div className="rounded-[28px] border border-gray-800 bg-[#101119]/95 p-6 lg:p-7">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">Cómo leer estos planes</p>
-            <p className="text-lg leading-8 text-gray-300">
-              Los dos primeros resuelven alcances base con pago online directo. El tercero existe para cuando ya necesitás una solución más pensada alrededor de tu operación real.
-            </p>
-
-            <div className="mt-5 grid gap-3 sm:grid-cols-3">
-              <div className="rounded-2xl border border-gray-800 bg-[#0d0e14] p-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-400">Base</p>
-                <p className="mt-2 text-sm leading-6 text-gray-300">Web clara, profesional y lista para salir.</p>
-              </div>
-              <div className="rounded-2xl border border-cyan-500/25 bg-cyan-500/7 p-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300">Comercial</p>
-                <p className="mt-2 text-sm leading-6 text-gray-300">Más alcance, mejor conversión y una base más completa.</p>
-              </div>
-              <div className="rounded-2xl border border-gray-800 bg-[#0d0e14] p-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-400">A medida</p>
-                <p className="mt-2 text-sm leading-6 text-gray-300">Para flujos propios, integraciones y mayor complejidad.</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="rounded-[28px] border border-cyan-500/25 bg-[linear-gradient(180deg,rgba(14,18,28,0.96)_0%,rgba(19,18,31,0.96)_100%)] p-6 shadow-[0_18px_45px_rgba(0,204,255,0.08)] lg:p-7">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">Si no encaja en un plan base</p>
-            <h3 className="font-rajdhani text-3xl font-bold text-white">Bajamos una propuesta realista</h3>
-            <p className="mt-4 text-gray-300">
-              Cuando tu proyecto necesita otra lógica, lo correcto no es forzarlo a un checkout cerrado. Ahí sí conviene definir alcance, prioridades y próximos pasos con más precisión.
-            </p>
-
-            <motion.a
-              href="/consulta"
-              className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-7 py-3.5 font-medium text-white shadow-[0_16px_35px_rgba(0,204,255,0.12)]"
-              whileHover={{ scale: 1.02 }}
-              transition={{ type: 'spring', stiffness: 400, damping: 12 }}
-            >
-              Pedir propuesta a medida
-              <ArrowRight className="h-4 w-4" />
-            </motion.a>
-
-            <p className="mt-4 text-sm leading-6 text-gray-400">
-              Úsalo solo si realmente necesitás algo fuera de estos alcances base.
-            </p>
-          </div>
-        </div>
       </div>
+
+      <Dialog open={Boolean(checkoutPlan)} onOpenChange={() => setCheckoutPlan(null)}>
+        <DialogContent className="max-w-lg border border-cyan-500/30 bg-[#0f111a] text-white">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-semibold text-white">{checkoutSummary?.title}</DialogTitle>
+          </DialogHeader>
+          {checkoutSummary && (
+            <div className="space-y-5">
+              <div className="rounded-2xl border border-gray-800 bg-[#0b0d14] p-4 text-sm text-gray-300">
+                <p>
+                  Plan: <span className="font-semibold text-white">{checkoutSummary.plan}</span>
+                </p>
+                <p className="mt-2">
+                  Precio: <span className="font-semibold text-white">{checkoutSummary.price}</span>
+                </p>
+                {checkoutSummary.delivery && (
+                  <p className="mt-2">
+                    Entrega estimada: <span className="font-semibold text-white">{checkoutSummary.delivery}</span>
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300">Incluye</p>
+                <ul className="mt-3 space-y-2 text-sm text-gray-300">
+                  {checkoutSummary.includes.map((item) => (
+                    <li key={item} className="flex items-start gap-3">
+                      <span className="mt-1 h-1.5 w-1.5 rounded-full bg-cyan-300" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => {
+                  if (checkoutPlan?.plan) {
+                    setCheckoutPlan(null);
+                    void openCheckout(checkoutPlan.plan);
+                  }
+                }}
+                className="inline-flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-6 py-3.5 font-medium text-white shadow-[0_16px_35px_rgba(0,204,255,0.2)]"
+              >
+                Continuar al pago seguro →
+              </button>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
 
       <PaymentErrorDialog
         open={errorOpen}
