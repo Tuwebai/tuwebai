@@ -234,7 +234,7 @@ Bajo.
 - antes de pricing, hace falta corregir las secciones que todavia contradicen el posicionamiento actual: proceso, tecnologia, comparativa e impacto
 - no conviene reabrir hero ni servicios antes de cerrar esas piezas intermedias del recorrido
 
-## Fase 6. Reposicionar proceso y tecnologia
+## Fase 6. Reposicionar proceso y retirar tecnologia de la home
 
 Estado:
 
@@ -242,13 +242,14 @@ Estado:
 
 ### Objetivo
 
-Convertir `process-section` y `tech-section` en soporte del posicionamiento actual, eliminando mensajes viejos de agencia integral, marketing o vitrina de stack.
+Convertir `process-section` en soporte del posicionamiento actual y retirar `tech-section` de la home para dejar `Tecnologias` como pagina satelite accesible desde el header.
 
 ### Impacto esperado
 
 - mas continuidad narrativa despues de servicios
 - menos contradiccion entre promesa comercial y bloques intermedios
-- mayor confianza sin tecnicismo innecesario
+- menos ruido tecnico en la home
+- mayor claridad al separar vitrina de stack del recorrido comercial principal
 
 ### Riesgo de regresion
 
@@ -258,16 +259,25 @@ Medio-bajo.
 
 - [process-section.tsx](c:\Users\juan\Documents\Proyectos\Tuwebai\client\src\features\marketing-home\components\process-section.tsx)
 - [tech-section.tsx](c:\Users\juan\Documents\Proyectos\Tuwebai\client\src\features\marketing-home\components\tech-section.tsx)
+- [global-navbar.tsx](c:\Users\juan\Documents\Proyectos\Tuwebai\client\src\app\layout\global-navbar.tsx)
+- [technologies-page.tsx](c:\Users\juan\Documents\Proyectos\Tuwebai\client\src\app\router\knowledge\technologies-page.tsx)
+
+### Decision de auditoria
+
+- `tech-section` hoy funciona como vidriera de stack, no como bloque de venta
+- la home ya ofrece acceso suficiente a `Tecnologias` desde el header
+- existe una pagina dedicada en `/tecnologias` que puede absorber ese contenido con mejor contexto
+- por eso, la direccion correcta no es reescribir esa seccion para la home sino retirarla del landing principal
 
 ### Hallazgos de re-auditoria
 
 - `process-section` sigue hablando como si TuWebAI vendiera estrategia, marketing digital, SEO y PPC como frente principal
-- `tech-section` sigue funcionando como vidriera de herramientas, no como explicacion de por que la solucion es solida, mantenible o escalable para el negocio
+- `tech-section` sigue funcionando como vidriera de herramientas y rompe el foco comercial de la home, aun cuando ese contenido ya tiene mejor lugar en `/tecnologias`
 
 ### Trabajo previsto
 
 - reescribir `process-section` como metodo de ejecucion de proyectos web serios
-- traducir `tech-section` a beneficios reales: rendimiento, escalabilidad, integracion y mantenimiento
+- retirar `tech-section` del landing principal y dejar la explicacion tecnica en la pagina `/tecnologias`
 - bajar abstraccion y tecnicismo decorativo
 
 ## Fase 7. Reestructurar comparativa e impacto
@@ -398,7 +408,7 @@ Medio-bajo.
 ### Secciones con trabajo parcial o pendiente
 
 - `process-section`
-- `tech-section`
+- retiro de `tech-section` de la home
 - `comparison-section`
 - `impact-section`
 - `pricing-section`
