@@ -33,7 +33,7 @@ export default function MarketingHomePage() {
         <WhatsAppButton />
       </Suspense>
 
-      <main id="main-content" className="relative">
+      <main id="main-content" className="landing-scroll-shell relative">
         <Suspense
           fallback={
             <section id="intro" className="landing-anchor-section flex items-center justify-center relative bg-gradient-1 overflow-hidden">

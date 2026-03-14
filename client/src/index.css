@@ -42,8 +42,6 @@
 
   html {
     scroll-behavior: smooth;
-    scroll-snap-type: y proximity;
-    scroll-padding-top: var(--landing-header-offset);
     @apply overflow-x-hidden;
   }
 
@@ -54,9 +52,19 @@
   }
 
   section {
-    scroll-snap-align: start;
     scroll-margin-top: 0px;
     @apply overflow-hidden;
+  }
+
+  .landing-scroll-shell {
+    scroll-snap-type: y proximity;
+    scroll-padding-top: var(--landing-header-offset);
+  }
+
+  .landing-scroll-shell > section,
+  .landing-scroll-shell > div > section,
+  .landing-scroll-shell .landing-anchor-section {
+    scroll-snap-align: start;
   }
 
   .landing-anchor-section {

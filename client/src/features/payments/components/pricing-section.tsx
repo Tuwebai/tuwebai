@@ -52,10 +52,12 @@ function PricingCard({
       variants={cardVariants}
       className={
         highlight
-          ? 'relative flex h-full flex-col rounded-[28px] border border-cyan-500/35 bg-[linear-gradient(180deg,rgba(18,18,23,0.97)_0%,rgba(22,22,34,0.97)_100%)] p-6 shadow-[0_0_0_1px_rgba(0,204,255,0.08),0_18px_45px_rgba(0,204,255,0.08)] lg:p-7'
-          : 'relative flex h-full flex-col rounded-[28px] border border-gray-800 bg-[#121217]/95 p-6 lg:p-7'
+          ? 'relative flex h-full flex-col rounded-[28px] border border-cyan-400/50 bg-[linear-gradient(180deg,rgba(16,19,29,0.98)_0%,rgba(22,18,34,0.98)_100%)] p-5 shadow-[0_0_0_1px_rgba(0,204,255,0.1),0_24px_55px_rgba(0,204,255,0.14)] lg:-translate-y-4 lg:scale-[1.03] lg:p-6'
+          : 'relative flex h-full flex-col rounded-[28px] border border-gray-800 bg-[#121217]/95 p-5 lg:p-6'
       }
     >
+      {highlight && <div className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/80 to-transparent" />}
+
       <div className="min-h-[164px]">
         <div className="flex items-start justify-between gap-3">
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">{signal}</p>
@@ -66,28 +68,28 @@ function PricingCard({
           )}
         </div>
 
-        <h3 className="mt-4 font-rajdhani text-[1.95rem] font-bold leading-none text-white">{title}</h3>
-        <p className="mt-4 font-rajdhani text-3xl font-bold text-white lg:text-[2.6rem]">{price}</p>
+        <h3 className="mt-3 font-rajdhani text-[1.8rem] font-bold leading-none text-white">{title}</h3>
+        <p className="mt-3 font-rajdhani text-3xl font-bold text-white lg:text-[2.35rem]">{price}</p>
         <p className="mt-1 text-xs font-medium uppercase tracking-[0.18em] text-gray-400">{cadence}</p>
 
-        <p className="mt-5 text-sm leading-6 text-gray-300">{fit}</p>
+        <p className="mt-4 text-sm leading-6 text-gray-300">{fit}</p>
       </div>
 
       {bonus ? (
-        <div className="mt-5 rounded-2xl border border-cyan-500/20 bg-cyan-500/8 px-4 py-3">
+        <div className="mt-4 rounded-2xl border border-cyan-500/25 bg-cyan-500/8 px-4 py-3">
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">Incluye</p>
           <p className="mt-2 text-sm leading-6 text-white">{bonus}</p>
         </div>
       ) : (
-        <div className="mt-5 rounded-2xl border border-gray-800 bg-[#0d0e14] px-4 py-3">
+        <div className="mt-4 rounded-2xl border border-gray-800 bg-[#0d0e14] px-4 py-3">
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-gray-400">Referencia</p>
           <p className="mt-2 text-sm leading-6 text-gray-300">{note}</p>
         </div>
       )}
 
-      <div className="mt-6 flex-1">
+      <div className="mt-5 flex-1">
         <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#00CCFF]">Qué incluye</p>
-        <ul className="space-y-3">
+        <ul className="space-y-2.5">
           {deliverables.map((item) => (
             <li key={item} className="flex items-start gap-3">
               <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#00CCFF]/15 text-[#00CCFF]">
@@ -132,7 +134,6 @@ const pricingCards: PricingCardProps[] = [
       'Jerarquía clara de servicios y contacto',
       'Diseño responsive y base técnica sólida',
       'Formulario y CTA listos para lanzar',
-      'Ajustes iniciales para salir ordenados',
     ],
     ctaLabel: 'Quiero una base profesional',
     note: 'Pensado para una presencia digital seria, sin entrar todavía en desarrollos complejos.',
@@ -149,7 +150,6 @@ const pricingCards: PricingCardProps[] = [
       'Integraciones o módulos según el alcance',
       'Mejor base para vender, operar y escalar',
       'Acompañamiento inicial de implementación',
-      'Más claridad para sostener crecimiento real',
     ],
     ctaLabel: 'Quiero esta propuesta',
     bonus: 'Hosting + dominio profesional por 1 año',
@@ -167,7 +167,6 @@ const pricingCards: PricingCardProps[] = [
       'Módulos, paneles o flujos a medida',
       'Integraciones según operación real',
       'Base mantenible, trazable y escalable',
-      'Propuesta dividida por etapas si hace falta',
     ],
     ctaLabel: 'Necesito algo a medida',
     note: 'Para cuando una web estándar ya no alcanza y hace falta diseñar alrededor del negocio real.',
@@ -225,7 +224,7 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
           variants={subtitleVariants}
         >
           <p className="text-xl leading-8 text-gray-300">
-            Esta sección no busca empujarte a un checkout. Sirve para ubicar el nivel de proyecto que más se parece a tu necesidad y orientar la conversación comercial con más claridad.
+            Estas referencias te ayudan a ubicar el tipo de proyecto que más se parece a tu necesidad y a dimensionar mejor la inversión inicial.
           </p>
           <p className="mt-4 text-sm leading-6 text-gray-400">
             Las referencias en USD funcionan como guía de alcance. Para proyectos en Argentina, la propuesta final se cotiza y se cobra en pesos argentinos.
