@@ -7,11 +7,13 @@ interface PricingCardProps {
   title: string;
   price: string;
   cadence: string;
-  summary: string;
-  fit: string;
   signal: string;
+  fit: string;
   deliverables: string[];
+  ctaLabel: string;
   highlight?: boolean;
+  note?: string;
+  bonus?: string;
   delay: number;
 }
 
@@ -19,11 +21,13 @@ function PricingCard({
   title,
   price,
   cadence,
-  summary,
-  fit,
   signal,
+  fit,
   deliverables,
+  ctaLabel,
   highlight = false,
+  note,
+  bonus,
   delay,
 }: PricingCardProps) {
   const { ref, hasIntersected } = useIntersectionObserver<HTMLDivElement>();
@@ -48,45 +52,66 @@ function PricingCard({
       variants={cardVariants}
       className={
         highlight
-          ? 'relative rounded-[28px] border border-cyan-500/35 bg-[linear-gradient(180deg,rgba(18,18,23,0.97)_0%,rgba(22,22,34,0.97)_100%)] p-6 shadow-[0_0_0_1px_rgba(0,204,255,0.08),0_18px_45px_rgba(0,204,255,0.08)] lg:p-7'
-          : 'relative rounded-[28px] border border-gray-800 bg-[#121217]/95 p-6 lg:p-7'
+          ? 'relative flex h-full flex-col rounded-[28px] border border-cyan-500/35 bg-[linear-gradient(180deg,rgba(18,18,23,0.97)_0%,rgba(22,22,34,0.97)_100%)] p-6 shadow-[0_0_0_1px_rgba(0,204,255,0.08),0_18px_45px_rgba(0,204,255,0.08)] lg:p-7'
+          : 'relative flex h-full flex-col rounded-[28px] border border-gray-800 bg-[#121217]/95 p-6 lg:p-7'
       }
     >
-      {highlight && (
-        <div className="mb-5 inline-flex rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">
-          Recomendado
+      <div className="min-h-[164px]">
+        <div className="flex items-start justify-between gap-3">
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">{signal}</p>
+          {highlight && (
+            <div className="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan-300">
+              Recomendada
+            </div>
+          )}
+        </div>
+
+        <h3 className="mt-4 font-rajdhani text-[1.95rem] font-bold leading-none text-white">{title}</h3>
+        <p className="mt-4 font-rajdhani text-3xl font-bold text-white lg:text-[2.6rem]">{price}</p>
+        <p className="mt-1 text-xs font-medium uppercase tracking-[0.18em] text-gray-400">{cadence}</p>
+
+        <p className="mt-5 text-sm leading-6 text-gray-300">{fit}</p>
+      </div>
+
+      {bonus ? (
+        <div className="mt-5 rounded-2xl border border-cyan-500/20 bg-cyan-500/8 px-4 py-3">
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">Incluye</p>
+          <p className="mt-2 text-sm leading-6 text-white">{bonus}</p>
+        </div>
+      ) : (
+        <div className="mt-5 rounded-2xl border border-gray-800 bg-[#0d0e14] px-4 py-3">
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-gray-400">Referencia</p>
+          <p className="mt-2 text-sm leading-6 text-gray-300">{note}</p>
         </div>
       )}
 
-      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-        <div>
-          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">{signal}</p>
-          <h3 className="font-rajdhani text-2xl font-bold text-white lg:text-[2rem]">{title}</h3>
-        </div>
-
-        <div className="sm:text-right">
-          <p className="font-rajdhani text-3xl font-bold text-white lg:text-4xl">{price}</p>
-          <p className="mt-1 text-xs font-medium uppercase tracking-[0.16em] text-gray-400">{cadence}</p>
-        </div>
+      <div className="mt-6 flex-1">
+        <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#00CCFF]">Qué incluye</p>
+        <ul className="space-y-3">
+          {deliverables.map((item) => (
+            <li key={item} className="flex items-start gap-3">
+              <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#00CCFF]/15 text-[#00CCFF]">
+                <Check className="h-3.5 w-3.5" />
+              </span>
+              <span className="text-sm leading-6 text-gray-300">{item}</span>
+            </li>
+          ))}
+        </ul>
       </div>
 
-      <p className="mb-6 text-gray-300">{summary}</p>
-
-      <div className="mb-6 rounded-2xl border border-gray-800 bg-[#0d0e14] p-4">
-        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[#00CCFF]">Mejor encaje</p>
-        <p className="leading-7 text-gray-300">{fit}</p>
-      </div>
-
-      <ul className="space-y-3">
-        {deliverables.map((item) => (
-          <li key={item} className="flex items-start gap-3">
-            <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#00CCFF]/15 text-[#00CCFF]">
-              <Check className="h-3.5 w-3.5" />
-            </span>
-            <span className="text-gray-300">{item}</span>
-          </li>
-        ))}
-      </ul>
+      <motion.a
+        href="/consulta"
+        className={
+          highlight
+            ? 'mt-7 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-6 py-3.5 font-medium text-white shadow-[0_16px_35px_rgba(0,204,255,0.12)]'
+            : 'mt-7 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-gray-700 bg-[#181a24] px-6 py-3.5 font-medium text-white transition-colors hover:border-cyan-400/35 hover:bg-[#1d2030]'
+        }
+        whileHover={{ scale: 1.02 }}
+        transition={{ type: 'spring', stiffness: 400, damping: 16 }}
+      >
+        {ctaLabel}
+        <ArrowRight className="h-4 w-4" />
+      </motion.a>
     </motion.article>
   );
 }
@@ -97,33 +122,37 @@ interface PricingSectionProps {
 
 const pricingCards: PricingCardProps[] = [
   {
-    title: 'Base web corporativa',
+    title: 'Base web',
     price: 'Desde USD 900',
     cadence: 'Proyecto inicial',
     signal: 'Presencia clara',
-    summary: 'Una base profesional para presentar mejor tu negocio, ordenar el mensaje y generar consultas con una web seria.',
-    fit: 'Empresas o marcas que necesitan ordenar su presencia online sin entrar todavía en desarrollos complejos.',
+    fit: 'Ideal para empresas que necesitan verse profesionales y empezar a recibir consultas con una base sólida.',
     deliverables: [
       'Sitio institucional con estructura profesional',
-      'Jerarquía de contenido y recorridos claros',
+      'Jerarquía clara de servicios y contacto',
       'Diseño responsive y base técnica sólida',
-      'Formulario, CTA y soporte para lanzamiento',
+      'Formulario y CTA listos para lanzar',
+      'Ajustes iniciales para salir ordenados',
     ],
+    ctaLabel: 'Quiero una base profesional',
+    note: 'Pensado para una presencia digital seria, sin entrar todavía en desarrollos complejos.',
     delay: 1,
   },
   {
-    title: 'Proyecto comercial completo',
+    title: 'Proyecto comercial',
     price: 'Desde USD 1.800',
     cadence: 'Mayor alcance',
-    signal: 'Más conversión',
-    summary: 'Pensado para operaciones que necesitan vender mejor, integrar procesos clave y sostener una experiencia digital más sólida.',
-    fit: 'E-commerce, negocios con catálogo, servicios con varios flujos o proyectos que ya requieren más alcance funcional.',
+    signal: 'Más recomendada',
+    fit: 'Ideal para negocios que ya venden o quieren vender mejor online con una experiencia más completa.',
     deliverables: [
-      'Arquitectura de contenido y experiencia orientada a negocio',
-      'Integraciones, paneles o módulos según alcance',
-      'Mejor base para crecimiento, mantenimiento y soporte',
-      'Acompañamiento inicial para ordenar la implementación',
+      'Arquitectura orientada a conversión y negocio',
+      'Integraciones o módulos según el alcance',
+      'Mejor base para vender, operar y escalar',
+      'Acompañamiento inicial de implementación',
+      'Más claridad para sostener crecimiento real',
     ],
+    ctaLabel: 'Quiero esta propuesta',
+    bonus: 'Hosting + dominio profesional por 1 año',
     highlight: true,
     delay: 2,
   },
@@ -132,14 +161,16 @@ const pricingCards: PricingCardProps[] = [
     price: 'Alcance personalizado',
     cadence: 'Proyecto estratégico',
     signal: 'Operación propia',
-    summary: 'Cuando una web estándar ya no alcanza y hace falta diseñar una solución alrededor de la operación real del negocio.',
-    fit: 'Equipos o empresas que necesitan una plataforma más específica, con lógica propia y mayor complejidad operativa.',
+    fit: 'Ideal para operaciones que necesitan lógica propia, mayor complejidad y una solución diseñada según contexto.',
     deliverables: [
-      'Definición técnica y funcional según contexto',
-      'Desarrollo por módulos o etapas de implementación',
-      'Escalabilidad, trazabilidad y estructura mantenible',
-      'Propuesta adaptada al nivel real del proyecto',
+      'Definición funcional y técnica según contexto',
+      'Módulos, paneles o flujos a medida',
+      'Integraciones según operación real',
+      'Base mantenible, trazable y escalable',
+      'Propuesta dividida por etapas si hace falta',
     ],
+    ctaLabel: 'Necesito algo a medida',
+    note: 'Para cuando una web estándar ya no alcanza y hace falta diseñar alrededor del negocio real.',
     delay: 3,
   },
 ];
@@ -201,7 +232,7 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
           </p>
         </motion.div>
 
-        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 lg:grid-cols-[1.15fr_1.15fr_0.9fr]">
+        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 lg:grid-cols-3">
           {pricingCards.map((card) => (
             <PricingCard key={card.title} {...card} />
           ))}
