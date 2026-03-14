@@ -8,7 +8,6 @@ const ScrollProgress = lazy(() => import('@/shared/ui/scroll-progress'));
 const PhilosophySection = lazy(() => import('@/features/marketing-home/components/philosophy-section'));
 const ServicesSection = lazy(() => import('@/features/marketing-home/components/services-section'));
 const ProcessSection = lazy(() => import('@/features/marketing-home/components/process-section'));
-const TechSection = lazy(() => import('@/features/marketing-home/components/tech-section'));
 const ImpactSection = lazy(() => import('@/features/marketing-home/components/impact-section'));
 const TestimonialsSection = lazy(() => import('@/features/testimonials/components/testimonials-section'));
 const ContactSection = lazy(() => import('@/features/contact/components/contact-section'));
@@ -56,7 +55,6 @@ export default function MarketingHomePage() {
           <PhilosophySection setRef={(ref: HTMLElement | null) => setSectionRef('philosophy', ref)} />
           <ServicesSection setRef={(ref: HTMLElement | null) => setSectionRef('services', ref)} />
           <ProcessSection setRef={(ref: HTMLElement | null) => setSectionRef('process', ref)} />
-          <TechSection setRef={(ref: HTMLElement | null) => setSectionRef('tech', ref)} />
           <ComparisonSection setRef={(ref: HTMLElement | null) => setSectionRef('comparison', ref)} />
           <ShowroomSection setRef={(ref: HTMLElement | null) => setSectionRef('showroom', ref)} />
           <PricingSection setRef={(ref: HTMLElement | null) => setSectionRef('pricing', ref)} />

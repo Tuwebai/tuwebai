@@ -240,7 +240,7 @@ Bajo.
 
 Estado:
 
-- pendiente
+- ✅ cerrada: `process-section` ya presenta el metodo de trabajo como ejecucion seria de proyectos web y `tech-section` salio de la home para quedar sostenida solo por la pagina dedicada de tecnologias
 
 ### Objetivo
 
@@ -281,6 +281,13 @@ Medio-bajo.
 - reescribir `process-section` como metodo de ejecucion de proyectos web serios
 - retirar `tech-section` del landing principal y dejar la explicacion tecnica en la pagina `/tecnologias`
 - bajar abstraccion y tecnicismo decorativo
+
+### Resultado implementado
+
+- `process-section` ya no vende estrategia, marketing, SEO o PPC como frente principal; ahora explica un metodo claro de trabajo orientado a negocio, ejecucion y base tecnica seria
+- `tech-section` ya no forma parte del landing principal
+- la navegacion por dots y la navegacion interna de `Inicio` en el header ya no listan `tech` como seccion del home
+- `Tecnologias` queda sostenida como pagina satelite accesible desde el header, que es donde ese contenido aporta mas valor sin romper el recorrido comercial del landing
 
 ## Fase 7. Reestructurar comparativa
 

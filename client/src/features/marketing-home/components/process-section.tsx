@@ -10,41 +10,37 @@ interface ProcessStepProps {
 }
 
 function ProcessStep({ number, title, description, delay }: ProcessStepProps) {
-  const { ref, hasIntersected } = useIntersectionObserver();
+  const { ref, hasIntersected } = useIntersectionObserver<HTMLDivElement>();
 
   const stepVariants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, y: 28 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.6,
-        delay: delay * 0.15,
+        duration: 0.55,
+        delay: delay * 0.12,
       },
     },
   };
 
   return (
     <motion.div
-      ref={ref as React.RefObject<HTMLDivElement>}
-      className="flex items-start gap-6"
+      ref={ref}
+      className="flex items-start gap-5 rounded-xl border border-gray-800 bg-[#121217]/70 p-6"
       initial="hidden"
       animate={hasIntersected ? 'visible' : 'hidden'}
       variants={stepVariants}
     >
       <div className="flex-shrink-0">
-        <motion.div
-          className="h-12 w-12 rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] flex items-center justify-center text-white font-rajdhani font-bold text-xl"
-          whileHover={{ scale: 1.1 }}
-          transition={{ duration: 0.3 }}
-        >
+        <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] font-rajdhani text-lg font-bold text-white">
           {number}
-        </motion.div>
+        </div>
       </div>
 
       <div>
-        <h3 className="font-rajdhani font-bold text-xl mb-2 text-white">{title}</h3>
-        <p className="text-gray-300">{description}</p>
+        <h3 className="mb-2 font-rajdhani text-xl font-bold text-white">{title}</h3>
+        <p className="leading-7 text-gray-300">{description}</p>
       </div>
     </motion.div>
   );
@@ -56,7 +52,7 @@ interface ProcessSectionProps {
 
 export default function ProcessSection({ setRef }: ProcessSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
-  const { ref: titleRef, hasIntersected: titleVisible } = useIntersectionObserver();
+  const { ref: titleRef, hasIntersected: titleVisible } = useIntersectionObserver<HTMLDivElement>();
 
   if (sectionRef.current && !sectionRef.current.hasAttribute('data-ref-set')) {
     setRef(sectionRef.current);
@@ -68,64 +64,72 @@ export default function ProcessSection({ setRef }: ProcessSectionProps) {
     visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
   };
 
+  const processSteps: ProcessStepProps[] = [
+    {
+      number: 1,
+      title: 'Entendemos el negocio y el objetivo real',
+      description:
+        'Primero ordenamos contexto, propuesta, prioridad comercial y alcance del proyecto para no construir una web desconectada de la operación.',
+      delay: 1,
+    },
+    {
+      number: 2,
+      title: 'Definimos la solución correcta',
+      description:
+        'Traducimos esa necesidad a una estructura web clara: qué secciones necesita, qué recorridos debe resolver y qué nivel técnico conviene implementar.',
+      delay: 2,
+    },
+    {
+      number: 3,
+      title: 'Diseñamos y desarrollamos con criterio',
+      description:
+        'Trabajamos interfaz, contenido, rendimiento e implementación como una sola pieza para que el proyecto se vea profesional y funcione bien desde el inicio.',
+      delay: 3,
+    },
+    {
+      number: 4,
+      title: 'Lanzamos con una base lista para crecer',
+      description:
+        'La entrega no busca solo publicar una web. Buscamos dejar una plataforma clara, mantenible y preparada para seguir evolucionando con el negocio.',
+      delay: 4,
+    },
+  ];
+
   return (
     <section
       id="process"
       ref={sectionRef}
-      className="landing-anchor-section flex items-center justify-center relative bg-gradient-2"
+      className="landing-anchor-section relative flex items-center justify-center bg-gradient-2"
     >
-      <div className="container mx-auto px-4 py-16 z-10">
+      <div className="container z-10 mx-auto px-4 py-16">
         <motion.div
-          ref={titleRef as React.RefObject<HTMLDivElement>}
-          className="text-center mb-16"
+          ref={titleRef}
+          className="mx-auto mb-14 max-w-4xl text-center"
           initial="hidden"
           animate={titleVisible ? 'visible' : 'hidden'}
           variants={titleVariants}
         >
-          <h2 className="font-rajdhani font-bold text-3xl md:text-5xl mb-6">
-            <span className="gradient-text gradient-border inline-block pb-2">El Proceso de Trabajo</span>
+          <h2 className="mb-6 font-rajdhani text-3xl font-bold md:text-5xl">
+            <span className="gradient-text gradient-border inline-block pb-2">
+              Cómo trabajamos cada proyecto web
+            </span>
           </h2>
 
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            Nuestro Proceso: De la Estrategia a los Resultados
+          <p className="mx-auto max-w-3xl text-xl text-gray-300">
+            No seguimos una receta genérica. Cada entrega se construye con foco en claridad comercial, ejecución técnica seria y una base que pueda sostener el crecimiento del negocio.
           </p>
         </motion.div>
 
-        <div className="max-w-3xl mx-auto space-y-12">
-          <ProcessStep
-            number={1}
-            title="Análisis y Diagnóstico Inicial"
-            description="Investigación del mercado y definición de KPIs específicos para medir el éxito de la estrategia."
-            delay={1}
-          />
-
-          <ProcessStep
-            number={2}
-            title="Diseño de Estrategia Personalizada"
-            description="Marketing digital, desarrollo web y análisis continuo adaptado a tus objetivos comerciales."
-            delay={2}
-          />
-
-          <ProcessStep
-            number={3}
-            title="Implementación y Ejecución"
-            description="Desarrollo de sitio web / landing pages + implementación de campañas SEO y PPC."
-            delay={3}
-          />
-
-          <ProcessStep
-            number={4}
-            title="Monitoreo y Ajustes"
-            description="Análisis constante de resultados y mejoras continuas para optimizar la tasa de conversión."
-            delay={4}
-          />
-
-          <ProcessStep
-            number={5}
-            title="Resultados Medibles"
-            description="Reportes detallados y recomendaciones específicas para escalar el crecimiento de tu negocio."
-            delay={5}
-          />
+        <div className="mx-auto grid max-w-5xl grid-cols-1 gap-5 md:grid-cols-2">
+          {processSteps.map((step) => (
+            <ProcessStep
+              key={step.number}
+              number={step.number}
+              title={step.title}
+              description={step.description}
+              delay={step.delay}
+            />
+          ))}
         </div>
       </div>
     </section>

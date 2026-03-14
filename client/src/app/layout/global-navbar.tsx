@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -40,7 +40,6 @@ export default function GlobalNavbar() {
         { id: 'philosophy', label: 'Filosofía' },
         { id: 'services', label: 'Servicios' },
         { id: 'process', label: 'Proceso' },
-        { id: 'tech', label: 'Tecnologías' },
         { id: 'showroom', label: 'Proyectos' }
       ]
     },
@@ -108,22 +107,22 @@ export default function GlobalNavbar() {
       (location.pathname === '/' && targetPage?.href === '/') ||
       activeNavItem?.sections?.some((section) => section.id === sectionId)
     ) {
-      if (debugNav) console.debug("Intentando hacer scroll en la misma página a la sección:", sectionId);
+      if (debugNav) console.debug("Intentando hacer scroll en la misma pÃ¡gina a la secciÃ³n:", sectionId);
 
       setTimeout(() => {
         const section = document.getElementById(sectionId);
         if (section) {
-          if (debugNav) console.debug("Sección encontrada, haciendo scroll");
+          if (debugNav) console.debug("SecciÃ³n encontrada, haciendo scroll");
           scrollToHomeSection(section);
         } else {
-          console.warn("Sección no encontrada:", sectionId);
+          console.warn("SecciÃ³n no encontrada:", sectionId);
         }
       }, 200);
     } else if (targetPage) {
       if (debugNav) console.debug(`Navegando a ${targetPage.href}#${sectionId}`);
       window.location.href = `${targetPage.href}#${sectionId}`;
     } else {
-      console.warn("No se encontró página para la sección:", sectionId);
+      console.warn("No se encontrÃ³ pÃ¡gina para la secciÃ³n:", sectionId);
     }
   };
 
@@ -146,14 +145,14 @@ export default function GlobalNavbar() {
                   to="/politica-privacidad"
                   className="hover:text-[#00CCFF] transition-colors"
                 >
-                  Política de Privacidad
+                  PolÃ­tica de Privacidad
                 </Link>
-                <span className="text-gray-600">•</span>
+                <span className="text-gray-600">â€¢</span>
                 <Link
                   to="/terminos-condiciones"
                   className="hover:text-[#9933FF] transition-colors"
                 >
-                  Términos y Condiciones
+                  TÃ©rminos y Condiciones
                 </Link>
               </div>
             )}
@@ -201,7 +200,7 @@ export default function GlobalNavbar() {
                         onClick={() => openModal(undefined, 'login')}
                         className="px-4 py-1.5 text-sm font-medium border border-gray-600 hover:border-gray-400 rounded-md text-gray-300 hover:text-white transition-colors"
                       >
-                        Iniciar sesión
+                        Iniciar sesiÃ³n
                       </button>
                       <button
                         onClick={() => openModal(undefined, 'register')}
@@ -268,7 +267,7 @@ export default function GlobalNavbar() {
                                 <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                                 </svg>
-                                🎛️ Panel de Control
+                                ðŸŽ›ï¸ Panel de Control
                               </div>
                             </a>
                             <button
@@ -278,7 +277,7 @@ export default function GlobalNavbar() {
                               }}
                               className="block w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-[#23232b] hover:text-white rounded-lg transition-colors"
                             >
-                              Cerrar sesión
+                              Cerrar sesiÃ³n
                             </button>
                           </div>
                         </div>
@@ -386,15 +385,15 @@ export default function GlobalNavbar() {
                       className="hover:text-[#00CCFF] transition-colors"
                       onClick={() => setIsMenuOpen(false)}
                     >
-                      Política de Privacidad
+                      PolÃ­tica de Privacidad
                     </Link>
-                    <span className="text-gray-600">•</span>
+                    <span className="text-gray-600">â€¢</span>
                     <Link
                       to="/terminos-condiciones"
                       className="hover:text-[#9933FF] transition-colors"
                       onClick={() => setIsMenuOpen(false)}
                     >
-                      Términos y Condiciones
+                      TÃ©rminos y Condiciones
                     </Link>
                   </div>
                 </div>
@@ -408,7 +407,7 @@ export default function GlobalNavbar() {
                       }}
                       className="flex-1 py-3 border border-gray-700 rounded-lg text-gray-300 font-medium text-center"
                     >
-                      Iniciar sesión
+                      Iniciar sesiÃ³n
                     </button>
                     <button
                       onClick={() => {
@@ -465,7 +464,7 @@ export default function GlobalNavbar() {
                         <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                         </svg>
-                        🎛️ Panel de Control
+                        ðŸŽ›ï¸ Panel de Control
                       </div>
                     </a>
                     <button
@@ -475,7 +474,7 @@ export default function GlobalNavbar() {
                       }}
                       className="block w-full py-2 px-4 text-left rounded-md text-gray-300 hover:bg-gray-800 transition-colors"
                     >
-                      Cerrar sesión
+                      Cerrar sesiÃ³n
                     </button>
                   </div>
                 )}
@@ -519,3 +518,4 @@ export default function GlobalNavbar() {
     </>
   );
 }
+
