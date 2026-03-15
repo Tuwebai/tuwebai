@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -130,7 +130,7 @@ export default function GlobalNavbar() {
     <>
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled ? 'bg-[#0a0a0f]/90 backdrop-blur-sm shadow-lg' : 'bg-transparent'
+          isScrolled ? 'bg-[#0a0a0f]/95 lg:bg-[#0a0a0f]/90 lg:backdrop-blur-sm shadow-lg' : 'bg-transparent'
         }`}
       >
         <div className="container mx-auto px-4">

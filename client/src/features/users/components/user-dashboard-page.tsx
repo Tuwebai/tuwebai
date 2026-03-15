@@ -295,7 +295,7 @@ export default function PanelUsuario() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.3 }}
-              className="bg-white/5 backdrop-blur-lg rounded-2xl p-8 border border-white/10"
+              className="bg-white/5 lg:backdrop-blur-lg rounded-2xl p-8 border border-white/10"
             >
               {activeTab === 'profile' && (
                 <UserProfileTab

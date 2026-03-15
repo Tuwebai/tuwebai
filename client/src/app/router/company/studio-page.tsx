@@ -258,7 +258,7 @@ export default function Estudio() {
       </div>
       
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 bg-white z-40 backdrop-blur-sm bg-opacity-90 border-b border-gray-100">
+      <header className="fixed top-0 left-0 right-0 bg-white z-40 lg:backdrop-blur-sm bg-opacity-90 border-b border-gray-100">
         <div className="container mx-auto px-4 md:px-6 py-4 flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-extrabold tracking-tight text-gray-900">
@@ -443,7 +443,7 @@ export default function Estudio() {
                       <p className="text-blue-300">{project.client}</p>
                       <p className="text-white text-sm mt-2 line-clamp-2">{project.description}</p>
                       <div className="mt-4">
-                        <span className="inline-block bg-white/20 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-full">
+                        <span className="inline-block bg-white/20 lg:backdrop-blur-sm text-white text-xs px-2 py-1 rounded-full">
                           {project.category.charAt(0).toUpperCase() + project.category.slice(1).replace('-', ' ')}
                         </span>
                       </div>

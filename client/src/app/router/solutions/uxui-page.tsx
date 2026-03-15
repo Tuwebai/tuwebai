@@ -74,7 +74,7 @@ export default function UXUI() {
     {
       id: 1,
       title: "Investigación UX",
-      description: "Entendemos a tus usuarios para diseñar experiencias que conecten emocionalmente y resuelvan sus necesidades reales.",
+      description: "Entendemos a tus usuarios para diseñar experiencias claras y alineadas con objetivos reales de negocio.",
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -91,7 +91,7 @@ export default function UXUI() {
     {
       id: 2,
       title: "Diseño de Interfaz",
-      description: "Transformamos ideas en interfaces intuitivas y atractivas que destacan tu marca y mantienen a tus usuarios comprometidos.",
+      description: "Transformamos ideas en interfaces intuitivas y atractivas que ordenan el recorrido y reflejan tu marca.",
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
@@ -108,7 +108,7 @@ export default function UXUI() {
     {
       id: 3,
       title: "Optimización de Conversión",
-      description: "Mejoramos continuamente tus interfaces para maximizar las conversiones y el retorno de inversión mediante pruebas y análisis.",
+      description: "Mejoramos interfaces para reducir fricción y aumentar consultas o ventas con métricas claras.",
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -116,7 +116,7 @@ export default function UXUI() {
       ),
       features: [
         "Tests A/B",
-        "Optimización de flujos de conversión",
+        "Optimización de flujos clave",
         "Mejora de tasas de abandono",
         "Análisis de comportamiento",
         "Métricas e informes"
@@ -129,7 +129,7 @@ export default function UXUI() {
     {
       id: 1,
       title: "Descubrimiento",
-      description: "Entendemos tu negocio, objetivos y usuarios para establecer las bases de un diseño efectivo y alineado con tus necesidades.",
+      description: "Entendemos tu negocio, objetivos y usuarios para establecer las bases de un diseño efectivo y alineado a resultados.",
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 16l2.879-2.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242zM21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -169,7 +169,7 @@ export default function UXUI() {
     {
       id: 5,
       title: "Prototipado",
-      description: "Creamos prototipos interactivos que simulan la experiencia real del usuario para validar y refinar el diseño.",
+      description: "Creamos prototipos interactivos para validar decisiones antes del desarrollo.",
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -179,7 +179,7 @@ export default function UXUI() {
     {
       id: 6,
       title: "Testing y Mejora",
-      description: "Evaluamos continuamente el diseño con usuarios reales para identificar y corregir problemas, optimizando la experiencia.",
+      description: "Evaluamos el diseño con usuarios reales para detectar y corregir problemas antes del lanzamiento.",
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -194,13 +194,13 @@ export default function UXUI() {
       id: 1,
       title: "LH Decants - E-commerce Premium",
       description: "Diseño UX/UI para sitio web corporativo premium de perfumes y fragancias exclusivas, enfocado en la experiencia de compra y la elegancia de la marca.",
-      challenge: "El cliente necesitaba un sitio web que reflejara la exclusividad y calidad premium de sus productos de perfumes, mientras ofrecía una experiencia de compra fluida y sofisticada.",
-      solution: "Creamos una interfaz elegante y sofisticada que destaca la calidad premium de los productos. Optimizamos el embudo de conversión y simplificamos el proceso de compra para maximizar las ventas.",
+      challenge: "El cliente necesitaba un sitio web que reflejara la exclusividad de su marca y ofreciera una experiencia de compra simple.",
+      solution: "Creamos una interfaz elegante con jerarquía clara y un flujo de compra ordenado.",
       results: [
-        "Aumento del 150% en ventas online",
-        "Mejora del 80% en la percepción de marca premium",
-        "Reducción del 40% en el abandono del carrito",
-        "Incremento del 60% en el tiempo de permanencia en el sitio"
+        "Percepción de marca más sólida",
+        "Recorrido de compra más claro",
+        "Mejor lectura del catálogo",
+        "Navegación más fluida"
       ],
       tags: ["E-commerce", "Diseño Premium", "Perfumes", "Lujo"],
       image: "/lhdecant-card.png",
@@ -306,7 +306,7 @@ export default function UXUI() {
       {/* Header flotante para desktop y móvil (solo si no se usa GlobalNavbar) */}
       {!isUsingGlobalNav && (
         <>
-          <header className="fixed top-0 left-0 right-0 bg-[#0a0a0f]/90 backdrop-blur-sm z-40 border-b border-gray-800">
+          <header className="fixed top-0 left-0 right-0 bg-[#0a0a0f]/95 lg:bg-[#0a0a0f]/90 lg:backdrop-blur-sm z-40 border-b border-gray-800">
             <div className="container mx-auto px-4 py-4">
               <div className="flex items-center justify-between">
                 <Link to="/" className="text-2xl font-rajdhani font-bold">
@@ -628,7 +628,7 @@ export default function UXUI() {
                 Transformá la experiencia de tus usuarios
               </h2>
               <p className="text-xl text-gray-300">
-                Convertí visitantes en usuarios leales con interfaces que enamoran desde el primer click.
+                Convertí visitas en acciones concretas con interfaces claras y efectivas.
               </p>
             </div>
             
@@ -659,7 +659,7 @@ export default function UXUI() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 md:p-8"
+            className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 md:p-8"
             onClick={closeProjectModal}
           >
             <motion.div
@@ -735,7 +735,7 @@ export default function UXUI() {
                     {selectedProject.tags.map((tag, i) => (
                       <span 
                         key={i} 
-                        className="text-xs px-3 py-1 bg-black/50 backdrop-blur-sm rounded-full text-white"
+                        className="text-xs px-3 py-1 bg-black/50 lg:backdrop-blur-sm rounded-full text-white"
                       >
                         {tag}
                       </span>
@@ -778,3 +778,4 @@ export default function UXUI() {
     </div>
   );
 }
+

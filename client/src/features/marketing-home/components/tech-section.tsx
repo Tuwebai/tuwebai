@@ -104,7 +104,7 @@ export default function TechSection({ setRef }: TechSectionProps) {
         </motion.div>
 
         <motion.div
-          className="bg-[#121217]/50 rounded-xl p-10 backdrop-blur-sm border border-gray-800 max-w-4xl mx-auto"
+          className="bg-[#121217]/50 rounded-xl p-10 lg:backdrop-blur-sm border border-gray-800 max-w-4xl mx-auto"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}

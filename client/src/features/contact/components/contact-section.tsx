@@ -48,7 +48,7 @@ function ContactForm({ delay }: ContactFormProps) {
     if (!formState.email.trim()) {
       newErrors.email = 'El email es requerido';
     } else if (!/\S+@\S+\.\S+/.test(formState.email)) {
-      newErrors.email = 'El email no es valido';
+      newErrors.email = 'El email no es válido';
     }
 
     if (!formState.message.trim()) {
@@ -170,7 +170,7 @@ function ContactForm({ delay }: ContactFormProps) {
               onChange={handleChange}
               rows={4}
               className={`w-full px-4 py-3 bg-[#0a0a0f]/70 border ${errors.message ? 'border-red-500' : 'border-gray-700'} rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00CCFF] focus:border-transparent text-white resize-none transition-all duration-200`}
-              placeholder="Tu mensaje aqui..."
+              placeholder="Tu mensaje aquí..."
             />
             {errors.message && <p className="text-red-500 text-xs mt-1">{errors.message}</p>}
           </div>
@@ -243,37 +243,37 @@ function ContactInfo({ delay }: ContactInfoProps) {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
           <span className="text-gray-300">
-            Abierto todos los dias menos domingo
+            Atención de lunes a sábado
           </span>
         </div>
       </div>
 
-      <h4 className="font-rajdhani font-bold text-xl mb-4 text-white">Que obtenes en esta primera conversacion?</h4>
+      <h4 className="font-rajdhani font-bold text-xl mb-4 text-white">¿Qué obtenés en esta primera conversación?</h4>
 
       <ul className="space-y-3">
         <li className="flex items-center space-x-3">
           <div className="h-2 w-2 rounded-full bg-[#00CCFF]"></div>
-          <span className="text-gray-300">Diagnostico personalizado de tu situacion actual</span>
+          <span className="text-gray-300">Diagnóstico personalizado de tu situación actual</span>
         </li>
 
         <li className="flex items-center space-x-3">
           <div className="h-2 w-2 rounded-full bg-[#9933FF]"></div>
-          <span className="text-gray-300">Identificacion de oportunidades de mejora</span>
+          <span className="text-gray-300">Identificación de oportunidades de mejora</span>
         </li>
 
         <li className="flex items-center space-x-3">
           <div className="h-2 w-2 rounded-full bg-[#00CCFF]"></div>
-          <span className="text-gray-300">Plan de accion concreto adaptado a tu negocio</span>
+          <span className="text-gray-300">Plan de acción concreto adaptado a tu negocio</span>
         </li>
 
         <li className="flex items-center space-x-3">
           <div className="h-2 w-2 rounded-full bg-[#9933FF]"></div>
-          <span className="text-gray-300">Estimacion de resultados potenciales y ROI esperado</span>
+          <span className="text-gray-300">Estimación de resultados potenciales y ROI esperado</span>
         </li>
       </ul>
 
       <div className="mt-8 pt-4 border-t border-gray-800">
-        <h5 className="font-medium text-white mb-2">Prefieres hablar directamente?</h5>
+        <h5 className="font-medium text-white mb-2">¿Preferís hablar directamente?</h5>
         <a href={TUWEBAI_WHATSAPP_URL} className="text-[#00CCFF] hover:underline flex items-center">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
@@ -321,11 +321,11 @@ export default function ContactSection({ setRef }: ContactSectionProps) {
           variants={titleVariants}
         >
           <h2 className="font-rajdhani font-bold text-3xl md:text-5xl mb-6">
-            <span className="gradient-text gradient-border inline-block pb-2">Listo para Maximizar tu Negocio Digital?</span>
+            <span className="gradient-text gradient-border inline-block pb-2">¿Listo para impulsar tu negocio con una web profesional?</span>
           </h2>
 
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            Contanos que necesitas y te ayudamos a definir el mejor camino para tu proyecto web.
+            Contanos qué necesitás y te ayudamos a definir el mejor camino para tu proyecto web.
           </p>
         </motion.div>
 
@@ -337,3 +337,4 @@ export default function ContactSection({ setRef }: ContactSectionProps) {
     </section>
   );
 }
+

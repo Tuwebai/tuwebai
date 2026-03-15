@@ -16,7 +16,7 @@ const tabs: Array<{ id: UserDashboardTab; label: string; icon: typeof User }> = 
 
 export function UserDashboardTabsNav({ activeTab, onTabChange }: UserDashboardTabsNavProps) {
   return (
-    <div className="mb-8 rounded-xl border border-white/10 bg-white/5 p-2 backdrop-blur-lg">
+    <div className="mb-8 rounded-xl border border-white/10 bg-white/5 p-2 lg:backdrop-blur-lg">
       <div className="flex flex-wrap gap-2">
         {tabs.map(({ id, label, icon: Icon }) => (
           <button

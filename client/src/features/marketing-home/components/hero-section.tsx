@@ -75,13 +75,13 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
         style={{ opacity: heroOpacity }}
       >
         <motion.div
-          className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-gray-300 backdrop-blur-sm"
+          className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-gray-300 lg:backdrop-blur-sm"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
           <span className="h-2 w-2 rounded-full bg-[#00CCFF] shadow-[0_0_10px_rgba(0,204,255,0.8)]" />
-          <span className="font-medium">Disenamos el futuro de tu negocio</span>
+          <span className="font-medium">Diseñamos el futuro de tu negocio</span>
         </motion.div>
 
         <motion.div
@@ -141,7 +141,7 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
             smooth={true}
             offset={-70}
             duration={1000}
-            className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-7 py-3 text-gray-200 font-medium backdrop-blur-sm transition-colors duration-300 hover:border-[#00CCFF]/50 hover:text-white cursor-pointer"
+            className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-7 py-3 text-gray-200 font-medium lg:backdrop-blur-sm transition-colors duration-300 hover:border-[#00CCFF]/50 hover:text-white cursor-pointer"
           >
             Ver proyectos reales
           </ScrollLink>

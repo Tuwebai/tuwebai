@@ -39,7 +39,7 @@ export function UserDashboardHeader({
   onLogout,
 }: UserDashboardHeaderProps) {
   return (
-    <div className="mb-6 rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-lg sm:mb-8 sm:p-6">
+    <div className="mb-6 rounded-2xl border border-white/10 bg-white/5 p-5 lg:backdrop-blur-lg sm:mb-8 sm:p-6">
       <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:items-center sm:gap-6 sm:text-left">
           <div className="group relative">
