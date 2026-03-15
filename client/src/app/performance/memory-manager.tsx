@@ -35,7 +35,7 @@ const MemoryManager: React.FC<MemoryManagerProps> = ({
       if (!memory) return;
       const usedJSHeapSize = memory.usedJSHeapSize / (1024 * 1024);
 
-      if (debug) console.debug(`MemoryManager: uso JS heap ${usedJSHeapSize.toFixed(2)} MB`);
+
 
       if (usedJSHeapSize > thresholdMB && !warnedRef.current) {
         warnedRef.current = true;

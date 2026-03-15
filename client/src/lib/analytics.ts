@@ -54,9 +54,7 @@ export const setAnalyticsConsent = (enabled: boolean): void => {
   ensureGtagQueue();
   applyAnalyticsConsent();
 
-  if (isDev) {
-    console.debug(`Analytics consent ${enabled ? 'enabled' : 'disabled'}`);
-  }
+
 };
 
 export const isAnalyticsEnabled = (): boolean => analyticsConsentGranted;
@@ -76,7 +74,7 @@ export const initializeAnalytics = (measurementId: string): void => {
     configuredMeasurementIds.add(measurementId);
   }
 
-  if (isDev) console.debug('Analytics queue initialized');
+
 };
 
 export const trackPageView = (path: string, title?: string): void => {
@@ -86,7 +84,7 @@ export const trackPageView = (path: string, title?: string): void => {
     page_path: path,
     page_title: title,
   });
-  if (isDev) console.debug(`Page view tracked: ${path}${title ? ` - ${title}` : ''}`);
+
 };
 
 export const trackEvent = (
@@ -102,19 +100,19 @@ export const trackEvent = (
     event_label: label,
     value,
   });
-  if (isDev) console.debug(`Event tracked: ${category} - ${action}${label ? ` - ${label}` : ''}${value ? ` - ${value}` : ''}`);
+
 };
 
 export const trackException = (description: string, fatal: boolean = false): void => {
   trackEvent('Exception', description, fatal ? 'Fatal' : 'Non-Fatal');
-  if (isDev) console.debug(`Exception tracked: ${description} (Fatal: ${fatal})`);
+
 };
 
 export const setUser = (userId: string): void => {
   if (typeof window === 'undefined' || !analyticsConsentGranted) return;
   ensureGtagQueue();
   window.gtag?.('set', { user_id: userId });
-  if (isDev) console.debug(`User set: ${userId}`);
+
 };
 
 export const trackWebVital = (metricName: string, value: number): void => {

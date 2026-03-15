@@ -37,7 +37,7 @@ const DEFAULT_SECTION_REFS: SectionRefMap = {
 
 export function useHomeSectionNavigation() {
   const location = useLocation();
-  const debugScroll = import.meta.env.DEV;
+
   const sectionRefs = useRef<SectionRefMap>(DEFAULT_SECTION_REFS);
 
   const setSectionRef = (id: string, ref: HTMLElement | null) => {
@@ -45,14 +45,12 @@ export function useHomeSectionNavigation() {
   };
 
   const scrollToSection = (sectionId: string) => {
-    if (debugScroll) console.debug('Intentando desplazarse a la sección:', sectionId);
+
 
     const section = sectionRefs.current[sectionId];
     if (section) {
-      if (debugScroll) console.debug('Sección encontrada, desplazándose...');
+
       scrollToHomeSection(section);
-    } else if (debugScroll) {
-      console.debug('Sección no encontrada en refs:', Object.keys(sectionRefs.current));
     }
   };
 
@@ -62,15 +60,15 @@ export function useHomeSectionNavigation() {
     const hashSection = location.hash ? location.hash.substring(1) : null;
     const targetSection = hashSection || sectionParam;
 
-    if (debugScroll) console.debug('Intentando navegar a sección:', targetSection);
+
 
     if (targetSection && HOME_SECTIONS.some((section) => section.id === targetSection)) {
       setTimeout(() => {
-        if (debugScroll) console.debug('Intentando scroll a sección:', targetSection);
+
         scrollToSection(targetSection);
       }, 300);
     }
-  }, [debugScroll, location]);
+  }, [location]);
 
   return {
     sections: HOME_SECTIONS,

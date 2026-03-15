@@ -25,7 +25,7 @@ export default function GlobalNavbar() {
   const { user, isAuthenticated } = useAuthState();
   const { logout } = useAuthActions();
   const { openModal } = useLoginModal();
-  const debugNav = import.meta.env.DEV;
+
 
   const handleIntentPrefetch = (path: string) => {
     prefetchRoute(path);
@@ -107,19 +107,19 @@ export default function GlobalNavbar() {
       (location.pathname === '/' && targetPage?.href === '/') ||
       activeNavItem?.sections?.some((section) => section.id === sectionId)
     ) {
-      if (debugNav) console.debug("Intentando hacer scroll en la misma página a la sección:", sectionId);
+
 
       setTimeout(() => {
         const section = document.getElementById(sectionId);
         if (section) {
-          if (debugNav) console.debug("Sección encontrada, haciendo scroll");
+
           scrollToHomeSection(section);
         } else {
           console.warn("Sección no encontrada:", sectionId);
         }
       }, 200);
     } else if (targetPage) {
-      if (debugNav) console.debug(`Navegando a ${targetPage.href}#${sectionId}`);
+
       window.location.href = `${targetPage.href}#${sectionId}`;
     } else {
       console.warn("No se encontró página para la sección:", sectionId);

@@ -3,7 +3,6 @@
  */
 import analytics from '@/lib/analytics';
 
-const isDev = import.meta.env.DEV;
 
 type LayoutShiftEntry = PerformanceEntry & {
   hadRecentInput?: boolean;
@@ -40,9 +39,6 @@ export function detectPerformanceFeatures(): {
 export function reportPerformanceMetric(metricName: string, value: number): void {
   // Solo ejecutar en el cliente
   if (typeof window === 'undefined') return;
-  
-  // Registrar métrica en la consola durante desarrollo
-  if (isDev) console.debug(`[Performance Metric] ${metricName}: ${value}`);
   
   // Enviar métrica a Google Analytics si está disponible
   analytics.trackWebVital(metricName, value);
@@ -143,14 +139,8 @@ export function runWhenIdle(callback: () => void, timeout: number = 5000): void 
  * @param label Etiqueta para identificar la medición
  * @returns El resultado de la función
  */
-export function measureExecutionTime<T>(fn: () => T, label: string): T {
-  const startTime = performance.now();
-  const result = fn();
-  const endTime = performance.now();
-  
-  if (isDev) console.debug(`[Performance] ${label}: ${(endTime - startTime).toFixed(2)}ms`);
-  
-  return result;
+export function measureExecutionTime<T>(fn: () => T, _label: string): T {
+  return fn();
 }
 
 // Fallback gtag management movido a gtag.ts

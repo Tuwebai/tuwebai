@@ -74,9 +74,7 @@ export type EnvConfig = z.infer<typeof envSchema>;
 let envVariables: EnvConfig;
 
 try {
-  console.log('Validando variables de entorno...');
   envVariables = envSchema.parse(process.env);
-  console.log('Variables de entorno validadas correctamente.');
 } catch (error) {
   if (error instanceof z.ZodError) {
     console.error('Error critico: fallo la validacion de las variables de entorno:');
