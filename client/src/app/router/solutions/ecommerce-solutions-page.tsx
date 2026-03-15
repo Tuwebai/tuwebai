@@ -25,7 +25,7 @@ export default function Ecommerce() {
                 <span className="gradient-text pb-2">Soluciones E-Commerce</span>
               </h1>
               <p className="text-xl text-gray-300 max-w-2xl mt-4">
-                Tiendas online optimizadas para conversión que transforman visitantes en compradores recurrentes.
+                Tiendas online pensadas para vender con claridad, velocidad y una experiencia de compra confiable.
               </p>
             </div>
 
@@ -52,9 +52,9 @@ export default function Ecommerce() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <h2 className="text-3xl font-rajdhani font-bold mb-6 text-white">Comercio electrónico que genera resultados</h2>
+            <h2 className="text-3xl font-rajdhani font-bold mb-6 text-white">E-commerce listo para operar con confianza</h2>
             <p className="text-lg text-gray-300 mb-8">
-              Una tienda online no es solo un catálogo digital, sino un complejo ecosistema de ventas que debe funcionar perfectamente para maximizar cada oportunidad. En TuWeb.ai desarrollamos e-commerce profesionales con foco en la experiencia de compra, optimización de conversión y gestión eficiente del inventario, adaptados tanto para pequeños emprendedores como para grandes marcas.
+              Una tienda online no es solo un catálogo: es un sistema de ventas. En TuWeb.ai desarrollamos e-commerce profesionales con foco en experiencia de compra, performance y una operación ordenada, adaptados a distintos niveles de escala.
             </p>
           </motion.div>
 
@@ -77,8 +77,8 @@ export default function Ecommerce() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   ),
-                  title: "Optimización de conversión",
-                  description: "Procesos de compra simplificados que aumentan la tasa de conversión y reducen el abandono de carrito."
+                  title: "Compra sin fricción",
+                  description: "Flujos claros para que el usuario llegue al pago sin obstáculos."
                 },
                 {
                   icon: (
@@ -86,8 +86,8 @@ export default function Ecommerce() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                     </svg>
                   ),
-                  title: "Pasarelas de pago seguras",
-                  description: "Integración con múltiples métodos de pago y transacciones protegidas para generar confianza."
+                  title: "Pagos seguros",
+                  description: "Integración con métodos de pago confiables y experiencia de checkout consistente."
                 },
                 {
                   icon: (
@@ -95,8 +95,8 @@ export default function Ecommerce() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                     </svg>
                   ),
-                  title: "Reportes avanzados",
-                  description: "Paneles analíticos para monitorear ventas, comportamiento del usuario y stock en tiempo real."
+                  title: "Métricas claras",
+                  description: "Paneles para monitorear ventas, comportamiento del usuario y stock en tiempo real."
                 },
                 {
                   icon: (
@@ -113,8 +113,8 @@ export default function Ecommerce() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                   ),
-                  title: "SEO para e-commerce",
-                  description: "Optimización específica para tiendas online que aumenta la visibilidad en buscadores y marketplaces."
+                  title: "Base SEO técnica",
+                  description: "Estructura optimizada para que tu tienda pueda posicionar con estabilidad."
                 }
               ].map((benefit, index) => (
                 <motion.div
@@ -149,9 +149,9 @@ export default function Ecommerce() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-3xl font-rajdhani font-bold mb-4 text-white">Tiendas que generan resultados</h2>
+            <h2 className="text-3xl font-rajdhani font-bold mb-4 text-white">Casos destacados</h2>
             <p className="text-lg text-gray-300 max-w-2xl mx-auto">
-              E-commerce que superan las expectativas
+              Proyectos reales con foco en operación y conversión.
             </p>
           </motion.div>
 
@@ -173,11 +173,11 @@ export default function Ecommerce() {
                   </div>
                   <h4 className="text-xl font-rajdhani font-bold mb-2 text-white">LH Decants - E-commerce Premium</h4>
                   <p className="text-gray-300 mb-4">
-                    Sitio web corporativo premium para empresa de perfumes y fragancias exclusivas. Diseño elegante y sofisticado que refleja la calidad de sus productos premium.
+                    Tienda online premium para una marca de fragancias exclusivas. Diseño elegante y flujo de compra claro.
                   </p>
                   <div className="flex flex-wrap gap-2 text-sm">
-                    <span className="px-3 py-1 rounded-full bg-[#00CCFF]/20 text-[#00CCFF]">+150% ventas</span>
-                    <span className="px-3 py-1 rounded-full bg-[#9933FF]/20 text-[#9933FF]">Diseño Premium</span>
+                    <span className="px-3 py-1 rounded-full bg-[#00CCFF]/20 text-[#00CCFF]">Experiencia de compra clara</span>
+                    <span className="px-3 py-1 rounded-full bg-[#9933FF]/20 text-[#9933FF]">Diseño premium</span>
                     <span className="px-3 py-1 rounded-full bg-[#00CCFF]/20 text-[#00CCFF]">Perfumes Exclusivos</span>
                   </div>
                 </div>
@@ -200,14 +200,14 @@ export default function Ecommerce() {
               Potenciá tus ventas online
             </h2>
             <p className="text-xl text-gray-300 mb-8">
-              Convirtamos tu catálogo en una poderosa plataforma de ventas.
+              Convirtamos tu catálogo en una plataforma de ventas confiable.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link 
                 to="/consulta"
                 className="inline-block px-8 py-4 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-full text-white font-medium shadow-lg hover:shadow-[#00CCFF]/20 transition-all transform hover:scale-105"
               >
-                Solicitá tu e-commerce
+                Solicitar propuesta
               </Link>
               <a 
                 href={`${TUWEBAI_WHATSAPP_URL}?text=Hola,%20estoy%20interesado%20en%20sus%20servicios%20de%20e-commerce`}
@@ -224,3 +224,4 @@ export default function Ecommerce() {
     </div>
   );
 }
+

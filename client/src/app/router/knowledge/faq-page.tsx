@@ -29,7 +29,7 @@ const faqs: FAQ[] = [
   {
     id: 1,
     question: "¿Cuánto cuesta desarrollar un sitio web en TuWeb.ai?",
-    answer: "Nuestros precios en pesos argentinos son: Plan Básico desde $299.000/mes (landing page o sitio simple), Plan Profesional desde $499.000/mes (sitio corporativo completo). Para e-commerce y proyectos complejos, el precio se determina según las funcionalidades específicas. Todos los precios incluyen hosting, dominio, SSL y panel de administración. Ofrecemos consulta gratuita para evaluar tu proyecto específico.",
+    answer: "Nuestros precios en pesos argentinos son: Presencia Profesional $420.000 ARS, Web Comercial $780.000 ARS y Sistema a Medida desde $1.400.000 ARS. Los planes con precio fijo se pueden pagar online y comenzar hoy mismo; el sistema a medida requiere propuesta. El plan comercial incluye hosting y dominio profesional por 1 año.",
     category: 'precios',
     helpfulCount: 156,
     notHelpfulCount: 12,
@@ -42,11 +42,11 @@ const faqs: FAQ[] = [
   {
     id: 2,
     question: "¿Qué incluye cada plan de desarrollo web?",
-    answer: "Plan Básico ($299.000/mes): Landing page o sitio web de hasta 5 páginas, diseño responsive, SEO básico, panel de administración, hosting y dominio por 1 año. Plan Profesional ($499.000/mes): Sitio web completo de hasta 10 páginas, e-commerce básico, SEO avanzado, integración con redes sociales, analytics, certificado SSL, hosting premium y soporte técnico prioritario.",
+    answer: "Presencia Profesional: sitio institucional optimizado, diseño responsive, formulario de contacto, base SEO y entrega estimada en 7 días. Web Comercial: arquitectura pensada para conversión, integraciones clave, SEO base + estructura optimizada, analytics y hosting + dominio por 1 año. Sistema a Medida: paneles o módulos personalizados, integraciones externas y arquitectura escalable.",
     category: 'servicios',
     helpfulCount: 134,
     notHelpfulCount: 8,
-    keywords: ['planes', 'inclusiones', 'páginas', 'e-commerce', 'seo', 'hosting'],
+    keywords: ['planes', 'alcances', 'web', 'e-commerce', 'seo', 'hosting'],
     relatedQuestions: [
       { id: 1, question: "¿Cuánto cuesta desarrollar un sitio web en TuWeb.ai?" },
       { id: 5, question: "¿Ofrecen servicios de mantenimiento después del lanzamiento?" }
@@ -55,11 +55,11 @@ const faqs: FAQ[] = [
   {
     id: 3,
     question: "¿Cuánto tiempo tardan en desarrollar mi sitio web?",
-    answer: "Basándonos en nuestros proyectos reales: Landing page simple (5-7 días), Sitio corporativo (2-3 semanas), E-commerce básico (3-4 semanas), Plataforma compleja (6-8 semanas). Estos tiempos incluyen diseño, desarrollo, pruebas y lanzamiento. Para proyectos urgentes, ofrecemos servicio express con costo adicional del 30%.",
+    answer: "En la mayoría de los casos: Presencia Profesional 7 días y Web Comercial 7–10 días. Para Sistema a Medida, el plazo depende del alcance y se define al cerrar la propuesta. Los tiempos incluyen diseño, desarrollo, pruebas y lanzamiento.",
     category: 'desarrollo',
     helpfulCount: 98,
     notHelpfulCount: 6,
-    keywords: ['tiempo', 'desarrollo', 'landing page', 'e-commerce', 'urgente', 'express'],
+    keywords: ['tiempo', 'desarrollo', 'plazos', 'entrega', 'alcance'],
     relatedQuestions: [
       { id: 4, question: "¿Qué tecnologías usan para el desarrollo?" },
       { id: 9, question: "¿Puedo ver el progreso de mi proyecto?" }
@@ -68,11 +68,11 @@ const faqs: FAQ[] = [
   {
     id: 4,
     question: "¿Qué tecnologías usan para el desarrollo?",
-    answer: "Utilizamos React y Next.js para sitios web modernos y rápidos, WordPress para proyectos que requieren CMS flexible, y Shopify para e-commerce. Nuestro stack incluye TypeScript, Tailwind CSS, Firebase para backend, y herramientas como Vercel para hosting. Elegimos la tecnología según tus necesidades específicas y presupuesto.",
+    answer: "Trabajamos con React + Vite para interfaces rápidas, TypeScript y Tailwind CSS para consistencia visual, y backend en Node cuando el proyecto lo requiere. Elegimos el stack en función del alcance, el rendimiento y la necesidad real del negocio.",
     category: 'desarrollo',
     helpfulCount: 87,
     notHelpfulCount: 4,
-    keywords: ['react', 'next.js', 'wordpress', 'shopify', 'typescript', 'firebase'],
+    keywords: ['react', 'vite', 'typescript', 'tailwind', 'node'],
     relatedQuestions: [
       { id: 3, question: "¿Cuánto tiempo tardan en desarrollar mi sitio web?" },
       { id: 10, question: "¿Puedo actualizar el contenido de mi sitio yo mismo?" }
@@ -81,7 +81,7 @@ const faqs: FAQ[] = [
   {
     id: 5,
     question: "¿Ofrecen mantenimiento después del lanzamiento?",
-    answer: "Sí, ofrecemos planes de mantenimiento mensuales: Básico ($50.000/mes): Actualizaciones de seguridad, backup semanal, soporte por email. Profesional ($100.000/mes): Todo lo anterior + monitoreo 24/7, actualizaciones de contenido (hasta 5 horas/mes), soporte telefónico prioritario. Premium ($200.000/mes): Mantenimiento completo + mejoras continuas.",
+    answer: "Sí. Ofrecemos mantenimiento mensual opcional según el alcance: actualizaciones de seguridad, backups, soporte y mejoras continuas. La propuesta se define en función de la complejidad del proyecto y el nivel de soporte requerido.",
     category: 'servicios',
     helpfulCount: 76,
     notHelpfulCount: 3,
@@ -93,28 +93,28 @@ const faqs: FAQ[] = [
   },
   {
     id: 6,
-    question: "¿Cómo miden el éxito de sus estrategias de marketing?",
-    answer: "Utilizamos Google Analytics 4, Google Search Console y herramientas específicas para cada canal. Medimos: Tráfico orgánico (SEO), Conversiones y leads (Google Ads), Engagement en redes sociales, ROI de campañas. Proporcionamos reportes mensuales con métricas específicas como: aumento de tráfico, posiciones en Google, leads generados, y conversiones.",
+    question: "¿Cómo medimos el éxito de un proyecto web?",
+    answer: "Definimos objetivos de negocio y medimos resultados reales: consultas recibidas, conversiones, rendimiento técnico (Core Web Vitals) y claridad del recorrido del usuario. Cuando el cliente lo solicita, integramos analytics para seguimiento continuo.",
     category: 'marketing',
     helpfulCount: 65,
     notHelpfulCount: 2,
-    keywords: ['analytics', 'seo', 'google ads', 'roi', 'reportes', 'métricas'],
+    keywords: ['analytics', 'rendimiento', 'conversiones', 'consultas', 'métricas'],
     relatedQuestions: [
-      { id: 7, question: "¿Cuánto tiempo se tarda en ver resultados con el SEO?" },
-      { id: 11, question: "¿Qué plataformas de marketing digital usan?" }
+      { id: 7, question: "¿Cuándo se ven resultados después del lanzamiento?" },
+      { id: 11, question: "¿Qué integraciones pueden incluir en un proyecto?" }
     ]
   },
   {
     id: 7,
-    question: "¿Cuánto tiempo se tarda en ver resultados con el SEO?",
-    answer: "Basándonos en nuestros casos reales: Mejoras iniciales en 2-4 semanas, posicionamiento estable en 3-6 meses. Para sitios nuevos: Primeras posiciones en 4-8 semanas. Para sitios existentes: Mejoras significativas en 2-3 meses. Factores que afectan: competitividad del sector, estado actual del sitio, y agresividad de la estrategia.",
+    question: "¿Cuándo se ven resultados después del lanzamiento?",
+    answer: "Depende del punto de partida y del tipo de negocio. En general, los primeros resultados se ven cuando el sitio está online, indexado y con el recorrido comercial claro. Si se requiere optimización adicional, se trabaja por etapas con métricas concretas.",
     category: 'marketing',
     helpfulCount: 112,
     notHelpfulCount: 9,
-    keywords: ['seo', 'tiempo', 'resultados', 'posicionamiento', 'competitividad'],
+    keywords: ['resultados', 'tiempo', 'optimización', 'rendimiento', 'conversiones'],
     relatedQuestions: [
-      { id: 6, question: "¿Cómo miden el éxito de sus estrategias de marketing?" },
-      { id: 12, question: "¿Ofrecen garantías de resultados?" }
+      { id: 6, question: "¿Cómo medimos el éxito de un proyecto web?" },
+      { id: 12, question: "¿Qué garantía ofrecen?" }
     ]
   },
   {
@@ -158,28 +158,28 @@ const faqs: FAQ[] = [
   },
   {
     id: 11,
-    question: "¿Qué plataformas de marketing digital usan?",
-    answer: "Google Ads para publicidad de búsqueda y display, Facebook/Instagram Ads para redes sociales, Google Analytics 4 para medición, Google Search Console para SEO, Mailchimp para email marketing, y herramientas específicas según el proyecto. Todas las campañas se optimizan semanalmente basándonos en datos reales de rendimiento.",
-    category: 'marketing',
+    question: "¿Qué integraciones pueden incluir en un proyecto?",
+    answer: "Podemos integrar formularios avanzados, CRM, pasarelas de pago, analytics, WhatsApp y herramientas de automatización según la necesidad real del negocio. Se define caso por caso.",
+    category: 'desarrollo',
     helpfulCount: 71,
     notHelpfulCount: 4,
-    keywords: ['google ads', 'facebook ads', 'analytics', 'mailchimp', 'optimización'],
+    keywords: ['integraciones', 'crm', 'pagos', 'analytics', 'whatsapp'],
     relatedQuestions: [
-      { id: 6, question: "¿Cómo miden el éxito de sus estrategias de marketing?" },
-      { id: 7, question: "¿Cuánto tiempo se tarda en ver resultados con el SEO?" }
+      { id: 4, question: "¿Qué tecnologías usan para el desarrollo?" },
+      { id: 2, question: "¿Qué incluye cada plan de desarrollo web?" }
     ]
   },
   {
     id: 12,
-    question: "¿Ofrecen garantías de resultados?",
-    answer: "Ofrecemos garantía de satisfacción: Si no estás conforme con el resultado final, trabajamos sin costo adicional hasta que lo estés. Para SEO y marketing: Garantizamos mejoras medibles en 6 meses o te devolvemos el 50% del pago. Para desarrollo web: Garantía de funcionamiento por 3 meses post-lanzamiento.",
+    question: "¿Qué garantía ofrecen?",
+    answer: "Garantizamos el correcto funcionamiento del sitio y acompañamos ajustes post-lanzamiento dentro del alcance acordado. Si aparece un bug, lo resolvemos sin costo adicional durante el período de garantía.",
     category: 'servicios',
     helpfulCount: 82,
     notHelpfulCount: 6,
-    keywords: ['garantía', 'satisfacción', 'devolución', 'funcionamiento', 'mejoras'],
+    keywords: ['garantía', 'funcionamiento', 'ajustes', 'soporte'],
     relatedQuestions: [
       { id: 1, question: "¿Cuánto cuesta desarrollar un sitio web en TuWeb.ai?" },
-      { id: 7, question: "¿Cuánto tiempo se tarda en ver resultados con el SEO?" }
+      { id: 7, question: "¿Cuándo se ven resultados después del lanzamiento?" }
     ]
   }
 ];
@@ -405,7 +405,7 @@ export default function FAQ() {
                     : 'bg-[#121217] text-gray-300 hover:bg-[#1a1a23]'
                 }`}
               >
-                Marketing
+                Optimización
               </button>
               <button
                 onClick={() => setActiveCategory('precios')}
@@ -644,3 +644,4 @@ export default function FAQ() {
     </main>
   );
 }
+

@@ -25,7 +25,7 @@ export default function Corporativos() {
                 <span className="gradient-text pb-2">Sitios Corporativos Premium</span>
               </h1>
               <p className="text-xl text-gray-300 max-w-2xl mt-4">
-                Posicioná tu marca con una presencia digital sólida, profesional y totalmente alineada con tu identidad corporativa.
+                Sitios corporativos diseñados para transmitir confianza, ordenar la información clave y sostener una presencia profesional.
               </p>
             </div>
 
@@ -54,7 +54,7 @@ export default function Corporativos() {
           >
             <h2 className="text-3xl font-rajdhani font-bold mb-6 text-white">¿Por qué necesitás un sitio corporativo?</h2>
             <p className="text-lg text-gray-300 mb-8">
-              Tu sitio web es la carta de presentación digital de tu empresa. En un mercado donde la primera impresión se forma online, contar con un sitio corporativo de alto nivel no es un lujo, sino una necesidad estratégica. En TuWeb.ai creamos sitios que no solo lucen impecables, sino que están diseñados estratégicamente para convertir visitantes en clientes potenciales.
+              Tu sitio web es la base de tu presencia digital. En un mercado donde la primera impresión se forma online, necesitás una web clara, confiable y alineada con tu identidad. En TuWeb.ai creamos sitios corporativos que ordenan tu propuesta, refuerzan credibilidad y preparan el camino para la conversión.
             </p>
           </motion.div>
 
@@ -78,7 +78,7 @@ export default function Corporativos() {
                     </svg>
                   ),
                   title: "Autoridad y confianza",
-                  description: "Generá credibilidad instantánea con tus visitantes a través de un diseño premium y profesional."
+                  description: "Transmití solidez con un diseño profesional y una estructura de contenido clara."
                 },
                 {
                   icon: (
@@ -87,7 +87,7 @@ export default function Corporativos() {
                     </svg>
                   ),
                   title: "Visibilidad en buscadores",
-                  description: "Sitios optimizados para SEO que posicionan tu marca en los primeros resultados de Google."
+                  description: "Base SEO técnica para que tu sitio pueda posicionar con estabilidad."
                 },
                 {
                   icon: (
@@ -95,8 +95,8 @@ export default function Corporativos() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   ),
-                  title: "Mayor conversión",
-                  description: "Diseño centrado en la experiencia de usuario para maximizar la tasa de conversión de visitantes a leads."
+                  title: "Conversión ordenada",
+                  description: "Recorridos simples y CTAs claros para convertir visitas en consultas reales."
                 }
               ].map((benefit, index) => (
                 <motion.div
@@ -122,7 +122,7 @@ export default function Corporativos() {
         </div>
       </section>
 
-      {/* Casos de éxito */}
+      {/* Casos destacados */}
       <section className="py-16 px-4 bg-gradient-to-b from-[#0a0a0f] to-[#0f0f19]">
         <div className="container mx-auto">
           <motion.div 
@@ -131,9 +131,9 @@ export default function Corporativos() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-3xl font-rajdhani font-bold mb-4 text-white">Casos de éxito</h2>
+            <h2 className="text-3xl font-rajdhani font-bold mb-4 text-white">Casos destacados</h2>
             <p className="text-lg text-gray-300 max-w-2xl mx-auto">
-              Empresas que transformaron su presencia digital con nuestros sitios corporativos
+              Proyectos reales que muestran cómo ordenamos presencia y mensaje.
             </p>
           </motion.div>
 
@@ -142,30 +142,30 @@ export default function Corporativos() {
               {
                 image: "/lhdecant-card.png",
                 title: "LH Decants",
-                description: "Sitio web corporativo premium para empresa de perfumes y fragancias. Diseno elegante y sofisticado que refleja la calidad de sus productos exclusivos.",
-                tags: ["E-commerce", "Diseno Premium"],
-                results: "Aumento del 150% en ventas online"
+                description: "Sitio corporativo premium para una marca de fragancias. Diseño elegante y contenido jerarquizado para comunicar confianza.",
+                tags: ["E-commerce", "Diseño Premium"],
+                results: "Presencia digital más clara y profesional"
               },
               {
                 image: "/dashboardtuwebai.png",
                 title: "TuWeb.ai Dashboard",
                 description: "Plataforma corporativa para clientes con panel de seguimiento de proyectos, tickets y pagos en una sola interfaz.",
                 tags: ["SaaS", "Panel de Clientes"],
-                results: "Centralizacion del 100% de gestiones operativas"
+                results: "Gestión operativa centralizada"
               },
               {
                 image: "/safespot.png",
                 title: "SafeSpot",
-                description: "Solucion digital orientada a seguridad ciudadana para reportes y trazabilidad de objetos robados con enfoque comunitario.",
+                description: "Solución digital orientada a seguridad ciudadana para reportes y trazabilidad con enfoque comunitario.",
                 tags: ["Seguridad", "Comunidad"],
-                results: "Mayor velocidad de respuesta y reporte ciudadano"
+                results: "Comunicación y trazabilidad más ordenadas"
               },
               {
                 image: "/trading-tuwebai.png",
                 title: "Trading TuWeb.ai",
-                description: "Dashboard de trading para visualizacion de mercado, control de operaciones y rendimiento con enfoque de decisiones rapidas.",
-                tags: ["Fintech", "Analitica"],
-                results: "Mejora del control operativo en tiempo real"
+                description: "Dashboard de trading para visualización de mercado, control de operaciones y rendimiento con enfoque de decisiones rápidas.",
+                tags: ["Fintech", "Analítica"],
+                results: "Mejor control operativo en tiempo real"
               }
             ].map((caseStudy, index) => (
               <motion.div
@@ -222,14 +222,14 @@ export default function Corporativos() {
               ¿Listo para llevar tu presencia corporativa al siguiente nivel?
             </h2>
             <p className="text-xl text-gray-300 mb-8">
-              Iniciemos juntos el camino hacia una identidad digital impactante para tu empresa.
+              Iniciemos juntos un sitio corporativo claro, serio y confiable.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link 
                 to="/consulta"
                 className="inline-block px-8 py-4 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-full text-white font-medium shadow-lg hover:shadow-[#00CCFF]/20 transition-all transform hover:scale-105"
               >
-                Solicitá tu sitio ahora
+                Solicitar propuesta
               </Link>
               <a 
                 href={`${TUWEBAI_WHATSAPP_URL}?text=Hola,%20estoy%20interesado%20en%20sus%20servicios%20corporativos`}
@@ -246,3 +246,4 @@ export default function Corporativos() {
     </div>
   );
 }
+
