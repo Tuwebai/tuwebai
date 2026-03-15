@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useAnimation } from 'framer-motion';
 import MetaTags from '@/shared/ui/meta-tags';
-import { TUWEBAI_WHATSAPP_DISPLAY } from '@/shared/constants/contact';
+import { TUWEBAI_WHATSAPP_DISPLAY, TUWEBAI_EMAIL } from '@/shared/constants/contact';
 
 type ProjectCategory = 'todos' | 'branding' | 'diseño-web' | 'ilustracion' | 'editorial';
 
@@ -762,7 +762,7 @@ export default function Estudio() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
                   <span className="text-gray-400">
-                    info@tuweb-ai.com
+                    {TUWEBAI_EMAIL}
                   </span>
                 </li>
                 <li className="flex items-start">

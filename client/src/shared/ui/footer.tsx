@@ -1,3 +1,5 @@
+import { TUWEBAI_EMAIL, TUWEBAI_SITE_URL, TUWEBAI_SITE_FULL_URL } from '@/shared/constants/contact';
+
 export default function Footer() {
   return (
     <footer className="bg-[#0a0a0f] pt-12 pb-8 text-gray-400 text-sm border-t border-gray-800 relative z-10 animate-fadeIn">
@@ -38,7 +40,7 @@ export default function Footer() {
                 </svg>
                 <div>
                   <p className="text-gray-300">Email:</p>
-                  <a href="mailto:tuwebai@gmail.com" className="hover:text-[#00CCFF] transition-colors">tuwebai@gmail.com</a>
+                  <a href={`mailto:${TUWEBAI_EMAIL}`} className="hover:text-[#00CCFF] transition-colors">{TUWEBAI_EMAIL}</a>
                 </div>
               </div>
 
@@ -48,7 +50,7 @@ export default function Footer() {
                 </svg>
                 <div>
                   <p className="text-gray-300">Web:</p>
-                  <a href="https://www.tuweb-ai.com" target="_blank" rel="noopener noreferrer" className="hover:text-[#9933FF] transition-colors">www.tuweb-ai.com</a>
+                  <a href={TUWEBAI_SITE_FULL_URL} target="_blank" rel="noopener noreferrer" className="hover:text-[#9933FF] transition-colors">{TUWEBAI_SITE_URL}</a>
                 </div>
               </div>
             </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { TUWEBAI_WHATSAPP_TEL, TUWEBAI_WHATSAPP_URL } from '@/shared/constants/contact';
+import { TUWEBAI_WHATSAPP_TEL, TUWEBAI_WHATSAPP_URL, TUWEBAI_EMAIL, TUWEBAI_SITE_FULL_URL } from '@/shared/constants/contact';
 
 interface MetaTagsProps {
   title: string;
@@ -83,8 +83,8 @@ const MetaTags: React.FC<MetaTagsProps> = ({
           "@context": "https://schema.org",
           "@type": "Organization",
           "name": "TuWeb.ai",
-          "url": "https://tuweb-ai.com",
-          "logo": "https://tuweb-ai.com/logo-tuwebai.png",
+          "url": TUWEBAI_SITE_FULL_URL,
+          "logo": `${TUWEBAI_SITE_FULL_URL}/logo-tuwebai.png`,
           "description": "Agencia digital especializada en desarrollo web y marketing digital en Argentina",
           "address": {
             "@type": "PostalAddress",
@@ -94,7 +94,7 @@ const MetaTags: React.FC<MetaTagsProps> = ({
             "@type": "ContactPoint",
             "telephone": TUWEBAI_WHATSAPP_TEL,
             "contactType": "customer service",
-            "email": "tuwebai@gmail.com"
+            "email": TUWEBAI_EMAIL
           },
           "sameAs": [
             TUWEBAI_WHATSAPP_URL

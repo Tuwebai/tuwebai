@@ -2,68 +2,80 @@ import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet';
 import { useEffect, useState } from 'react';
 import PageBanner from '@/shared/ui/page-banner';
-import { TUWEBAI_WHATSAPP_DISPLAY } from '@/shared/constants/contact';
-import { ChevronRight } from 'lucide-react';
+import { TUWEBAI_WHATSAPP_DISPLAY, TUWEBAI_EMAIL } from '@/shared/constants/contact';
+import { 
+  ChevronRight, 
+  UserCheck, 
+  Target, 
+  Scale, 
+  Archive, 
+  Network, 
+  Shield, 
+  Lock, 
+  Cookie, 
+  History, 
+  Mail 
+} from 'lucide-react';
 
 const TOC_ITEMS = [
-  { id: 'responsable', label: '1. Responsable del Tratamiento' },
-  { id: 'finalidad', label: '2. Finalidad del Tratamiento' },
-  { id: 'legitimacion', label: '3. Legitimación' },
-  { id: 'conservacion', label: '4. Conservación de los Datos' },
-  { id: 'destinatarios', label: '5. Destinatarios' },
-  { id: 'derechos', label: '6. Derechos' },
-  { id: 'seguridad', label: '7. Medidas de Seguridad' },
-  { id: 'cookies', label: '8. Uso de Cookies' },
-  { id: 'cambios', label: '9. Modificaciones' },
-  { id: 'contacto', label: '10. Contacto' },
+  { id: 'responsable', label: '1. Responsable del Tratamiento', icon: UserCheck },
+  { id: 'finalidad', label: '2. Finalidad del Tratamiento', icon: Target },
+  { id: 'legitimacion', label: '3. Legitimación', icon: Scale },
+  { id: 'conservacion', label: '4. Conservación de los Datos', icon: Archive },
+  { id: 'destinatarios', label: '5. Destinatarios', icon: Network },
+  { id: 'derechos', label: '6. Derechos', icon: Shield },
+  { id: 'seguridad', label: '7. Medidas de Seguridad', icon: Lock },
+  { id: 'cookies', label: '8. Uso de Cookies', icon: Cookie },
+  { id: 'cambios', label: '9. Modificaciones', icon: History },
+  { id: 'contacto', label: '10. Contacto', icon: Mail },
 ];
 
 /**
  * Hook para detectar la sección activa en el viewport
  */
-function useActiveSection(sectionIds: string[], offset = 120) {
+function useActiveSection(sectionIds: string[]) {
   const [activeId, setActiveId] = useState<string>('');
 
+  // Sync initial param from URL on mount only
   useEffect(() => {
-    const handleScroll = () => {
-      let currentId = '';
-      const sectionElements = sectionIds
-        .map((id) => document.getElementById(id))
-        .filter((el): el is HTMLElement => el !== null);
+    const params = new URLSearchParams(window.location.search);
+    const sectionId = params.get('section_id');
 
-      for (const el of sectionElements) {
-        const top = el.getBoundingClientRect().top;
-        if (top <= offset) {
-          currentId = el.id;
+    if (sectionId && sectionIds.includes(sectionId)) {
+      setActiveId(sectionId);
+      // Timeout para dejar que React dibuje el DOM antes de medir top
+      setTimeout(() => {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          const absoluteTop = element.getBoundingClientRect().top + window.scrollY;
+          window.scrollTo({ top: absoluteTop - 120, behavior: 'instant' });
         }
-      }
+      }, 100);
+    } else if (sectionIds.length > 0) {
+      setActiveId(sectionIds[0]);
+    }
+  }, [sectionIds]);
 
-      if (currentId) {
-        setActiveId(currentId);
-      } else if (sectionElements.length > 0 && window.scrollY < 100) {
-        setActiveId(sectionElements[0].id);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [sectionIds, offset]);
-
-  return activeId;
+  return { activeId, setActiveId };
 }
 
 export default function PrivacyPolicyPage() {
-  const activeSectionId = useActiveSection(TOC_ITEMS.map((i) => i.id));
+  const { activeId: activeSectionId, setActiveId } = useActiveSection(TOC_ITEMS.map((i) => i.id));
 
   const handleScrollTo = (id: string, e: React.MouseEvent) => {
     e.preventDefault();
+    
+    // UI instantánea en TOC y URL
+    setActiveId(id);
+    const url = new URL(window.location.href);
+    url.searchParams.set('section_id', id);
+    window.history.pushState({}, '', url);
+
     const element = document.getElementById(id);
     if (element) {
-      // Offset para que no quede oculto detrás del navbar global si es fijo
-      const offsetPos = element.offsetTop - 100;
-      window.scrollTo({ top: offsetPos, behavior: 'smooth' });
+      // Offset de 120px para no quedar tapado por Navbar Global fijo
+      const absoluteTop = element.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({ top: absoluteTop - 120, behavior: 'smooth' });
     }
   };
 
@@ -77,37 +89,42 @@ export default function PrivacyPolicyPage() {
         />
       </Helmet>
 
-      <PageBanner
-        title="Política de Privacidad"
-        subtitle="Información sobre el tratamiento de tus datos personales"
-      />
+      {/* Native Scroll Wrapper */}
+      <div className="bg-[#080810] min-h-screen">
+        <PageBanner
+          title="Política de Privacidad"
+          subtitle="Información sobre el tratamiento de tus datos personales"
+        />
 
-      <section className="py-16 bg-[#080810] min-h-screen">
-        <div className="container mx-auto px-4 lg:px-8 max-w-[1280px]">
+        <div className="container mx-auto px-4 lg:px-8 py-16 max-w-[1280px]">
           <div className="flex flex-col lg:flex-row gap-12 lg:gap-20 relative items-start">
             
-            {/* T.O.C (Table of Contents) - Mobile/Desktop */}
-            <aside className="w-full lg:w-72 shrink-0 lg:sticky lg:top-32 order-2 lg:order-1">
-              <div className="p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
+            {/* T.O.C (Table of Contents) - Sidebar */}
+            <aside className="w-full lg:w-80 shrink-0 border border-white/10 bg-[#080810]/50 rounded-2xl lg:sticky lg:top-32 lg:max-h-[calc(100vh-160px)] lg:overflow-y-auto z-20 custom-scrollbar shadow-xl backdrop-blur-md">
+              <div className="p-6">
                 <h3 className="text-white font-semibold mb-6 flex items-center gap-2">
                   Contenido del documento
                 </h3>
                 <nav className="flex flex-col gap-1">
                   {TOC_ITEMS.map((item) => {
                     const isActive = activeSectionId === item.id;
+                    const Icon = item.icon;
                     return (
                       <a
                         key={item.id}
                         href={`#${item.id}`}
                         onClick={(e) => handleScrollTo(item.id, e)}
-                        className={`flex items-center min-h-[44px] px-3 py-2 rounded-lg text-sm transition-all duration-200 ${
+                        className={`group flex items-center min-h-[44px] px-3 py-2 rounded-lg text-sm transition-all duration-200 ${
                           isActive
                             ? 'bg-[#00CCFF]/10 text-[#00CCFF] font-medium'
                             : 'text-gray-400 hover:text-white hover:bg-white/5'
                         }`}
                       >
-                        {isActive && <ChevronRight className="w-4 h-4 mr-1 shrink-0" />}
-                        <span className="leading-snug">{item.label}</span>
+                        <div className="flex items-center gap-2.5 flex-1 min-w-0">
+                          <Icon className={`w-4 h-4 shrink-0 transition-colors ${isActive ? 'text-[#00CCFF]' : 'text-gray-500 group-hover:text-gray-300'}`} />
+                          <span className="leading-snug truncate whitespace-normal">{item.label}</span>
+                        </div>
+                        {isActive && <ChevronRight className="w-4 h-4 ml-1 shrink-0 opacity-70" />}
                       </a>
                     );
                   })}
@@ -115,16 +132,17 @@ export default function PrivacyPolicyPage() {
               </div>
             </aside>
 
-            {/* Contenido Documental */}
-            <motion.main
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="w-full max-w-[820px] mx-auto order-1 lg:order-2 space-y-16 pb-20"
-            >
-              <div className="text-gray-400 text-sm mb-12 pb-6 border-b border-white/10">
-                Última actualización: {new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}
-              </div>
+            {/* Panel Interactivo de Contenido */}
+            <main className="flex-1 w-full relative">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="w-full max-w-[820px] mx-auto pb-32"
+              >
+                <div className="text-gray-400 text-sm mb-12 pb-6 border-b border-white/10">
+                  Última actualización: {new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}
+                </div>
 
               {/* Secciones */}
               <div className="space-y-16 text-gray-300 leading-relaxed text-[17px]">
@@ -133,7 +151,7 @@ export default function PrivacyPolicyPage() {
                   <h2 className="text-2xl font-semibold text-white mb-6">1. Responsable del Tratamiento</h2>
                   <p>
                     El responsable del tratamiento de los datos personales que facilites a través de este sitio web es <strong className="text-white">TuWeb.ai</strong>, 
-                    con correo electrónico <a href="mailto:hola@tuweb.ai" className="text-[#00CCFF] hover:underline">hola@tuweb.ai</a> y teléfono {TUWEBAI_WHATSAPP_DISPLAY}.
+                    con correo electrónico <a href={`mailto:${TUWEBAI_EMAIL}`} className="text-[#00CCFF] hover:underline">{TUWEBAI_EMAIL}</a> y teléfono {TUWEBAI_WHATSAPP_DISPLAY}.
                   </p>
                 </section>
 
@@ -195,7 +213,7 @@ export default function PrivacyPolicyPage() {
                     oposición, limitación del tratamiento y portabilidad.</strong>
                   </p>
                   <p className="mb-4">
-                    Inicia cualquiera de estos trámites enviando un correo a <a href="mailto:hola@tuweb.ai" className="text-[#00CCFF] hover:underline">hola@tuweb.ai</a>.
+                    Inicia cualquiera de estos trámites enviando un correo a <a href={`mailto:${TUWEBAI_EMAIL}`} className="text-[#00CCFF] hover:underline">{TUWEBAI_EMAIL}</a>.
                     Para validar tu identidad y por seguridad (previniendo ingeniería social), requeriremos adjuntar prueba de identidad.
                   </p>
                   <p>
@@ -236,16 +254,17 @@ export default function PrivacyPolicyPage() {
                   <h2 className="text-2xl font-semibold text-white mb-6">10. Contacto</h2>
                   <p>
                     ¿Alguna duda o inquietud específica sobre tus datos que no cubrímos aquí? Contacta al equipo técnico marcando el asunto 
-                    como "Privacidad" a través de <a href="mailto:hola@tuweb.ai" className="text-[#00CCFF] hover:underline">hola@tuweb.ai</a> 
+                    como "Privacidad" a través de <a href={`mailto:${TUWEBAI_EMAIL}`} className="text-[#00CCFF] hover:underline">{TUWEBAI_EMAIL}</a> 
                     y nuestro equipo responsable en protección de datos auditará el caso.
                   </p>
                 </section>
                 
               </div>
-            </motion.main>
-          </div>
+            </motion.div>
+          </main>
         </div>
-      </section>
+      </div>
+    </div>
     </>
   );
 }

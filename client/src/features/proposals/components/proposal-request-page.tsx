@@ -9,7 +9,7 @@ import { Input } from "@/shared/ui/input";
 import { Textarea } from "@/shared/ui/textarea";
 import { useToast } from "@/shared/ui/use-toast";
 import WhatsAppButton from "@/shared/ui/whatsapp-button";
-import { TUWEBAI_WHATSAPP_DISPLAY, TUWEBAI_WHATSAPP_TEL, TUWEBAI_WHATSAPP_URL } from '@/shared/constants/contact';
+import { TUWEBAI_WHATSAPP_DISPLAY, TUWEBAI_WHATSAPP_TEL, TUWEBAI_WHATSAPP_URL, TUWEBAI_EMAIL } from '@/shared/constants/contact';
 import analytics from "@/lib/analytics";
 import { getProposalErrorMessage, submitProposal } from '@/features/proposals/services/proposals.service';
 
@@ -881,7 +881,7 @@ export default function Consulta() {
                           </svg>
                         </div>
                         <span className="font-medium mb-1">Email</span>
-                        <span className="text-sm text-gray-300">tuwebai@gmail.com</span>
+                        <span className="text-sm text-gray-300">{TUWEBAI_EMAIL}</span>
                       </motion.a>
                     </div>
                     

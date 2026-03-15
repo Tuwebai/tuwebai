@@ -1,8 +1,73 @@
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet';
+import { useEffect, useState } from 'react';
 import PageBanner from '@/shared/ui/page-banner';
+import { TUWEBAI_EMAIL } from '@/shared/constants/contact';
+import { 
+  ChevronRight, 
+  Cookie, 
+  ShieldCheck, 
+  ExternalLink, 
+  Settings, 
+  Table as TableIcon, 
+  RefreshCw, 
+  Mail 
+} from 'lucide-react';
+
+const TOC_ITEMS = [
+  { id: 'definicion', label: '1. ¿Qué son las cookies?', icon: Cookie },
+  { id: 'tipos', label: '2. Tipos de cookies', icon: Settings },
+  { id: 'terceros', label: '3. Cookies de terceros', icon: ShieldCheck },
+  { id: 'administracion', label: '4. Cómo administrarlas', icon: ExternalLink },
+  { id: 'listado', label: '5. Cookies utilizadas', icon: TableIcon },
+  { id: 'cambios', label: '6. Modificaciones', icon: RefreshCw },
+  { id: 'contacto', label: '7. Contacto', icon: Mail },
+];
+
+/**
+ * Hook para detectar la sección activa en el viewport con offset para Navbar
+ */
+function useActiveSection(sectionIds: string[]) {
+  const [activeId, setActiveId] = useState<string>('');
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const sectionId = params.get('section_id');
+
+    if (sectionId && sectionIds.includes(sectionId)) {
+      setActiveId(sectionId);
+      setTimeout(() => {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          const absoluteTop = element.getBoundingClientRect().top + window.scrollY;
+          window.scrollTo({ top: absoluteTop - 120, behavior: 'instant' });
+        }
+      }, 100);
+    } else if (sectionIds.length > 0) {
+      setActiveId(sectionIds[0]);
+    }
+  }, [sectionIds]);
+
+  return { activeId, setActiveId };
+}
 
 export default function PoliticaCookies() {
+  const { activeId: activeSectionId, setActiveId } = useActiveSection(TOC_ITEMS.map((i) => i.id));
+
+  const handleScrollTo = (id: string, e: React.MouseEvent) => {
+    e.preventDefault();
+    setActiveId(id);
+    const url = new URL(window.location.href);
+    url.searchParams.set('section_id', id);
+    window.history.pushState({}, '', url);
+
+    const element = document.getElementById(id);
+    if (element) {
+      const absoluteTop = element.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({ top: absoluteTop - 120, behavior: 'smooth' });
+    }
+  };
+
   return (
     <>
       <Helmet>
@@ -10,149 +75,198 @@ export default function PoliticaCookies() {
         <meta name="description" content="Información sobre las cookies utilizadas en el sitio web de TuWeb.ai" />
       </Helmet>
 
-      <PageBanner 
-        title="Política de Cookies" 
-        subtitle="Información sobre el uso de cookies en nuestra web"
-      />
+      <div className="bg-[#080810] min-h-screen">
+        <PageBanner 
+          title="Política de Cookies" 
+          subtitle="Información técnica sobre el uso de cookies en nuestra web"
+        />
 
-      <section className="py-16 bg-[#080810]">
-        <div className="container mx-auto px-4 max-w-5xl">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="prose prose-lg prose-invert max-w-none"
-          >
-            <h2>Política de Cookies</h2>
-            <p>Última actualización: {new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+        <div className="container mx-auto px-4 lg:px-8 py-16 max-w-[1280px]">
+          <div className="flex flex-col lg:flex-row gap-12 lg:gap-20 relative items-start">
+            
+            {/* Sidebar TOC */}
+            <aside className="w-full lg:w-80 shrink-0 border border-white/10 bg-[#080810]/50 rounded-2xl lg:sticky lg:top-32 lg:max-h-[calc(100vh-160px)] lg:overflow-y-auto z-20 custom-scrollbar shadow-xl backdrop-blur-md">
+              <div className="p-6">
+                <h3 className="text-white font-semibold mb-6 flex items-center gap-2">
+                  Contenido
+                </h3>
+                <nav className="flex flex-col gap-1">
+                  {TOC_ITEMS.map((item) => {
+                    const isActive = activeSectionId === item.id;
+                    const Icon = item.icon;
+                    return (
+                      <a
+                        key={item.id}
+                        href={`#${item.id}`}
+                        onClick={(e) => handleScrollTo(item.id, e)}
+                        className={`group flex items-center min-h-[44px] px-3 py-2 rounded-lg text-sm transition-all duration-200 ${
+                          isActive
+                            ? 'bg-[#00CCFF]/10 text-[#00CCFF] font-medium'
+                            : 'text-gray-400 hover:text-white hover:bg-white/5'
+                        }`}
+                      >
+                        <div className="flex items-center gap-2.5 flex-1 min-w-0">
+                          <Icon className={`w-4 h-4 shrink-0 transition-colors ${isActive ? 'text-[#00CCFF]' : 'text-gray-500 group-hover:text-gray-300'}`} />
+                          <span className="leading-snug truncate whitespace-normal">{item.label}</span>
+                        </div>
+                        {isActive && <ChevronRight className="w-4 h-4 ml-1 shrink-0 opacity-70" />}
+                      </a>
+                    );
+                  })}
+                </nav>
+              </div>
+            </aside>
 
-            <h3>1. ¿Qué son las cookies?</h3>
-            <p>
-              Las cookies son pequeños archivos de texto que los sitios web que visitas colocan en tu ordenador. Se utilizan de forma generalizada 
-              para que los sitios web funcionen, o funcionen de manera más eficiente, así como para proporcionar información a los propietarios del sitio. 
-              Las cookies permiten a un sitio web reconocer tu dispositivo y recordar información sobre tu visita (por ejemplo, tu idioma preferido, 
-              tamaño de fuente y otras preferencias).
-            </p>
+            {/* Main Content */}
+            <main className="flex-1 w-full relative">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="w-full max-w-[820px] mx-auto pb-32"
+              >
+                <div className="text-gray-400 text-sm mb-12 pb-6 border-b border-white/10">
+                  Última actualización: {new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}
+                </div>
 
-            <h3>2. Tipos de cookies que utilizamos</h3>
-            <p>En nuestro sitio web utilizamos los siguientes tipos de cookies:</p>
+                <div className="space-y-16 text-gray-300 leading-relaxed text-[17px]">
+                  
+                  <section id="definicion" className="scroll-mt-32">
+                    <h2 className="text-2xl font-semibold text-white mb-6">1. ¿Qué son las cookies?</h2>
+                    <p>
+                      Las cookies son pequeños archivos de texto que los sitios web colocan en tu dispositivo. 
+                      Se utilizan de forma generalizada para que los sitios web funcionen adecuadamente, 
+                      proporcionando información técnica a los propietarios y permitiendo reconocer tu dispositivo 
+                      para recordar preferencias de navegación.
+                    </p>
+                  </section>
 
-            <h4>2.1. Cookies técnicas o necesarias</h4>
-            <p>
-              Son aquellas que permiten al usuario la navegación a través de una página web, plataforma o aplicación y la utilización de las 
-              diferentes opciones o servicios que en ella existan como, por ejemplo, controlar el tráfico y la comunicación de datos, identificar 
-              la sesión, acceder a partes de acceso restringido, recordar los elementos que integran un pedido, realizar el proceso de compra de un 
-              pedido, realizar la solicitud de inscripción o participación en un evento, utilizar elementos de seguridad durante la navegación, 
-              almacenar contenidos para la difusión de vídeos o sonido o compartir contenidos a través de redes sociales.
-            </p>
+                  <section id="tipos" className="scroll-mt-32">
+                    <h2 className="text-2xl font-semibold text-white mb-6">2. Tipos de cookies que utilizamos</h2>
+                    <div className="space-y-8">
+                      <div>
+                        <h4 className="text-white font-medium mb-3 flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 bg-[#00CCFF] rounded-full"></span>
+                          Técnicas o necesarias
+                        </h4>
+                        <p>
+                          Vitales para la navegación y seguridad. Permiten controlar el tráfico, identificar sesiones y acceder 
+                          a áreas restringidas de la plataforma SaaS.
+                        </p>
+                      </div>
 
-            <h4>2.2. Cookies de preferencias o personalización</h4>
-            <p>
-              Son aquellas que permiten recordar información para que el usuario acceda al servicio con determinadas características que pueden 
-              diferenciar su experiencia de la de otros usuarios, como, por ejemplo, el idioma, el número de resultados a mostrar cuando el usuario 
-              realiza una búsqueda, el aspecto o contenido del servicio en función del tipo de navegador a través del cual el usuario accede al 
-              servicio o de la región desde la que accede al servicio, etc.
-            </p>
+                      <div>
+                        <h4 className="text-white font-medium mb-3 flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 bg-[#00CCFF] rounded-full"></span>
+                          Preferencias o personalización
+                        </h4>
+                        <p>
+                          Permiten recordar información como el idioma o el tema (Dark/Light mode) para mejorar tu experiencia individual.
+                        </p>
+                      </div>
 
-            <h4>2.3. Cookies analíticas o de medición</h4>
-            <p>
-              Son aquellas que permiten al responsable de las mismas el seguimiento y análisis del comportamiento de los usuarios de los sitios web 
-              a los que están vinculadas, incluida la cuantificación de los impactos de los anuncios. La información recogida mediante este tipo 
-              de cookies se utiliza en la medición de la actividad de los sitios web, aplicación o plataforma, con el fin de introducir mejoras en 
-              función del análisis de los datos de uso que hacen los usuarios del servicio.
-            </p>
+                      <div>
+                        <h4 className="text-white font-medium mb-3 flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 bg-[#00CCFF] rounded-full"></span>
+                          Analíticas o de medición
+                        </h4>
+                        <p>
+                          Utilizadas para cuantificar la actividad del sitio e introducir mejoras basadas en el análisis de datos de uso.
+                        </p>
+                      </div>
+                    </div>
+                  </section>
 
-            <h4>2.4. Cookies de publicidad comportamental</h4>
-            <p>
-              Son aquellas que almacenan información del comportamiento de los usuarios obtenida a través de la observación continuada de sus 
-              hábitos de navegación, lo que permite desarrollar un perfil específico para mostrar publicidad en función del mismo.
-            </p>
+                  <section id="terceros" className="scroll-mt-32">
+                    <h2 className="text-2xl font-semibold text-white mb-6">3. Cookies de terceros</h2>
+                    <p>
+                      En algunas secciones instalamos cookies de terceros para gestionar servicios externos (ej. Google Analytics). 
+                      Estas cookies permiten auditar el rendimiento de nuestras herramientas de forma agregada.
+                    </p>
+                  </section>
 
-            <h3>3. Cookies de terceros</h3>
-            <p>
-              En algunas páginas de nuestro sitio web se pueden instalar cookies de terceros que permiten gestionar y mejorar los servicios que 
-              éstos ofrecen. Un ejemplo de este uso son los enlaces a las redes sociales que permiten compartir nuestros contenidos.
-            </p>
+                  <section id="administracion" className="scroll-mt-32">
+                    <h2 className="text-2xl font-semibold text-white mb-6">4. Cómo administrar las cookies</h2>
+                    <p className="mb-6">
+                      Puedes permitir, bloquear o eliminar las cookies configurando las opciones de tu navegador:
+                    </p>
+                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {[
+                        { name: 'Google Chrome', url: 'https://support.google.com/chrome/answer/95647?hl=es' },
+                        { name: 'Mozilla Firefox', url: 'https://support.mozilla.org/es/kb/habilitar-y-deshabilitar-cookies-sitios-web-rastrear-preferencias' },
+                        { name: 'Safari', url: 'https://support.apple.com/es-es/guide/safari/sfri11471/mac' },
+                        { name: 'Microsoft Edge', url: 'https://support.microsoft.com/es-es/microsoft-edge/eliminar-las-cookies-en-microsoft-edge-63947406-40ac-c3b8-57b9-2a946a29ae09' }
+                      ].map((browser) => (
+                        <li key={browser.name}>
+                          <a 
+                            href={browser.url} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="flex items-center justify-between p-4 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-colors group"
+                          >
+                            <span className="text-gray-300 group-hover:text-white">{browser.name}</span>
+                            <ExternalLink className="w-4 h-4 text-[#00CCFF]" />
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
 
-            <h3>4. ¿Cómo administrar las cookies?</h3>
-            <p>
-              Puedes permitir, bloquear o eliminar las cookies instaladas en tu equipo mediante la configuración de las opciones del navegador. 
-              En caso de que no permitas la instalación de cookies es posible que no puedas acceder a algunas de las funcionalidades del sitio web.
-            </p>
-            <p>
-              A continuación, te ofrecemos enlaces para gestionar y controlar las cookies en los principales navegadores:
-            </p>
-            <ul>
-              <li><a href="https://support.google.com/chrome/answer/95647?hl=es" target="_blank" rel="noopener noreferrer" className="text-[#00CCFF] hover:text-[#9933FF]">Google Chrome</a></li>
-              <li><a href="https://support.mozilla.org/es/kb/habilitar-y-deshabilitar-cookies-sitios-web-rastrear-preferencias" target="_blank" rel="noopener noreferrer" className="text-[#00CCFF] hover:text-[#9933FF]">Mozilla Firefox</a></li>
-              <li><a href="https://support.apple.com/es-es/guide/safari/sfri11471/mac" target="_blank" rel="noopener noreferrer" className="text-[#00CCFF] hover:text-[#9933FF]">Safari</a></li>
-              <li><a href="https://support.microsoft.com/es-es/microsoft-edge/eliminar-las-cookies-en-microsoft-edge-63947406-40ac-c3b8-57b9-2a946a29ae09" target="_blank" rel="noopener noreferrer" className="text-[#00CCFF] hover:text-[#9933FF]">Microsoft Edge</a></li>
-            </ul>
+                  <section id="listado" className="scroll-mt-32">
+                    <h2 className="text-2xl font-semibold text-white mb-6">5. Cookies utilizadas en nuestra plataforma</h2>
+                    <div className="overflow-x-auto border border-white/10 rounded-2xl">
+                      <table className="w-full text-left text-sm">
+                        <thead className="bg-white/5 border-b border-white/10">
+                          <tr>
+                            <th className="px-6 py-4 font-semibold text-white">Nombre</th>
+                            <th className="px-6 py-4 font-semibold text-white">Tipo</th>
+                            <th className="px-6 py-4 font-semibold text-white">Finalidad</th>
+                            <th className="px-6 py-4 font-semibold text-white">Duración</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-white/5">
+                          {[
+                            { name: 'session', type: 'Técnica', goal: 'Mantenimiento de sesión', duration: 'Sesión' },
+                            { name: '_ga', type: 'Analítica', goal: 'Google Analytics', duration: '2 años' },
+                            { name: '_gid', type: 'Analítica', goal: 'Distinguir usuarios', duration: '24 horas' },
+                            { name: 'theme', type: 'Personalización', goal: 'Preferencias de tema', duration: '1 año' }
+                          ].map((cookie) => (
+                            <tr key={cookie.name} className="hover:bg-white/[0.02] transition-colors">
+                              <td className="px-6 py-4 font-mono text-[#00CCFF]">{cookie.name}</td>
+                              <td className="px-6 py-4 text-gray-400">{cookie.type}</td>
+                              <td className="px-6 py-4 text-gray-300">{cookie.goal}</td>
+                              <td className="px-6 py-4 text-gray-400">{cookie.duration}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </section>
 
-            <h3>5. Cookies utilizadas en nuestro sitio web</h3>
-            <table className="w-full">
-              <thead>
-                <tr>
-                  <th className="border border-gray-700 px-4 py-2">Nombre</th>
-                  <th className="border border-gray-700 px-4 py-2">Tipo</th>
-                  <th className="border border-gray-700 px-4 py-2">Propietario</th>
-                  <th className="border border-gray-700 px-4 py-2">Finalidad</th>
-                  <th className="border border-gray-700 px-4 py-2">Duración</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td className="border border-gray-700 px-4 py-2">session</td>
-                  <td className="border border-gray-700 px-4 py-2">Técnica</td>
-                  <td className="border border-gray-700 px-4 py-2">Propia</td>
-                  <td className="border border-gray-700 px-4 py-2">Mantenimiento de la sesión del usuario</td>
-                  <td className="border border-gray-700 px-4 py-2">Sesión</td>
-                </tr>
-                <tr>
-                  <td className="border border-gray-700 px-4 py-2">_ga</td>
-                  <td className="border border-gray-700 px-4 py-2">Analítica</td>
-                  <td className="border border-gray-700 px-4 py-2">Google Analytics</td>
-                  <td className="border border-gray-700 px-4 py-2">Distinguir usuarios únicos</td>
-                  <td className="border border-gray-700 px-4 py-2">2 años</td>
-                </tr>
-                <tr>
-                  <td className="border border-gray-700 px-4 py-2">_gid</td>
-                  <td className="border border-gray-700 px-4 py-2">Analítica</td>
-                  <td className="border border-gray-700 px-4 py-2">Google Analytics</td>
-                  <td className="border border-gray-700 px-4 py-2">Distinguir usuarios</td>
-                  <td className="border border-gray-700 px-4 py-2">24 horas</td>
-                </tr>
-                <tr>
-                  <td className="border border-gray-700 px-4 py-2">_gat</td>
-                  <td className="border border-gray-700 px-4 py-2">Analítica</td>
-                  <td className="border border-gray-700 px-4 py-2">Google Analytics</td>
-                  <td className="border border-gray-700 px-4 py-2">Limitar el porcentaje de solicitudes</td>
-                  <td className="border border-gray-700 px-4 py-2">1 minuto</td>
-                </tr>
-                <tr>
-                  <td className="border border-gray-700 px-4 py-2">theme</td>
-                  <td className="border border-gray-700 px-4 py-2">Personalización</td>
-                  <td className="border border-gray-700 px-4 py-2">Propia</td>
-                  <td className="border border-gray-700 px-4 py-2">Almacenar preferencias de tema (claro/oscuro)</td>
-                  <td className="border border-gray-700 px-4 py-2">1 año</td>
-                </tr>
-              </tbody>
-            </table>
+                  <section id="cambios" className="scroll-mt-32">
+                    <h2 className="text-2xl font-semibold text-white mb-6">6. Modificaciones</h2>
+                    <p>
+                      Actualizamos esta política periódicamente para reflejar mejoras técnicas o cambios normativos. 
+                      Recomendamos revisarla frecuentemente para estar informado.
+                    </p>
+                  </section>
 
-            <h3>6. Cambios en la política de cookies</h3>
-            <p>
-              Es posible que actualicemos la Política de Cookies de nuestro sitio web, por ello le recomendamos revisar esta política cada vez 
-              que acceda a nuestro sitio web con el objetivo de estar adecuadamente informado sobre cómo y para qué usamos las cookies.
-            </p>
-
-            <h3>7. Contacto</h3>
-            <p>
-              Si tienes cualquier duda sobre nuestra Política de Cookies, puedes contactar con nosotros a través del 
-              correo electrónico hola@tuweb.ai.
-            </p>
-          </motion.div>
+                  <section id="contacto" className="scroll-mt-32">
+                    <h2 className="text-2xl font-semibold text-white mb-6">7. Contacto</h2>
+                    <p>
+                      Si tienes dudas sobre nuestra política técnica de cookies, puedes contactar al equipo en 
+                      <a href={`mailto:${TUWEBAI_EMAIL}`} className="text-[#00CCFF] hover:underline ml-1">
+                        {TUWEBAI_EMAIL}
+                      </a>.
+                    </p>
+                  </section>
+                  
+                </div>
+              </motion.div>
+            </main>
+          </div>
         </div>
-      </section>
+      </div>
     </>
   );
 }

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import AnimatedShape from '@/shared/ui/animated-shape';
-import { TUWEBAI_WHATSAPP_DISPLAY, TUWEBAI_WHATSAPP_URL } from '@/shared/constants/contact';
+import { TUWEBAI_WHATSAPP_DISPLAY, TUWEBAI_WHATSAPP_URL, TUWEBAI_EMAIL } from '@/shared/constants/contact';
 
 export default function ConsultoriaEstrategica() {
   const [activeTab, setActiveTab] = useState<number>(1);
@@ -719,11 +719,11 @@ export default function ConsultoriaEstrategica() {
                 <div className="bg-[#1a1a23] p-6 rounded-lg">
                   <h3 className="font-rajdhani font-bold text-xl mb-4">¿Prefieres hablar directamente?</h3>
                   <div className="space-y-4">
-                    <a href="mailto:hola@tuweb.ai" className="flex items-center text-gray-300 hover:text-white transition-colors">
+                    <a href={`mailto:${TUWEBAI_EMAIL}`} className="flex items-center text-gray-300 hover:text-white transition-colors">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#00CCFF] mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                       </svg>
-                      hola@tuweb.ai
+                      {TUWEBAI_EMAIL}
                     </a>
                     <a href={TUWEBAI_WHATSAPP_URL} className="flex items-center text-gray-300 hover:text-white transition-colors">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#9933FF] mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">

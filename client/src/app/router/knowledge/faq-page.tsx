@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import AnimatedShape from '@/shared/ui/animated-shape';
 import { useToast } from '@/shared/ui/use-toast';
+import { TUWEBAI_EMAIL } from '@/shared/constants/contact';
 // Tipo para las categorías de preguntas
 type FAQCategory = 'general' | 'servicios' | 'desarrollo' | 'marketing' | 'precios';
 
@@ -632,7 +633,7 @@ export default function FAQ() {
                 Solicitar consulta gratuita
               </a>
               <a
-                href="mailto:hola@tuweb.ai"
+                href={`mailto:${TUWEBAI_EMAIL}`}
                 className="px-6 py-3 bg-[#1a1a23] border border-gray-700 rounded-lg text-white font-medium text-center hover:bg-[#1f1f29] transition-colors"
               >
                 Enviar email
