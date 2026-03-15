@@ -87,6 +87,33 @@ export const useAuth = () => {
   return useMemo(() => ({ ...state, ...actions }), [state, actions]);
 };
 
+const AUTH_TIMEOUT_MS = 2500;
+
+const withTimeout = <T,>(promise: Promise<T>, timeoutMs: number, fallback: T): Promise<T> => (
+  new Promise((resolve) => {
+    let settled = false;
+    const timer = setTimeout(() => {
+      if (settled) return;
+      settled = true;
+      resolve(fallback);
+    }, timeoutMs);
+
+    promise
+      .then((value) => {
+        if (settled) return;
+        settled = true;
+        clearTimeout(timer);
+        resolve(value);
+      })
+      .catch(() => {
+        if (settled) return;
+        settled = true;
+        clearTimeout(timer);
+        resolve(fallback);
+      });
+  })
+);
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUserState] = useState<User | null>(null);
   const [isLoadingAuth, setIsLoadingAuth] = useState(false);
@@ -133,13 +160,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           if (!isMounted) return;
 
           if (firebaseUser) {
-            try {
-              await firebaseUser.reload();
-            } catch {
-              // Si el refresh de Firebase falla, preservamos la sesión con el snapshot actual.
-            }
+            await withTimeout(firebaseUser.reload(), AUTH_TIMEOUT_MS, undefined);
             const currentFirebaseUser = auth.currentUser ?? firebaseUser;
-            const persistedUser = await getUser(currentFirebaseUser.uid);
+            const persistedUser = await withTimeout(getUser(currentFirebaseUser.uid), AUTH_TIMEOUT_MS, null);
             let dbUser = mergeFirebaseUserData(currentFirebaseUser, persistedUser);
             if (!persistedUser) {
               await setUser(dbUser);

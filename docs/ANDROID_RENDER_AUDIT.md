@@ -17,6 +17,7 @@
 - AuthProvider non-blocking aplicado: `isLoadingAuth` ya no se fuerza durante `onAuthStateChanged` (P0 #4 corregido).
 - Scroll-snap en móviles corregido: solo aplica en desktop mediante media query (P0 #5 corregido).
 - Persistencia Firestore en Android/Chrome deshabilitada mediante cache en memoria (P0 #3 corregido).
+- Firebase Auth con timeout aplicado en reload y fetch de usuario (P1 #9 corregido).
 
 ---
 
@@ -291,14 +292,14 @@ html {
 | -------------------------------- | ------------------- | --------------- | -------- |
 | GET /api/users/{uid}             | AuthContext.tsx     | <200ms          | OK       |
 | GET /api/users/{uid}/preferences | use-auth-queries.ts | <200ms          | OK       |
-| Firebase Auth                    | AuthContext.tsx     | <500ms          | Variable |
+| Firebase Auth                    | AuthContext.tsx     | <500ms          | Con timeout |
 
 
 ### 8.2 Problemas Identificados
 
-1. **Firebase Auth no tiene timeout configurado**
-  - Si el backend de Firebase está lento, el auth se queda esperando indefinidamente
-  - No hay fallback para mostrar contenido sin auth
+1. **Firebase Auth no tiene timeout configurado** ✅ corregido
+   - Se agregó timeout para `reload` y `getUser`
+   - Hay fallback para seguir con el snapshot actual si expira
 2. **No hay estrategia de stale-while-revalidate**
   - El auth siempre hace fetch fresh en lugar de mostrar caché primero
 
@@ -350,7 +351,7 @@ html {
 | 6   | Code-split framer-motion por ruta ✅ parcial (Home lazy) | vite.config.ts + App.tsx | 4h       |
 | 7   | Lazy load recharts solo en página dashboard ✅ cerrado | chart.tsx                | 1h       |
 | 8   | Optimizar ThemeProvider con SSR-safe ✅ corregido | ThemeContext.tsx         | 2h       |
-| 9   | Agregar timeout a Firebase auth             | AuthContext.tsx          | 2h       |
+| 9   | Agregar timeout a Firebase auth ✅ corregido | AuthContext.tsx          | 2h       |
 | 10  | Preconnect y preload críticos               | index.html               | 1h       |
 
 
