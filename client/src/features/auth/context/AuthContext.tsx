@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+﻿import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import type { User as FirebaseUser } from 'firebase/auth';
 import { useToast } from '@/shared/ui/use-toast';
 import {
@@ -89,7 +89,7 @@ export const useAuth = () => {
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUserState] = useState<User | null>(null);
-  const [isLoadingAuth, setIsLoadingAuth] = useState(true);
+  const [isLoadingAuth, setIsLoadingAuth] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
 
@@ -131,7 +131,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
         const unsubscribe = onAuthStateChanged(auth, async (firebaseUser: FirebaseUser | null) => {
           if (!isMounted) return;
-          setIsLoadingAuth(true);
 
           if (firebaseUser) {
             try {
@@ -157,7 +156,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
               await setUser(dbUser);
             }
             if (isMounted) setUserState(dbUser);
-          } else if (isMounted) {
+          } else {
             setUserState(null);
           }
 
@@ -350,3 +349,4 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     </AuthStateContext.Provider>
   );
 };
+
