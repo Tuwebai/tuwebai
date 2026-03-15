@@ -44,5 +44,10 @@ export default defineConfig({
   server: {
     port: 5173,
     host: true,
+    watch: {
+      // En Windows, el watcher puede perder eventos; polling evita reinicios manuales.
+      usePolling: true,
+      interval: 100,
+    },
   },
 });

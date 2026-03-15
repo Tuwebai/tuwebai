@@ -94,3 +94,5 @@ audit-*.md
 docs/*_AUDIT.md
 docs/AUTH_ACCESS_MATRIX.md
 docs/LEGACY_PHP_ISOLATION.md
+docs/*
+skills/*
