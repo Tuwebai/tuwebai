@@ -9,7 +9,6 @@ import session from "express-session";
 import MemoryStore from "memorystore";
 import fs from "fs";
 import path from "path";
-import passport from "passport";
 import { fileURLToPath } from "url";
 import cors, { CorsOptions } from "cors";
 import helmet from "helmet";
@@ -202,9 +201,6 @@ app.use(
   })
 );
 
-app.use(passport.initialize());
-app.use(passport.session());
-
 // Logging auth
 app.use((req, res, next) => {
   if (req.path.includes("/auth/")) {
@@ -213,8 +209,6 @@ app.use((req, res, next) => {
       method: req.method,
       path: req.path,
       sessionId: req.sessionID,
-      userId: req.session?.userId,
-      userEmail: req.session?.userEmail,
     });
   }
   next();
