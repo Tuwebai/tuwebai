@@ -18,6 +18,7 @@
 - Scroll-snap en móviles corregido: solo aplica en desktop mediante media query (P0 #5 corregido).
 - Persistencia Firestore en Android/Chrome deshabilitada mediante cache en memoria (P0 #3 corregido).
 - Firebase Auth con timeout aplicado en reload y fetch de usuario (P1 #9 corregido).
+- Preconnect y preload críticos aplicados en `index.html` (P1 #10 corregido).
 
 ---
 
@@ -352,7 +353,7 @@ html {
 | 7   | Lazy load recharts solo en página dashboard ✅ cerrado | chart.tsx                | 1h       |
 | 8   | Optimizar ThemeProvider con SSR-safe ✅ corregido | ThemeContext.tsx         | 2h       |
 | 9   | Agregar timeout a Firebase auth ✅ corregido | AuthContext.tsx          | 2h       |
-| 10  | Preconnect y preload críticos               | index.html               | 1h       |
+| 10  | Preconnect y preload críticos ✅ corregido | index.html               | 1h       |
 
 
 **Impacto esperado:** Mejora TTI y reduce bundle 30%
