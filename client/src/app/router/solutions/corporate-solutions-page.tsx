@@ -140,28 +140,28 @@ export default function Corporativos() {
           <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {[
               {
-                image: "/lhdecant-card.png",
+                image: "/lhdecant-card.webp",
                 title: "LH Decants",
                 description: "Sitio corporativo premium para una marca de fragancias. Diseño elegante y contenido jerarquizado para comunicar confianza.",
                 tags: ["E-commerce", "Diseño Premium"],
                 results: "Presencia digital más clara y profesional"
               },
               {
-                image: "/dashboardtuwebai.png",
+                image: "/dashboardtuwebai.webp",
                 title: "TuWeb.ai Dashboard",
                 description: "Plataforma corporativa para clientes con panel de seguimiento de proyectos, tickets y pagos en una sola interfaz.",
                 tags: ["SaaS", "Panel de Clientes"],
                 results: "Gestión operativa centralizada"
               },
               {
-                image: "/safespot.png",
+                image: "/safespot.webp",
                 title: "SafeSpot",
                 description: "Solución digital orientada a seguridad ciudadana para reportes y trazabilidad con enfoque comunitario.",
                 tags: ["Seguridad", "Comunidad"],
                 results: "Comunicación y trazabilidad más ordenadas"
               },
               {
-                image: "/trading-tuwebai.png",
+                image: "/trading-tuwebai.webp",
                 title: "Trading TuWeb.ai",
                 description: "Dashboard de trading para visualización de mercado, control de operaciones y rendimiento con enfoque de decisiones rápidas.",
                 tags: ["Fintech", "Analítica"],

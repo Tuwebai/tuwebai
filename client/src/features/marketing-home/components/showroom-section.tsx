@@ -106,7 +106,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
         { label: "Productos originales", value: "100%" },
         { label: "Fragancias", value: "+200" }
       ],
-      image: "/lhdecant-card.png",
+      image: "/lhdecant-card.webp",
       detailsUrl: "/showroom",
       externalUrl: "https://lhdecant.com/"
     },
@@ -135,7 +135,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
         { label: "Módulos", value: "4" },
         { label: "Disponibilidad", value: "24/7" }
       ],
-      image: "/dashboardtuwebai.png",
+      image: "/dashboardtuwebai.webp",
       detailsUrl: "/showroom",
       externalUrl: "https://dashboard.tuweb-ai.com/"
     },
@@ -159,7 +159,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
         { label: "Cobertura", value: "Comunidad activa" },
         { label: "Objetivo", value: "Recuperacion rapida" }
       ],
-      image: "/safespot.png",
+      image: "/safespot.webp",
       detailsUrl: "/showroom",
       externalUrl: "https://safespot.tuweb-ai.com/"
     },
@@ -183,7 +183,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
         { label: "Control", value: "Operaciones 24/7" },
         { label: "Analisis", value: "Rendimiento continuo" }
       ],
-      image: "/trading-tuwebai.png",
+      image: "/trading-tuwebai.webp",
       detailsUrl: "/showroom",
       externalUrl: "https://trading.tuweb-ai.com/"
     }

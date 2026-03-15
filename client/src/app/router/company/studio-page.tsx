@@ -92,11 +92,11 @@ export default function Estudio() {
       category: "diseño-web",
       description: "Sitio web corporativo premium para empresa de perfumes y fragancias exclusivas.",
       fullDescription: "Desarrollamos un sitio web corporativo premium para LH Decants, especialistas en decants de perfumes exclusivos. El proyecto incluyó diseño UX/UI sofisticado, optimización del embudo de conversión, integración de e-commerce y estrategia de marca premium que refleja la exclusividad de sus productos.",
-      image: "/lhdecant-card.png",
+      image: "/lhdecant-card.webp",
       images: [
-        "/lhdecant-card.png",
-        "/lhdecant-card.png",
-        "/lhdecant-card.png"
+        "/lhdecant-card.webp",
+        "/lhdecant-card.webp",
+        "/lhdecant-card.webp"
       ],
       services: ["UX/UI Design", "Desarrollo Frontend", "E-commerce", "SEO", "Optimización móvil", "Branding"],
       featured: true
@@ -108,11 +108,11 @@ export default function Estudio() {
       category: "branding",
       description: "Desarrollo de identidad visual premium para marca de perfumes exclusivos.",
       fullDescription: "Creamos una identidad visual sofisticada y elegante para LH Decants que comunica la exclusividad y calidad premium de sus decants de perfumes. El sistema incluye logo, paleta cromática, tipografías y aplicaciones de marca que reflejan la elegancia del mundo de las fragancias.",
-      image: "/lhdecant-card.png",
+      image: "/lhdecant-card.webp",
       images: [
-        "/lhdecant-card.png",
-        "/lhdecant-card.png",
-        "/lhdecant-card.png"
+        "/lhdecant-card.webp",
+        "/lhdecant-card.webp",
+        "/lhdecant-card.webp"
       ],
       services: ["Estrategia de marca", "Diseño de logo", "Sistema de identidad", "Aplicaciones de marca", "Brand Guidelines"]
     },
@@ -123,11 +123,11 @@ export default function Estudio() {
       category: "diseño-web",
       description: "Optimización de la experiencia de compra para e-commerce de perfumes premium.",
       fullDescription: "Rediseñamos la experiencia de usuario completa del sitio web de LH Decants, focalizando en la simplicidad del proceso de compra, la presentación elegante de productos y la optimización del embudo de conversión para maximizar las ventas de productos premium.",
-      image: "/lhdecant-card.png",
+      image: "/lhdecant-card.webp",
       images: [
-        "/lhdecant-card.png",
-        "/lhdecant-card.png",
-        "/lhdecant-card.png"
+        "/lhdecant-card.webp",
+        "/lhdecant-card.webp",
+        "/lhdecant-card.webp"
       ],
       services: ["UX Research", "UI Design", "Optimización conversión", "Testing de usabilidad", "Analytics"]
     }

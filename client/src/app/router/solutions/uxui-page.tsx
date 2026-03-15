@@ -203,10 +203,10 @@ export default function UXUI() {
         "Navegación más fluida"
       ],
       tags: ["E-commerce", "Diseño Premium", "Perfumes", "Lujo"],
-      image: "/lhdecant-card.png",
+      image: "/lhdecant-card.webp",
       mockups: [
-        "/lhdecant-card.png",
-        "/lhdecant-card.png"
+        "/lhdecant-card.webp",
+        "/lhdecant-card.webp"
       ]
     }
   ];

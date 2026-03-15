@@ -166,7 +166,7 @@ export default function Ecommerce() {
                 <div className="bg-[#121217] rounded-xl p-6">
                   <div className="h-64 rounded-lg bg-gradient-to-br from-[#0f0f19]/90 to-[#121217]/90 mb-4 flex items-center justify-center overflow-hidden">
                     <img
-                      src="/lhdecant-card.png"
+                      src="/lhdecant-card.webp"
                       alt="LH Decants"
                       className="w-full h-full object-cover"
                     />

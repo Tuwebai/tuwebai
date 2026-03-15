@@ -49,7 +49,7 @@ const teamMembers: TeamMember[] = [
     role: "CEO & Full-Stack",
     bio: "Desarrollador Full-Stack apasionado por crear soluciones digitales innovadoras. Con experiencia en tecnologías modernas y un enfoque centrado en resultados, lidero proyectos que transforman ideas en realidades digitales exitosas.",
     skills: ["Desarrollo Full-Stack", "React", "Node.js", "TypeScript", "Firebase", "MongoDB", "AWS"],
-    image: "https://tuwebai.netlify.app/image_perfil.jpg",
+    image: "https://tuwebai.netlify.app/image_perfil.webp",
     linkedin: "https://www.linkedin.com/in/juan-esteban-l%C3%B3pez-pachao-040b89345?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
     twitter: "https://www.instagram.com/juanchi_lopezd3?igsh=cjM2emZzd2xucXI3",
     longBio: "Juanchi es un desarrollador Full-Stack con una pasión innata por la tecnología y la innovación. Especializado en crear aplicaciones web modernas y escalables, combina habilidades técnicas sólidas con una visión estratégica para desarrollar soluciones que no solo cumplen con los requisitos técnicos, sino que también generan valor real para los usuarios y las empresas. Su experiencia abarca desde el desarrollo frontend con React y TypeScript hasta la implementación de arquitecturas backend robustas con Node.js y bases de datos modernas.",
@@ -67,7 +67,7 @@ const featuredProjects: FeaturedProject[] = [
     id: 1,
     title: "LH Decants - E-commerce Premium",
     description: "Sitio web corporativo premium para empresa de perfumes y fragancias exclusivas. Aumento del 150% en ventas online",
-    image: "/lhdecant-card.png",
+    image: "/lhdecant-card.webp",
     memberId: 1 // Juanchi López
   }
 ];

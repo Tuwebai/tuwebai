@@ -14,17 +14,17 @@ const featuredProjects = [
   },
   {
     name: 'TuWeb.ai Dashboard',
-    logo: '/dashboardtuwebai.png',
+    logo: '/dashboardtuwebai.webp',
     alt: 'Logo de TuWeb.ai Dashboard'
   },
   {
     name: 'SafeSpot',
-    logo: '/safespot.png',
+    logo: '/safespot.webp',
     alt: 'Logo de SafeSpot'
   },
   {
     name: 'Trading TuWeb.ai',
-    logo: '/trading-tuwebai.png',
+    logo: '/trading-tuwebai.webp',
     alt: 'Logo de Trading TuWeb.ai'
   }
 ] as const;
