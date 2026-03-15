@@ -2,7 +2,7 @@ import { lazy } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 import { LazyRoute } from '@/app/router/lazy-route';
-import HomePage from '@/app/router/home/home-page';
+const HomePage = lazy(() => import('@/app/router/home/home-page'));
 import NotFoundPage from '@/app/router/errors/not-found-page';
 import PaymentReturnView from '@/features/payments/components/payment-return-view';
 
@@ -35,7 +35,7 @@ const CookiesPolicyPage = lazy(() => import('@/app/router/legal/cookies-policy-p
 export default function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<HomePage />} />
+      <Route path="/" element={<LazyRoute><HomePage /></LazyRoute>} />
 
       <Route path="/corporativos" element={<LazyRoute><CorporateSolutionsPage /></LazyRoute>} />
       <Route path="/uxui" element={<LazyRoute><UxUiPage /></LazyRoute>} />

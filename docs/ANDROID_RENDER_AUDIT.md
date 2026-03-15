@@ -1,4 +1,4 @@
-﻿# 🔴 AUDITORÍA CRÍTICA: Android Render Blocking - NO_FCP
+# 🔴 AUDITORÍA CRÍTICA: Android Render Blocking - NO_FCP
 
 **Fecha:** 2026-03-06  
 **Auditor:** Performance Engineering Team  
@@ -24,7 +24,7 @@
 
 ### El Problema
 
-La aplicación **TuWeb.ai** experimenta un fallo crítico de renderizado en Android (y potencialmente otros dispositivos) manifestado como **`NO_FCP`** (No First Contentful Paint). Esto significa que la página **no pinta absolutamente ningún contenido** durante la carga inicial, dejando a los usuarios con una pantalla en blanco indefinidamente.
+La aplicación **TuWeb.ai** experimenta un fallo crítico de renderizado en Android (y potencialmente otros dispositivos) manifestado como `**NO_FCP`** (No First Contentful Paint). Esto significa que la página **no pinta absolutamente ningún contenido** durante la carga inicial, dejando a los usuarios con una pantalla en blanco indefinidamente.
 
 ### Evidencia Principal
 
@@ -43,20 +43,22 @@ El problema NO son las imágenes (315KB, 173KB, 79KB) ni el backend. La causa ra
 
 ### 🔴 CRÍTICO - Hallazgos Confirmados por Código
 
-| #   | Hallazgo                                                   | Severidad | Archivo(s)                 | Línea(s)  |
-| --- | ---------------------------------------------------------- | --------- | -------------------------- | --------- |
-| 1   | **NO_FCP - Sin pintado de contenido**                      | P0        | Lighthouse Report          | 10-18     |
-| 2   | **IndexedDB warning** ⚠️ mitigado (persistencia Android deshabilitada) | P1        | Lighthouse Report          | 16        |
-| 3   | **Puppeteer en dependencias de producción**                | P0        | package.json               | 106       |
-| 4   | **Framer-motion importado en 41+ archivos**                | P1        | \*.tsx (múltiples)         | -         |
-| 5   | **Firebase initialization síncrona** (persistencia Android mitigada) | P1        | client/src/lib/firebase.ts | 15        |
-| 6   | **AuthProvider bloquea render con onAuthStateChanged** ✅ corregido     | P1        | client/src/features/auth/context/AuthContext.tsx | 149-201 |
-| 7   | **ThemeProvider accede localStorage sincrónicamente**      | P2        | client/src/core/theme/ThemeContext.tsx | 23, 37 |
-| 8   | **Scroll-snap CSS bloqueante** ✅ corregido                | P2        | index.css                  | 44, 54-56 |
-| 9   | **react-typewriter-effect carga lazy pero con delay fijo** | P2        | hero-section.tsx           | 68-89     |
-| 10  | **Recharts en bundle aunque no se use en home**            | P2        | chart.tsx                  | 2         |
-| 11  | **QueryClient defaultOptions sin retryDelay exponencial**  | P2        | queryClient.ts             | 44-52     |
-| 12  | **Google Fonts sin display=swap**                          | P2        | client/index.html          | 80-83     |
+
+| #   | Hallazgo                                                               | Severidad | Archivo(s)                                       | Línea(s)  |
+| --- | ---------------------------------------------------------------------- | --------- | ------------------------------------------------ | --------- |
+| 1   | **NO_FCP - Sin pintado de contenido**                                  | P0        | Lighthouse Report                                | 10-18     |
+| 2   | **IndexedDB warning** ⚠️ mitigado (persistencia Android deshabilitada) | P1        | Lighthouse Report                                | 16        |
+| 3   | **Puppeteer en dependencias de producción**                            | P0        | package.json                                     | 106       |
+| 4   | **Framer-motion importado en 41+ archivos**                            | P1        | .tsx (múltiples)                                 | -         |
+| 5   | **Firebase initialization síncrona** (persistencia Android mitigada)   | P1        | client/src/lib/firebase.ts                       | 15        |
+| 6   | **AuthProvider bloquea render con onAuthStateChanged** ✅ corregido     | P1        | client/src/features/auth/context/AuthContext.tsx | 149-201   |
+| 7   | **ThemeProvider accede localStorage sincrónicamente**                  | P2        | client/src/core/theme/ThemeContext.tsx           | 23, 37    |
+| 8   | **Scroll-snap CSS bloqueante** ✅ corregido                             | P2        | index.css                                        | 44, 54-56 |
+| 9   | **react-typewriter-effect carga lazy pero con delay fijo**             | P2        | hero-section.tsx                                 | 68-89     |
+| 10  | **Recharts en bundle aunque no se use en home**                        | P2        | chart.tsx                                        | 2         |
+| 11  | **QueryClient defaultOptions sin retryDelay exponencial**              | P2        | queryClient.ts                                   | 44-52     |
+| 12  | **Google Fonts sin display=swap**                                      | P2        | client/index.html                                | 80-83     |
+
 
 ---
 
@@ -164,7 +166,7 @@ Esto infla el bundle de producción con:
 
 ### 4.2 Framer-Motion en Bundle Crítico
 
-Aunque el code splitting está configurado, framer-motion se importa de forma eager en:
+Aunque el code splitting está configurado, framer-motion se importa de forma eager en (Home ya es lazy):
 
 - `hero-section.tsx` (línea 2)
 - `global-navbar.tsx` (línea 3)
@@ -198,11 +200,13 @@ El `index.html` ya incluye un skeleton inicial en el `#root`. Esto evita la pant
 
 ### Imágenes Referenciadas
 
+
 | Imagen               | Tamaño | Ubicación | Impacto | Estado                 |
 | -------------------- | ------ | --------- | ------- | ---------------------- |
 | dashboardtuwebai.png | ~315KB | public/   | Medio   | NO es causa del NO_FCP |
 | safespot.png         | ~173KB | public/   | Medio   | NO es causa del NO_FCP |
 | trading-tuwebai.png  | ~79KB  | public/   | Bajo    | NO es causa del NO_FCP |
+
 
 **Veredicto:** Las imágenes son grandes pero se cargan lazy. No bloquean el FCP. El problema es 100% JavaScript/CSS.
 
@@ -241,22 +245,26 @@ FCP LÍMITE: 10000ms (Lighthouse timeout)
 
 ### 7.1 Problemas Críticos
 
-| Problema                    | Archivo                   | Línea     | Severidad |
-| --------------------------- | ------------------------- | --------- | --------- |
-| Firebase init síncrono (IndexedDB mitigado) | client/src/lib/firebase.ts           | 15        | P1        |
-| Auth state bloquea render ✅ corregido  | client/src/features/auth/context/AuthContext.tsx  | 149-201   | P1        |
-| localStorage sync access    | client/src/core/theme/ThemeContext.tsx | 23, 37    | P2        |
-| Scroll-snap bloqueante ✅ corregido | client/src/index.css                 | 44, 54-56 | P2        |
-| No loading skeleton inicial ✅ corregido | client/index.html                    | 125       | P1        |
+
+| Problema                                    | Archivo                                          | Línea     | Severidad |
+| ------------------------------------------- | ------------------------------------------------ | --------- | --------- |
+| Firebase init síncrono (IndexedDB mitigado) | client/src/lib/firebase.ts                       | 15        | P1        |
+| Auth state bloquea render ✅ corregido       | client/src/features/auth/context/AuthContext.tsx | 149-201   | P1        |
+| localStorage sync access                    | client/src/core/theme/ThemeContext.tsx           | 23, 37    | P2        |
+| Scroll-snap bloqueante ✅ corregido          | client/src/index.css                             | 44, 54-56 | P2        |
+| No loading skeleton inicial ✅ corregido     | client/index.html                                | 125       | P1        |
+
 
 ### 7.2 Problemas de Bundle
 
-| Dependencia             | Uso          | Tamaño Est. | Recomendación                  |
-| ----------------------- | ------------ | ----------- | ------------------------------ |
+
+| Dependencia             | Uso          | Tamaño Est. | Recomendación                               |
+| ----------------------- | ------------ | ----------- | ------------------------------------------- |
 | puppeteer               | Solo testing | ~40MB       | ✅ corregido: ya no figura en `package.json` |
-| framer-motion           | 41+ archivos | ~60KB       | Code-split por página          |
-| recharts                | 1 archivo    | ~100KB      | Lazy load en página específica |
-| react-typewriter-effect | 1 archivo    | ~15KB       | Preload o quitar               |
+| framer-motion           | 41+ archivos | ~60KB       | Code-split por página (Home lazy aplicado)  |
+| recharts                | 1 archivo    | ~100KB      | Lazy load en página específica              |
+| react-typewriter-effect | 1 archivo    | ~15KB       | Preload o quitar                            |
+
 
 ### 7.3 Problemas de CSS
 
@@ -278,20 +286,21 @@ html {
 
 ### 8.1 Endpoints Críticos en Arranque
 
+
 | Endpoint                         | Llamado desde       | Tiempo objetivo | Estado   |
 | -------------------------------- | ------------------- | --------------- | -------- |
 | GET /api/users/{uid}             | AuthContext.tsx     | <200ms          | OK       |
 | GET /api/users/{uid}/preferences | use-auth-queries.ts | <200ms          | OK       |
 | Firebase Auth                    | AuthContext.tsx     | <500ms          | Variable |
 
+
 ### 8.2 Problemas Identificados
 
 1. **Firebase Auth no tiene timeout configurado**
-   - Si el backend de Firebase está lento, el auth se queda esperando indefinidamente
-   - No hay fallback para mostrar contenido sin auth
-
+  - Si el backend de Firebase está lento, el auth se queda esperando indefinidamente
+  - No hay fallback para mostrar contenido sin auth
 2. **No hay estrategia de stale-while-revalidate**
-   - El auth siempre hace fetch fresh en lugar de mostrar caché primero
+  - El auth siempre hace fetch fresh en lugar de mostrar caché primero
 
 ---
 
@@ -306,12 +315,14 @@ html {
 
 ### 9.2 Comportamientos Específicos
 
-| Síntoma                 | Causa Probable                        | Prioridad |
-| ----------------------- | ------------------------------------- | --------- |
+
+| Síntoma                 | Causa Probable                          | Prioridad |
+| ----------------------- | --------------------------------------- | --------- |
 | Pantalla blanca >10s    | IndexedDB + Firebase bloqueo (mitigado) | P0        |
-| Crash después de cargar | Out of memory por puppeteer (mitigado) | P0        |
-| Scroll lento/tirones    | Scroll-snap CSS + framer-motion       | P1        |
-| Input delay             | Main thread bloqueado por animaciones | P1        |
+| Crash después de cargar | Out of memory por puppeteer (mitigado)  | P0        |
+| Scroll lento/tirones    | Scroll-snap CSS + framer-motion (parcialmente mitigado) | P1        |
+| Input delay             | Main thread bloqueado por animaciones   | P1        |
+
 
 ---
 
@@ -319,29 +330,34 @@ html {
 
 ### 🔴 P0 - CRÍTICO (Fix Inmediato - 24-48h)
 
-| #   | Fix                                               | Archivo(s)               | Estimado |
-| --- | ------------------------------------------------- | ------------------------ | -------- |
-| 1   | **Agregar loading skeleton en index.html** ✅ corregido | client/index.html        | 2h       |
-| 2   | **Mover puppeteer a devDependencies** ✅ corregido | package.json             | 15min    |
+
+| #   | Fix                                                           | Archivo(s)               | Estimado |
+| --- | ------------------------------------------------------------- | ------------------------ | -------- |
+| 1   | **Agregar loading skeleton en index.html** ✅ corregido        | client/index.html        | 2h       |
+| 2   | **Mover puppeteer a devDependencies** ✅ corregido             | package.json             | 15min    |
 | 3   | **Deshabilitar persistencia Firebase en Android** ✅ corregido | lib/firebase.ts          | 1h       |
-| 4   | **Hacer AuthProvider non-blocking** ✅ corregido  | contexts/AuthContext.tsx | 4h       |
-| 5   | **Quitar scroll-snap en móviles** ✅ corregido    | index.css + hooks        | 2h       |
+| 4   | **Hacer AuthProvider non-blocking** ✅ corregido               | contexts/AuthContext.tsx | 4h       |
+| 5   | **Quitar scroll-snap en móviles** ✅ corregido                 | index.css + hooks        | 2h       |
+
 
 **Impacto esperado:** Reduce FCP de 5s+ a <2s
 
 ### 🟠 P1 - ALTO (Fix Semana 1)
 
+
 | #   | Fix                                         | Archivo(s)               | Estimado |
 | --- | ------------------------------------------- | ------------------------ | -------- |
-| 6   | Code-split framer-motion por ruta           | vite.config.ts + App.tsx | 4h       |
+| 6   | Code-split framer-motion por ruta ✅ parcial (Home lazy) | vite.config.ts + App.tsx | 4h       |
 | 7   | Lazy load recharts solo en página dashboard | chart.tsx                | 1h       |
 | 8   | Optimizar ThemeProvider con SSR-safe        | ThemeContext.tsx         | 2h       |
 | 9   | Agregar timeout a Firebase auth             | AuthContext.tsx          | 2h       |
 | 10  | Preconnect y preload críticos               | index.html               | 1h       |
 
+
 **Impacto esperado:** Mejora TTI y reduce bundle 30%
 
 ### 🟡 P2 - MEDIO (Fix Semana 2-3)
+
 
 | #   | Fix                                                   | Archivo(s)     | Estimado |
 | --- | ----------------------------------------------------- | -------------- | -------- |
@@ -350,13 +366,16 @@ html {
 | 13  | Reducir uso de backdrop-filter en móviles             | componentes UI | 4h       |
 | 14  | Implementar virtual scrolling para listas largas      | -              | 6h       |
 
+
 ### 🟢 P3 - BAJO (Backlog)
+
 
 | #   | Fix                                            | Archivo(s)      | Estimado |
 | --- | ---------------------------------------------- | --------------- | -------- |
 | 15  | Migrar a Firebase v11 (modular)                | lib/firebase.ts | 4h       |
 | 16  | Implementar HTTP/3 push para recursos críticos | -               | 8h       |
 | 17  | Optimizar imágenes a WebP con fallback         | build process   | 4h       |
+
 
 ---
 
@@ -558,16 +577,17 @@ self.addEventListener("fetch", (event) => {
 
 ### Criterios de Éxito
 
-- [ ] **FCP < 1.8s** en Lighthouse mobile simulation
-- [ ] **NO_FCP error eliminado** del reporte Lighthouse
-- [ ] **First Paint visual** ocurre antes de los 2 segundos en Android real
-- [ ] **No regressions** en desktop (FCP desktop < 1s)
-- [ ] **Bundle size** reducido en >30% (puppeteer eliminado de prod; code-splitting pendiente)
-- [ ] **Time to Interactive < 3.5s** en 4G lento
-- [ ] **No IndexedDB warnings** en Lighthouse (pendiente de re-test)
-- [ ] **Puppeteer** solo en devDependencies
+- **FCP < 1.8s** en Lighthouse mobile simulation
+- **NO_FCP error eliminado** del reporte Lighthouse
+- **First Paint visual** ocurre antes de los 2 segundos en Android real
+- **No regressions** en desktop (FCP desktop < 1s)
+- **Bundle size** reducido en >30% (puppeteer eliminado de prod; code-splitting pendiente)
+- **Time to Interactive < 3.5s** en 4G lento
+- **No IndexedDB warnings** en Lighthouse (pendiente de re-test)
+- **Puppeteer** solo en devDependencies
 
 ### Métricas a Monitorear
+
 
 | Métrica     | Antes  | Objetivo | Herramienta             |
 | ----------- | ------ | -------- | ----------------------- |
@@ -577,14 +597,15 @@ self.addEventListener("fetch", (event) => {
 | Bundle JS   | ~800KB | <500KB   | Webpack Bundle Analyzer |
 | Speed Index | >8s    | <3s      | Lighthouse              |
 
+
 ### Testing Checklist
 
-- [ ] Test en Android Chrome (dispositivo físico)
-- [ ] Test en iOS Safari
-- [ ] Test en 3G lento (network throttling)
-- [ ] Test con "Clear Storage" (simular primer visita)
-- [ ] Test con IndexedDB llena
-- [ ] Test de regressión en desktop
+- Test en Android Chrome (dispositivo físico)
+- Test en iOS Safari
+- Test en 3G lento (network throttling)
+- Test con "Clear Storage" (simular primer visita)
+- Test con IndexedDB llena
+- Test de regressión en desktop
 
 ---
 
@@ -629,5 +650,4 @@ react-typewriter-effect: ~15KB parsed
 **Documento generado por:** Performance Engineering Team  
 **Revisión requerida por:** Tech Lead, Arquitecto  
 **Próxima revisión:** Post-implementación de P0 fixes  
-**Contacto:** dev-team@tuwebai.com
-
+**Contacto:** [dev-team@tuwebai.com](mailto:dev-team@tuwebai.com)
