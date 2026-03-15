@@ -55,7 +55,7 @@ El problema NO son las imágenes (315KB, 173KB, 79KB) ni el backend. La causa ra
 | 7   | **ThemeProvider accede localStorage sincrónicamente**                  | P2        | client/src/core/theme/ThemeContext.tsx           | 23, 37    |
 | 8   | **Scroll-snap CSS bloqueante** ✅ corregido                             | P2        | index.css                                        | 44, 54-56 |
 | 9   | **react-typewriter-effect carga lazy pero con delay fijo**             | P2        | hero-section.tsx                                 | 68-89     |
-| 10  | **Recharts en bundle aunque no se use en home**                        | P2        | chart.tsx                                        | 2         |
+| 10  | **Recharts en bundle aunque no se use en home** ✅ cerrado (no existe en repo actual) | P2        | chart.tsx                                        | 2         |
 | 11  | **QueryClient defaultOptions sin retryDelay exponencial**              | P2        | queryClient.ts                                   | 44-52     |
 | 12  | **Google Fonts sin display=swap**                                      | P2        | client/index.html                                | 80-83     |
 
@@ -262,7 +262,7 @@ FCP LÍMITE: 10000ms (Lighthouse timeout)
 | ----------------------- | ------------ | ----------- | ------------------------------------------- |
 | puppeteer               | Solo testing | ~40MB       | ✅ corregido: ya no figura en `package.json` |
 | framer-motion           | 41+ archivos | ~60KB       | Code-split por página (Home lazy aplicado)  |
-| recharts                | 1 archivo    | ~100KB      | Lazy load en página específica              |
+| recharts                | 1 archivo    | ~100KB      | ✅ cerrado: no hay uso en repo actual       |
 | react-typewriter-effect | 1 archivo    | ~15KB       | Preload o quitar                            |
 
 
@@ -348,7 +348,7 @@ html {
 | #   | Fix                                         | Archivo(s)               | Estimado |
 | --- | ------------------------------------------- | ------------------------ | -------- |
 | 6   | Code-split framer-motion por ruta ✅ parcial (Home lazy) | vite.config.ts + App.tsx | 4h       |
-| 7   | Lazy load recharts solo en página dashboard | chart.tsx                | 1h       |
+| 7   | Lazy load recharts solo en página dashboard ✅ cerrado | chart.tsx                | 1h       |
 | 8   | Optimizar ThemeProvider con SSR-safe        | ThemeContext.tsx         | 2h       |
 | 9   | Agregar timeout a Firebase auth             | AuthContext.tsx          | 2h       |
 | 10  | Preconnect y preload críticos               | index.html               | 1h       |
@@ -641,7 +641,7 @@ tuweb-ai.com-20260305T235948.json (Lighthouse Report)
 framer-motion: ~60KB parsed
 firebase: ~200KB+ parsed
 puppeteer: ~40MB (INAPROPIADO para prod, eliminado)
-recharts: ~100KB parsed
+recharts: ~100KB parsed (no presente en repo actual)
 react-typewriter-effect: ~15KB parsed
 ```
 
