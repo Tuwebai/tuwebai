@@ -15,6 +15,7 @@
 - `ThemeContext` vive en `client/src/core/theme/ThemeContext.tsx`.
 - `components/sections/*` ya no está en uso para el landing.
 - AuthProvider non-blocking aplicado: `isLoadingAuth` ya no se fuerza durante `onAuthStateChanged` (P0 #4 corregido).
+- Scroll-snap en móviles corregido: solo aplica en desktop mediante media query (P0 #5 corregido).
 
 ---
 
@@ -33,7 +34,7 @@ La aplicación **TuWeb.ai** experimenta un fallo crítico de renderizado en Andr
 
 ### Hallazgo Clave
 
-El problema NO son las imágenes (315KB, 173KB, 79KB) ni el backend. La causa raíz es una **combinación letal de JavaScript bloqueante, inicialización síncrona de Firebase, dependencias masivas en el bundle inicial, y CSS scroll-snap que bloquea el renderizado**.
+El problema NO son las imágenes (315KB, 173KB, 79KB) ni el backend. La causa raíz es una **combinación letal de JavaScript bloqueante, inicialización síncrona de Firebase, dependencias masivas en el bundle inicial, y CSS scroll-snap que bloquea el renderizado (ya corregido en móviles)**.
 
 ---
 
@@ -50,7 +51,7 @@ El problema NO son las imágenes (315KB, 173KB, 79KB) ni el backend. La causa ra
 | 5   | **Firebase initialization síncrona**                       | P1        | client/src/lib/firebase.ts | 15        |
 | 6   | **AuthProvider bloquea render con onAuthStateChanged** ✅ corregido     | P1        | client/src/features/auth/context/AuthContext.tsx | 149-201 |
 | 7   | **ThemeProvider accede localStorage sincrónicamente**      | P2        | client/src/core/theme/ThemeContext.tsx | 23, 37 |
-| 8   | **Scroll-snap CSS bloqueante**                             | P2        | index.css                  | 44, 54-56 |
+| 8   | **Scroll-snap CSS bloqueante** ✅ corregido                | P2        | index.css                  | 44, 54-56 |
 | 9   | **react-typewriter-effect carga lazy pero con delay fijo** | P2        | hero-section.tsx           | 68-89     |
 | 10  | **Recharts en bundle aunque no se use en home**            | P2        | chart.tsx                  | 2         |
 | 11  | **QueryClient defaultOptions sin retryDelay exponencial**  | P2        | queryClient.ts             | 44-52     |
@@ -79,7 +80,7 @@ El problema NO son las imágenes (315KB, 173KB, 79KB) ni el backend. La causa ra
 │    ├── import { startWebVitalsTracking } from "@/lib/performance"
 │    │   └── PerformanceObservers [BLOQUEANTE en Android]        │
 │    └── import "./index.css"                                     │
-│        └── scroll-snap-type: y proximity [BLOQUEANTE]          │
+│        └── scroll-snap-type: y proximity [solo desktop] ✅      │
 │                                                                 │
 │ 3. App.tsx se importa                                           │
 │    ├── import { AuthProvider } from '@/features/auth/context/AuthContext'   │
@@ -121,13 +122,13 @@ Firebase se inicializa con persistencia por defecto, lo que en Android puede:
 2. Causar deadlocks si hay transacciones pendientes de sesiones anteriores
 3. Consumir memoria significativa (>100MB en dispositivos Android)
 
-### 3.3 Causa Raíz Terciaria: CSS Scroll-Snap
+### 3.3 Causa Raíz Terciaria: CSS Scroll-Snap ✅ corregido
 
 ```css
 /* client/src/index.css - Líneas 44, 54-56 */
 html {
   scroll-behavior: smooth;
-  scroll-snap-type: y proximity; /* ← BLOQUEA RENDER EN MÓVILES */
+  scroll-snap-type: y proximity; /* ← BLOQUEA RENDER EN MÓVILES (corregido: solo desktop) */
 }
 
 section {
@@ -137,7 +138,7 @@ section {
 }
 ```
 
-**Impacto:** El scroll-snap forza al navegador a calcular layout de TODAS las secciones antes de pintar, ya que necesita determinar los snap points.
+**Impacto:** El scroll-snap forza al navegador a calcular layout de TODAS las secciones antes de pintar, ya que necesita determinar los snap points. **Mitigado al limitarlo a desktop.**
 
 ---
 
@@ -242,7 +243,7 @@ FCP LÍMITE: 10000ms (Lighthouse timeout)
 | Firebase init síncrono      | client/src/lib/firebase.ts           | 15        | P1        |
 | Auth state bloquea render ✅ corregido  | client/src/features/auth/context/AuthContext.tsx  | 149-201   | P1        |
 | localStorage sync access    | client/src/core/theme/ThemeContext.tsx | 23, 37    | P2        |
-| Scroll-snap bloqueante      | client/src/index.css                 | 44, 54-56 | P2        |
+| Scroll-snap bloqueante ✅ corregido | client/src/index.css                 | 44, 54-56 | P2        |
 | No loading skeleton inicial | client/index.html                    | 125       | P1        |
 
 ### 7.2 Problemas de Bundle
@@ -259,7 +260,7 @@ FCP LÍMITE: 10000ms (Lighthouse timeout)
 ```css
 /* PROBLEMA: Scroll-snap bloquea render */
 html {
-  scroll-snap-type: y proximity; /* ELIMINAR en móviles */
+  scroll-snap-type: y proximity; /* ELIMINAR en móviles (corregido: solo desktop) */
 }
 
 /* PROBLEMA: backdrop-filter costoso en Android */
@@ -321,7 +322,7 @@ html {
 | 2   | **Mover puppeteer a devDependencies**             | package.json             | 15min    |
 | 3   | **Deshabilitar persistencia Firebase en Android** | lib/firebase.ts          | 1h       |
 | 4   | **Hacer AuthProvider non-blocking** ✅ corregido  | contexts/AuthContext.tsx | 4h       |
-| 5   | **Quitar scroll-snap en móviles**                 | index.css + hooks        | 2h       |
+| 5   | **Quitar scroll-snap en móviles** ✅ corregido    | index.css + hooks        | 2h       |
 
 **Impacto esperado:** Reduce FCP de 5s+ a <2s
 
@@ -434,7 +435,7 @@ npm uninstall puppeteer
 npm install -D puppeteer
 ```
 
-#### 3. Deshabilitar Scroll-Snap en Móviles
+#### 3. Deshabilitar Scroll-Snap en Móviles ✅ corregido
 
 ```css
 /* index.css - Reemplazar líneas 42-46 */
@@ -446,7 +447,7 @@ html {
 /* Scroll snap SOLO en desktop */
 @media (min-width: 1024px) {
   html {
-    scroll-snap-type: y proximity;
+    scroll-snap-type: y proximity; /* ✅ solo desktop */
   }
 
   section {
