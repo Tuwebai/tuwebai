@@ -1,4 +1,4 @@
-﻿import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import type { User as FirebaseUser } from 'firebase/auth';
 import { useToast } from '@/shared/ui/use-toast';
 import {
@@ -8,6 +8,7 @@ import {
   useLogoutMutation,
   useRegisterMutation,
   useResetPasswordMutation,
+  useConfirmPasswordResetMutation,
   useUpdateProfileMutation,
 } from '../hooks/use-auth-mutations';
 import { isGoogleAuthUser, mergeFirebaseUserData } from '../services/auth-avatar';
@@ -133,6 +134,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const updateProfileMutation = useUpdateProfileMutation();
   const changePasswordMutation = useChangePasswordMutation();
   const resetPasswordMutation = useResetPasswordMutation();
+  const confirmPasswordResetMutation = useConfirmPasswordResetMutation();
 
   const isAnyMutationPending =
     loginMutation.isPending ||
@@ -141,7 +143,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     registerMutation.isPending ||
     updateProfileMutation.isPending ||
     changePasswordMutation.isPending ||
-    resetPasswordMutation.isPending;
+    resetPasswordMutation.isPending ||
+    confirmPasswordResetMutation.isPending;
 
   const isLoading = isLoadingAuth;
   const isMutatingAuth = isAnyMutationPending;
@@ -257,9 +260,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, [resetPasswordMutation]);
 
-  const resetPassword = useCallback(async (_token: string, _newPassword: string) => {
-    toast({ title: 'Función no soportada', description: 'Usa el enlace enviado por email para restablecer tu contraseña.' });
-  }, [toast]);
+  const resetPassword = useCallback(async (token: string, newPassword: string) => {
+    setError(null);
+    try {
+      await confirmPasswordResetMutation.mutateAsync({ code: token, newPassword });
+    } catch (error: unknown) {
+      setError(getAuthErrorMessage(error, 'Error al restablecer contraseña'));
+      throw error;
+    }
+  }, [confirmPasswordResetMutation]);
 
   const updateUserProfile = useCallback(async (data: Partial<User>) => {
     if (!user) return;

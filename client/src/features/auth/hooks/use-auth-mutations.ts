@@ -204,3 +204,21 @@ export const useResetPasswordMutation = () => {
     },
   });
 };
+
+export const useConfirmPasswordResetMutation = () => {
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async ({ code, newPassword }: { code: string; newPassword: string }) => {
+      const { auth } = await getFirebase();
+      const { confirmPasswordReset } = await getFirebaseAuth();
+      await confirmPasswordReset(auth, code, newPassword);
+    },
+    onSuccess: () => {
+      // Evitamos un doble toast si el componente que llama ya lanza uno, pero dejamos este por consistencia
+    },
+    onError: (error: unknown) => {
+      toast({ title: 'Error', description: getAuthErrorMessage(error, 'Error al restablecer contraseña'), variant: 'destructive' });
+    },
+  });
+};
