@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
+import { getFirestore, initializeFirestore, memoryLocalCache } from 'firebase/firestore';
 
 const getRequiredEnv = (key: keyof ImportMetaEnv): string => {
   const value = import.meta.env[key];
@@ -24,7 +24,13 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+const isAndroidChrome =
+  typeof navigator !== 'undefined' &&
+  /Android/i.test(navigator.userAgent) &&
+  /Chrome/i.test(navigator.userAgent);
 
 export const auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();
-export const db = getFirestore(app); 
+export const db = isAndroidChrome
+  ? initializeFirestore(app, { localCache: memoryLocalCache() })
+  : getFirestore(app);

@@ -16,6 +16,7 @@
 - `components/sections/*` ya no está en uso para el landing.
 - AuthProvider non-blocking aplicado: `isLoadingAuth` ya no se fuerza durante `onAuthStateChanged` (P0 #4 corregido).
 - Scroll-snap en móviles corregido: solo aplica en desktop mediante media query (P0 #5 corregido).
+- Persistencia Firestore en Android/Chrome deshabilitada mediante cache en memoria (P0 #3 corregido).
 
 ---
 
@@ -28,7 +29,7 @@ La aplicación **TuWeb.ai** experimenta un fallo crítico de renderizado en Andr
 ### Evidencia Principal
 
 - **Reporte Lighthouse:** `runtimeError: NO_FCP` (línea 10 del JSON)
-- **Warning crítico:** "There may be stored data affecting loading performance in this location: IndexedDB"
+- **Warning crítico:** "There may be stored data affecting loading performance in this location: IndexedDB" (mitigado en Android/Chrome)
 - **Impacto:** 100% de usuarios Android afectados, posible degradación en iOS/desktop
 - **Tiempo estimado de carga:** >30s (timeout de Lighthouse) vs <3s esperado
 
@@ -45,10 +46,10 @@ El problema NO son las imágenes (315KB, 173KB, 79KB) ni el backend. La causa ra
 | #   | Hallazgo                                                   | Severidad | Archivo(s)                 | Línea(s)  |
 | --- | ---------------------------------------------------------- | --------- | -------------------------- | --------- |
 | 1   | **NO_FCP - Sin pintado de contenido**                      | P0        | Lighthouse Report          | 10-18     |
-| 2   | **IndexedDB warning**                                      | P1        | Lighthouse Report          | 16        |
+| 2   | **IndexedDB warning** ⚠️ mitigado (persistencia Android deshabilitada) | P1        | Lighthouse Report          | 16        |
 | 3   | **Puppeteer en dependencias de producción**                | P0        | package.json               | 106       |
 | 4   | **Framer-motion importado en 41+ archivos**                | P1        | \*.tsx (múltiples)         | -         |
-| 5   | **Firebase initialization síncrona**                       | P1        | client/src/lib/firebase.ts | 15        |
+| 5   | **Firebase initialization síncrona** (persistencia Android mitigada) | P1        | client/src/lib/firebase.ts | 15        |
 | 6   | **AuthProvider bloquea render con onAuthStateChanged** ✅ corregido     | P1        | client/src/features/auth/context/AuthContext.tsx | 149-201 |
 | 7   | **ThemeProvider accede localStorage sincrónicamente**      | P2        | client/src/core/theme/ThemeContext.tsx | 23, 37 |
 | 8   | **Scroll-snap CSS bloqueante** ✅ corregido                | P2        | index.css                  | 44, 54-56 |
@@ -106,9 +107,9 @@ El problema NO son las imágenes (315KB, 173KB, 79KB) ni el backend. La causa ra
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-### 3.2 Causa Raíz Secundaria: IndexedDB Corruption
+### 3.2 Causa Raíz Secundaria: IndexedDB Corruption ✅ mitigada
 
-El warning de Lighthouse sobre IndexedDB sugiere que:
+El warning de Lighthouse sobre IndexedDB sugiere que (mitigado en Android/Chrome):
 
 - Firebase Firestore puede tener persistencia local habilitada
 - La IndexedDB está corrupta o sobrecargada
@@ -121,6 +122,8 @@ Firebase se inicializa con persistencia por defecto, lo que en Android puede:
 1. Bloquear el thread principal al abrir la DB
 2. Causar deadlocks si hay transacciones pendientes de sesiones anteriores
 3. Consumir memoria significativa (>100MB en dispositivos Android)
+
+**Mitigación aplicada:** Firestore usa cache en memoria en Android/Chrome para evitar IndexedDB blocking.
 
 ### 3.3 Causa Raíz Terciaria: CSS Scroll-Snap ✅ corregido
 
@@ -240,7 +243,7 @@ FCP LÍMITE: 10000ms (Lighthouse timeout)
 
 | Problema                    | Archivo                   | Línea     | Severidad |
 | --------------------------- | ------------------------- | --------- | --------- |
-| Firebase init síncrono      | client/src/lib/firebase.ts           | 15        | P1        |
+| Firebase init síncrono (IndexedDB mitigado) | client/src/lib/firebase.ts           | 15        | P1        |
 | Auth state bloquea render ✅ corregido  | client/src/features/auth/context/AuthContext.tsx  | 149-201   | P1        |
 | localStorage sync access    | client/src/core/theme/ThemeContext.tsx | 23, 37    | P2        |
 | Scroll-snap bloqueante ✅ corregido | client/src/index.css                 | 44, 54-56 | P2        |
@@ -296,7 +299,7 @@ html {
 
 ### 9.1 Issues Conocidos de Chrome Android
 
-1. **IndexedDB deadlock**: Chrome Android tiene bugs conocidos donde IndexedDB puede bloquearse indefinidamente si hay transacciones abiertas
+1. **IndexedDB deadlock**: Chrome Android tiene bugs conocidos donde IndexedDB puede bloquearse indefinidamente si hay transacciones abiertas (mitigado en Android/Chrome)
 2. **PerformanceObserver overhead**: En Android, los observers de performance consumen más recursos
 3. **Scroll-snap performance**: Es notablemente más lento que en desktop
 4. **Memory pressure**: Android tiene límites de memoria más agresivos para WebViews
@@ -305,7 +308,7 @@ html {
 
 | Síntoma                 | Causa Probable                        | Prioridad |
 | ----------------------- | ------------------------------------- | --------- |
-| Pantalla blanca >10s    | IndexedDB + Firebase bloqueo          | P0        |
+| Pantalla blanca >10s    | IndexedDB + Firebase bloqueo (mitigado) | P0        |
 | Crash después de cargar | Out of memory por puppeteer           | P0        |
 | Scroll lento/tirones    | Scroll-snap CSS + framer-motion       | P1        |
 | Input delay             | Main thread bloqueado por animaciones | P1        |
@@ -320,7 +323,7 @@ html {
 | --- | ------------------------------------------------- | ------------------------ | -------- |
 | 1   | **Agregar loading skeleton en index.html** ✅ corregido | client/index.html        | 2h       |
 | 2   | **Mover puppeteer a devDependencies**             | package.json             | 15min    |
-| 3   | **Deshabilitar persistencia Firebase en Android** | lib/firebase.ts          | 1h       |
+| 3   | **Deshabilitar persistencia Firebase en Android** ✅ corregido | lib/firebase.ts          | 1h       |
 | 4   | **Hacer AuthProvider non-blocking** ✅ corregido  | contexts/AuthContext.tsx | 4h       |
 | 5   | **Quitar scroll-snap en móviles** ✅ corregido    | index.css + hooks        | 2h       |
 
@@ -457,10 +460,10 @@ html {
 }
 ```
 
-#### 4. Firebase con Persistencia Condicional
+#### 4. Firebase con Persistencia Condicional ✅ corregido
 
 ```typescript
-// lib/firebase.ts - Reemplazar línea 15
+// lib/firebase.ts - ✅ aplicado
 const app = initializeApp(firebaseConfig);
 
 // Deshabilitar persistencia en Android/Chrome para evitar IndexedDB blocking
@@ -561,7 +564,7 @@ self.addEventListener("fetch", (event) => {
 - [ ] **No regressions** en desktop (FCP desktop < 1s)
 - [ ] **Bundle size** reducido en >30% (quitar puppeteer, code-splitting)
 - [ ] **Time to Interactive < 3.5s** en 4G lento
-- [ ] **No IndexedDB warnings** en Lighthouse
+- [ ] **No IndexedDB warnings** en Lighthouse (pendiente de re-test)
 - [ ] **Puppeteer** solo en devDependencies
 
 ### Métricas a Monitorear
