@@ -1,7 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, LazyMotion, m } from 'framer-motion';
 import { Link as RouterLink } from 'react-router-dom';
 import { Link as ScrollLink } from 'react-scroll';
+
+// Lazy load animation features (P1#6 Framer-Motion Code Split)
+const loadFeatures = () => import('framer-motion').then(res => res.domAnimation);
 
 interface HeroSectionProps {
   setRef: (ref: HTMLElement | null) => void;
@@ -70,130 +73,132 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
       ref={sectionRef}
       className="landing-anchor-section flex items-center justify-center relative bg-gradient-1 overflow-hidden"
     >
-      <motion.div
-        className="container mx-auto px-4 text-center z-10"
-        style={{ opacity: heroOpacity }}
-      >
-        <motion.div
-          className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-gray-300 lg:backdrop-blur-sm"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+      <LazyMotion features={loadFeatures}>
+        <m.div
+          className="container mx-auto px-4 text-center z-10"
+          style={{ opacity: heroOpacity }}
         >
-          <span className="h-2 w-2 rounded-full bg-[#00CCFF] shadow-[0_0_10px_rgba(0,204,255,0.8)]" />
-          <span className="font-medium">Diseñamos el futuro de tu negocio</span>
-        </motion.div>
-
-        <motion.div
-          className="mb-6"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.15 }}
-        >
-          <div className="mb-4">
-            <span className="gradient-text font-rajdhani font-semibold text-lg md:text-xl tracking-[0.22em] uppercase">
-              TuWeb.ai
-            </span>
-          </div>
-
-          <h1 className="font-rajdhani font-bold text-4xl md:text-6xl xl:text-7xl leading-tight max-w-5xl mx-auto">
-            <span className="text-white">Desarrollo web profesional para negocios que quieren </span>
-            <span className="gradient-text">vender mejor online</span>
-          </h1>
-        </motion.div>
-
-        <motion.div
-          className="font-rajdhani text-lg md:text-2xl text-gray-300 mb-10 min-h-[5rem] md:min-h-[3.5rem] max-w-4xl mx-auto"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-        >
-          <AnimatePresence mode="wait">
-            <motion.p
-              key={heroMessages[activeMessageIndex]}
-              className="mx-auto max-w-4xl text-gray-300"
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.35, ease: 'easeInOut' }}
-            >
-              {heroMessages[activeMessageIndex]}
-            </motion.p>
-          </AnimatePresence>
-        </motion.div>
-
-        <motion.div
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.45 }}
-        >
-          <RouterLink
-            to="/consulta"
-            className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-7 py-3 text-white font-semibold shadow-[0_10px_30px_rgba(0,204,255,0.22)] transition-transform duration-300 hover:scale-[1.02]"
+          <m.div
+            className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-gray-300 lg:backdrop-blur-sm"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
           >
-            Contar mi proyecto
-          </RouterLink>
+            <span className="h-2 w-2 rounded-full bg-[#00CCFF] shadow-[0_0_10px_rgba(0,204,255,0.8)]" />
+            <span className="font-medium">Diseñamos el futuro de tu negocio</span>
+          </m.div>
 
-          <ScrollLink
-            to="showroom"
-            spy={true}
-            smooth={true}
-            offset={-70}
-            duration={1000}
-            className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-7 py-3 text-gray-200 font-medium lg:backdrop-blur-sm transition-colors duration-300 hover:border-[#00CCFF]/50 hover:text-white cursor-pointer"
+          <m.div
+            className="mb-6"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.15 }}
           >
-            Ver proyectos reales
-          </ScrollLink>
-        </motion.div>
+            <div className="mb-4">
+              <span className="gradient-text font-rajdhani font-semibold text-lg md:text-xl tracking-[0.22em] uppercase">
+                TuWeb.ai
+              </span>
+            </div>
 
-        <motion.div
-          className="flex flex-wrap items-center justify-center gap-3 text-sm text-gray-300"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-        >
-          <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2">Sitios corporativos</span>
-          <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2">E-commerce</span>
-          <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2">Sistemas web</span>
-        </motion.div>
+            <h1 className="font-rajdhani font-bold text-4xl md:text-6xl xl:text-7xl leading-tight max-w-5xl mx-auto">
+              <span className="text-white">Desarrollo web profesional para negocios que quieren </span>
+              <span className="gradient-text">vender mejor online</span>
+            </h1>
+          </m.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.75 }}
-          className="mt-10"
-        >
-          <ScrollLink
-            to="philosophy"
-            spy={true}
-            smooth={true}
-            offset={-70}
-            duration={1000}
-            className="inline-flex items-center cursor-pointer"
+          <m.div
+            className="font-rajdhani text-lg md:text-2xl text-gray-300 mb-10 min-h-[5rem] md:min-h-[3.5rem] max-w-4xl mx-auto"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
           >
-            <motion.span
-              className="mr-2 text-gray-300"
-              whileHover={{ color: '#00CCFF' }}
-              animate={{ y: [0, 5, 0] }}
-              transition={{ duration: 2, repeat: Infinity }}
+            <AnimatePresence mode="wait">
+              <m.p
+                key={heroMessages[activeMessageIndex]}
+                className="mx-auto max-w-4xl text-gray-300"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.35, ease: 'easeInOut' }}
+              >
+                {heroMessages[activeMessageIndex]}
+              </m.p>
+            </AnimatePresence>
+          </m.div>
+
+          <m.div
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.45 }}
+          >
+            <RouterLink
+              to="/consulta"
+              className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-7 py-3 text-white font-semibold shadow-[0_10px_30px_rgba(0,204,255,0.22)] transition-transform duration-300 hover:scale-[1.02]"
             >
-              Conocer como trabajamos
-            </motion.span>
-            <motion.svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6 text-[#00CCFF]"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              animate={{ y: [0, 5, 0] }}
-              transition={{ duration: 2, repeat: Infinity }}
+              Contar mi proyecto
+            </RouterLink>
+
+            <ScrollLink
+              to="showroom"
+              spy={true}
+              smooth={true}
+              offset={-70}
+              duration={1000}
+              className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-7 py-3 text-gray-200 font-medium lg:backdrop-blur-sm transition-colors duration-300 hover:border-[#00CCFF]/50 hover:text-white cursor-pointer"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-            </motion.svg>
-          </ScrollLink>
-        </motion.div>
-      </motion.div>
+              Ver proyectos reales
+            </ScrollLink>
+          </m.div>
+
+          <m.div
+            className="flex flex-wrap items-center justify-center gap-3 text-sm text-gray-300"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+          >
+            <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2">Sitios corporativos</span>
+            <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2">E-commerce</span>
+            <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2">Sistemas web</span>
+          </m.div>
+
+          <m.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.75 }}
+            className="mt-10"
+          >
+            <ScrollLink
+              to="philosophy"
+              spy={true}
+              smooth={true}
+              offset={-70}
+              duration={1000}
+              className="inline-flex items-center cursor-pointer"
+            >
+              <m.span
+                className="mr-2 text-gray-300"
+                whileHover={{ color: '#00CCFF' }}
+                animate={{ y: [0, 5, 0] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                Conocer como trabajamos
+              </m.span>
+              <m.svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 text-[#00CCFF]"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                animate={{ y: [0, 5, 0] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+              </m.svg>
+            </ScrollLink>
+          </m.div>
+        </m.div>
+      </LazyMotion>
 
       {children && (
         <div className="absolute inset-x-0 bottom-24 z-20 pointer-events-none">
