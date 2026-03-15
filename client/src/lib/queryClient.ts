@@ -49,6 +49,9 @@ export const queryClient = new QueryClient({
       refetchOnWindowFocus: false,
       retry: 1,
       staleTime: 5 * 60 * 1000,
+      // Backoff exponencial: evita hammer al servidor en red degradada (Android)
+      // intento 0 → 1s, intento 1 → 2s, cap en 30s
+      retryDelay: (attempt: number) => Math.min(1_000 * 2 ** attempt, 30_000),
     },
   },
 });
