@@ -187,7 +187,7 @@ Aunque el code splitting está configurado, framer-motion se importa de forma ea
 
 ### 4.4 Falta de Loading State Inicial
 
-El `index.html` tiene un `<div id="root"></div>` vacío sin skeleton o spinner inicial. Esto significa que los usuarios ven pantalla completamente blanca hasta que React hidrata.
+El `index.html` ya incluye un skeleton inicial en el `#root`. Esto evita la pantalla blanca mientras React hidrata. ✅ corregido
 
 ---
 
@@ -244,7 +244,7 @@ FCP LÍMITE: 10000ms (Lighthouse timeout)
 | Auth state bloquea render ✅ corregido  | client/src/features/auth/context/AuthContext.tsx  | 149-201   | P1        |
 | localStorage sync access    | client/src/core/theme/ThemeContext.tsx | 23, 37    | P2        |
 | Scroll-snap bloqueante ✅ corregido | client/src/index.css                 | 44, 54-56 | P2        |
-| No loading skeleton inicial | client/index.html                    | 125       | P1        |
+| No loading skeleton inicial ✅ corregido | client/index.html                    | 125       | P1        |
 
 ### 7.2 Problemas de Bundle
 
@@ -318,7 +318,7 @@ html {
 
 | #   | Fix                                               | Archivo(s)               | Estimado |
 | --- | ------------------------------------------------- | ------------------------ | -------- |
-| 1   | **Agregar loading skeleton en index.html**        | client/index.html        | 2h       |
+| 1   | **Agregar loading skeleton en index.html** ✅ corregido | client/index.html        | 2h       |
 | 2   | **Mover puppeteer a devDependencies**             | package.json             | 15min    |
 | 3   | **Deshabilitar persistencia Firebase en Android** | lib/firebase.ts          | 1h       |
 | 4   | **Hacer AuthProvider non-blocking** ✅ corregido  | contexts/AuthContext.tsx | 4h       |
