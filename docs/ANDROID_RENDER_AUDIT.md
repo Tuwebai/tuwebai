@@ -52,7 +52,7 @@ El problema NO son las imágenes (315KB, 173KB, 79KB) ni el backend. La causa ra
 | 4   | **Framer-motion importado en 41+ archivos**                            | P1        | .tsx (múltiples)                                 | -         |
 | 5   | **Firebase initialization síncrona** (persistencia Android mitigada)   | P1        | client/src/lib/firebase.ts                       | 15        |
 | 6   | **AuthProvider bloquea render con onAuthStateChanged** ✅ corregido     | P1        | client/src/features/auth/context/AuthContext.tsx | 149-201   |
-| 7   | **ThemeProvider accede localStorage sincrónicamente**                  | P2        | client/src/core/theme/ThemeContext.tsx           | 23, 37    |
+| 7   | **ThemeProvider accede localStorage sincrónicamente** ✅ mitigado (guardas SSR-safe) | P2        | client/src/core/theme/ThemeContext.tsx           | 23, 37    |
 | 8   | **Scroll-snap CSS bloqueante** ✅ corregido                             | P2        | index.css                                        | 44, 54-56 |
 | 9   | **react-typewriter-effect carga lazy pero con delay fijo**             | P2        | hero-section.tsx                                 | 68-89     |
 | 10  | **Recharts en bundle aunque no se use en home** ✅ cerrado (no existe en repo actual) | P2        | chart.tsx                                        | 2         |
@@ -89,7 +89,7 @@ El problema NO son las imágenes (315KB, 173KB, 79KB) ni el backend. La causa ra
 │    ├── import { AuthProvider } from '@/features/auth/context/AuthContext'   │
 │    │   └── useEffect con onAuthStateChanged [ASYNC, no bloquea render] ✅   │
 │    ├── import { ThemeProvider } from '@/core/theme/ThemeContext' │
-│    │   └── localStorage.getItem('theme') [BLOQUEANTE sync]     │
+│    │   └── acceso a localStorage guardado con SSR-safe ✅       │
 │    └── import { lazy, Suspense } from 'react'                  │
 │        └── PERO hero-section.tsx importa motion de framer-motion│
 │            de forma EAGER (no lazy)                            │
@@ -223,7 +223,7 @@ TIEMPO (ms)    EVENTO                                    IMPACTO
 +150           QueryClient inicializado                  OK
 +200           Firebase importado (lazy)                 OK
 +250           AuthProvider montado                      OK
-+300           ThemeProvider accede localStorage         LEVE BLOQUEO
++300           ThemeProvider accede localStorage (SSR-safe) ✅
 +400           startWebVitalsTracking() ejecuta          BLOQUEO Android
 +500           Scroll-snap CSS aplicado                  BLOQUE RENDER
 +600           Framer-motion importado                   PARSE 60KB
@@ -250,7 +250,7 @@ FCP LÍMITE: 10000ms (Lighthouse timeout)
 | ------------------------------------------- | ------------------------------------------------ | --------- | --------- |
 | Firebase init síncrono (IndexedDB mitigado) | client/src/lib/firebase.ts                       | 15        | P1        |
 | Auth state bloquea render ✅ corregido       | client/src/features/auth/context/AuthContext.tsx | 149-201   | P1        |
-| localStorage sync access                    | client/src/core/theme/ThemeContext.tsx           | 23, 37    | P2        |
+| localStorage sync access ✅ mitigado        | client/src/core/theme/ThemeContext.tsx           | 23, 37    | P2        |
 | Scroll-snap bloqueante ✅ corregido          | client/src/index.css                             | 44, 54-56 | P2        |
 | No loading skeleton inicial ✅ corregido     | client/index.html                                | 125       | P1        |
 
@@ -349,7 +349,7 @@ html {
 | --- | ------------------------------------------- | ------------------------ | -------- |
 | 6   | Code-split framer-motion por ruta ✅ parcial (Home lazy) | vite.config.ts + App.tsx | 4h       |
 | 7   | Lazy load recharts solo en página dashboard ✅ cerrado | chart.tsx                | 1h       |
-| 8   | Optimizar ThemeProvider con SSR-safe        | ThemeContext.tsx         | 2h       |
+| 8   | Optimizar ThemeProvider con SSR-safe ✅ corregido | ThemeContext.tsx         | 2h       |
 | 9   | Agregar timeout a Firebase auth             | AuthContext.tsx          | 2h       |
 | 10  | Preconnect y preload críticos               | index.html               | 1h       |
 
