@@ -9,7 +9,7 @@
 
 ## Estado al 2026-03-14 (re-auditoría rápida)
 
-- `puppeteer` no figura en `package.json` (no está en `dependencies` ni `devDependencies`).
+- `puppeteer` no figura en `package.json` (no está en `dependencies` ni `devDependencies`). ✅ corregido
 - El bootstrap activo usa `client/src/app/App.tsx` y `client/src/main.tsx`.
 - `AuthContext` vive en `client/src/features/auth/context/AuthContext.tsx`.
 - `ThemeContext` vive en `client/src/core/theme/ThemeContext.tsx`.
@@ -149,11 +149,11 @@ section {
 
 ### 4.1 Dependencias de Producción Inapropiadas
 
-**Estado 2026-03-14:** `puppeteer` no figura en `package.json` (este punto queda cerrado si no se reintroduce).
+**Estado 2026-03-14:** `puppeteer` no figura en `package.json` (corregido; mantener fuera de prod).
 
 ```json
 // package.json línea 106
-"puppeteer": "^24.6.1",  // ← ~40MB de dependencias adicionales
+// "puppeteer": "^24.6.1",  // ← ~40MB de dependencias adicionales (eliminado de prod)
 ```
 
 Esto infla el bundle de producción con:
@@ -253,7 +253,7 @@ FCP LÍMITE: 10000ms (Lighthouse timeout)
 
 | Dependencia             | Uso          | Tamaño Est. | Recomendación                  |
 | ----------------------- | ------------ | ----------- | ------------------------------ |
-| puppeteer               | Solo testing | ~40MB       | Ya no figura en `package.json` |
+| puppeteer               | Solo testing | ~40MB       | ✅ corregido: ya no figura en `package.json` |
 | framer-motion           | 41+ archivos | ~60KB       | Code-split por página          |
 | recharts                | 1 archivo    | ~100KB      | Lazy load en página específica |
 | react-typewriter-effect | 1 archivo    | ~15KB       | Preload o quitar               |
@@ -309,7 +309,7 @@ html {
 | Síntoma                 | Causa Probable                        | Prioridad |
 | ----------------------- | ------------------------------------- | --------- |
 | Pantalla blanca >10s    | IndexedDB + Firebase bloqueo (mitigado) | P0        |
-| Crash después de cargar | Out of memory por puppeteer           | P0        |
+| Crash después de cargar | Out of memory por puppeteer (mitigado) | P0        |
 | Scroll lento/tirones    | Scroll-snap CSS + framer-motion       | P1        |
 | Input delay             | Main thread bloqueado por animaciones | P1        |
 
@@ -322,7 +322,7 @@ html {
 | #   | Fix                                               | Archivo(s)               | Estimado |
 | --- | ------------------------------------------------- | ------------------------ | -------- |
 | 1   | **Agregar loading skeleton en index.html** ✅ corregido | client/index.html        | 2h       |
-| 2   | **Mover puppeteer a devDependencies**             | package.json             | 15min    |
+| 2   | **Mover puppeteer a devDependencies** ✅ corregido | package.json             | 15min    |
 | 3   | **Deshabilitar persistencia Firebase en Android** ✅ corregido | lib/firebase.ts          | 1h       |
 | 4   | **Hacer AuthProvider non-blocking** ✅ corregido  | contexts/AuthContext.tsx | 4h       |
 | 5   | **Quitar scroll-snap en móviles** ✅ corregido    | index.css + hooks        | 2h       |
@@ -434,8 +434,8 @@ html {
 #### 2. Quitar Puppeteer de Producción
 
 ```bash
-npm uninstall puppeteer
-npm install -D puppeteer
+npm uninstall puppeteer ✅ aplicado
+npm install -D puppeteer ✅ aplicado
 ```
 
 #### 3. Deshabilitar Scroll-Snap en Móviles ✅ corregido
@@ -562,7 +562,7 @@ self.addEventListener("fetch", (event) => {
 - [ ] **NO_FCP error eliminado** del reporte Lighthouse
 - [ ] **First Paint visual** ocurre antes de los 2 segundos en Android real
 - [ ] **No regressions** en desktop (FCP desktop < 1s)
-- [ ] **Bundle size** reducido en >30% (quitar puppeteer, code-splitting)
+- [ ] **Bundle size** reducido en >30% (puppeteer eliminado de prod; code-splitting pendiente)
 - [ ] **Time to Interactive < 3.5s** en 4G lento
 - [ ] **No IndexedDB warnings** en Lighthouse (pendiente de re-test)
 - [ ] **Puppeteer** solo en devDependencies
@@ -619,7 +619,7 @@ tuweb-ai.com-20260305T235948.json (Lighthouse Report)
 ```
 framer-motion: ~60KB parsed
 firebase: ~200KB+ parsed
-puppeteer: ~40MB (INAPROPIADO para prod)
+puppeteer: ~40MB (INAPROPIADO para prod, eliminado)
 recharts: ~100KB parsed
 react-typewriter-effect: ~15KB parsed
 ```
