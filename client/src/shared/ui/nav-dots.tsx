@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
 import { scrollToHomeSection } from '@/features/marketing-home/utils/scroll-to-home-section';
 
 interface Section {
@@ -65,16 +64,13 @@ export default function NavDots({ sections }: NavDotsProps) {
               }
             }}
           >
-            <motion.div
+            <span
               className={`h-2 w-2 rounded-full transition-all duration-300 hover:bg-[#9933FF] cursor-pointer ${
                 activeSection === section.id
-                  ? 'bg-[#00CCFF] shadow-[0_0_8px_rgba(0,204,255,0.8)]'
+                  ? 'bg-[#00CCFF] shadow-[0_0_8px_rgba(0,204,255,0.8)] scale-[1.3]'
                   : 'bg-gray-500'
               }`}
-              whileHover={{ scale: 1.3 }}
-              animate={{
-                scale: activeSection === section.id ? 1.3 : 1
-              }}
+              aria-hidden="true"
             />
           </a>
           <span className="opacity-0 group-hover:opacity-100 absolute right-full mr-2 text-white text-xs whitespace-nowrap transition-opacity duration-300 pointer-events-none">

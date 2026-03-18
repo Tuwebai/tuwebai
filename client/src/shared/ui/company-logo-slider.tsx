@@ -1,5 +1,3 @@
-import { motion } from 'framer-motion';
-
 import { useIntersectionObserver } from '@/core/hooks/use-intersection-observer';
 
 interface CompanyLogoSliderProps {
@@ -32,18 +30,12 @@ const featuredProjects = [
 export default function CompanyLogoSlider({ className = '' }: CompanyLogoSliderProps) {
   const { ref, hasIntersected } = useIntersectionObserver();
 
-  const containerVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
-  };
-
   return (
-    <motion.div
+    <div
       ref={ref as React.RefObject<HTMLDivElement>}
-      className={`w-full py-8 ${className}`}
-      initial="hidden"
-      animate={hasIntersected ? "visible" : "hidden"}
-      variants={containerVariants}
+      className={`w-full py-8 transform-gpu transition-all duration-700 ease-out ${
+        hasIntersected ? 'translate-y-0 opacity-100' : 'translate-y-5 opacity-0'
+      } ${className}`}
     >
       <div className="max-w-6xl mx-auto px-4">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 place-items-center">
@@ -61,6 +53,6 @@ export default function CompanyLogoSlider({ className = '' }: CompanyLogoSliderP
           ))}
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }

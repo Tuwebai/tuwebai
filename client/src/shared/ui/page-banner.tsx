@@ -1,6 +1,5 @@
-import { motion } from 'framer-motion';
-
 import AnimatedShape from '@/shared/ui/animated-shape';
+import RevealBlock from '@/shared/ui/reveal-block';
 
 interface PageBannerProps {
   title: string;
@@ -21,10 +20,10 @@ export default function PageBanner({ title, subtitle, showShapes = true, classNa
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+          <RevealBlock
+            hiddenClassName="opacity-0 translate-y-8"
+            visibleClassName="opacity-100 translate-y-0"
+            durationMs={800}
           >
             <h1 className="font-rajdhani font-bold text-4xl md:text-6xl mb-6">
               <span className="gradient-text">{title}</span>
@@ -35,7 +34,7 @@ export default function PageBanner({ title, subtitle, showShapes = true, classNa
                 {subtitle}
               </p>
             )}
-          </motion.div>
+          </RevealBlock>
         </div>
       </div>
     </section>
