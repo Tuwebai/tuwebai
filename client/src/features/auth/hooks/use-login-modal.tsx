@@ -1,6 +1,7 @@
 import React, { createContext, lazy, Suspense, useContext, useState } from 'react';
 
 const LoginModal = lazy(() => import('@/features/auth/components/LoginModal'));
+const LoginModalAuthRuntime = lazy(() => import('@/features/auth/components/login-modal-auth-runtime'));
 
 interface LoginModalContextType {
   isOpen: boolean;
@@ -14,8 +15,14 @@ const LoginModalContext = createContext<LoginModalContextType>({
   closeModal: () => {},
 });
 
-export const LoginModalProvider: React.FC<{ children: React.ReactNode }> = ({
+interface LoginModalProviderProps {
+  children: React.ReactNode;
+  mountAuthProvider?: boolean;
+}
+
+export const LoginModalProvider: React.FC<LoginModalProviderProps> = ({
   children,
+  mountAuthProvider = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [redirectUrl, setRedirectUrl] = useState<string | undefined>(undefined);
@@ -39,12 +46,21 @@ export const LoginModalProvider: React.FC<{ children: React.ReactNode }> = ({
       {children}
       {isOpen ? (
         <Suspense fallback={null}>
-          <LoginModal
-            isOpen={isOpen}
-            onClose={closeModal}
-            redirectUrl={redirectUrl}
-            defaultMode={defaultMode}
-          />
+          {mountAuthProvider ? (
+            <LoginModalAuthRuntime
+              isOpen={isOpen}
+              onClose={closeModal}
+              redirectUrl={redirectUrl}
+              defaultMode={defaultMode}
+            />
+          ) : (
+            <LoginModal
+              isOpen={isOpen}
+              onClose={closeModal}
+              redirectUrl={redirectUrl}
+              defaultMode={defaultMode}
+            />
+          )}
         </Suspense>
       ) : null}
     </LoginModalContext.Provider>

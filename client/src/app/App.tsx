@@ -248,8 +248,11 @@ function AppShell() {
 }
 
 export default function App() {
+  const location = useLocation();
+  const authMode = shouldUseAuthenticatedShell(location.pathname) ? 'authenticated' : 'public';
+
   return (
-    <AppProviders>
+    <AppProviders authMode={authMode}>
       <AppShell />
     </AppProviders>
   );
