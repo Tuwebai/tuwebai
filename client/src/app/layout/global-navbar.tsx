@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
 
 import { useIsMobile } from '@/core/hooks/use-mobile';
 import { useAuthActions, useAuthState } from '@/features/auth/context/AuthContext';
@@ -313,15 +312,10 @@ export default function GlobalNavbar() {
         </div>
       </header>
 
-      <AnimatePresence>
-        {isMenuOpen && (
-          <motion.div
-            className="fixed inset-0 bg-[#0a0a0f] z-50 overflow-y-auto"
-            initial={{ opacity: 0, x: "100%" }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: "100%" }}
-            transition={{ duration: 0.3 }}
-          >
+      {isMenuOpen ? (
+        <div
+          className="fixed inset-0 z-50 overflow-y-auto bg-[#0a0a0f] transition-transform duration-300 ease-out translate-x-0 opacity-100"
+        >
             <div className="min-h-screen flex flex-col">
               <div className="flex justify-between items-center p-4 border-b border-gray-800">
                 <Link to="/" className="text-2xl font-rajdhani font-bold" onClick={() => setIsMenuOpen(false)}>
@@ -513,9 +507,8 @@ export default function GlobalNavbar() {
                 </div>
               </div>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </div>
+      ) : null}
     </>
   );
 }
