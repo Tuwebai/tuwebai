@@ -10,7 +10,7 @@ interface ComparisonRow {
 }
 
 interface ComparisonSectionProps {
-  setRef: (ref: HTMLElement | null) => void;
+  setRef?: (ref: HTMLElement | null) => void;
 }
 
 const comparisonRows: ComparisonRow[] = [
@@ -84,7 +84,7 @@ export default function ComparisonSection({ setRef }: ComparisonSectionProps) {
   const { ref: titleRef, hasIntersected: titleVisible } = useIntersectionObserver<HTMLDivElement>();
   const { ref: boardRef, hasIntersected: boardVisible } = useIntersectionObserver<HTMLDivElement>();
 
-  if (sectionRef.current && !sectionRef.current.hasAttribute('data-ref-set')) {
+  if (setRef && sectionRef.current && !sectionRef.current.hasAttribute('data-ref-set')) {
     setRef(sectionRef.current);
     sectionRef.current.setAttribute('data-ref-set', 'true');
   }

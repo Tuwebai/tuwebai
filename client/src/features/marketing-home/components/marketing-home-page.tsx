@@ -13,7 +13,6 @@ const ImpactSection = lazy(() => import('@/features/marketing-home/components/im
 const TestimonialsSection = lazy(() => import('@/features/testimonials/components/testimonials-section'));
 const ContactSection = lazy(() => import('@/features/contact/components/contact-section'));
 const PricingSection = lazy(() => import('@/features/payments/components/pricing-section'));
-const ComparisonSection = lazy(() => import('@/features/marketing-home/components/comparison-section'));
 const ShowroomSection = lazy(() => import('@/features/marketing-home/components/showroom-section'));
 const CompanyLogoSlider = lazy(() => import('@/shared/ui/company-logo-slider'));
 
@@ -95,7 +94,6 @@ export default function MarketingHomePage() {
 
         {showDeferredSections ? (
           <Suspense fallback={null}>
-            <ComparisonSection setRef={(ref: HTMLElement | null) => setSectionRef('comparison', ref)} />
             <ShowroomSection setRef={(ref: HTMLElement | null) => setSectionRef('showroom', ref)} />
             <PricingSection setRef={(ref: HTMLElement | null) => setSectionRef('pricing', ref)} />
 
