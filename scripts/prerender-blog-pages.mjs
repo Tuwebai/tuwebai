@@ -337,24 +337,6 @@ async function main() {
   const publicPosts = posts.filter((post) => !post.noindex);
   const indexHtml = await fs.readFile(path.join(distDir, 'index.html'), 'utf8');
 
-  const homePrerenderHtml = applyHeadMetadata(
-    injectPrerenderContent(indexHtml, renderHomePageContent()),
-    {
-      title: 'TuWeb.ai - Desarrollo Web Profesional para Negocios en Argentina',
-      description:
-        'Desarrollamos sitios web, e-commerce y sistemas web para negocios que necesitan una presencia digital profesional, confiable y preparada para vender.',
-      keywords:
-        'desarrollo web argentina, desarrollo web profesional, sitios web para negocios, ecommerce argentina, sistemas web, diseño web profesional, TuWeb.ai',
-      robots: 'index, follow',
-      url: siteUrl,
-      ogType: 'website',
-      ogImage: defaultOgImage,
-      structuredData: buildHomeStructuredData(),
-    },
-  );
-
-  await fs.writeFile(path.join(distDir, 'index.html'), homePrerenderHtml, 'utf8');
-
   const blogIndexHtml = applyHeadMetadata(
     injectPrerenderContent(indexHtml, renderListPageContent(publicPosts)),
     {
@@ -391,9 +373,8 @@ async function main() {
 
   await fs.writeFile(path.join(distDir, 'sitemap.xml'), buildSitemapXml(posts), 'utf8');
 
-  console.log(`Prerender home + blog completado: ${publicPosts.length} articulo(s) y sitemap actualizado.`);
+  console.log(`Prerender blog completado: ${publicPosts.length} articulo(s) y sitemap actualizado.`);
 }
-
 main().catch((error) => {
   console.error(error);
   process.exitCode = 1;

@@ -1,4 +1,4 @@
-import { createRoot } from "react-dom/client";
+import { createRoot, hydrateRoot } from "react-dom/client";
 import { BrowserRouter, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { QueryClientProvider } from "@tanstack/react-query";
@@ -44,12 +44,25 @@ function AppWithScrollReset() {
   );
 }
 
-createRoot(document.getElementById("root")!).render(
+const rootElement = document.getElementById("root");
+
+if (!rootElement) {
+  throw new Error("No se encontro el nodo root para montar la aplicacion");
+}
+
+const appTree = (
   <QueryClientProvider client={queryClient}>
     <BrowserRouter>
       <AppWithScrollReset />
     </BrowserRouter>
-  </QueryClientProvider>,
+  </QueryClientProvider>
 );
+
+if (rootElement.dataset.prerender === "react-app" && rootElement.hasChildNodes()) {
+  hydrateRoot(rootElement, appTree);
+} else {
+  rootElement.innerHTML = "";
+  createRoot(rootElement).render(appTree);
+}
 
 startWebVitalsTracking();

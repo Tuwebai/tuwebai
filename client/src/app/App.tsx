@@ -29,7 +29,9 @@ function AppShell() {
   const isPrivacyResolved = !isAuthenticated || !isLoadingPrivacy;
   const canTrackAnalytics = !isLoading && isPrivacyResolved && (!isAuthenticated || privacySettings.analyticsConsent);
 
-  (window as Window & { isUsingGlobalNav?: boolean }).isUsingGlobalNav = shouldUseGlobalNav;
+  if (typeof window !== 'undefined') {
+    (window as Window & { isUsingGlobalNav?: boolean }).isUsingGlobalNav = shouldUseGlobalNav;
+  }
 
   useEffect(() => {
     analytics.setConsent(canTrackAnalytics);

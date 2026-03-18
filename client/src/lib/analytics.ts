@@ -1,4 +1,4 @@
-const isDev = import.meta.env.DEV;
+const isDev = Boolean(import.meta.env?.DEV);
 const GTAG_SCRIPT_ID = 'tuwebai-gtag-script';
 const isLocalEnvironment = () =>
   typeof window !== 'undefined' &&

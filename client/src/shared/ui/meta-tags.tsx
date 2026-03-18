@@ -28,7 +28,7 @@ const MetaTags: React.FC<MetaTagsProps> = ({
   description,
   keywords,
   image = '/logo-tuwebai.png',
-  url = window.location.href,
+  url = typeof window !== 'undefined' ? window.location.href : TUWEBAI_SITE_FULL_URL,
   type = 'website',
   twitterCard = 'summary_large_image',
   ogImage,

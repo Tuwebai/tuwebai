@@ -2,13 +2,13 @@ import { Suspense, lazy, useEffect, useState } from 'react';
 import { useHomeSectionNavigation } from '@/features/marketing-home/hooks/use-home-section-navigation';
 import { runWhenIdle } from '@/lib/performance';
 
-const HeroSection = lazy(() => import('@/features/marketing-home/components/hero-section'));
+import HeroSection from '@/features/marketing-home/components/hero-section';
 const NavDots = lazy(() => import('@/shared/ui/nav-dots'));
 const WhatsAppButton = lazy(() => import('@/shared/ui/whatsapp-button'));
 const ScrollProgress = lazy(() => import('@/shared/ui/scroll-progress'));
-const PhilosophySection = lazy(() => import('@/features/marketing-home/components/philosophy-section'));
-const ServicesSection = lazy(() => import('@/features/marketing-home/components/services-section'));
-const ProcessSection = lazy(() => import('@/features/marketing-home/components/process-section'));
+import PhilosophySection from '@/features/marketing-home/components/philosophy-section';
+import ServicesSection from '@/features/marketing-home/components/services-section';
+import ProcessSection from '@/features/marketing-home/components/process-section';
 const ImpactSection = lazy(() => import('@/features/marketing-home/components/impact-section'));
 const TestimonialsSection = lazy(() => import('@/features/testimonials/components/testimonials-section'));
 const ContactSection = lazy(() => import('@/features/contact/components/contact-section'));
@@ -85,24 +85,9 @@ export default function MarketingHomePage() {
       ) : null}
 
       <main id="main-content" className="landing-scroll-shell relative">
-        <Suspense
-          fallback={
-            <section id="intro" className="landing-anchor-section flex items-center justify-center relative bg-gradient-1 overflow-hidden">
-              <div className="container mx-auto px-4 text-center z-10">
-                <h1 className="font-rajdhani font-bold text-5xl md:text-7xl mb-2">
-                  <span className="gradient-text">TuWeb.ai</span>
-                </h1>
-                <p className="font-rajdhani text-xl md:text-3xl text-gray-300 mb-12">
-                  Desarrollo web profesional para negocios que quieren vender mejor online
-                </p>
-              </div>
-            </section>
-          }
-        >
-          <HeroSection setRef={(ref: HTMLElement | null) => setSectionRef('intro', ref)} />
-        </Suspense>
+        <HeroSection setRef={(ref: HTMLElement | null) => setSectionRef('intro', ref)} />
 
-        <Suspense fallback={<div className="landing-anchor-section flex items-center justify-center"><div className="w-8 h-8 rounded-full border-4 border-[#00CCFF] border-t-transparent animate-spin"></div></div>}>
+        <Suspense fallback={null}>
           <PhilosophySection setRef={(ref: HTMLElement | null) => setSectionRef('philosophy', ref)} />
           <ServicesSection setRef={(ref: HTMLElement | null) => setSectionRef('services', ref)} />
           <ProcessSection setRef={(ref: HTMLElement | null) => setSectionRef('process', ref)} />
