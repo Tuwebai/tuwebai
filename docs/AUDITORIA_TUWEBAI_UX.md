@@ -155,7 +155,7 @@ Prueba social robusta: Incluir testimonios en video o citas con nombre y foto, l
 
 Indicadores de confianza: Agregar badges de garantías (“Satisfacción garantizada”, “Más de X proyectos entregados”), certificaciones (Google Partner, Meta Ads) o alianzas estratégicas.
 
-Recursos educativos: Añadir un blog o sección de recursos con artículos sobre optimización de conversión, marketing local y diseño de landing pages. Estos contenidos educan a los clientes, posicionan a la agencia como autoridad y ayudan al SEO.
+Recursos educativos: Añadir un blog o sección de recursos con artículos sobre optimización de conversión, marketing local y diseño de landing pages. Estos contenidos educan a los clientes, posicionan a la agencia como autoridad y ayudan al SEO. ✅ Corregido en el repo actual con `/blog` y el primer artículo cargado desde `docs-blogs/articulo1.md`.
 
 FAQ orientado a resultados: Incorporar preguntas frecuentes que respondan dudas típicas: tiempos de entrega, herramientas utilizadas, qué se espera del cliente, costos adicionales, etc.
 
@@ -237,7 +237,7 @@ Proceso y prueba social: Mostrar el método de trabajo seguido de casos de éxit
 
 Planes y contacto: Ubicar los planes de precios antes de la sección de contacto, para que el visitante vea alternativas y decida si solicitar la consulta.
 
-Contenido de soporte: Incluir recursos (blog, FAQs) en la parte inferior o en el pie de página para visitantes que necesiten más información.
+Contenido de soporte: Incluir recursos (blog, FAQs) en la parte inferior o en el pie de página para visitantes que necesiten más información. ✅ Corregido en el repo actual con acceso al blog desde navegación y footer.
 
 11. Recomendaciones para que el sitio comunique mejor el valor de la agencia
 

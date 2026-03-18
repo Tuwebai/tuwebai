@@ -17,6 +17,8 @@ const MarketingPositioningPage = lazy(() => import('@/app/router/services/market
 const MarketingAutomationPage = lazy(() => import('@/app/router/services/marketing-automation-page'));
 
 const FaqPage = lazy(() => import('@/app/router/knowledge/faq-page'));
+const BlogPage = lazy(() => import('@/app/router/blog/blog-page'));
+const BlogArticlePage = lazy(() => import('@/app/router/blog/blog-article-page'));
 const TeamPage = lazy(() => import('@/app/router/company/team-page'));
 const VacanciesPage = lazy(() => import('@/app/router/company/vacancies-page'));
 const TechnologiesPage = lazy(() => import('@/app/router/knowledge/technologies-page'));
@@ -48,6 +50,8 @@ export default function AppRoutes() {
       <Route path="/servicios/automatizacion-marketing" element={<LazyRoute><MarketingAutomationPage /></LazyRoute>} />
 
       <Route path="/faq" element={<LazyRoute><FaqPage /></LazyRoute>} />
+      <Route path="/blog" element={<LazyRoute><BlogPage /></LazyRoute>} />
+      <Route path="/blog/:slug" element={<LazyRoute><BlogArticlePage /></LazyRoute>} />
       <Route path="/equipo" element={<LazyRoute><TeamPage /></LazyRoute>} />
       <Route path="/vacantes" element={<LazyRoute><VacanciesPage /></LazyRoute>} />
       <Route path="/tecnologias" element={<LazyRoute><TechnologiesPage /></LazyRoute>} />

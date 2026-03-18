@@ -1,10 +1,77 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
+import type { Plugin } from "vite";
+
+import { buildBlogPosts } from "./scripts/blog-content-utils.mjs";
+
+const BLOG_VIRTUAL_MODULE_ID = "virtual:blog-posts";
+const RESOLVED_BLOG_VIRTUAL_MODULE_ID = `\0${BLOG_VIRTUAL_MODULE_ID}`;
+
+function blogContentPlugin(): Plugin {
+  const docsDir = path.resolve(__dirname, "./docs-blogs");
+  const markdownGlob = path.join(docsDir, "**/*.md");
+  const isBlogContentFile = (file: string) => file.startsWith(docsDir) && file.endsWith(".md");
+
+  return {
+    name: "tuwebai-blog-content",
+    resolveId(id) {
+      if (id === BLOG_VIRTUAL_MODULE_ID) {
+        return RESOLVED_BLOG_VIRTUAL_MODULE_ID;
+      }
+
+      return null;
+    },
+    load(id) {
+      if (id !== RESOLVED_BLOG_VIRTUAL_MODULE_ID) {
+        return null;
+      }
+
+      const posts = buildBlogPosts(docsDir);
+      return `export const blogPosts = ${JSON.stringify(posts, null, 2)};`;
+    },
+    buildStart() {
+      this.addWatchFile(docsDir);
+      this.addWatchFile(markdownGlob);
+    },
+    configureServer(server) {
+      server.watcher.add(docsDir);
+      server.watcher.add(markdownGlob);
+
+      const triggerReload = (file: string) => {
+        if (!isBlogContentFile(file)) {
+          return;
+        }
+
+        const virtualModule = server.moduleGraph.getModuleById(RESOLVED_BLOG_VIRTUAL_MODULE_ID);
+        if (virtualModule) {
+          server.moduleGraph.invalidateModule(virtualModule);
+        }
+
+        server.ws.send({ type: "full-reload" });
+      };
+
+      server.watcher.on("add", triggerReload);
+      server.watcher.on("unlink", triggerReload);
+    },
+    handleHotUpdate(context) {
+      if (!isBlogContentFile(context.file)) {
+        return;
+      }
+
+      const virtualModule = context.server.moduleGraph.getModuleById(RESOLVED_BLOG_VIRTUAL_MODULE_ID);
+      if (virtualModule) {
+        context.server.moduleGraph.invalidateModule(virtualModule);
+      }
+
+      context.server.ws.send({ type: "full-reload" });
+    },
+  };
+}
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), blogContentPlugin()],
   root: "./client",
   envDir: "..",
   resolve: {

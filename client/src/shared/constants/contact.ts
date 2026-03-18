@@ -5,8 +5,8 @@ export const TUWEBAI_WHATSAPP_TEL = `+${TUWEBAI_WHATSAPP_NUMBER}`;
 
 // Source of Truth - Contact Data
 export const TUWEBAI_EMAIL = 'tuwebai@gmail.com';
-export const TUWEBAI_SITE_URL = 'www.tuweb-ai.com';
-export const TUWEBAI_SITE_FULL_URL = 'https://www.tuweb-ai.com';
+export const TUWEBAI_SITE_URL = 'tuweb-ai.com';
+export const TUWEBAI_SITE_FULL_URL = 'https://tuweb-ai.com';
 
 //Social Media
 export const TUWEBAI_FACEBOOK_URL = 'https://www.facebook.com/tuwebai';

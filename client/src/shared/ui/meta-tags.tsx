@@ -17,6 +17,7 @@ interface MetaTagsProps {
   language?: string;
   geoRegion?: string;
   geoPlacename?: string;
+  structuredData?: Record<string, unknown> | Array<Record<string, unknown>>;
 }
 
 /**
@@ -37,6 +38,7 @@ const MetaTags: React.FC<MetaTagsProps> = ({
   language = 'es-AR',
   geoRegion = 'AR',
   geoPlacename = 'Argentina',
+  structuredData,
 }) => {
   // Construimos el título completo con el nombre del sitio
   const fullTitle = `${title} | Tuweb.ai`;
@@ -101,6 +103,11 @@ const MetaTags: React.FC<MetaTagsProps> = ({
           ]
         })}
       </script>
+      {structuredData && (
+        <script type="application/ld+json">
+          {JSON.stringify(structuredData)}
+        </script>
+      )}
     </Helmet>
   );
 };

@@ -1,7 +1,7 @@
 User-agent: *
 Allow: /
 
-# Sitemap
+# Sitemap principal canonico
 Sitemap: https://tuweb-ai.com/sitemap.xml
 
 # Disallow admin and private areas
@@ -17,6 +17,7 @@ Allow: /corporativos
 Allow: /uxui
 Allow: /ecommerce
 Allow: /consulta
+Allow: /blog
 Allow: /servicios/
 Allow: /faq
 Allow: /equipo
@@ -44,5 +45,5 @@ Disallow: /
 User-agent: SemrushBot
 Disallow: /
 
-# Host
+# Host canonico
 Host: https://tuweb-ai.com
