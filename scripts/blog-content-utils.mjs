@@ -91,6 +91,7 @@ function parseFrontmatter(markdown) {
 
 function renderInline(value) {
   let rendered = escapeHtml(value);
+  rendered = rendered.replace(/\\([\\`*_{}\[\]()#+\-.!|])/g, '$1');
 
   rendered = rendered.replace(/`([^`]+)`/g, '<code>$1</code>');
   rendered = rendered.replace(/\[([^\]]+)\]\s*\(([^)]+)\)/g, (_, label, url) => {
@@ -100,6 +101,10 @@ function renderInline(value) {
   });
   rendered = rendered.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
   rendered = rendered.replace(/\*(.+?)\*/g, '<em>$1</em>');
+  rendered = rendered.replace(
+    /___(\s*\/\s*\d+)/g,
+    '<input type="number" min="0" step="1" class="blog-score-input" aria-label="Subtotal del checklist" />$1',
+  );
 
   return rendered;
 }
@@ -111,6 +116,18 @@ function parseMarkdown(markdown) {
   let paragraph = [];
   let unorderedList = [];
   let orderedList = [];
+  let tableRows = [];
+
+  const isTableSeparatorLine = (line) =>
+    /^\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?$/.test(line.trim());
+
+  const splitTableCells = (line) =>
+    line
+      .trim()
+      .replace(/^\|/, '')
+      .replace(/\|$/, '')
+      .split('|')
+      .map((cell) => cell.trim());
 
   const flushParagraph = () => {
     if (paragraph.length === 0) {
@@ -139,10 +156,36 @@ function parseMarkdown(markdown) {
     orderedList = [];
   };
 
+  const flushTable = () => {
+    if (tableRows.length === 0) {
+      return;
+    }
+
+    if (tableRows.length < 2 || !isTableSeparatorLine(tableRows[1])) {
+      paragraph.push(...tableRows);
+      tableRows = [];
+      return;
+    }
+
+    const headers = splitTableCells(tableRows[0]);
+    const bodyRows = tableRows.slice(2).map(splitTableCells);
+    const thead = `<thead><tr>${headers.map((cell) => `<th>${renderInline(cell)}</th>`).join('')}</tr></thead>`;
+    const tbody = `<tbody>${bodyRows
+      .map(
+        (row) =>
+          `<tr>${row.map((cell) => `<td>${renderInline(cell)}</td>`).join('')}</tr>`,
+      )
+      .join('')}</tbody>`;
+
+    html.push(`<div class="blog-table-wrap"><table>${thead}${tbody}</table></div>`);
+    tableRows = [];
+  };
+
   const flushAll = () => {
     flushParagraph();
     flushUnorderedList();
     flushOrderedList();
+    flushTable();
   };
 
   for (const line of lines) {
@@ -156,6 +199,14 @@ function parseMarkdown(markdown) {
     if (trimmed === '---') {
       flushAll();
       html.push('<hr />');
+      continue;
+    }
+
+    if (trimmed.startsWith('|')) {
+      flushParagraph();
+      flushUnorderedList();
+      flushOrderedList();
+      tableRows.push(trimmed);
       continue;
     }
 
@@ -174,6 +225,7 @@ function parseMarkdown(markdown) {
     if (orderedListMatch) {
       flushParagraph();
       flushUnorderedList();
+      flushTable();
       orderedList.push(`<li>${renderInline(orderedListMatch[2])}</li>`);
       continue;
     }
@@ -182,9 +234,10 @@ function parseMarkdown(markdown) {
     if (taskListMatch) {
       flushParagraph();
       flushOrderedList();
+      flushTable();
       const checked = taskListMatch[1].toLowerCase() === 'x' ? ' checked' : '';
       unorderedList.push(
-        `<li class="task-list-item"><input type="checkbox" disabled${checked} /><span>${renderInline(taskListMatch[2])}</span></li>`,
+        `<li class="task-list-item"><input type="checkbox" class="task-list-checkbox"${checked} /><span>${renderInline(taskListMatch[2])}</span></li>`,
       );
       continue;
     }
@@ -193,10 +246,12 @@ function parseMarkdown(markdown) {
     if (unorderedListMatch) {
       flushParagraph();
       flushOrderedList();
+      flushTable();
       unorderedList.push(`<li>${renderInline(unorderedListMatch[1])}</li>`);
       continue;
     }
 
+    flushTable();
     paragraph.push(trimmed);
   }
 
@@ -251,6 +306,16 @@ function normalizeKeywords(frontmatterKeywords, markdownKeywords) {
   return markdownKeywords;
 }
 
+function buildFallbackKeywords(title, headings) {
+  const candidates = [title, ...headings.filter((heading) => heading.level === 2).map((heading) => heading.text)];
+
+  return candidates
+    .map((value) => value.trim())
+    .filter(Boolean)
+    .filter((value, index, values) => values.indexOf(value) === index)
+    .slice(0, 6);
+}
+
 function buildSeoTitle(title, keywords, seoTitleOverride) {
   if (seoTitleOverride) {
     return seoTitleOverride;
@@ -284,15 +349,16 @@ export function buildBlogPosts(docsDir) {
 
     const slug = slugifyFromFilename(entry.name);
     const title = frontmatter.title?.trim() || titleMatch[1].trim();
-    const keywords = normalizeKeywords(frontmatter.keywords, extractKeywords(content));
     const description = frontmatter.description?.trim() || extractDescription(content);
     const excerpt = frontmatter.excerpt?.trim() || extractExcerpt(content);
     const publishedAt = frontmatter.publishedAt?.trim() || stats.birthtime.toISOString();
     const updatedAt = frontmatter.updatedAt?.trim() || stats.mtime.toISOString();
-    const seoTitle = buildSeoTitle(title, keywords, frontmatter.seoTitle?.trim());
     const canonicalUrl = `${SITE_URL}/blog/${slug}`;
     const ogImage = frontmatter.ogImage?.trim() || DEFAULT_OG_IMAGE;
     const { html, headings } = parseMarkdown(content);
+    const keywords = normalizeKeywords(frontmatter.keywords, extractKeywords(content));
+    const normalizedKeywords = keywords.length > 0 ? keywords : buildFallbackKeywords(title, headings);
+    const seoTitle = buildSeoTitle(title, normalizedKeywords, frontmatter.seoTitle?.trim());
 
     posts.push({
       slug,
@@ -305,7 +371,7 @@ export function buildBlogPosts(docsDir) {
       html,
       markdown: content,
       headings,
-      keywords,
+      keywords: normalizedKeywords,
       sourceFile: entry.name,
       seo: {
         title: seoTitle,

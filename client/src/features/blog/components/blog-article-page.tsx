@@ -163,7 +163,13 @@ export default function BlogArticlePage({ slug }: BlogArticlePageProps) {
                     [&_h2]:mt-10 [&_h2]:mb-5 [&_h2]:font-rajdhani [&_h2]:text-3xl [&_h2]:font-bold [&_h2]:leading-tight [&_h2]:text-white
                     [&_hr]:my-10 [&_hr]:border-white/10
                     [&_li]:mb-3 [&_ol]:ml-6 [&_ol]:list-decimal [&_p]:mb-5 [&_strong]:text-white
-                    [&_ul]:ml-6 [&_ul]:list-disc"
+                    [&_table]:min-w-full [&_table]:border-collapse [&_table]:text-left [&_tbody_tr]:border-t [&_tbody_tr]:border-white/10
+                    [&_td]:border border-white/10 [&_td]:px-4 [&_td]:py-3 [&_td]:align-top
+                    [&_th]:border border-white/10 [&_th]:bg-white/[0.06] [&_th]:px-4 [&_th]:py-3 [&_th]:font-semibold [&_th]:text-white
+                    [&_ul]:ml-6 [&_ul]:list-disc
+                    [&_.blog-score-input]:mx-2 [&_.blog-score-input]:w-16 [&_.blog-score-input]:rounded-lg [&_.blog-score-input]:border [&_.blog-score-input]:border-white/15 [&_.blog-score-input]:bg-white/[0.04] [&_.blog-score-input]:px-2 [&_.blog-score-input]:py-1.5 [&_.blog-score-input]:text-center [&_.blog-score-input]:text-white [&_.blog-score-input]:outline-none [&_.blog-score-input]:transition-colors focus:[&_.blog-score-input]:border-[#00CCFF]/50
+                    [&_.blog-table-wrap]:my-8 [&_.blog-table-wrap]:overflow-x-auto [&_.task-list-item]:list-none [&_.task-list-item]:pl-0 [&_.task-list-item]:flex [&_.task-list-item]:items-start [&_.task-list-item]:gap-3
+                    [&_.task-list-checkbox]:mt-1 [&_.task-list-checkbox]:h-4 [&_.task-list-checkbox]:w-4 [&_.task-list-checkbox]:accent-[#00CCFF]"
                   dangerouslySetInnerHTML={{ __html: articleHtml }}
                 />
 
