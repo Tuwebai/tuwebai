@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 
+import AnimatedShape from '@/shared/ui/animated-shape';
 import ComparisonSection from '@/features/marketing-home/components/comparison-section';
 import MetaTags from '@/shared/ui/meta-tags';
-import PageBanner from '@/shared/ui/page-banner';
 import { TUWEBAI_SITE_FULL_URL } from '@/shared/constants/contact';
 
 export default function ComparisonsPage() {
@@ -23,23 +23,33 @@ export default function ComparisonsPage() {
         }}
       />
 
-      <main className="min-h-screen bg-[#0a0a0f] text-white">
-        <PageBanner
-          title="Comparativas y criterio web"
-          subtitle="Reunimos el bloque comparativo fuera de la home para que siga disponible, pero en un contexto mas comodo para leer y evaluar opciones."
-        />
+      <main className="min-h-screen bg-gradient-1 text-white">
+        <section className="relative overflow-hidden bg-gradient-1 pt-24 pb-8">
+          <AnimatedShape type={1} className="top-[12%] right-[-150px]" delay={1} />
+          <AnimatedShape type={2} className="bottom-[-40px] left-[-110px]" delay={2} />
 
-        <div className="container mx-auto px-4 pt-8">
-          <Link
-            to="/"
-            className="inline-flex items-center gap-2 text-sm text-gray-400 transition-colors hover:text-white"
-          >
-            <span aria-hidden="true">&larr;</span>
-            Volver al inicio
-          </Link>
-        </div>
+          <div className="container relative z-10 mx-auto grid min-h-[132px] grid-cols-[1fr_auto_1fr] items-center px-4">
+            <div className="flex items-center">
+              <Link
+                to="/"
+                className="inline-flex items-center gap-2 text-sm text-gray-400 transition-colors hover:text-white"
+              >
+                <span aria-hidden="true">&larr;</span>
+                Volver al inicio
+              </Link>
+            </div>
 
-        <ComparisonSection />
+            <h1 className="text-center font-rajdhani text-2xl font-bold md:text-4xl">
+              <span className="gradient-text gradient-border inline-block pb-2">
+                La diferencia no es solo visual
+              </span>
+            </h1>
+
+            <div aria-hidden="true" />
+          </div>
+        </section>
+
+        <ComparisonSection showIntro={false} sectionClassName="bg-gradient-1 -mt-8 pt-0" />
       </main>
     </>
   );

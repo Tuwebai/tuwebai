@@ -11,6 +11,8 @@ interface ComparisonRow {
 
 interface ComparisonSectionProps {
   setRef?: (ref: HTMLElement | null) => void;
+  showIntro?: boolean;
+  sectionClassName?: string;
 }
 
 const comparisonRows: ComparisonRow[] = [
@@ -79,7 +81,11 @@ function ColumnCard({
   );
 }
 
-export default function ComparisonSection({ setRef }: ComparisonSectionProps) {
+export default function ComparisonSection({
+  setRef,
+  showIntro = true,
+  sectionClassName = 'bg-[linear-gradient(180deg,#121217_0%,#0a0a0f_100%)]',
+}: ComparisonSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const { ref: titleRef, hasIntersected: titleVisible } = useIntersectionObserver<HTMLDivElement>();
   const { ref: boardRef, hasIntersected: boardVisible } = useIntersectionObserver<HTMLDivElement>();
@@ -103,9 +109,10 @@ export default function ComparisonSection({ setRef }: ComparisonSectionProps) {
     <section
       id="comparison"
       ref={sectionRef}
-      className="landing-anchor-section relative flex items-center justify-center bg-[linear-gradient(180deg,#121217_0%,#0a0a0f_100%)]"
+      className={`landing-anchor-section relative flex items-center justify-center ${sectionClassName}`}
     >
       <div className="container relative z-10 mx-auto px-4 py-16">
+        {showIntro ? (
         <motion.div
           ref={titleRef}
           className="mx-auto mb-12 max-w-4xl text-center"
@@ -128,12 +135,13 @@ export default function ComparisonSection({ setRef }: ComparisonSectionProps) {
             Un proyecto web serio no se mide solo por diseño o velocidad de entrega. También importa cómo resuelve el negocio, cómo se mantiene y qué base deja para crecer.
           </p>
         </motion.div>
+        ) : null}
 
         <motion.div
-          ref={boardRef}
-          className="mx-auto max-w-6xl"
+          ref={showIntro ? boardRef : undefined}
+          className={`mx-auto max-w-6xl ${showIntro ? '' : 'pt-0'}`}
           initial="hidden"
-          animate={boardVisible ? 'visible' : 'hidden'}
+          animate={showIntro ? (boardVisible ? 'visible' : 'hidden') : 'visible'}
           variants={boardVariants}
         >
           <div className="mb-6 hidden grid-cols-[0.85fr_1fr_1fr] gap-5 xl:grid">
