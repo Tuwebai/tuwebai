@@ -1,5 +1,3 @@
-import { motion } from "framer-motion"
-
 interface AnimatedShapeProps {
   className?: string
   type: 1 | 2
@@ -18,11 +16,8 @@ export default function AnimatedShape({
   const isShape1 = type === 1
 
   return (
-    <motion.div
+    <div
       className={`absolute opacity-20 z-0 ${className}`}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 0.2 }}
-      transition={{ duration: 1.5, delay: delay * 0.5 }}
       style={style}
     >
       <div
@@ -36,6 +31,6 @@ export default function AnimatedShape({
           rounded-[32%_58%_69%_43%/48%_32%_59%_55%]
         `}
       />
-    </motion.div>
+    </div>
   )
 }

@@ -84,7 +84,12 @@ export default defineConfig({
     sourcemap: false,
     modulePreload: {
       resolveDependencies: (_url: string, deps: string[]) =>
-        deps.filter((dep) => !dep.includes('motion-') && !dep.includes('radix-')),
+        deps.filter(
+          (dep) =>
+            !dep.includes('firebase-') &&
+            !dep.includes('motion-') &&
+            !dep.includes('radix-'),
+        ),
     },
     // Aumentar el límite de warning para chunks lazy (no afecta el index)
     chunkSizeWarningLimit: 600,
