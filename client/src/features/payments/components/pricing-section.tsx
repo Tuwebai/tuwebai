@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useIntersectionObserver } from '@/core/hooks/use-intersection-observer';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/shared/ui/dialog';
 import PaymentErrorDialog from '@/features/payments/components/payment-error-dialog';
+import PaymentModalFrame from '@/features/payments/components/payment-modal-frame';
 import { createPreferenceWithRetry, getPaymentsErrorMessage } from '@/features/payments/services/payments.service';
 import type { PaymentPlan } from '@/features/payments/types';
 
@@ -264,55 +264,55 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
         </div>
       </div>
 
-      <Dialog open={Boolean(checkoutPlan)} onOpenChange={() => setCheckoutPlan(null)}>
-        <DialogContent className="max-w-lg border border-cyan-500/30 bg-[#0f111a] text-white">
-          <DialogHeader>
-            <DialogTitle className="text-2xl font-semibold text-white">{checkoutSummary?.title}</DialogTitle>
-          </DialogHeader>
-          {checkoutSummary && (
-            <div className="space-y-5">
-              <div className="rounded-2xl border border-gray-800 bg-[#0b0d14] p-4 text-sm text-gray-300">
-                <p>
-                  Plan: <span className="font-semibold text-white">{checkoutSummary.plan}</span>
-                </p>
+      <PaymentModalFrame
+        open={Boolean(checkoutPlan)}
+        title={checkoutSummary?.title ?? 'Estas contratando'}
+        onClose={() => setCheckoutPlan(null)}
+        size="wide"
+      >
+        {checkoutSummary && (
+          <div className="space-y-5">
+            <div className="rounded-2xl border border-gray-800 bg-[#0b0d14] p-4 text-sm text-gray-300">
+              <p>
+                Plan: <span className="font-semibold text-white">{checkoutSummary.plan}</span>
+              </p>
+              <p className="mt-2">
+                Precio: <span className="font-semibold text-white">{checkoutSummary.price}</span>
+              </p>
+              {checkoutSummary.delivery && (
                 <p className="mt-2">
-                  Precio: <span className="font-semibold text-white">{checkoutSummary.price}</span>
+                  Entrega estimada: <span className="font-semibold text-white">{checkoutSummary.delivery}</span>
                 </p>
-                {checkoutSummary.delivery && (
-                  <p className="mt-2">
-                    Entrega estimada: <span className="font-semibold text-white">{checkoutSummary.delivery}</span>
-                  </p>
-                )}
-              </div>
-
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300">Incluye</p>
-                <ul className="mt-3 space-y-2 text-sm text-gray-300">
-                  {checkoutSummary.includes.map((item) => (
-                    <li key={item} className="flex items-start gap-3">
-                      <span className="mt-1 h-1.5 w-1.5 rounded-full bg-cyan-300" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => {
-                  if (checkoutPlan?.plan) {
-                    setCheckoutPlan(null);
-                    void openCheckout(checkoutPlan.plan);
-                  }
-                }}
-                className="inline-flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-6 py-3.5 font-medium text-white shadow-[0_16px_35px_rgba(0,204,255,0.2)]"
-              >
-                Continuar al pago seguro →
-              </button>
+              )}
             </div>
-          )}
-        </DialogContent>
-      </Dialog>
+
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300">Incluye</p>
+              <ul className="mt-3 space-y-2 text-sm text-gray-300">
+                {checkoutSummary.includes.map((item) => (
+                  <li key={item} className="flex items-start gap-3">
+                    <span className="mt-1 h-1.5 w-1.5 rounded-full bg-cyan-300" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => {
+                if (checkoutPlan?.plan) {
+                  setCheckoutPlan(null);
+                  void openCheckout(checkoutPlan.plan);
+                }
+              }}
+              className="inline-flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-6 py-3.5 font-medium text-white shadow-[0_16px_35px_rgba(0,204,255,0.2)]"
+            >
+              Continuar al pago seguro →
+            </button>
+          </div>
+        )}
+      </PaymentModalFrame>
 
       <PaymentErrorDialog
         open={errorOpen}
