@@ -1,5 +1,6 @@
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, useEffect, useState } from 'react';
 import { useHomeSectionNavigation } from '@/features/marketing-home/hooks/use-home-section-navigation';
+import { runWhenIdle } from '@/lib/performance';
 
 const HeroSection = lazy(() => import('@/features/marketing-home/components/hero-section'));
 const NavDots = lazy(() => import('@/shared/ui/nav-dots'));
@@ -18,20 +19,70 @@ const CompanyLogoSlider = lazy(() => import('@/shared/ui/company-logo-slider'));
 
 export default function MarketingHomePage() {
   const { sections, setSectionRef } = useHomeSectionNavigation();
+  const [showFloatingUi, setShowFloatingUi] = useState(false);
+  const [showDeferredSections, setShowDeferredSections] = useState(false);
+
+  useEffect(() => {
+    let mounted = true;
+    let fallbackTimeoutId: ReturnType<typeof setTimeout> | null = null;
+
+    const revealFloatingUi = () => {
+      if (mounted) {
+        setShowFloatingUi(true);
+      }
+    };
+
+    const revealDeferredSections = () => {
+      if (mounted) {
+        setShowDeferredSections(true);
+      }
+    };
+
+    runWhenIdle(revealFloatingUi, 1200);
+    runWhenIdle(revealDeferredSections, 1800);
+
+    const onUserIntent = () => {
+      revealFloatingUi();
+      fallbackTimeoutId = setTimeout(revealDeferredSections, 150);
+      window.removeEventListener('scroll', onUserIntent);
+      window.removeEventListener('pointerdown', onUserIntent);
+      window.removeEventListener('keydown', onUserIntent);
+    };
+
+    window.addEventListener('scroll', onUserIntent, { passive: true, once: true });
+    window.addEventListener('pointerdown', onUserIntent, { passive: true, once: true });
+    window.addEventListener('keydown', onUserIntent, { once: true });
+
+    return () => {
+      mounted = false;
+      if (fallbackTimeoutId) {
+        clearTimeout(fallbackTimeoutId);
+      }
+      window.removeEventListener('scroll', onUserIntent);
+      window.removeEventListener('pointerdown', onUserIntent);
+      window.removeEventListener('keydown', onUserIntent);
+    };
+  }, []);
 
   return (
     <>
-      <Suspense fallback={null}>
-        <ScrollProgress />
-      </Suspense>
+      {showFloatingUi ? (
+        <Suspense fallback={null}>
+          <ScrollProgress />
+        </Suspense>
+      ) : null}
 
-      <Suspense fallback={null}>
-        <NavDots sections={sections} />
-      </Suspense>
+      {showFloatingUi ? (
+        <Suspense fallback={null}>
+          <NavDots sections={sections} />
+        </Suspense>
+      ) : null}
 
-      <Suspense fallback={null}>
-        <WhatsAppButton />
-      </Suspense>
+      {showFloatingUi ? (
+        <Suspense fallback={null}>
+          <WhatsAppButton />
+        </Suspense>
+      ) : null}
 
       <main id="main-content" className="landing-scroll-shell relative">
         <Suspense
@@ -55,16 +106,21 @@ export default function MarketingHomePage() {
           <PhilosophySection setRef={(ref: HTMLElement | null) => setSectionRef('philosophy', ref)} />
           <ServicesSection setRef={(ref: HTMLElement | null) => setSectionRef('services', ref)} />
           <ProcessSection setRef={(ref: HTMLElement | null) => setSectionRef('process', ref)} />
-          <ComparisonSection setRef={(ref: HTMLElement | null) => setSectionRef('comparison', ref)} />
-          <ShowroomSection setRef={(ref: HTMLElement | null) => setSectionRef('showroom', ref)} />
-          <PricingSection setRef={(ref: HTMLElement | null) => setSectionRef('pricing', ref)} />
-
-          <CompanyLogoSlider className="py-20 bg-gray-900 bg-opacity-30" />
-
-          <ImpactSection setRef={(ref: HTMLElement | null) => setSectionRef('impact', ref)} />
-          <TestimonialsSection setRef={(ref: HTMLElement | null) => setSectionRef('testimonials', ref)} />
-          <ContactSection setRef={(ref: HTMLElement | null) => setSectionRef('contact', ref)} />
         </Suspense>
+
+        {showDeferredSections ? (
+          <Suspense fallback={null}>
+            <ComparisonSection setRef={(ref: HTMLElement | null) => setSectionRef('comparison', ref)} />
+            <ShowroomSection setRef={(ref: HTMLElement | null) => setSectionRef('showroom', ref)} />
+            <PricingSection setRef={(ref: HTMLElement | null) => setSectionRef('pricing', ref)} />
+
+            <CompanyLogoSlider className="py-20 bg-gray-900 bg-opacity-30" />
+
+            <ImpactSection setRef={(ref: HTMLElement | null) => setSectionRef('impact', ref)} />
+            <TestimonialsSection setRef={(ref: HTMLElement | null) => setSectionRef('testimonials', ref)} />
+            <ContactSection setRef={(ref: HTMLElement | null) => setSectionRef('contact', ref)} />
+          </Suspense>
+        ) : null}
       </main>
     </>
   );

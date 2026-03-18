@@ -69,8 +69,6 @@
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
 
     <!-- Preconnect for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -128,129 +126,146 @@
   </head>
   <body>
     <div id="root">
+      <!-- APP_PRERENDER_FALLBACK_START -->
       <div
         id="initial-skeleton"
+        aria-hidden="true"
         style="
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(to bottom, #0a0a0f, #121320);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        z-index: 9999;
+        min-height: 100vh;
+        background:
+          radial-gradient(circle at top left, rgba(0, 204, 255, 0.16), transparent 32%),
+          radial-gradient(circle at top right, rgba(153, 51, 255, 0.14), transparent 28%),
+          linear-gradient(to bottom, #0a0a0f, #121320);
+        color: white;
       "
       >
-        <div
+        <header
           style="
-          font-family: 'Rajdhani', sans-serif;
-          font-size: 3rem;
-          background: linear-gradient(to right, #00CCFF, #9933FF);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          margin-bottom: 1rem;
-        "
-        >
-          TuWeb.ai
-        </div>
-        <div
-          style="
-          width: 200px;
-          height: 4px;
-          background: rgba(255,255,255,0.1);
-          border-radius: 2px;
-          overflow: hidden;
+          display:flex;
+          align-items:center;
+          justify-content:space-between;
+          gap:16px;
+          padding:24px 32px;
+          border-bottom:1px solid rgba(255,255,255,0.08);
         "
         >
           <div
             style="
-            width: 40%;
-            height: 100%;
-            background: linear-gradient(to right, #00CCFF, #9933FF);
-            animation: skeleton-pulse 1.5s ease-in-out infinite;
+            font-family:'Rajdhani', sans-serif;
+            font-size:1.75rem;
+            font-weight:700;
+            background:linear-gradient(to right, #00CCFF, #9933FF);
+            -webkit-background-clip:text;
+            -webkit-text-fill-color:transparent;
           "
-          ></div>
-        </div>
+          >
+            TuWeb.ai
+          </div>
+          <div
+            style="
+            display:inline-flex;
+            align-items:center;
+            border:1px solid rgba(255,255,255,0.1);
+            border-radius:999px;
+            padding:10px 18px;
+            color:#d1d5db;
+            font:500 0.9rem Inter, sans-serif;
+            background:rgba(255,255,255,0.04);
+          "
+          >
+            Cargando experiencia completa...
+          </div>
+        </header>
+
+        <main
+          style="
+          max-width:1200px;
+          margin:0 auto;
+          padding:80px 24px 64px;
+        "
+        >
+          <div style="max-width:720px;">
+            <div
+              style="
+              display:inline-flex;
+              align-items:center;
+              gap:10px;
+              border:1px solid rgba(0,204,255,0.28);
+              border-radius:999px;
+              padding:8px 16px;
+              margin-bottom:24px;
+              background:rgba(0,204,255,0.08);
+              color:#9BE7FF;
+              font:600 0.75rem Inter, sans-serif;
+              letter-spacing:0.18em;
+              text-transform:uppercase;
+            "
+            >
+              Desarrollo web profesional
+            </div>
+
+            <h1
+              style="
+              margin:0;
+              font-family:'Rajdhani', sans-serif;
+              font-size:clamp(3rem, 7vw, 5.8rem);
+              line-height:0.98;
+              font-weight:700;
+            "
+            >
+              Desarrollo web profesional para negocios que quieren vender mejor online
+            </h1>
+
+            <p
+              style="
+              margin:24px 0 0;
+              color:#d1d5db;
+              font:400 1.1rem/1.8 Inter, sans-serif;
+              max-width:640px;
+            "
+            >
+              Creamos sitios web, e-commerce y sistemas web que transmiten confianza y convierten visitas en oportunidades reales.
+            </p>
+
+            <div style="display:flex;flex-wrap:wrap;gap:14px;margin-top:32px;">
+              <span
+                style="
+                display:inline-flex;
+                align-items:center;
+                justify-content:center;
+                min-width:220px;
+                padding:14px 22px;
+                border-radius:999px;
+                background:linear-gradient(to right, #00CCFF, #9933FF);
+                color:white;
+                font:600 0.95rem Inter, sans-serif;
+              "
+              >
+                Contar mi proyecto
+              </span>
+              <span
+                style="
+                display:inline-flex;
+                align-items:center;
+                justify-content:center;
+                min-width:220px;
+                padding:14px 22px;
+                border-radius:999px;
+                border:1px solid rgba(255,255,255,0.14);
+                color:#e5e7eb;
+                font:500 0.95rem Inter, sans-serif;
+                background:rgba(255,255,255,0.04);
+              "
+              >
+                Ver proyectos reales
+              </span>
+            </div>
+          </div>
+        </main>
       </div>
+      <!-- APP_PRERENDER_FALLBACK_END -->
     </div>
-    <style>
-      @keyframes skeleton-pulse {
-        0%,
-        100% {
-          transform: translateX(-100%);
-        }
-        50% {
-          transform: translateX(250%);
-        }
-      }
-    </style>
     <script type="module" src="/src/main.tsx"></script>
-    <script>
-      (function () {
-        var adsenseLoaded = false;
-        var hostname = window.location.hostname;
-        var isLocalEnvironment =
-          hostname === "localhost" ||
-          hostname === "127.0.0.1" ||
-          hostname === "[::1]";
-
-        function loadScript(src, attrs) {
-          var script = document.createElement("script");
-          script.src = src;
-          script.async = true;
-          if (attrs) {
-            Object.keys(attrs).forEach(function (key) {
-              script.setAttribute(key, attrs[key]);
-            });
-          }
-          document.head.appendChild(script);
-          return script;
-        }
-
-        function loadAnalyticsAndAds() {
-          if (isLocalEnvironment) {
-            return;
-          }
-
-          if (!adsenseLoaded) {
-            adsenseLoaded = true;
-            loadScript(
-              "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4693865721377675",
-              { crossorigin: "anonymous" },
-            );
-          }
-        }
-
-        function scheduleDeferredLoad() {
-          if ("requestIdleCallback" in window) {
-            window.requestIdleCallback(loadAnalyticsAndAds, { timeout: 4000 });
-          } else {
-            setTimeout(loadAnalyticsAndAds, 2500);
-          }
-        }
-
-        var events = ["pointerdown", "keydown", "scroll", "visibilitychange"];
-        var triggered = false;
-
-        function triggerLoad() {
-          if (triggered) return;
-          triggered = true;
-          events.forEach(function (eventName) {
-            window.removeEventListener(eventName, triggerLoad, { passive: true });
-          });
-          loadAnalyticsAndAds();
-        }
-
-        events.forEach(function (eventName) {
-          window.addEventListener(eventName, triggerLoad, { passive: true, once: true });
-        });
-
-        scheduleDeferredLoad();
-      })();
-    </script>
   </body>
 </html>
 

@@ -47,7 +47,10 @@ function replaceTag(html, pattern, replacement) {
 }
 
 function injectPrerenderContent(html, prerenderedContent) {
-  return html.replace('<div id="root">', `<div id="root"><div id="prerendered-content">${prerenderedContent}</div>`);
+  return html.replace(
+    /<!-- APP_PRERENDER_FALLBACK_START -->[\s\S]*?<!-- APP_PRERENDER_FALLBACK_END -->/i,
+    `<div id="prerendered-content">${prerenderedContent}</div>`,
+  );
 }
 
 function applyHeadMetadata(html, metadata) {
@@ -112,6 +115,75 @@ function renderListPageContent(posts) {
     </main>`;
 }
 
+function renderHomePageContent() {
+  return `
+    <main style="min-height:100vh;background:
+      radial-gradient(circle at top left, rgba(0, 204, 255, 0.16), transparent 32%),
+      radial-gradient(circle at top right, rgba(153, 51, 255, 0.14), transparent 28%),
+      linear-gradient(to bottom, #0a0a0f, #121320);color:#fff;font-family:Inter,sans-serif;">
+      <section style="max-width:1200px;margin:0 auto;padding:120px 24px 80px;">
+        <div style="max-width:760px;">
+          <div style="display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(255,255,255,.1);border-radius:999px;padding:10px 18px;margin-bottom:24px;background:rgba(255,255,255,.04);color:#d1d5db;font-size:14px;font-weight:500;">
+            <span style="width:8px;height:8px;border-radius:999px;background:#00CCFF;box-shadow:0 0 10px rgba(0,204,255,.8);display:inline-block;"></span>
+            Diseñamos el futuro de tu negocio
+          </div>
+          <div style="margin-bottom:18px;color:#9BE7FF;font-family:Rajdhani,sans-serif;font-size:20px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;">
+            TuWeb.ai
+          </div>
+          <h1 style="margin:0;font-family:Rajdhani,sans-serif;font-size:clamp(52px,8vw,88px);line-height:.96;font-weight:700;max-width:980px;">
+            Desarrollo web profesional para negocios que quieren <span style="background:linear-gradient(90deg,#00CCFF,#9933FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">vender mejor online</span>
+          </h1>
+          <p style="margin:28px 0 0;color:#d1d5db;font-size:20px;line-height:1.8;max-width:700px;">
+            Creamos sitios web, e-commerce y sistemas web que transmiten confianza, cargan rápido y convierten visitas en oportunidades reales.
+          </p>
+          <div style="display:flex;flex-wrap:wrap;gap:14px;margin-top:34px;">
+            <a href="/consulta" style="display:inline-flex;align-items:center;justify-content:center;min-width:220px;padding:14px 24px;border-radius:999px;background:linear-gradient(90deg,#00CCFF,#9933FF);color:#fff;font-size:16px;font-weight:600;text-decoration:none;box-shadow:0 10px 30px rgba(0,204,255,.22);">
+              Contar mi proyecto
+            </a>
+            <a href="/#showroom" style="display:inline-flex;align-items:center;justify-content:center;min-width:220px;padding:14px 24px;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);color:#e5e7eb;font-size:16px;font-weight:500;text-decoration:none;">
+              Ver proyectos reales
+            </a>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:28px;color:#d1d5db;font-size:14px;">
+            <span style="border:1px solid rgba(255,255,255,.1);border-radius:999px;padding:10px 16px;background:rgba(255,255,255,.05);">Sitios corporativos</span>
+            <span style="border:1px solid rgba(255,255,255,.1);border-radius:999px;padding:10px 16px;background:rgba(255,255,255,.05);">E-commerce</span>
+            <span style="border:1px solid rgba(255,255,255,.1);border-radius:999px;padding:10px 16px;background:rgba(255,255,255,.05);">Sistemas web</span>
+          </div>
+        </div>
+      </section>
+
+      <section style="max-width:1200px;margin:0 auto;padding:0 24px 48px;">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;">
+          <article style="border:1px solid rgba(255,255,255,.08);border-radius:24px;padding:24px;background:rgba(18,18,23,.72);">
+            <h2 style="font-family:Rajdhani,sans-serif;font-size:28px;line-height:1.1;margin:0 0 12px;">Sitios corporativos</h2>
+            <p style="margin:0;color:#d4d4d8;font-size:17px;line-height:1.7;">Webs profesionales para empresas que necesitan transmitir confianza, presentar mejor su oferta y generar consultas reales.</p>
+          </article>
+          <article style="border:1px solid rgba(255,255,255,.08);border-radius:24px;padding:24px;background:rgba(18,18,23,.72);">
+            <h2 style="font-family:Rajdhani,sans-serif;font-size:28px;line-height:1.1;margin:0 0 12px;">E-commerce</h2>
+            <p style="margin:0;color:#d4d4d8;font-size:17px;line-height:1.7;">Tiendas online rápidas, claras y preparadas para convertir mejor, facilitar la compra y sostener crecimiento sin fricción técnica.</p>
+          </article>
+          <article style="border:1px solid rgba(255,255,255,.08);border-radius:24px;padding:24px;background:rgba(18,18,23,.72);">
+            <h2 style="font-family:Rajdhani,sans-serif;font-size:28px;line-height:1.1;margin:0 0 12px;">Sistemas web</h2>
+            <p style="margin:0;color:#d4d4d8;font-size:17px;line-height:1.7;">Plataformas, paneles y flujos web a medida para ordenar procesos, integrar herramientas y operar con más claridad.</p>
+          </article>
+        </div>
+      </section>
+
+      <section style="max-width:1200px;margin:0 auto;padding:0 24px 96px;">
+        <div style="border:1px solid rgba(255,255,255,.08);border-radius:28px;padding:32px;background:linear-gradient(180deg,rgba(18,18,23,.98),rgba(10,10,15,.98));">
+          <p style="margin:0 0 12px;color:#9BE7FF;font-size:13px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;">Cómo trabajamos</p>
+          <h2 style="margin:0 0 16px;font-family:Rajdhani,sans-serif;font-size:42px;line-height:1.05;">Una base seria para crecer sin improvisaciones</h2>
+          <ol style="margin:0;padding-left:20px;color:#d4d4d8;font-size:18px;line-height:1.9;">
+            <li>Entendemos el negocio y el objetivo real antes de definir alcance.</li>
+            <li>Diseñamos la solución web correcta según operación, oferta y conversión.</li>
+            <li>Desarrollamos con foco en rendimiento, claridad y mantenibilidad.</li>
+            <li>Lanzamos una plataforma preparada para seguir evolucionando.</li>
+          </ol>
+        </div>
+      </section>
+    </main>`;
+}
+
 function renderArticlePageContent(article) {
   const articleBodyHtml = article.html.replace(/^<h1[\s\S]*?<\/h1>\n?/, '');
 
@@ -153,6 +225,30 @@ function buildListStructuredData(posts) {
         url: `${siteUrl}/blog/${post.slug}`,
         name: post.title,
       })),
+    },
+  ];
+}
+
+function buildHomeStructuredData() {
+  return [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'WebPage',
+      name: 'TuWeb.ai - Desarrollo Web Profesional para Negocios en Argentina',
+      description:
+        'Desarrollamos sitios web, e-commerce y sistemas web para negocios que necesitan una presencia digital profesional, confiable y preparada para vender.',
+      url: siteUrl,
+      inLanguage: 'es-AR',
+      isPartOf: {
+        '@type': 'WebSite',
+        name: 'TuWeb.ai',
+        url: siteUrl,
+      },
+      about: {
+        '@type': 'Organization',
+        name: 'TuWeb.ai',
+        url: siteUrl,
+      },
     },
   ];
 }
@@ -241,6 +337,24 @@ async function main() {
   const publicPosts = posts.filter((post) => !post.noindex);
   const indexHtml = await fs.readFile(path.join(distDir, 'index.html'), 'utf8');
 
+  const homePrerenderHtml = applyHeadMetadata(
+    injectPrerenderContent(indexHtml, renderHomePageContent()),
+    {
+      title: 'TuWeb.ai - Desarrollo Web Profesional para Negocios en Argentina',
+      description:
+        'Desarrollamos sitios web, e-commerce y sistemas web para negocios que necesitan una presencia digital profesional, confiable y preparada para vender.',
+      keywords:
+        'desarrollo web argentina, desarrollo web profesional, sitios web para negocios, ecommerce argentina, sistemas web, diseño web profesional, TuWeb.ai',
+      robots: 'index, follow',
+      url: siteUrl,
+      ogType: 'website',
+      ogImage: defaultOgImage,
+      structuredData: buildHomeStructuredData(),
+    },
+  );
+
+  await fs.writeFile(path.join(distDir, 'index.html'), homePrerenderHtml, 'utf8');
+
   const blogIndexHtml = applyHeadMetadata(
     injectPrerenderContent(indexHtml, renderListPageContent(publicPosts)),
     {
@@ -277,7 +391,7 @@ async function main() {
 
   await fs.writeFile(path.join(distDir, 'sitemap.xml'), buildSitemapXml(posts), 'utf8');
 
-  console.log(`Prerender blog completado: ${publicPosts.length} articulo(s) y sitemap actualizado.`);
+  console.log(`Prerender home + blog completado: ${publicPosts.length} articulo(s) y sitemap actualizado.`);
 }
 
 main().catch((error) => {

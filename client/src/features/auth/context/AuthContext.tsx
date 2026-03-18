@@ -89,6 +89,16 @@ export const useAuth = () => {
 };
 
 const AUTH_TIMEOUT_MS = 2500;
+const PUBLIC_AUTH_BOOT_DELAY_MS = 2500;
+
+const shouldEagerlyInitializeAuth = (): boolean => {
+  if (typeof window === 'undefined') {
+    return true;
+  }
+
+  const { pathname } = window.location;
+  return pathname.startsWith('/panel') || pathname.startsWith('/auth/');
+};
 
 const withTimeout = <T,>(promise: Promise<T>, timeoutMs: number, fallback: T): Promise<T> => (
   new Promise((resolve) => {
@@ -117,7 +127,7 @@ const withTimeout = <T,>(promise: Promise<T>, timeoutMs: number, fallback: T): P
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUserState] = useState<User | null>(null);
-  const [isLoadingAuth, setIsLoadingAuth] = useState(false);
+  const [isLoadingAuth, setIsLoadingAuth] = useState(shouldEagerlyInitializeAuth);
   const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
 
@@ -152,8 +162,36 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     let unsubscribeFn: (() => void) | null = null;
     let isMounted = true;
+    let authStarted = false;
+    let idleTimeoutId: ReturnType<typeof setTimeout> | null = null;
+    let onUserIntent: (() => void) | null = null;
+    let onVisibilityChange: (() => void) | null = null;
+
+    const cleanupDeferredBoot = () => {
+      if (typeof window !== 'undefined' && onUserIntent) {
+        window.removeEventListener('pointerdown', onUserIntent);
+        window.removeEventListener('keydown', onUserIntent);
+      }
+
+      if (typeof window !== 'undefined' && onVisibilityChange) {
+        window.removeEventListener('visibilitychange', onVisibilityChange);
+      }
+
+      if (idleTimeoutId) {
+        clearTimeout(idleTimeoutId);
+        idleTimeoutId = null;
+      }
+    };
 
     const initAuth = async () => {
+      if (authStarted || !isMounted) {
+        return;
+      }
+
+      authStarted = true;
+      cleanupDeferredBoot();
+      setIsLoadingAuth(true);
+
       try {
         const { auth } = await getFirebase();
         const { onAuthStateChanged } = await getFirebaseAuth();
@@ -197,10 +235,37 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     };
 
-    initAuth();
+    const startAuth = () => {
+      void initAuth();
+    };
+
+    if (shouldEagerlyInitializeAuth()) {
+      startAuth();
+    } else {
+      onUserIntent = () => {
+        startAuth();
+      };
+
+      onVisibilityChange = () => {
+        if (document.visibilityState === 'visible') {
+          onUserIntent?.();
+        }
+      };
+
+      window.addEventListener('pointerdown', onUserIntent, { passive: true, once: true });
+      window.addEventListener('keydown', onUserIntent, { once: true });
+      window.addEventListener('visibilitychange', onVisibilityChange, { once: true });
+
+      if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(() => startAuth(), { timeout: PUBLIC_AUTH_BOOT_DELAY_MS });
+      } else {
+        idleTimeoutId = setTimeout(startAuth, PUBLIC_AUTH_BOOT_DELAY_MS);
+      }
+    }
 
     return () => {
       isMounted = false;
+      cleanupDeferredBoot();
       if (unsubscribeFn) {
         unsubscribeFn();
       }

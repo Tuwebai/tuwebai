@@ -8,11 +8,16 @@ interface CreateTestimonialContext {
   previousTestimonials: TestimonialsListItem[];
 }
 
-export const useTestimonials = () => {
+interface UseTestimonialsOptions {
+  enabled?: boolean;
+}
+
+export const useTestimonials = ({ enabled = true }: UseTestimonialsOptions = {}) => {
   const { toast } = useToast();
 
   return useQuery({
     queryKey: ['testimonials'],
+    enabled,
     queryFn: async (): Promise<TestimonialsListItem[]> => {
       try {
         const allTestimonials = await getAllTestimonials();

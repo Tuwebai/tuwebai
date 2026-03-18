@@ -44,16 +44,6 @@ export function useHomeSectionNavigation() {
     sectionRefs.current[id] = ref;
   };
 
-  const scrollToSection = (sectionId: string) => {
-
-
-    const section = sectionRefs.current[sectionId];
-    if (section) {
-
-      scrollToHomeSection(section);
-    }
-  };
-
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const sectionParam = searchParams.get('section');
@@ -63,10 +53,24 @@ export function useHomeSectionNavigation() {
 
 
     if (targetSection && HOME_SECTIONS.some((section) => section.id === targetSection)) {
-      setTimeout(() => {
+      let attempts = 0;
+      const maxAttempts = 12;
 
-        scrollToSection(targetSection);
-      }, 300);
+      const tryScrollToSection = () => {
+        attempts += 1;
+
+        const section = sectionRefs.current[targetSection];
+        if (section) {
+          scrollToHomeSection(section);
+          return;
+        }
+
+        if (attempts < maxAttempts) {
+          window.setTimeout(tryScrollToSection, 200);
+        }
+      };
+
+      window.setTimeout(tryScrollToSection, 300);
     }
   }, [location]);
 

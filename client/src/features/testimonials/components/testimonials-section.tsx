@@ -96,8 +96,11 @@ interface TestimonialsSectionProps {
 export default function TestimonialsSection({ setRef }: TestimonialsSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const { ref: titleRef, hasIntersected: titleVisible } = useIntersectionObserver();
+  const { ref: queryGateRef, hasIntersected: testimonialsVisible } = useIntersectionObserver({
+    rootMargin: '250px 0px',
+  });
   const sliderRef = useRef<Slider | null>(null);
-  const { data: testimonials = [], isLoading: loading } = useTestimonials();
+  const { data: testimonials = [], isLoading: loading } = useTestimonials({ enabled: testimonialsVisible });
 
   if (sectionRef.current && !sectionRef.current.hasAttribute('data-ref-set')) {
     setRef(sectionRef.current);
@@ -160,7 +163,7 @@ export default function TestimonialsSection({ setRef }: TestimonialsSectionProps
       <AnimatedShape type={1} className="top-[20%] right-[-150px]" delay={2} />
       <AnimatedShape type={2} className="bottom-[10%] left-[-100px]" delay={3} />
 
-      <div className="container mx-auto px-4 py-16 z-10">
+      <div ref={queryGateRef as React.RefObject<HTMLDivElement>} className="container mx-auto px-4 py-16 z-10">
         <motion.div
           ref={titleRef as React.RefObject<HTMLDivElement>}
           className="text-center mb-16"
