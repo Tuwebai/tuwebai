@@ -36,6 +36,14 @@ export interface NewsletterSubscriberRecord {
     userAgent: string | null;
     submittedAt: string;
   };
+  brevoSync?: {
+    status: 'pending' | 'synced' | 'failed';
+    lastOperation: 'subscribe' | 'unsubscribe';
+    lastAttemptAt: string;
+    lastSyncedAt?: string;
+    lastError?: string;
+    retryCount: number;
+  };
 }
 
 export interface NewsletterSubscriptionResult {

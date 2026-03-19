@@ -1,4 +1,5 @@
 import { env } from '../../config/env.config';
+import { getFirestore as getAdminFirestore } from '../firebase/firestore';
 import { appLogger } from '../../utils/app-logger';
 
 interface BrevoNewsletterSubscriber {
@@ -12,7 +13,16 @@ interface BackgroundSyncOptions {
   meta?: Record<string, unknown>;
 }
 
+type BrevoSyncOperation = 'subscribe' | 'unsubscribe';
+
+const omitUndefinedFields = <T extends Record<string, unknown>>(record: T): T =>
+  Object.fromEntries(Object.entries(record).filter(([, value]) => value !== undefined)) as T;
+
 const BREVO_TIMEOUT_MS = 8000;
+const NEWSLETTER_COLLECTION = 'newsletter_subscribers';
+
+const getSubscriberDocumentId = (emailNormalized: string): string =>
+  Buffer.from(emailNormalized, 'utf8').toString('base64url');
 
 const isBrevoNewsletterSyncConfigured = (): boolean =>
   !!env.BREVO_API_KEY?.trim() && Number.isInteger(env.BREVO_NEWSLETTER_LIST_ID);
@@ -46,6 +56,46 @@ const brevoRequest = async (path: string, init: RequestInit): Promise<void> => {
   }
 };
 
+const markBrevoSyncState = async (
+  subscriber: BrevoNewsletterSubscriber,
+  operation: BrevoSyncOperation,
+  state: 'pending' | 'synced' | 'failed',
+  errorMessage?: string,
+): Promise<void> => {
+  const db = getAdminFirestore();
+  if (!db) return;
+
+  const subscriberRef = db.collection(NEWSLETTER_COLLECTION).doc(getSubscriberDocumentId(subscriber.emailNormalized));
+  const snapshot = await subscriberRef.get();
+  if (!snapshot.exists) return;
+
+  const existing = snapshot.data() as {
+    brevoSync?: {
+      retryCount?: number;
+    };
+  };
+
+  const nowIso = new Date().toISOString();
+  const nextRetryCount =
+    state === 'pending'
+      ? ((existing?.brevoSync?.retryCount ?? 0) + 1)
+      : (existing?.brevoSync?.retryCount ?? 1);
+
+  await subscriberRef.set(
+    {
+      brevoSync: omitUndefinedFields({
+        status: state,
+        lastOperation: operation,
+        lastAttemptAt: nowIso,
+        lastSyncedAt: state === 'synced' ? nowIso : undefined,
+        lastError: state === 'failed' ? errorMessage || 'Unknown Brevo sync error' : undefined,
+        retryCount: nextRetryCount,
+      }),
+    },
+    { merge: true },
+  );
+};
+
 const syncConfirmedSubscriber = async (subscriber: BrevoNewsletterSubscriber): Promise<void> => {
   await brevoRequest('/contacts', {
     method: 'POST',
@@ -75,8 +125,11 @@ export const queueBrevoNewsletterSubscribeSync = (
     return;
   }
 
-  void syncConfirmedSubscriber(subscriber)
+  void markBrevoSyncState(subscriber, 'subscribe', 'pending')
+    .catch(() => undefined)
+    .then(() => syncConfirmedSubscriber(subscriber))
     .then(() => {
+      void markBrevoSyncState(subscriber, 'subscribe', 'synced').catch(() => undefined);
       appLogger.info(`${options.event}.synced`, {
         ...(options.meta || {}),
         emailNormalized: subscriber.emailNormalized,
@@ -84,6 +137,12 @@ export const queueBrevoNewsletterSubscribeSync = (
       });
     })
     .catch((error: unknown) => {
+      void markBrevoSyncState(
+        subscriber,
+        'subscribe',
+        'failed',
+        error instanceof Error ? error.message : 'Unknown Brevo sync error',
+      ).catch(() => undefined);
       appLogger.warn(`${options.event}.failed`, {
         ...(options.meta || {}),
         emailNormalized: subscriber.emailNormalized,
@@ -102,8 +161,11 @@ export const queueBrevoNewsletterUnsubscribeSync = (
     return;
   }
 
-  void syncUnsubscribedSubscriber(subscriber)
+  void markBrevoSyncState(subscriber, 'unsubscribe', 'pending')
+    .catch(() => undefined)
+    .then(() => syncUnsubscribedSubscriber(subscriber))
     .then(() => {
+      void markBrevoSyncState(subscriber, 'unsubscribe', 'synced').catch(() => undefined);
       appLogger.info(`${options.event}.synced`, {
         ...(options.meta || {}),
         emailNormalized: subscriber.emailNormalized,
@@ -111,6 +173,12 @@ export const queueBrevoNewsletterUnsubscribeSync = (
       });
     })
     .catch((error: unknown) => {
+      void markBrevoSyncState(
+        subscriber,
+        'unsubscribe',
+        'failed',
+        error instanceof Error ? error.message : 'Unknown Brevo sync error',
+      ).catch(() => undefined);
       appLogger.warn(`${options.event}.failed`, {
         ...(options.meta || {}),
         emailNormalized: subscriber.emailNormalized,
