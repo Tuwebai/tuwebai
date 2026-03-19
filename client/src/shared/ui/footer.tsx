@@ -1,5 +1,35 @@
-import NewsletterForm from '@/features/newsletter/components/newsletter-form';
+import { Suspense, lazy } from 'react';
+import { useIntersectionObserver } from '@/core/hooks/use-intersection-observer';
 import { TUWEBAI_EMAIL, TUWEBAI_SITE_FULL_URL, TUWEBAI_SITE_URL } from '@/shared/constants/contact';
+
+const NewsletterForm = lazy(() => import('@/features/newsletter/components/newsletter-form'));
+
+function DeferredFooterNewsletter() {
+  const { ref, hasIntersected } = useIntersectionObserver<HTMLDivElement>({
+    rootMargin: '320px 0px',
+  });
+
+  return (
+    <div ref={ref} className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+      <p className="mb-2 text-[11px] uppercase tracking-[0.22em] text-[#9BE7FF]">Newsletter</p>
+      <p className="mb-3 text-xs leading-6 text-gray-400">Recibi nuevas publicaciones y analisis de conversion.</p>
+
+      {hasIntersected ? (
+        <Suspense fallback={<div className="h-[74px] w-full rounded-lg border border-white/10 bg-[#0a0a0f]/40" />}>
+          <NewsletterForm
+            source="footer"
+            className="text-xs"
+            buttonText="Sumarme"
+            inputPlaceholder="Tu email"
+            disclaimerClassName="text-gray-500"
+          />
+        </Suspense>
+      ) : (
+        <div className="h-[74px] w-full rounded-lg border border-white/10 bg-[#0a0a0f]/40" />
+      )}
+    </div>
+  );
+}
 
 export default function Footer() {
   return (
@@ -9,17 +39,7 @@ export default function Footer() {
           <div>
             <h3 className="mb-4 font-rajdhani text-lg font-bold text-white">TuWeb.ai</h3>
             <p className="mb-4">Creando experiencias web inteligentes para marcas que buscan destacar en el entorno digital.</p>
-            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-              <p className="mb-2 text-[11px] uppercase tracking-[0.22em] text-[#9BE7FF]">Newsletter</p>
-              <p className="mb-3 text-xs leading-6 text-gray-400">Recibi nuevas publicaciones y analisis de conversion.</p>
-              <NewsletterForm
-                source="footer"
-                className="text-xs"
-                buttonText="Sumarme"
-                inputPlaceholder="Tu email"
-                disclaimerClassName="text-gray-500"
-              />
-            </div>
+            <DeferredFooterNewsletter />
           </div>
 
           <div>
