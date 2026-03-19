@@ -12,6 +12,7 @@ import WhatsAppButton from "@/shared/ui/whatsapp-button";
 import { TUWEBAI_WHATSAPP_DISPLAY, TUWEBAI_WHATSAPP_TEL, TUWEBAI_WHATSAPP_URL, TUWEBAI_EMAIL } from '@/shared/constants/contact';
 import analytics from "@/lib/analytics";
 import { getProposalErrorMessage, submitProposal } from '@/features/proposals/services/proposals.service';
+import '@/features/proposals/components/proposal-request-page.css';
 
 const formSchema = z.object({
   nombre: z.string().min(2, { message: "El nombre es requerido" }),
@@ -279,12 +280,12 @@ export default function Consulta() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] text-white">
+    <div className="proposal-request-page">
       <WhatsAppButton />
       
       {/* Header */}
       <motion.header 
-        className="bg-gradient-to-b from-[#0f0f19] to-[#0a0a0f] pt-24 pb-16 px-4"
+        className="proposal-request-header"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
@@ -312,12 +313,12 @@ export default function Consulta() {
         <div className="container mx-auto">
           <div className="max-w-3xl mx-auto">
             <motion.div
-              className="bg-gradient-to-br from-[#00CCFF]/10 to-[#9933FF]/10 rounded-xl p-[1px]"
+              className="proposal-request-frame"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <div className="bg-[#121217] rounded-xl p-8">
+              <div className="proposal-request-card">
                 {submitted ? (
                   <motion.div
                     className="text-center py-16"
@@ -325,7 +326,7 @@ export default function Consulta() {
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.5 }}
                   >
-                    <div className="w-20 h-20 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-full flex items-center justify-center mx-auto mb-6">
+                    <div className="proposal-request-success-icon">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
@@ -336,7 +337,7 @@ export default function Consulta() {
                     </p>
                     <Link 
                       to="/"
-                      className="inline-block px-6 py-3 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-full text-white font-medium"
+                      className="proposal-request-pill-button"
                     >
                       Volver al inicio
                     </Link>
@@ -351,7 +352,7 @@ export default function Consulta() {
                       </div>
                       <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
                         <motion.div 
-                          className="h-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF]"
+                          className="proposal-request-progress-fill"
                           initial={{ width: `${(1 / totalSteps) * 100}%` }}
                           animate={{ width: `${(currentStep / totalSteps) * 100}%` }}
                           transition={{ duration: 0.3 }}
@@ -817,7 +818,7 @@ export default function Consulta() {
                           >
                             <Button
                               type="submit"
-                              className="w-full py-4 text-lg bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-full text-white font-medium hover:shadow-lg hover:shadow-[#00CCFF]/20 transition-all"
+                              className="proposal-request-primary-submit"
                               >
                               Solicitar propuesta personalizada
                             </Button>
