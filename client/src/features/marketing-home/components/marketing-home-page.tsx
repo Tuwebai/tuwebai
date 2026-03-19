@@ -11,7 +11,6 @@ import PhilosophySection from '@/features/marketing-home/components/philosophy-s
 import ServicesSection from '@/features/marketing-home/components/services-section';
 import ProcessSection from '@/features/marketing-home/components/process-section';
 const ImpactSection = lazy(() => import('@/features/marketing-home/components/impact-section'));
-const TestimonialsSection = lazy(() => import('@/features/testimonials/components/testimonials-section'));
 const ContactSection = lazy(() => import('@/features/contact/components/contact-section'));
 const PricingSection = lazy(() => import('@/features/payments/components/pricing-section'));
 const ShowroomSection = lazy(() => import('@/features/marketing-home/components/showroom-section'));
@@ -97,7 +96,6 @@ export default function MarketingHomePage() {
             <PricingSection setRef={(ref: HTMLElement | null) => setSectionRef('pricing', ref)} />
 
             <ImpactSection setRef={(ref: HTMLElement | null) => setSectionRef('impact', ref)} />
-            <TestimonialsSection setRef={(ref: HTMLElement | null) => setSectionRef('testimonials', ref)} />
             <ContactSection setRef={(ref: HTMLElement | null) => setSectionRef('contact', ref)} />
           </Suspense>
         ) : null}

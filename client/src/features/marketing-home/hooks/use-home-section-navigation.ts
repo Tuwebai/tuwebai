@@ -15,7 +15,6 @@ export const HOME_SECTIONS: HomeSectionItem[] = [
   { id: 'showroom', label: 'Proyectos' },
   { id: 'pricing', label: 'Planes' },
   { id: 'impact', label: 'Impacto' },
-  { id: 'testimonials', label: 'Testimonios' },
   { id: 'contact', label: 'Contacto' },
 ];
 
@@ -29,7 +28,6 @@ const DEFAULT_SECTION_REFS: SectionRefMap = {
   showroom: null,
   pricing: null,
   impact: null,
-  testimonials: null,
   contact: null,
 };
 
