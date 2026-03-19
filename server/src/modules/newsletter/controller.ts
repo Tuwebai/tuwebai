@@ -1,6 +1,10 @@
 import { Request, Response } from 'express';
 import { env } from '../../config/env.config';
-import { queueContactEmail, queueNewsletterConfirmationEmail } from '../../infrastructure/mail/email.service';
+import {
+  queueContactEmail,
+  queueNewsletterConfirmationEmail,
+  queueNewsletterUnsubscribeEmail,
+} from '../../infrastructure/mail/email.service';
 import { getErrorMessage } from '../../shared/utils/error-message';
 import { appLogger } from '../../utils/app-logger';
 import {
@@ -110,8 +114,20 @@ export const handleNewsletterConfirm = async (req: Request, res: Response) => {
 export const handleNewsletterUnsubscribe = async (req: Request, res: Response) => {
   try {
     const result = await unsubscribeNewsletterSubscription(req.params.token);
+    const frontendBaseUrl = env.FRONTEND_URL.replace(/\/+$/, '');
 
     if (result.success) {
+      if (result.subscriber?.email) {
+        queueNewsletterUnsubscribeEmail(
+          result.subscriber.email,
+          `${frontendBaseUrl}/newsletter/unsubscribe/${encodeURIComponent(req.params.token)}`,
+          {
+            event: 'public.newsletter_unsubscribe',
+            meta: { route: req.path, method: req.method },
+          },
+        );
+      }
+
       return res.status(200).json(result);
     }
 

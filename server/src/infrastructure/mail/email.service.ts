@@ -18,6 +18,18 @@ interface TransactionalEmailData {
   text: string;
 }
 
+interface NewsletterEmailTemplateOptions {
+  preheader: string;
+  eyebrow: string;
+  title: string;
+  intro: string;
+  body: string[];
+  actionLabel: string;
+  actionUrl: string;
+  actionHint: string;
+  footerNote: string;
+}
+
 const getContactTo = (): string => env.CONTACT_TO_EMAIL?.trim() || env.SMTP_USER?.trim() || 'tuwebai@gmail.com';
 const SMTP_TIMEOUT_MS = 8000;
 const SMTP_MAX_ATTEMPTS = 2;
@@ -104,6 +116,147 @@ const sendTransactionalEmail = async (data: TransactionalEmailData) => {
   throw new Error('SMTP send failed after retries');
 };
 
+const buildNewsletterEmailShell = (options: NewsletterEmailTemplateOptions): string => {
+  const bodyParagraphs = options.body
+    .map(
+      (paragraph) => `
+            <p style="margin:0 0 14px;font-size:15px;line-height:27px;color:#c9d7f2;">
+              ${paragraph}
+            </p>`,
+    )
+    .join('');
+
+  return `
+    <!DOCTYPE html>
+    <html lang="es">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>${options.title}</title>
+      </head>
+      <body style="margin:0;padding:0;background:#060913;font-family:Inter,Segoe UI,Arial,sans-serif;">
+        <div style="display:none;font-size:1px;color:#060913;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;">
+          ${options.preheader}
+        </div>
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background:#060913;">
+          <tr>
+            <td align="center" style="padding:28px 14px 44px;">
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="640" style="width:100%;max-width:640px;">
+                <tr>
+                  <td style="padding:0 0 14px;">
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                      <tr>
+                        <td valign="middle" style="padding:8px 0;">
+                          <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                            <tr>
+                              <td valign="middle" style="padding-right:12px;">
+                                <img src="https://tuweb-ai.com/logo-tuwebai.png" width="42" height="42" alt="TuWeb.ai" style="width:42px;height:42px;border-radius:10px;" />
+                              </td>
+                              <td valign="middle">
+                                <div style="font-family:Rajdhani,Arial,sans-serif;font-size:26px;line-height:1;color:#FFFFFF;font-weight:700;letter-spacing:-0.4px;">
+                                  TuWeb<span style="color:#00CCFF;">.ai</span>
+                                </div>
+                                <div style="padding-top:6px;font-size:11px;line-height:1.4;color:#8DA1C7;letter-spacing:0.22em;text-transform:uppercase;">
+                                  Newsletter de crecimiento digital
+                                </div>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:0;">
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="border:1px solid rgba(0,204,255,0.16);border-radius:28px;overflow:hidden;background:
+                      radial-gradient(circle at top left, rgba(0,204,255,0.18), transparent 34%),
+                      radial-gradient(circle at top right, rgba(153,51,255,0.20), transparent 36%),
+                      linear-gradient(180deg, #101828 0%, #0B1020 100%);">
+                      <tr>
+                        <td style="padding:42px 40px 40px;">
+                          <div style="display:inline-block;margin-bottom:18px;border:1px solid rgba(0,204,255,0.24);border-radius:999px;padding:8px 14px;background:rgba(0,204,255,0.08);font-size:11px;line-height:1;color:#8BE8FF;letter-spacing:0.24em;text-transform:uppercase;">
+                            ${options.eyebrow}
+                          </div>
+                          <h1 style="margin:0 0 18px;font-family:Rajdhani,Arial,sans-serif;font-size:44px;line-height:46px;color:#FFFFFF;font-weight:700;letter-spacing:-0.04em;">
+                            ${options.title}
+                          </h1>
+                          <p style="margin:0 0 28px;font-size:16px;line-height:28px;color:#C9D7F2;max-width:520px;">
+                            ${options.intro}
+                          </p>
+                          <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                            <tr>
+                              <td style="border-radius:999px;background:linear-gradient(90deg,#00CCFF 0%,#9933FF 100%);">
+                                <a href="${options.actionUrl}" target="_blank" rel="noopener noreferrer" style="display:inline-block;padding:15px 26px;font-size:14px;font-weight:700;color:#FFFFFF;">
+                                  ${options.actionLabel}
+                                </a>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr><td style="height:10px;"></td></tr>
+                <tr>
+                  <td>
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="border:1px solid rgba(255,255,255,0.08);border-radius:24px;background:#0D1220;">
+                      <tr>
+                        <td style="padding:36px 36px 34px;">
+                          ${bodyParagraphs}
+                          <p style="margin:10px 0 12px;font-size:14px;line-height:24px;color:#93a7c7;">
+                            ${options.actionHint}
+                          </p>
+                          <p style="margin:0;font-size:13px;line-height:24px;word-break:break-all;color:#7dd3fc;">
+                            ${options.actionUrl}
+                          </p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr><td style="height:24px;"></td></tr>
+                <tr>
+                  <td style="padding:0 2px;">
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                      <tr>
+                        <td style="height:1px;background:linear-gradient(90deg,rgba(0,204,255,0.1) 0%,rgba(153,51,255,0.45) 50%,rgba(0,204,255,0.1) 100%);"></td>
+                      </tr>
+                    </table>
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                      <tr>
+                        <td style="padding-top:22px;">
+                          <div style="font-family:Rajdhani,Arial,sans-serif;font-size:22px;line-height:1;color:#FFFFFF;font-weight:700;">
+                            TuWeb<span style="color:#00CCFF;">.ai</span>
+                          </div>
+                          <div style="padding-top:8px;font-size:13px;line-height:22px;color:#8DA1C7;">
+                            Desarrollo web profesional para negocios que necesitan confianza, claridad y conversion.
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding-top:18px;">
+                          <p style="margin:0;font-size:11px;line-height:20px;color:#7E90B6;">
+                            ${options.footerNote}<br />
+                            <a href="https://tuweb-ai.com/politica-privacidad" target="_blank" rel="noopener noreferrer" style="color:#B9C7E6;text-decoration:underline;">Politica de privacidad</a>
+                            &nbsp;-&nbsp; Argentina
+                          </p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </body>
+    </html>
+  `;
+};
+
 interface BackgroundEmailOptions {
   event: string;
   meta?: Record<string, unknown>;
@@ -146,44 +299,50 @@ const buildNewsletterConfirmationEmail = (confirmationUrl: string) => {
     '',
     'Si no solicitaste esta suscripcion, podes ignorar este mensaje.',
   ].join('\n');
+  const html = buildNewsletterEmailShell({
+    preheader: 'Confirma tu email para activar el newsletter de TuWeb.ai.',
+    eyebrow: 'Newsletter TuWeb.ai',
+    title: 'Confirma tu suscripcion',
+    intro: 'Recibimos tu solicitud para sumarte al newsletter. Falta un paso breve para activar las proximas ediciones.',
+    body: [
+      'Para completar el alta, confirma tu email desde el siguiente enlace.',
+      'Si no solicitaste esta suscripcion, podes ignorar este mensaje sin hacer nada.',
+    ],
+    actionLabel: 'Confirmar suscripcion',
+    actionUrl: confirmationUrl,
+    actionHint: 'Si el boton no funciona, copia y pega esta URL en tu navegador:',
+    footerNote: 'Recibis este email porque se solicito el alta al newsletter de TuWeb.ai desde tuweb-ai.com.',
+  });
 
-  const html = `
-    <!DOCTYPE html>
-    <html lang="es">
-      <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>${subject}</title>
-      </head>
-      <body style="margin:0;padding:24px;background:#080b14;color:#f3f7ff;font-family:Segoe UI,Tahoma,sans-serif;">
-        <div style="max-width:600px;margin:0 auto;background:linear-gradient(180deg,#111827 0%,#0b1020 100%);border:1px solid rgba(0,204,255,.2);border-radius:20px;overflow:hidden;">
-          <div style="padding:32px 32px 20px;background:radial-gradient(circle at top left,rgba(0,204,255,.18),transparent 45%),radial-gradient(circle at top right,rgba(153,51,255,.18),transparent 40%);">
-            <p style="margin:0 0 12px;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:#7dd3fc;">Newsletter TuWeb.ai</p>
-            <h1 style="margin:0;font-size:30px;line-height:1.2;color:#ffffff;">Confirma tu suscripcion</h1>
-          </div>
-          <div style="padding:0 32px 32px;">
-            <p style="margin:0 0 18px;font-size:16px;line-height:1.7;color:#dbe7ff;">
-              Recibimos tu solicitud para sumarte al newsletter. Para activar la suscripcion, confirma tu email desde el siguiente enlace:
-            </p>
-            <p style="margin:0 0 24px;">
-              <a href="${confirmationUrl}" style="display:inline-block;padding:14px 22px;border-radius:999px;background:linear-gradient(90deg,#00ccff 0%,#7c3aed 100%);color:#ffffff;text-decoration:none;font-weight:700;">
-                Confirmar suscripcion
-              </a>
-            </p>
-            <p style="margin:0 0 12px;font-size:14px;line-height:1.7;color:#93a7c7;">
-              Si el boton no funciona, copia y pega esta URL en tu navegador:
-            </p>
-            <p style="margin:0;font-size:13px;line-height:1.7;word-break:break-all;color:#7dd3fc;">
-              ${confirmationUrl}
-            </p>
-            <p style="margin:24px 0 0;font-size:14px;line-height:1.7;color:#93a7c7;">
-              Si no solicitaste esta suscripcion, podes ignorar este mensaje.
-            </p>
-          </div>
-        </div>
-      </body>
-    </html>
-  `;
+  return { subject, text, html };
+};
+
+const buildNewsletterUnsubscribeEmail = (unsubscribeUrl: string) => {
+  const subject = 'Tu suscripcion al newsletter de TuWeb.ai fue cancelada';
+  const text = [
+    'Tu baja del newsletter de TuWeb.ai se proceso correctamente.',
+    '',
+    'Si fue un error o queres volver a suscribirte, podes hacerlo desde:',
+    'https://tuweb-ai.com/blog',
+    '',
+    'Referencia de baja:',
+    unsubscribeUrl,
+  ].join('\n');
+
+  const html = buildNewsletterEmailShell({
+    preheader: 'Confirmacion de baja del newsletter de TuWeb.ai.',
+    eyebrow: 'Preferencias del newsletter',
+    title: 'Tu baja fue procesada',
+    intro: 'La direccion quedo removida de las proximas ediciones del newsletter de TuWeb.ai.',
+    body: [
+      'No vas a recibir nuevas publicaciones desde esta suscripcion, salvo mensajes transaccionales necesarios para confirmar este cambio.',
+      'Si queres volver a sumarte, podes hacerlo cuando quieras desde el blog o desde cualquiera de nuestros formularios editoriales.',
+    ],
+    actionLabel: 'Volver al blog',
+    actionUrl: 'https://tuweb-ai.com/blog',
+    actionHint: 'Guardamos este enlace como referencia de la baja procesada:',
+    footerNote: `Este email confirma la baja solicitada desde el siguiente enlace: <a href="${unsubscribeUrl}" target="_blank" rel="noopener noreferrer" style="color:#B9C7E6;text-decoration:underline;">ver referencia</a>.`,
+  });
 
   return { subject, text, html };
 };
@@ -204,6 +363,44 @@ export const queueNewsletterConfirmationEmail = (
   }
 
   const emailPayload = buildNewsletterConfirmationEmail(confirmationUrl);
+
+  void sendTransactionalEmail({
+    to: email,
+    subject: emailPayload.subject,
+    html: emailPayload.html,
+    text: emailPayload.text,
+  })
+    .then((result) => {
+      appLogger.info(`${options.event}.smtp_sent`, {
+        ...(options.meta || {}),
+        messageId: result?.messageId,
+      });
+    })
+    .catch((error: unknown) => {
+      const message = error instanceof Error ? error.message : 'Unknown SMTP error';
+      appLogger.warn(`${options.event}.smtp_failed`, {
+        ...(options.meta || {}),
+        error: message,
+      });
+    });
+};
+
+export const queueNewsletterUnsubscribeEmail = (
+  email: string,
+  unsubscribeUrl: string,
+  options: BackgroundEmailOptions,
+): void => {
+  if (isSmtpDeliveryDisabled()) {
+    appLogger.info(`${options.event}.smtp_disabled`, options.meta || {});
+    return;
+  }
+
+  if (!isMailerConfigured()) {
+    appLogger.warn(`${options.event}.smtp_not_configured`, options.meta || {});
+    return;
+  }
+
+  const emailPayload = buildNewsletterUnsubscribeEmail(unsubscribeUrl);
 
   void sendTransactionalEmail({
     to: email,
