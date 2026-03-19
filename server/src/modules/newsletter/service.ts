@@ -19,10 +19,12 @@ export interface NewsletterSubscriptionContext {
 export interface NewsletterSubscriberRecord {
   email: string;
   emailNormalized: string;
-  status: 'pending_confirmation' | 'subscribed' | 'unsubscribed';
+  status: 'pending_confirmation' | 'subscribed' | 'unsubscribed' | 'bounced' | 'complained';
   createdAt: string;
   confirmedAt?: string;
   unsubscribedAt?: string;
+  bouncedAt?: string;
+  complainedAt?: string;
   updatedAt: string;
   lastSubmittedAt: string;
   firstSource: string;
@@ -41,6 +43,12 @@ export interface NewsletterSubscriptionResult {
   persistedIn: 'firestore' | 'fallback';
   subscriber: NewsletterSubscriberRecord;
   confirmationToken: string | null;
+}
+
+interface NewsletterWebhookResult {
+  success: boolean;
+  message: string;
+  subscriber?: NewsletterSubscriberRecord;
 }
 
 interface NewsletterActionResult {
@@ -319,6 +327,56 @@ export const unsubscribeNewsletterSubscription = async (
       existing.status === 'unsubscribed'
         ? 'Tu suscripcion ya estaba dada de baja.'
         : 'Tu email fue dado de baja correctamente.',
+    subscriber: nextSubscriber,
+  };
+};
+
+export const applyNewsletterProviderEvent = async (
+  email: string,
+  providerEvent: 'hard_bounce' | 'soft_bounce' | 'complaint' | 'unsubscribe',
+): Promise<NewsletterWebhookResult> => {
+  const db = getAdminFirestore();
+  if (!db) {
+    return {
+      success: false,
+      message: 'No se pudo procesar el webhook en este momento.',
+    };
+  }
+
+  const emailNormalized = normalizeEmail(email);
+  const subscriberRef = db.collection(NEWSLETTER_COLLECTION).doc(getSubscriberDocumentId(emailNormalized));
+  const snapshot = await subscriberRef.get();
+
+  if (!snapshot.exists) {
+    return {
+      success: false,
+      message: 'No encontramos un suscriptor para este evento.',
+    };
+  }
+
+  const existing = snapshot.data() as NewsletterSubscriberRecord;
+  const nowIso = new Date().toISOString();
+
+  const nextSubscriber = omitUndefinedFields({
+    ...existing,
+    status:
+      providerEvent === 'complaint'
+        ? 'complained'
+        : providerEvent === 'unsubscribe'
+          ? 'unsubscribed'
+          : 'bounced',
+    unsubscribedAt: providerEvent === 'unsubscribe' ? existing.unsubscribedAt || nowIso : existing.unsubscribedAt,
+    bouncedAt:
+      providerEvent === 'hard_bounce' || providerEvent === 'soft_bounce' ? existing.bouncedAt || nowIso : existing.bouncedAt,
+    complainedAt: providerEvent === 'complaint' ? existing.complainedAt || nowIso : existing.complainedAt,
+    updatedAt: nowIso,
+  }) as NewsletterSubscriberRecord;
+
+  await subscriberRef.set(nextSubscriber, { merge: true });
+
+  return {
+    success: true,
+    message: 'Evento de proveedor aplicado correctamente.',
     subscriber: nextSubscriber,
   };
 };

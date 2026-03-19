@@ -64,6 +64,7 @@ const PATHS_ALLOWED_WITHOUT_ORIGIN = [
   "/api/users/avatar",
   "/webhook/mercadopago/health",
   "/webhook/mercadopago",
+  "/webhooks/brevo",
 ] as const;
 
 function isPathAllowedWithoutOrigin(p: string): boolean {

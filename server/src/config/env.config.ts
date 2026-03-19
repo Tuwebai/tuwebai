@@ -26,6 +26,7 @@ const envSchema = z
       .string()
       .optional()
       .transform((value) => (value ? Number(value) : undefined)),
+    BREVO_WEBHOOK_TOKEN: z.string().optional(),
     SMTP_HOST: z.string().default('smtp.gmail.com'),
     SMTP_PORT: z.string().transform(Number).default('465'),
     SMTP_SECURE: z

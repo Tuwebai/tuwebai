@@ -9,6 +9,7 @@ import { getErrorMessage } from '../../shared/utils/error-message';
 import { appLogger } from '../../utils/app-logger';
 import {
   confirmNewsletterSubscription,
+  applyNewsletterProviderEvent,
   registerNewsletterSubscription,
   unsubscribeNewsletterSubscription,
 } from './service';
@@ -148,6 +149,58 @@ export const handleNewsletterUnsubscribe = async (req: Request, res: Response) =
         env.NODE_ENV === 'development'
           ? getErrorMessage(error, 'unknown_newsletter_unsubscribe_error')
           : undefined,
+    });
+  }
+};
+
+const mapBrevoEvent = (event: string): 'hard_bounce' | 'soft_bounce' | 'complaint' | 'unsubscribe' | null => {
+  const normalized = event.trim().toLowerCase();
+
+  if (normalized.includes('hard') && normalized.includes('bounce')) return 'hard_bounce';
+  if (normalized.includes('soft') && normalized.includes('bounce')) return 'soft_bounce';
+  if (normalized.includes('spam') || normalized.includes('complaint')) return 'complaint';
+  if (normalized.includes('unsubscribe')) return 'unsubscribe';
+
+  return null;
+};
+
+export const handleBrevoWebhook = async (req: Request, res: Response) => {
+  try {
+    const configuredToken = env.BREVO_WEBHOOK_TOKEN?.trim();
+    const providedToken = typeof req.query.token === 'string' ? req.query.token.trim() : '';
+
+    if (configuredToken && configuredToken !== providedToken) {
+      appLogger.warn('newsletter.brevo_webhook.unauthorized', {
+        route: req.path,
+        method: req.method,
+      });
+      return res.status(401).json({ success: false, message: 'Webhook no autorizado.' });
+    }
+
+    const mappedEvent = mapBrevoEvent(req.body.event);
+    if (!mappedEvent) {
+      return res.status(202).json({ success: true, message: 'Evento ignorado.' });
+    }
+
+    const result = await applyNewsletterProviderEvent(req.body.email, mappedEvent);
+
+    if (result.success) {
+      return res.status(200).json(result);
+    }
+
+    const notFound = result.message.includes('No encontramos');
+    return res.status(notFound ? 404 : 503).json(result);
+  } catch (error: unknown) {
+    appLogger.error('newsletter.brevo_webhook.failed', {
+      error: getErrorMessage(error, 'unknown_brevo_webhook_error'),
+      route: req.path,
+      method: req.method,
+    });
+
+    return res.status(500).json({
+      success: false,
+      message: 'No se pudo procesar el webhook de Brevo.',
+      details: env.NODE_ENV === 'development' ? getErrorMessage(error, 'unknown_brevo_webhook_error') : undefined,
     });
   }
 };

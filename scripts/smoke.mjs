@@ -228,6 +228,30 @@ const run = async () => {
       assert(response.status === 400, `Expected 400, got ${response.status}`);
     });
 
+    await runCase('brevo.webhook.unauthorized_or_accepted', async () => {
+      const { response } = await request('/webhooks/brevo', {
+        method: 'POST',
+        body: JSON.stringify({
+          event: 'hard_bounce',
+          email: 'qa@example.com',
+        }),
+      });
+      assert([200, 202, 401, 404, 503].includes(response.status), `Expected 200/202/401/404/503, got ${response.status}`);
+    });
+
+    if (process.env.BREVO_WEBHOOK_TOKEN) {
+      await runCase('brevo.webhook.authorized_or_firestore_unavailable', async () => {
+        const { response } = await request(`/webhooks/brevo?token=${encodeURIComponent(process.env.BREVO_WEBHOOK_TOKEN)}`, {
+          method: 'POST',
+          body: JSON.stringify({
+            event: 'hard_bounce',
+            email: 'qa@example.com',
+          }),
+        });
+        assert([200, 202, 404, 503].includes(response.status), `Expected 200/202/404/503, got ${response.status}`);
+      });
+    }
+
     if (ENFORCE_AUTH_MODE) {
       await runCase('users.get.401_without_token_when_auth_enforced', async () => {
         const { response } = await request('/api/users/smoke-user-1');

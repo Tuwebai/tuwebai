@@ -1,8 +1,13 @@
 import { Router } from 'express';
-import { handleNewsletter, handleNewsletterConfirm, handleNewsletterUnsubscribe } from './controller';
+import { handleBrevoWebhook, handleNewsletter, handleNewsletterConfirm, handleNewsletterUnsubscribe } from './controller';
 import { validatePayload } from '../../middlewares/validate.middleware';
 import { apiLimiter } from '../../middlewares/rate-limit.middleware';
-import { newsletterConfirmParamsSchema, newsletterSchema, newsletterUnsubscribeParamsSchema } from '../../schemas/api.schemas';
+import {
+  brevoWebhookSchema,
+  newsletterConfirmParamsSchema,
+  newsletterSchema,
+  newsletterUnsubscribeParamsSchema,
+} from '../../schemas/api.schemas';
 
 const router = Router();
 
@@ -14,5 +19,6 @@ router.get(
   validatePayload(newsletterUnsubscribeParamsSchema),
   handleNewsletterUnsubscribe,
 );
+router.post('/webhooks/brevo', validatePayload(brevoWebhookSchema), handleBrevoWebhook);
 
 export default router;

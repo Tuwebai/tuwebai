@@ -71,6 +71,15 @@ export const newsletterUnsubscribeParamsSchema = z.object({
   }),
 });
 
+export const brevoWebhookSchema = z.object({
+  body: z
+    .object({
+      event: z.string().min(2, 'Evento invalido'),
+      email: z.string().email('Email invalido'),
+    })
+    .passthrough(),
+});
+
 export const authVerifyParamsSchema = z.object({
   params: z.object({
     token: z.string({ required_error: 'Token requerido' }).min(6, 'Token invalido')
