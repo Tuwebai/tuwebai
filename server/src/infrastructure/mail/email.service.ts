@@ -356,6 +356,39 @@ const buildNewsletterUnsubscribeEmail = (unsubscribeUrl: string) => {
   return { subject, text, html };
 };
 
+const buildNewsletterWelcomeEmail = () => {
+  const subject = 'Bienvenido al newsletter de TuWeb.ai';
+  const actionUrl = 'https://tuweb-ai.com/blog';
+  const text = [
+    'Tu suscripcion al newsletter de TuWeb.ai ya quedo activa.',
+    '',
+    'A partir de ahora vas a recibir recursos concretos sobre conversion web, landings, estructura comercial y decisiones tecnicas.',
+    '',
+    'Podes empezar por el blog:',
+    actionUrl,
+    '',
+    'Si queres responder con tu caso o tu proyecto, podes hacerlo directamente sobre este email.',
+  ].join('\n');
+
+  const html = buildNewsletterEmailShell({
+    preheader: 'Tu suscripcion ya esta activa. Empeza por el blog de TuWeb.ai.',
+    eyebrow: 'Newsletter TuWeb.ai',
+    title: 'Ya estas dentro',
+    intro:
+      'Tu suscripcion quedo activa. A partir de ahora vas a recibir criterios concretos sobre conversion web, landings y decisiones tecnicas para negocios que necesitan vender mejor online.',
+    body: [
+      'En TuWeb.ai usamos el newsletter para compartir diagnosticos, aprendizajes de implementacion y recursos accionables. La idea no es llenar tu inbox, sino darte material util para decidir mejor.',
+      'Si queres empezar ahora, entra al blog. Ahi vas a encontrar articulos sobre auditoria web, conversion, ecommerce, landings y estructura comercial.',
+    ],
+    actionLabel: 'Ir al blog',
+    actionUrl,
+    actionHint: 'Tambien podes copiar esta URL en tu navegador:',
+    footerNote: 'Recibis este email porque confirmaste tu suscripcion al newsletter de TuWeb.ai.',
+  });
+
+  return { subject, text, html };
+};
+
 export const queueNewsletterConfirmationEmail = (
   email: string,
   confirmationUrl: string,
@@ -411,6 +444,41 @@ export const queueNewsletterUnsubscribeEmail = (
   }
 
   const emailPayload = buildNewsletterUnsubscribeEmail(unsubscribeUrl);
+
+  void sendTransactionalEmail({
+    to: email,
+    subject: emailPayload.subject,
+    html: emailPayload.html,
+    text: emailPayload.text,
+    from: getNewsletterFrom(),
+  })
+    .then((result) => {
+      appLogger.info(`${options.event}.smtp_sent`, {
+        ...(options.meta || {}),
+        messageId: result?.messageId,
+      });
+    })
+    .catch((error: unknown) => {
+      const message = error instanceof Error ? error.message : 'Unknown SMTP error';
+      appLogger.warn(`${options.event}.smtp_failed`, {
+        ...(options.meta || {}),
+        error: message,
+      });
+    });
+};
+
+export const queueNewsletterWelcomeEmail = (email: string, options: BackgroundEmailOptions): void => {
+  if (isSmtpDeliveryDisabled()) {
+    appLogger.info(`${options.event}.smtp_disabled`, options.meta || {});
+    return;
+  }
+
+  if (!isMailerConfigured()) {
+    appLogger.warn(`${options.event}.smtp_not_configured`, options.meta || {});
+    return;
+  }
+
+  const emailPayload = buildNewsletterWelcomeEmail();
 
   void sendTransactionalEmail({
     to: email,

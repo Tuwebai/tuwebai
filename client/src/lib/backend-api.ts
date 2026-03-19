@@ -160,7 +160,7 @@ export const backendApi = {
     }),
 
   confirmNewsletter: (token: string) =>
-    apiFetch<{ success: boolean; message: string; unsubscribeToken?: string | null }>(
+    apiFetch<{ success: boolean; message: string; unsubscribeToken?: string | null; justConfirmed?: boolean }>(
       `/newsletter/confirm/${encodeURIComponent(token)}`
     ),
 

@@ -4,6 +4,7 @@ import {
   queueContactEmail,
   queueNewsletterConfirmationEmail,
   queueNewsletterUnsubscribeEmail,
+  queueNewsletterWelcomeEmail,
 } from '../../infrastructure/mail/email.service';
 import { getErrorMessage } from '../../shared/utils/error-message';
 import { appLogger } from '../../utils/app-logger';
@@ -91,6 +92,13 @@ export const handleNewsletterConfirm = async (req: Request, res: Response) => {
     const result = await confirmNewsletterSubscription(req.params.token);
 
     if (result.success) {
+      if (result.justConfirmed && result.subscriber?.email) {
+        queueNewsletterWelcomeEmail(result.subscriber.email, {
+          event: 'public.newsletter_welcome',
+          meta: { route: req.path, method: req.method },
+        });
+      }
+
       return res.status(200).json(result);
     }
 

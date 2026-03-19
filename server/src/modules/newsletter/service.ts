@@ -56,6 +56,7 @@ interface NewsletterActionResult {
   message: string;
   subscriber?: NewsletterSubscriberRecord;
   unsubscribeToken?: string | null;
+  justConfirmed?: boolean;
 }
 
 const NEWSLETTER_COLLECTION = 'newsletter_subscribers';
@@ -274,6 +275,7 @@ export const confirmNewsletterSubscription = async (
         : 'Tu email fue confirmado correctamente. Ya quedaste suscripto.',
     subscriber: nextSubscriber,
     unsubscribeToken: encodeNewsletterToken(decoded.emailNormalized, 'newsletter-unsubscribe'),
+    justConfirmed: existing.status !== 'subscribed',
   };
 };
 
