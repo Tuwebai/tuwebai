@@ -17,6 +17,9 @@ const envSchema = z
     CONTACT_TO_EMAIL: z.string().email('CONTACT_TO_EMAIL debe ser un email valido').optional(),
     SMTP_USER: z.string().optional(),
     SMTP_PASS: z.string().optional(),
+    SMTP_FROM_EMAIL: z.string().email('SMTP_FROM_EMAIL debe ser un email valido').optional(),
+    SMTP_FROM_NAME: z.string().default('TuWeb.ai'),
+    NEWSLETTER_FROM_EMAIL: z.string().email('NEWSLETTER_FROM_EMAIL debe ser un email valido').optional(),
     SMTP_HOST: z.string().default('smtp.gmail.com'),
     SMTP_PORT: z.string().transform(Number).default('465'),
     SMTP_SECURE: z
@@ -64,6 +67,13 @@ const envSchema = z
           code: z.ZodIssueCode.custom,
           message: 'SMTP_PASS es requerido en produccion para envio de emails',
           path: ['SMTP_PASS'],
+        });
+      }
+      if (!data.SMTP_FROM_EMAIL?.trim()) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'SMTP_FROM_EMAIL es requerido en produccion para remitente visible',
+          path: ['SMTP_FROM_EMAIL'],
         });
       }
     }

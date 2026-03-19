@@ -16,6 +16,8 @@ interface TransactionalEmailData {
   subject: string;
   html: string;
   text: string;
+  from?: string;
+  replyTo?: string;
 }
 
 interface NewsletterEmailTemplateOptions {
@@ -31,6 +33,10 @@ interface NewsletterEmailTemplateOptions {
 }
 
 const getContactTo = (): string => env.CONTACT_TO_EMAIL?.trim() || env.SMTP_USER?.trim() || 'tuwebai@gmail.com';
+const getDefaultFrom = (): string =>
+  `"${env.SMTP_FROM_NAME.trim()}" <${env.SMTP_FROM_EMAIL?.trim() || env.SMTP_USER?.trim() || 'no-reply@tuweb-ai.com'}>`;
+const getNewsletterFrom = (): string =>
+  `"${env.SMTP_FROM_NAME.trim()} Newsletter" <${env.NEWSLETTER_FROM_EMAIL?.trim() || env.SMTP_FROM_EMAIL?.trim() || env.SMTP_USER?.trim() || 'news@tuweb-ai.com'}>`;
 const SMTP_TIMEOUT_MS = 8000;
 const SMTP_MAX_ATTEMPTS = 2;
 
@@ -65,8 +71,9 @@ export const sendContactEmail = async (data: EmailData) => {
   const { name, email, title, message, type = 'contact' } = data;
   const emailTitle = title || "Consulta desde formulario de contacto";
   const mailOptions = {
-    from: env.SMTP_USER!,
+    from: getDefaultFrom(),
     to: getContactTo(),
+    replyTo: email,
     subject: emailTitle,
     html: generateEmailTemplate({
       name,
@@ -96,8 +103,9 @@ const sendTransactionalEmail = async (data: TransactionalEmailData) => {
   }
 
   const mailOptions = {
-    from: env.SMTP_USER!,
+    from: data.from || getDefaultFrom(),
     to: data.to,
+    replyTo: data.replyTo,
     subject: data.subject,
     html: data.html,
     text: data.text,
@@ -369,6 +377,7 @@ export const queueNewsletterConfirmationEmail = (
     subject: emailPayload.subject,
     html: emailPayload.html,
     text: emailPayload.text,
+    from: getNewsletterFrom(),
   })
     .then((result) => {
       appLogger.info(`${options.event}.smtp_sent`, {
@@ -407,6 +416,7 @@ export const queueNewsletterUnsubscribeEmail = (
     subject: emailPayload.subject,
     html: emailPayload.html,
     text: emailPayload.text,
+    from: getNewsletterFrom(),
   })
     .then((result) => {
       appLogger.info(`${options.event}.smtp_sent`, {
