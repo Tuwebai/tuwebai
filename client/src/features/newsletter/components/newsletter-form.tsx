@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
 import { useToast } from '@/shared/ui/use-toast';
 import analytics from '@/lib/analytics';
 import {
@@ -12,13 +11,17 @@ interface NewsletterFormProps {
   theme?: 'light' | 'dark';
   className?: string;
   buttonText?: string;
+  inputPlaceholder?: string;
+  disclaimerClassName?: string;
 }
 
 export default function NewsletterForm({
   source = 'website',
   theme = 'dark',
   className = '',
-  buttonText = 'Suscribirse'
+  buttonText = 'Suscribirse',
+  inputPlaceholder = 'Tu email',
+  disclaimerClassName = 'text-gray-500',
 }: NewsletterFormProps) {
   const [email, setEmail] = useState('');
   const [submitState, setSubmitState] = useState<'idle' | 'sent'>('idle');
@@ -81,24 +84,21 @@ export default function NewsletterForm({
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="Tu email"
+            placeholder={inputPlaceholder}
             className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200 ${inputClasses}`}
           />
           {error && <p className="absolute -bottom-6 left-0 text-red-500 text-xs">{error}</p>}
         </div>
 
-        <motion.button
+        <button
           type="submit"
           className={`px-6 py-3 rounded-lg font-medium shadow-lg disabled:opacity-70 ${buttonClasses}`}
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          transition={{ duration: 0.2 }}
         >
           {submitState === 'sent' ? 'Enviado' : buttonText}
-        </motion.button>
+        </button>
       </div>
 
-      <p className="text-gray-500 text-xs mt-3 text-center">
+      <p className={`text-xs mt-3 text-center ${disclaimerClassName}`}>
         Al suscribirte, aceptas nuestra politica de privacidad.
       </p>
     </form>

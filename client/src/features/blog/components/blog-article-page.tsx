@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight, ArrowUp, Clock3 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 import { useBlogArticle } from '@/features/blog/hooks/use-blog-article';
+import NewsletterForm from '@/features/newsletter/components/newsletter-form';
 import { TUWEBAI_SITE_FULL_URL, TUWEBAI_WHATSAPP_URL } from '@/shared/constants/contact';
 import MetaTags from '@/shared/ui/meta-tags';
 
@@ -174,10 +175,30 @@ export default function BlogArticlePage({ slug }: BlogArticlePageProps) {
                 />
 
                 <div className="mt-10 border-t border-white/10 pt-6">
+                  <div className="rounded-[28px] border border-[#00CCFF]/20 bg-[radial-gradient(circle_at_left_top,_rgba(0,204,255,0.14),_transparent_32%),radial-gradient(circle_at_right_bottom,_rgba(153,51,255,0.12),_transparent_30%),linear-gradient(180deg,_rgba(16,19,27,0.92),_rgba(10,10,15,0.92))] p-6 md:p-8">
+                    <span className="inline-flex rounded-full border border-[#00CCFF]/30 bg-[#00CCFF]/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-[#9BE7FF]">
+                      Newsletter TuWeb.ai
+                    </span>
+                    <h2 className="mt-4 font-rajdhani text-3xl font-bold text-white md:text-4xl">
+                      Si este articulo te sirvio, recibi los proximos por email.
+                    </h2>
+                    <p className="mt-3 max-w-2xl text-sm leading-7 text-gray-300 md:text-base">
+                      Te enviamos nuevas publicaciones, aprendizajes de conversion y recursos tecnicos aplicables a negocios reales. Confirmas tu alta por email y podes darte de baja cuando quieras.
+                    </p>
+                    <div className="mt-6 max-w-2xl">
+                      <NewsletterForm
+                        source={`blog-article:${article.slug}`}
+                        buttonText="Quiero recibirlos"
+                        inputPlaceholder="tuemail@negocio.com"
+                        disclaimerClassName="text-gray-400"
+                      />
+                    </div>
+                  </div>
+
                   <button
                     type="button"
                     onClick={scrollToArticleTop}
-                    className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-5 py-3 text-sm font-medium text-white transition-colors hover:border-[#00CCFF]/40 hover:bg-[#00CCFF]/10"
+                    className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-5 py-3 text-sm font-medium text-white transition-colors hover:border-[#00CCFF]/40 hover:bg-[#00CCFF]/10"
                   >
                     <ArrowUp className="h-4 w-4" />
                     Volver al inicio del articulo

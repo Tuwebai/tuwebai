@@ -1,87 +1,91 @@
-import { TUWEBAI_EMAIL, TUWEBAI_SITE_URL, TUWEBAI_SITE_FULL_URL } from '@/shared/constants/contact';
+import NewsletterForm from '@/features/newsletter/components/newsletter-form';
+import { TUWEBAI_EMAIL, TUWEBAI_SITE_FULL_URL, TUWEBAI_SITE_URL } from '@/shared/constants/contact';
 
 export default function Footer() {
   return (
-    <footer className="bg-[#0a0a0f] pt-12 pb-8 text-gray-400 text-sm border-t border-gray-800 relative z-10 animate-fadeIn">
+    <footer className="relative z-10 border-t border-gray-800 bg-[#0a0a0f] pb-8 pt-12 text-sm text-gray-400 animate-fadeIn">
       <div className="container mx-auto px-4">
-        <div className="grid md:grid-cols-4 gap-8 mb-10">
+        <div className="mb-10 grid gap-8 md:grid-cols-4">
           <div>
-            <h3 className="text-white font-rajdhani font-bold text-lg mb-4">TuWeb.ai</h3>
+            <h3 className="mb-4 font-rajdhani text-lg font-bold text-white">TuWeb.ai</h3>
             <p className="mb-4">Creando experiencias web inteligentes para marcas que buscan destacar en el entorno digital.</p>
+            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+              <p className="mb-2 text-[11px] uppercase tracking-[0.22em] text-[#9BE7FF]">Newsletter</p>
+              <p className="mb-3 text-xs leading-6 text-gray-400">Recibi nuevas publicaciones y analisis de conversion.</p>
+              <NewsletterForm
+                source="footer"
+                className="text-xs"
+                buttonText="Sumarme"
+                inputPlaceholder="Tu email"
+                disclaimerClassName="text-gray-500"
+              />
+            </div>
           </div>
 
           <div>
-            <h3 className="text-white font-rajdhani font-bold text-lg mb-4">Servicios</h3>
+            <h3 className="mb-4 font-rajdhani text-lg font-bold text-white">Servicios</h3>
             <ul className="space-y-2">
-              <li><a href="/servicios/consultoria-estrategica" className="hover:text-[#00CCFF] transition-colors">Consultoría Estratégica</a></li>
-              <li><a href="/servicios/desarrollo-web" className="hover:text-[#00CCFF] transition-colors">Desarrollo Web</a></li>
-              <li><a href="/servicios/posicionamiento-marketing" className="hover:text-[#00CCFF] transition-colors">Posicionamiento y Marketing</a></li>
-              <li><a href="/servicios/automatizacion-marketing" className="hover:text-[#00CCFF] transition-colors">Automatización de Marketing</a></li>
-              <li><a href="/contacto" className="hover:text-[#00CCFF] transition-colors">Contacto</a></li>
+              <li><a href="/servicios/consultoria-estrategica" className="transition-colors hover:text-[#00CCFF]">Consultoria Estrategica</a></li>
+              <li><a href="/servicios/desarrollo-web" className="transition-colors hover:text-[#00CCFF]">Desarrollo Web</a></li>
+              <li><a href="/servicios/posicionamiento-marketing" className="transition-colors hover:text-[#00CCFF]">Posicionamiento y Marketing</a></li>
+              <li><a href="/servicios/automatizacion-marketing" className="transition-colors hover:text-[#00CCFF]">Automatizacion de Marketing</a></li>
+              <li><a href="/contacto" className="transition-colors hover:text-[#00CCFF]">Contacto</a></li>
             </ul>
           </div>
 
           <div>
-            <h3 className="text-white font-rajdhani font-bold text-lg mb-4">Enlaces rápidos</h3>
+            <h3 className="mb-4 font-rajdhani text-lg font-bold text-white">Enlaces rapidos</h3>
             <ul className="space-y-2">
-              <li><a href="/faq" className="hover:text-[#9933FF] transition-colors">Preguntas Frecuentes</a></li>
-              <li><a href="/blog" className="hover:text-[#9933FF] transition-colors">Blog</a></li>
-              <li><a href="/comparativas" className="hover:text-[#9933FF] transition-colors">Comparativas</a></li>
-              <li><a href="/tecnologias" className="hover:text-[#9933FF] transition-colors">Tecnologias</a></li>
-              <li><a href="/contacto" className="hover:text-[#9933FF] transition-colors">Contacto</a></li>
+              <li><a href="/faq" className="transition-colors hover:text-[#9933FF]">Preguntas Frecuentes</a></li>
+              <li><a href="/blog" className="transition-colors hover:text-[#9933FF]">Blog</a></li>
+              <li><a href="/comparativas" className="transition-colors hover:text-[#9933FF]">Comparativas</a></li>
+              <li><a href="/tecnologias" className="transition-colors hover:text-[#9933FF]">Tecnologias</a></li>
+              <li><a href="/contacto" className="transition-colors hover:text-[#9933FF]">Contacto</a></li>
             </ul>
           </div>
 
           <div>
-            <h3 className="text-white font-rajdhani font-bold text-lg mb-4">Contacto</h3>
+            <h3 className="mb-4 font-rajdhani text-lg font-bold text-white">Contacto</h3>
             <div className="space-y-2">
               <div className="flex items-start space-x-3">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#00CCFF] mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" className="mt-0.5 h-5 w-5 text-[#00CCFF]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
                 <div>
                   <p className="text-gray-300">Email:</p>
-                  <a href={`mailto:${TUWEBAI_EMAIL}`} className="hover:text-[#00CCFF] transition-colors">{TUWEBAI_EMAIL}</a>
+                  <a href={`mailto:${TUWEBAI_EMAIL}`} className="transition-colors hover:text-[#00CCFF]">{TUWEBAI_EMAIL}</a>
                 </div>
               </div>
 
               <div className="flex items-start space-x-3">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#9933FF] mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" className="mt-0.5 h-5 w-5 text-[#9933FF]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
                 </svg>
                 <div>
                   <p className="text-gray-300">Web:</p>
-                  <a href={TUWEBAI_SITE_FULL_URL} target="_blank" rel="noopener noreferrer" className="hover:text-[#9933FF] transition-colors">{TUWEBAI_SITE_URL}</a>
+                  <a
+                    href={TUWEBAI_SITE_FULL_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="transition-colors hover:text-[#9933FF]"
+                  >
+                    {TUWEBAI_SITE_URL}
+                  </a>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="border-t border-gray-800 pt-8 mb-4 flex flex-col md:flex-row justify-between items-center">
+        <div className="mb-4 flex flex-col items-center justify-between border-t border-gray-800 pt-8 md:flex-row">
           <div className="flex items-center gap-2">
-            <img src="/logo-tuwebai.png" alt="Logo TuWeb.ai" className="w-8 h-8" />
+            <img src="/logo-tuwebai.png" alt="Logo TuWeb.ai" className="h-8 w-8" />
             <span className="text-sm text-gray-400">© 2024 TuWeb.ai. Todos los derechos reservados.</span>
           </div>
-          <div className="mt-4 md:mt-0 flex gap-6">
-            <a
-              href="/terminos-condiciones"
-              className="hover:text-[#9933FF] transition-colors"
-            >
-              Términos y condiciones
-            </a>
-            <a
-              href="/politica-privacidad"
-              className="hover:text-[#00CCFF] transition-colors"
-            >
-              Política de privacidad
-            </a>
-            <a
-              href="/politica-cookies"
-              className="hover:text-[#00CCFF] transition-colors"
-            >
-              Cookies
-            </a>
+          <div className="mt-4 flex gap-6 md:mt-0">
+            <a href="/terminos-condiciones" className="transition-colors hover:text-[#9933FF]">Terminos y condiciones</a>
+            <a href="/politica-privacidad" className="transition-colors hover:text-[#00CCFF]">Politica de privacidad</a>
+            <a href="/politica-cookies" className="transition-colors hover:text-[#00CCFF]">Cookies</a>
           </div>
         </div>
       </div>

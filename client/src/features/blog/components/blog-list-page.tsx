@@ -4,6 +4,7 @@ import { ArrowRight, Clock3 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 import { useBlogPosts } from '@/features/blog/hooks/use-blog-posts';
+import NewsletterForm from '@/features/newsletter/components/newsletter-form';
 import { TUWEBAI_SITE_FULL_URL } from '@/shared/constants/contact';
 import MetaTags from '@/shared/ui/meta-tags';
 
@@ -104,6 +105,31 @@ export default function BlogListPage() {
                 </div>
               </article>
             ))}
+          </div>
+        </section>
+
+        <section className="mx-auto mt-10 max-w-6xl">
+          <div className="overflow-hidden rounded-[32px] border border-[#00CCFF]/20 bg-[radial-gradient(circle_at_left_top,_rgba(0,204,255,0.16),_transparent_32%),radial-gradient(circle_at_right_bottom,_rgba(153,51,255,0.14),_transparent_30%),linear-gradient(180deg,_rgba(16,19,27,0.98),_rgba(10,10,15,0.98))] px-6 py-10 shadow-2xl shadow-black/30 md:px-10">
+            <div className="max-w-3xl">
+              <span className="inline-flex rounded-full border border-[#00CCFF]/30 bg-[#00CCFF]/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.26em] text-[#9BE7FF]">
+                Newsletter editorial
+              </span>
+              <h2 className="mt-5 font-rajdhani text-4xl font-bold leading-tight text-white md:text-5xl">
+                Recibi nuevos articulos y criterios concretos para mejorar tu web.
+              </h2>
+              <p className="mt-4 max-w-2xl text-base leading-7 text-gray-300 md:text-lg">
+                Enviamos una seleccion breve con analisis, errores frecuentes y oportunidades de conversion para negocios en Argentina. Sin spam y con confirmacion por email.
+              </p>
+            </div>
+
+            <div className="mt-8 max-w-3xl">
+              <NewsletterForm
+                source="blog-list"
+                buttonText="Recibir ediciones"
+                inputPlaceholder="nombre@empresa.com"
+                disclaimerClassName="text-gray-400"
+              />
+            </div>
           </div>
         </section>
       </main>
