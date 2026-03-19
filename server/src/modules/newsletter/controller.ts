@@ -3,26 +3,43 @@ import { env } from '../../config/env.config';
 import { queueContactEmail } from '../../infrastructure/mail/email.service';
 import { getErrorMessage } from '../../shared/utils/error-message';
 import { appLogger } from '../../utils/app-logger';
-import { storeSubmission } from '../../utils/submission-store';
+import { registerNewsletterSubscription } from './service';
+
+const resolveIpAddress = (req: Request): string | null => {
+  const forwardedFor = req.headers['x-forwarded-for'];
+
+  if (typeof forwardedFor === 'string') {
+    return forwardedFor.split(',')[0]?.trim() || null;
+  }
+
+  if (Array.isArray(forwardedFor) && forwardedFor[0]) {
+    return forwardedFor[0];
+  }
+
+  return req.ip || null;
+};
 
 export const handleNewsletter = async (req: Request, res: Response) => {
   try {
     const { email, source } = req.body;
-    storeSubmission('newsletter', {
+    const result = await registerNewsletterSubscription({
       email,
       source: source || 'website',
-      createdAt: new Date().toISOString(),
+      ipAddress: resolveIpAddress(req),
+      userAgent: req.get('user-agent') || null,
     });
 
-    queueContactEmail(
-      {
-        name: 'Newsletter',
-        email,
-        title: 'Nueva suscripcion a newsletter',
-        message: `Email: ${email}\nSource: ${source || 'website'}\nTimestamp: ${new Date().toISOString()}`,
-      },
-      { event: 'public.newsletter', meta: { route: req.path, method: req.method } }
-    );
+    if (!result.isExistingSubscriber) {
+      queueContactEmail(
+        {
+          name: 'Newsletter',
+          email,
+          title: 'Nueva suscripcion a newsletter',
+          message: `Email: ${result.subscriber.email}\nSource: ${result.subscriber.lastSource}\nTimestamp: ${result.subscriber.createdAt}\nPersistencia: ${result.persistedIn}`,
+        },
+        { event: 'public.newsletter', meta: { route: req.path, method: req.method } }
+      );
+    }
 
     return res.status(202).json({
       success: true,
