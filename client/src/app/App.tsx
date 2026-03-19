@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import AppProviders from '@/app/providers/AppProviders';
@@ -10,10 +10,9 @@ import { DEFAULT_USER_PRIVACY_SETTINGS } from '@/features/users/types/privacy';
 import analytics from '@/lib/analytics';
 import { runWhenIdle } from '@/lib/performance';
 import { SkipLink } from '@/shared/ui/skip-link';
-
-const GlobalNavbar = lazy(() => import('@/app/layout/global-navbar'));
-const Footer = lazy(() => import('@/shared/ui/footer'));
-const Toaster = lazy(() => import('@/shared/ui/toaster').then((module) => ({ default: module.Toaster })));
+import GlobalNavbar from '@/app/layout/global-navbar';
+import Footer from '@/shared/ui/footer';
+import { Toaster } from '@/shared/ui/toaster';
 
 const shouldEagerlyRunAnalytics = (pathname: string) =>
   pathname.startsWith('/panel') || pathname.startsWith('/auth/');
@@ -34,19 +33,13 @@ function ShellFrame() {
 
       <SkipLink />
       {shouldUseGlobalNav && (
-        <Suspense fallback={<div className="h-16" />}>
-          <GlobalNavbar />
-        </Suspense>
+        <GlobalNavbar />
       )}
 
       <AppRoutes />
 
-      <Suspense fallback={null}>
-        <Footer />
-      </Suspense>
-      <Suspense fallback={null}>
-        <Toaster />
-      </Suspense>
+      <Footer />
+      <Toaster />
     </>
   );
 }
