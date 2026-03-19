@@ -1,4 +1,4 @@
-import { createRoot, hydrateRoot } from "react-dom/client";
+import { createRoot } from "react-dom/client";
 import { BrowserRouter, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { QueryClientProvider } from "@tanstack/react-query";
@@ -58,20 +58,11 @@ const appTree = (
   </QueryClientProvider>
 );
 
-const isHomeReactPrerender =
-  rootElement.dataset.prerender === "react-app" &&
-  rootElement.hasChildNodes() &&
-  window.location.pathname === "/";
-
-if (isHomeReactPrerender) {
+if (rootElement.dataset.prerender) {
   rootElement.removeAttribute("data-prerender");
-  rootElement.innerHTML = "";
-  createRoot(rootElement).render(appTree);
-} else if (rootElement.dataset.prerender === "react-app" && rootElement.hasChildNodes()) {
-  hydrateRoot(rootElement, appTree);
-} else {
-  rootElement.innerHTML = "";
-  createRoot(rootElement).render(appTree);
 }
+
+rootElement.innerHTML = "";
+createRoot(rootElement).render(appTree);
 
 startWebVitalsTracking();
