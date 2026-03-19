@@ -4,7 +4,7 @@ import { appLogger } from '../../utils/app-logger';
 interface BrevoNewsletterSubscriber {
   email: string;
   emailNormalized: string;
-  status: 'pending_confirmation' | 'subscribed' | 'unsubscribed';
+  status: 'pending_confirmation' | 'subscribed' | 'unsubscribed' | 'bounced' | 'complained';
 }
 
 interface BackgroundSyncOptions {

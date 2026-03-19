@@ -37,6 +37,7 @@ const getDefaultFrom = (): string =>
   `"${env.SMTP_FROM_NAME.trim()}" <${env.SMTP_FROM_EMAIL?.trim() || env.SMTP_USER?.trim() || 'no-reply@tuweb-ai.com'}>`;
 const getNewsletterFrom = (): string =>
   `"${env.SMTP_FROM_NAME.trim()} Newsletter" <${env.NEWSLETTER_FROM_EMAIL?.trim() || env.SMTP_FROM_EMAIL?.trim() || env.SMTP_USER?.trim() || 'news@tuweb-ai.com'}>`;
+const EMAIL_BRAND_LOGO_URL = 'https://tuweb-ai.com/logo-tuwebai-email.png';
 const SMTP_TIMEOUT_MS = 8000;
 const SMTP_MAX_ATTEMPTS = 2;
 
@@ -159,7 +160,7 @@ const buildNewsletterEmailShell = (options: NewsletterEmailTemplateOptions): str
                           <table role="presentation" cellspacing="0" cellpadding="0" border="0">
                             <tr>
                               <td valign="middle" style="padding-right:12px;">
-                                <img src="https://tuweb-ai.com/logo-tuwebai.png" width="42" height="42" alt="TuWeb.ai" style="width:42px;height:42px;border-radius:10px;" />
+                                <img src="${EMAIL_BRAND_LOGO_URL}" width="42" height="42" alt="TuWeb.ai" style="width:42px;height:42px;border-radius:10px;" />
                               </td>
                               <td valign="middle">
                                 <div style="font-family:Rajdhani,Arial,sans-serif;font-size:26px;line-height:1;color:#FFFFFF;font-weight:700;letter-spacing:-0.4px;">
