@@ -1,4 +1,5 @@
 import { Suspense, lazy, useEffect, useState } from 'react';
+import { useIntersectionObserver } from '@/core/hooks/use-intersection-observer';
 import { useHomeSectionNavigation } from '@/features/marketing-home/hooks/use-home-section-navigation';
 import { runWhenIdle } from '@/lib/performance';
 
@@ -19,10 +20,12 @@ export default function MarketingHomePage() {
   const { sections, setSectionRef } = useHomeSectionNavigation();
   const [showFloatingUi, setShowFloatingUi] = useState(false);
   const [showDeferredSections, setShowDeferredSections] = useState(false);
+  const { ref: deferredSectionsGateRef, hasIntersected: shouldRevealDeferredSections } = useIntersectionObserver<HTMLDivElement>({
+    rootMargin: '900px 0px',
+  });
 
   useEffect(() => {
     let mounted = true;
-    let fallbackTimeoutId: ReturnType<typeof setTimeout> | null = null;
 
     const revealFloatingUi = () => {
       if (mounted) {
@@ -30,18 +33,10 @@ export default function MarketingHomePage() {
       }
     };
 
-    const revealDeferredSections = () => {
-      if (mounted) {
-        setShowDeferredSections(true);
-      }
-    };
-
     runWhenIdle(revealFloatingUi, 1200);
-    runWhenIdle(revealDeferredSections, 1800);
 
     const onUserIntent = () => {
       revealFloatingUi();
-      fallbackTimeoutId = setTimeout(revealDeferredSections, 150);
       window.removeEventListener('scroll', onUserIntent);
       window.removeEventListener('pointerdown', onUserIntent);
       window.removeEventListener('keydown', onUserIntent);
@@ -53,14 +48,17 @@ export default function MarketingHomePage() {
 
     return () => {
       mounted = false;
-      if (fallbackTimeoutId) {
-        clearTimeout(fallbackTimeoutId);
-      }
       window.removeEventListener('scroll', onUserIntent);
       window.removeEventListener('pointerdown', onUserIntent);
       window.removeEventListener('keydown', onUserIntent);
     };
   }, []);
+
+  useEffect(() => {
+    if (shouldRevealDeferredSections) {
+      setShowDeferredSections(true);
+    }
+  }, [shouldRevealDeferredSections]);
 
   return (
     <>
@@ -90,6 +88,8 @@ export default function MarketingHomePage() {
           <ServicesSection setRef={(ref: HTMLElement | null) => setSectionRef('services', ref)} />
           <ProcessSection setRef={(ref: HTMLElement | null) => setSectionRef('process', ref)} />
         </Suspense>
+
+        <div ref={deferredSectionsGateRef} aria-hidden="true" className="h-px w-full" />
 
         {showDeferredSections ? (
           <Suspense fallback={null}>
