@@ -8,6 +8,17 @@ import { buildBlogPosts } from "./scripts/blog-content-utils.mjs";
 const BLOG_VIRTUAL_MODULE_ID = "virtual:blog-posts";
 const RESOLVED_BLOG_VIRTUAL_MODULE_ID = `\0${BLOG_VIRTUAL_MODULE_ID}`;
 
+function getRadixChunkName(id: string): string | null {
+  const normalizedId = id.replace(/\\/g, "/");
+  const match = normalizedId.match(/node_modules\/@radix-ui\/([^/]+)/);
+
+  if (!match) {
+    return null;
+  }
+
+  return `radix-${match[1]}`;
+}
+
 function blogContentPlugin(): Plugin {
   const docsDir = path.resolve(__dirname, "./docs-blogs");
   const markdownGlob = path.join(docsDir, "**/*.md");
@@ -105,8 +116,9 @@ export default defineConfig({
             return 'motion';
           }
           // Radix UI — chunk propio para componentes UI pesados
-          if (id.includes('node_modules/@radix-ui')) {
-            return 'radix';
+          const radixChunkName = getRadixChunkName(id);
+          if (radixChunkName) {
+            return radixChunkName;
           }
           // Dejar que Vite maneje React, React-DOM, y React-Router nativamente
         },
