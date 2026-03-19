@@ -45,6 +45,10 @@ export default function NewsletterForm({
     void subscribeToNewsletter({ email: emailSnapshot, source })
       .then(() => {
         analytics.event('engagement', 'newsletter_signup', source);
+        toast({
+          title: 'Revisa tu email',
+          description: 'Te enviamos un enlace para confirmar la suscripcion al newsletter.',
+        });
       })
       .catch((submitError: unknown) => {
         console.error('Error al procesar la suscripcion:', submitError);

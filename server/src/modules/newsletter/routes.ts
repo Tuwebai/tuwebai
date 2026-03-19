@@ -1,11 +1,12 @@
 import { Router } from 'express';
-import { handleNewsletter } from './controller';
+import { handleNewsletter, handleNewsletterConfirm } from './controller';
 import { validatePayload } from '../../middlewares/validate.middleware';
 import { apiLimiter } from '../../middlewares/rate-limit.middleware';
-import { newsletterSchema } from '../../schemas/api.schemas';
+import { newsletterConfirmParamsSchema, newsletterSchema } from '../../schemas/api.schemas';
 
 const router = Router();
 
 router.post('/newsletter', apiLimiter, validatePayload(newsletterSchema), handleNewsletter);
+router.get('/newsletter/confirm/:token', apiLimiter, validatePayload(newsletterConfirmParamsSchema), handleNewsletterConfirm);
 
 export default router;

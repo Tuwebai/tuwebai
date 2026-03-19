@@ -59,6 +59,12 @@ export const newsletterSchema = z.object({
   })
 });
 
+export const newsletterConfirmParamsSchema = z.object({
+  params: z.object({
+    token: z.string({ required_error: 'Token requerido' }).min(6, 'Token invalido'),
+  }),
+});
+
 export const authVerifyParamsSchema = z.object({
   params: z.object({
     token: z.string({ required_error: 'Token requerido' }).min(6, 'Token invalido')

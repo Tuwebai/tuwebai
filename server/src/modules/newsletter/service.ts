@@ -1,4 +1,7 @@
+import crypto from 'crypto';
+
 import { getFirestore as getAdminFirestore } from '../../infrastructure/firebase/firestore';
+import { env } from '../../config/env.config';
 import { appLogger } from '../../utils/app-logger';
 import { storeSubmission } from '../../utils/submission-store';
 
@@ -14,6 +17,7 @@ interface NewsletterSubscriberRecord {
   emailNormalized: string;
   status: 'pending_confirmation' | 'subscribed' | 'unsubscribed';
   createdAt: string;
+  confirmedAt?: string;
   updatedAt: string;
   lastSubmittedAt: string;
   firstSource: string;
@@ -31,9 +35,11 @@ export interface NewsletterSubscriptionResult {
   isExistingSubscriber: boolean;
   persistedIn: 'firestore' | 'fallback';
   subscriber: NewsletterSubscriberRecord;
+  confirmationToken: string | null;
 }
 
 const NEWSLETTER_COLLECTION = 'newsletter_subscribers';
+const NEWSLETTER_CONFIRM_TOKEN_TTL_MS = 1000 * 60 * 60 * 24 * 2;
 
 const normalizeEmail = (email: string): string => email.trim().toLowerCase();
 
@@ -41,6 +47,64 @@ const getSubscriberDocumentId = (emailNormalized: string): string =>
   Buffer.from(emailNormalized, 'utf8').toString('base64url');
 
 const uniqueSources = (sources: string[]): string[] => Array.from(new Set(sources.filter(Boolean)));
+
+const resolveSubscriptionStatus = (
+  existingStatus: NewsletterSubscriberRecord['status'] | undefined,
+): NewsletterSubscriberRecord['status'] => (existingStatus === 'subscribed' ? 'subscribed' : 'pending_confirmation');
+
+const createNewsletterSignature = (payload: string): string =>
+  crypto.createHmac('sha256', env.SESSION_SECRET).update(payload).digest('base64url');
+
+const encodeNewsletterToken = (emailNormalized: string): string => {
+  const payload = JSON.stringify({
+    emailNormalized,
+    exp: Date.now() + NEWSLETTER_CONFIRM_TOKEN_TTL_MS,
+    purpose: 'newsletter-confirmation',
+  });
+  const payloadBase64 = Buffer.from(payload, 'utf8').toString('base64url');
+  const signature = createNewsletterSignature(payloadBase64);
+  return `${payloadBase64}.${signature}`;
+};
+
+const decodeNewsletterToken = (token: string): { emailNormalized: string; exp: number; purpose: string } | null => {
+  const [payloadBase64, signature] = token.split('.');
+  if (!payloadBase64 || !signature) {
+    return null;
+  }
+
+  const expectedSignature = createNewsletterSignature(payloadBase64);
+  const providedBuffer = Buffer.from(signature);
+  const expectedBuffer = Buffer.from(expectedSignature);
+
+  if (providedBuffer.length !== expectedBuffer.length || !crypto.timingSafeEqual(providedBuffer, expectedBuffer)) {
+    return null;
+  }
+
+  try {
+    const payload = JSON.parse(Buffer.from(payloadBase64, 'base64url').toString('utf8')) as {
+      emailNormalized?: string;
+      exp?: number;
+      purpose?: string;
+    };
+
+    if (
+      !payload.emailNormalized ||
+      typeof payload.exp !== 'number' ||
+      payload.purpose !== 'newsletter-confirmation' ||
+      payload.exp < Date.now()
+    ) {
+      return null;
+    }
+
+    return {
+      emailNormalized: payload.emailNormalized,
+      exp: payload.exp,
+      purpose: payload.purpose,
+    };
+  } catch {
+    return null;
+  }
+};
 
 const buildSubscriberRecord = (
   existing: Partial<NewsletterSubscriberRecord> | undefined,
@@ -53,8 +117,9 @@ const buildSubscriberRecord = (
   return {
     email: existing?.email || context.email.trim(),
     emailNormalized,
-    status: existing?.status || 'pending_confirmation',
+    status: resolveSubscriptionStatus(existing?.status),
     createdAt: existing?.createdAt || nowIso,
+    confirmedAt: existing?.status === 'subscribed' ? existing?.confirmedAt || nowIso : undefined,
     updatedAt: nowIso,
     lastSubmittedAt: nowIso,
     firstSource: existing?.firstSource || context.source,
@@ -78,6 +143,7 @@ const persistNewsletterFallback = (
     isExistingSubscriber: false,
     persistedIn: 'fallback',
     subscriber,
+    confirmationToken: null,
   };
 };
 
@@ -114,5 +180,60 @@ export const registerNewsletterSubscription = async (
     isExistingSubscriber: snapshot.exists,
     persistedIn: 'firestore',
     subscriber,
+    confirmationToken: encodeNewsletterToken(emailNormalized),
+  };
+};
+
+export const confirmNewsletterSubscription = async (
+  token: string,
+): Promise<{ success: boolean; message: string; subscriber?: NewsletterSubscriberRecord }> => {
+  const decoded = decodeNewsletterToken(token);
+  if (!decoded) {
+    return {
+      success: false,
+      message: 'El enlace de confirmacion no es valido o ya vencio.',
+    };
+  }
+
+  const db = getAdminFirestore();
+  if (!db) {
+    return {
+      success: false,
+      message: 'No se pudo confirmar la suscripcion en este momento.',
+    };
+  }
+
+  const subscriberRef = db.collection(NEWSLETTER_COLLECTION).doc(getSubscriberDocumentId(decoded.emailNormalized));
+  const snapshot = await subscriberRef.get();
+
+  if (!snapshot.exists) {
+    return {
+      success: false,
+      message: 'No encontramos una suscripcion pendiente para este enlace.',
+    };
+  }
+
+  const existing = snapshot.data() as NewsletterSubscriberRecord;
+  const nowIso = new Date().toISOString();
+  const nextSubscriber: NewsletterSubscriberRecord = {
+    ...existing,
+    status: 'subscribed',
+    confirmedAt: existing.confirmedAt || nowIso,
+    updatedAt: nowIso,
+    consent: {
+      ...existing.consent,
+      submittedAt: existing.consent?.submittedAt || nowIso,
+    },
+  };
+
+  await subscriberRef.set(nextSubscriber, { merge: true });
+
+  return {
+    success: true,
+    message:
+      existing.status === 'subscribed'
+        ? 'Tu suscripcion ya estaba confirmada.'
+        : 'Tu email fue confirmado correctamente. Ya quedaste suscripto.',
+    subscriber: nextSubscriber,
   };
 };

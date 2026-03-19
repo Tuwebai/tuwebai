@@ -159,6 +159,9 @@ export const backendApi = {
       body: payload,
     }),
 
+  confirmNewsletter: (token: string) =>
+    apiFetch<{ success: boolean; message: string }>(`/newsletter/confirm/${encodeURIComponent(token)}`),
+
   submitTestimonial: (payload: { name: string; company?: string; testimonial: string }) =>
     apiFetch<{ success?: boolean; id?: string; message?: string }>('/api/testimonials', {
       method: 'POST',
