@@ -292,6 +292,18 @@ interface BackgroundEmailOptions {
   meta?: Record<string, unknown>;
 }
 
+const assertTransactionalNewsletterEmailReady = (options: BackgroundEmailOptions) => {
+  if (isSmtpDeliveryDisabled()) {
+    appLogger.info(`${options.event}.smtp_disabled`, options.meta || {});
+    throw new Error('SMTP delivery disabled');
+  }
+
+  if (!isMailerConfigured()) {
+    appLogger.warn(`${options.event}.smtp_not_configured`, options.meta || {});
+    throw new Error('SMTP not configured');
+  }
+};
+
 export const queueContactEmail = (data: EmailData, options: BackgroundEmailOptions): void => {
   if (isSmtpDeliveryDisabled()) {
     appLogger.info(`${options.event}.smtp_disabled`, options.meta || {});
@@ -449,6 +461,30 @@ export const queueNewsletterConfirmationEmail = (
     });
 };
 
+export const sendNewsletterConfirmationEmail = async (
+  email: string,
+  confirmationUrl: string,
+  options: BackgroundEmailOptions,
+) => {
+  assertTransactionalNewsletterEmailReady(options);
+  const emailPayload = buildNewsletterConfirmationEmail(confirmationUrl);
+
+  const result = await sendTransactionalEmail({
+    to: email,
+    subject: emailPayload.subject,
+    html: emailPayload.html,
+    text: emailPayload.text,
+    from: getNewsletterFrom(),
+  });
+
+  appLogger.info(`${options.event}.smtp_sent`, {
+    ...(options.meta || {}),
+    messageId: result?.messageId,
+  });
+
+  return result;
+};
+
 export const queueNewsletterUnsubscribeEmail = (
   email: string,
   unsubscribeUrl: string,
@@ -488,6 +524,30 @@ export const queueNewsletterUnsubscribeEmail = (
     });
 };
 
+export const sendNewsletterUnsubscribeEmail = async (
+  email: string,
+  unsubscribeUrl: string,
+  options: BackgroundEmailOptions,
+) => {
+  assertTransactionalNewsletterEmailReady(options);
+  const emailPayload = buildNewsletterUnsubscribeEmail(unsubscribeUrl);
+
+  const result = await sendTransactionalEmail({
+    to: email,
+    subject: emailPayload.subject,
+    html: emailPayload.html,
+    text: emailPayload.text,
+    from: getNewsletterFrom(),
+  });
+
+  appLogger.info(`${options.event}.smtp_sent`, {
+    ...(options.meta || {}),
+    messageId: result?.messageId,
+  });
+
+  return result;
+};
+
 export const queueNewsletterWelcomeEmail = (email: string, options: BackgroundEmailOptions): void => {
   if (isSmtpDeliveryDisabled()) {
     appLogger.info(`${options.event}.smtp_disabled`, options.meta || {});
@@ -521,4 +581,24 @@ export const queueNewsletterWelcomeEmail = (email: string, options: BackgroundEm
         error: message,
       });
     });
+};
+
+export const sendNewsletterWelcomeEmail = async (email: string, options: BackgroundEmailOptions) => {
+  assertTransactionalNewsletterEmailReady(options);
+  const emailPayload = buildNewsletterWelcomeEmail();
+
+  const result = await sendTransactionalEmail({
+    to: email,
+    subject: emailPayload.subject,
+    html: emailPayload.html,
+    text: emailPayload.text,
+    from: getNewsletterFrom(),
+  });
+
+  appLogger.info(`${options.event}.smtp_sent`, {
+    ...(options.meta || {}),
+    messageId: result?.messageId,
+  });
+
+  return result;
 };
