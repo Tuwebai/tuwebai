@@ -1,6 +1,10 @@
 import crypto from 'crypto';
 
 import { getFirestore as getAdminFirestore } from '../../infrastructure/firebase/firestore';
+import {
+  queueBrevoNewsletterSubscribeSync,
+  queueBrevoNewsletterUnsubscribeSync,
+} from '../../infrastructure/mail/brevo-newsletter.service';
 import { env } from '../../config/env.config';
 import { appLogger } from '../../utils/app-logger';
 import { storeSubmission } from '../../utils/submission-store';
@@ -12,7 +16,7 @@ export interface NewsletterSubscriptionContext {
   userAgent?: string | null;
 }
 
-interface NewsletterSubscriberRecord {
+export interface NewsletterSubscriberRecord {
   email: string;
   emailNormalized: string;
   status: 'pending_confirmation' | 'subscribed' | 'unsubscribed';
@@ -249,6 +253,10 @@ export const confirmNewsletterSubscription = async (
   }) as NewsletterSubscriberRecord;
 
   await subscriberRef.set(nextSubscriber, { merge: true });
+  queueBrevoNewsletterSubscribeSync(nextSubscriber, {
+    event: 'newsletter.brevo_subscribe',
+    meta: { source: nextSubscriber.lastSource },
+  });
 
   return {
     success: true,
@@ -300,6 +308,10 @@ export const unsubscribeNewsletterSubscription = async (
   };
 
   await subscriberRef.set(nextSubscriber, { merge: true });
+  queueBrevoNewsletterUnsubscribeSync(nextSubscriber, {
+    event: 'newsletter.brevo_unsubscribe',
+    meta: { source: nextSubscriber.lastSource },
+  });
 
   return {
     success: true,

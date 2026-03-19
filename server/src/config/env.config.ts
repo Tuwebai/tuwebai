@@ -20,6 +20,12 @@ const envSchema = z
     SMTP_FROM_EMAIL: z.string().email('SMTP_FROM_EMAIL debe ser un email valido').optional(),
     SMTP_FROM_NAME: z.string().default('TuWeb.ai'),
     NEWSLETTER_FROM_EMAIL: z.string().email('NEWSLETTER_FROM_EMAIL debe ser un email valido').optional(),
+    BREVO_API_KEY: z.string().optional(),
+    BREVO_API_BASE_URL: z.string().url('BREVO_API_BASE_URL debe ser una URL valida').default('https://api.brevo.com/v3'),
+    BREVO_NEWSLETTER_LIST_ID: z
+      .string()
+      .optional()
+      .transform((value) => (value ? Number(value) : undefined)),
     SMTP_HOST: z.string().default('smtp.gmail.com'),
     SMTP_PORT: z.string().transform(Number).default('465'),
     SMTP_SECURE: z
