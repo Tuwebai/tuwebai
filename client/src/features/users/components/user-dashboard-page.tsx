@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { Suspense, lazy, useState, useEffect, useRef } from 'react';
 import { Navigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '@/features/auth/context/AuthContext';
@@ -9,7 +9,6 @@ import { getErrorMessage } from '@/shared/utils/error-message';
 import { useUpdateUserPrivacyMutation, useUserPrivacyQuery } from '@/features/users/hooks/use-privacy-settings';
 import type { UpdateUserPrivacyPayload } from '@/features/users/types/privacy';
 import { DEFAULT_USER_PRIVACY_SETTINGS } from '@/features/users/types/privacy';
-import { PrivacyTab } from '@/features/users/components/privacy-tab';
 import { UserDashboardHeader } from '@/features/users/components/user-dashboard-header';
 import { UserIntegrationsTab } from '@/features/users/components/user-integrations-tab';
 import { UserProfileTab } from '@/features/users/components/user-profile-tab';
@@ -21,6 +20,12 @@ import {
   validateUserPasswordForm,
   validateUserProfileForm,
 } from '@/features/users/utils/user-dashboard-forms';
+
+const PrivacyTab = lazy(() =>
+  import('@/features/users/components/privacy-tab').then((module) => ({
+    default: module.PrivacyTab,
+  })),
+);
 
 export default function PanelUsuario() {
   const { 
@@ -340,12 +345,20 @@ export default function PanelUsuario() {
 
               {/* Tab: Privacidad */}
               {activeTab === 'privacy' && (
-                <PrivacyTab
-                  settings={privacySettings}
-                  isLoading={isLoadingPrivacy}
-                  isSaving={updatePrivacyMutation.isPending}
-                  onSave={handleSavePrivacy}
-                />
+                <Suspense
+                  fallback={
+                    <div className="flex min-h-[240px] items-center justify-center text-sm text-slate-300">
+                      Cargando configuracion de privacidad...
+                    </div>
+                  }
+                >
+                  <PrivacyTab
+                    settings={privacySettings}
+                    isLoading={isLoadingPrivacy}
+                    isSaving={updatePrivacyMutation.isPending}
+                    onSave={handleSavePrivacy}
+                  />
+                </Suspense>
               )}
 
               {/* Tab: Integraciones */}
