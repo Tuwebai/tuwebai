@@ -157,15 +157,19 @@ export const backendApi = {
     apiFetch<{ success?: boolean; message?: string }>('/newsletter', {
       method: 'POST',
       body: payload,
+      timeoutMs: 15000,
     }),
 
   confirmNewsletter: (token: string) =>
     apiFetch<{ success: boolean; message: string; unsubscribeToken?: string | null; justConfirmed?: boolean }>(
-      `/newsletter/confirm/${encodeURIComponent(token)}`
+      `/newsletter/confirm/${encodeURIComponent(token)}`,
+      { timeoutMs: 15000 }
     ),
 
   unsubscribeNewsletter: (token: string) =>
-    apiFetch<{ success: boolean; message: string }>(`/newsletter/unsubscribe/${encodeURIComponent(token)}`),
+    apiFetch<{ success: boolean; message: string }>(`/newsletter/unsubscribe/${encodeURIComponent(token)}`, {
+      timeoutMs: 15000,
+    }),
 
   submitTestimonial: (payload: { name: string; company?: string; testimonial: string }) =>
     apiFetch<{ success?: boolean; id?: string; message?: string }>('/api/testimonials', {

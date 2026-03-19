@@ -4,6 +4,7 @@ type PrimitiveBody = string | FormData | URLSearchParams | Blob | ArrayBuffer | 
 
 interface ApiRequestOptions extends Omit<RequestInit, 'body'> {
   body?: PrimitiveBody | Record<string, unknown> | unknown[];
+  timeoutMs?: number;
 }
 
 export class ApiError extends Error {
@@ -75,7 +76,7 @@ const extractErrorMessage = (payload: unknown, fallback: string): string => {
 };
 
 export async function apiFetch<T>(path: string, options: ApiRequestOptions = {}): Promise<T> {
-  const { body, headers, credentials, ...rest } = options;
+  const { body, headers, credentials, timeoutMs, signal, ...rest } = options;
   const requestHeaders = new Headers(headers || {});
   const requestId = requestHeaders.get('X-Request-Id') || requestHeaders.get('x-request-id') || createRequestId();
   requestHeaders.set('X-Request-Id', requestId);
@@ -98,12 +99,43 @@ export async function apiFetch<T>(path: string, options: ApiRequestOptions = {})
     }
   }
 
-  const response = await fetch(`${API_URL}${normalizePath(path)}`, {
-    ...rest,
-    headers: requestHeaders,
-    body: requestBody,
-    credentials: credentials ?? 'same-origin',
-  });
+  const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+  const requestSignal = signal ?? controller?.signal;
+  const requestTimeoutMs = typeof timeoutMs === 'number' && Number.isFinite(timeoutMs) && timeoutMs > 0
+    ? timeoutMs
+    : undefined;
+  let timeoutId: ReturnType<typeof setTimeout> | null = null;
+
+  if (!signal && controller && requestTimeoutMs) {
+    timeoutId = setTimeout(() => controller.abort(), requestTimeoutMs);
+  }
+
+  let response: Response;
+
+  try {
+    response = await fetch(`${API_URL}${normalizePath(path)}`, {
+      ...rest,
+      headers: requestHeaders,
+      body: requestBody,
+      credentials: credentials ?? 'same-origin',
+      signal: requestSignal,
+    });
+  } catch (error: unknown) {
+    if (timeoutId) clearTimeout(timeoutId);
+
+    if (error instanceof DOMException && error.name === 'AbortError') {
+      throw new ApiError(
+        'La solicitud tardo demasiado en responder. Intenta nuevamente en unos segundos.',
+        408,
+        null,
+        requestId
+      );
+    }
+
+    throw error;
+  }
+
+  if (timeoutId) clearTimeout(timeoutId);
 
   const payload = await parseBody(response);
   const responseRequestId = response.headers.get('x-request-id') || requestId;
