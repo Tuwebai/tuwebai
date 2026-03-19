@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import AnimatedShape from '@/shared/ui/animated-shape';
+import '@/app/router/services/service-detail-page.css';
 
 export default function DesarrolloWeb() {
   const [activeTab, setActiveTab] = useState<number>(1);
@@ -12,20 +13,20 @@ export default function DesarrolloWeb() {
   }, []);
 
   return (
-    <main className="bg-[#0a0a0f] text-white min-h-screen">
+    <main className="service-detail-page">
       {/* Hero Section */}
-      <section className="relative bg-gradient-1 pt-24 pb-16">
+      <section className="service-detail-hero bg-gradient-1">
         <AnimatedShape type={1} className="top-[10%] right-[-150px]" delay={1} />
         <AnimatedShape type={2} className="bottom-[10%] left-[-100px]" delay={2} />
         
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
+        <div className="service-detail-hero-inner container mx-auto px-4">
+          <div className="service-detail-hero-stack">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <Link to="/" className="inline-flex items-center text-gray-400 hover:text-white mb-8">
+              <Link to="/" className="service-detail-back-link">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
@@ -42,7 +43,7 @@ export default function DesarrolloWeb() {
               
               <motion.a 
                 href="#contacto" 
-                className="inline-block px-8 py-4 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-full text-white font-medium shadow-lg hover:shadow-[#00CCFF]/20"
+                className="service-detail-primary-cta"
                 whileHover={{ scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
@@ -59,50 +60,50 @@ export default function DesarrolloWeb() {
           <div className="grid md:grid-cols-3 gap-8">
             {/* Sidebar */}
             <div className="md:col-span-1">
-              <div className="bg-[#121217] rounded-xl p-6 sticky top-24">
+              <div className="service-detail-sidebar">
                 <h3 className="font-rajdhani font-bold text-2xl mb-6 gradient-text">
                   Nuestros Servicios
                 </h3>
                 
                 <ul className="space-y-4">
                   <li 
-                    className={`py-3 px-4 rounded-lg cursor-pointer transition-colors ${activeTab === 1 ? 'bg-gradient-to-r from-[#00CCFF]/20 to-[#9933FF]/20 border-l-4 border-[#00CCFF]' : 'hover:bg-[#1a1a23]'}`}
+                    className={`service-detail-sidebar-item ${activeTab === 1 ? 'service-detail-sidebar-item--active' : ''}`}
                     onClick={() => setActiveTab(1)}
                   >
                     <div className="font-medium">Sitios Web Corporativos</div>
                   </li>
                   <li 
-                    className={`py-3 px-4 rounded-lg cursor-pointer transition-colors ${activeTab === 2 ? 'bg-gradient-to-r from-[#00CCFF]/20 to-[#9933FF]/20 border-l-4 border-[#00CCFF]' : 'hover:bg-[#1a1a23]'}`}
+                    className={`service-detail-sidebar-item ${activeTab === 2 ? 'service-detail-sidebar-item--active' : ''}`}
                     onClick={() => setActiveTab(2)}
                   >
                     <div className="font-medium">Landing Pages Optimizadas</div>
                   </li>
                   <li 
-                    className={`py-3 px-4 rounded-lg cursor-pointer transition-colors ${activeTab === 3 ? 'bg-gradient-to-r from-[#00CCFF]/20 to-[#9933FF]/20 border-l-4 border-[#00CCFF]' : 'hover:bg-[#1a1a23]'}`}
+                    className={`service-detail-sidebar-item ${activeTab === 3 ? 'service-detail-sidebar-item--active' : ''}`}
                     onClick={() => setActiveTab(3)}
                   >
                     <div className="font-medium">Tecnologías y Herramientas</div>
                   </li>
                   <li 
-                    className={`py-3 px-4 rounded-lg cursor-pointer transition-colors ${activeTab === 4 ? 'bg-gradient-to-r from-[#00CCFF]/20 to-[#9933FF]/20 border-l-4 border-[#00CCFF]' : 'hover:bg-[#1a1a23]'}`}
+                    className={`service-detail-sidebar-item ${activeTab === 4 ? 'service-detail-sidebar-item--active' : ''}`}
                     onClick={() => setActiveTab(4)}
                   >
                     <div className="font-medium">Portafolio de Proyectos</div>
                   </li>
                   <li 
-                    className={`py-3 px-4 rounded-lg cursor-pointer transition-colors ${activeTab === 5 ? 'bg-gradient-to-r from-[#00CCFF]/20 to-[#9933FF]/20 border-l-4 border-[#00CCFF]' : 'hover:bg-[#1a1a23]'}`}
+                    className={`service-detail-sidebar-item ${activeTab === 5 ? 'service-detail-sidebar-item--active' : ''}`}
                     onClick={() => setActiveTab(5)}
                   >
                     <div className="font-medium">Preguntas Frecuentes</div>
                   </li>
                 </ul>
                 
-                <div className="mt-8 p-4 bg-[#1a1a23] rounded-lg">
+                <div className="service-detail-sidebar-help">
                   <div className="text-[#00CCFF] font-medium mb-2">¿Necesitas asesoramiento?</div>
                   <p className="text-gray-400 text-sm mb-4">Agenda una llamada gratuita con uno de nuestros expertos en desarrollo web</p>
                   <a 
                     href="/consulta" 
-                    className="w-full block text-center py-2 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-lg text-white font-medium"
+                    className="service-detail-sidebar-link"
                   >
                     Agendar llamada
                   </a>
@@ -113,7 +114,7 @@ export default function DesarrolloWeb() {
             {/* Main content based on selected tab */}
             <div className="md:col-span-2">
               {activeTab === 1 && (
-                <div className="bg-[#121217] rounded-xl p-8">
+                <div className="service-detail-card">
                   <h2 className="font-rajdhani font-bold text-3xl mb-6 gradient-text">
                     Sitios Web Corporativos
                   </h2>
@@ -125,22 +126,22 @@ export default function DesarrolloWeb() {
                   </p>
                   
                   <div className="grid md:grid-cols-2 gap-6 mb-8">
-                    <div className="bg-[#1a1a23] p-6 rounded-lg border-l-4 border-[#00CCFF]">
+                    <div className="service-detail-feature-card service-detail-feature-card--cyan">
                       <h3 className="font-rajdhani font-bold text-xl mb-3">Diseño UI/UX Personalizado</h3>
                       <p className="text-gray-400">Interfaces atractivas y funcionales diseñadas específicamente para tu marca y objetivos comerciales.</p>
                     </div>
                     
-                    <div className="bg-[#1a1a23] p-6 rounded-lg border-l-4 border-[#9933FF]">
+                    <div className="service-detail-feature-card service-detail-feature-card--purple">
                       <h3 className="font-rajdhani font-bold text-xl mb-3">Optimización para Móviles</h3>
                       <p className="text-gray-400">Experiencia perfecta en todos los dispositivos, garantizando que tu sitio se vea profesional en cualquier pantalla.</p>
                     </div>
                     
-                    <div className="bg-[#1a1a23] p-6 rounded-lg border-l-4 border-[#00CCFF]">
+                    <div className="service-detail-feature-card service-detail-feature-card--cyan">
                       <h3 className="font-rajdhani font-bold text-xl mb-3">Optimización SEO</h3>
                       <p className="text-gray-400">Estructura y código optimizados para mejorar tu posicionamiento en motores de búsqueda.</p>
                     </div>
                     
-                    <div className="bg-[#1a1a23] p-6 rounded-lg border-l-4 border-[#9933FF]">
+                    <div className="service-detail-feature-card service-detail-feature-card--purple">
                       <h3 className="font-rajdhani font-bold text-xl mb-3">CMS Personalizado</h3>
                       <p className="text-gray-400">Panel de administración intuitivo para que puedas actualizar fácilmente el contenido de tu sitio.</p>
                     </div>
@@ -190,7 +191,7 @@ export default function DesarrolloWeb() {
                     </div>
                   </div>
                   
-                  <div className="bg-gradient-to-r from-[#00CCFF]/10 to-[#9933FF]/10 p-6 rounded-lg">
+                  <div className="service-detail-highlight-box">
                     <h3 className="font-rajdhani font-bold text-xl mb-3">Incluye</h3>
                     <div className="grid grid-cols-2 gap-4">
                       <div className="flex items-center">

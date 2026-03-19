@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import AnimatedShape from '@/shared/ui/animated-shape';
 import { TUWEBAI_WHATSAPP_DISPLAY, TUWEBAI_WHATSAPP_URL, TUWEBAI_EMAIL } from '@/shared/constants/contact';
+import '@/app/router/services/service-detail-page.css';
 
 export default function ConsultoriaEstrategica() {
   const [activeTab, setActiveTab] = useState<number>(1);
@@ -13,20 +14,20 @@ export default function ConsultoriaEstrategica() {
   }, []);
 
   return (
-    <main className="bg-[#0a0a0f] text-white min-h-screen">
+    <main className="service-detail-page">
       {/* Hero Section */}
-      <section className="relative bg-gradient-1 pt-24 pb-16">
+      <section className="service-detail-hero bg-gradient-1">
         <AnimatedShape type={1} className="top-[10%] right-[-150px]" delay={1} />
         <AnimatedShape type={2} className="bottom-[10%] left-[-100px]" delay={2} />
         
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
+        <div className="service-detail-hero-inner container mx-auto px-4">
+          <div className="service-detail-hero-stack">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <Link to="/" className="inline-flex items-center text-gray-400 hover:text-white mb-8">
+              <Link to="/" className="service-detail-back-link">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
@@ -43,7 +44,7 @@ export default function ConsultoriaEstrategica() {
               
               <motion.a 
                 href="#contacto" 
-                className="inline-block px-8 py-4 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-full text-white font-medium shadow-lg hover:shadow-[#00CCFF]/20"
+                className="service-detail-primary-cta"
                 whileHover={{ scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
@@ -60,50 +61,50 @@ export default function ConsultoriaEstrategica() {
           <div className="grid md:grid-cols-3 gap-8">
             {/* Sidebar */}
             <div className="md:col-span-1">
-              <div className="bg-[#121217] rounded-xl p-6 sticky top-24">
+              <div className="service-detail-sidebar">
                 <h3 className="font-rajdhani font-bold text-2xl mb-6 gradient-text">
                   ¿Qué incluye?
                 </h3>
                 
                 <ul className="space-y-4">
                   <li 
-                    className={`py-3 px-4 rounded-lg cursor-pointer transition-colors ${activeTab === 1 ? 'bg-gradient-to-r from-[#00CCFF]/20 to-[#9933FF]/20 border-l-4 border-[#00CCFF]' : 'hover:bg-[#1a1a23]'}`}
+                    className={`service-detail-sidebar-item ${activeTab === 1 ? 'service-detail-sidebar-item--active' : ''}`}
                     onClick={() => setActiveTab(1)}
                   >
                     <div className="font-medium">Análisis y Diagnóstico</div>
                   </li>
                   <li 
-                    className={`py-3 px-4 rounded-lg cursor-pointer transition-colors ${activeTab === 2 ? 'bg-gradient-to-r from-[#00CCFF]/20 to-[#9933FF]/20 border-l-4 border-[#00CCFF]' : 'hover:bg-[#1a1a23]'}`}
+                    className={`service-detail-sidebar-item ${activeTab === 2 ? 'service-detail-sidebar-item--active' : ''}`}
                     onClick={() => setActiveTab(2)}
                   >
                     <div className="font-medium">Metodología de Trabajo</div>
                   </li>
                   <li 
-                    className={`py-3 px-4 rounded-lg cursor-pointer transition-colors ${activeTab === 3 ? 'bg-gradient-to-r from-[#00CCFF]/20 to-[#9933FF]/20 border-l-4 border-[#00CCFF]' : 'hover:bg-[#1a1a23]'}`}
+                    className={`service-detail-sidebar-item ${activeTab === 3 ? 'service-detail-sidebar-item--active' : ''}`}
                     onClick={() => setActiveTab(3)}
                   >
                     <div className="font-medium">Entregables</div>
                   </li>
                   <li 
-                    className={`py-3 px-4 rounded-lg cursor-pointer transition-colors ${activeTab === 4 ? 'bg-gradient-to-r from-[#00CCFF]/20 to-[#9933FF]/20 border-l-4 border-[#00CCFF]' : 'hover:bg-[#1a1a23]'}`}
+                    className={`service-detail-sidebar-item ${activeTab === 4 ? 'service-detail-sidebar-item--active' : ''}`}
                     onClick={() => setActiveTab(4)}
                   >
                     <div className="font-medium">Casos de Éxito</div>
                   </li>
                   <li 
-                    className={`py-3 px-4 rounded-lg cursor-pointer transition-colors ${activeTab === 5 ? 'bg-gradient-to-r from-[#00CCFF]/20 to-[#9933FF]/20 border-l-4 border-[#00CCFF]' : 'hover:bg-[#1a1a23]'}`}
+                    className={`service-detail-sidebar-item ${activeTab === 5 ? 'service-detail-sidebar-item--active' : ''}`}
                     onClick={() => setActiveTab(5)}
                   >
                     <div className="font-medium">Preguntas Frecuentes</div>
                   </li>
                 </ul>
                 
-                <div className="mt-8 p-4 bg-[#1a1a23] rounded-lg">
+                <div className="service-detail-sidebar-help">
                   <div className="text-[#00CCFF] font-medium mb-2">¿Necesitas más información?</div>
                   <p className="text-gray-400 text-sm mb-4">Agenda una llamada gratuita con uno de nuestros consultores especializados</p>
                   <a 
                     href="/consulta" 
-                    className="w-full block text-center py-2 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-lg text-white font-medium"
+                    className="service-detail-sidebar-link"
                   >
                     Agendar llamada
                   </a>
@@ -114,7 +115,7 @@ export default function ConsultoriaEstrategica() {
             {/* Main content based on selected tab */}
             <div className="md:col-span-2">
               {activeTab === 1 && (
-                <div className="bg-[#121217] rounded-xl p-8">
+                <div className="service-detail-card">
                   <h2 className="font-rajdhani font-bold text-3xl mb-6 gradient-text">
                     Análisis y Diagnóstico
                   </h2>
@@ -125,22 +126,22 @@ export default function ConsultoriaEstrategica() {
                   </p>
                   
                   <div className="grid md:grid-cols-2 gap-6 mb-8">
-                    <div className="bg-[#1a1a23] p-6 rounded-lg border-l-4 border-[#00CCFF]">
+                    <div className="service-detail-feature-card service-detail-feature-card--cyan">
                       <h3 className="font-rajdhani font-bold text-xl mb-3">Análisis de Mercado</h3>
                       <p className="text-gray-400">Investigamos tendencias, competidores y nichos de mercado para identificar oportunidades estratégicas para tu negocio.</p>
                     </div>
                     
-                    <div className="bg-[#1a1a23] p-6 rounded-lg border-l-4 border-[#9933FF]">
+                    <div className="service-detail-feature-card service-detail-feature-card--purple">
                       <h3 className="font-rajdhani font-bold text-xl mb-3">Auditoría Digital</h3>
                       <p className="text-gray-400">Evaluamos tu presencia online actual, incluyendo sitio web, SEO, redes sociales y canales de marketing digital.</p>
                     </div>
                     
-                    <div className="bg-[#1a1a23] p-6 rounded-lg border-l-4 border-[#00CCFF]">
+                    <div className="service-detail-feature-card service-detail-feature-card--cyan">
                       <h3 className="font-rajdhani font-bold text-xl mb-3">Análisis de Conversión</h3>
                       <p className="text-gray-400">Identificamos cuellos de botella en tu embudo de conversión y oportunidades para mejorar las tasas de conversión.</p>
                     </div>
                     
-                    <div className="bg-[#1a1a23] p-6 rounded-lg border-l-4 border-[#9933FF]">
+                    <div className="service-detail-feature-card service-detail-feature-card--purple">
                       <h3 className="font-rajdhani font-bold text-xl mb-3">Benchmarking Competitivo</h3>
                       <p className="text-gray-400">Comparamos tu estrategia digital con los líderes de tu industria para identificar ventajas competitivas.</p>
                     </div>
@@ -163,7 +164,7 @@ export default function ConsultoriaEstrategica() {
                     </div>
                   </div>
                   
-                  <div className="bg-gradient-to-r from-[#00CCFF]/10 to-[#9933FF]/10 p-6 rounded-lg">
+                  <div className="service-detail-highlight-box">
                     <h3 className="font-rajdhani font-bold text-xl mb-3">¿Qué obtendrás?</h3>
                     <ul className="space-y-2">
                       <li className="flex items-start">
@@ -190,7 +191,7 @@ export default function ConsultoriaEstrategica() {
               )}
               
               {activeTab === 2 && (
-                <div className="bg-[#121217] rounded-xl p-8">
+                <div className="service-detail-card">
                   <h2 className="font-rajdhani font-bold text-3xl mb-6 gradient-text">
                     Metodología de Trabajo
                   </h2>
@@ -203,7 +204,7 @@ export default function ConsultoriaEstrategica() {
                   
                   <div className="space-y-8 mb-10">
                     <div className="flex">
-                      <div className="flex-shrink-0 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-full h-10 w-10 flex items-center justify-center font-bold text-white">
+                      <div className="service-detail-step-badge">
                         1
                       </div>
                       <div className="ml-4">
@@ -217,7 +218,7 @@ export default function ConsultoriaEstrategica() {
                     </div>
                     
                     <div className="flex">
-                      <div className="flex-shrink-0 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-full h-10 w-10 flex items-center justify-center font-bold text-white">
+                      <div className="service-detail-step-badge">
                         2
                       </div>
                       <div className="ml-4">
@@ -231,7 +232,7 @@ export default function ConsultoriaEstrategica() {
                     </div>
                     
                     <div className="flex">
-                      <div className="flex-shrink-0 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-full h-10 w-10 flex items-center justify-center font-bold text-white">
+                      <div className="service-detail-step-badge">
                         3
                       </div>
                       <div className="ml-4">
@@ -245,7 +246,7 @@ export default function ConsultoriaEstrategica() {
                     </div>
                     
                     <div className="flex">
-                      <div className="flex-shrink-0 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-full h-10 w-10 flex items-center justify-center font-bold text-white">
+                      <div className="service-detail-step-badge">
                         4
                       </div>
                       <div className="ml-4">

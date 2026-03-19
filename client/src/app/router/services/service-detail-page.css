@@ -1,0 +1,135 @@
+.service-detail-page {
+  min-height: 100vh;
+  background: #0a0a0f;
+  color: #ffffff;
+}
+
+.service-detail-hero {
+  position: relative;
+  padding-top: 6rem;
+  padding-bottom: 4rem;
+}
+
+.service-detail-hero-inner {
+  position: relative;
+  z-index: 10;
+}
+
+.service-detail-hero-stack {
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  max-width: 56rem;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.service-detail-back-link {
+  margin-bottom: 2rem;
+  display: inline-flex;
+  align-items: center;
+  color: #9ca3af;
+  transition: color 0.2s ease;
+}
+
+.service-detail-back-link:hover {
+  color: #ffffff;
+}
+
+.service-detail-primary-cta {
+  display: inline-block;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, #00ccff 0%, #9933ff 100%);
+  padding: 1rem 2rem;
+  font-weight: 500;
+  color: #ffffff;
+  box-shadow: 0 10px 25px rgba(0, 204, 255, 0.15);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.service-detail-primary-cta:hover {
+  box-shadow: 0 10px 25px rgba(0, 204, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.service-detail-sidebar {
+  position: sticky;
+  top: 6rem;
+  border-radius: 0.75rem;
+  background: #121217;
+  padding: 1.5rem;
+}
+
+.service-detail-sidebar-item {
+  cursor: pointer;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.service-detail-sidebar-item:hover {
+  background: #1a1a23;
+}
+
+.service-detail-sidebar-item--active {
+  border-left: 4px solid #00ccff;
+  background: linear-gradient(90deg, rgba(0, 204, 255, 0.2) 0%, rgba(153, 51, 255, 0.2) 100%);
+}
+
+.service-detail-sidebar-help {
+  margin-top: 2rem;
+  border-radius: 0.5rem;
+  background: #1a1a23;
+  padding: 1rem;
+}
+
+.service-detail-sidebar-link {
+  display: block;
+  width: 100%;
+  border-radius: 0.5rem;
+  background: linear-gradient(90deg, #00ccff 0%, #9933ff 100%);
+  padding: 0.5rem 1rem;
+  text-align: center;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.service-detail-card {
+  border-radius: 0.75rem;
+  background: #121217;
+  padding: 2rem;
+}
+
+.service-detail-feature-card {
+  border-radius: 0.5rem;
+  background: #1a1a23;
+  padding: 1.5rem;
+}
+
+.service-detail-feature-card--cyan {
+  border-left: 4px solid #00ccff;
+}
+
+.service-detail-feature-card--purple {
+  border-left: 4px solid #9933ff;
+}
+
+.service-detail-highlight-box {
+  border-radius: 0.5rem;
+  background: linear-gradient(90deg, rgba(0, 204, 255, 0.1) 0%, rgba(153, 51, 255, 0.1) 100%);
+  padding: 1.5rem;
+}
+
+.service-detail-step-badge {
+  display: flex;
+  height: 2.5rem;
+  width: 2.5rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, #00ccff 0%, #9933ff 100%);
+  font-weight: 700;
+  color: #ffffff;
+}
