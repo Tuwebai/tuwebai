@@ -20,11 +20,7 @@ Allow: /consulta
 Allow: /blog
 Allow: /servicios/
 Allow: /faq
-Allow: /equipo
-Allow: /tecnologias
 Allow: /contacto
-Allow: /estudio
-Allow: /vacantes
 Allow: /politica-privacidad
 Allow: /politica-cookies
 Allow: /terminos-condiciones

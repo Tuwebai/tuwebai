@@ -31,17 +31,6 @@ export const MAIN_NAVIGATION: NavigationLink[] = [
   },
   { name: 'E-commerce', href: '/ecommerce' },
   { name: 'Blog', href: '/blog' },
-  {
-    name: 'Tecnologias',
-    href: '/tecnologias',
-    sections: [
-      { id: 'frontend', label: 'Frontend' },
-      { id: 'backend', label: 'Backend' },
-      { id: 'cms', label: 'CMS' },
-      { id: 'ecommerce', label: 'E-commerce' },
-      { id: 'design', label: 'Diseno' },
-    ],
-  },
   { name: 'FAQ', href: '/faq' },
 ];
 

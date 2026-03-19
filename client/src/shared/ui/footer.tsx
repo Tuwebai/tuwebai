@@ -45,7 +45,6 @@ export default function Footer() {
           <div>
             <h3 className="mb-4 font-rajdhani text-lg font-bold text-white">Servicios</h3>
             <ul className="space-y-2">
-              <li><a href="/servicios/estrategia-digital" className="transition-colors hover:text-[#00CCFF]">Estrategia Digital</a></li>
               <li><a href="/servicios/desarrollo-web" className="transition-colors hover:text-[#00CCFF]">Desarrollo Web</a></li>
               <li><a href="/contacto" className="transition-colors hover:text-[#00CCFF]">Contacto</a></li>
             </ul>
@@ -56,7 +55,6 @@ export default function Footer() {
             <ul className="space-y-2">
               <li><a href="/faq" className="transition-colors hover:text-[#9933FF]">Preguntas Frecuentes</a></li>
               <li><a href="/blog" className="transition-colors hover:text-[#9933FF]">Blog</a></li>
-              <li><a href="/tecnologias" className="transition-colors hover:text-[#9933FF]">Tecnologias</a></li>
               <li><a href="/contacto" className="transition-colors hover:text-[#9933FF]">Contacto</a></li>
             </ul>
           </div>

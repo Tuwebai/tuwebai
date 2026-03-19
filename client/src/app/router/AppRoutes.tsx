@@ -11,13 +11,11 @@ const UxUiPage = lazy(() => import('@/app/router/solutions/uxui-page'));
 const EcommerceSolutionsPage = lazy(() => import('@/app/router/solutions/ecommerce-solutions-page'));
 const ProposalRequestPage = lazy(() => import('@/features/proposals/components/proposal-request-page'));
 
-const DigitalStrategyPage = lazy(() => import('@/app/router/services/digital-strategy-page'));
 const WebDevelopmentPage = lazy(() => import('@/app/router/services/web-development-page'));
 
 const FaqPage = lazy(() => import('@/app/router/knowledge/faq-page'));
 const BlogPage = lazy(() => import('@/app/router/blog/blog-page'));
 const BlogArticlePage = lazy(() => import('@/app/router/blog/blog-article-page'));
-const TechnologiesPage = lazy(() => import('@/app/router/knowledge/technologies-page'));
 
 const AuthVerifyPage = lazy(() => import('@/features/auth/components/auth-verify-page'));
 const NewsletterConfirmPage = lazy(() => import('@/features/newsletter/components/newsletter-confirm-page'));
@@ -40,16 +38,15 @@ export default function AppRoutes() {
       <Route path="/ecommerce" element={<LazyRoute><EcommerceSolutionsPage /></LazyRoute>} />
       <Route path="/consulta" element={<LazyRoute><ProposalRequestPage /></LazyRoute>} />
 
-      <Route path="/servicios/estrategia-digital" element={<LazyRoute><DigitalStrategyPage /></LazyRoute>} />
       <Route path="/servicios/desarrollo-web" element={<LazyRoute><WebDevelopmentPage /></LazyRoute>} />
-      <Route path="/servicios/consultoria-estrategica" element={<Navigate to="/servicios/estrategia-digital" replace />} />
-      <Route path="/servicios/posicionamiento-marketing" element={<Navigate to="/servicios/estrategia-digital" replace />} />
-      <Route path="/servicios/automatizacion-marketing" element={<Navigate to="/servicios/estrategia-digital" replace />} />
+      <Route path="/servicios/estrategia-digital" element={<Navigate to="/consulta" replace />} />
+      <Route path="/servicios/consultoria-estrategica" element={<Navigate to="/consulta" replace />} />
+      <Route path="/servicios/posicionamiento-marketing" element={<Navigate to="/consulta" replace />} />
+      <Route path="/servicios/automatizacion-marketing" element={<Navigate to="/consulta" replace />} />
 
       <Route path="/faq" element={<LazyRoute><FaqPage /></LazyRoute>} />
       <Route path="/blog" element={<LazyRoute><BlogPage /></LazyRoute>} />
       <Route path="/blog/:slug" element={<LazyRoute><BlogArticlePage /></LazyRoute>} />
-      <Route path="/tecnologias" element={<LazyRoute><TechnologiesPage /></LazyRoute>} />
 
       <Route path="/auth/verify/:token" element={<LazyRoute><AuthVerifyPage /></LazyRoute>} />
       <Route path="/auth/reset-password" element={<LazyRoute><AuthVerifyPage /></LazyRoute>} />
