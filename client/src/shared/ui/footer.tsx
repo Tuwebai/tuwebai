@@ -45,10 +45,8 @@ export default function Footer() {
           <div>
             <h3 className="mb-4 font-rajdhani text-lg font-bold text-white">Servicios</h3>
             <ul className="space-y-2">
-              <li><a href="/servicios/consultoria-estrategica" className="transition-colors hover:text-[#00CCFF]">Consultoria Estrategica</a></li>
+              <li><a href="/servicios/estrategia-digital" className="transition-colors hover:text-[#00CCFF]">Estrategia Digital</a></li>
               <li><a href="/servicios/desarrollo-web" className="transition-colors hover:text-[#00CCFF]">Desarrollo Web</a></li>
-              <li><a href="/servicios/posicionamiento-marketing" className="transition-colors hover:text-[#00CCFF]">Posicionamiento y Marketing</a></li>
-              <li><a href="/servicios/automatizacion-marketing" className="transition-colors hover:text-[#00CCFF]">Automatizacion de Marketing</a></li>
               <li><a href="/contacto" className="transition-colors hover:text-[#00CCFF]">Contacto</a></li>
             </ul>
           </div>

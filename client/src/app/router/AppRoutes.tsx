@@ -1,5 +1,5 @@
 import { lazy } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { LazyRoute } from '@/app/router/lazy-route';
 import HomePage from '@/app/router/home/home-page';
@@ -11,10 +11,8 @@ const UxUiPage = lazy(() => import('@/app/router/solutions/uxui-page'));
 const EcommerceSolutionsPage = lazy(() => import('@/app/router/solutions/ecommerce-solutions-page'));
 const ProposalRequestPage = lazy(() => import('@/features/proposals/components/proposal-request-page'));
 
-const StrategicConsultingPage = lazy(() => import('@/app/router/services/strategic-consulting-page'));
+const DigitalStrategyPage = lazy(() => import('@/app/router/services/digital-strategy-page'));
 const WebDevelopmentPage = lazy(() => import('@/app/router/services/web-development-page'));
-const MarketingPositioningPage = lazy(() => import('@/app/router/services/marketing-positioning-page'));
-const MarketingAutomationPage = lazy(() => import('@/app/router/services/marketing-automation-page'));
 
 const FaqPage = lazy(() => import('@/app/router/knowledge/faq-page'));
 const BlogPage = lazy(() => import('@/app/router/blog/blog-page'));
@@ -42,10 +40,11 @@ export default function AppRoutes() {
       <Route path="/ecommerce" element={<LazyRoute><EcommerceSolutionsPage /></LazyRoute>} />
       <Route path="/consulta" element={<LazyRoute><ProposalRequestPage /></LazyRoute>} />
 
-      <Route path="/servicios/consultoria-estrategica" element={<LazyRoute><StrategicConsultingPage /></LazyRoute>} />
+      <Route path="/servicios/estrategia-digital" element={<LazyRoute><DigitalStrategyPage /></LazyRoute>} />
       <Route path="/servicios/desarrollo-web" element={<LazyRoute><WebDevelopmentPage /></LazyRoute>} />
-      <Route path="/servicios/posicionamiento-marketing" element={<LazyRoute><MarketingPositioningPage /></LazyRoute>} />
-      <Route path="/servicios/automatizacion-marketing" element={<LazyRoute><MarketingAutomationPage /></LazyRoute>} />
+      <Route path="/servicios/consultoria-estrategica" element={<Navigate to="/servicios/estrategia-digital" replace />} />
+      <Route path="/servicios/posicionamiento-marketing" element={<Navigate to="/servicios/estrategia-digital" replace />} />
+      <Route path="/servicios/automatizacion-marketing" element={<Navigate to="/servicios/estrategia-digital" replace />} />
 
       <Route path="/faq" element={<LazyRoute><FaqPage /></LazyRoute>} />
       <Route path="/blog" element={<LazyRoute><BlogPage /></LazyRoute>} />
