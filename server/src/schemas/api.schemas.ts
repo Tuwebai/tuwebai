@@ -80,6 +80,12 @@ export const brevoWebhookSchema = z.object({
     .passthrough(),
 });
 
+export const newsletterReconcileSchema = z.object({
+  body: z.object({
+    limit: z.number().int().min(1).max(100).optional().default(50),
+  }),
+});
+
 export const authVerifyParamsSchema = z.object({
   params: z.object({
     token: z.string({ required_error: 'Token requerido' }).min(6, 'Token invalido')

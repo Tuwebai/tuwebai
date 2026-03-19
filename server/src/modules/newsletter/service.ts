@@ -59,6 +59,18 @@ interface NewsletterWebhookResult {
   subscriber?: NewsletterSubscriberRecord;
 }
 
+interface NewsletterReconcileResult {
+  success: boolean;
+  message: string;
+  scanned: number;
+  scheduled: number;
+  items: Array<{
+    emailNormalized: string;
+    operation: 'subscribe' | 'unsubscribe';
+    status: NewsletterSubscriberRecord['status'];
+  }>;
+}
+
 interface NewsletterActionResult {
   success: boolean;
   message: string;
@@ -388,5 +400,65 @@ export const applyNewsletterProviderEvent = async (
     success: true,
     message: 'Evento de proveedor aplicado correctamente.',
     subscriber: nextSubscriber,
+  };
+};
+
+export const reconcileNewsletterBrevoSync = async (limit = 50): Promise<NewsletterReconcileResult> => {
+  const db = getAdminFirestore();
+  if (!db) {
+    return {
+      success: false,
+      message: 'No se pudo reconciliar newsletter en este momento.',
+      scanned: 0,
+      scheduled: 0,
+      items: [],
+    };
+  }
+
+  const safeLimit = Math.max(1, Math.min(limit, 100));
+  const snapshot = await db
+    .collection(NEWSLETTER_COLLECTION)
+    .where('status', 'in', ['subscribed', 'unsubscribed'])
+    .limit(safeLimit * 3)
+    .get();
+
+  const items: NewsletterReconcileResult['items'] = [];
+
+  for (const doc of snapshot.docs) {
+    const subscriber = doc.data() as NewsletterSubscriberRecord;
+    const syncStatus = subscriber.brevoSync?.status;
+    if (syncStatus === 'synced') continue;
+
+    const operation = subscriber.status === 'subscribed' ? 'subscribe' : 'unsubscribe';
+    items.push({
+      emailNormalized: subscriber.emailNormalized,
+      operation,
+      status: subscriber.status,
+    });
+
+    if (operation === 'subscribe') {
+      queueBrevoNewsletterSubscribeSync(subscriber, {
+        event: 'newsletter.brevo_reconcile_subscribe',
+        meta: { source: 'manual_reconcile' },
+      });
+    } else {
+      queueBrevoNewsletterUnsubscribeSync(subscriber, {
+        event: 'newsletter.brevo_reconcile_unsubscribe',
+        meta: { source: 'manual_reconcile' },
+      });
+    }
+
+    if (items.length >= safeLimit) break;
+  }
+
+  return {
+    success: true,
+    message:
+      items.length > 0
+        ? 'Reconciliacion de Brevo programada correctamente.'
+        : 'No encontramos suscriptores pendientes de reconciliacion con Brevo.',
+    scanned: snapshot.size,
+    scheduled: items.length,
+    items,
   };
 };

@@ -11,6 +11,7 @@ import { appLogger } from '../../utils/app-logger';
 import {
   confirmNewsletterSubscription,
   applyNewsletterProviderEvent,
+  reconcileNewsletterBrevoSync,
   registerNewsletterSubscription,
   unsubscribeNewsletterSubscription,
 } from './service';
@@ -209,6 +210,25 @@ export const handleBrevoWebhook = async (req: Request, res: Response) => {
       success: false,
       message: 'No se pudo procesar el webhook de Brevo.',
       details: env.NODE_ENV === 'development' ? getErrorMessage(error, 'unknown_brevo_webhook_error') : undefined,
+    });
+  }
+};
+
+export const handleNewsletterBrevoReconcile = async (req: Request, res: Response) => {
+  try {
+    const result = await reconcileNewsletterBrevoSync(req.body.limit);
+    return res.status(result.success ? 200 : 503).json(result);
+  } catch (error: unknown) {
+    appLogger.error('newsletter.brevo_reconcile.failed', {
+      error: getErrorMessage(error, 'unknown_brevo_reconcile_error'),
+      route: req.path,
+      method: req.method,
+    });
+
+    return res.status(500).json({
+      success: false,
+      message: 'No se pudo reconciliar newsletter con Brevo.',
+      details: env.NODE_ENV === 'development' ? getErrorMessage(error, 'unknown_brevo_reconcile_error') : undefined,
     });
   }
 };

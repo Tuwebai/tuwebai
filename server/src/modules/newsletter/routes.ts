@@ -1,10 +1,18 @@
 import { Router } from 'express';
-import { handleBrevoWebhook, handleNewsletter, handleNewsletterConfirm, handleNewsletterUnsubscribe } from './controller';
+import {
+  handleBrevoWebhook,
+  handleNewsletter,
+  handleNewsletterBrevoReconcile,
+  handleNewsletterConfirm,
+  handleNewsletterUnsubscribe,
+} from './controller';
 import { validatePayload } from '../../middlewares/validate.middleware';
 import { apiLimiter } from '../../middlewares/rate-limit.middleware';
+import { requireInternalApiKey } from '../../middlewares/internal-auth.middleware';
 import {
   brevoWebhookSchema,
   newsletterConfirmParamsSchema,
+  newsletterReconcileSchema,
   newsletterSchema,
   newsletterUnsubscribeParamsSchema,
 } from '../../schemas/api.schemas';
@@ -20,5 +28,12 @@ router.get(
   handleNewsletterUnsubscribe,
 );
 router.post('/webhooks/brevo', validatePayload(brevoWebhookSchema), handleBrevoWebhook);
+router.post(
+  '/newsletter/reconcile-brevo',
+  apiLimiter,
+  requireInternalApiKey,
+  validatePayload(newsletterReconcileSchema),
+  handleNewsletterBrevoReconcile,
+);
 
 export default router;
