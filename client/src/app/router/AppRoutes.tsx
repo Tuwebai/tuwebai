@@ -20,11 +20,7 @@ const FaqPage = lazy(() => import('@/app/router/knowledge/faq-page'));
 const ComparisonsPage = lazy(() => import('@/app/router/knowledge/comparisons-page'));
 const BlogPage = lazy(() => import('@/app/router/blog/blog-page'));
 const BlogArticlePage = lazy(() => import('@/app/router/blog/blog-article-page'));
-const TeamPage = lazy(() => import('@/app/router/company/team-page'));
-const VacanciesPage = lazy(() => import('@/app/router/company/vacancies-page'));
 const TechnologiesPage = lazy(() => import('@/app/router/knowledge/technologies-page'));
-
-const StudioPage = lazy(() => import('@/app/router/company/studio-page'));
 
 const AuthVerifyPage = lazy(() => import('@/features/auth/components/auth-verify-page'));
 const NewsletterConfirmPage = lazy(() => import('@/features/newsletter/components/newsletter-confirm-page'));
@@ -56,11 +52,7 @@ export default function AppRoutes() {
       <Route path="/comparativas" element={<LazyRoute><ComparisonsPage /></LazyRoute>} />
       <Route path="/blog" element={<LazyRoute><BlogPage /></LazyRoute>} />
       <Route path="/blog/:slug" element={<LazyRoute><BlogArticlePage /></LazyRoute>} />
-      <Route path="/equipo" element={<LazyRoute><TeamPage /></LazyRoute>} />
-      <Route path="/vacantes" element={<LazyRoute><VacanciesPage /></LazyRoute>} />
       <Route path="/tecnologias" element={<LazyRoute><TechnologiesPage /></LazyRoute>} />
-
-      <Route path="/estudio" element={<LazyRoute><StudioPage /></LazyRoute>} />
 
       <Route path="/auth/verify/:token" element={<LazyRoute><AuthVerifyPage /></LazyRoute>} />
       <Route path="/auth/reset-password" element={<LazyRoute><AuthVerifyPage /></LazyRoute>} />
