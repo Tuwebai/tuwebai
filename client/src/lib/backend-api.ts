@@ -160,7 +160,12 @@ export const backendApi = {
     }),
 
   confirmNewsletter: (token: string) =>
-    apiFetch<{ success: boolean; message: string }>(`/newsletter/confirm/${encodeURIComponent(token)}`),
+    apiFetch<{ success: boolean; message: string; unsubscribeToken?: string | null }>(
+      `/newsletter/confirm/${encodeURIComponent(token)}`
+    ),
+
+  unsubscribeNewsletter: (token: string) =>
+    apiFetch<{ success: boolean; message: string }>(`/newsletter/unsubscribe/${encodeURIComponent(token)}`),
 
   submitTestimonial: (payload: { name: string; company?: string; testimonial: string }) =>
     apiFetch<{ success?: boolean; id?: string; message?: string }>('/api/testimonials', {

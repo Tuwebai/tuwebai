@@ -8,5 +8,8 @@ export const subscribeToNewsletter = (payload: NewsletterSubscriptionInput) =>
 export const confirmNewsletterSubscription = (token: string) =>
   backendApi.confirmNewsletter(token);
 
+export const unsubscribeNewsletterSubscription = (token: string) =>
+  backendApi.unsubscribeNewsletter(token);
+
 export const getNewsletterErrorMessage = (error: unknown, fallback: string) =>
   getUiErrorMessage(error, fallback);

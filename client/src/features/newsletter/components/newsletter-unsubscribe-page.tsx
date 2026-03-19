@@ -2,58 +2,56 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 import {
-  confirmNewsletterSubscription,
   getNewsletterErrorMessage,
+  unsubscribeNewsletterSubscription,
 } from '@/features/newsletter/services/newsletter.service';
 import MetaTags from '@/shared/ui/meta-tags';
 
-type ConfirmationState = 'loading' | 'success' | 'error';
+type UnsubscribeState = 'loading' | 'success' | 'error';
 
-export default function NewsletterConfirmPage() {
+export default function NewsletterUnsubscribePage() {
   const { token } = useParams<{ token: string }>();
-  const [state, setState] = useState<ConfirmationState>('loading');
-  const [message, setMessage] = useState('Estamos validando tu enlace de newsletter.');
-  const [unsubscribeToken, setUnsubscribeToken] = useState<string | null>(null);
+  const [state, setState] = useState<UnsubscribeState>('loading');
+  const [message, setMessage] = useState('Estamos procesando tu solicitud de baja.');
 
   useEffect(() => {
-    const runConfirmation = async () => {
+    const runUnsubscribe = async () => {
       if (!token) {
         setState('error');
-        setMessage('El enlace de confirmacion no es valido.');
+        setMessage('El enlace de baja no es valido.');
         return;
       }
 
       try {
-        const response = await confirmNewsletterSubscription(token);
+        const response = await unsubscribeNewsletterSubscription(token);
         setState(response.success ? 'success' : 'error');
         setMessage(response.message);
-        setUnsubscribeToken(response.unsubscribeToken || null);
       } catch (error: unknown) {
         setState('error');
         setMessage(
           getNewsletterErrorMessage(
             error,
-            'No pudimos confirmar tu suscripcion en este momento. Intenta nuevamente desde el enlace del correo.',
+            'No pudimos procesar la baja en este momento. Intenta nuevamente desde el enlace del correo.',
           ),
         );
       }
     };
 
-    void runConfirmation();
+    void runUnsubscribe();
   }, [token]);
 
   const panelClassName =
     state === 'success'
-      ? 'border-[#00CCFF]/35 bg-[#0C1425]/92'
+      ? 'border-red-500/30 bg-[#170C16]/92'
       : state === 'error'
-        ? 'border-red-500/35 bg-[#1A1018]/92'
+        ? 'border-white/12 bg-[#151827]/92'
         : 'border-white/10 bg-[#0D1220]/92';
 
   return (
     <main className="min-h-screen bg-[#060913] px-6 py-16 text-white">
       <MetaTags
-        title="Confirmacion de newsletter | TuWeb.ai"
-        description="Confirma tu suscripcion al newsletter de TuWeb.ai."
+        title="Baja de newsletter | TuWeb.ai"
+        description="Gestiona la baja del newsletter de TuWeb.ai."
         robots="noindex,follow"
       />
 
@@ -61,12 +59,12 @@ export default function NewsletterConfirmPage() {
         <section
           className={`w-full rounded-[32px] border p-8 shadow-[0_24px_80px_rgba(0,0,0,0.35)] md:p-12 ${panelClassName}`}
         >
-          <div className="mb-6 inline-flex rounded-full border border-[#00CCFF]/30 bg-[#00CCFF]/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-[#8BE8FF]">
-            Newsletter TuWeb.ai
+          <div className="mb-6 inline-flex rounded-full border border-red-500/25 bg-red-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-[#FFB7C2]">
+            Preferencias newsletter
           </div>
 
           <h1 className="max-w-2xl text-4xl font-bold leading-tight text-white md:text-5xl">
-            {state === 'success' ? 'Suscripcion confirmada' : state === 'error' ? 'No pudimos confirmar el email' : 'Confirmando suscripcion'}
+            {state === 'success' ? 'Suscripcion dada de baja' : state === 'error' ? 'No pudimos procesar la baja' : 'Procesando baja'}
           </h1>
 
           <p className="mt-6 max-w-2xl text-base leading-8 text-[#C9D7F2] md:text-lg">
@@ -75,8 +73,8 @@ export default function NewsletterConfirmPage() {
 
           {state === 'loading' ? (
             <div className="mt-10 flex items-center gap-4 text-sm text-[#8EA8D6]">
-              <span className="h-3 w-3 animate-pulse rounded-full bg-[#00CCFF]" />
-              Validando enlace y actualizando tu estado de suscripcion.
+              <span className="h-3 w-3 animate-pulse rounded-full bg-red-400" />
+              Validando enlace y actualizando tus preferencias.
             </div>
           ) : (
             <div className="mt-10 flex flex-col gap-4 sm:flex-row">
@@ -90,16 +88,8 @@ export default function NewsletterConfirmPage() {
                 to="/blog"
                 className="inline-flex items-center justify-center rounded-full border border-white/12 px-6 py-3 text-sm font-semibold text-[#DCE7FF] transition-colors duration-200 hover:border-[#00CCFF]/45 hover:text-white"
               >
-                Ver contenido del blog
+                Seguir leyendo el blog
               </Link>
-              {state === 'success' && unsubscribeToken ? (
-                <Link
-                  to={`/newsletter/unsubscribe/${encodeURIComponent(unsubscribeToken)}`}
-                  className="inline-flex items-center justify-center rounded-full border border-red-500/30 px-6 py-3 text-sm font-semibold text-[#FFCDD5] transition-colors duration-200 hover:border-red-400/50 hover:text-white"
-                >
-                  Darme de baja
-                </Link>
-              ) : null}
             </div>
           )}
         </section>

@@ -3,7 +3,11 @@ import { env } from '../../config/env.config';
 import { queueContactEmail, queueNewsletterConfirmationEmail } from '../../infrastructure/mail/email.service';
 import { getErrorMessage } from '../../shared/utils/error-message';
 import { appLogger } from '../../utils/app-logger';
-import { confirmNewsletterSubscription, registerNewsletterSubscription } from './service';
+import {
+  confirmNewsletterSubscription,
+  registerNewsletterSubscription,
+  unsubscribeNewsletterSubscription,
+} from './service';
 
 const resolveIpAddress = (req: Request): string | null => {
   const forwardedFor = req.headers['x-forwarded-for'];
@@ -99,6 +103,35 @@ export const handleNewsletterConfirm = async (req: Request, res: Response) => {
       success: false,
       message: 'No se pudo confirmar la suscripcion en este momento.',
       details: env.NODE_ENV === 'development' ? getErrorMessage(error, 'unknown_newsletter_confirm_error') : undefined,
+    });
+  }
+};
+
+export const handleNewsletterUnsubscribe = async (req: Request, res: Response) => {
+  try {
+    const result = await unsubscribeNewsletterSubscription(req.params.token);
+
+    if (result.success) {
+      return res.status(200).json(result);
+    }
+
+    const isAvailabilityError = result.message.includes('en este momento');
+
+    return res.status(isAvailabilityError ? 503 : 400).json(result);
+  } catch (error: unknown) {
+    appLogger.error('public.newsletter_unsubscribe_failed', {
+      error: getErrorMessage(error, 'unknown_newsletter_unsubscribe_error'),
+      route: req.path,
+      method: req.method,
+    });
+
+    return res.status(500).json({
+      success: false,
+      message: 'No se pudo procesar la baja en este momento.',
+      details:
+        env.NODE_ENV === 'development'
+          ? getErrorMessage(error, 'unknown_newsletter_unsubscribe_error')
+          : undefined,
     });
   }
 };
