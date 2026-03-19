@@ -1,0 +1,485 @@
+.uxui-page {
+  min-height: 100vh;
+  background: #0a0a0f;
+  color: #fff;
+}
+
+.uxui-floating-header {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 40;
+  border-bottom: 1px solid rgb(31 41 55);
+  background: rgb(10 10 15 / 0.95);
+}
+
+.uxui-floating-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+.uxui-wordmark {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.uxui-wordmark-accent {
+  color: #00ccff;
+}
+
+.uxui-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.uxui-nav-link {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #d1d5db;
+  transition: color 180ms ease;
+}
+
+.uxui-nav-link:hover {
+  color: #fff;
+}
+
+.uxui-nav-link--active {
+  color: #00ccff;
+}
+
+.uxui-nav-cta {
+  margin-left: 1.5rem;
+  padding: 0.5rem 1.25rem;
+  border-radius: 9999px;
+  background: linear-gradient(to right, #00ccff, #9933ff);
+  box-shadow: 0 10px 24px rgb(0 204 255 / 0.2);
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: box-shadow 180ms ease;
+}
+
+.uxui-nav-cta:hover {
+  box-shadow: 0 10px 24px rgb(153 51 255 / 0.3);
+}
+
+.uxui-hero {
+  padding: 8rem 1rem 5rem;
+  background: linear-gradient(to bottom, #0f0f19, #0a0a0f);
+}
+
+.uxui-hero-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.uxui-hero-copy {
+  max-width: 42rem;
+  margin-bottom: 2.5rem;
+}
+
+.uxui-hero-title {
+  margin-bottom: 1.5rem;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 2.25rem;
+  line-height: 1.05;
+  font-weight: 700;
+}
+
+.uxui-hero-subtitle {
+  margin-bottom: 2rem;
+  font-size: 1.25rem;
+  color: #d1d5db;
+}
+
+.uxui-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.uxui-hero-primary,
+.uxui-hero-secondary {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: background-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.uxui-hero-primary {
+  background: linear-gradient(to right, #00ccff, #9933ff);
+  box-shadow: 0 10px 24px rgb(0 204 255 / 0.2);
+  color: #fff;
+}
+
+.uxui-hero-primary:hover {
+  box-shadow: 0 10px 24px rgb(153 51 255 / 0.3);
+}
+
+.uxui-hero-secondary {
+  border: 1px solid rgb(55 65 81);
+  background: transparent;
+  color: #fff;
+}
+
+.uxui-hero-secondary:hover {
+  background: rgb(255 255 255 / 0.05);
+}
+
+.uxui-hero-visual {
+  position: relative;
+  width: 100%;
+  max-width: 28rem;
+  height: 20rem;
+}
+
+.uxui-hero-visual-glow {
+  position: absolute;
+  border-radius: 1rem;
+}
+
+.uxui-hero-visual-glow--main {
+  inset: 0;
+  opacity: 0.3;
+  filter: blur(24px);
+  background: linear-gradient(135deg, rgb(0 204 255 / 0.3), rgb(153 51 255 / 0.3));
+}
+
+.uxui-hero-visual-glow--top {
+  top: -1rem;
+  right: -1rem;
+  width: 8rem;
+  height: 8rem;
+  border-radius: 9999px;
+  filter: blur(20px);
+  background: linear-gradient(135deg, rgb(153 51 255 / 0.2), rgb(0 204 255 / 0.2));
+}
+
+.uxui-hero-visual-glow--bottom {
+  bottom: -1rem;
+  left: -1rem;
+  width: 8rem;
+  height: 8rem;
+  border-radius: 9999px;
+  filter: blur(20px);
+  background: linear-gradient(135deg, rgb(0 204 255 / 0.2), rgb(153 51 255 / 0.2));
+}
+
+.uxui-hero-visual-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.uxui-section {
+  padding: 5rem 1rem;
+  background: #0a0a0f;
+}
+
+.uxui-section--alt {
+  background: #0c0c14;
+}
+
+.uxui-section--cta {
+  background: linear-gradient(to bottom, #0a0a0f, #0f0f19);
+}
+
+.uxui-section-heading {
+  max-width: 48rem;
+  margin: 0 auto 4rem;
+  text-align: center;
+}
+
+.uxui-section-title {
+  margin-bottom: 1rem;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1.875rem;
+  line-height: 1.1;
+  font-weight: 700;
+}
+
+.uxui-section-copy {
+  font-size: 1.125rem;
+  color: #d1d5db;
+}
+
+.uxui-services-grid {
+  display: grid;
+  gap: 2rem;
+}
+
+.uxui-service-frame {
+  padding: 1px;
+  border-radius: 0.75rem;
+  background: linear-gradient(135deg, rgb(0 204 255 / 0.1), rgb(153 51 255 / 0.1));
+}
+
+.uxui-service-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  background: #121217;
+}
+
+.uxui-service-icon {
+  display: flex;
+  width: 4rem;
+  height: 4rem;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  border-radius: 9999px;
+  background: linear-gradient(to right, #00ccff, #9933ff);
+  color: #fff;
+}
+
+.uxui-service-title {
+  margin-bottom: 0.75rem;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.uxui-service-description {
+  flex-grow: 1;
+  margin-bottom: 1.5rem;
+  color: #d1d5db;
+}
+
+.uxui-service-meta-title {
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #fff;
+}
+
+.uxui-service-list {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.uxui-service-list-item {
+  display: flex;
+  align-items: flex-start;
+  font-size: 0.875rem;
+  color: #d1d5db;
+}
+
+.uxui-process-grid {
+  display: grid;
+  gap: 2rem 2rem;
+}
+
+.uxui-process-item {
+  position: relative;
+}
+
+.uxui-process-step {
+  position: absolute;
+  top: -2rem;
+  left: 0;
+  display: flex;
+  width: 2rem;
+  height: 2rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: linear-gradient(to right, #00ccff, #9933ff);
+  color: #fff;
+  font-weight: 700;
+}
+
+.uxui-process-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  background: #121217;
+}
+
+.uxui-process-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.uxui-process-icon {
+  display: flex;
+  width: 2.5rem;
+  height: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.75rem;
+  border-radius: 9999px;
+  background: linear-gradient(to right, rgb(0 204 255 / 0.2), rgb(153 51 255 / 0.2));
+  color: #00ccff;
+}
+
+.uxui-process-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.uxui-process-description {
+  color: #d1d5db;
+}
+
+.uxui-process-connector {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  display: none;
+  width: 4rem;
+  height: 0.25rem;
+  transform: translate(50%, -50%);
+}
+
+.uxui-process-connector-line {
+  width: 100%;
+  height: 0.125rem;
+  background: linear-gradient(to right, #00ccff, #9933ff);
+}
+
+.uxui-process-connector-dot {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  background: #9933ff;
+  transform: translateY(-50%);
+}
+
+.uxui-cta-card {
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: 2rem;
+  border: 1px solid rgb(31 41 55);
+  border-radius: 0.75rem;
+  background: #121217;
+}
+
+.uxui-cta-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.uxui-cta-title {
+  margin-bottom: 1rem;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1.875rem;
+  line-height: 1.1;
+  font-weight: 700;
+}
+
+.uxui-cta-copy {
+  font-size: 1.25rem;
+  color: #d1d5db;
+}
+
+.uxui-cta-actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.uxui-cta-primary,
+.uxui-cta-secondary {
+  display: inline-block;
+  padding: 1rem 2rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  text-align: center;
+  transition: background-color 180ms ease, box-shadow 180ms ease;
+}
+
+.uxui-cta-primary {
+  background: linear-gradient(to right, #00ccff, #9933ff);
+  box-shadow: 0 10px 24px rgb(0 204 255 / 0.2);
+  color: #fff;
+}
+
+.uxui-cta-primary:hover {
+  box-shadow: 0 10px 24px rgb(153 51 255 / 0.3);
+}
+
+.uxui-cta-secondary {
+  border: 1px solid #9933ff;
+  color: #9933ff;
+}
+
+.uxui-cta-secondary:hover {
+  background: rgb(153 51 255 / 0.1);
+}
+
+@media (min-width: 640px) {
+  .uxui-cta-actions {
+    flex-direction: row;
+  }
+}
+
+@media (min-width: 768px) {
+  .uxui-services-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .uxui-process-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .uxui-hero-title,
+  .uxui-cta-title,
+  .uxui-section-title {
+    font-size: 2.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .uxui-floating-header {
+    background: rgb(10 10 15 / 0.9);
+    backdrop-filter: blur(4px);
+  }
+
+  .uxui-hero-layout {
+    flex-direction: row;
+  }
+
+  .uxui-hero-copy {
+    margin-right: 2rem;
+    margin-bottom: 0;
+  }
+
+  .uxui-hero-title {
+    font-size: 3.75rem;
+  }
+
+  .uxui-hero-visual {
+    height: 24rem;
+  }
+
+  .uxui-services-grid,
+  .uxui-process-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .uxui-process-connector {
+    display: block;
+  }
+}

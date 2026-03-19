@@ -5,6 +5,7 @@ import { useIsMobile } from "@/core/hooks/use-mobile";
 import ScrollProgress from "@/shared/ui/scroll-progress";
 import WhatsAppButton from "@/shared/ui/whatsapp-button";
 import { TUWEBAI_WHATSAPP_URL } from '@/shared/constants/contact';
+import "./uxui-page.css";
 
 // Tipos para proyectos UX/UI
 interface UXUIProject {
@@ -299,18 +300,18 @@ export default function UXUI() {
   const isUsingGlobalNav = (window as WindowWithGlobalNav).isUsingGlobalNav !== false;
   
   return (
-    <div className="min-h-screen bg-[#0a0a0f] text-white">
+    <div className="uxui-page">
       <ScrollProgress color="#00CCFF" />
       <WhatsAppButton />
       
       {/* Header flotante para desktop y móvil (solo si no se usa GlobalNavbar) */}
       {!isUsingGlobalNav && (
         <>
-          <header className="fixed top-0 left-0 right-0 bg-[#0a0a0f]/95 lg:bg-[#0a0a0f]/90 lg:backdrop-blur-sm z-40 border-b border-gray-800">
-            <div className="container mx-auto px-4 py-4">
-              <div className="flex items-center justify-between">
-                <Link to="/" className="text-2xl font-rajdhani font-bold">
-                  TuWeb<span className="text-[#00CCFF]">.ai</span>
+          <header className="uxui-floating-header">
+            <div className="container mx-auto">
+              <div className="uxui-floating-header-inner">
+                <Link to="/" className="uxui-wordmark">
+                  TuWeb<span className="uxui-wordmark-accent">.ai</span>
                 </Link>
                 
                 {isMobile ? (
@@ -320,34 +321,34 @@ export default function UXUI() {
                     </svg>
                   </button>
                 ) : (
-                  <nav className="flex items-center space-x-6">
+                  <nav className="uxui-nav">
                     <button 
                       onClick={() => setActiveTab("servicios")}
-                      className={`text-sm font-medium transition-colors ${activeTab === "servicios" ? 'text-[#00CCFF]' : 'text-gray-300 hover:text-white'}`}
+                      className={`uxui-nav-link ${activeTab === "servicios" ? 'uxui-nav-link--active' : ''}`}
                     >
                       Servicios UX/UI
                     </button>
                     <button 
                       onClick={() => setActiveTab("procesos")}
-                      className={`text-sm font-medium transition-colors ${activeTab === "procesos" ? 'text-[#00CCFF]' : 'text-gray-300 hover:text-white'}`}
+                      className={`uxui-nav-link ${activeTab === "procesos" ? 'uxui-nav-link--active' : ''}`}
                     >
                       Nuestro Proceso
                     </button>
                     <button 
                       onClick={() => setActiveTab("proyectos")}
-                      className={`text-sm font-medium transition-colors ${activeTab === "proyectos" ? 'text-[#00CCFF]' : 'text-gray-300 hover:text-white'}`}
+                      className={`uxui-nav-link ${activeTab === "proyectos" ? 'uxui-nav-link--active' : ''}`}
                     >
                       Proyectos
                     </button>
                     <button 
                       onClick={() => setActiveTab("contacto")}
-                      className={`text-sm font-medium transition-colors ${activeTab === "contacto" ? 'text-[#00CCFF]' : 'text-gray-300 hover:text-white'}`}
+                      className={`uxui-nav-link ${activeTab === "contacto" ? 'uxui-nav-link--active' : ''}`}
                     >
                       Contacto
                     </button>
                     <Link 
                       to="/consulta"
-                      className="ml-6 px-5 py-2 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-full text-white text-sm font-medium shadow-lg shadow-[#00CCFF]/20 hover:shadow-[#9933FF]/30 transition-all"
+                      className="uxui-nav-cta"
                     >
                       Solicitar propuesta
                     </Link>
@@ -364,16 +365,16 @@ export default function UXUI() {
       
       {/* Hero Section */}
       <motion.section 
-        className="bg-gradient-to-b from-[#0f0f19] to-[#0a0a0f] pt-32 pb-20 px-4"
+        className="uxui-hero"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
       >
         <div className="container mx-auto">
-          <div className="flex flex-col lg:flex-row items-center justify-between">
-            <div className="max-w-2xl lg:mr-8 mb-10 lg:mb-0">
+          <div className="uxui-hero-layout">
+            <div className="uxui-hero-copy">
               <motion.h1 
-                className="text-4xl md:text-6xl font-rajdhani font-bold mb-6"
+                className="uxui-hero-title"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
@@ -384,7 +385,7 @@ export default function UXUI() {
               </motion.h1>
               
               <motion.p 
-                className="text-xl text-gray-300 mb-8"
+                className="uxui-hero-subtitle"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
@@ -393,20 +394,20 @@ export default function UXUI() {
               </motion.p>
               
               <motion.div
-                className="flex flex-wrap gap-4"
+                className="uxui-hero-actions"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
               >
                 <button
                   onClick={() => setActiveTab("servicios")}
-                  className="px-6 py-3 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-lg text-white font-medium shadow-lg shadow-[#00CCFF]/20 hover:shadow-[#9933FF]/30 transition-all"
+                  className="uxui-hero-primary"
                 >
                   Explorar servicios
                 </button>
                 <button
                   onClick={() => setActiveTab("proyectos")}
-                  className="px-6 py-3 bg-transparent border border-gray-700 rounded-lg text-white font-medium hover:bg-white/5 transition-all"
+                  className="uxui-hero-secondary"
                 >
                   Ver proyectos
                 </button>
@@ -414,66 +415,66 @@ export default function UXUI() {
             </div>
             
             <motion.div 
-              className="w-full max-w-md h-80 lg:h-96 relative"
+              className="uxui-hero-visual"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.3 }}
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-[#00CCFF]/30 to-[#9933FF]/30 rounded-2xl blur-2xl opacity-30"></div>
-              <div className="absolute inset-0 flex items-center justify-center">
+              <div className="uxui-hero-visual-glow uxui-hero-visual-glow--main"></div>
+              <div className="uxui-hero-visual-center">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-32 w-32 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
               </div>
               
-              <div className="absolute -top-4 -right-4 h-32 w-32 bg-gradient-to-br from-[#9933FF]/20 to-[#00CCFF]/20 rounded-full blur-xl"></div>
-              <div className="absolute -bottom-4 -left-4 h-32 w-32 bg-gradient-to-br from-[#00CCFF]/20 to-[#9933FF]/20 rounded-full blur-xl"></div>
+              <div className="uxui-hero-visual-glow uxui-hero-visual-glow--top"></div>
+              <div className="uxui-hero-visual-glow uxui-hero-visual-glow--bottom"></div>
             </motion.div>
           </div>
         </div>
       </motion.section>
       
       {/* Servicios Section */}
-      <section ref={serviciosRef} id="servicios" className="py-20 px-4 bg-[#0a0a0f]">
+      <section ref={serviciosRef} id="servicios" className="uxui-section">
         <div className="container mx-auto">
           <motion.div 
-            className="text-center max-w-3xl mx-auto mb-16"
+            className="uxui-section-heading"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-3xl md:text-4xl font-rajdhani font-bold mb-4">
+            <h2 className="uxui-section-title">
               <span className="gradient-text">Servicios</span> de diseño UX/UI
             </h2>
-            <p className="text-gray-300 text-lg">
+            <p className="uxui-section-copy">
               Ofrecemos soluciones completas de experiencia de usuario para crear productos digitales que conectan con tus clientes y generan resultados.
             </p>
           </motion.div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="uxui-services-grid">
             {uxuiServices.map((service, index) => (
               <motion.div
                 key={service.id}
-                className="bg-gradient-to-br from-[#00CCFF]/10 to-[#9933FF]/10 rounded-xl p-[1px]"
+                className="uxui-service-frame"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 + index * 0.1 }}
               >
-                <div className="bg-[#121217] rounded-xl p-6 h-full flex flex-col">
-                  <div className="h-16 w-16 rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] flex items-center justify-center mb-4">
+                <div className="uxui-service-card">
+                  <div className="uxui-service-icon">
                     <div className="text-white">
                       {service.icon}
                     </div>
                   </div>
                   
-                  <h3 className="text-xl font-rajdhani font-bold mb-3 text-white">{service.title}</h3>
-                  <p className="text-gray-300 mb-6 flex-grow">{service.description}</p>
+                  <h3 className="uxui-service-title">{service.title}</h3>
+                  <p className="uxui-service-description">{service.description}</p>
                   
                   <div className="mt-auto">
-                    <h4 className="font-medium text-white text-sm mb-2">Incluye:</h4>
-                    <ul className="space-y-2">
+                    <h4 className="uxui-service-meta-title">Incluye:</h4>
+                    <ul className="uxui-service-list">
                       {service.features.map((feature, i) => (
-                        <li key={i} className="flex items-start text-sm text-gray-300">
+                        <li key={i} className="uxui-service-list-item">
                           <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[#00CCFF] mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                           </svg>
@@ -490,52 +491,52 @@ export default function UXUI() {
       </section>
       
       {/* Proceso Section */}
-      <section ref={procesosRef} id="procesos" className="py-20 px-4 bg-[#0c0c14]">
+      <section ref={procesosRef} id="procesos" className="uxui-section uxui-section--alt">
         <div className="container mx-auto">
           <motion.div 
-            className="text-center max-w-3xl mx-auto mb-16"
+            className="uxui-section-heading"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-3xl md:text-4xl font-rajdhani font-bold mb-4">
+            <h2 className="uxui-section-title">
               Nuestro <span className="gradient-text">proceso</span> de diseño
             </h2>
-            <p className="text-gray-300 text-lg">
+            <p className="uxui-section-copy">
               Seguimos una metodología ágil y centrada en el usuario para entregar diseños que superan expectativas.
             </p>
           </motion.div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 gap-y-12">
+          <div className="uxui-process-grid">
             {uxuiProcesses.map((process, index) => (
               <motion.div
                 key={process.id}
-                className="relative"
+                className="uxui-process-item"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 + index * 0.1 }}
               >
-                <div className="absolute -top-8 left-0 w-8 h-8 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-full flex items-center justify-center text-white font-bold">
+                <div className="uxui-process-step">
                   {process.id}
                 </div>
                 
-                <div className="bg-[#121217] rounded-xl p-6 h-full flex flex-col">
-                  <div className="flex items-center mb-4">
-                    <div className="h-10 w-10 rounded-full bg-gradient-to-r from-[#00CCFF]/20 to-[#9933FF]/20 flex items-center justify-center mr-3">
-                      <div className="text-[#00CCFF]">
+                <div className="uxui-process-card">
+                  <div className="uxui-process-header">
+                    <div className="uxui-process-icon">
+                      <div>
                         {process.icon}
                       </div>
                     </div>
-                    <h3 className="text-xl font-rajdhani font-bold text-white">{process.title}</h3>
+                    <h3 className="uxui-process-title">{process.title}</h3>
                   </div>
                   
-                  <p className="text-gray-300">{process.description}</p>
+                  <p className="uxui-process-description">{process.description}</p>
                 </div>
                 
                 {index < uxuiProcesses.length - 1 && !isMobile && (
-                  <div className="hidden lg:block absolute top-1/2 right-0 transform translate-x-1/2 -translate-y-1/2 w-16 h-1">
-                    <div className="h-0.5 w-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF]"></div>
-                    <div className="absolute right-0 top-1/2 transform -translate-y-1/2 h-2 w-2 rounded-full bg-[#9933FF]"></div>
+                  <div className="uxui-process-connector">
+                    <div className="uxui-process-connector-line"></div>
+                    <div className="uxui-process-connector-dot"></div>
                   </div>
                 )}
               </motion.div>
@@ -615,27 +616,27 @@ export default function UXUI() {
       </section>
       
       {/* CTA Section */}
-      <section ref={contactoRef} id="contacto" className="py-20 px-4 bg-gradient-to-b from-[#0a0a0f] to-[#0f0f19]">
+      <section ref={contactoRef} id="contacto" className="uxui-section uxui-section--cta">
         <div className="container mx-auto">
           <motion.div 
-            className="max-w-4xl mx-auto bg-[#121217] rounded-xl p-8 border border-gray-800"
+            className="uxui-cta-card"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className="text-center mb-8">
-              <h2 className="text-3xl md:text-4xl font-rajdhani font-bold mb-4 gradient-text">
+            <div className="uxui-cta-header">
+              <h2 className="uxui-cta-title gradient-text">
                 Transformá la experiencia de tus usuarios
               </h2>
-              <p className="text-xl text-gray-300">
+              <p className="uxui-cta-copy">
                 Convertí visitas en acciones concretas con interfaces claras y efectivas.
               </p>
             </div>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="uxui-cta-actions">
               <Link 
                 to="/consulta"
-                className="inline-block px-8 py-4 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-lg text-white font-medium shadow-lg shadow-[#00CCFF]/20 hover:shadow-[#9933FF]/30 transition-all text-center"
+                className="uxui-cta-primary"
               >
                 Solicitá tu proyecto UX/UI
               </Link>
@@ -643,7 +644,7 @@ export default function UXUI() {
                 href={`${TUWEBAI_WHATSAPP_URL}?text=Hola,%20estoy%20interesado%20en%20sus%20servicios%20de%20UX/UI`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block px-8 py-4 border border-[#9933FF] rounded-lg text-[#9933FF] font-medium hover:bg-[#9933FF]/10 transition-all text-center"
+                className="uxui-cta-secondary"
               >
                 Contactar por WhatsApp
               </a>
