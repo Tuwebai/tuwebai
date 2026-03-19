@@ -25,6 +25,7 @@
     "dev:all": "concurrently -k -n backend,frontend -c cyan,magenta \"npm:dev:backend\" \"npm:dev:frontend\"",
     "dev:enterprise": "concurrently -k -n backend,frontend,logsink -c cyan,magenta,yellow \"npm:dev:backend\" \"npm:dev:frontend\" \"npm:dev:log-sink\"",
     "perf:baseline": "node scripts/perf-baseline.mjs",
+    "perf:budget": "node scripts/perf-budget.mjs",
     "smoke": "node scripts/smoke.mjs",
     "smoke:auth": "cross-env SMOKE_ENFORCE_FIREBASE_AUTH=1 node scripts/smoke.mjs",
     "test": "npm run smoke",
