@@ -58,7 +58,16 @@ const appTree = (
   </QueryClientProvider>
 );
 
-if (rootElement.dataset.prerender === "react-app" && rootElement.hasChildNodes()) {
+const isHomeReactPrerender =
+  rootElement.dataset.prerender === "react-app" &&
+  rootElement.hasChildNodes() &&
+  window.location.pathname === "/";
+
+if (isHomeReactPrerender) {
+  rootElement.removeAttribute("data-prerender");
+  rootElement.innerHTML = "";
+  createRoot(rootElement).render(appTree);
+} else if (rootElement.dataset.prerender === "react-app" && rootElement.hasChildNodes()) {
   hydrateRoot(rootElement, appTree);
 } else {
   rootElement.innerHTML = "";
