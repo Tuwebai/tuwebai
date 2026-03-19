@@ -32,6 +32,10 @@ interface NewsletterEmailTemplateOptions {
   footerNote: string;
 }
 
+const TUWEBAI_BLOG_URL = 'https://tuweb-ai.com/blog';
+const TUWEBAI_CONSULTA_URL = 'https://tuweb-ai.com/consulta';
+const TUWEBAI_WHATSAPP_NUMBER = '5493571417960';
+
 const getContactTo = (): string => env.CONTACT_TO_EMAIL?.trim() || env.SMTP_USER?.trim() || 'tuwebai@gmail.com';
 const getDefaultFrom = (): string =>
   `"${env.SMTP_FROM_NAME.trim()}" <${env.SMTP_FROM_EMAIL?.trim() || env.SMTP_USER?.trim() || 'no-reply@tuweb-ai.com'}>`;
@@ -63,6 +67,22 @@ const isRetryableError = (error: unknown): boolean => {
     message.includes('etimedout') ||
     message.includes('eai_again')
   );
+};
+
+const buildWhatsAppUrl = (message: string): string =>
+  `https://wa.me/${TUWEBAI_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+
+const resolveTransactionalActionUrl = (label: string, url: string): string => {
+  const normalizedUrl = url.trim().replace(/\/+$/, '');
+  const normalizedConsultaUrl = TUWEBAI_CONSULTA_URL.replace(/\/+$/, '');
+
+  if (label.trim().toLowerCase() !== 'consulta' && normalizedUrl === normalizedConsultaUrl) {
+    return buildWhatsAppUrl(
+      'Hola, quiero hacer una consulta sobre mi web y entender como mejorar conversiones con TuWeb.ai.',
+    );
+  }
+
+  return normalizedUrl;
 };
 
 export const sendContactEmail = async (data: EmailData) => {
@@ -126,6 +146,7 @@ const sendTransactionalEmail = async (data: TransactionalEmailData) => {
 };
 
 const buildNewsletterEmailShell = (options: NewsletterEmailTemplateOptions): string => {
+  const actionUrl = resolveTransactionalActionUrl(options.actionLabel, options.actionUrl);
   const bodyParagraphs = options.body
     .map(
       (paragraph) => `
@@ -197,7 +218,7 @@ const buildNewsletterEmailShell = (options: NewsletterEmailTemplateOptions): str
                           <table role="presentation" cellspacing="0" cellpadding="0" border="0">
                             <tr>
                               <td style="border-radius:999px;background:linear-gradient(90deg,#00CCFF 0%,#9933FF 100%);">
-                                <a href="${options.actionUrl}" target="_blank" rel="noopener noreferrer" style="display:inline-block;padding:15px 26px;font-size:14px;font-weight:700;color:#FFFFFF;">
+                                <a href="${actionUrl}" target="_blank" rel="noopener noreferrer" style="display:inline-block;padding:15px 26px;font-size:14px;font-weight:700;color:#FFFFFF;">
                                   ${options.actionLabel}
                                 </a>
                               </td>
@@ -219,7 +240,7 @@ const buildNewsletterEmailShell = (options: NewsletterEmailTemplateOptions): str
                             ${options.actionHint}
                           </p>
                           <p style="margin:0;font-size:13px;line-height:24px;word-break:break-all;color:#7dd3fc;">
-                            ${options.actionUrl}
+                            ${actionUrl}
                           </p>
                         </td>
                       </tr>
@@ -332,7 +353,7 @@ const buildNewsletterUnsubscribeEmail = (unsubscribeUrl: string) => {
     'Tu baja del newsletter de TuWeb.ai se proceso correctamente.',
     '',
     'Si fue un error o queres volver a suscribirte, podes hacerlo desde:',
-    'https://tuweb-ai.com/blog',
+    TUWEBAI_BLOG_URL,
     '',
     'Referencia de baja:',
     unsubscribeUrl,
@@ -348,7 +369,7 @@ const buildNewsletterUnsubscribeEmail = (unsubscribeUrl: string) => {
       'Si queres volver a sumarte, podes hacerlo cuando quieras desde el blog o desde cualquiera de nuestros formularios editoriales.',
     ],
     actionLabel: 'Volver al blog',
-    actionUrl: 'https://tuweb-ai.com/blog',
+    actionUrl: TUWEBAI_BLOG_URL,
     actionHint: 'Guardamos este enlace como referencia de la baja procesada:',
     footerNote: `Este email confirma la baja solicitada desde el siguiente enlace: <a href="${unsubscribeUrl}" target="_blank" rel="noopener noreferrer" style="color:#B9C7E6;text-decoration:underline;">ver referencia</a>.`,
   });
@@ -358,7 +379,7 @@ const buildNewsletterUnsubscribeEmail = (unsubscribeUrl: string) => {
 
 const buildNewsletterWelcomeEmail = () => {
   const subject = 'Bienvenido al newsletter de TuWeb.ai';
-  const actionUrl = 'https://tuweb-ai.com/blog';
+  const actionUrl = TUWEBAI_BLOG_URL;
   const text = [
     'Tu suscripcion al newsletter de TuWeb.ai ya quedo activa.',
     '',
