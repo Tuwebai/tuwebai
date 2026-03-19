@@ -2,9 +2,9 @@ import { Request, Response } from 'express';
 import { env } from '../../config/env.config';
 import {
   queueContactEmail,
-  sendNewsletterConfirmationEmail,
-  sendNewsletterUnsubscribeEmail,
-  sendNewsletterWelcomeEmail,
+  queueNewsletterConfirmationEmail,
+  queueNewsletterUnsubscribeEmail,
+  queueNewsletterWelcomeEmail,
 } from '../../infrastructure/mail/email.service';
 import { getErrorMessage } from '../../shared/utils/error-message';
 import { appLogger } from '../../utils/app-logger';
@@ -42,7 +42,7 @@ export const handleNewsletter = async (req: Request, res: Response) => {
     const frontendBaseUrl = env.FRONTEND_URL.replace(/\/+$/, '');
 
     if (result.confirmationToken && result.subscriber.status === 'pending_confirmation') {
-      await sendNewsletterConfirmationEmail(
+      queueNewsletterConfirmationEmail(
         result.subscriber.email,
         `${frontendBaseUrl}/newsletter/confirm/${encodeURIComponent(result.confirmationToken)}`,
         {
@@ -94,7 +94,7 @@ export const handleNewsletterConfirm = async (req: Request, res: Response) => {
 
     if (result.success) {
       if (result.justConfirmed && result.subscriber?.email) {
-        await sendNewsletterWelcomeEmail(result.subscriber.email, {
+        queueNewsletterWelcomeEmail(result.subscriber.email, {
           event: 'public.newsletter_welcome',
           meta: { route: req.path, method: req.method },
         });
@@ -128,7 +128,7 @@ export const handleNewsletterUnsubscribe = async (req: Request, res: Response) =
 
     if (result.success) {
       if (result.subscriber?.email) {
-        await sendNewsletterUnsubscribeEmail(
+        queueNewsletterUnsubscribeEmail(
           result.subscriber.email,
           `${frontendBaseUrl}/newsletter/unsubscribe/${encodeURIComponent(req.params.token)}`,
           {
