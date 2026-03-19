@@ -14,7 +14,6 @@ const TestimonialsSection = lazy(() => import('@/features/testimonials/component
 const ContactSection = lazy(() => import('@/features/contact/components/contact-section'));
 const PricingSection = lazy(() => import('@/features/payments/components/pricing-section'));
 const ShowroomSection = lazy(() => import('@/features/marketing-home/components/showroom-section'));
-const CompanyLogoSlider = lazy(() => import('@/shared/ui/company-logo-slider'));
 
 export default function MarketingHomePage() {
   const { sections, setSectionRef } = useHomeSectionNavigation();
@@ -96,8 +95,6 @@ export default function MarketingHomePage() {
           <Suspense fallback={null}>
             <ShowroomSection setRef={(ref: HTMLElement | null) => setSectionRef('showroom', ref)} />
             <PricingSection setRef={(ref: HTMLElement | null) => setSectionRef('pricing', ref)} />
-
-            <CompanyLogoSlider className="py-20 bg-gray-900 bg-opacity-30" />
 
             <ImpactSection setRef={(ref: HTMLElement | null) => setSectionRef('impact', ref)} />
             <TestimonialsSection setRef={(ref: HTMLElement | null) => setSectionRef('testimonials', ref)} />

@@ -92,6 +92,7 @@ export default function TestimonialsSection({ setRef }: TestimonialsSectionProps
   });
   const sliderRef = useRef<Slider | null>(null);
   const { data: testimonials = [], isLoading: loading } = useTestimonials({ enabled: testimonialsVisible });
+  const hasMultipleTestimonials = testimonials.length > 1;
 
   if (sectionRef.current && !sectionRef.current.hasAttribute('data-ref-set')) {
     setRef(sectionRef.current);
@@ -107,12 +108,12 @@ export default function TestimonialsSection({ setRef }: TestimonialsSectionProps
   }, []);
 
   const settings = {
-    dots: true,
-    infinite: true,
+    dots: hasMultipleTestimonials,
+    infinite: hasMultipleTestimonials,
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
-    autoplay: true,
+    autoplay: hasMultipleTestimonials,
     autoplaySpeed: 5000,
     pauseOnHover: true,
     arrows: false,
@@ -170,6 +171,16 @@ export default function TestimonialsSection({ setRef }: TestimonialsSectionProps
               <p className="text-lg text-gray-400">Todavia no hay testimonios publicados.</p>
               <p className="mt-2 text-sm text-gray-500">Cuando empecemos a recibir mas historias reales, las vas a ver aca.</p>
             </div>
+          ) : !hasMultipleTestimonials ? (
+            <div className="px-2">
+              <TestimonialCard
+                name={testimonials[0].name}
+                company={testimonials[0].company}
+                testimonial={testimonials[0].testimonial}
+                delay={0}
+                isNew={testimonials[0].isNew}
+              />
+            </div>
           ) : (
             <Slider {...settings} ref={sliderRef}>
               {testimonials.map((testimonial, index: number) => (
@@ -186,6 +197,7 @@ export default function TestimonialsSection({ setRef }: TestimonialsSectionProps
             </Slider>
           )}
 
+          {hasMultipleTestimonials ? (
           <div className="mt-8 flex justify-center gap-4">
             <button
               onClick={() => sliderRef.current?.slickPrev()}
@@ -205,6 +217,7 @@ export default function TestimonialsSection({ setRef }: TestimonialsSectionProps
               </svg>
             </button>
           </div>
+          ) : null}
         </div>
 
         <div className="mx-auto hidden max-w-6xl gap-8 lg:grid lg:grid-cols-3">
