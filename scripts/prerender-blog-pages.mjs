@@ -47,6 +47,54 @@ function injectPrerenderContent(html, prerenderedContent) {
   );
 }
 
+function deferSpaBootstrap(html) {
+  const moduleScriptMatch = html.match(/<script type="module" crossorigin src="([^"]+)"><\/script>/i);
+
+  if (!moduleScriptMatch) {
+    return html;
+  }
+
+  const moduleSrc = moduleScriptMatch[1];
+  const deferredBootstrapScript = `
+    <script>
+      (() => {
+        let bootstrapped = false;
+        let idleHandle = null;
+        let timeoutHandle = null;
+        const start = () => {
+          if (bootstrapped) return;
+          bootstrapped = true;
+          window.removeEventListener('pointerdown', start, passiveOptions);
+          window.removeEventListener('touchstart', start, passiveOptions);
+          window.removeEventListener('keydown', start);
+          window.removeEventListener('scroll', start, passiveOptions);
+          if (idleHandle !== null && 'cancelIdleCallback' in window) {
+            window.cancelIdleCallback(idleHandle);
+          }
+          if (timeoutHandle !== null) {
+            window.clearTimeout(timeoutHandle);
+          }
+          import('${moduleSrc}');
+        };
+        const passiveOptions = { passive: true, once: true };
+        window.addEventListener('pointerdown', start, passiveOptions);
+        window.addEventListener('touchstart', start, passiveOptions);
+        window.addEventListener('keydown', start, { once: true });
+        window.addEventListener('scroll', start, passiveOptions);
+        if ('requestIdleCallback' in window) {
+          idleHandle = window.requestIdleCallback(start, { timeout: 2500 });
+        } else {
+          timeoutHandle = window.setTimeout(start, 2500);
+        }
+      })();
+    </script>
+  `;
+
+  return html
+    .replace(moduleScriptMatch[0], '')
+    .replace('</body>', `${deferredBootstrapScript}\n  </body>`);
+}
+
 function applyHeadMetadata(html, metadata) {
   let nextHtml = html;
 
@@ -332,7 +380,7 @@ async function main() {
   const indexHtml = await fs.readFile(path.join(distDir, 'index.html'), 'utf8');
 
   const blogIndexHtml = applyHeadMetadata(
-    injectPrerenderContent(indexHtml, renderListPageContent(publicPosts)),
+    deferSpaBootstrap(injectPrerenderContent(indexHtml, renderListPageContent(publicPosts))),
     {
       title: 'Blog de Desarrollo Web y Conversion | TuWeb.ai',
       description: 'Guias de TuWeb.ai sobre conversion web, SEO tecnico y crecimiento digital para negocios en Argentina.',
@@ -349,7 +397,7 @@ async function main() {
 
   for (const article of publicPosts) {
     const articleHtml = applyHeadMetadata(
-      injectPrerenderContent(indexHtml, renderArticlePageContent(article)),
+      deferSpaBootstrap(injectPrerenderContent(indexHtml, renderArticlePageContent(article))),
       {
         title: `${article.seo.title} | Tuweb.ai`,
         description: article.seo.description,
