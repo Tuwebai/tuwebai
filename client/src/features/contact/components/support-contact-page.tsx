@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import { getContactErrorMessage, submitContactForm } from '@/features/contact/services/contact.service';
-import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
 import { Textarea } from '@/shared/ui/textarea';
 
@@ -62,9 +61,13 @@ export default function SupportContactPage() {
             <label htmlFor="message" className="block text-white font-medium mb-1">Mensaje</label>
             <Textarea id="message" name="message" value={form.message} onChange={handleChange} required className="bg-[#1A1A23] border-gray-700 text-white" placeholder="Contanos en qué podemos ayudarte" rows={5} />
           </div>
-          <Button type="submit" className="w-full py-3 text-lg bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-full text-white font-semibold">
+          <button
+            type="submit"
+            className="w-full rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-4 py-3 text-lg font-semibold text-white transition-opacity disabled:cursor-not-allowed disabled:opacity-70"
+            disabled={submitState === 'sent'}
+          >
             {submitState === 'sent' ? 'Enviado' : 'Enviar'}
-          </Button>
+          </button>
         </form>
       </div>
     </div>

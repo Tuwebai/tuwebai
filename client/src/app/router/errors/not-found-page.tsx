@@ -1,8 +1,6 @@
 import { Link } from 'react-router-dom';
 import { AlertTriangle, ArrowLeft, Home, Search } from 'lucide-react';
 
-import { Button } from '@/shared/ui/button';
-
 export default function NotFoundPage() {
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-b from-indigo-50 to-white">
@@ -23,28 +21,32 @@ export default function NotFoundPage() {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button asChild size="lg" className="gap-2">
-            <Link to="/">
-              <Home className="h-5 w-5" />
-              <span>Volver al inicio</span>
-            </Link>
-          </Button>
+          <Link
+            to="/"
+            className="inline-flex items-center justify-center gap-2 rounded-md bg-cyan-500 px-8 py-3 text-sm font-medium text-white transition-colors hover:bg-cyan-400"
+          >
+            <Home className="h-5 w-5" />
+            <span>Volver al inicio</span>
+          </Link>
 
-          <Button asChild variant="outline" size="lg" className="gap-2">
-            <Link to="/consulta">
-              <Search className="h-5 w-5" />
-              <span>Contactar con soporte</span>
-            </Link>
-          </Button>
+          <Link
+            to="/consulta"
+            className="inline-flex items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-8 py-3 text-sm font-medium text-gray-900 transition-colors hover:bg-gray-50"
+          >
+            <Search className="h-5 w-5" />
+            <span>Contactar con soporte</span>
+          </Link>
         </div>
 
         <div className="mt-20">
-          <Button asChild variant="ghost" className="gap-2">
-            <Link to="javascript:history.back()">
-              <ArrowLeft className="h-4 w-4" />
-              <span>Volver a la pagina anterior</span>
-            </Link>
-          </Button>
+          <button
+            type="button"
+            onClick={() => window.history.back()}
+            className="inline-flex items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 hover:text-gray-900"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            <span>Volver a la pagina anterior</span>
+          </button>
         </div>
 
         <div className="mt-16 grid gap-4 text-left max-w-2xl mx-auto">
