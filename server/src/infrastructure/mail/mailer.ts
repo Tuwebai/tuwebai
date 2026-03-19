@@ -23,3 +23,22 @@ export const transporter = nodemailer.createTransport({
 
 export const isMailerConfigured = (): boolean => !!hasSmtpCredentials;
 export const isSmtpDeliveryDisabled = (): boolean => smtpDeliveryDisabled;
+
+export const getMailerRuntimeInfo = () => ({
+  disabled: smtpDeliveryDisabled,
+  configured: !!hasSmtpCredentials,
+  host: env.SMTP_HOST,
+  port: env.SMTP_PORT,
+  secure: env.SMTP_SECURE ?? true,
+  smtpUserConfigured: !!normalizedSmtpUser,
+  smtpFromConfigured: !!env.SMTP_FROM_EMAIL?.trim(),
+  newsletterFromConfigured: !!env.NEWSLETTER_FROM_EMAIL?.trim(),
+});
+
+export const verifyMailerConnection = async (): Promise<void> => {
+  if (!hasSmtpCredentials) {
+    return;
+  }
+
+  await transporter.verify();
+};

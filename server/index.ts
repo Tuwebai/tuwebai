@@ -19,6 +19,7 @@ import { globalErrorHandler } from "./src/middlewares/error.middleware";
 import { appLogger } from "./src/utils/app-logger";
 import { requireInternalApiKey } from "./src/middlewares/internal-auth.middleware";
 import { requestIdMiddleware } from "./src/middlewares/request-id.middleware";
+import { getMailerRuntimeInfo, verifyMailerConnection } from "./src/infrastructure/mail/mailer";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -338,6 +339,8 @@ app.use(appRoutes);
 app.use(globalErrorHandler);
 
 app.listen(env.PORT, () => {
+  const mailerInfo = getMailerRuntimeInfo();
+
   appLogger.info("server.started", {
     port: env.PORT,
     allowedOrigins,
@@ -345,6 +348,29 @@ app.listen(env.PORT, () => {
     sessionSecretConfigured: true,
     mercadopagoAccessTokenConfigured: !!env.MERCADOPAGO_ACCESS_TOKEN,
     mercadopagoWebhookSecretConfigured: !!env.MERCADOPAGO_WEBHOOK_SECRET,
-    smtpConfigured: !!env.SMTP_USER,
+    smtpConfigured: mailerInfo.configured,
+    smtpDisabled: mailerInfo.disabled,
+    smtpHost: mailerInfo.host,
+    smtpPort: mailerInfo.port,
+    smtpSecure: mailerInfo.secure,
+    smtpFromConfigured: mailerInfo.smtpFromConfigured,
+    newsletterFromConfigured: mailerInfo.newsletterFromConfigured,
   });
+
+  void verifyMailerConnection()
+    .then(() => {
+      appLogger.info("smtp.verify_ok", {
+        host: mailerInfo.host,
+        port: mailerInfo.port,
+        secure: mailerInfo.secure,
+      });
+    })
+    .catch((error: unknown) => {
+      appLogger.error("smtp.verify_failed", {
+        host: mailerInfo.host,
+        port: mailerInfo.port,
+        secure: mailerInfo.secure,
+        error: error instanceof Error ? error.message : String(error),
+      });
+    });
 });
