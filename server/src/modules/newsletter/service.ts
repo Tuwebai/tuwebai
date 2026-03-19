@@ -56,6 +56,9 @@ const getSubscriberDocumentId = (emailNormalized: string): string =>
 
 const uniqueSources = (sources: string[]): string[] => Array.from(new Set(sources.filter(Boolean)));
 
+const omitUndefinedFields = <T extends Record<string, unknown>>(record: T): T =>
+  Object.fromEntries(Object.entries(record).filter(([, value]) => value !== undefined)) as T;
+
 const resolveSubscriptionStatus = (
   existingStatus: NewsletterSubscriberRecord['status'] | undefined,
 ): NewsletterSubscriberRecord['status'] => (existingStatus === 'subscribed' ? 'subscribed' : 'pending_confirmation');
@@ -128,13 +131,11 @@ const buildSubscriberRecord = (
   const emailNormalized = normalizeEmail(context.email);
   const existingSources = Array.isArray(existing?.sources) ? existing.sources : [];
 
-  return {
+  const nextSubscriber = {
     email: existing?.email || context.email.trim(),
     emailNormalized,
     status: resolveSubscriptionStatus(existing?.status),
     createdAt: existing?.createdAt || nowIso,
-    confirmedAt: existing?.status === 'subscribed' ? existing?.confirmedAt || nowIso : undefined,
-    unsubscribedAt: undefined,
     updatedAt: nowIso,
     lastSubmittedAt: nowIso,
     firstSource: existing?.firstSource || context.source,
@@ -147,6 +148,11 @@ const buildSubscriberRecord = (
       submittedAt: nowIso,
     },
   };
+
+  return omitUndefinedFields({
+    ...nextSubscriber,
+    confirmedAt: existing?.status === 'subscribed' ? existing?.confirmedAt || nowIso : undefined,
+  }) as NewsletterSubscriberRecord;
 };
 
 const persistNewsletterFallback = (
@@ -230,7 +236,7 @@ export const confirmNewsletterSubscription = async (
 
   const existing = snapshot.data() as NewsletterSubscriberRecord;
   const nowIso = new Date().toISOString();
-  const nextSubscriber: NewsletterSubscriberRecord = {
+  const nextSubscriber = omitUndefinedFields({
     ...existing,
     status: 'subscribed',
     confirmedAt: existing.confirmedAt || nowIso,
@@ -240,7 +246,7 @@ export const confirmNewsletterSubscription = async (
       ...existing.consent,
       submittedAt: existing.consent?.submittedAt || nowIso,
     },
-  };
+  }) as NewsletterSubscriberRecord;
 
   await subscriberRef.set(nextSubscriber, { merge: true });
 
