@@ -114,15 +114,6 @@
     scroll-margin-top: calc(var(--landing-header-offset) + 0.25rem);
   }
   
-  /* Estilos para Slick Carousel */
-  .slick-dots li button:before {
-    color: rgba(0, 204, 255, 0.5) !important;
-  }
-  
-  .slick-dots li.slick-active button:before {
-    color: rgba(153, 51, 255, 0.8) !important;
-  }
-  
   /* Estilos para la barra de scroll */
   ::-webkit-scrollbar {
     width: 8px;
@@ -149,72 +140,31 @@
   .bg-gradient-2 {
     background: linear-gradient(135deg, rgba(180, 0, 255, 0.05) 0%, rgba(0, 212, 255, 0.1) 100%);
   }
-  
-  /* Glass base: sin blur en mobile - fallback con mayor opacidad */
+
   .bg-glass {
     background: rgba(18, 18, 23, 0.88);
     border: 1px solid rgba(255, 255, 255, 0.05);
   }
 
-  /* Blur activado solo en desktop - evita costo GPU en Android */
-  @media (min-width: 1024px) {
-      /* Glass base: sin blur en mobile - fallback con mayor opacidad */
-  .bg-glass {
-    background: rgba(18, 18, 23, 0.88);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+  .glass-panel {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
-  /* Blur activado solo en desktop - evita costo GPU en Android */
+  .modal-overlay {
+    background: rgba(0, 0, 0, 0.85);
+  }
+
   @media (min-width: 1024px) {
     .bg-glass {
       background: rgba(18, 18, 23, 0.7);
       backdrop-filter: blur(8px);
     }
-  }
 
-  /* Utilitario centralizado: glass para panels y cards */
-  .glass-panel {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  @media (min-width: 1024px) {
     .glass-panel {
       backdrop-filter: blur(12px);
     }
-  }
 
-  /* Utilitario centralizado: overlay oscuro para modales */
-  .modal-overlay {
-    background: rgba(0, 0, 0, 0.85);
-  }
-
-  @media (min-width: 1024px) {
-    .modal-overlay {
-      background: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(4px);
-    }
-  }
-  }
-
-  /* Utilitario centralizado: glass para panels y cards */
-  .glass-panel {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  @media (min-width: 1024px) {
-    .glass-panel {
-      backdrop-filter: blur(12px);
-    }
-  }
-
-  /* Utilitario centralizado: overlay oscuro para modales */
-  .modal-overlay {
-    background: rgba(0, 0, 0, 0.85);
-  }
-
-  @media (min-width: 1024px) {
     .modal-overlay {
       background: rgba(0, 0, 0, 0.8);
       backdrop-filter: blur(4px);

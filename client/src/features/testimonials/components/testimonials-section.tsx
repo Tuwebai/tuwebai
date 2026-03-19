@@ -10,6 +10,7 @@ import RevealBlock from '@/shared/ui/reveal-block';
 import TestimonialForm from '@/features/testimonials/components/testimonial-form';
 
 import 'slick-carousel/slick/slick.css';
+import '@/features/testimonials/components/testimonials-section.css';
 
 interface TestimonialCardProps {
   name: string;
