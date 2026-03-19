@@ -14,7 +14,7 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
   const heroMessages = useMemo(
     () => [
       'Creamos sitios web, e-commerce y sistemas web que transmiten confianza y convierten visitas en oportunidades reales.',
-      'Tu negocio necesita una presencia digital seria, rapida y preparada para crecer sin improvisaciones.',
+      'Tu negocio necesita una presencia digital seria, rápida y preparada para crecer sin improvisaciones.',
       'Trabajamos con foco en negocio, rendimiento y una experiencia web profesional de punta a punta.',
     ],
     [],
@@ -72,7 +72,7 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
       <div className="container mx-auto z-10 px-4 text-center" style={{ opacity: heroOpacity }}>
         <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-gray-300 lg:backdrop-blur-sm">
           <span className="h-2 w-2 rounded-full bg-[#00CCFF] shadow-[0_0_10px_rgba(0,204,255,0.8)]" />
-          <span className="font-medium">Disenamos el futuro de tu negocio</span>
+          <span className="font-medium">Diseñamos el futuro de tu negocio</span>
         </div>
 
         <div className="mb-6">
@@ -130,7 +130,7 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
             className="inline-flex cursor-pointer items-center"
           >
             <span className="mr-2 text-gray-300 transition-colors duration-300 hover:text-[#00CCFF]">
-              Conocer como trabajamos
+              Conocer cómo trabajamos
             </span>
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 animate-bounce text-[#00CCFF]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
