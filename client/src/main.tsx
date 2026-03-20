@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import App from "@/app/App";
 import { queryClient } from "@/lib/queryClient";
-import { startWebVitalsTracking } from "@/lib/performance";
+import { startProductionNavigationDiagnostics, startWebVitalsTracking } from "@/lib/performance";
 import "./index.css";
 
 // Componente para restaurar la posición de desplazamiento al inicio
@@ -66,3 +66,4 @@ rootElement.innerHTML = "";
 createRoot(rootElement).render(appTree);
 
 startWebVitalsTracking();
+startProductionNavigationDiagnostics();

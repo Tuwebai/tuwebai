@@ -86,6 +86,43 @@ export const newsletterReconcileSchema = z.object({
   }),
 });
 
+export const performanceBeaconSchema = z.object({
+  body: z.object({
+    pathname: z.string().min(1).max(500),
+    href: z.string().max(4000).optional(),
+    referrer: z.string().max(4000).optional(),
+    navigationType: z.string().max(50).optional(),
+    documentTimings: z
+      .object({
+        ttfbMs: z.number().min(0).max(120000).optional(),
+        domInteractiveMs: z.number().min(0).max(120000).optional(),
+        domContentLoadedMs: z.number().min(0).max(120000).optional(),
+        loadEventEndMs: z.number().min(0).max(120000).optional(),
+      })
+      .optional(),
+    paintTimings: z
+      .object({
+        firstPaintMs: z.number().min(0).max(120000).optional(),
+        firstContentfulPaintMs: z.number().min(0).max(120000).optional(),
+        lcpMs: z.number().min(0).max(120000).optional(),
+        cls: z.number().min(0).max(1000).optional(),
+        fidMs: z.number().min(0).max(120000).optional(),
+      })
+      .optional(),
+    slowResources: z
+      .array(
+        z.object({
+          name: z.string().min(1).max(4000),
+          initiatorType: z.string().max(100).optional(),
+          durationMs: z.number().min(0).max(120000).optional(),
+          transferSize: z.number().min(0).max(Number.MAX_SAFE_INTEGER).optional(),
+        })
+      )
+      .max(10)
+      .optional(),
+  }),
+});
+
 export const authVerifyParamsSchema = z.object({
   params: z.object({
     token: z.string({ required_error: 'Token requerido' }).min(6, 'Token invalido')

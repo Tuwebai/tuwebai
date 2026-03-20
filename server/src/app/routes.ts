@@ -5,6 +5,7 @@ import testimonialsRoutes from '../modules/testimonials/routes';
 import supportRoutes from '../modules/support/routes';
 import projectsRoutes from '../modules/projects/routes';
 import usersRoutes from '../modules/users/routes';
+import performanceRoutes from '../modules/performance/routes';
 import paymentRoutes from '../routes/payment.routes';
 
 const router = Router();
@@ -15,6 +16,7 @@ router.use(testimonialsRoutes);
 router.use(supportRoutes);
 router.use(projectsRoutes);
 router.use(usersRoutes);
+router.use(performanceRoutes);
 router.use(paymentRoutes);
 
 export default router;
