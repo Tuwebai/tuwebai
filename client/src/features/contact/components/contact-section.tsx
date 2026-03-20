@@ -95,6 +95,10 @@ function ContactForm({ delay }: ContactFormProps) {
         setSubmitState('sent');
         setFormState({ name: '', email: '', message: '' });
         analytics.event('engagement', 'submit_form', 'contact_form');
+        toast({
+          title: 'Solicitud recibida',
+          description: 'Te vamos a contactar a la brevedad para revisar tu consulta.',
+        });
 
         setTimeout(() => {
           setSubmitState('idle');
