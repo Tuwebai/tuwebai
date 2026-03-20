@@ -13,7 +13,9 @@ export default function AppProviders({ children, authMode = 'authenticated' }: A
   if (authMode === 'public') {
     return (
       <ThemeProvider>
-        <LoginModalProvider mountAuthProvider>{children}</LoginModalProvider>
+        <AuthProvider>
+          <LoginModalProvider>{children}</LoginModalProvider>
+        </AuthProvider>
       </ThemeProvider>
     );
   }
