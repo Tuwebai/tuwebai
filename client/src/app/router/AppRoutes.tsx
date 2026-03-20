@@ -52,7 +52,8 @@ export default function AppRoutes() {
       <Route path="/auth/reset-password" element={<LazyRoute><AuthVerifyPage /></LazyRoute>} />
       <Route path="/newsletter/confirm/:token" element={<LazyRoute><NewsletterConfirmPage /></LazyRoute>} />
       <Route path="/newsletter/unsubscribe/:token" element={<LazyRoute><NewsletterUnsubscribePage /></LazyRoute>} />
-      <Route path="/panel" element={<LazyRoute><UserDashboardPage /></LazyRoute>} />
+      <Route path="/panel" element={<Navigate to="/panel/perfil" replace />} />
+      <Route path="/panel/:tab" element={<LazyRoute><UserDashboardPage /></LazyRoute>} />
 
       <Route
         path="/pago-exitoso"

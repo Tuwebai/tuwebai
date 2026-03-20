@@ -57,7 +57,7 @@ export function PrivacyTab({ settings, isLoading, isSaving, onSave }: PrivacyTab
           Privacidad
         </h2>
         <p className="max-w-2xl text-sm leading-6 text-slate-300">
-          Gestiona como se muestran tus datos en el panel y registra tus decisiones de privacidad desde un solo lugar.
+          Gestiona cómo se muestran tus datos en el panel y registra tus decisiones de privacidad desde un solo lugar.
         </p>
       </div>
 
@@ -90,7 +90,7 @@ export function PrivacyTab({ settings, isLoading, isSaving, onSave }: PrivacyTab
                     <Eye className="mt-0.5 h-4 w-4 shrink-0 text-cyan-300" />
                     <span className="min-w-0">
                       <span className="block text-sm font-medium">Visibilidad</span>
-                      <span className="mt-1 block text-xs leading-5 text-slate-400">Controla que datos aparecen en tu resumen.</span>
+                      <span className="mt-1 block text-xs leading-5 text-slate-400">Controla qué datos aparecen en tu resumen.</span>
                     </span>
                   </button>
                   <button
@@ -127,7 +127,7 @@ export function PrivacyTab({ settings, isLoading, isSaving, onSave }: PrivacyTab
                   >
                     <Shield className="mt-0.5 h-4 w-4 shrink-0 text-cyan-300" />
                     <span className="min-w-0">
-                      <span className="block text-sm font-medium">Politica de privacidad</span>
+                      <span className="block text-sm font-medium">Política de privacidad</span>
                       <span className="mt-1 block text-xs leading-5 text-slate-400">Consulta el detalle de tratamiento y control de datos.</span>
                     </span>
                   </a>
@@ -137,8 +137,8 @@ export function PrivacyTab({ settings, isLoading, isSaving, onSave }: PrivacyTab
                   >
                     <Cookie className="mt-0.5 h-4 w-4 shrink-0 text-cyan-300" />
                     <span className="min-w-0">
-                      <span className="block text-sm font-medium">Politica de cookies</span>
-                      <span className="mt-1 block text-xs leading-5 text-slate-400">Revisa como tratamos preferencias y medicion del sitio.</span>
+                      <span className="block text-sm font-medium">Política de cookies</span>
+                      <span className="mt-1 block text-xs leading-5 text-slate-400">Revisa cómo tratamos preferencias y medición del sitio.</span>
                     </span>
                   </a>
                 </div>
@@ -153,7 +153,7 @@ export function PrivacyTab({ settings, isLoading, isSaving, onSave }: PrivacyTab
             <div>
               <h3 className="text-lg font-medium text-white">Visibilidad del resumen</h3>
               <p className="mt-1 text-sm leading-6 text-slate-400">
-                Decide que informacion aparece en la parte superior de tu panel.
+                Decide qué información aparece en la parte superior de tu panel.
               </p>
             </div>
 
@@ -226,16 +226,16 @@ export function PrivacyTab({ settings, isLoading, isSaving, onSave }: PrivacyTab
                 <div className="min-w-0">
                   <div className="flex items-center gap-2 text-sm font-medium text-white">
                     <Info className="h-4 w-4 text-cyan-300" />
-                    Permitir analitica funcional
+                    Permitir analítica funcional
                   </div>
                   <p className="mt-1 text-sm leading-6 text-slate-400">
-                    Controla si TuWeb.ai puede medir uso basico del sitio para mejorar rendimiento y experiencia.
+                    Controla si TuWeb.ai puede medir uso básico del sitio para mejorar rendimiento y experiencia.
                   </p>
                 </div>
                 <Switch
                   checked={Boolean(draft.analyticsConsent)}
                   onCheckedChange={(checked) => setDraft((current) => ({ ...current, analyticsConsent: checked }))}
-                  aria-label="Permitir analitica funcional"
+                  aria-label="Permitir analítica funcional"
                 />
               </div>
             </div>

@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useToast } from '@/shared/ui/use-toast';
+import { TUWEBAI_SITE_FULL_URL } from '@/shared/constants/contact';
 import type { User, RegisterData } from '../types';
 import { mergeFirebaseUserData } from '../services/auth-avatar';
 import { getAuthErrorMessage } from '../services/auth-error';
@@ -25,6 +26,14 @@ const getFirebaseAuth = () => {
 const getUsersService = () => {
   if (!usersServicePromise) usersServicePromise = import('@/features/users/services/users.service');
   return usersServicePromise;
+};
+
+const getAuthActionBaseUrl = () => {
+  if (typeof window !== 'undefined' && window.location.origin) {
+    return window.location.origin;
+  }
+
+  return TUWEBAI_SITE_FULL_URL;
 };
 
 export const useLoginMutation = () => {
@@ -194,7 +203,10 @@ export const useResetPasswordMutation = () => {
     mutationFn: async (email: string) => {
       const { auth } = await getFirebase();
       const { sendPasswordResetEmail } = await getFirebaseAuth();
-      await sendPasswordResetEmail(auth, email);
+      await sendPasswordResetEmail(auth, email, {
+        url: `${getAuthActionBaseUrl()}/auth/reset-password`,
+        handleCodeInApp: false,
+      });
     },
     onSuccess: () => {
       toast({ title: 'Correo enviado', description: 'Si el email existe, recibirás instrucciones para restablecer tu contraseña.' });

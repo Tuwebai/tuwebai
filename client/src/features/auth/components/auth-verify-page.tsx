@@ -12,7 +12,9 @@ const isDevelopment = import.meta.env.DEV;
 export default function AuthVerifyPage() {
   const { token } = useParams<{ token: string }>();
   const [searchParams] = useSearchParams();
-  const action = searchParams.get('action') || 'verify';
+  const queryMode = searchParams.get('mode');
+  const action = searchParams.get('action') || (queryMode === 'resetPassword' ? 'reset' : 'verify');
+  const actionCode = searchParams.get('oobCode') || token || '';
   const navigate = useNavigate();
   const { toast } = useToast();
   const { resetPassword } = useAuthActions();
@@ -30,7 +32,7 @@ export default function AuthVerifyPage() {
 
   useEffect(() => {
     const verifyToken = async () => {
-      if (!token) {
+      if (!actionCode) {
         setIsLoading(false);
         setMessage('Token no válido o expirado.');
         return;
@@ -42,7 +44,7 @@ export default function AuthVerifyPage() {
       }
 
       try {
-        const data = await verifyAuthToken(token);
+        const data = await verifyAuthToken(actionCode);
 
         setIsSuccess(data.success);
         setMessage(data.message);
@@ -66,7 +68,7 @@ export default function AuthVerifyPage() {
     };
 
     void verifyToken();
-  }, [token, action, navigate, toast]);
+  }, [actionCode, action, navigate, toast]);
 
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -89,7 +91,7 @@ export default function AuthVerifyPage() {
     setIsSubmitting(true);
 
     try {
-      await resetPassword(token || '', newPassword);
+      await resetPassword(actionCode, newPassword);
 
       setIsSuccess(true);
       setMessage('Tu contraseña ha sido restablecida correctamente.');

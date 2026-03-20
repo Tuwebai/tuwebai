@@ -1,6 +1,5 @@
 import { Eye, Globe, Shield, User } from 'lucide-react';
-
-export type UserDashboardTab = 'profile' | 'security' | 'privacy' | 'integrations';
+import type { UserDashboardTab } from '@/features/users/utils/user-dashboard-tabs';
 
 interface UserDashboardTabsNavProps {
   activeTab: UserDashboardTab;

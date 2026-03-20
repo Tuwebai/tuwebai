@@ -1,6 +1,4 @@
-import type React from 'react';
-import { AlertCircle, Eye, EyeOff, Lock, Save, Shield, X } from 'lucide-react';
-import type { UserPasswordFormState } from '@/features/users/utils/user-dashboard-forms';
+import { KeyRound, Mail, Shield } from 'lucide-react';
 
 type PasswordInfo = {
   changedAt: string | null;
@@ -9,40 +7,20 @@ type PasswordInfo = {
 
 type UserSecurityTabProps = {
   isActive?: boolean;
+  email?: string;
   passwordInfo: PasswordInfo;
-  isChangingPassword: boolean;
-  isSavingPassword: boolean;
-  showPassword: boolean;
-  showNewPassword: boolean;
-  showConfirmPassword: boolean;
-  passwordForm: UserPasswordFormState;
-  errors: Record<string, string>;
-  onStartChangePassword: () => void;
-  onPasswordChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-  onCancel: () => void;
-  onTogglePasswordVisibility: () => void;
-  onToggleNewPasswordVisibility: () => void;
-  onToggleConfirmPasswordVisibility: () => void;
+  isSendingPasswordReset: boolean;
+  passwordResetSentTo: string | null;
+  onRequestPasswordReset: () => Promise<void>;
 };
 
 export function UserSecurityTab({
   isActive,
+  email,
   passwordInfo,
-  isChangingPassword,
-  isSavingPassword,
-  showPassword,
-  showNewPassword,
-  showConfirmPassword,
-  passwordForm,
-  errors,
-  onStartChangePassword,
-  onPasswordChange,
-  onSubmit,
-  onCancel,
-  onTogglePasswordVisibility,
-  onToggleNewPasswordVisibility,
-  onToggleConfirmPasswordVisibility,
+  isSendingPasswordReset,
+  passwordResetSentTo,
+  onRequestPasswordReset,
 }: UserSecurityTabProps) {
   return (
     <div className="space-y-6">
@@ -63,13 +41,13 @@ export function UserSecurityTab({
                   : 'border border-yellow-500/30 bg-yellow-500/20 text-yellow-400'
               }`}
             >
-              {isActive ? 'Activa' : 'En revision'}
+              {isActive ? 'Activa' : 'En revisión'}
             </span>
           </div>
 
           {passwordInfo.changedAt && (
             <div className="flex items-center justify-between rounded-lg bg-white/5 p-3">
-              <span className="text-gray-300">Ultimo cambio de contrasena</span>
+              <span className="text-gray-300">Último cambio de contraseña</span>
               <span className="text-white">
                 {new Date(passwordInfo.changedAt).toLocaleDateString('es-ES', {
                   year: 'numeric',
@@ -82,7 +60,7 @@ export function UserSecurityTab({
 
           {passwordInfo.daysSinceChange !== null && (
             <div className="flex items-center justify-between rounded-lg bg-white/5 p-3">
-              <span className="text-gray-300">Dias desde el ultimo cambio</span>
+              <span className="text-gray-300">Días desde el último cambio</span>
               <span
                 className={`rounded-full px-2 py-1 text-xs font-medium ${
                   passwordInfo.daysSinceChange > 90
@@ -92,7 +70,7 @@ export function UserSecurityTab({
                       : 'border border-green-500/30 bg-green-500/20 text-green-400'
                 }`}
               >
-                {passwordInfo.daysSinceChange} dias
+                {passwordInfo.daysSinceChange} días
               </span>
             </div>
           )}
@@ -100,135 +78,56 @@ export function UserSecurityTab({
       </div>
 
       <div className="rounded-xl border border-white/10 bg-white/5 p-6">
-        <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-lg font-medium text-white">Cambiar contrasena</h3>
-          {!isChangingPassword && (
-            <button
-              onClick={onStartChangePassword}
-              className="flex items-center gap-2 rounded-lg bg-blue-500 px-4 py-2 font-medium text-white transition-all hover:bg-blue-600"
-              type="button"
-            >
-              <Lock className="h-4 w-4" />
-              Cambiar contrasena
-            </button>
-          )}
+        <div className="mb-4 flex items-start justify-between gap-4">
+          <div>
+            <h3 className="text-lg font-medium text-white">Restablecer contraseña</h3>
+            <p className="mt-2 max-w-2xl text-sm text-gray-300">
+              Por seguridad, el cambio de contraseña se hace desde un enlace enviado a tu correo.
+              El botón te manda a una página dedicada para completar el proceso.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => {
+              void onRequestPasswordReset();
+            }}
+            disabled={isSendingPasswordReset || !email}
+            className="flex shrink-0 items-center gap-2 rounded-lg bg-blue-500 px-4 py-2 font-medium text-white transition-all hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {isSendingPasswordReset ? (
+              <>
+                <div className="h-4 w-4 animate-spin rounded-full border-b-2 border-t-2 border-white" />
+                Enviando...
+              </>
+            ) : (
+              <>
+                <KeyRound className="h-4 w-4" />
+                Enviar enlace
+              </>
+            )}
+          </button>
         </div>
 
-        {isChangingPassword && (
-          <form onSubmit={onSubmit} className="space-y-4">
-            <div>
-              <label className="mb-2 block text-sm font-medium text-gray-300">Contrasena actual</label>
-              <div className="relative">
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  name="currentPassword"
-                  value={passwordForm.currentPassword}
-                  onChange={onPasswordChange}
-                  className={`w-full rounded-lg border bg-white/5 px-4 py-3 text-white transition-all ${
-                    errors.currentPassword ? 'border-red-500' : 'border-white/20 focus:border-blue-500'
-                  }`}
-                />
-                <button
-                  type="button"
-                  onClick={onTogglePasswordVisibility}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 transform text-gray-400 hover:text-white"
-                >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                </button>
-              </div>
-              {errors.currentPassword && (
-                <span className="mt-1 flex items-center gap-1 text-sm text-red-400">
-                  <AlertCircle className="h-3 w-3" />
-                  {errors.currentPassword}
-                </span>
-              )}
+        <div className="rounded-lg border border-blue-500/20 bg-blue-500/10 p-4 text-sm text-blue-100">
+          <div className="flex items-start gap-3">
+            <Mail className="mt-0.5 h-4 w-4 shrink-0 text-blue-300" />
+            <div className="space-y-2">
+              <p>
+                Correo de destino:{' '}
+                <span className="font-medium text-white">{email || 'No configurado'}</span>
+              </p>
+              <p>
+                Cuando abras el email, vas a entrar a una página segura de TuWeb.ai para elegir la nueva contraseña.
+              </p>
+              {passwordResetSentTo ? (
+                <p className="font-medium text-emerald-300">
+                  Enlace enviado correctamente a {passwordResetSentTo}.
+                </p>
+              ) : null}
             </div>
-
-            <div>
-              <label className="mb-2 block text-sm font-medium text-gray-300">Nueva contrasena</label>
-              <div className="relative">
-                <input
-                  type={showNewPassword ? 'text' : 'password'}
-                  name="newPassword"
-                  value={passwordForm.newPassword}
-                  onChange={onPasswordChange}
-                  className={`w-full rounded-lg border bg-white/5 px-4 py-3 text-white transition-all ${
-                    errors.newPassword ? 'border-red-500' : 'border-white/20 focus:border-blue-500'
-                  }`}
-                />
-                <button
-                  type="button"
-                  onClick={onToggleNewPasswordVisibility}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 transform text-gray-400 hover:text-white"
-                >
-                  {showNewPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                </button>
-              </div>
-              {errors.newPassword && (
-                <span className="mt-1 flex items-center gap-1 text-sm text-red-400">
-                  <AlertCircle className="h-3 w-3" />
-                  {errors.newPassword}
-                </span>
-              )}
-            </div>
-
-            <div>
-              <label className="mb-2 block text-sm font-medium text-gray-300">Confirmar nueva contrasena</label>
-              <div className="relative">
-                <input
-                  type={showConfirmPassword ? 'text' : 'password'}
-                  name="confirmPassword"
-                  value={passwordForm.confirmPassword}
-                  onChange={onPasswordChange}
-                  className={`w-full rounded-lg border bg-white/5 px-4 py-3 text-white transition-all ${
-                    errors.confirmPassword ? 'border-red-500' : 'border-white/20 focus:border-blue-500'
-                  }`}
-                />
-                <button
-                  type="button"
-                  onClick={onToggleConfirmPasswordVisibility}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 transform text-gray-400 hover:text-white"
-                >
-                  {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                </button>
-              </div>
-              {errors.confirmPassword && (
-                <span className="mt-1 flex items-center gap-1 text-sm text-red-400">
-                  <AlertCircle className="h-3 w-3" />
-                  {errors.confirmPassword}
-                </span>
-              )}
-            </div>
-
-            <div className="flex gap-3 pt-4">
-              <button
-                type="submit"
-                disabled={isSavingPassword}
-                className="flex items-center gap-2 rounded-lg bg-blue-500 px-6 py-3 font-medium text-white transition-all disabled:opacity-60 hover:bg-blue-600"
-              >
-                {isSavingPassword ? (
-                  <>
-                    <div className="h-4 w-4 animate-spin rounded-full border-b-2 border-t-2 border-white" />
-                    Actualizando...
-                  </>
-                ) : (
-                  <>
-                    <Save className="h-4 w-4" />
-                    Actualizar contrasena
-                  </>
-                )}
-              </button>
-              <button
-                type="button"
-                onClick={onCancel}
-                className="flex items-center gap-2 rounded-lg bg-gray-600 px-6 py-3 font-medium text-white transition-all hover:bg-gray-700"
-              >
-                <X className="h-4 w-4" />
-                Cancelar
-              </button>
-            </div>
-          </form>
-        )}
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -28,7 +28,7 @@ export function UserProfileTab({
       <div className="mb-6 flex items-center justify-between">
         <h2 className="flex items-center gap-2 text-xl font-semibold text-white">
           <User className="h-5 w-5" />
-          Informacion personal
+          Información personal
         </h2>
         {!isEditing && (
           <button
@@ -116,7 +116,7 @@ export function UserProfileTab({
           <div>
             <label className="mb-2 flex items-center gap-2 text-sm font-medium text-gray-300">
               <Phone className="h-4 w-4" />
-              Telefono (opcional)
+              Teléfono (opcional)
             </label>
             <input
               type="tel"
@@ -140,14 +140,14 @@ export function UserProfileTab({
           <div className="md:col-span-2">
             <label className="mb-2 flex items-center gap-2 text-sm font-medium text-gray-300">
               <MapPin className="h-4 w-4" />
-              Direccion (opcional)
+              Dirección (opcional)
             </label>
             <input
               type="text"
               name="address"
               value={profileForm.address}
               onChange={onProfileChange}
-              placeholder="Calle, Ciudad, Pais"
+              placeholder="Calle, Ciudad, País"
               className={`w-full rounded-lg border bg-white/5 px-4 py-3 text-white transition-all ${
                 errors.address ? 'border-red-500' : 'border-white/20 focus:border-blue-500'
               } ${!isEditing ? 'cursor-not-allowed opacity-50' : ''}`}
