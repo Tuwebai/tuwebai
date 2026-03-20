@@ -23,18 +23,18 @@ export default function PhilosophySection({ setRef }: PhilosophySectionProps) {
     >
       <AnimatedShape type={1} className="top-[30%] left-[-150px]" delay={5} />
 
-      <div className="container mx-auto grid items-center gap-12 px-4 py-16 md:grid-cols-2 z-10">
+      <div className="container z-10 mx-auto grid items-center gap-10 px-3 py-14 sm:px-4 sm:py-16 md:grid-cols-2 md:gap-12">
         <RevealBlock
           hiddenClassName="opacity-0 -translate-x-8"
           visibleClassName="opacity-100 translate-x-0"
         >
-          <h2 className="mb-6 font-rajdhani text-3xl font-bold md:text-5xl">
+          <h2 className="mb-6 font-rajdhani text-3xl font-bold sm:text-4xl md:text-5xl">
             <span className="gradient-text gradient-border inline-block pb-2">
               Un enfoque web pensado para negocio, no para improvisar
             </span>
           </h2>
 
-          <p className="mb-6 text-lg font-medium text-gray-200 md:text-xl">
+          <p className="mb-6 text-base font-medium leading-7 text-gray-200 sm:text-lg md:text-xl">
             Disenamos, desarrollamos y optimizamos experiencias web que ayudan a vender mejor,
             operar con mas claridad y transmitir una imagen profesional.
           </p>
@@ -71,8 +71,8 @@ export default function PhilosophySection({ setRef }: PhilosophySectionProps) {
           delayMs={160}
         >
           <div className="relative rounded-lg bg-gradient-to-br from-[#00CCFF] to-[#9933FF] p-1">
-            <div className="rounded-lg bg-[#0a0a0f] p-8">
-              <h3 className="mb-4 font-rajdhani text-2xl text-gray-100">
+            <div className="rounded-lg bg-[#0a0a0f] p-5 sm:p-8">
+              <h3 className="mb-4 font-rajdhani text-xl text-gray-100 sm:text-2xl">
                 Lo que resolvemos en proyectos reales
               </h3>
               <p className="mb-5 font-medium text-gray-200">

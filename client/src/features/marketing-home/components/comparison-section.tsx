@@ -111,7 +111,7 @@ export default function ComparisonSection({
       ref={sectionRef}
       className={`landing-anchor-section relative flex items-center justify-center ${sectionClassName}`}
     >
-      <div className="container relative z-10 mx-auto px-4 py-16">
+      <div className="container relative z-10 mx-auto px-3 py-14 sm:px-4 sm:py-16">
         {showIntro ? (
         <motion.div
           ref={titleRef}
@@ -125,13 +125,13 @@ export default function ComparisonSection({
             Comparativa de criterio
           </div>
 
-          <h2 className="mb-6 font-rajdhani text-3xl font-bold md:text-5xl">
+          <h2 className="mb-6 font-rajdhani text-3xl font-bold sm:text-4xl md:text-5xl">
             <span className="gradient-text gradient-border inline-block pb-2">
               La diferencia no es solo visual
             </span>
           </h2>
 
-          <p className="mx-auto max-w-3xl text-xl leading-8 text-gray-300">
+          <p className="mx-auto max-w-3xl text-base leading-7 text-gray-300 sm:text-xl sm:leading-8">
             Un proyecto web serio no se mide solo por diseño o velocidad de entrega. También importa cómo resuelve el negocio, cómo se mantiene y qué base deja para crecer.
           </p>
         </motion.div>
@@ -163,8 +163,8 @@ export default function ComparisonSection({
 
           <div className="space-y-4 xl:hidden">
             {comparisonRows.map((row) => (
-              <div key={row.label} className="rounded-2xl border border-gray-800 bg-[#0f1016]/95 p-5">
-                <p className="mb-4 font-rajdhani text-2xl font-bold text-white">{row.label}</p>
+              <div key={row.label} className="rounded-2xl border border-gray-800 bg-[#0f1016]/95 p-4 sm:p-5">
+                <p className="mb-4 font-rajdhani text-xl font-bold text-white sm:text-2xl">{row.label}</p>
                 <div className="grid gap-4">
                   <ColumnCard title="Solución genérica" description={row.generic} accent="muted" />
                   <ColumnCard title="TuWeb.ai" description={row.tuwebai} accent="highlight" />
@@ -198,13 +198,13 @@ export default function ComparisonSection({
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          <p className="mb-6 text-lg leading-8 text-gray-400">
+          <p className="mb-6 text-base leading-7 text-gray-400 sm:text-lg sm:leading-8">
             Si estás evaluando opciones, la pregunta no es solo cuánto cuesta una web, sino qué tan bien va a sostener tu negocio cuando empiece a usarse de verdad.
           </p>
 
           <motion.a
             href="/consulta"
-            className="inline-block rounded-xl bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-7 py-3.5 font-medium text-white shadow-[0_16px_35px_rgba(0,204,255,0.12)]"
+            className="inline-flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-6 py-3.5 text-center font-medium text-white shadow-[0_16px_35px_rgba(0,204,255,0.12)] sm:w-auto sm:px-7"
             whileHover={{ scale: 1.04 }}
             transition={{ type: 'spring', stiffness: 400, damping: 12 }}
           >

@@ -33,9 +33,9 @@ function DeferredFooterNewsletter() {
 
 export default function Footer() {
   return (
-    <footer className="relative z-10 border-t border-gray-800 bg-[#0a0a0f] pb-8 pt-12 text-sm text-gray-400 animate-fadeIn">
-      <div className="container mx-auto px-4">
-        <div className="mb-10 grid gap-8 md:grid-cols-4">
+    <footer className="relative z-10 animate-fadeIn border-t border-gray-800 bg-[#0a0a0f] pb-8 pt-10 text-sm text-gray-400 sm:pt-12">
+      <div className="container mx-auto px-3 sm:px-4">
+        <div className="mb-10 grid gap-8 sm:gap-10 md:grid-cols-2 xl:grid-cols-4">
           <div>
             <h3 className="mb-4 font-rajdhani text-lg font-bold text-white">TuWeb.ai</h3>
             <p className="mb-4">Creando experiencias web inteligentes para marcas que buscan destacar en el entorno digital.</p>
@@ -92,12 +92,12 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mb-4 flex flex-col items-center justify-between border-t border-gray-800 pt-8 md:flex-row">
-          <div className="flex items-center gap-2">
+        <div className="mb-4 flex flex-col items-center justify-between gap-4 border-t border-gray-800 pt-8 md:flex-row md:gap-6">
+          <div className="flex flex-col items-center gap-2 text-center sm:flex-row sm:text-left">
             <img src="/logo-tuwebai.png" alt="Logo TuWeb.ai" className="h-8 w-8" />
             <span className="text-sm text-gray-400">© 2024 TuWeb.ai. Todos los derechos reservados.</span>
           </div>
-          <div className="mt-4 flex gap-6 md:mt-0">
+          <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-center md:justify-end">
             <a href="/terminos-condiciones" className="transition-colors hover:text-[#9933FF]">Terminos y condiciones</a>
             <a href="/politica-privacidad" className="transition-colors hover:text-[#00CCFF]">Politica de privacidad</a>
             <a href="/politica-cookies" className="transition-colors hover:text-[#00CCFF]">Cookies</a>

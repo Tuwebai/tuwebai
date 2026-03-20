@@ -123,8 +123,8 @@ function ContactForm({ delay }: ContactFormProps) {
       whileHover={{ scale: 1.01 }}
       transition={{ duration: 0.3 }}
     >
-      <div className="bg-glass backdrop-blur-md p-8 rounded-xl shadow-xl">
-        <h3 className="font-rajdhani font-bold text-2xl mb-6 text-white">Contanos tu proyecto</h3>
+      <div className="bg-glass rounded-xl p-5 shadow-xl backdrop-blur-md sm:p-8">
+        <h3 className="mb-6 font-rajdhani text-xl font-bold text-white sm:text-2xl">Contanos tu proyecto</h3>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
@@ -217,7 +217,7 @@ function ContactInfo({ delay }: ContactInfoProps) {
       animate={hasIntersected ? 'visible' : 'hidden'}
       variants={infoVariants}
     >
-      <h3 className="font-rajdhani font-bold text-2xl mb-6 text-white">Contacto directo</h3>
+      <h3 className="mb-6 font-rajdhani text-xl font-bold text-white sm:text-2xl">Contacto directo</h3>
 
       <div className="space-y-4 mb-8">
         <div className="flex items-center space-x-3">
@@ -312,24 +312,24 @@ export default function ContactSection({ setRef }: ContactSectionProps) {
       <AnimatedShape type={1} className="top-[20%] left-[-150px]" delay={1} />
       <AnimatedShape type={2} className="bottom-[10%] right-[-100px]" delay={2} />
 
-      <div className="container mx-auto px-4 py-16 z-10">
+      <div className="container z-10 mx-auto px-3 py-14 sm:px-4 sm:py-16">
         <motion.div
           ref={titleRef as React.RefObject<HTMLDivElement>}
-          className="text-center mb-16"
+          className="mb-12 text-center sm:mb-16"
           initial="hidden"
           animate={titleVisible ? 'visible' : 'hidden'}
           variants={titleVariants}
         >
-          <h2 className="font-rajdhani font-bold text-3xl md:text-5xl mb-6">
+          <h2 className="mb-6 font-rajdhani text-3xl font-bold sm:text-4xl md:text-5xl">
             <span className="gradient-text gradient-border inline-block pb-2">¿Listo para impulsar tu negocio con una web profesional?</span>
           </h2>
 
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+          <p className="mx-auto max-w-2xl text-base leading-7 text-gray-300 sm:text-xl sm:leading-8">
             Contanos qué necesitás y te ayudamos a definir el mejor camino para tu proyecto web.
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        <div className="mx-auto grid max-w-5xl gap-8 md:grid-cols-2">
           <ContactForm delay={1} />
           <ContactInfo delay={2} />
         </div>

@@ -91,8 +91,8 @@ function PricingCard({ plan, delay, isProcessing, onCheckout, onProposal }: Pric
   const { ref, hasIntersected } = useIntersectionObserver<HTMLDivElement>();
 
   const wrapperClasses = plan.highlight
-    ? 'relative flex h-full flex-col rounded-[30px] border border-cyan-400/60 bg-[linear-gradient(180deg,rgba(18,22,34,0.98)_0%,rgba(26,20,40,0.98)_100%)] px-6 py-7 shadow-[0_0_0_1px_rgba(0,204,255,0.16),0_28px_80px_rgba(0,204,255,0.16)] lg:-translate-y-6 lg:scale-[1.04]'
-    : 'relative flex h-full flex-col rounded-[30px] border border-gray-800 bg-[#121217]/96 px-6 py-6';
+    ? 'relative flex h-full flex-col rounded-[30px] border border-cyan-400/60 bg-[linear-gradient(180deg,rgba(18,22,34,0.98)_0%,rgba(26,20,40,0.98)_100%)] px-5 py-6 shadow-[0_0_0_1px_rgba(0,204,255,0.16),0_28px_80px_rgba(0,204,255,0.16)] sm:px-6 sm:py-7 lg:-translate-y-6 lg:scale-[1.04]'
+    : 'relative flex h-full flex-col rounded-[30px] border border-gray-800 bg-[#121217]/96 px-5 py-5 sm:px-6 sm:py-6';
 
   const actionClasses = plan.highlight
     ? 'inline-flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-6 py-4 text-base font-semibold text-white shadow-[0_18px_45px_rgba(0,204,255,0.2)] transition-transform hover:scale-[1.02] disabled:cursor-wait disabled:opacity-70'
@@ -115,9 +115,9 @@ function PricingCard({ plan, delay, isProcessing, onCheckout, onProposal }: Pric
       )}
 
       <div className="flex min-h-[180px] flex-col">
-        <h3 className="font-rajdhani text-[1.9rem] font-bold leading-tight text-white">{plan.title}</h3>
+        <h3 className="font-rajdhani text-[1.65rem] font-bold leading-tight text-white sm:text-[1.9rem]">{plan.title}</h3>
         <p className="mt-3 text-sm leading-6 text-gray-300">{plan.intro}</p>
-        <p className="mt-5 font-rajdhani text-[2.15rem] font-bold text-white">{plan.price}</p>
+        <p className="mt-5 font-rajdhani text-[1.9rem] font-bold text-white sm:text-[2.15rem]">{plan.price}</p>
       </div>
 
       <div className="mt-5 flex-1">
@@ -221,7 +221,7 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
       ref={sectionRef}
       className="landing-anchor-section relative flex items-center justify-center bg-gradient-1 py-20"
     >
-      <div className="container relative z-10 mx-auto px-4">
+      <div className="container relative z-10 mx-auto px-3 sm:px-4">
         <motion.div
           ref={titleRef}
           initial={{ opacity: 0, y: 30 }}
@@ -229,7 +229,7 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
           transition={{ duration: 0.8 }}
           className="mx-auto max-w-4xl text-center"
         >
-          <h2 className="font-rajdhani text-3xl font-bold md:text-5xl">
+          <h2 className="font-rajdhani text-3xl font-bold sm:text-4xl md:text-5xl">
             <span className="gradient-text gradient-border inline-block pb-2">
               Planes para lanzar o escalar tu presencia web
             </span>
@@ -243,7 +243,7 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
           transition={{ duration: 0.8, delay: 0.12 }}
           className="mx-auto mb-14 max-w-3xl text-center"
         >
-          <p className="text-xl leading-8 text-gray-300">
+          <p className="text-base leading-7 text-gray-300 sm:text-xl sm:leading-8">
             Elegí el nivel de desarrollo que necesita tu negocio.
             <br />
             Podés pagar online y comenzar hoy mismo.

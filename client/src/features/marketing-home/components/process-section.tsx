@@ -12,15 +12,15 @@ interface ProcessStepProps {
 function ProcessStep({ number, title, description, delayMs }: ProcessStepProps) {
   return (
     <RevealBlock className="h-full" delayMs={delayMs}>
-      <div className="flex h-full items-start gap-5 rounded-xl border border-gray-800 bg-[#121217]/70 p-6">
+      <div className="flex h-full items-start gap-4 rounded-xl border border-gray-800 bg-[#121217]/70 p-5 sm:gap-5 sm:p-6">
         <div className="flex-shrink-0">
-          <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] font-rajdhani text-lg font-bold text-white">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] font-rajdhani text-base font-bold text-white sm:h-11 sm:w-11 sm:text-lg">
             {number}
           </div>
         </div>
 
         <div>
-          <h3 className="mb-2 font-rajdhani text-xl font-bold text-white">{title}</h3>
+          <h3 className="mb-2 font-rajdhani text-lg font-bold text-white sm:text-xl">{title}</h3>
           <p className="leading-7 text-gray-300">{description}</p>
         </div>
       </div>
@@ -77,15 +77,15 @@ export default function ProcessSection({ setRef }: ProcessSectionProps) {
       ref={sectionRef}
       className="landing-anchor-section relative flex items-center justify-center bg-gradient-2"
     >
-      <div className="container z-10 mx-auto px-4 py-16">
+      <div className="container z-10 mx-auto px-3 py-14 sm:px-4 sm:py-16">
         <RevealBlock className="mx-auto mb-14 max-w-4xl text-center">
-          <h2 className="mb-6 font-rajdhani text-3xl font-bold md:text-5xl">
+          <h2 className="mb-6 font-rajdhani text-3xl font-bold sm:text-4xl md:text-5xl">
             <span className="gradient-text gradient-border inline-block pb-2">
               Como trabajamos cada proyecto web
             </span>
           </h2>
 
-          <p className="mx-auto max-w-3xl text-xl text-gray-300">
+          <p className="mx-auto max-w-3xl text-base leading-7 text-gray-300 sm:text-xl sm:leading-8">
             No seguimos una receta generica. Cada entrega se construye con foco en claridad
             comercial, ejecucion tecnica seria y una base que pueda sostener el crecimiento del negocio.
           </p>

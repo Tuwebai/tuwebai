@@ -13,12 +13,12 @@ function ServiceCard({ title, description, icon, delayMs }: ServiceCardProps) {
   return (
     <RevealBlock className="h-full" delayMs={delayMs}>
       <div className="h-full rounded-xl bg-gradient-to-br from-[#00CCFF]/10 to-[#9933FF]/10 p-[1px]">
-        <div className="flex h-full flex-col rounded-xl bg-[#121217] p-6 transition-transform duration-300 hover:scale-[1.01]">
+        <div className="flex h-full flex-col rounded-xl bg-[#121217] p-5 sm:p-6 transition-transform duration-300 hover:scale-[1.01]">
           <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF]">
             {icon}
           </div>
 
-          <h3 className="mb-3 font-rajdhani text-xl font-bold text-white">{title}</h3>
+          <h3 className="mb-3 font-rajdhani text-xl font-bold text-white sm:text-[1.35rem]">{title}</h3>
 
           <p className="flex-grow text-gray-300">{description}</p>
         </div>
@@ -45,15 +45,15 @@ export default function ServicesSection({ setRef }: ServicesSectionProps) {
       ref={sectionRef}
       className="landing-anchor-section relative flex items-center justify-center bg-gradient-1"
     >
-      <div className="container mx-auto px-4 py-16 z-10">
+      <div className="container z-10 mx-auto px-3 py-14 sm:px-4 sm:py-16">
         <RevealBlock className="mb-16 text-center">
-          <h2 className="mb-6 font-rajdhani text-3xl font-bold leading-tight md:text-5xl">
+          <h2 className="mb-6 font-rajdhani text-3xl font-bold leading-tight sm:text-4xl md:text-5xl">
             <span className="gradient-text gradient-border mx-auto block max-w-4xl pb-2">
               Servicios web pensados para vender, operar y crecer
             </span>
           </h2>
 
-          <p className="mx-auto max-w-3xl text-xl text-gray-300">
+          <p className="mx-auto max-w-3xl text-base leading-7 text-gray-300 sm:text-xl sm:leading-8">
             Nos enfocamos en tres tipos de soluciones: sitios corporativos, e-commerce
             y sistemas web para negocios que necesitan una presencia digital profesional.
           </p>
@@ -97,7 +97,7 @@ export default function ServicesSection({ setRef }: ServicesSectionProps) {
         <RevealBlock className="mt-16 text-center" delayMs={220}>
           <a
             href="/consulta"
-            className="inline-block rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-8 py-4 font-medium text-white shadow-lg transition-transform duration-300 hover:scale-[1.02] hover:shadow-[#00CCFF]/20"
+            className="inline-flex w-full items-center justify-center rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-6 py-4 text-center font-medium text-white shadow-lg transition-transform duration-300 hover:scale-[1.02] hover:shadow-[#00CCFF]/20 sm:w-auto sm:px-8"
           >
             Contar mi proyecto
           </a>

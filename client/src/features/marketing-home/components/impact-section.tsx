@@ -30,12 +30,12 @@ function TrustCard({ eyebrow, title, description, delay }: TrustCardProps) {
       initial="hidden"
       animate={hasIntersected ? 'visible' : 'hidden'}
       variants={cardVariants}
-      className="rounded-xl border border-gray-800 bg-[#121217] p-6"
+      className="rounded-xl border border-gray-800 bg-[#121217] p-5 sm:p-6"
     >
       <p className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-[#00CCFF]">
         {eyebrow}
       </p>
-      <h3 className="mb-3 font-rajdhani text-2xl font-bold text-white">{title}</h3>
+      <h3 className="mb-3 font-rajdhani text-xl font-bold text-white sm:text-2xl">{title}</h3>
       <p className="text-sm leading-7 text-gray-300">{description}</p>
     </motion.div>
   );
@@ -102,7 +102,7 @@ export default function ImpactSection({ setRef }: ImpactSectionProps) {
       ref={sectionRef}
       className="landing-anchor-section relative flex items-center justify-center bg-gradient-2"
     >
-      <div className="container relative z-10 mx-auto px-4 py-16">
+      <div className="container relative z-10 mx-auto px-3 py-14 sm:px-4 sm:py-16">
         <motion.div
           ref={titleRef}
           className="mx-auto mb-12 max-w-4xl text-center"
@@ -110,13 +110,13 @@ export default function ImpactSection({ setRef }: ImpactSectionProps) {
           animate={titleVisible ? 'visible' : 'hidden'}
           variants={titleVariants}
         >
-          <h2 className="mb-6 font-rajdhani text-3xl font-bold md:text-5xl">
+          <h2 className="mb-6 font-rajdhani text-3xl font-bold sm:text-4xl md:text-5xl">
             <span className="gradient-text gradient-border inline-block pb-2">
               Lo que sostiene una solución web profesional
             </span>
           </h2>
 
-          <p className="mx-auto max-w-3xl text-xl text-gray-300">
+          <p className="mx-auto max-w-3xl text-base leading-7 text-gray-300 sm:text-xl sm:leading-8">
             Un proyecto serio no depende solo del diseño. Necesita claridad comercial, una experiencia cuidada y una base técnica preparada para crecer con el negocio.
           </p>
         </motion.div>
@@ -140,7 +140,7 @@ export default function ImpactSection({ setRef }: ImpactSectionProps) {
           animate={textVisible ? 'visible' : 'hidden'}
           variants={textVariants}
         >
-          <p className="text-lg leading-8 text-gray-300">
+          <p className="text-base leading-7 text-gray-300 sm:text-lg sm:leading-8">
             Los casos del showroom muestran cómo esto baja a proyectos reales. Este bloque existe para dejar claro que detrás de cada entrega hay criterio, estructura y una forma de trabajo pensada para sostener resultados.
           </p>
         </motion.div>
