@@ -35,7 +35,7 @@ export function AuthenticatedNavbarActions({
     return <PublicNavbarActions isMobileMenu={isMobileMenu} onAction={onAction} />;
   }
 
-  const dashboardUrl = buildDashboardTokenUrl(user?.email, user?.name || user?.username);
+  const dashboardUrl = buildDashboardTokenUrl(user?.email, user?.username || user?.name);
 
   if (isMobileMenu) {
     return (
@@ -43,12 +43,12 @@ export function AuthenticatedNavbarActions({
         <div className="flex items-center gap-3 mb-3">
           <UserAvatar
             image={user?.image}
-            name={user?.name}
+            name={user?.username || user?.name}
             username={user?.username}
             className="w-10 h-10 rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] flex items-center justify-center text-white font-medium overflow-hidden"
           />
           <div>
-            <div className="text-white font-medium">{user?.name || user?.username}</div>
+            <div className="text-white font-medium">{user?.username || user?.name}</div>
             <div className="text-sm text-gray-400">{user?.email}</div>
           </div>
         </div>
@@ -102,11 +102,11 @@ export function AuthenticatedNavbarActions({
       >
         <UserAvatar
           image={user?.image}
-          name={user?.name}
+          name={user?.username || user?.name}
           username={user?.username}
           className="w-8 h-8 rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] flex items-center justify-center text-white font-medium overflow-hidden border-2 border-white/20"
         />
-        <span className="hidden max-w-[12rem] truncate text-sm text-gray-300 xl:inline">{user?.name || user?.username}</span>
+        <span className="hidden max-w-[12rem] truncate text-sm text-gray-300 xl:inline">{user?.username || user?.name}</span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className={`w-4 h-4 text-gray-400 transition-transform ${showProfileMenu ? 'rotate-180' : ''}`}
