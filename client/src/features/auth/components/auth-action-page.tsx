@@ -11,9 +11,10 @@ import {
   resolveAuthAction,
 } from '@/features/auth/services/auth-action.service';
 import { verifyAuthToken } from '@/features/auth/services/auth.service';
-import MetaTags from '@/shared/ui/meta-tags';
-import { useToast } from '@/shared/ui/use-toast';
 import type { PreparedAuthAction } from '@/features/auth/types/auth-action';
+import MetaTags from '@/shared/ui/meta-tags';
+import { TUWEBAI_EMAIL, TUWEBAI_WHATSAPP_DISPLAY, TUWEBAI_WHATSAPP_URL } from '@/shared/constants/contact';
+import { useToast } from '@/shared/ui/use-toast';
 
 type PageState =
   | { kind: 'loading' }
@@ -21,21 +22,24 @@ type PageState =
   | { kind: 'success'; title: string; description: string }
   | { kind: 'error'; title: string; description: string };
 
-const successCopy: Record<Exclude<PreparedAuthAction['mode'], 'resetPassword'>, { title: string; getDescription: (email: string | null) => string }> = {
+const successCopy: Record<
+  Exclude<PreparedAuthAction['mode'], 'resetPassword'>,
+  { title: string; getDescription: (email: string | null) => string }
+> = {
   verifyEmail: {
     title: 'Correo verificado',
     getDescription: (email) => (
       email
-        ? `La dirección ${email} quedó verificada. Ya podés iniciar sesión en TuWeb.ai.`
-        : 'Tu dirección de correo quedó verificada. Ya podés iniciar sesión en TuWeb.ai.'
+        ? `La dirección ${email} quedó verificada. Ya podés ingresar a TuWeb.ai con normalidad.`
+        : 'Tu dirección de correo quedó verificada. Ya podés ingresar a TuWeb.ai con normalidad.'
     ),
   },
   recoverEmail: {
     title: 'Correo restaurado',
     getDescription: (email) => (
       email
-        ? `Se revirtió el cambio de correo y ${email} volvió a quedar asociado a tu cuenta.`
-        : 'Se revirtió el cambio de correo de tu cuenta correctamente.'
+        ? `Revertimos el cambio y ${email} volvió a quedar asociado a tu cuenta.`
+        : 'Revertimos el cambio de correo de tu cuenta correctamente.'
     ),
   },
 };
@@ -151,7 +155,7 @@ export default function AuthActionPage() {
 
       toast({
         title: 'Contraseña actualizada',
-        description: 'Ya podés iniciar sesión con tu nueva contraseña.',
+        description: 'Ya podés ingresar con tu nueva contraseña.',
       });
 
       setPageState({
@@ -178,26 +182,26 @@ export default function AuthActionPage() {
       />
 
       <div className="mx-auto flex min-h-[calc(100vh-5rem)] max-w-5xl items-center justify-center">
-        <div className="grid w-full gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+        <div className="grid w-full gap-8 lg:grid-cols-[1.05fr_0.95fr]">
           <section className="rounded-[28px] border border-white/10 bg-slate-950/60 p-6 shadow-[0_24px_70px_rgba(2,6,23,0.55)] backdrop-blur xl:p-8">
             <span className="inline-flex rounded-full border border-cyan-400/30 bg-cyan-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200">
-              Seguridad de cuenta
+              Cuenta TuWeb.ai
             </span>
 
             <h1 className="mt-5 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-              Acción segura de TuWeb.ai
+              Protegé el acceso a tu cuenta
             </h1>
 
             <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-300 sm:text-base">
-              Este enlace procesa acciones sensibles de autenticación desde una página propia de TuWeb.ai. No
-              dependemos de la interfaz genérica de Firebase para la experiencia final del usuario.
+              Estás en una página segura de TuWeb.ai para confirmar cambios importantes de tu cuenta. Seguí el paso
+              indicado y después vas a poder continuar normalmente.
             </p>
 
             <div className="mt-8">
               {pageState.kind === 'loading' && (
                 <AuthActionStatus
                   title="Procesando enlace"
-                  description="Estamos validando la solicitud y preparando el flujo correcto para tu cuenta."
+                  description="Estamos validando tu solicitud para mostrarte el paso correcto."
                   tone="info"
                 />
               )}
@@ -238,27 +242,41 @@ export default function AuthActionPage() {
           </section>
 
           <aside className="rounded-[28px] border border-white/10 bg-white/5 p-6 shadow-[0_24px_70px_rgba(15,23,42,0.45)] backdrop-blur xl:p-8">
-            <h2 className="text-lg font-semibold text-white">Qué queda listo con este flujo</h2>
+            <h2 className="text-lg font-semibold text-white">Qué va a pasar ahora</h2>
 
             <ul className="mt-5 space-y-4 text-sm leading-6 text-slate-300">
               <li className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                Los correos de Firebase pueden apuntar a <span className="font-medium text-white">tu dominio</span> y a
-                una página controlada por TuWeb.ai.
+                Vas a completar este cambio sin salir de TuWeb.ai.
               </li>
               <li className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                El restablecimiento de contraseña se procesa con el <span className="font-medium text-white">oobCode</span>{' '}
-                real de Firebase, pero dentro de tu UI.
+                Cuando termines, vas a poder volver a ingresar con normalidad.
               </li>
               <li className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                La verificación de correo y la recuperación de email dejan de depender de la pantalla genérica de
-                <span className="font-medium text-white"> firebaseapp.com</span>.
+                Si el enlace venció o no funciona, podés pedir uno nuevo desde el panel o desde el login.
               </li>
             </ul>
 
-            <div className="mt-6 rounded-2xl border border-violet-400/20 bg-violet-400/10 px-4 py-4 text-sm text-violet-100">
-              URL final para Firebase:
-              <div className="mt-2 break-all font-mono text-xs text-white sm:text-sm">
-                https://tuweb-ai.com/auth/action
+            <div className="mt-6 rounded-2xl border border-violet-400/20 bg-violet-400/10 px-4 py-4">
+              <h3 className="text-sm font-semibold text-white">Necesitás ayuda</h3>
+              <p className="mt-2 text-sm leading-6 text-slate-200">
+                Si tenés problemas con el acceso, escribinos y lo resolvemos desde soporte.
+              </p>
+
+              <div className="mt-4 flex flex-col gap-3">
+                <a
+                  href={`mailto:${TUWEBAI_EMAIL}`}
+                  className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-white transition hover:bg-white/10"
+                >
+                  {TUWEBAI_EMAIL}
+                </a>
+                <a
+                  href={TUWEBAI_WHATSAPP_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-cyan-500 to-violet-500 px-4 py-2 text-sm font-semibold text-white transition hover:opacity-95"
+                >
+                  WhatsApp {TUWEBAI_WHATSAPP_DISPLAY}
+                </a>
               </div>
             </div>
           </aside>
