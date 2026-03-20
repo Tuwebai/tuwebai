@@ -4,24 +4,13 @@ import { queueContactEmail } from '../../infrastructure/mail/email.service';
 import { getErrorMessage } from '../../shared/utils/error-message';
 import { appLogger } from '../../utils/app-logger';
 import { storeSubmission } from '../../utils/submission-store';
+import { dispatchPublicSubmission, handlePublicSubmissionError } from './submission-ops';
 
 export { handleContact, handleConsulta, handleTestEmail } from '../../controllers/contact.controller';
 
 export const handlePropuesta = async (req: Request, res: Response) => {
   try {
     const { nombre, email, tipo_proyecto, servicios, presupuesto, plazo, detalles } = req.body;
-    storeSubmission('propuesta', {
-      nombre,
-      email,
-      tipo_proyecto,
-      servicios,
-      presupuesto,
-      plazo,
-      detalles,
-      createdAt: new Date().toISOString(),
-      source: 'website',
-    });
-
     const message = [
       'Nueva solicitud de propuesta',
       `Nombre: ${nombre}`,
@@ -35,31 +24,35 @@ export const handlePropuesta = async (req: Request, res: Response) => {
       detalles,
     ].join('\n');
 
-    queueContactEmail(
-      {
+    return dispatchPublicSubmission(res, {
+      req,
+      channel: 'propuesta',
+      event: 'public.propuesta',
+      storePayload: {
+        name: nombre,
+        email,
+        nombre,
+        tipo_proyecto,
+        servicios,
+        presupuesto,
+        plazo,
+        detalles,
+      },
+      emailPayload: {
         name: nombre,
         email,
         title: 'Nueva solicitud de propuesta',
         message,
       },
-      { event: 'public.propuesta', meta: { route: req.path, method: req.method } }
-    );
-
-    return res.status(202).json({
-      success: true,
-      message: 'Solicitud recibida. Procesaremos tu propuesta en breve.',
+      successMessage: 'Solicitud recibida. Procesaremos tu propuesta en breve.',
     });
   } catch (error: unknown) {
-    appLogger.error('public.propuesta_failed', {
-      error: getErrorMessage(error, 'unknown_propuesta_error'),
-      route: req.path,
-      method: req.method,
-    });
-
-    return res.status(500).json({
-      success: false,
-      message: 'No se pudo procesar la solicitud en este momento.',
-      details: env.NODE_ENV === 'development' ? getErrorMessage(error, 'unknown_propuesta_error') : undefined,
+    return handlePublicSubmissionError(res, {
+      req,
+      error,
+      logEvent: 'public.propuesta_failed',
+      fallbackError: 'unknown_propuesta_error',
+      userMessage: 'No se pudo procesar la solicitud en este momento.',
     });
   }
 };

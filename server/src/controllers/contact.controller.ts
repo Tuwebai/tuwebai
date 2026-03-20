@@ -1,41 +1,32 @@
 import { Request, Response } from 'express';
-import { env } from '../config/env.config';
+import { dispatchPublicSubmission, handlePublicSubmissionError } from '../modules/contact/submission-ops';
 import { getErrorMessage } from '../shared/utils/error-message';
-import { queueContactEmail, sendContactEmail } from '../services/email.service';
+import { sendContactEmail } from '../services/email.service';
 import { appLogger } from '../utils/app-logger';
-import { storeSubmission } from '../utils/submission-store';
 
 export const handleContact = async (req: Request, res: Response) => {
   try {
     const { name, email, title, message } = req.body;
-    storeSubmission('contact', {
-      name,
-      email,
-      title,
-      message,
-      createdAt: new Date().toISOString(),
-      source: 'website',
-    });
-
-    queueContactEmail(
-      { name, email, title, message },
-      { event: 'contact', meta: { route: req.path, method: req.method } }
-    );
-
-    return res.status(202).json({
-      success: true,
-      message: 'Mensaje recibido. Procesaremos el envio en breve.',
+    return dispatchPublicSubmission(res, {
+      req,
+      channel: 'contact',
+      event: 'contact',
+      storePayload: {
+        name,
+        email,
+        title,
+        message,
+      },
+      emailPayload: { name, email, title, message },
+      successMessage: 'Mensaje recibido. Procesaremos el envio en breve.',
     });
   } catch (error: unknown) {
-    appLogger.error('contact.submit_failed', {
-      error: getErrorMessage(error, 'unknown_contact_submit_error'),
-      route: req.path,
-      method: req.method,
-    });
-    return res.status(500).json({
-      success: false,
-      message: 'No se pudo enviar el mensaje en este momento.',
-      details: env.NODE_ENV === 'development' ? getErrorMessage(error, 'unknown_contact_submit_error') : undefined,
+    return handlePublicSubmissionError(res, {
+      req,
+      error,
+      logEvent: 'contact.submit_failed',
+      fallbackError: 'unknown_contact_submit_error',
+      userMessage: 'No se pudo enviar el mensaje en este momento.',
     });
   }
 };
@@ -43,34 +34,26 @@ export const handleContact = async (req: Request, res: Response) => {
 export const handleConsulta = async (req: Request, res: Response) => {
   try {
     const { name, email, title, message } = req.body;
-    storeSubmission('consulta', {
-      name,
-      email,
-      title,
-      message,
-      createdAt: new Date().toISOString(),
-      source: 'website',
-    });
-
-    queueContactEmail(
-      { name, email, title, message },
-      { event: 'consulta', meta: { route: req.path, method: req.method } }
-    );
-
-    return res.status(202).json({
-      success: true,
-      message: 'Consulta recibida. Procesaremos el envio en breve.',
+    return dispatchPublicSubmission(res, {
+      req,
+      channel: 'consulta',
+      event: 'consulta',
+      storePayload: {
+        name,
+        email,
+        title,
+        message,
+      },
+      emailPayload: { name, email, title, message },
+      successMessage: 'Consulta recibida. Procesaremos el envio en breve.',
     });
   } catch (error: unknown) {
-    appLogger.error('consultation.submit_failed', {
-      error: getErrorMessage(error, 'unknown_consultation_submit_error'),
-      route: req.path,
-      method: req.method,
-    });
-    return res.status(500).json({
-      success: false,
-      message: 'No se pudo enviar la consulta en este momento.',
-      details: env.NODE_ENV === 'development' ? getErrorMessage(error, 'unknown_consultation_submit_error') : undefined,
+    return handlePublicSubmissionError(res, {
+      req,
+      error,
+      logEvent: 'consultation.submit_failed',
+      fallbackError: 'unknown_consultation_submit_error',
+      userMessage: 'No se pudo enviar la consulta en este momento.',
     });
   }
 };
@@ -99,7 +82,7 @@ export const handleTestEmail = async (_req: Request, res: Response) => {
     return res.status(500).json({
       success: false,
       message: 'Error enviando email de prueba',
-      details: env.NODE_ENV === 'development' ? getErrorMessage(error, 'unknown_test_email_error') : undefined,
+      details: process.env.NODE_ENV === 'development' ? getErrorMessage(error, 'unknown_test_email_error') : undefined,
       timestamp: new Date().toISOString(),
     });
   }
