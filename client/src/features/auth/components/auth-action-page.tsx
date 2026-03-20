@@ -175,15 +175,15 @@ export default function AuthActionPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(34,211,238,0.16),_transparent_32%),linear-gradient(180deg,_#020617_0%,_#0f172a_45%,_#111827_100%)] px-4 pb-10 pt-24 text-white sm:px-6 sm:pb-12 sm:pt-28 lg:px-8 lg:pt-32">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(34,211,238,0.16),_transparent_32%),linear-gradient(180deg,_#020617_0%,_#0f172a_45%,_#111827_100%)] px-4 pb-10 pt-28 text-white sm:px-6 sm:pb-12 sm:pt-32 lg:px-8 lg:pt-40">
       <MetaTags
         title="Acciones de cuenta | TuWeb.ai"
         description="Gestioná la verificación de correo y el restablecimiento de contraseña de tu cuenta TuWeb.ai."
       />
 
-      <div className="mx-auto w-full max-w-6xl">
-        <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)] lg:gap-8">
-          <section className="rounded-[28px] border border-white/10 bg-slate-950/60 p-5 shadow-[0_24px_70px_rgba(2,6,23,0.55)] backdrop-blur sm:p-6 xl:p-8">
+      <div className="mx-auto w-full max-w-[1120px]">
+        <div className="grid items-start gap-6 lg:grid-cols-2 xl:grid-cols-[minmax(0,_680px)_minmax(320px,_360px)] xl:justify-center xl:gap-8">
+          <section className="rounded-[28px] border border-white/10 bg-slate-950/60 p-5 shadow-[0_24px_70px_rgba(2,6,23,0.55)] backdrop-blur sm:p-6 xl:p-7">
             <span className="inline-flex rounded-full border border-cyan-400/30 bg-cyan-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200">
               Cuenta TuWeb.ai
             </span>
@@ -192,12 +192,12 @@ export default function AuthActionPage() {
               Protegé el acceso a tu cuenta
             </h1>
 
-            <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-300 sm:text-base">
+            <p className="mt-3 max-w-xl text-sm leading-7 text-slate-300 sm:text-base">
               Estás en una página segura de TuWeb.ai para confirmar cambios importantes de tu cuenta. Seguí el paso
               indicado y después vas a poder continuar normalmente.
             </p>
 
-            <div className="mt-6 max-w-2xl">
+            <div className="mt-6 max-w-[620px]">
               {pageState.kind === 'loading' && (
                 <AuthActionStatus
                   title="Procesando enlace"
@@ -241,7 +241,7 @@ export default function AuthActionPage() {
             </div>
           </section>
 
-          <aside className="rounded-[28px] border border-white/10 bg-white/5 p-5 shadow-[0_24px_70px_rgba(15,23,42,0.45)] backdrop-blur sm:p-6 xl:p-8 lg:sticky lg:top-28">
+          <aside className="rounded-[28px] border border-white/10 bg-white/5 p-5 shadow-[0_24px_70px_rgba(15,23,42,0.45)] backdrop-blur sm:p-6 xl:p-7 lg:sticky lg:top-32">
             <h2 className="text-lg font-semibold text-white">Qué va a pasar ahora</h2>
 
             <ul className="mt-5 space-y-3 text-sm leading-6 text-slate-300">
