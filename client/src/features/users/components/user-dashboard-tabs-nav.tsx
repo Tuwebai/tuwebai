@@ -1,4 +1,4 @@
-import { Eye, Globe, Shield, User } from 'lucide-react';
+import { Eye, Shield, User } from 'lucide-react';
 import type { UserDashboardTab } from '@/features/users/utils/user-dashboard-tabs';
 
 interface UserDashboardTabsNavProps {
@@ -10,7 +10,6 @@ const tabs: Array<{ id: UserDashboardTab; label: string; icon: typeof User }> = 
   { id: 'profile', label: 'Perfil', icon: User },
   { id: 'security', label: 'Seguridad', icon: Shield },
   { id: 'privacy', label: 'Privacidad', icon: Eye },
-  { id: 'integrations', label: 'Integraciones', icon: Globe },
 ];
 
 export function UserDashboardTabsNav({ activeTab, onTabChange }: UserDashboardTabsNavProps) {

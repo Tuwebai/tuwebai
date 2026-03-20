@@ -2,7 +2,6 @@ export const USER_DASHBOARD_TAB_SEGMENTS = {
   profile: 'perfil',
   security: 'seguridad',
   privacy: 'privacidad',
-  integrations: 'integraciones',
 } as const;
 
 export type UserDashboardTab = keyof typeof USER_DASHBOARD_TAB_SEGMENTS;

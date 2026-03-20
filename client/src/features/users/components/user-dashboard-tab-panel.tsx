@@ -1,7 +1,6 @@
 import { Suspense, lazy } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
-import { UserIntegrationsTab } from '@/features/users/components/user-integrations-tab';
 import { UserProfileTab } from '@/features/users/components/user-profile-tab';
 import { UserSecurityTab } from '@/features/users/components/user-security-tab';
 import type { UpdateUserPrivacyPayload, UserPrivacySettings } from '@/features/users/types/privacy';
@@ -115,8 +114,6 @@ export function UserDashboardTabPanel({
             />
           </Suspense>
         ) : null}
-
-        {activeTab === 'integrations' ? <UserIntegrationsTab /> : null}
       </motion.div>
     </AnimatePresence>
   );
