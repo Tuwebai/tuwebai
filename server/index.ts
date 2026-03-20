@@ -20,6 +20,8 @@ import { appLogger } from "./src/utils/app-logger";
 import { requireInternalApiKey } from "./src/middlewares/internal-auth.middleware";
 import { requestIdMiddleware } from "./src/middlewares/request-id.middleware";
 import { getMailerRuntimeInfo, verifyMailerConnection } from "./src/infrastructure/mail/mailer";
+import { sendContactEmail, sendTransactionalEmailNow } from "./src/infrastructure/mail/email.service";
+import { startMailOutboxWorker } from "./src/infrastructure/mail/outbox";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -337,6 +339,11 @@ app.use(appRoutes);
 
 // Error handler (al final)
 app.use(globalErrorHandler);
+
+startMailOutboxWorker({
+  sendContact: sendContactEmail,
+  sendTransactional: sendTransactionalEmailNow,
+});
 
 app.listen(env.PORT, () => {
   const mailerInfo = getMailerRuntimeInfo();

@@ -3,6 +3,11 @@ import { env } from '../../config/env.config';
 import { transporter, isMailerConfigured, isSmtpDeliveryDisabled } from './mailer';
 import { generateEmailTemplate } from './templates';
 import { appLogger } from '../../utils/app-logger';
+import {
+  enqueueContactEmailOutbox,
+  enqueueTransactionalEmailOutbox,
+  type BackgroundEmailOptions,
+} from './outbox';
 
 export interface EmailData {
   name: string;
@@ -133,7 +138,7 @@ export const sendContactEmail = async (data: EmailData) => {
   throw new Error('SMTP send failed after retries');
 };
 
-const sendTransactionalEmail = async (data: TransactionalEmailData) => {
+export const sendTransactionalEmailNow = async (data: TransactionalEmailData) => {
   if (!isMailerConfigured()) {
     throw new Error('SMTP no configurado: defina SMTP_USER y SMTP_PASS en el entorno.');
   }
@@ -303,11 +308,6 @@ const buildNewsletterEmailShell = (options: NewsletterEmailTemplateOptions): str
   `;
 };
 
-interface BackgroundEmailOptions {
-  event: string;
-  meta?: Record<string, unknown>;
-}
-
 const assertTransactionalNewsletterEmailReady = (options: BackgroundEmailOptions) => {
   if (isSmtpDeliveryDisabled()) {
     appLogger.info(`${options.event}.smtp_disabled`, options.meta || {});
@@ -331,20 +331,7 @@ export const queueContactEmail = (data: EmailData, options: BackgroundEmailOptio
     return;
   }
 
-  void sendContactEmail(data)
-    .then((result) => {
-      appLogger.info(`${options.event}.smtp_sent`, {
-        ...(options.meta || {}),
-        messageId: result?.messageId,
-      });
-    })
-    .catch((error: unknown) => {
-      const message = error instanceof Error ? error.message : 'Unknown SMTP error';
-      appLogger.warn(`${options.event}.smtp_failed`, {
-        ...(options.meta || {}),
-        error: message,
-      });
-    });
+  enqueueContactEmailOutbox(data, options);
 };
 
 const buildNewsletterConfirmationEmail = (confirmationUrl: string) => {
@@ -454,28 +441,14 @@ export const queueNewsletterConfirmationEmail = (
   }
 
   const emailPayload = buildNewsletterConfirmationEmail(confirmationUrl);
-
-  void sendTransactionalEmail({
+  enqueueTransactionalEmailOutbox({
     to: email,
     subject: emailPayload.subject,
     html: emailPayload.html,
     text: emailPayload.text,
     from: getNewsletterFrom(),
     attachments: buildNewsletterAttachments(),
-  })
-    .then((result) => {
-      appLogger.info(`${options.event}.smtp_sent`, {
-        ...(options.meta || {}),
-        messageId: result?.messageId,
-      });
-    })
-    .catch((error: unknown) => {
-      const message = error instanceof Error ? error.message : 'Unknown SMTP error';
-      appLogger.warn(`${options.event}.smtp_failed`, {
-        ...(options.meta || {}),
-        error: message,
-      });
-    });
+  }, options);
 };
 
 export const sendNewsletterConfirmationEmail = async (
@@ -486,7 +459,7 @@ export const sendNewsletterConfirmationEmail = async (
   assertTransactionalNewsletterEmailReady(options);
   const emailPayload = buildNewsletterConfirmationEmail(confirmationUrl);
 
-  const result = await sendTransactionalEmail({
+  const result = await sendTransactionalEmailNow({
     to: email,
     subject: emailPayload.subject,
     html: emailPayload.html,
@@ -519,28 +492,14 @@ export const queueNewsletterUnsubscribeEmail = (
   }
 
   const emailPayload = buildNewsletterUnsubscribeEmail(unsubscribeUrl);
-
-  void sendTransactionalEmail({
+  enqueueTransactionalEmailOutbox({
     to: email,
     subject: emailPayload.subject,
     html: emailPayload.html,
     text: emailPayload.text,
     from: getNewsletterFrom(),
     attachments: buildNewsletterAttachments(),
-  })
-    .then((result) => {
-      appLogger.info(`${options.event}.smtp_sent`, {
-        ...(options.meta || {}),
-        messageId: result?.messageId,
-      });
-    })
-    .catch((error: unknown) => {
-      const message = error instanceof Error ? error.message : 'Unknown SMTP error';
-      appLogger.warn(`${options.event}.smtp_failed`, {
-        ...(options.meta || {}),
-        error: message,
-      });
-    });
+  }, options);
 };
 
 export const sendNewsletterUnsubscribeEmail = async (
@@ -551,7 +510,7 @@ export const sendNewsletterUnsubscribeEmail = async (
   assertTransactionalNewsletterEmailReady(options);
   const emailPayload = buildNewsletterUnsubscribeEmail(unsubscribeUrl);
 
-  const result = await sendTransactionalEmail({
+  const result = await sendTransactionalEmailNow({
     to: email,
     subject: emailPayload.subject,
     html: emailPayload.html,
@@ -580,35 +539,21 @@ export const queueNewsletterWelcomeEmail = (email: string, options: BackgroundEm
   }
 
   const emailPayload = buildNewsletterWelcomeEmail();
-
-  void sendTransactionalEmail({
+  enqueueTransactionalEmailOutbox({
     to: email,
     subject: emailPayload.subject,
     html: emailPayload.html,
     text: emailPayload.text,
     from: getNewsletterFrom(),
     attachments: buildNewsletterAttachments(),
-  })
-    .then((result) => {
-      appLogger.info(`${options.event}.smtp_sent`, {
-        ...(options.meta || {}),
-        messageId: result?.messageId,
-      });
-    })
-    .catch((error: unknown) => {
-      const message = error instanceof Error ? error.message : 'Unknown SMTP error';
-      appLogger.warn(`${options.event}.smtp_failed`, {
-        ...(options.meta || {}),
-        error: message,
-      });
-    });
+  }, options);
 };
 
 export const sendNewsletterWelcomeEmail = async (email: string, options: BackgroundEmailOptions) => {
   assertTransactionalNewsletterEmailReady(options);
   const emailPayload = buildNewsletterWelcomeEmail();
 
-  const result = await sendTransactionalEmail({
+  const result = await sendTransactionalEmailNow({
     to: email,
     subject: emailPayload.subject,
     html: emailPayload.html,
