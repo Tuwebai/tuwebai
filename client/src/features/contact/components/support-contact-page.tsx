@@ -6,7 +6,7 @@ import { Textarea } from '@/shared/ui/textarea';
 
 export default function SupportContactPage() {
   const [form, setForm] = useState({ name: '', email: '', title: '', message: '' });
-  const [submitState, setSubmitState] = useState<'idle' | 'sent'>('idle');
+  const [submitState, setSubmitState] = useState<'idle' | 'submitting' | 'sent'>('idle');
   const [alert, setAlert] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -17,23 +17,27 @@ export default function SupportContactPage() {
     e.preventDefault();
     setAlert(null);
     const snapshot = { ...form };
-    setSubmitState('sent');
-    setAlert({ type: 'success', message: 'Mensaje recibido. Lo estamos procesando.' });
-    setForm({ name: '', email: '', title: '', message: '' });
+    setSubmitState('submitting');
 
-    setTimeout(() => {
-      setAlert(null);
-      setSubmitState('idle');
-    }, 4000);
+    void submitContactForm(snapshot)
+      .then(() => {
+        setSubmitState('sent');
+        setAlert({ type: 'success', message: 'Mensaje recibido. Lo estamos procesando.' });
+        setForm({ name: '', email: '', title: '', message: '' });
 
-    void submitContactForm(snapshot).catch((err) => {
-      setAlert({
-        type: 'error',
-        message: getContactErrorMessage(err, 'No se pudo enviar el mensaje. Intenta de nuevo.'),
+        setTimeout(() => {
+          setAlert(null);
+          setSubmitState('idle');
+        }, 4000);
+      })
+      .catch((err) => {
+        setAlert({
+          type: 'error',
+          message: getContactErrorMessage(err, 'No se pudo enviar el mensaje. Intenta de nuevo.'),
+        });
+        setForm(snapshot);
+        setSubmitState('idle');
       });
-      setForm(snapshot);
-      setSubmitState('idle');
-    });
   };
 
   return (
@@ -64,9 +68,9 @@ export default function SupportContactPage() {
           <button
             type="submit"
             className="w-full rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-4 py-3 text-lg font-semibold text-white transition-opacity disabled:cursor-not-allowed disabled:opacity-70"
-            disabled={submitState === 'sent'}
+            disabled={submitState === 'submitting'}
           >
-            {submitState === 'sent' ? 'Enviado' : 'Enviar'}
+            {submitState === 'submitting' ? 'Enviando...' : submitState === 'sent' ? 'Enviado' : 'Enviar'}
           </button>
         </form>
       </div>

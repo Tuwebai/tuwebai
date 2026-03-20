@@ -122,7 +122,8 @@ const PresupuestoEstimado: React.FC<{
 
 export default function Consulta() {
   const { toast } = useToast();
-    const [submitted, setSubmitted] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const [showEstimador, setShowEstimador] = useState(false);
   
@@ -240,10 +241,7 @@ export default function Consulta() {
       detalles: data.mensaje
     };
 
-    // Feedback instantaneo: la UI confirma recepcion antes de red.
-    setSubmitted(true);
-    reset();
-    setCurrentStep(1);
+    setIsSubmitting(true);
 
     if (data.email) {
       localStorage.setItem('userEmail', data.email);
@@ -251,20 +249,25 @@ export default function Consulta() {
 
     analytics.event('Formulario', 'Consulta Enviada', data.tipoProyecto);
 
-    const successTimer = setTimeout(() => {
-      setSubmitted(false);
-    }, 10000);
-
     void submitProposal(propuestaData)
       .then(() => {
+        setSubmitted(true);
+        reset();
+        setCurrentStep(1);
+        setIsSubmitting(false);
+
+        setTimeout(() => {
+          setSubmitted(false);
+        }, 10000);
+
         toast({
           title: "Solicitud recibida",
           description: "Tu propuesta personalizada estara lista en menos de 48 horas",
         });
       })
       .catch((error) => {
-        clearTimeout(successTimer);
         setSubmitted(false);
+        setIsSubmitting(false);
         reset(snapshotData);
         setCurrentStep(snapshotStep);
         console.error('Error al enviar formulario:', error);
@@ -816,12 +819,13 @@ export default function Consulta() {
                             transition={{ duration: 0.2 }}
                             className="w-full sm:w-auto"
                           >
-                            <Button
-                              type="submit"
-                              className="proposal-request-primary-submit"
-                              >
-                              Solicitar propuesta personalizada
-                            </Button>
+                              <Button
+                                type="submit"
+                                className="proposal-request-primary-submit"
+                                disabled={isSubmitting}
+                                >
+                                {isSubmitting ? 'Enviando...' : 'Solicitar propuesta personalizada'}
+                              </Button>
                           </motion.div>
                         )}
                       </div>
