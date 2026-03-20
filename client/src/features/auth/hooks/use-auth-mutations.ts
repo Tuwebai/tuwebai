@@ -124,7 +124,7 @@ export const useRegisterMutation = () => {
   return useMutation({
     mutationFn: async (userData: RegisterData) => {
       const { auth } = await getFirebase();
-      const { createUserWithEmailAndPassword, updateProfile } = await getFirebaseAuth();
+      const { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } = await getFirebaseAuth();
       const { setUser } = await getUsersService();
 
       const userCredential = await createUserWithEmailAndPassword(auth, userData.email, userData.password);
@@ -145,6 +145,10 @@ export const useRegisterMutation = () => {
       };
 
       await setUser(newUser);
+      await sendEmailVerification(userCredential.user, {
+        url: `${getAuthActionBaseUrl()}/auth/action`,
+        handleCodeInApp: false,
+      });
       return newUser;
     },
     onSuccess: () => {
@@ -174,28 +178,6 @@ export const useUpdateProfileMutation = () => {
   });
 };
 
-export const useChangePasswordMutation = () => {
-  const { toast } = useToast();
-
-  return useMutation({
-    mutationFn: async ({ currentPassword: _currentPassword, newPassword }: { currentPassword: string; newPassword: string }) => {
-      const { auth } = await getFirebase();
-      const { updatePassword } = await getFirebaseAuth();
-      if (auth.currentUser) {
-        await updatePassword(auth.currentUser, newPassword);
-      } else {
-        throw new Error('No hay usuario autenticado para cambiar la contraseña.');
-      }
-    },
-    onSuccess: () => {
-      toast({ title: 'Contraseña actualizada', description: 'Tu contraseña ha sido actualizada.' });
-    },
-    onError: (error: unknown) => {
-      toast({ title: 'Error', description: getAuthErrorMessage(error, 'Error al cambiar contraseña'), variant: 'destructive' });
-    },
-  });
-};
-
 export const useResetPasswordMutation = () => {
   const { toast } = useToast();
 
@@ -204,7 +186,7 @@ export const useResetPasswordMutation = () => {
       const { auth } = await getFirebase();
       const { sendPasswordResetEmail } = await getFirebaseAuth();
       await sendPasswordResetEmail(auth, email, {
-        url: `${getAuthActionBaseUrl()}/auth/reset-password`,
+        url: `${getAuthActionBaseUrl()}/auth/action`,
         handleCodeInApp: false,
       });
     },

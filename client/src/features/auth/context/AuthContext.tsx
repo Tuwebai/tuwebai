@@ -2,7 +2,6 @@ import React, { createContext, useCallback, useContext, useEffect, useMemo, useS
 import type { User as FirebaseUser } from 'firebase/auth';
 import { useToast } from '@/shared/ui/use-toast';
 import {
-  useChangePasswordMutation,
   useGoogleLoginMutation,
   useLoginMutation,
   useLogoutMutation,
@@ -56,7 +55,6 @@ interface AuthActions {
   requestPasswordReset: (email: string) => Promise<void>;
   resetPassword: (token: string, newPassword: string) => Promise<void>;
   updateUserProfile: (data: Partial<User>) => Promise<void>;
-  changePassword: (currentPassword: string, newPassword: string) => Promise<void>;
   fetchPasswordInfo: () => Promise<void>;
   uploadProfileImage: (imageFile: File) => Promise<void>;
   clearError: () => void;
@@ -142,7 +140,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logoutMutation = useLogoutMutation();
   const registerMutation = useRegisterMutation();
   const updateProfileMutation = useUpdateProfileMutation();
-  const changePasswordMutation = useChangePasswordMutation();
   const resetPasswordMutation = useResetPasswordMutation();
   const confirmPasswordResetMutation = useConfirmPasswordResetMutation();
 
@@ -152,7 +149,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     logoutMutation.isPending ||
     registerMutation.isPending ||
     updateProfileMutation.isPending ||
-    changePasswordMutation.isPending ||
     resetPasswordMutation.isPending ||
     confirmPasswordResetMutation.isPending;
 
@@ -353,17 +349,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsLoadingPasswordInfo(false);
   }, []);
 
-  const changePassword = useCallback(async (currentPassword: string, newPassword: string) => {
-    if (!user) return;
-    setError(null);
-    try {
-      await changePasswordMutation.mutateAsync({ currentPassword, newPassword });
-    } catch (error: unknown) {
-      setError(getAuthErrorMessage(error, 'Error al cambiar contraseña'));
-      throw error;
-    }
-  }, [user, changePasswordMutation]);
-
   const uploadProfileImage = useCallback(async (imageFile: File) => {
     if (!user) return;
     setError(null);
@@ -418,7 +403,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     requestPasswordReset,
     resetPassword,
     updateUserProfile,
-    changePassword,
     fetchPasswordInfo,
     uploadProfileImage,
     clearError,
@@ -431,7 +415,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     requestPasswordReset,
     resetPassword,
     updateUserProfile,
-    changePassword,
     fetchPasswordInfo,
     uploadProfileImage,
     clearError,
