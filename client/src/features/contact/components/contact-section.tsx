@@ -23,7 +23,7 @@ function ContactForm({ delay }: ContactFormProps) {
     email: '',
     message: ''
   });
-  const [submitState, setSubmitState] = useState<'idle' | 'sent'>('idle');
+  const [submitState, setSubmitState] = useState<'idle' | 'submitting' | 'sent'>('idle');
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const formVariants = {
@@ -43,6 +43,8 @@ function ContactForm({ delay }: ContactFormProps) {
 
     if (!formState.name.trim()) {
       newErrors.name = 'El nombre es requerido';
+    } else if (formState.name.trim().length < 2) {
+      newErrors.name = 'El nombre debe tener al menos 2 caracteres';
     }
 
     if (!formState.email.trim()) {
@@ -53,6 +55,8 @@ function ContactForm({ delay }: ContactFormProps) {
 
     if (!formState.message.trim()) {
       newErrors.message = 'El mensaje es requerido';
+    } else if (formState.message.trim().length < 10) {
+      newErrors.message = 'El mensaje debe tener al menos 10 caracteres';
     }
 
     setErrors(newErrors);
@@ -78,13 +82,8 @@ function ContactForm({ delay }: ContactFormProps) {
     if (!validateForm()) return;
 
     const snapshot = { ...formState };
-    setSubmitState('sent');
+    setSubmitState('submitting');
     setErrors({});
-    setFormState({ name: '', email: '', message: '' });
-
-    setTimeout(() => {
-      setSubmitState('idle');
-    }, 4000);
 
     void submitContactForm({
       name: snapshot.name,
@@ -93,14 +92,19 @@ function ContactForm({ delay }: ContactFormProps) {
       source: 'sitio_web_principal',
     })
       .then(() => {
+        setSubmitState('sent');
+        setFormState({ name: '', email: '', message: '' });
         analytics.event('engagement', 'submit_form', 'contact_form');
+
+        setTimeout(() => {
+          setSubmitState('idle');
+        }, 4000);
       })
       .catch((error: unknown) => {
         const serverErrors = getContactFieldErrors(error);
         if (Object.keys(serverErrors).length > 0) {
           setErrors(serverErrors);
         }
-        setFormState(snapshot);
         setSubmitState('idle');
         toast({
           title: 'Error al enviar',
@@ -177,12 +181,17 @@ function ContactForm({ delay }: ContactFormProps) {
 
           <motion.button
             type="submit"
-            className="w-full px-6 py-3 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-lg text-white font-medium disabled:opacity-70 shadow-lg shadow-[#00CCFF]/20 hover:shadow-[#9933FF]/30"
+            disabled={submitState === 'submitting'}
+            className="w-full px-6 py-3 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-lg text-white font-medium disabled:cursor-wait disabled:opacity-70 shadow-lg shadow-[#00CCFF]/20 hover:shadow-[#9933FF]/30"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             transition={{ duration: 0.2 }}
           >
-            {submitState === 'sent' ? 'Enviado' : 'Quiero una propuesta inicial'}
+            {submitState === 'submitting'
+              ? 'Enviando...'
+              : submitState === 'sent'
+                ? 'Enviado'
+                : 'Quiero una propuesta inicial'}
           </motion.button>
         </form>
       </div>
