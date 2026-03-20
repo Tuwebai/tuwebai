@@ -50,7 +50,7 @@ export default function BlogArticlePage({ slug }: BlogArticlePageProps) {
           <h1 className="font-rajdhani text-4xl font-bold">Articulo no encontrado</h1>
           <p className="mt-4 text-gray-300">El contenido que buscabas no existe o fue movido.</p>
           <Link
-            to="/blog"
+            to="/blog/"
             className="mt-6 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-5 py-3 font-medium text-white"
           >
             <ArrowLeft className="h-4 w-4" />
@@ -83,7 +83,7 @@ export default function BlogArticlePage({ slug }: BlogArticlePageProps) {
         '@type': 'ListItem',
         position: 2,
         name: 'Blog',
-        item: `${TUWEBAI_SITE_FULL_URL}/blog`,
+        item: `${TUWEBAI_SITE_FULL_URL}/blog/`,
       },
       {
         '@type': 'ListItem',
@@ -135,7 +135,7 @@ export default function BlogArticlePage({ slug }: BlogArticlePageProps) {
 
       <main className="min-h-screen bg-[#0a0a0f] px-4 pb-20 pt-28 text-white">
         <div className="mx-auto max-w-6xl">
-          <Link to="/blog" className="inline-flex items-center gap-2 text-sm text-gray-400 transition-colors hover:text-white">
+          <Link to="/blog/" className="inline-flex items-center gap-2 text-sm text-gray-400 transition-colors hover:text-white">
             <ArrowLeft className="h-4 w-4" />
             Volver al blog
           </Link>

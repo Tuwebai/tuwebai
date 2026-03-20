@@ -10,7 +10,7 @@ import MetaTags from '@/shared/ui/meta-tags';
 
 export default function BlogListPage() {
   const posts = useBlogPosts().filter((post) => !post.noindex);
-  const pageUrl = `${TUWEBAI_SITE_FULL_URL}/blog`;
+  const pageUrl = `${TUWEBAI_SITE_FULL_URL}/blog/`;
   const publishedArticlesLabel = `${posts.length} articulos publicados`;
 
   return (

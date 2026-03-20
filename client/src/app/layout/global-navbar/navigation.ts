@@ -30,7 +30,7 @@ export const MAIN_NAVIGATION: NavigationLink[] = [
     ],
   },
   { name: 'E-commerce', href: '/ecommerce' },
-  { name: 'Blog', href: '/blog' },
+  { name: 'Blog', href: '/blog/' },
   { name: 'FAQ', href: '/faq' },
 ];
 

@@ -85,7 +85,7 @@ export default function NewsletterUnsubscribePage() {
                 Volver al inicio
               </Link>
               <Link
-                to="/blog"
+                to="/blog/"
                 className="inline-flex items-center justify-center rounded-full border border-white/12 px-6 py-3 text-sm font-semibold text-[#DCE7FF] transition-colors duration-200 hover:border-[#00CCFF]/45 hover:text-white"
               >
                 Seguir leyendo el blog

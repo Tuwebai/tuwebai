@@ -54,7 +54,7 @@ export default function Footer() {
             <h3 className="mb-4 font-rajdhani text-lg font-bold text-white">Enlaces rapidos</h3>
             <ul className="space-y-2">
               <li><a href="/faq" className="transition-colors hover:text-[#9933FF]">Preguntas Frecuentes</a></li>
-              <li><a href="/blog" className="transition-colors hover:text-[#9933FF]">Blog</a></li>
+              <li><a href="/blog/" className="transition-colors hover:text-[#9933FF]">Blog</a></li>
               <li><a href="/contacto" className="transition-colors hover:text-[#9933FF]">Contacto</a></li>
             </ul>
           </div>

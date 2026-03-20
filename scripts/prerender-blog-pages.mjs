@@ -251,7 +251,7 @@ function buildListStructuredData(posts) {
       '@type': 'Blog',
       name: 'Blog TuWeb.ai',
       description: 'Guias y articulos sobre conversion web, SEO tecnico y estrategia digital en Argentina.',
-      url: `${siteUrl}/blog`,
+      url: `${siteUrl}/blog/`,
       publisher: {
         '@type': 'Organization',
         name: 'TuWeb.ai',
@@ -328,7 +328,7 @@ function buildArticleStructuredData(article) {
       '@type': 'BreadcrumbList',
       itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'Inicio', item: siteUrl },
-        { '@type': 'ListItem', position: 2, name: 'Blog', item: `${siteUrl}/blog` },
+        { '@type': 'ListItem', position: 2, name: 'Blog', item: `${siteUrl}/blog/` },
         { '@type': 'ListItem', position: 3, name: article.title, item: article.seo.canonicalUrl },
       ],
     },
@@ -354,7 +354,7 @@ function buildSitemapXml(posts) {
   }
 
   lines.push('  <url>');
-  lines.push(`    <loc>${siteUrl}/blog</loc>`);
+  lines.push(`    <loc>${siteUrl}/blog/</loc>`);
   lines.push(`    <lastmod>${new Date().toISOString().slice(0, 10)}</lastmod>`);
   lines.push('    <changefreq>weekly</changefreq>');
   lines.push('    <priority>0.85</priority>');
@@ -386,7 +386,7 @@ async function main() {
       description: 'Guias de TuWeb.ai sobre conversion web, SEO tecnico y crecimiento digital para negocios en Argentina.',
       keywords: 'blog desarrollo web argentina, blog conversion web, seo tecnico argentina, tuwebai blog',
       robots: 'index, follow',
-      url: `${siteUrl}/blog`,
+      url: `${siteUrl}/blog/`,
       ogType: 'website',
       ogImage: defaultOgImage,
       structuredData: buildListStructuredData(publicPosts),

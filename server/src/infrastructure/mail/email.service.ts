@@ -38,7 +38,7 @@ interface NewsletterEmailTemplateOptions {
   footerNote: string;
 }
 
-const TUWEBAI_BLOG_URL = 'https://tuweb-ai.com/blog';
+const TUWEBAI_BLOG_URL = 'https://tuweb-ai.com/blog/';
 const TUWEBAI_CONSULTA_URL = 'https://tuweb-ai.com/consulta';
 const TUWEBAI_WHATSAPP_NUMBER = '5493571417960';
 const EMAIL_BRAND_LOGO_CID = 'tuwebai-newsletter-logo';
