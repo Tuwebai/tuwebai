@@ -10,8 +10,8 @@ export const TUWEBAI_SITE_FULL_URL = 'https://tuweb-ai.com';
 
 //Social Media
 export const TUWEBAI_FACEBOOK_URL = 'https://www.facebook.com/tuwebai';
-export const TUWEBAI_INSTAGRAM_URL = 'https://www.instagram.com/tuwebai';
-export const TUWEBAI_LINKEDIN_URL = 'https://www.linkedin.com/company/tuwebai';
+export const TUWEBAI_INSTAGRAM_URL = 'https://www.instagram.com/tuwebai?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==';
+export const TUWEBAI_LINKEDIN_URL = 'https://www.linkedin.com/in/juanchiidev';
 export const TUWEBAI_X_URL = 'https://x.com/tuwebai';
 export const TUWEBAI_YOUTUBE_URL = 'https://www.youtube.com/@tuwebai';
 export const TUWEBAI_TIKTOK_URL = 'https://www.tiktok.com/@tuwebai';

@@ -45,7 +45,7 @@ export function UserDashboardHeader({
           <div className="group relative">
             <UserAvatar
               image={user?.image}
-              name={user?.name}
+              name={user?.username || user?.name}
               username={user?.username}
               className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-2xl font-bold text-white"
               textClassName="text-white"
@@ -75,7 +75,7 @@ export function UserDashboardHeader({
 
           <div className="w-full min-w-0">
             <div className="mb-2 flex flex-wrap items-center justify-center gap-3 sm:justify-start">
-              <h1 className="text-2xl font-bold text-white">{user?.name || user?.username}</h1>
+              <h1 className="text-2xl font-bold text-white">{user?.username || user?.name}</h1>
               {privacySettings.profileStatusVisible &&
                 (user?.isActive ? (
                   <span className="flex items-center gap-1 rounded-full border border-green-500/30 bg-green-500/20 px-3 py-1 text-xs text-green-400">
@@ -106,7 +106,7 @@ export function UserDashboardHeader({
             }}
             className="w-full rounded-lg border border-white/10 px-4 py-2 text-gray-300 transition-colors hover:border-white/20 hover:text-white sm:w-auto"
           >
-            Cerrar sesion
+            Cerrar sesión
           </button>
         </div>
       </div>
