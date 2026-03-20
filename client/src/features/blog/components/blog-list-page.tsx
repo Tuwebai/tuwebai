@@ -49,7 +49,7 @@ export default function BlogListPage() {
 
       <main className="min-h-screen bg-[#0a0a0f] px-4 pb-20 pt-28 text-white">
         <section className="mx-auto max-w-6xl">
-          <div className="relative overflow-hidden rounded-[32px] border border-white/10 bg-[radial-gradient(circle_at_top_left,_rgba(0,204,255,0.18),_transparent_38%),radial-gradient(circle_at_top_right,_rgba(153,51,255,0.14),_transparent_32%),linear-gradient(180deg,_rgba(18,18,23,0.98),_rgba(10,10,15,0.98))] px-6 py-12 shadow-2xl shadow-black/30 md:px-10">
+          <div className="relative overflow-hidden rounded-[28px] border border-white/10 bg-[radial-gradient(circle_at_top_left,_rgba(0,204,255,0.18),_transparent_38%),radial-gradient(circle_at_top_right,_rgba(153,51,255,0.14),_transparent_32%),linear-gradient(180deg,_rgba(18,18,23,0.98),_rgba(10,10,15,0.98))] px-5 py-10 shadow-2xl shadow-black/30 sm:rounded-[32px] sm:px-6 md:px-10 md:py-12">
             <div className="flex flex-wrap items-center gap-3">
               <span className="inline-flex rounded-full border border-[#00CCFF]/30 bg-[#00CCFF]/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.28em] text-[#9BE7FF]">
                 Blog TuWeb.ai
@@ -58,7 +58,7 @@ export default function BlogListPage() {
                 {publishedArticlesLabel}
               </span>
             </div>
-            <h1 className="mt-6 max-w-3xl font-rajdhani text-4xl font-bold leading-tight text-white md:text-6xl">
+            <h1 className="mt-6 max-w-3xl font-rajdhani text-[2.35rem] font-bold leading-[1.02] text-white sm:text-5xl md:text-6xl">
               Recursos para corregir una web que no convierte y vender mejor.
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-7 text-gray-300 md:text-lg">
@@ -79,7 +79,7 @@ export default function BlogListPage() {
                     <p className="text-sm text-gray-400">
                       {format(parseISO(post.publishedAt), "d 'de' MMMM 'de' yyyy", { locale: es })}
                     </p>
-                    <h2 className="mt-3 font-rajdhani text-3xl font-bold text-white">
+                    <h2 className="mt-3 font-rajdhani text-2xl font-bold text-white sm:text-3xl">
                       <Link to={`/blog/${post.slug}`} className="transition-colors group-hover:text-[#9BE7FF]">
                         {post.title}
                       </Link>
@@ -109,12 +109,12 @@ export default function BlogListPage() {
         </section>
 
         <section className="mx-auto mt-10 max-w-6xl">
-          <div className="overflow-hidden rounded-[32px] border border-[#00CCFF]/20 bg-[radial-gradient(circle_at_left_top,_rgba(0,204,255,0.16),_transparent_32%),radial-gradient(circle_at_right_bottom,_rgba(153,51,255,0.14),_transparent_30%),linear-gradient(180deg,_rgba(16,19,27,0.98),_rgba(10,10,15,0.98))] px-6 py-10 shadow-2xl shadow-black/30 md:px-10">
+          <div className="overflow-hidden rounded-[28px] border border-[#00CCFF]/20 bg-[radial-gradient(circle_at_left_top,_rgba(0,204,255,0.16),_transparent_32%),radial-gradient(circle_at_right_bottom,_rgba(153,51,255,0.14),_transparent_30%),linear-gradient(180deg,_rgba(16,19,27,0.98),_rgba(10,10,15,0.98))] px-5 py-8 shadow-2xl shadow-black/30 sm:rounded-[32px] sm:px-6 md:px-10 md:py-10">
             <div className="max-w-3xl">
               <span className="inline-flex rounded-full border border-[#00CCFF]/30 bg-[#00CCFF]/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.26em] text-[#9BE7FF]">
                 Newsletter editorial
               </span>
-              <h2 className="mt-5 font-rajdhani text-4xl font-bold leading-tight text-white md:text-5xl">
+              <h2 className="mt-5 font-rajdhani text-3xl font-bold leading-tight text-white sm:text-4xl md:text-5xl">
                 Recibi nuevos articulos y criterios concretos para mejorar tu web.
               </h2>
               <p className="mt-4 max-w-2xl text-base leading-7 text-gray-300 md:text-lg">

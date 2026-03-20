@@ -70,34 +70,34 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
       className="landing-anchor-section relative flex items-center justify-center overflow-hidden bg-gradient-1"
     >
       <div className="container mx-auto z-10 px-4 text-center" style={{ opacity: heroOpacity }}>
-        <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-gray-300 lg:backdrop-blur-sm">
+        <div className="mb-5 inline-flex max-w-full items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs text-gray-300 sm:px-4 sm:text-sm lg:backdrop-blur-sm">
           <span className="h-2 w-2 rounded-full bg-[#00CCFF] shadow-[0_0_10px_rgba(0,204,255,0.8)]" />
           <span className="font-medium">Diseñamos el futuro de tu negocio</span>
         </div>
 
         <div className="mb-6">
           <div className="mb-4">
-            <span className="gradient-text font-rajdhani text-lg font-semibold uppercase tracking-[0.22em] md:text-xl">
+            <span className="gradient-text font-rajdhani text-base font-semibold uppercase tracking-[0.18em] sm:text-lg md:text-xl">
               TuWeb.ai
             </span>
           </div>
 
-          <h1 className="mx-auto max-w-5xl font-rajdhani text-4xl font-bold leading-tight md:text-6xl xl:text-7xl">
+          <h1 className="mx-auto max-w-5xl font-rajdhani text-[2.35rem] font-bold leading-[0.98] sm:text-5xl md:text-6xl xl:text-7xl">
             <span className="text-white">Desarrollo web profesional para negocios que quieren </span>
             <span className="gradient-text">vender mejor online</span>
           </h1>
         </div>
 
-        <div className="mx-auto mb-10 min-h-[5rem] max-w-4xl font-rajdhani text-lg text-gray-300 md:min-h-[3.5rem] md:text-2xl">
+        <div className="mx-auto mb-8 min-h-[6.5rem] max-w-4xl px-2 font-rajdhani text-base text-gray-300 sm:min-h-[5rem] sm:text-lg md:min-h-[3.5rem] md:px-0 md:text-2xl">
           <p key={heroMessages[activeMessageIndex]} className="mx-auto max-w-4xl text-gray-300 transition-opacity duration-300 ease-in-out">
             {heroMessages[activeMessageIndex]}
           </p>
         </div>
 
-        <div className="mb-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <div className="mb-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
           <RouterLink
             to="/consulta"
-            className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-7 py-3 font-semibold text-white shadow-[0_10px_30px_rgba(0,204,255,0.22)] transition-transform duration-300 hover:scale-[1.02]"
+            className="inline-flex min-h-12 items-center justify-center rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-6 py-3 text-center font-semibold text-white shadow-[0_10px_30px_rgba(0,204,255,0.22)] transition-transform duration-300 hover:scale-[1.02] sm:px-7"
           >
             Contar mi proyecto
           </RouterLink>
@@ -108,16 +108,16 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
             smooth={true}
             offset={-70}
             duration={1000}
-            className="inline-flex cursor-pointer items-center justify-center rounded-full border border-white/15 bg-white/5 px-7 py-3 font-medium text-gray-200 transition-colors duration-300 hover:border-[#00CCFF]/50 hover:text-white lg:backdrop-blur-sm"
+            className="inline-flex min-h-12 cursor-pointer items-center justify-center rounded-full border border-white/15 bg-white/5 px-6 py-3 text-center font-medium text-gray-200 transition-colors duration-300 hover:border-[#00CCFF]/50 hover:text-white sm:px-7 lg:backdrop-blur-sm"
           >
             Ver proyectos reales
           </ScrollLink>
         </div>
 
-        <div className="flex flex-wrap items-center justify-center gap-3 text-sm text-gray-300">
-          <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2">Sitios corporativos</span>
-          <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2">E-commerce</span>
-          <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2">Sistemas web</span>
+        <div className="flex flex-wrap items-center justify-center gap-2 text-sm text-gray-300 sm:gap-3">
+          <span className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs sm:px-4 sm:text-sm">Sitios corporativos</span>
+          <span className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs sm:px-4 sm:text-sm">E-commerce</span>
+          <span className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs sm:px-4 sm:text-sm">Sistemas web</span>
         </div>
 
         <div className="mt-10">

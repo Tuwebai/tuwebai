@@ -295,13 +295,13 @@ export default function Consulta() {
             <Link to="/" className="text-3xl font-rajdhani font-bold mb-10 inline-block">
               TuWeb<span className="text-[#00CCFF]">.ai</span>
             </Link>
-            <h1 className="text-4xl md:text-5xl font-rajdhani font-bold mb-4">
+            <h1 className="mb-4 text-[2.35rem] font-rajdhani font-bold leading-tight sm:text-5xl md:text-5xl">
               <span className="gradient-text pb-2">Solicitar propuesta personalizada</span>
             </h1>
             <p className="text-sm text-gray-400 max-w-2xl mx-auto mt-4 leading-6">
               Si venís desde las referencias de inversión del home, tomalas como guía comercial. Para proyectos en Argentina cotizamos y cobramos en pesos argentinos; para proyectos fuera de Argentina, la moneda se define al confirmar alcance.
             </p>
-            <p className="text-xl text-gray-300 max-w-2xl mx-auto mt-4">
+            <p className="mx-auto mt-4 max-w-2xl text-base text-gray-300 sm:text-xl">
               Completá el formulario y en menos de 48 horas recibirás una propuesta a medida para tu proyecto.
             </p>
           </div>
@@ -438,7 +438,7 @@ export default function Consulta() {
                               <label className="block text-white font-medium mb-2">
                                 ¿Cómo nos encontraste? (opcional)
                               </label>
-                              <div className="grid grid-cols-2 gap-2">
+                              <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                                 {['google', 'redes_sociales', 'recomendacion', 'otro'].map((source) => (
                                   <label 
                                     key={source} 
@@ -484,7 +484,7 @@ export default function Consulta() {
                               <label htmlFor="tipoProyecto" className="block text-white font-medium mb-2">
                                 ¿Qué tipo de proyecto necesitas? <span className="text-[#00CCFF]">*</span>
                               </label>
-                              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3">
                                 {[
                                   {id: 'web', name: 'Sitio web', icon: '🌐'},
                                   {id: 'ecommerce', name: 'Tienda online', icon: '🛒'},
@@ -627,7 +627,7 @@ export default function Consulta() {
                               <label htmlFor="presupuesto" className="block text-white font-medium mb-2">
                                 Presupuesto aproximado <span className="text-[#00CCFF]">*</span>
                               </label>
-                              <div className="grid grid-cols-2 gap-3">
+                              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                                 {[
                                   {id: 'menos5k', name: 'Menos de $5.000'},
                                   {id: '5k-10k', name: '$5.000 - $10.000'},
@@ -663,7 +663,7 @@ export default function Consulta() {
                               <label htmlFor="plazo" className="block text-white font-medium mb-2">
                                 Plazo estimado para el proyecto
                               </label>
-                              <div className="grid grid-cols-2 gap-3">
+                              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                                 {[
                                   {id: '1_mes', name: 'Menos de 1 mes'},
                                   {id: '2_3_meses', name: '2-3 meses'},
@@ -783,11 +783,11 @@ export default function Consulta() {
                       </AnimatePresence>
                       
                       {/* Botones de navegación */}
-                      <div className="flex justify-between pt-4">
+                        <div className="flex flex-col gap-3 pt-4 sm:flex-row sm:justify-between">
                         {currentStep > 1 ? (
                           <Button
                             type="button"
-                            className="bg-gray-800 hover:bg-gray-700 text-white rounded-full px-6"
+                              className="w-full rounded-full bg-gray-800 px-6 text-white hover:bg-gray-700 sm:w-auto"
                             onClick={() => setCurrentStep(prev => Math.max(prev - 1, 1))}
                           >
                             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -802,7 +802,7 @@ export default function Consulta() {
                         {currentStep < totalSteps ? (
                           <Button
                             type="button"
-                            className="bg-gradient-to-r from-[#00CCFF] to-[#9933FF] text-white rounded-full px-6"
+                              className="w-full rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-6 text-white sm:w-auto"
                             onClick={validarYAvanzar}
                           >
                             Siguiente

@@ -47,7 +47,7 @@ export default function BlogArticlePage({ slug }: BlogArticlePageProps) {
     return (
       <main className="min-h-screen bg-[#0a0a0f] px-4 pb-20 pt-28 text-white">
         <div className="mx-auto max-w-3xl rounded-[28px] border border-white/10 bg-white/[0.03] p-8 text-center">
-          <h1 className="font-rajdhani text-4xl font-bold">Articulo no encontrado</h1>
+          <h1 className="font-rajdhani text-3xl font-bold sm:text-4xl">Articulo no encontrado</h1>
           <p className="mt-4 text-gray-300">El contenido que buscabas no existe o fue movido.</p>
           <Link
             to="/blog/"
@@ -144,7 +144,7 @@ export default function BlogArticlePage({ slug }: BlogArticlePageProps) {
             <article className="overflow-hidden rounded-[32px] border border-white/10 bg-[linear-gradient(180deg,_rgba(18,18,23,0.98),_rgba(10,10,15,0.98))] shadow-2xl shadow-black/30">
               <header id="inicio-articulo-blog" className="border-b border-white/10 px-6 py-8 md:px-10">
                 <p className="text-sm uppercase tracking-[0.24em] text-[#9BE7FF]">Blog TuWeb.ai</p>
-                <h1 className="mt-4 font-rajdhani text-4xl font-bold leading-tight md:text-5xl">{article.title}</h1>
+                <h1 className="mt-4 font-rajdhani text-3xl font-bold leading-tight sm:text-4xl md:text-5xl">{article.title}</h1>
                 <div className="mt-5 flex flex-wrap items-center gap-4 text-sm text-gray-400">
                   <span>{format(parseISO(article.publishedAt), "d 'de' MMMM 'de' yyyy", { locale: es })}</span>
                   <span className="inline-flex items-center gap-2">
@@ -156,12 +156,12 @@ export default function BlogArticlePage({ slug }: BlogArticlePageProps) {
 
               <div className="px-6 py-8 md:px-10">
                 <div
-                  className="blog-prose max-w-none text-[17px] leading-8 text-gray-200
+                  className="blog-prose max-w-none text-[15px] leading-7 text-gray-200 sm:text-[17px] sm:leading-8
                     [&_a]:text-[#9BE7FF] [&_a]:underline [&_a]:underline-offset-4
                     [&_code]:rounded [&_code]:bg-white/10 [&_code]:px-1.5 [&_code]:py-1 [&_code]:text-sm
                     [&_em]:text-gray-100 [&_em]:italic
-                    [&_h1]:mb-6 [&_h1]:font-rajdhani [&_h1]:text-4xl [&_h1]:font-bold [&_h1]:leading-tight
-                    [&_h2]:mt-10 [&_h2]:mb-5 [&_h2]:font-rajdhani [&_h2]:text-3xl [&_h2]:font-bold [&_h2]:leading-tight [&_h2]:text-white
+                    [&_h1]:mb-6 [&_h1]:font-rajdhani [&_h1]:text-3xl [&_h1]:font-bold [&_h1]:leading-tight sm:[&_h1]:text-4xl
+                    [&_h2]:mt-10 [&_h2]:mb-5 [&_h2]:font-rajdhani [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:leading-tight [&_h2]:text-white sm:[&_h2]:text-3xl
                     [&_hr]:my-10 [&_hr]:border-white/10
                     [&_li]:mb-3 [&_ol]:ml-6 [&_ol]:list-decimal [&_p]:mb-5 [&_strong]:text-white
                     [&_table]:min-w-full [&_table]:border-collapse [&_table]:text-left [&_tbody_tr]:border-t [&_tbody_tr]:border-white/10
@@ -179,7 +179,7 @@ export default function BlogArticlePage({ slug }: BlogArticlePageProps) {
                     <span className="inline-flex rounded-full border border-[#00CCFF]/30 bg-[#00CCFF]/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-[#9BE7FF]">
                       Newsletter TuWeb.ai
                     </span>
-                    <h2 className="mt-4 font-rajdhani text-3xl font-bold text-white md:text-4xl">
+                    <h2 className="mt-4 font-rajdhani text-2xl font-bold text-white sm:text-3xl md:text-4xl">
                       Si este articulo te sirvio, recibi los proximos por email.
                     </h2>
                     <p className="mt-3 max-w-2xl text-sm leading-7 text-gray-300 md:text-base">
@@ -210,7 +210,7 @@ export default function BlogArticlePage({ slug }: BlogArticlePageProps) {
             <aside className="space-y-6">
               <div className="rounded-[28px] border border-[#00CCFF]/20 bg-[#10131b] p-6">
                 <p className="text-xs uppercase tracking-[0.22em] text-[#9BE7FF]">Diagnostico gratuito</p>
-                <h2 className="mt-3 font-rajdhani text-3xl font-bold text-white">Descubri por que tu web no convierte.</h2>
+                <h2 className="mt-3 font-rajdhani text-2xl font-bold text-white sm:text-3xl">Descubri por que tu web no convierte.</h2>
                 <p className="mt-4 text-sm leading-7 text-gray-300">
                   Si tu sitio recibe trafico web sin conversiones, revisamos estructura, CTA, mobile y velocidad para decirte que esta frenando las consultas.
                 </p>

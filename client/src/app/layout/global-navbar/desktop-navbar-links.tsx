@@ -14,13 +14,13 @@ export function DesktopNavbarLinks({
   return (
     <>
       {MAIN_NAVIGATION.map((item) => (
-        <div key={item.name} className="relative group">
+        <div key={item.name} className="group relative shrink-0">
           <Link
             to={item.href}
             onMouseEnter={() => prefetchNavigationPath(item.href)}
             onFocus={() => prefetchNavigationPath(item.href)}
             onTouchStart={() => prefetchNavigationPath(item.href)}
-            className={`text-sm font-medium transition-colors ${
+            className={`whitespace-nowrap text-sm font-medium transition-colors ${
               activePage === item.name ? 'text-[#00CCFF]' : 'text-gray-300 hover:text-white'
             }`}
           >
@@ -28,7 +28,7 @@ export function DesktopNavbarLinks({
           </Link>
 
           {item.sections?.length ? (
-            <div className="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-[#0a0a0f] ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+            <div className="absolute left-0 z-50 mt-2 w-56 rounded-md bg-[#0a0a0f] opacity-0 invisible shadow-lg ring-1 ring-black ring-opacity-5 transition-all duration-200 group-hover:visible group-hover:opacity-100">
               <div className="py-1">
                 {item.sections.map((section) => (
                   <button

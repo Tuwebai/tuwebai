@@ -44,14 +44,14 @@ export default function WhatsAppButton({
 
   return (
     <div
-      className={`fixed bottom-6 right-6 z-40 transition-all duration-500 ease-out ${
+      className={`fixed bottom-4 right-4 z-40 transition-all duration-500 ease-out sm:bottom-6 sm:right-6 ${
         isButtonVisible
           ? 'translate-y-0 scale-100 opacity-100'
           : 'pointer-events-none translate-y-4 scale-90 opacity-0'
       }`}
     >
       <div
-        className={`absolute bottom-16 right-0 mb-3 w-64 max-w-xs rounded-lg bg-white p-4 shadow-lg transition-all duration-200 ease-out dark:bg-gray-800 ${
+        className={`absolute bottom-16 right-0 mb-3 w-[min(16rem,calc(100vw-2rem))] max-w-xs rounded-lg bg-white p-3 shadow-lg transition-all duration-200 ease-out dark:bg-gray-800 sm:w-64 sm:p-4 ${
           isPopupVisible
             ? 'translate-y-0 scale-100 opacity-100'
             : 'pointer-events-none translate-y-3 scale-95 opacity-0'
@@ -101,7 +101,7 @@ export default function WhatsAppButton({
         href={whatsappUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-all duration-200 ease-out hover:scale-110 hover:shadow-xl active:scale-95"
+          className="flex h-12 w-12 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-all duration-200 ease-out hover:scale-110 hover:shadow-xl active:scale-95 sm:h-14 sm:w-14"
         onClick={() => setIsPopupVisible(false)}
         onMouseEnter={() => !isPopupVisible && setIsPopupVisible(true)}
         aria-label="Contactar por WhatsApp"

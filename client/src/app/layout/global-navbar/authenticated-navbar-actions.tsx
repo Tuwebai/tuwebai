@@ -95,7 +95,7 @@ export function AuthenticatedNavbarActions({
   }
 
   return (
-    <div className="relative flex-shrink-0 min-w-[160px]">
+    <div className="relative flex-shrink-0">
       <button
         onClick={() => setShowProfileMenu((current) => !current)}
         className="flex items-center gap-2 py-1.5 px-3 rounded-md hover:bg-gray-800/50 transition-colors"
@@ -106,7 +106,7 @@ export function AuthenticatedNavbarActions({
           username={user?.username}
           className="w-8 h-8 rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] flex items-center justify-center text-white font-medium overflow-hidden border-2 border-white/20"
         />
-        <span className="text-sm text-gray-300">{user?.name || user?.username}</span>
+        <span className="hidden max-w-[12rem] truncate text-sm text-gray-300 xl:inline">{user?.name || user?.username}</span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className={`w-4 h-4 text-gray-400 transition-transform ${showProfileMenu ? 'rotate-180' : ''}`}
@@ -119,7 +119,7 @@ export function AuthenticatedNavbarActions({
       </button>
 
       {showProfileMenu ? (
-        <div className="absolute right-0 mt-2 w-56 rounded-xl shadow-lg bg-[#18181b] ring-1 ring-black ring-opacity-5 z-50 border border-white/10">
+        <div className="absolute right-0 z-50 mt-2 w-52 rounded-xl border border-white/10 bg-[#18181b] shadow-lg ring-1 ring-black ring-opacity-5 xl:w-56">
           <div className="py-1">
             <Link
               to="/panel"

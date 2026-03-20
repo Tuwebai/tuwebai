@@ -46,7 +46,7 @@ export default function NavDots({ sections }: NavDotsProps) {
   }, [sections]);
 
   return (
-    <nav className="fixed right-6 top-1/2 transform -translate-y-1/2 z-50 flex flex-col gap-4 p-2">
+    <nav className="fixed right-3 top-1/2 z-50 hidden -translate-y-1/2 flex-col gap-3 p-2 lg:flex xl:right-6">
       {sections.map((section) => (
         <div key={section.id} className="relative flex items-center group">
           <a

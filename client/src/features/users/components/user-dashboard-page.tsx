@@ -274,7 +274,7 @@ export default function PanelUsuario() {
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
       <MetaTags title="Panel de Usuario | TuWeb.ai" description="Gestiona tu cuenta, preferencias y seguridad en TuWeb.ai." />
       
-      <div className="container mx-auto px-4 pb-8 pt-28 sm:pb-10 sm:pt-32">
+      <div className="container mx-auto px-3 pb-8 pt-24 sm:px-4 sm:pb-10 sm:pt-28 lg:pt-32">
         <motion.div 
           initial={{ opacity: 0, y: 20 }} 
           animate={{ opacity: 1, y: 0 }} 
@@ -300,7 +300,7 @@ export default function PanelUsuario() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.3 }}
-              className="bg-white/5 lg:backdrop-blur-lg rounded-2xl p-8 border border-white/10"
+              className="rounded-2xl border border-white/10 bg-white/5 p-4 sm:p-6 lg:p-8 lg:backdrop-blur-lg"
             >
               {activeTab === 'profile' && (
                 <UserProfileTab

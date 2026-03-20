@@ -111,26 +111,26 @@ export default function GlobalNavbar() {
           isScrolled ? 'bg-[#0a0a0f]/95 lg:bg-[#0a0a0f]/90 lg:backdrop-blur-sm shadow-lg' : 'bg-transparent'
         }`}
       >
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between py-4">
-            <Link to="/" className="text-2xl font-rajdhani font-bold">
+        <div className="container mx-auto px-3 sm:px-4">
+          <div className="flex items-center justify-between gap-3 py-3 sm:py-4">
+            <Link to="/" className="shrink-0 text-xl font-rajdhani font-bold sm:text-2xl">
               TuWeb<span className="text-[#00CCFF]">.ai</span>
             </Link>
 
             {!isMobile ? (
-              <div className="hidden md:flex items-center space-x-4 text-xs text-gray-400">
+              <div className="hidden items-center space-x-4 text-xs text-gray-400 xl:flex">
                 <NavbarMetaLinks />
               </div>
             ) : null}
 
             {!isMobile ? (
-              <nav className="hidden md:flex items-center space-x-6">
+              <nav className="hidden min-w-0 items-center gap-4 lg:flex xl:gap-6">
                 <DesktopNavbarLinks
                   activePage={activePage}
                   onSectionSelect={handleSectionSelect}
                 />
 
-                <div className="flex flex-wrap items-center gap-3 md:gap-4 relative z-20">
+                <div className="relative z-20 flex shrink-0 flex-wrap items-center justify-end gap-2 xl:gap-3">
                   {navbarActions}
 
                   <Link
@@ -138,7 +138,7 @@ export default function GlobalNavbar() {
                     onMouseEnter={() => prefetchNavigationPath('/consulta')}
                     onFocus={() => prefetchNavigationPath('/consulta')}
                     onTouchStart={() => prefetchNavigationPath('/consulta')}
-                    className="px-5 py-2 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-full text-white text-sm font-medium shadow-lg shadow-[#00CCFF]/20 hover:shadow-[#9933FF]/30 transition-all whitespace-nowrap"
+                    className="rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-4 py-2 text-sm font-medium text-white shadow-lg shadow-[#00CCFF]/20 transition-all whitespace-nowrap hover:shadow-[#9933FF]/30 xl:px-5"
                   >
                     Consultanos
                   </Link>
@@ -164,7 +164,7 @@ export default function GlobalNavbar() {
         <div className="fixed inset-0 z-50 overflow-y-auto bg-[#0a0a0f] transition-transform duration-300 ease-out translate-x-0 opacity-100">
           <div className="min-h-screen flex flex-col">
             <div className="flex justify-between items-center p-4 border-b border-gray-800">
-              <Link to="/" className="text-2xl font-rajdhani font-bold" onClick={() => setIsMenuOpen(false)}>
+              <Link to="/" className="text-xl font-rajdhani font-bold sm:text-2xl" onClick={() => setIsMenuOpen(false)}>
                 TuWeb<span className="text-[#00CCFF]">.ai</span>
               </Link>
               <button
@@ -189,7 +189,7 @@ export default function GlobalNavbar() {
 
             <div className="p-4 border-t border-gray-800">
               <div className="mb-6 text-center">
-                <div className="flex justify-center space-x-4 text-sm text-gray-400">
+                <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 text-sm text-gray-400">
                   <NavbarMetaLinks onClick={() => setIsMenuOpen(false)} />
                 </div>
               </div>

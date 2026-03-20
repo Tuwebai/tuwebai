@@ -94,23 +94,23 @@ export default function TechSection({ setRef }: TechSectionProps) {
           animate={titleVisible ? 'visible' : 'hidden'}
           variants={titleVariants}
         >
-          <h2 className="font-rajdhani font-bold text-3xl md:text-5xl mb-6">
+          <h2 className="mb-6 font-rajdhani text-3xl font-bold sm:text-4xl md:text-5xl">
             <span className="gradient-text gradient-border inline-block pb-2">Tecnologías que dominamos</span>
           </h2>
 
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+          <p className="mx-auto max-w-2xl text-base text-gray-300 sm:text-xl">
             Herramientas modernas para soluciones de vanguardia
           </p>
         </motion.div>
 
         <motion.div
-          className="bg-[#121217]/50 rounded-xl p-10 lg:backdrop-blur-sm border border-gray-800 max-w-4xl mx-auto"
+          className="mx-auto max-w-4xl rounded-xl border border-gray-800 bg-[#121217]/50 p-5 sm:p-8 lg:backdrop-blur-sm lg:p-10"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          <div className="grid grid-cols-3 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 sm:gap-8">
             {technologies.map((tech, index) => (
               <TechItem key={index} icon={tech.icon} name={tech.name} index={index} />
             ))}

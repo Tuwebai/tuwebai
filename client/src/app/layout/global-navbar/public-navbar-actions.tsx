@@ -40,13 +40,13 @@ export function PublicNavbarActions({
     <div className="flex items-center gap-2">
       <button
         onClick={() => openModal(undefined, 'login')}
-        className="px-4 py-1.5 text-sm font-medium border border-gray-600 hover:border-gray-400 rounded-md text-gray-300 hover:text-white transition-colors"
+        className="rounded-md border border-gray-600 px-3 py-1.5 text-sm font-medium text-gray-300 transition-colors hover:border-gray-400 hover:text-white xl:px-4"
       >
         Iniciar sesion
       </button>
       <button
         onClick={() => openModal(undefined, 'register')}
-        className="px-4 py-1.5 text-sm font-medium bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-md text-white shadow-lg shadow-[#00CCFF]/20 hover:shadow-[#9933FF]/30 transition-all"
+        className="rounded-md bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-3 py-1.5 text-sm font-medium text-white shadow-lg shadow-[#00CCFF]/20 transition-all hover:shadow-[#9933FF]/30 xl:px-4"
       >
         Registrarse
       </button>

@@ -40,11 +40,11 @@ export default function ShowroomProjectModal({
 
   return createPortal(
     <div
-      className="fixed inset-0 z-50 overflow-y-auto bg-transparent p-4 md:p-6"
+      className="fixed inset-0 z-50 overflow-y-auto bg-transparent p-3 sm:p-4 md:p-6"
       onClick={onClose}
     >
       <motion.div
-        className="relative mx-auto flex min-h-[calc(100dvh-2rem)] w-full max-w-[min(92rem,100vw-2rem)] items-center justify-center md:min-h-[calc(100dvh-3rem)]"
+        className="relative mx-auto flex min-h-[calc(100dvh-1.5rem)] w-full max-w-[min(92rem,100vw-1.5rem)] items-center justify-center sm:min-h-[calc(100dvh-2rem)] sm:max-w-[min(92rem,100vw-2rem)] md:min-h-[calc(100dvh-3rem)]"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -65,7 +65,7 @@ export default function ShowroomProjectModal({
         </button>
 
         <motion.div
-          className="relative w-full max-w-6xl overflow-hidden rounded-[28px] border border-white/10 bg-[#121217] shadow-[0_34px_90px_rgba(0,0,0,0.55)]"
+          className="relative w-full max-w-6xl overflow-hidden rounded-[24px] border border-white/10 bg-[#121217] shadow-[0_34px_90px_rgba(0,0,0,0.55)] sm:rounded-[28px]"
           initial={{ opacity: 0, scale: 0.96, y: 12 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 0.24, ease: 'easeOut' }}
@@ -112,7 +112,7 @@ export default function ShowroomProjectModal({
             </button>
           </div>
 
-          <div className="grid lg:grid-cols-[minmax(0,1.04fr)_minmax(320px,0.96fr)]">
+          <div className="grid lg:grid-cols-[minmax(0,1.04fr)_minmax(280px,0.96fr)] xl:grid-cols-[minmax(0,1.04fr)_minmax(320px,0.96fr)]">
             <div className="border-b border-white/10 bg-[#0d1016] lg:border-b-0 lg:border-r">
               <div className="aspect-[16/10] overflow-hidden">
                 <img
@@ -165,7 +165,7 @@ export default function ShowroomProjectModal({
                   </div>
                 </div>
 
-                <h3 className="font-rajdhani text-3xl font-bold text-white sm:text-4xl">
+                <h3 className="font-rajdhani text-2xl font-bold text-white sm:text-3xl xl:text-4xl">
                   {project.title}
                 </h3>
                 <p className="mt-3 max-w-xl text-sm leading-7 text-gray-300 sm:text-base">

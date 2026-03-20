@@ -63,3 +63,25 @@
   height: 100%;
   background: linear-gradient(90deg, #00ccff 0%, #9933ff 100%);
 }
+
+@media (max-width: 640px) {
+  .proposal-request-header {
+    padding: 5rem 0.75rem 3rem;
+  }
+
+  .proposal-request-card {
+    padding: 1.25rem;
+  }
+
+  .proposal-request-pill-button {
+    width: 100%;
+    padding: 0.875rem 1.25rem;
+    text-align: center;
+  }
+
+  .proposal-request-primary-submit {
+    padding-top: 0.875rem;
+    padding-bottom: 0.875rem;
+    font-size: 1rem;
+  }
+}
