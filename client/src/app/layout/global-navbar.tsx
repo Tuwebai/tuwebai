@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 import { useIsMobile } from '@/core/hooks/use-mobile';
+import { useAuthState } from '@/features/auth/context/AuthContext';
 import { scrollToHomeSection } from '@/features/marketing-home/utils/scroll-to-home-section';
 
 import { AuthenticatedNavbarActions } from './global-navbar/authenticated-navbar-actions';
 import { DesktopNavbarLinks } from './global-navbar/desktop-navbar-links';
 import { MobileNavbarLinks } from './global-navbar/mobile-navbar-links';
-import { MAIN_NAVIGATION, prefetchNavigationPath, shouldUseAuthenticatedNavbar } from './global-navbar/navigation';
+import { MAIN_NAVIGATION, prefetchNavigationPath } from './global-navbar/navigation';
 import { PublicNavbarActions } from './global-navbar/public-navbar-actions';
 
 function NavbarMetaLinks({ onClick }: { onClick?: () => void }) {
@@ -38,7 +39,7 @@ export default function GlobalNavbar() {
   const [activePage, setActivePage] = useState('');
   const location = useLocation();
   const isMobile = useIsMobile();
-  const shouldRenderAuthenticatedNavbar = shouldUseAuthenticatedNavbar(location.pathname);
+  const { isAuthenticated } = useAuthState();
 
   useEffect(() => {
     const nextActivePage = MAIN_NAVIGATION.find((item) => item.href === location.pathname)?.name || '';
@@ -96,11 +97,11 @@ export default function GlobalNavbar() {
     console.warn('No se encontro pagina para la seccion:', sectionId);
   };
 
-  const navbarActions = shouldRenderAuthenticatedNavbar
+  const navbarActions = isAuthenticated
     ? <AuthenticatedNavbarActions />
     : <PublicNavbarActions />;
 
-  const mobileNavbarActions = shouldRenderAuthenticatedNavbar
+  const mobileNavbarActions = isAuthenticated
     ? <AuthenticatedNavbarActions isMobileMenu onAction={() => setIsMenuOpen(false)} />
     : <PublicNavbarActions isMobileMenu onAction={() => setIsMenuOpen(false)} />;
 
