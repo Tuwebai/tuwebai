@@ -80,7 +80,9 @@ export const useGoogleLoginMutation = () => {
         dbUser.email !== persistedUser.email ||
         dbUser.name !== persistedUser.name ||
         dbUser.username !== persistedUser.username ||
-        dbUser.image !== persistedUser.image
+        dbUser.image !== persistedUser.image ||
+        dbUser.authProvider !== persistedUser.authProvider ||
+        dbUser.passwordChangedAt !== persistedUser.passwordChangedAt
       ) {
         await setUser(dbUser);
       }
@@ -139,6 +141,8 @@ export const useRegisterMutation = () => {
         username: userData.username,
         name: userData.name || userData.username,
         image: userCredential.user.photoURL || '',
+        authProvider: 'password',
+        passwordChangedAt: new Date().toISOString(),
         isActive: true,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),

@@ -27,6 +27,7 @@ type UserDashboardTabPanelProps = {
   isSavingProfile: boolean;
   isActive?: boolean;
   email?: string;
+  authProvider?: 'password' | 'google';
   passwordInfo: PasswordInfo;
   isSendingPasswordReset: boolean;
   passwordResetSentTo: string | null;
@@ -49,6 +50,7 @@ export function UserDashboardTabPanel({
   isSavingProfile,
   isActive,
   email,
+  authProvider,
   passwordInfo,
   isSendingPasswordReset,
   passwordResetSentTo,
@@ -89,6 +91,7 @@ export function UserDashboardTabPanel({
           <UserSecurityTab
             isActive={isActive}
             email={email}
+            authProvider={authProvider}
             passwordInfo={passwordInfo}
             isSendingPasswordReset={isSendingPasswordReset}
             passwordResetSentTo={passwordResetSentTo}

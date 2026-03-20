@@ -269,6 +269,7 @@ export default function UserDashboardPage() {
             isSavingProfile={isSavingProfile}
             isActive={user?.isActive}
             email={user?.email}
+            authProvider={user?.authProvider}
             passwordInfo={passwordInfo}
             isSendingPasswordReset={isSendingPasswordReset}
             passwordResetSentTo={passwordResetSentTo}

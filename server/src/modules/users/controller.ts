@@ -56,6 +56,8 @@ type UserDocument = {
   username?: string;
   name?: string;
   image?: string;
+  authProvider?: 'password' | 'google';
+  passwordChangedAt?: string | null;
   role?: string;
   isActive?: boolean;
   projectId?: string;
@@ -90,6 +92,49 @@ export const handleAuthDevVerify = (req: Request, res: Response) => {
     success: true,
     message: `Verificacion de desarrollo simulada para ${email}.`,
   });
+};
+
+export const handlePasswordResetMetadata = async (req: Request, res: Response) => {
+  const db = getAdminFirestore();
+  if (!db) {
+    return res.status(503).json({ success: false, message: 'Firestore admin no disponible' });
+  }
+
+  try {
+    const email = String(req.body?.email || '').trim().toLowerCase();
+    const passwordChangedAt = String(req.body?.passwordChangedAt || '').trim();
+
+    const snapshot = await db.collection('users').where('email', '==', email).limit(1).get();
+    if (!snapshot.empty) {
+      const ref = snapshot.docs[0].ref;
+      await ref.set(
+        {
+          authProvider: 'password',
+          passwordChangedAt,
+          updatedAt: new Date().toISOString(),
+        },
+        { merge: true }
+      );
+
+      appLogger.info('auth.password_reset_metadata_recorded', {
+        uid: snapshot.docs[0].id,
+        email,
+        passwordChangedAt,
+      });
+    } else {
+      appLogger.warn('auth.password_reset_metadata_user_not_found', {
+        email,
+      });
+    }
+
+    return res.json({ success: true });
+  } catch (error: unknown) {
+    appLogger.error('auth.password_reset_metadata_failed', {
+      error: getErrorMessage(error, 'unknown_password_reset_metadata_error'),
+      email: req.body?.email,
+    });
+    return res.status(500).json({ success: false, message: 'No se pudo registrar el cambio de contraseña' });
+  }
 };
 
 export const handleAvatarProxy = async (req: Request, res: Response) => {

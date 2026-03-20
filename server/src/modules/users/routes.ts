@@ -2,6 +2,7 @@ import { Router } from 'express';
 import {
   handleAvatarProxy,
   handleAuthDevVerify,
+  handlePasswordResetMetadata,
   handleAuthVerify,
   handleGetUser,
   handleGetUserPayments,
@@ -16,6 +17,7 @@ import { apiLimiter, strictApiLimiter } from '../../middlewares/rate-limit.middl
 import { requireFirebaseAuthForUidParam } from '../../middlewares/firebase-auth.middleware';
 import {
   authDevVerifyParamsSchema,
+  authPasswordResetMetadataSchema,
   authVerifyParamsSchema,
   userPrivacyUpdateSchema,
   userPreferencesUpdateSchema,
@@ -27,6 +29,7 @@ const router = Router();
 
 router.get('/api/auth/verify/:token', apiLimiter, validatePayload(authVerifyParamsSchema), handleAuthVerify);
 router.get('/api/auth/dev-verify/:email', strictApiLimiter, validatePayload(authDevVerifyParamsSchema), handleAuthDevVerify);
+router.post('/api/auth/password-reset-metadata', strictApiLimiter, validatePayload(authPasswordResetMetadataSchema), handlePasswordResetMetadata);
 router.get('/api/users/avatar', apiLimiter, handleAvatarProxy);
 router.get('/api/users/:uid', apiLimiter, requireFirebaseAuthForUidParam, validatePayload(userUidParamsSchema), handleGetUser);
 router.get('/api/users/:uid/payments', apiLimiter, requireFirebaseAuthForUidParam, validatePayload(userUidParamsSchema), handleGetUserPayments);

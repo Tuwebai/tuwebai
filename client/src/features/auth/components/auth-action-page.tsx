@@ -10,7 +10,7 @@ import {
   prepareAuthAction,
   resolveAuthAction,
 } from '@/features/auth/services/auth-action.service';
-import { verifyAuthToken } from '@/features/auth/services/auth.service';
+import { recordPasswordReset, verifyAuthToken } from '@/features/auth/services/auth.service';
 import type { PreparedAuthAction } from '@/features/auth/types/auth-action';
 import MetaTags from '@/shared/ui/meta-tags';
 import { TUWEBAI_EMAIL, TUWEBAI_WHATSAPP_DISPLAY, TUWEBAI_WHATSAPP_URL } from '@/shared/constants/contact';
@@ -152,6 +152,10 @@ export default function AuthActionPage() {
 
     try {
       await resetPassword(resolvedAction.code, newPassword);
+      await recordPasswordReset({
+        email: pageState.action.email,
+        passwordChangedAt: new Date().toISOString(),
+      });
 
       toast({
         title: 'Contraseña actualizada',

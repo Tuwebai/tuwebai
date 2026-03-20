@@ -123,6 +123,31 @@ const withTimeout = <T,>(promise: Promise<T>, timeoutMs: number, fallback: T): P
   })
 );
 
+const derivePasswordInfo = (user: User | null): PasswordInfo => {
+  if (!user || user.authProvider !== 'password' || !user.passwordChangedAt) {
+    return {
+      changedAt: null,
+      daysSinceChange: null,
+    };
+  }
+
+  const changedAt = new Date(user.passwordChangedAt);
+  if (Number.isNaN(changedAt.getTime())) {
+    return {
+      changedAt: null,
+      daysSinceChange: null,
+    };
+  }
+
+  const diffMs = Date.now() - changedAt.getTime();
+  const daysSinceChange = Math.max(0, Math.floor(diffMs / (1000 * 60 * 60 * 24)));
+
+  return {
+    changedAt: user.passwordChangedAt,
+    daysSinceChange,
+  };
+};
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUserState] = useState<User | null>(null);
   const [isLoadingAuth, setIsLoadingAuth] = useState(shouldEagerlyInitializeAuth);
@@ -154,6 +179,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const isLoading = isLoadingAuth;
   const isMutatingAuth = isAnyMutationPending;
+
+  useEffect(() => {
+    setPasswordInfo(derivePasswordInfo(user));
+    setIsLoadingPasswordInfo(false);
+  }, [user]);
 
   useEffect(() => {
     let unsubscribeFn: (() => void) | null = null;
@@ -204,13 +234,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             if (!persistedUser) {
               await setUser(dbUser);
             } else if (
-              isGoogleAuthUser(currentFirebaseUser) &&
               (
+                dbUser.authProvider !== persistedUser.authProvider ||
+                dbUser.passwordChangedAt !== persistedUser.passwordChangedAt ||
+                (
+                  isGoogleAuthUser(currentFirebaseUser) &&
+                  (
                 dbUser.uid !== persistedUser.uid ||
                 dbUser.email !== persistedUser.email ||
                 dbUser.name !== persistedUser.name ||
                 dbUser.username !== persistedUser.username ||
                 dbUser.image !== persistedUser.image
+                  )
+                )
               )
             ) {
               await setUser(dbUser);
@@ -345,9 +381,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const fetchPasswordInfo = useCallback(async () => {
     setIsLoadingPasswordInfo(true);
-    setPasswordInfo({ changedAt: null, daysSinceChange: null });
+    setPasswordInfo(derivePasswordInfo(user));
     setIsLoadingPasswordInfo(false);
-  }, []);
+  }, [user]);
 
   const uploadProfileImage = useCallback(async (imageFile: File) => {
     if (!user) return;

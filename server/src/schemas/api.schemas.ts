@@ -135,6 +135,13 @@ export const authDevVerifyParamsSchema = z.object({
   })
 });
 
+export const authPasswordResetMetadataSchema = z.object({
+  body: z.object({
+    email: z.string({ required_error: 'Email requerido' }).email('Email invalido'),
+    passwordChangedAt: z.string({ required_error: 'passwordChangedAt requerido' }).datetime('Fecha invalida'),
+  }),
+});
+
 export const paymentStatusParamsSchema = z.object({
   params: z.object({
     paymentId: z
@@ -156,6 +163,8 @@ export const userUpdateSchema = z.object({
     username: z.string().min(1, 'username invalido').max(120).optional(),
     name: z.string().min(1, 'name invalido').max(120).optional(),
     image: z.string().max(4000).optional(),
+    authProvider: z.enum(['password', 'google']).optional(),
+    passwordChangedAt: z.string().datetime('Fecha invalida').nullable().optional(),
     role: z.string().max(50).optional(),
     isActive: z.boolean().optional(),
     projectId: z.string().max(200).optional(),
