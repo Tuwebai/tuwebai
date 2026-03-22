@@ -21,6 +21,7 @@ const BlogArticlePage = lazy(() => import('@/app/router/blog/blog-article-page')
 
 const AuthActionPage = lazy(() => import('@/features/auth/components/auth-action-page'));
 const NewsletterConfirmPage = lazy(() => import('@/features/newsletter/components/newsletter-confirm-page'));
+const NewsletterConfirmationLandingPage = lazy(() => import('@/features/newsletter/components/newsletter-confirmation-landing-page'));
 const NewsletterUnsubscribePage = lazy(() => import('@/features/newsletter/components/newsletter-unsubscribe-page'));
 const UserDashboardPage = lazy(() => import('@/features/users/components/user-dashboard-page'));
 
@@ -55,6 +56,7 @@ export default function AppRoutes() {
       <Route path="/auth/action" element={<LazyRoute><AuthActionPage /></LazyRoute>} />
       <Route path="/auth/verify/:token" element={<LazyRoute><AuthActionPage /></LazyRoute>} />
       <Route path="/auth/reset-password" element={<LazyRoute><AuthActionPage /></LazyRoute>} />
+      <Route path="/newsletter/confirmacion" element={<LazyRoute><NewsletterConfirmationLandingPage /></LazyRoute>} />
       <Route path="/newsletter/confirm/:token" element={<LazyRoute><NewsletterConfirmPage /></LazyRoute>} />
       <Route path="/newsletter/unsubscribe/:token" element={<LazyRoute><NewsletterUnsubscribePage /></LazyRoute>} />
       <Route path="/panel" element={<Navigate to="/panel/perfil" replace />} />
