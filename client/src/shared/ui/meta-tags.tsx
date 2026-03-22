@@ -1,6 +1,13 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { TUWEBAI_WHATSAPP_TEL, TUWEBAI_WHATSAPP_URL, TUWEBAI_EMAIL, TUWEBAI_SITE_FULL_URL } from '@/shared/constants/contact';
+import {
+  TUWEBAI_EMAIL,
+  TUWEBAI_INSTAGRAM_URL,
+  TUWEBAI_LINKEDIN_URL,
+  TUWEBAI_SITE_FULL_URL,
+  TUWEBAI_WHATSAPP_TEL,
+  TUWEBAI_WHATSAPP_URL,
+} from '@/shared/constants/contact';
 
 interface MetaTagsProps {
   title: string;
@@ -82,25 +89,53 @@ const MetaTags: React.FC<MetaTagsProps> = ({
       {/* Schema.org structured data */}
       <script type="application/ld+json">
         {JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "Organization",
-          "name": "TuWeb.ai",
-          "url": TUWEBAI_SITE_FULL_URL,
-          "logo": `${TUWEBAI_SITE_FULL_URL}/logo-tuwebai.png`,
-          "description": "Agencia digital especializada en desarrollo web y marketing digital en Argentina",
-          "address": {
-            "@type": "PostalAddress",
-            "addressCountry": "AR"
+          '@context': 'https://schema.org',
+          '@type': 'LocalBusiness',
+          name: 'TuWebAI',
+          alternateName: ['TuWeb.ai', 'Tuweb AI'],
+          url: TUWEBAI_SITE_FULL_URL,
+          logo: `${TUWEBAI_SITE_FULL_URL}/logo-tuwebai.png`,
+          description:
+            'Agencia de desarrollo web profesional en Río Tercero, Córdoba. Webs comerciales, e-commerce y sistemas a medida para negocios argentinos.',
+          founder: {
+            '@type': 'Person',
+            name: 'Juan Esteban López Pachao',
+            alternateName: ['Juanchi', 'Juanchi López', 'juanchiidev'],
+            jobTitle: 'Fundador y Desarrollador Fullstack',
+            url: TUWEBAI_LINKEDIN_URL,
+            sameAs: [TUWEBAI_LINKEDIN_URL, TUWEBAI_INSTAGRAM_URL],
           },
-          "contactPoint": {
-            "@type": "ContactPoint",
-            "telephone": TUWEBAI_WHATSAPP_TEL,
-            "contactType": "customer service",
-            "email": TUWEBAI_EMAIL
+          address: {
+            '@type': 'PostalAddress',
+            streetAddress: 'Juan Larrea',
+            addressLocality: 'Río Tercero',
+            addressRegion: 'Córdoba',
+            addressCountry: 'AR',
+            postalCode: 'X5850',
           },
-          "sameAs": [
-            TUWEBAI_WHATSAPP_URL
-          ]
+          geo: {
+            '@type': 'GeoCoordinates',
+            latitude: -32.1731,
+            longitude: -64.1146,
+          },
+          telephone: TUWEBAI_WHATSAPP_TEL,
+          email: TUWEBAI_EMAIL,
+          openingHours: 'Mo-Sa 09:00-18:00',
+          priceRange: '$$',
+          currenciesAccepted: 'ARS',
+          paymentAccepted: 'MercadoPago, Transferencia bancaria',
+          areaServed: {
+            '@type': 'Country',
+            name: 'Argentina',
+          },
+          serviceType: [
+            'Desarrollo web',
+            'E-commerce',
+            'Sistemas web a medida',
+            'SEO técnico',
+            'Landing pages',
+          ],
+          sameAs: [TUWEBAI_WHATSAPP_URL, TUWEBAI_INSTAGRAM_URL, TUWEBAI_LINKEDIN_URL],
         })}
       </script>
       {structuredData && (
