@@ -1,6 +1,7 @@
 import MetaTags from '@/shared/ui/meta-tags';
 import AnimatedShape from '@/shared/ui/animated-shape';
 import RevealBlock from '@/shared/ui/reveal-block';
+import { Link } from 'react-router-dom';
 import {
   TUWEBAI_GITHUB_URL,
   TUWEBAI_LINKEDIN_URL,
@@ -423,6 +424,39 @@ export default function AboutPage() {
                 </a>
               </RevealBlock>
             </div>
+          </div>
+        </section>
+
+        <section className="bg-[#0a0a0f] py-16 sm:py-20">
+          <div className="container mx-auto px-4">
+            <RevealBlock
+              hiddenClassName="opacity-0 translate-y-8"
+              visibleClassName="opacity-100 translate-y-0"
+              className="mx-auto max-w-5xl rounded-[32px] border border-white/5 bg-[radial-gradient(circle_at_top,rgba(0,204,255,0.12),transparent_45%),radial-gradient(circle_at_bottom_right,rgba(153,51,255,0.12),transparent_35%),linear-gradient(180deg,rgba(18,18,31,0.96)_0%,rgba(10,10,15,0.98)_100%)] px-6 py-10 text-center sm:px-10 sm:py-14"
+            >
+              <h2 className="mx-auto max-w-3xl font-rajdhani text-3xl font-bold text-white sm:text-4xl md:text-5xl">
+                Si esto resuena con lo que necesita tu negocio, hablemos.
+              </h2>
+              <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-gray-300 sm:text-lg sm:leading-8">
+                La primera conversación es siempre sin cargo. Te decimos si podemos ayudarte y
+                cómo.
+              </p>
+
+              <div className="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
+                <Link
+                  to="/contacto"
+                  className="inline-flex min-h-12 items-center justify-center rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-6 py-3 font-semibold text-white shadow-[0_12px_30px_rgba(0,204,255,0.18)] transition-transform duration-200 hover:scale-[1.02]"
+                >
+                  Contar mi proyecto →
+                </Link>
+                <Link
+                  to="/?section=showroom"
+                  className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/10 bg-white/5 px-6 py-3 font-medium text-gray-200 transition-colors duration-200 hover:border-cyan-300/40 hover:text-white"
+                >
+                  Ver proyectos reales
+                </Link>
+              </div>
+            </RevealBlock>
           </div>
         </section>
       </div>
