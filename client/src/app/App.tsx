@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import AppProviders from '@/app/providers/AppProviders';
 import GlobalNavbar from '@/app/layout/global-navbar';
 import { ThirdPartyScriptManager } from '@/app/performance';
-import AppRoutes from '@/app/router/AppRoutes';
+import HomePage from '@/app/router/home/home-page';
 import analytics from '@/lib/analytics';
 import { runWhenIdle } from '@/lib/performance';
 import Footer from '@/shared/ui/footer';
@@ -12,11 +12,14 @@ import { SkipLink } from '@/shared/ui/skip-link';
 import { Toaster } from '@/shared/ui/toaster';
 
 const AuthenticatedAppRoot = lazy(() => import('@/app/authenticated-app-root'));
+const PublicRoutes = lazy(() => import('@/app/router/public-routes'));
 
 const shouldUseAuthenticatedShell = (pathname: string) =>
   pathname.startsWith('/panel') || pathname.startsWith('/auth/');
 
 function PublicShellFrame() {
+  const location = useLocation();
+
   if (typeof window !== 'undefined') {
     (window as Window & { isUsingGlobalNav?: boolean }).isUsingGlobalNav = true;
   }
@@ -26,7 +29,13 @@ function PublicShellFrame() {
       <ThirdPartyScriptManager />
       <SkipLink />
       <GlobalNavbar />
-      <AppRoutes />
+      {location.pathname === '/' ? (
+        <HomePage />
+      ) : (
+        <Suspense fallback={null}>
+          <PublicRoutes />
+        </Suspense>
+      )}
       <Footer />
       <Toaster />
     </>
