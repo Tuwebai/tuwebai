@@ -49,7 +49,7 @@ const TUWEBAI_WHATSAPP_NUMBER = '5493571417960';
 const EMAIL_BRAND_LOGO_CID = 'tuwebai-newsletter-logo';
 const EMAIL_BRAND_LOGO_PATH = path.resolve(process.cwd(), 'client/public/logo-tuwebai-email.png');
 
-const getContactTo = (): string => env.CONTACT_TO_EMAIL?.trim() || env.SMTP_USER?.trim() || 'tuwebai@gmail.com';
+const getContactTo = (): string => env.CONTACT_TO_EMAIL?.trim() || env.SMTP_USER?.trim() || 'hola@tuweb-ai.com';
 const getDefaultFrom = (): string =>
   `"${env.SMTP_FROM_NAME.trim()}" <${env.SMTP_FROM_EMAIL?.trim() || env.SMTP_USER?.trim() || 'no-reply@tuweb-ai.com'}>`;
 const getNewsletterFrom = (): string =>
