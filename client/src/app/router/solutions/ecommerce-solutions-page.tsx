@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { TUWEBAI_WHATSAPP_URL } from "@/shared/constants/contact";
 import WhatsAppButton from "@/shared/ui/whatsapp-button";
@@ -57,12 +56,7 @@ export default function Ecommerce() {
     <div className="ecommerce-page">
       <WhatsAppButton />
 
-      <motion.header
-        className="ecommerce-header"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
+      <header className="ecommerce-header animate-in fade-in slide-in-from-top-2 duration-500">
         <div className="container mx-auto">
           <div className="ecommerce-header-layout">
             <div className="ecommerce-header-copy">
@@ -77,52 +71,35 @@ export default function Ecommerce() {
               </p>
             </div>
 
-            <motion.div
-              className="ecommerce-hero-icon"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-            >
+            <div className="ecommerce-hero-icon animate-in fade-in zoom-in-95 duration-500">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-24 w-24 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
               </svg>
-            </motion.div>
+            </div>
           </div>
         </div>
-      </motion.header>
+      </header>
 
       <section className="ecommerce-section">
         <div className="container mx-auto">
-          <motion.div
-            className="ecommerce-intro"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
+          <div className="ecommerce-intro animate-in fade-in slide-in-from-bottom-2 duration-500">
             <h2 className="ecommerce-section-title">E-commerce listo para operar con confianza</h2>
             <p className="ecommerce-section-copy">
               Una tienda online no es solo un catálogo: es un sistema de ventas. En TuWeb.ai desarrollamos e-commerce profesionales con foco en experiencia de compra, performance y una operación ordenada, adaptados a distintos niveles de escala.
             </p>
-          </motion.div>
+          </div>
 
           <div className="ecommerce-block-spacing">
-            <motion.h3
-              className="ecommerce-section-title ecommerce-section-title--centered"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-            >
+            <h3 className="ecommerce-section-title ecommerce-section-title--centered animate-in fade-in duration-500">
               Ventajas de nuestras tiendas online
-            </motion.h3>
+            </h3>
 
             <div className="ecommerce-benefits-grid">
               {benefits.map((benefit, index) => (
-                <motion.div
+                <div
                   key={benefit.title}
-                  className="ecommerce-benefit-frame"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
+                  className="ecommerce-benefit-frame animate-in fade-in slide-in-from-bottom-2 duration-500"
+                  style={{ animationDelay: `${0.2 + index * 0.1}s` }}
                 >
                   <div className="ecommerce-benefit-card">
                     <div className="ecommerce-benefit-icon">
@@ -131,7 +108,7 @@ export default function Ecommerce() {
                     <h4 className="ecommerce-benefit-title">{benefit.title}</h4>
                     <p className="ecommerce-benefit-description">{benefit.description}</p>
                   </div>
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>
@@ -140,19 +117,17 @@ export default function Ecommerce() {
 
       <section className="ecommerce-section ecommerce-section--featured">
         <div className="container mx-auto">
-          <motion.div className="text-center mb-12" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }}>
+          <div className="mb-12 text-center animate-in fade-in duration-500">
             <h2 className="ecommerce-section-title ecommerce-section-title--centered">Casos destacados</h2>
             <p className="ecommerce-section-copy ecommerce-section-copy--centered">
               Proyectos reales con foco en operación y conversión.
             </p>
-          </motion.div>
+          </div>
 
           <div className="ecommerce-featured-grid">
-            <motion.div
-              className="ecommerce-featured-item"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
+            <div
+              className="ecommerce-featured-item animate-in fade-in slide-in-from-bottom-2 duration-500"
+              style={{ animationDelay: '0.3s' }}
             >
               <div className="ecommerce-featured-frame">
                 <div className="ecommerce-featured-card">
@@ -170,19 +145,14 @@ export default function Ecommerce() {
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
 
       <section className="ecommerce-section ecommerce-section--cta">
         <div className="container mx-auto">
-          <motion.div
-            className="ecommerce-cta"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
+          <div className="ecommerce-cta animate-in fade-in slide-in-from-bottom-2 duration-500">
             <h2 className="ecommerce-cta-title">Potenciá tus ventas online</h2>
             <p className="ecommerce-cta-copy">Convirtamos tu catálogo en una plataforma de ventas confiable.</p>
             <div className="ecommerce-cta-actions">
@@ -198,7 +168,7 @@ export default function Ecommerce() {
                 Contactar por WhatsApp
               </a>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
     </div>
