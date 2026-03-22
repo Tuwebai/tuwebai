@@ -253,8 +253,12 @@ export default function AboutPage() {
                 <RevealBlock delayMs={150}>
                   <aside className="rounded-2xl border border-white/5 bg-[#12121f] p-8">
                     <div className="flex items-center gap-4">
-                      <div className="flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-r from-cyan-400 to-violet-500 font-rajdhani text-2xl font-bold text-white">
-                        JL
+                      <div className="h-20 w-20 overflow-hidden rounded-full border border-white/10 bg-white/5">
+                        <img
+                          src="/image_perfil.webp"
+                          alt="Foto de perfil de Juan Esteban López"
+                          className="h-full w-full object-cover"
+                        />
                       </div>
                       <div>
                         <p className="font-rajdhani text-2xl font-bold text-white">
