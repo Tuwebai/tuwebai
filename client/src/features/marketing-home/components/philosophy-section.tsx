@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { Link } from 'react-router-dom';
 
 import AnimatedShape from '@/shared/ui/animated-shape';
 import RevealBlock from '@/shared/ui/reveal-block';
@@ -23,78 +24,93 @@ export default function PhilosophySection({ setRef }: PhilosophySectionProps) {
     >
       <AnimatedShape type={1} className="top-[30%] left-[-150px]" delay={5} />
 
-      <div className="container z-10 mx-auto grid items-center gap-10 px-3 py-14 sm:px-4 sm:py-16 md:grid-cols-2 md:gap-12">
-        <RevealBlock
-          hiddenClassName="opacity-0 -translate-x-8"
-          visibleClassName="opacity-100 translate-x-0"
-        >
-          <h2 className="mb-6 font-rajdhani text-3xl font-bold sm:text-4xl md:text-5xl">
+      <div className="container z-10 mx-auto px-3 py-14 sm:px-4 sm:py-16">
+        <div className="mb-10 max-w-4xl">
+          <h2 className="mb-5 font-rajdhani text-3xl font-bold sm:text-4xl md:text-5xl">
             <span className="gradient-text gradient-border inline-block pb-2">
-              Un enfoque web pensado para negocio, no para improvisar
+              Tu web deberia traerte clientes.
+              <br />
+              Si no lo hace, algo esta mal.
             </span>
           </h2>
 
-          <p className="mb-6 text-base font-medium leading-7 text-gray-200 sm:text-lg md:text-xl">
-            Disenamos, desarrollamos y optimizamos experiencias web que ayudan a vender mejor,
-            operar con mas claridad y transmitir una imagen profesional.
+          <p className="max-w-3xl text-base font-medium leading-7 text-gray-200 sm:text-lg md:text-xl">
+            Construimos sitios web para negocios argentinos que quieren vender online, no solo
+            existir. Codigo a medida, entrega en 2 a 4 semanas.
           </p>
+        </div>
 
-          <p className="mb-4 text-gray-300">
-            No trabajamos con recetas genericas ni con sitios que se ven bien pero no acompanan
-            al negocio. Cada proyecto se construye con foco en objetivos reales, estructura clara
-            y rendimiento.
-          </p>
+        <div className="grid items-start gap-10 md:grid-cols-2 md:gap-12">
+          <RevealBlock
+            hiddenClassName="opacity-0 -translate-x-8"
+            visibleClassName="opacity-100 translate-x-0"
+          >
+            <p className="mb-4 text-gray-300">
+              No trabajamos con templates ni con sitios que se ven bien en el portfolio pero no
+              generan una sola consulta.
+            </p>
 
-          <p className="mb-4 text-gray-300">
-            El objetivo no es solo publicar una web: es crear una plataforma digital seria,
-            confiable y preparada para crecer con tu empresa.
-          </p>
+            <p className="mb-6 text-gray-300">
+              Cada proyecto empieza entendiendo que necesita el negocio, no que esta de moda en
+              diseno web.
+            </p>
 
-          <div className="mb-2 inline-flex items-center space-x-3">
-            <div className="h-1 w-12 bg-[#00CCFF]" />
-            <span className="font-rajdhani text-sm uppercase tracking-wider text-gray-400">
-              Como trabajamos
-            </span>
-          </div>
+            <div className="mb-2 inline-flex items-center space-x-3">
+              <div className="h-1 w-12 bg-[#00CCFF]" />
+              <span className="font-rajdhani text-sm uppercase tracking-wider text-gray-400">
+                Como trabajamos
+              </span>
+            </div>
 
-          <ul className="mb-4 space-y-3">
-            <li className="text-gray-300">• Estrategia antes que decoracion</li>
-            <li className="text-gray-300">• Desarrollo web alineado al negocio</li>
-            <li className="text-gray-300">• Rendimiento, claridad y confianza</li>
-            <li className="text-gray-300">• Base preparada para escalar</li>
-          </ul>
-        </RevealBlock>
+            <ul className="mb-4 space-y-3">
+              <li className="text-gray-300">- Entendemos el negocio antes de disenar</li>
+              <li className="text-gray-300">- Mobile-first desde el primer wireframe</li>
+              <li className="text-gray-300">- Analytics configurado desde el dia 1</li>
+              <li className="text-gray-300">- Entrega en 2 a 4 semanas segun el proyecto</li>
+            </ul>
+          </RevealBlock>
 
-        <RevealBlock
-          hiddenClassName="opacity-0 translate-x-8"
-          visibleClassName="opacity-100 translate-x-0"
-          delayMs={160}
-        >
-          <div className="relative rounded-lg bg-gradient-to-br from-[#00CCFF] to-[#9933FF] p-1">
-            <div className="rounded-lg bg-[#0a0a0f] p-5 sm:p-8">
-              <h3 className="mb-4 font-rajdhani text-xl text-gray-100 sm:text-2xl">
-                Lo que resolvemos en proyectos reales
-              </h3>
-              <p className="mb-5 font-medium text-gray-200">
-                Muchas empresas ya tienen presencia online, pero no una web que realmente
-                acompane ventas, operacion y crecimiento.
-              </p>
-              <ul className="mb-4 space-y-3">
-                <li className="text-gray-300">• Sitios que no transmiten confianza ni profesionalismo</li>
-                <li className="text-gray-300">• Estructuras confusas que dificultan conversion y contacto</li>
-                <li className="text-gray-300">• Herramientas desconectadas del proceso comercial</li>
-                <li className="text-gray-300">• Tecnologia que se vuelve una carga en vez de una ventaja</li>
-              </ul>
-              <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-4">
-                <p className="text-sm leading-relaxed text-gray-300">
-                  Por eso trabajamos con una logica simple: entender el negocio, definir
-                  prioridades y construir una solucion web clara, rapida y lista para sostener
-                  crecimiento real.
+          <RevealBlock
+            hiddenClassName="opacity-0 translate-x-8"
+            visibleClassName="opacity-100 translate-x-0"
+            delayMs={160}
+          >
+            <div className="relative rounded-lg bg-gradient-to-br from-[#00CCFF] to-[#9933FF] p-1">
+              <div className="rounded-lg bg-[#0a0a0f] p-5 sm:p-8">
+                <p className="mb-5 font-medium leading-7 text-gray-200">
+                  Lo que vemos en el 80% de los sitios que nos llegan:
                 </p>
+                <ul className="mb-4 space-y-3">
+                  <li className="text-gray-300">- Diseno bonito que no convierte nada</li>
+                  <li className="text-gray-300">- Sin CTA visible en el primer scroll</li>
+                  <li className="text-gray-300">- Carga en mas de 4 segundos en celular</li>
+                  <li className="text-gray-300">- Sin analitica configurada</li>
+                </ul>
+                <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-4">
+                  <p className="text-sm leading-relaxed text-gray-300">
+                    El problema no es que tengas web. Es que tu web no esta trabajando para vos.
+                  </p>
+                  <p className="mt-4 text-sm leading-relaxed text-gray-300">
+                    Por eso trabajamos con una logica simple: entender el problema primero,
+                    construir la solucion despues.
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
-        </RevealBlock>
+          </RevealBlock>
+        </div>
+
+        <div className="mt-10 flex flex-col items-start gap-4 border-t border-white/10 pt-8 sm:flex-row sm:items-center sm:justify-between">
+          <p className="font-rajdhani text-2xl font-bold text-white sm:text-3xl">
+            Tu web tiene estos problemas?
+          </p>
+          <Link
+            to="/consulta"
+            className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-6 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(0,204,255,0.18)] transition-transform duration-200 hover:scale-[1.02]"
+          >
+            Diagnostico gratuito -&gt;
+          </Link>
+        </div>
       </div>
     </section>
   );
