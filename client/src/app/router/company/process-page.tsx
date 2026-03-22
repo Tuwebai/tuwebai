@@ -7,12 +7,82 @@ import { TUWEBAI_SITE_FULL_URL } from '@/shared/constants/contact';
 
 const PROCESS_PAGE_URL = `${TUWEBAI_SITE_FULL_URL}/proceso`;
 
-const PROCESS_OVERVIEW = [
-  { step: '01', title: 'Consulta inicial', duration: '1 día' },
-  { step: '02', title: 'Propuesta y alcance', duration: '1 a 2 días' },
-  { step: '03', title: 'Diseño y desarrollo', duration: '2 a 4 semanas' },
-  { step: '04', title: 'Revisión y ajustes', duration: '3 a 5 días' },
-  { step: '05', title: 'Lanzamiento y entrega', duration: '1 día' },
+interface ProcessTimelineItem {
+  step: string;
+  title: string;
+  duration: string;
+  summary: string;
+  whatHappens: string;
+  whatWeDo: string;
+  whatYouNeed: string;
+  deliverable: string;
+  highlight?: boolean;
+}
+
+const PROCESS_TIMELINE: ProcessTimelineItem[] = [
+  {
+    step: '01',
+    title: 'Consulta inicial',
+    duration: '1 día',
+    summary: 'Una llamada o chat de 20 a 30 minutos para entender el proyecto.',
+    whatHappens:
+      'Nos contás qué necesita tu negocio, qué problemas tenés hoy y qué esperás del proyecto.',
+    whatWeDo:
+      'Escuchamos, preguntamos lo que falta y evaluamos si realmente podemos ayudarte.',
+    whatYouNeed: 'Solo tu tiempo y claridad sobre el objetivo principal del proyecto.',
+    deliverable: 'Confirmación de si avanzamos y por qué sí o por qué no.',
+  },
+  {
+    step: '02',
+    title: 'Propuesta y alcance',
+    duration: '1 a 2 días',
+    summary: 'Definimos exactamente qué vamos a construir, cuánto cuesta y cuándo lo tenés.',
+    whatHappens:
+      'Todo queda por escrito: alcance, límites del proyecto, precio cerrado y tiempos reales.',
+    whatWeDo:
+      'Documentamos alcance, cronograma y precio sin estimaciones vagas ni promesas abiertas.',
+    whatYouNeed: 'Revisar la propuesta y confirmar o ajustar antes de arrancar.',
+    deliverable: 'Propuesta comercial escrita con alcance, precio y cronograma.',
+  },
+  {
+    step: '03',
+    title: 'Diseño y desarrollo',
+    duration: '2 a 4 semanas',
+    summary: 'Arranca el trabajo real: diseño, código, integraciones y analytics desde el día 1.',
+    whatHappens:
+      'Construimos el proyecto completo: interfaz, frontend, backend si aplica, contenido e integraciones.',
+    whatWeDo:
+      'Diseñamos y desarrollamos en una sola mano, con un punto de revisión intermedio para validar la dirección.',
+    whatYouNeed:
+      'Entregar textos, fotos y logo dentro de los primeros 3 días. Sin contenido no hay avance.',
+    deliverable: 'Sitio funcional listo para revisión completa.',
+    highlight: true,
+  },
+  {
+    step: '04',
+    title: 'Revisión y ajustes',
+    duration: '3 a 5 días',
+    summary: 'Revisás el sitio completo y consolidamos una ronda de cambios dentro del alcance.',
+    whatHappens:
+      'Nos marcás los ajustes necesarios con criterio de negocio y cerramos la versión final.',
+    whatWeDo:
+      'Implementamos la ronda de revisión incluida. Si algo queda fuera del alcance, te avisamos antes.',
+    whatYouNeed:
+      'Revisar con criterio: objetivo, recorrido del usuario, formularios y coherencia comercial.',
+    deliverable: 'Sitio aprobado por el cliente, listo para lanzar.',
+  },
+  {
+    step: '05',
+    title: 'Lanzamiento y entrega',
+    duration: '1 día',
+    summary: 'Publicamos el sitio y te entregamos el control total.',
+    whatHappens:
+      'Hacemos deploy en producción, chequeamos mobile y desktop, y liberamos todos los accesos.',
+    whatWeDo:
+      'Entregamos hosting, dominio, código fuente y analytics para que no dependas de nosotros.',
+    whatYouNeed: 'Validar que los accesos queden recibidos y que el sitio ya está online.',
+    deliverable: 'Sitio live y todos los accesos en tus manos.',
+  },
 ];
 
 export default function ProcessPage() {
@@ -77,24 +147,83 @@ export default function ProcessPage() {
             <div className="mx-auto max-w-6xl">
               <RevealBlock className="text-center">
                 <p className="mb-4 text-xs uppercase tracking-[0.24em] text-cyan-300">
-                  Vista general
+                  Línea de tiempo
                 </p>
                 <h2 className="font-rajdhani text-3xl font-bold text-white sm:text-4xl md:text-5xl">
-                  Las 5 etapas que vamos a desarrollar en esta página.
+                  Qué pasa en cada etapa, cuánto tarda y qué te llevás.
                 </h2>
               </RevealBlock>
 
-              <div className="mt-12 grid gap-4 md:grid-cols-5">
-                {PROCESS_OVERVIEW.map((item, index) => (
-                  <RevealBlock key={item.step} delayMs={index * 70}>
-                    <article className="h-full rounded-2xl border border-white/5 bg-[#12121f] p-5">
-                      <p className="text-xs uppercase tracking-[0.22em] text-cyan-300">
-                        Etapa {item.step}
-                      </p>
-                      <h3 className="mt-3 font-rajdhani text-2xl font-bold text-white">
-                        {item.title}
-                      </h3>
-                      <p className="mt-3 text-sm leading-6 text-gray-400">{item.duration}</p>
+              <div className="mt-12 space-y-5">
+                {PROCESS_TIMELINE.map((item, index) => (
+                  <RevealBlock key={item.step} delayMs={index * 80}>
+                    <article
+                      className={`relative overflow-hidden rounded-2xl border p-6 sm:p-7 ${
+                        item.highlight
+                          ? 'border-cyan-400/30 bg-[linear-gradient(180deg,rgba(12,20,37,0.94)_0%,rgba(16,16,28,0.98)_100%)] shadow-[0_20px_60px_rgba(0,204,255,0.08)]'
+                          : 'border-white/5 bg-[#12121f]'
+                      }`}
+                    >
+                      <div className="flex flex-col gap-5 lg:grid lg:grid-cols-[160px_minmax(0,1fr)] lg:gap-8">
+                        <div className="lg:border-r lg:border-white/10 lg:pr-6">
+                          <p className="text-xs uppercase tracking-[0.22em] text-cyan-300">
+                            Etapa {item.step}
+                          </p>
+                          <h3 className="mt-3 font-rajdhani text-3xl font-bold text-white">
+                            {item.title}
+                          </h3>
+                          <p className="mt-3 text-sm uppercase tracking-[0.18em] text-gray-400">
+                            Duración
+                          </p>
+                          <p className="mt-1 text-base font-medium text-gray-200">{item.duration}</p>
+                        </div>
+
+                        <div className="space-y-5">
+                          <p className="text-base leading-7 text-gray-200 sm:text-lg">
+                            {item.summary}
+                          </p>
+
+                          <div className="grid gap-4 md:grid-cols-2">
+                            <div className="rounded-xl border border-white/6 bg-white/[0.03] p-4">
+                              <p className="text-xs uppercase tracking-[0.2em] text-cyan-300">
+                                Qué pasa
+                              </p>
+                              <p className="mt-3 text-sm leading-7 text-gray-300">
+                                {item.whatHappens}
+                              </p>
+                            </div>
+
+                            <div className="rounded-xl border border-white/6 bg-white/[0.03] p-4">
+                              <p className="text-xs uppercase tracking-[0.2em] text-cyan-300">
+                                Qué hacemos nosotros
+                              </p>
+                              <p className="mt-3 text-sm leading-7 text-gray-300">
+                                {item.whatWeDo}
+                              </p>
+                            </div>
+                          </div>
+
+                          <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)]">
+                            <div className="rounded-xl border border-white/6 bg-white/[0.03] p-4">
+                              <p className="text-xs uppercase tracking-[0.2em] text-cyan-300">
+                                Qué necesitás vos
+                              </p>
+                              <p className="mt-3 text-sm leading-7 text-gray-300">
+                                {item.whatYouNeed}
+                              </p>
+                            </div>
+
+                            <div className="rounded-xl border border-cyan-400/15 bg-cyan-400/[0.06] p-4">
+                              <p className="text-xs uppercase tracking-[0.2em] text-cyan-300">
+                                Entregable
+                              </p>
+                              <p className="mt-3 text-sm leading-7 text-gray-200">
+                                {item.deliverable}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </article>
                   </RevealBlock>
                 ))}
