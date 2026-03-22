@@ -86,6 +86,37 @@ const PRINCIPLES = [
 
 const STACK_CHIPS = ['React', 'Node.js', 'Supabase', 'Firebase', 'Tailwind'];
 
+const FEATURED_PROJECTS = [
+  {
+    title: 'LH Decants',
+    category: 'E-commerce',
+    description:
+      'Tienda de decants con catálogo por mililitro, checkout con MercadoPago y panel de stock propio.',
+    stack: ['React', 'Node.js', 'MercadoPago'],
+    image: '/lhdecant-card.webp',
+    href: 'https://lhdecant.com/',
+    badge: 'Cliente',
+  },
+  {
+    title: 'SafeSpot',
+    category: 'Seguridad',
+    description:
+      'Plataforma colaborativa con alertas, reportes geolocalizados y seguimiento comunitario en tiempo real.',
+    stack: ['React', 'Supabase', 'Mapas'],
+    image: '/safespot.webp',
+    href: 'https://safespot.tuweb-ai.com/',
+  },
+  {
+    title: 'Captiva',
+    category: 'Landing Pages',
+    description:
+      'Sistema de demos y landings orientadas a conversión para negocios locales con propuesta comercial clara.',
+    stack: ['React', 'Tailwind', 'Vite'],
+    image: '/captiva.png',
+    href: 'https://captiva.tuweb-ai.com/captiva',
+  },
+];
+
 export default function AboutPage() {
   return (
     <>
@@ -302,6 +333,95 @@ export default function AboutPage() {
                   </aside>
                 </RevealBlock>
               </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-[#0f0f1a] py-16 sm:py-20">
+          <div className="container mx-auto px-4">
+            <div className="mx-auto max-w-6xl">
+              <RevealBlock className="text-center">
+                <p className="mb-4 text-xs uppercase tracking-[0.24em] text-cyan-300">
+                  Lo que construimos
+                </p>
+                <h2 className="font-rajdhani text-3xl font-bold text-white sm:text-4xl md:text-5xl">
+                  Proyectos reales.
+                  <br />
+                  Problemas reales resueltos.
+                </h2>
+                <p className="mx-auto mt-6 max-w-3xl text-base leading-7 text-gray-300 sm:text-lg sm:leading-8">
+                  Algunos propios, uno de cliente. Todos con código a medida y lógica de negocio
+                  pensada desde cero.
+                </p>
+              </RevealBlock>
+
+              <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+                {FEATURED_PROJECTS.map((project, index) => (
+                  <RevealBlock key={project.title} delayMs={index * 90}>
+                    <article className="overflow-hidden rounded-2xl border border-white/5 bg-[#12121f]">
+                      <div className="relative h-52 overflow-hidden">
+                        <img
+                          src={project.image}
+                          alt={project.title}
+                          className="h-full w-full object-cover"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0f]/90 via-transparent to-transparent" />
+                        <div className="absolute bottom-4 left-4 flex flex-wrap gap-2">
+                          <span className="rounded-full border border-white/10 bg-[#0a0a0f]/80 px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-gray-200">
+                            {project.category}
+                          </span>
+                          {project.badge ? (
+                            <span className="rounded-full border border-amber-400/20 bg-amber-400/10 px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-amber-200">
+                              {project.badge}
+                            </span>
+                          ) : null}
+                        </div>
+                      </div>
+
+                      <div className="p-6">
+                        <h3 className="font-rajdhani text-2xl font-bold text-white">
+                          {project.title}
+                        </h3>
+                        <p className="mt-4 text-base leading-7 text-gray-300">
+                          {project.description}
+                        </p>
+
+                        <div className="mt-5 flex flex-wrap gap-2">
+                          {project.stack.map((item) => (
+                            <span
+                              key={item}
+                              className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs uppercase tracking-[0.14em] text-gray-300"
+                            >
+                              {item}
+                            </span>
+                          ))}
+                        </div>
+
+                        <div className="mt-6">
+                          <a
+                            href={project.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center text-sm font-medium text-cyan-300 transition-colors hover:text-white"
+                          >
+                            Ver proyecto
+                            <span className="ml-2">→</span>
+                          </a>
+                        </div>
+                      </div>
+                    </article>
+                  </RevealBlock>
+                ))}
+              </div>
+
+              <RevealBlock className="mt-10 text-center" delayMs={200}>
+                <a
+                  href="/?section=showroom"
+                  className="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-6 py-3 font-medium text-white transition-colors hover:border-cyan-300/40 hover:text-cyan-200"
+                >
+                  Ver todos los proyectos →
+                </a>
+              </RevealBlock>
             </div>
           </div>
         </section>
