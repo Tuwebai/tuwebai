@@ -1,9 +1,7 @@
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, useLocation } from "react-router-dom";
 import { useEffect } from "react";
-import { QueryClientProvider } from "@tanstack/react-query";
 import App from "@/app/App";
-import { queryClient } from "@/lib/queryClient";
 import { startProductionNavigationDiagnostics, startWebVitalsTracking } from "@/lib/performance";
 import "./index.css";
 
@@ -51,11 +49,9 @@ if (!rootElement) {
 }
 
 const appTree = (
-  <QueryClientProvider client={queryClient}>
-    <BrowserRouter>
-      <AppWithScrollReset />
-    </BrowserRouter>
-  </QueryClientProvider>
+  <BrowserRouter>
+    <AppWithScrollReset />
+  </BrowserRouter>
 );
 
 if (rootElement.dataset.prerender) {

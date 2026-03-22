@@ -1,11 +1,12 @@
 import { Suspense, lazy, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import AppProviders from '@/app/providers/AppProviders';
 import GlobalNavbar from '@/app/layout/global-navbar';
 import { ThirdPartyScriptManager } from '@/app/performance';
 import HomePage from '@/app/router/home/home-page';
-import { AuthProvider } from '@/features/auth/context/AuthContext';
+import { ThemeProvider } from '@/core/theme/ThemeContext';
+import { PublicNavbarAuthProvider } from '@/features/auth/context/public-navbar-auth-provider';
+import { LoginModalProvider } from '@/features/auth/hooks/use-login-modal';
 import analytics from '@/lib/analytics';
 import { runWhenIdle } from '@/lib/performance';
 import Footer from '@/shared/ui/footer';
@@ -29,9 +30,9 @@ function PublicShellFrame() {
     <>
       <ThirdPartyScriptManager />
       <SkipLink />
-      <AuthProvider>
+      <PublicNavbarAuthProvider>
         <GlobalNavbar />
-      </AuthProvider>
+      </PublicNavbarAuthProvider>
       {location.pathname === '/' ? (
         <HomePage />
       ) : (
@@ -123,9 +124,11 @@ function PublicAppRoot() {
   }, [location]);
 
   return (
-    <AppProviders authMode="public">
+    <ThemeProvider>
+      <LoginModalProvider mountAuthProvider>
       <PublicShellFrame />
-    </AppProviders>
+      </LoginModalProvider>
+    </ThemeProvider>
   );
 }
 

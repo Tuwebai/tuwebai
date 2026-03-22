@@ -1,3 +1,4 @@
+import { AppQueryProvider } from '@/app/providers/app-query-provider';
 import LoginModal from '@/features/auth/components/LoginModal';
 import { AuthProvider } from '@/features/auth/context/AuthContext';
 
@@ -10,8 +11,10 @@ interface LoginModalAuthRuntimeProps {
 
 export default function LoginModalAuthRuntime(props: LoginModalAuthRuntimeProps) {
   return (
-    <AuthProvider>
-      <LoginModal {...props} />
-    </AuthProvider>
+    <AppQueryProvider>
+      <AuthProvider>
+        <LoginModal {...props} />
+      </AuthProvider>
+    </AppQueryProvider>
   );
 }

@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
+import { AppQueryProvider } from '@/app/providers/app-query-provider';
 import AppRoutes from '@/app/router/AppRoutes';
 import { MemoryManager, ThirdPartyScriptManager } from '@/app/performance';
 import { ThemeProvider } from '@/core/theme/ThemeContext';
@@ -144,12 +145,14 @@ function AuthenticatedAppShell() {
 
 export default function AuthenticatedAppRoot() {
   return (
-    <ThemeProvider>
-      <AuthProvider>
-        <LoginModalProvider>
-          <AuthenticatedAppShell />
-        </LoginModalProvider>
-      </AuthProvider>
-    </ThemeProvider>
+    <AppQueryProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <LoginModalProvider>
+            <AuthenticatedAppShell />
+          </LoginModalProvider>
+        </AuthProvider>
+      </ThemeProvider>
+    </AppQueryProvider>
   );
 }
