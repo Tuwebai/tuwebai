@@ -21,6 +21,19 @@ function getRadixChunkName(id: string): string | null {
   return `radix-${match[1]}`;
 }
 
+function isVendorModule(id: string): boolean {
+  const normalizedId = id.replace(/\\/g, "/");
+
+  return (
+    normalizedId.includes('/node_modules/react/') ||
+    normalizedId.includes('/node_modules/react-dom/') ||
+    normalizedId.includes('/node_modules/react-router/') ||
+    normalizedId.includes('/node_modules/react-router-dom/') ||
+    normalizedId.includes('/node_modules/@remix-run/router/') ||
+    normalizedId.includes('/node_modules/@tanstack/react-query/')
+  );
+}
+
 function blogContentPlugin(): Plugin {
   const docsDir = path.resolve(__dirname, "./docs-blogs");
   const markdownGlob = path.join(docsDir, "**/*.md");
@@ -131,6 +144,9 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id) {
+          if (isVendorModule(id)) {
+            return 'vendor';
+          }
           // Firebase SDK — chunk propio para no contaminar el bundle principal
           if (id.includes('node_modules/firebase') || id.includes('node_modules/@firebase')) {
             return 'firebase';
@@ -142,9 +158,8 @@ export default defineConfig({
           // Radix UI — chunk propio para componentes UI pesados
           const radixChunkName = getRadixChunkName(id);
           if (radixChunkName) {
-            return radixChunkName;
+            return 'radix';
           }
-          // Dejar que Vite maneje React, React-DOM, y React-Router nativamente
         },
       },
     },
