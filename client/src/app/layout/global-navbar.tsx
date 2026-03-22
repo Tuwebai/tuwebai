@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Instagram, Linkedin } from 'lucide-react';
 
-import { useIsMobile } from '@/core/hooks/use-mobile';
 import { useOptionalAuthState } from '@/features/auth/context/auth-context';
 import { scrollToHomeSection } from '@/features/marketing-home/utils/scroll-to-home-section';
 import {
@@ -49,7 +48,6 @@ export default function GlobalNavbar({ authMode = 'auto' }: GlobalNavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activePage, setActivePage] = useState('');
   const location = useLocation();
-  const isMobile = useIsMobile();
   const { isAuthenticated } = useOptionalAuthState();
   const shouldShowAuthenticatedActions = authMode === 'auto' && isAuthenticated;
 
@@ -75,6 +73,22 @@ export default function GlobalNavbar({ authMode = 'auto' }: GlobalNavbarProps) {
     handleScroll();
 
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const desktopQuery = window.matchMedia('(min-width: 1024px)');
+    const syncMenuState = (event: MediaQueryList | MediaQueryListEvent) => {
+      if (event.matches) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    syncMenuState(desktopQuery);
+    desktopQuery.addEventListener('change', syncMenuState);
+
+    return () => desktopQuery.removeEventListener('change', syncMenuState);
   }, []);
 
   const handleSectionSelect = (sectionId: string) => {
@@ -130,45 +144,40 @@ export default function GlobalNavbar({ authMode = 'auto' }: GlobalNavbarProps) {
               TuWeb<span className="text-[#00CCFF]">.ai</span>
             </Link>
 
-            {!isMobile ? (
-              <div className="hidden items-center space-x-4 text-xs text-gray-400 xl:flex">
-                <NavbarMetaLinks />
+            <div className="hidden items-center space-x-4 text-xs text-gray-400 xl:flex">
+              <NavbarMetaLinks />
+            </div>
+
+            <nav className="hidden min-w-0 items-center gap-4 lg:flex xl:gap-6">
+              <DesktopNavbarLinks
+                activePage={activePage}
+                onSectionSelect={handleSectionSelect}
+              />
+
+              <div className="relative z-20 flex shrink-0 flex-wrap items-center justify-end gap-2 xl:gap-3">
+                {navbarActions}
+
+                <Link
+                  to="/consulta"
+                  onMouseEnter={() => prefetchNavigationPath('/consulta')}
+                  onFocus={() => prefetchNavigationPath('/consulta')}
+                  onTouchStart={() => prefetchNavigationPath('/consulta')}
+                  className="rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-4 py-2 text-sm font-medium text-white shadow-lg shadow-[#00CCFF]/20 transition-all whitespace-nowrap hover:shadow-[#9933FF]/30 xl:px-5"
+                >
+                  Consultanos
+                </Link>
               </div>
-            ) : null}
+            </nav>
 
-            {!isMobile ? (
-              <nav className="hidden min-w-0 items-center gap-4 lg:flex xl:gap-6">
-                <DesktopNavbarLinks
-                  activePage={activePage}
-                  onSectionSelect={handleSectionSelect}
-                />
-
-                <div className="relative z-20 flex shrink-0 flex-wrap items-center justify-end gap-2 xl:gap-3">
-                  {navbarActions}
-
-                  <Link
-                    to="/consulta"
-                    onMouseEnter={() => prefetchNavigationPath('/consulta')}
-                    onFocus={() => prefetchNavigationPath('/consulta')}
-                    onTouchStart={() => prefetchNavigationPath('/consulta')}
-                    className="rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-4 py-2 text-sm font-medium text-white shadow-lg shadow-[#00CCFF]/20 transition-all whitespace-nowrap hover:shadow-[#9933FF]/30 xl:px-5"
-                  >
-                    Consultanos
-                  </Link>
-                </div>
-              </nav>
-            ) : null}
-
-            {isMobile ? (
-              <button
-                onClick={() => setIsMenuOpen(true)}
-                className="p-2 rounded-md text-gray-200 hover:bg-gray-800/30"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              </button>
-            ) : null}
+            <button
+              onClick={() => setIsMenuOpen(true)}
+              className="rounded-md p-2 text-gray-200 hover:bg-gray-800/30 lg:hidden"
+              aria-label="Abrir menu de navegacion"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
           </div>
         </div>
       </header>
