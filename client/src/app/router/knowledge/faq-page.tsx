@@ -29,7 +29,7 @@ const faqs: FAQ[] = [
   {
     id: 1,
     question: "¿Cuánto cuesta desarrollar un sitio web en TuWeb.ai?",
-    answer: "Nuestros precios en pesos argentinos son: Presencia Profesional $420.000 ARS, Web Comercial $780.000 ARS y Sistema a Medida desde $1.400.000 ARS. Los planes con precio fijo se pueden pagar online y comenzar hoy mismo; el sistema a medida requiere propuesta. El plan comercial incluye hosting y dominio profesional por 1 año.",
+    answer: "Nuestros precios en pesos argentinos son: Presencia Profesional $420.000 ARS, Web Comercial $780.000 ARS y Sistema a Medida desde $1.400.000 ARS. Los planes con precio fijo pueden iniciar con checkout online o coordinación directa según el caso; el sistema a medida requiere propuesta. El plan comercial incluye hosting y dominio profesional por 1 año.",
     category: 'precios',
     helpfulCount: 156,
     notHelpfulCount: 12,
@@ -42,7 +42,7 @@ const faqs: FAQ[] = [
   {
     id: 2,
     question: "¿Qué incluye cada plan de desarrollo web?",
-    answer: "Presencia Profesional: sitio institucional optimizado, diseño responsive, formulario de contacto, base SEO y entrega estimada en 7 días. Web Comercial: arquitectura pensada para conversión, integraciones clave, SEO base + estructura optimizada, analytics y hosting + dominio por 1 año. Sistema a Medida: paneles o módulos personalizados, integraciones externas y arquitectura escalable.",
+    answer: "Presencia Profesional: sitio institucional a medida, diseño responsive, formulario de contacto + WhatsApp, SEO base y analytics desde el día 1. Web Comercial: arquitectura pensada para convertir, formularios + automatizaciones, SEO técnico, analytics con seguimiento de conversiones y hosting + dominio por 1 año. Sistema a Medida: paneles o módulos personalizados, integraciones externas, arquitectura escalable y diagnóstico técnico incluido antes de arrancar.",
     category: 'servicios',
     helpfulCount: 134,
     notHelpfulCount: 8,
@@ -55,7 +55,7 @@ const faqs: FAQ[] = [
   {
     id: 3,
     question: "¿Cuánto tiempo tardan en desarrollar mi sitio web?",
-    answer: "En la mayoría de los casos: Presencia Profesional 7 días y Web Comercial 7–10 días. Para Sistema a Medida, el plazo depende del alcance y se define al cerrar la propuesta. Los tiempos incluyen diseño, desarrollo, pruebas y lanzamiento.",
+    answer: "En la mayoría de los casos: Presencia Profesional 2 a 3 semanas y Web Comercial 3 a 4 semanas. Para Sistema a Medida, el plazo depende del alcance y se define en la consulta inicial. Los tiempos incluyen diseño, desarrollo, pruebas y lanzamiento.",
     category: 'desarrollo',
     helpfulCount: 98,
     notHelpfulCount: 6,
@@ -617,4 +617,5 @@ export default function FAQ() {
     </main>
   );
 }
+
 
