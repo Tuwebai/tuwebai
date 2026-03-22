@@ -386,55 +386,60 @@ export default function ChecklistWebGratisPage() {
 
             <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
               <div className="space-y-4">
-                {CHECKLIST_CATEGORIES.map((category, categoryIndex) => (
-                  <Card
-                    key={category.id}
-                    className="border-white/10 bg-[#10111a]/92 text-white shadow-[0_20px_50px_rgba(0,0,0,0.18)]"
-                  >
-                    <CardHeader className="space-y-3">
-                      <div className="flex items-center gap-3">
-                        <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#00CCFF]/25 bg-[#00CCFF]/10 text-sm font-semibold text-[#9BE7FF]">
-                          {categoryIndex + 1}
+                <Accordion type="multiple" className="space-y-4">
+                  {CHECKLIST_CATEGORIES.map((category, categoryIndex) => (
+                    <AccordionItem
+                      key={category.id}
+                      value={category.id}
+                      className="overflow-hidden rounded-[24px] border border-white/10 bg-[#10111a]/92 text-white shadow-[0_20px_50px_rgba(0,0,0,0.18)]"
+                    >
+                      <AccordionTrigger className="px-6 py-5 text-left hover:no-underline">
+                        <span className="flex items-center gap-3 pr-4">
+                          <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#00CCFF]/25 bg-[#00CCFF]/10 text-sm font-semibold text-[#9BE7FF]">
+                            {categoryIndex + 1}
+                          </span>
+                          <span className="font-rajdhani text-2xl font-bold">{category.title}</span>
                         </span>
-                        <CardTitle className="font-rajdhani text-2xl">{category.title}</CardTitle>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      {category.items.map((item, itemIndex) => {
-                        const itemId = `${category.id}-${itemIndex}`;
-                        const checked = Boolean(checkedItems[itemId]);
+                      </AccordionTrigger>
+                      <AccordionContent className="px-6 pb-6">
+                        <div className="space-y-4">
+                          {category.items.map((item, itemIndex) => {
+                            const itemId = `${category.id}-${itemIndex}`;
+                            const checked = Boolean(checkedItems[itemId]);
 
-                        return (
-                          <label
-                            key={itemId}
-                            htmlFor={itemId}
-                            className={cn(
-                              'flex cursor-pointer items-start gap-3 rounded-2xl border px-4 py-3 transition-colors',
-                              checked
-                                ? 'border-[#00CCFF]/45 bg-[#00CCFF]/10'
-                                : 'border-white/8 bg-white/[0.02] hover:border-[#00CCFF]/30',
-                            )}
-                          >
-                            <Checkbox
-                              id={itemId}
-                              checked={checked}
-                              onCheckedChange={(value) => handleToggleItem(itemId, value === true)}
-                              className="mt-1 h-5 w-5 border-[#00CCFF]/60 data-[state=checked]:bg-[#00CCFF] data-[state=checked]:text-[#0a0a0f]"
-                            />
-                            <span
-                              className={cn(
-                                'text-sm leading-7 text-gray-200 sm:text-base',
-                                checked && 'text-white line-through decoration-[#00CCFF]/60 decoration-2',
-                              )}
-                            >
-                              {item}
-                            </span>
-                          </label>
-                        );
-                      })}
-                    </CardContent>
-                  </Card>
-                ))}
+                            return (
+                              <label
+                                key={itemId}
+                                htmlFor={itemId}
+                                className={cn(
+                                  'flex cursor-pointer items-start gap-3 rounded-2xl border px-4 py-3 transition-colors',
+                                  checked
+                                    ? 'border-[#00CCFF]/45 bg-[#00CCFF]/10'
+                                    : 'border-white/8 bg-white/[0.02] hover:border-[#00CCFF]/30',
+                                )}
+                              >
+                                <Checkbox
+                                  id={itemId}
+                                  checked={checked}
+                                  onCheckedChange={(value) => handleToggleItem(itemId, value === true)}
+                                  className="mt-1 h-5 w-5 border-[#00CCFF]/60 data-[state=checked]:bg-[#00CCFF] data-[state=checked]:text-[#0a0a0f]"
+                                />
+                                <span
+                                  className={cn(
+                                    'text-sm leading-7 text-gray-200 sm:text-base',
+                                    checked && 'text-white line-through decoration-[#00CCFF]/60 decoration-2',
+                                  )}
+                                >
+                                  {item}
+                                </span>
+                              </label>
+                            );
+                          })}
+                        </div>
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
               </div>
 
               <aside className="space-y-5 lg:sticky lg:top-28 lg:self-start">
