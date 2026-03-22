@@ -1,8 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+
 import { useIntersectionObserver } from '@/core/hooks/use-intersection-observer';
 import PaymentErrorDialog from '@/features/payments/components/payment-error-dialog';
 import PaymentModalFrame from '@/features/payments/components/payment-modal-frame';
-import { createPreferenceWithRetry, getPaymentsErrorMessage } from '@/features/payments/services/payments.service';
+import {
+  createPreferenceWithRetry,
+  getPaymentsErrorMessage,
+} from '@/features/payments/services/payments.service';
 import type { PaymentPlan } from '@/features/payments/types';
 
 interface PricingPlan {
@@ -23,57 +27,63 @@ const pricingPlans: PricingPlan[] = [
   {
     id: 'plan-1',
     title: 'Presencia Profesional',
-    intro: 'Para negocios que necesitan una web clara para empezar a recibir consultas',
+    intro:
+      'Para el negocio que necesita presencia profesional en Google y empezar a recibir consultas.',
     price: '$420.000 ARS',
     includes: [
-      'Sitio institucional optimizado para presentar tu negocio',
-      'Diseño responsive (móvil + desktop)',
-      'Formulario de contacto y CTA configurados',
-      'Base SEO para aparecer en Google',
-      'Entrega estimada: 7 días',
+      'Sitio institucional a medida',
+      'Diseño responsive (mobile + desktop)',
+      'Formulario de contacto + WhatsApp',
+      'SEO base para aparecer en Google',
+      'Analytics configurado desde el día 1',
     ],
-    cta: 'Crear mi web base →',
+    delivery: '2 a 3 semanas',
+    cta: 'Quiero esta web →',
     plan: 'esencial',
     checkoutIncludes: [
-      'Sitio institucional optimizado para presentar tu negocio',
-      'Diseño responsive (móvil + desktop)',
-      'Formulario de contacto y CTA configurados',
+      'Sitio institucional a medida',
+      'Diseño responsive (mobile + desktop)',
+      'Formulario de contacto + WhatsApp',
     ],
   },
   {
     id: 'plan-2',
     title: 'Web Comercial',
-    intro: 'Web diseñada para vender y generar clientes',
+    intro:
+      'Para el negocio que quiere que su web genere consultas de forma consistente.',
     price: '$780.000 ARS',
     includes: [
-      'Arquitectura web pensada para conversión',
-      'Integración de formularios y automatizaciones',
-      'SEO base + estructura optimizada',
-      'Integración de analytics',
+      'Arquitectura pensada para convertir',
+      'Formularios + automatizaciones',
+      'SEO técnico + estructura optimizada',
+      'Analytics + seguimiento de conversiones',
       'Hosting + dominio profesional por 1 año',
     ],
-    delivery: '7–10 días',
+    delivery: '3 a 4 semanas',
     cta: 'Lanzar mi web comercial →',
     badge: '⭐ Más elegido por negocios',
     highlight: true,
     plan: 'avanzado',
     checkoutIncludes: [
-      'web completa',
-      'hosting + dominio',
-      'SEO base',
+      'Arquitectura pensada para convertir',
+      'Formularios + automatizaciones',
+      'Hosting + dominio profesional por 1 año',
     ],
   },
   {
     id: 'plan-3',
     title: 'Sistema a Medida',
-    intro: 'Para proyectos con lógica o funcionalidades personalizadas',
+    intro:
+      'Para el negocio que necesita algo que no existe todavía: paneles, flujos, integraciones propias.',
     price: 'Desde $1.400.000',
     includes: [
       'Paneles o módulos personalizados',
       'Integraciones con sistemas externos',
       'Arquitectura escalable',
-      'Desarrollo orientado a crecimiento',
+      'Desarrollo orientado al crecimiento',
+      'Diagnóstico técnico incluido antes de arrancar',
     ],
+    delivery: 'Según alcance definido en la consulta inicial',
     cta: 'Solicitar propuesta →',
   },
 ];
@@ -114,9 +124,13 @@ function PricingCard({ plan, delay, isProcessing, onCheckout, onProposal }: Pric
       )}
 
       <div className="flex min-h-[180px] flex-col">
-        <h3 className="font-rajdhani text-[1.65rem] font-bold leading-tight text-white sm:text-[1.9rem]">{plan.title}</h3>
+        <h3 className="font-rajdhani text-[1.65rem] font-bold leading-tight text-white sm:text-[1.9rem]">
+          {plan.title}
+        </h3>
         <p className="mt-3 text-sm leading-6 text-gray-300">{plan.intro}</p>
-        <p className="mt-5 font-rajdhani text-[1.9rem] font-bold text-white sm:text-[2.15rem]">{plan.price}</p>
+        <p className="mt-5 font-rajdhani text-[1.9rem] font-bold text-white sm:text-[2.15rem]">
+          {plan.price}
+        </p>
       </div>
 
       <div className="mt-5 flex-1">
@@ -132,7 +146,9 @@ function PricingCard({ plan, delay, isProcessing, onCheckout, onProposal }: Pric
 
       {plan.delivery && (
         <div className="mt-5 rounded-2xl border border-gray-800 bg-[#0d0e14] px-4 py-3">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300">Entrega estimada</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300">
+            Entrega estimada
+          </p>
           <p className="mt-2 text-sm text-white">{plan.delivery}</p>
         </div>
       )}
@@ -147,8 +163,8 @@ function PricingCard({ plan, delay, isProcessing, onCheckout, onProposal }: Pric
           {isProcessing ? 'Preparando checkout...' : plan.cta}
         </button>
         <div className="mt-3 text-xs uppercase tracking-[0.18em] text-gray-400">
-          <p>Pago seguro con MercadoPago</p>
-          <p>Tarjeta o transferencia</p>
+          <p>PAGO CON MERCADOPAGO</p>
+          <p>TARJETA O TRANSFERENCIA</p>
         </div>
       </div>
     </article>
@@ -161,8 +177,10 @@ interface PricingSectionProps {
 
 export default function PricingSection({ setRef }: PricingSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
-  const { ref: titleRef, hasIntersected: titleVisible } = useIntersectionObserver<HTMLDivElement>();
-  const { ref: subtitleRef, hasIntersected: subtitleVisible } = useIntersectionObserver<HTMLDivElement>();
+  const { ref: titleRef, hasIntersected: titleVisible } =
+    useIntersectionObserver<HTMLDivElement>();
+  const { ref: subtitleRef, hasIntersected: subtitleVisible } =
+    useIntersectionObserver<HTMLDivElement>();
   const [processingPlan, setProcessingPlan] = useState<PaymentPlan | null>(null);
   const [retryPlan, setRetryPlan] = useState<PaymentPlan | null>(null);
   const [paymentError, setPaymentError] = useState<string | null>(null);
@@ -188,7 +206,9 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
       }
       window.location.assign(response.init_point);
     } catch (error: unknown) {
-      setPaymentError(getPaymentsErrorMessage(error, 'No se pudo iniciar el pago online en este momento.'));
+      setPaymentError(
+        getPaymentsErrorMessage(error, 'No se pudo iniciar el pago online en este momento.'),
+      );
       setErrorOpen(true);
     } finally {
       setProcessingPlan(null);
@@ -229,7 +249,9 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
         >
           <h2 className="font-rajdhani text-3xl font-bold sm:text-4xl md:text-5xl">
             <span className="gradient-text gradient-border inline-block pb-2">
-              Planes para lanzar o escalar tu presencia web
+              Tres planes. Precios claros.
+              <br />
+              Sin sorpresas al final del proyecto.
             </span>
           </h2>
         </div>
@@ -242,9 +264,9 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
           style={{ transitionDelay: '120ms' }}
         >
           <p className="text-base leading-7 text-gray-300 sm:text-xl sm:leading-8">
-            Elegí el nivel de desarrollo que necesita tu negocio.
+            Elegí el punto de partida para tu negocio.
             <br />
-            Podés pagar online y comenzar hoy mismo.
+            La consulta inicial siempre es sin cargo.
           </p>
         </div>
 
@@ -264,7 +286,7 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
 
       <PaymentModalFrame
         open={Boolean(checkoutPlan)}
-        title={checkoutSummary?.title ?? 'Estas contratando'}
+        title={checkoutSummary?.title ?? 'Estás contratando'}
         onClose={() => setCheckoutPlan(null)}
         size="wide"
       >
@@ -279,13 +301,16 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
               </p>
               {checkoutSummary.delivery && (
                 <p className="mt-2">
-                  Entrega estimada: <span className="font-semibold text-white">{checkoutSummary.delivery}</span>
+                  Entrega estimada:{' '}
+                  <span className="font-semibold text-white">{checkoutSummary.delivery}</span>
                 </p>
               )}
             </div>
 
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300">Incluye</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300">
+                Incluye
+              </p>
               <ul className="mt-3 space-y-2 text-sm text-gray-300">
                 {checkoutSummary.includes.map((item) => (
                   <li key={item} className="flex items-start gap-3">
@@ -326,4 +351,3 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
     </section>
   );
 }
-
