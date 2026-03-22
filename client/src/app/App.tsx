@@ -5,6 +5,7 @@ import AppProviders from '@/app/providers/AppProviders';
 import GlobalNavbar from '@/app/layout/global-navbar';
 import { ThirdPartyScriptManager } from '@/app/performance';
 import HomePage from '@/app/router/home/home-page';
+import { AuthProvider } from '@/features/auth/context/AuthContext';
 import analytics from '@/lib/analytics';
 import { runWhenIdle } from '@/lib/performance';
 import Footer from '@/shared/ui/footer';
@@ -28,7 +29,9 @@ function PublicShellFrame() {
     <>
       <ThirdPartyScriptManager />
       <SkipLink />
-      <GlobalNavbar />
+      <AuthProvider>
+        <GlobalNavbar />
+      </AuthProvider>
       {location.pathname === '/' ? (
         <HomePage />
       ) : (
