@@ -1,8 +1,83 @@
 import { Suspense, lazy } from 'react';
+import { Link } from 'react-router-dom';
+
 import { useIntersectionObserver } from '@/core/hooks/use-intersection-observer';
-import { TUWEBAI_EMAIL, TUWEBAI_SITE_FULL_URL, TUWEBAI_SITE_URL } from '@/shared/constants/contact';
+import {
+  TUWEBAI_CAPTIVA_URL,
+  TUWEBAI_EMAIL,
+  TUWEBAI_GITHUB_URL,
+  TUWEBAI_INSTAGRAM_URL,
+  TUWEBAI_LINKEDIN_URL,
+  TUWEBAI_LOCATION,
+  TUWEBAI_WHATSAPP_DISPLAY,
+  TUWEBAI_WHATSAPP_TEL,
+} from '@/shared/constants/contact';
 
 const NewsletterForm = lazy(() => import('@/features/newsletter/components/newsletter-form'));
+
+interface FooterLink {
+  label: string;
+  href: string;
+  external?: boolean;
+}
+
+const footerColumns: Array<{ title: string; links: FooterLink[] }> = [
+  {
+    title: 'Servicios',
+    links: [
+      { label: 'Webs corporativas', href: '/corporativos' },
+      { label: 'E-commerce', href: '/ecommerce' },
+      { label: 'Sistemas a medida', href: '/consulta' },
+      { label: 'Captiva', href: TUWEBAI_CAPTIVA_URL, external: true },
+      { label: 'Contacto', href: '/contacto' },
+    ],
+  },
+  {
+    title: 'Empresa',
+    links: [
+      { label: 'Nosotros', href: '/?section=philosophy' },
+      { label: 'Proceso', href: '/?section=process' },
+      { label: 'Stack tecnológico', href: '/servicios/desarrollo-web' },
+      { label: 'Casos de éxito', href: '/?section=showroom' },
+    ],
+  },
+  {
+    title: 'Recursos',
+    links: [
+      { label: 'Blog', href: '/blog' },
+      { label: 'FAQ', href: '/faq' },
+      { label: 'Diagnóstico gratuito', href: '/consulta' },
+      { label: 'Checklist web gratis', href: '/blog' },
+      { label: 'Recursos', href: '/blog' },
+    ],
+  },
+  {
+    title: 'Legal',
+    links: [
+      { label: 'Privacidad', href: '/politica-privacidad' },
+      { label: 'Términos', href: '/terminos-condiciones' },
+      { label: 'Cookies', href: '/politica-cookies' },
+    ],
+  },
+];
+
+function FooterNavLink({ link }: { link: FooterLink }) {
+  const className = 'transition-colors hover:text-white';
+
+  if (link.external) {
+    return (
+      <a href={link.href} target="_blank" rel="noopener noreferrer" className={className}>
+        {link.label}
+      </a>
+    );
+  }
+
+  return (
+    <Link to={link.href} className={className}>
+      {link.label}
+    </Link>
+  );
+}
 
 function DeferredFooterNewsletter() {
   const { ref, hasIntersected } = useIntersectionObserver<HTMLDivElement>({
@@ -10,12 +85,20 @@ function DeferredFooterNewsletter() {
   });
 
   return (
-    <div ref={ref} className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+    <div
+      ref={ref}
+      className="rounded-3xl border border-white/10 bg-[linear-gradient(180deg,rgba(18,18,26,0.9)_0%,rgba(11,11,17,0.96)_100%)] p-5"
+    >
       <p className="mb-2 text-[11px] uppercase tracking-[0.22em] text-[#9BE7FF]">Newsletter</p>
-      <p className="mb-3 text-xs leading-6 text-gray-400">Recibi nuevas publicaciones y analisis de conversion.</p>
+      <p className="mb-3 text-sm leading-6 text-gray-400">
+        Recibí publicaciones, análisis y recursos concretos sobre conversión web para negocios en
+        Argentina.
+      </p>
 
       {hasIntersected ? (
-        <Suspense fallback={<div className="h-[74px] w-full rounded-lg border border-white/10 bg-[#0a0a0f]/40" />}>
+        <Suspense
+          fallback={<div className="h-[74px] w-full rounded-lg border border-white/10 bg-[#0a0a0f]/40" />}
+        >
           <NewsletterForm
             source="footer"
             className="text-xs"
@@ -32,75 +115,88 @@ function DeferredFooterNewsletter() {
 }
 
 export default function Footer() {
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer className="relative z-10 animate-fadeIn border-t border-gray-800 bg-[#0a0a0f] pb-8 pt-10 text-sm text-gray-400 sm:pt-12">
       <div className="container mx-auto px-3 sm:px-4">
-        <div className="mb-10 grid gap-8 sm:gap-10 md:grid-cols-2 xl:grid-cols-4">
-          <div>
-            <h3 className="mb-4 font-rajdhani text-lg font-bold text-white">TuWeb.ai</h3>
-            <p className="mb-4">Creando experiencias web inteligentes para marcas que buscan destacar en el entorno digital.</p>
-            <DeferredFooterNewsletter />
-          </div>
+        <div className="mb-10 grid gap-8 border-b border-gray-800/80 pb-10 lg:grid-cols-[minmax(0,1.4fr)_minmax(340px,0.9fr)] lg:items-start">
+          <div className="max-w-2xl">
+            <h3 className="mb-4 font-rajdhani text-2xl font-bold text-white">TuWeb.ai</h3>
+            <p className="max-w-xl text-base leading-7 text-gray-300">
+              Desarrollo web profesional para negocios argentinos que quieren vender online.
+            </p>
 
-          <div>
-            <h3 className="mb-4 font-rajdhani text-lg font-bold text-white">Servicios</h3>
-            <ul className="space-y-2">
-              <li><a href="/servicios/desarrollo-web" className="transition-colors hover:text-[#00CCFF]">Desarrollo Web</a></li>
-              <li><a href="/contacto" className="transition-colors hover:text-[#00CCFF]">Contacto</a></li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="mb-4 font-rajdhani text-lg font-bold text-white">Enlaces rapidos</h3>
-            <ul className="space-y-2">
-              <li><a href="/faq" className="transition-colors hover:text-[#9933FF]">Preguntas Frecuentes</a></li>
-              <li><a href="/blog/" className="transition-colors hover:text-[#9933FF]">Blog</a></li>
-              <li><a href="/contacto" className="transition-colors hover:text-[#9933FF]">Contacto</a></li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="mb-4 font-rajdhani text-lg font-bold text-white">Contacto</h3>
-            <div className="space-y-2">
-              <div className="flex items-start space-x-3">
-                <svg xmlns="http://www.w3.org/2000/svg" className="mt-0.5 h-5 w-5 text-[#00CCFF]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-                <div>
-                  <p className="text-gray-300">Email:</p>
-                  <a href={`mailto:${TUWEBAI_EMAIL}`} className="transition-colors hover:text-[#00CCFF]">{TUWEBAI_EMAIL}</a>
-                </div>
-              </div>
-
-              <div className="flex items-start space-x-3">
-                <svg xmlns="http://www.w3.org/2000/svg" className="mt-0.5 h-5 w-5 text-[#9933FF]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
-                </svg>
-                <div>
-                  <p className="text-gray-300">Web:</p>
-                  <a
-                    href={TUWEBAI_SITE_FULL_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="transition-colors hover:text-[#9933FF]"
-                  >
-                    {TUWEBAI_SITE_URL}
-                  </a>
-                </div>
-              </div>
+            <div className="mt-6 space-y-3 text-sm text-gray-300">
+              <p>📍 {TUWEBAI_LOCATION}</p>
+              <p>
+                📧{' '}
+                <a href={`mailto:${TUWEBAI_EMAIL}`} className="transition-colors hover:text-white">
+                  {TUWEBAI_EMAIL}
+                </a>
+              </p>
+              <p>
+                📱{' '}
+                <a href={`tel:${TUWEBAI_WHATSAPP_TEL}`} className="transition-colors hover:text-white">
+                  {TUWEBAI_WHATSAPP_DISPLAY}
+                </a>
+              </p>
             </div>
           </div>
+
+          <DeferredFooterNewsletter />
         </div>
 
-        <div className="mb-4 flex flex-col items-center justify-between gap-4 border-t border-gray-800 pt-8 md:flex-row md:gap-6">
-          <div className="flex flex-col items-center gap-2 text-center sm:flex-row sm:text-left">
-            <img src="/logo-tuwebai.png" alt="Logo TuWeb.ai" className="h-8 w-8" />
-            <span className="text-sm text-gray-400">© 2024 TuWeb.ai. Todos los derechos reservados.</span>
+        <div className="grid gap-8 border-b border-gray-800/80 py-10 sm:grid-cols-2 xl:grid-cols-4">
+          {footerColumns.map((column) => (
+            <div key={column.title}>
+              <h4 className="mb-4 font-rajdhani text-lg font-bold uppercase tracking-[0.12em] text-white">
+                {column.title}
+              </h4>
+              <ul className="space-y-3">
+                {column.links.map((link) => (
+                  <li key={link.label}>
+                    <FooterNavLink link={link} />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        <div className="flex flex-col gap-5 pt-8 md:flex-row md:items-end md:justify-between">
+          <div className="space-y-2">
+            <p className="text-sm text-gray-300">
+              © {currentYear} TuWebAI · Desarrollo web profesional
+            </p>
+            <p className="text-sm text-gray-400">Hecho en Córdoba, Argentina 🇦🇷</p>
           </div>
-          <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-center md:justify-end">
-            <a href="/terminos-condiciones" className="transition-colors hover:text-[#9933FF]">Terminos y condiciones</a>
-            <a href="/politica-privacidad" className="transition-colors hover:text-[#00CCFF]">Politica de privacidad</a>
-            <a href="/politica-cookies" className="transition-colors hover:text-[#00CCFF]">Cookies</a>
+
+          <div className="flex flex-wrap gap-5 text-sm text-gray-300">
+            <a
+              href={TUWEBAI_LINKEDIN_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-white"
+            >
+              LinkedIn
+            </a>
+            <a
+              href={TUWEBAI_INSTAGRAM_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-white"
+            >
+              Instagram
+            </a>
+            <a
+              href={TUWEBAI_GITHUB_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-white"
+            >
+              GitHub
+            </a>
           </div>
         </div>
       </div>
