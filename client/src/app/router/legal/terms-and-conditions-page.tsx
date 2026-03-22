@@ -1,7 +1,7 @@
-import { Helmet } from 'react-helmet';
 import { useEffect, useState } from 'react';
 import PageBanner from '@/shared/ui/page-banner';
-import { TUWEBAI_SITE_URL } from '@/shared/constants/contact';
+import MetaTags from '@/shared/ui/meta-tags';
+import { TUWEBAI_SITE_FULL_URL, TUWEBAI_SITE_URL } from '@/shared/constants/contact';
 import { 
   ChevronRight, 
   Info, 
@@ -79,10 +79,13 @@ export default function TerminosCondiciones() {
 
   return (
     <>
-      <Helmet>
-        <title>Términos y Condiciones | TuWeb.ai</title>
-        <meta name="description" content="Términos y condiciones de uso de los servicios de TuWeb.ai" />
-      </Helmet>
+      <MetaTags
+        title="Términos y Condiciones"
+        description="Leé las condiciones de uso, contratación, pagos y propiedad intelectual que rigen los servicios de TuWebAI."
+        keywords="términos y condiciones, contratación web, pagos TuWebAI, propiedad intelectual"
+        url={`${TUWEBAI_SITE_FULL_URL}/terminos`}
+        ogType="website"
+      />
 
       {/* Native Scroll Wrapper */}
       <div className="bg-[#080810] min-h-screen">

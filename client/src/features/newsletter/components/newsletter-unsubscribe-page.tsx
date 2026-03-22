@@ -50,8 +50,8 @@ export default function NewsletterUnsubscribePage() {
   return (
     <main className="min-h-screen bg-[#060913] px-6 py-16 text-white">
       <MetaTags
-        title="Baja de newsletter | TuWeb.ai"
-        description="Gestiona la baja del newsletter de TuWeb.ai."
+        title="Baja de newsletter"
+        description="Gestioná la baja del newsletter de TuWeb.ai."
         robots="noindex,follow"
       />
 

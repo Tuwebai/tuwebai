@@ -181,8 +181,9 @@ export default function AuthActionPage() {
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(34,211,238,0.16),_transparent_32%),linear-gradient(180deg,_#020617_0%,_#0f172a_45%,_#111827_100%)] px-4 pb-10 pt-28 text-white sm:px-6 sm:pb-12 sm:pt-32 lg:px-8 lg:pt-40">
       <MetaTags
-        title="Acciones de cuenta | TuWeb.ai"
+        title="Acciones de cuenta"
         description="Gestioná la verificación de correo y el restablecimiento de contraseña de tu cuenta TuWeb.ai."
+        robots="noindex,follow"
       />
 
       <div className="mx-auto w-full max-w-[1120px]">

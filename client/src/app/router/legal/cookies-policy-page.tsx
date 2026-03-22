@@ -1,7 +1,7 @@
-import { Helmet } from 'react-helmet';
 import { useEffect, useState } from 'react';
 import PageBanner from '@/shared/ui/page-banner';
-import { TUWEBAI_EMAIL } from '@/shared/constants/contact';
+import MetaTags from '@/shared/ui/meta-tags';
+import { TUWEBAI_EMAIL, TUWEBAI_SITE_FULL_URL } from '@/shared/constants/contact';
 import { 
   ChevronRight, 
   Cookie, 
@@ -69,10 +69,13 @@ export default function PoliticaCookies() {
 
   return (
     <>
-      <Helmet>
-        <title>Política de Cookies | TuWeb.ai</title>
-        <meta name="description" content="Información sobre las cookies utilizadas en el sitio web de TuWeb.ai" />
-      </Helmet>
+      <MetaTags
+        title="Política de Cookies"
+        description="Información técnica sobre las cookies que usa TuWebAI, para qué sirven y cómo podés administrarlas."
+        keywords="política de cookies, cookies TuWebAI, cookies sitio web, preferencias de cookies"
+        url={`${TUWEBAI_SITE_FULL_URL}/cookies`}
+        ogType="website"
+      />
 
       <div className="bg-[#080810] min-h-screen">
         <PageBanner 

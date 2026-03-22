@@ -1,7 +1,11 @@
-import { Helmet } from 'react-helmet';
 import { useEffect, useState } from 'react';
 import PageBanner from '@/shared/ui/page-banner';
-import { TUWEBAI_WHATSAPP_DISPLAY, TUWEBAI_EMAIL } from '@/shared/constants/contact';
+import MetaTags from '@/shared/ui/meta-tags';
+import {
+  TUWEBAI_WHATSAPP_DISPLAY,
+  TUWEBAI_EMAIL,
+  TUWEBAI_SITE_FULL_URL,
+} from '@/shared/constants/contact';
 import { 
   ChevronRight, 
   UserCheck, 
@@ -80,13 +84,13 @@ export default function PrivacyPolicyPage() {
 
   return (
     <>
-      <Helmet>
-        <title>Política de Privacidad | TuWeb.ai</title>
-        <meta
-          name="description"
-          content="Política de privacidad y tratamiento de datos personales de TuWeb.ai"
-        />
-      </Helmet>
+      <MetaTags
+        title="Política de Privacidad"
+        description="Conocé cómo TuWebAI recopila, usa y protege tus datos personales al navegar o contratar nuestros servicios."
+        keywords="política de privacidad, protección de datos, tratamiento de datos personales, TuWebAI"
+        url={`${TUWEBAI_SITE_FULL_URL}/privacidad`}
+        ogType="website"
+      />
 
       {/* Native Scroll Wrapper */}
       <div className="bg-[#080810] min-h-screen">

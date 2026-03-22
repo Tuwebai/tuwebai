@@ -52,8 +52,8 @@ export default function NewsletterConfirmPage() {
   return (
     <main className="min-h-screen bg-[#060913] px-6 py-16 text-white">
       <MetaTags
-        title="Confirmacion de newsletter | TuWeb.ai"
-        description="Confirma tu suscripcion al newsletter de TuWeb.ai."
+        title="Confirmación de newsletter"
+        description="Confirmá tu suscripción al newsletter de TuWeb.ai."
         robots="noindex,follow"
       />
 
