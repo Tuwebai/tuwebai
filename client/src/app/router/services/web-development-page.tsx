@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import AnimatedShape from '@/shared/ui/animated-shape';
 import '@/app/router/services/service-detail-page.css';
@@ -21,11 +20,7 @@ export default function DesarrolloWeb() {
         
         <div className="service-detail-hero-inner container mx-auto px-4">
           <div className="service-detail-hero-stack">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-            >
+            <div className="animate-in fade-in slide-in-from-bottom-2 duration-700">
               <Link to="/" className="service-detail-back-link">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -41,15 +36,13 @@ export default function DesarrolloWeb() {
                 Sitios web de alto rendimiento diseñados para convertir visitantes en clientes
               </p>
               
-              <motion.a 
+              <a
                 href="#contacto" 
-                className="service-detail-primary-cta"
-                whileHover={{ scale: 1.05 }}
-                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                className="service-detail-primary-cta transition-transform duration-200 hover:scale-[1.05]"
               >
                 Solicitar presupuesto
-              </motion.a>
-            </motion.div>
+              </a>
+            </div>
           </div>
         </div>
       </section>
