@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { getContactErrorMessage, submitContactForm } from '@/features/contact/services/contact.service';
 import { Input } from '@/shared/ui/input';
+import MetaTags from '@/shared/ui/meta-tags';
 import { Textarea } from '@/shared/ui/textarea';
 
 export default function SupportContactPage() {
@@ -41,7 +42,16 @@ export default function SupportContactPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-[#0a0a0f] to-[#18181b] p-4">
+    <>
+      <MetaTags
+        title="Contacto"
+        description="Consulta gratuita sin compromiso. Contanos qué necesita tu negocio y te respondemos en menos de 24 horas. Río Tercero, Córdoba. Atención lunes a sábado."
+        keywords="contacto TuWebAI, consulta gratuita, proyecto web, Río Tercero, Córdoba"
+        url="https://tuweb-ai.com/contacto"
+        ogType="website"
+        ogImage="/logo-tuwebai.png"
+      />
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-[#0a0a0f] to-[#18181b] p-4">
       <div className="bg-[#18181b] rounded-xl shadow-lg p-8 max-w-md w-full flex flex-col items-center">
         <h1 className="text-3xl font-bold text-[#00ccff] mb-2 font-rajdhani">Contacto de Soporte</h1>
         <p className="text-gray-400 mb-6 text-center">¿Tenés dudas, problemas o necesitás ayuda? Completá el formulario y nuestro equipo de soporte te responderá a la brevedad.</p>
@@ -74,7 +84,8 @@ export default function SupportContactPage() {
           </button>
         </form>
       </div>
-    </div>
+      </div>
+    </>
   );
 }
 

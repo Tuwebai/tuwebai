@@ -5,9 +5,10 @@ export default function HomePage() {
   return (
     <>
       <MetaTags
-        title="TuWeb.ai | Sitios web para negocios que quieren vender más online"
-        description="Construimos sitios web, e-commerce y sistemas a medida para negocios argentinos que necesitan vender online, generar consultas y crecer con código real."
-        keywords="desarrollo web argentina, sitios web para negocios, ecommerce argentina, sistemas a medida, diseño web argentina, landing pages, React, Node.js, TuWeb.ai"
+        title="TuWebAI | Desarrollo Web Profesional para Negocios Argentinos"
+        description="Construimos sitios web a medida para negocios argentinos que quieren vender online. Webs comerciales, e-commerce y sistemas web. Sin templates. Código real. Río Tercero, Córdoba."
+        keywords="desarrollo web Argentina, sitios web para negocios, e-commerce Argentina, sistemas web a medida, desarrollo web Córdoba, TuWebAI"
+        url="https://tuweb-ai.com/"
         ogImage="/logo-tuwebai.png"
         ogType="website"
         twitterCard="summary_large_image"

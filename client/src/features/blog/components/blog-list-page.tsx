@@ -18,9 +18,9 @@ export default function BlogListPage() {
   return (
     <>
       <MetaTags
-        title="Blog de Desarrollo Web y Conversion"
-        description="Guias de TuWeb.ai sobre conversion web, SEO tecnico y crecimiento digital para negocios en Argentina."
-        keywords="blog desarrollo web argentina, blog conversion web, seo tecnico argentina, tuwebai blog"
+        title="Blog"
+        description="Artículos sobre desarrollo web, conversión, SEO y marketing digital para negocios argentinos. Sin relleno, solo información útil."
+        keywords="blog desarrollo web Argentina, conversión web, SEO técnico Argentina, marketing digital, TuWebAI"
         url={pageUrl}
         ogType="website"
         structuredData={[

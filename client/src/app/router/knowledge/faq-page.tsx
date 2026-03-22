@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import AnimatedShape from '@/shared/ui/animated-shape';
+import MetaTags from '@/shared/ui/meta-tags';
 import { useToast } from '@/shared/ui/use-toast';
 import { TUWEBAI_EMAIL } from '@/shared/constants/contact';
 // Tipo para las categorías de preguntas
@@ -294,7 +295,16 @@ export default function FAQ() {
   };
 
   return (
-    <main className="bg-[#0a0a0f] text-white min-h-screen">
+    <>
+      <MetaTags
+        title="Preguntas Frecuentes"
+        description="Respondemos las dudas más comunes antes de arrancar: tiempos de entrega, precios, qué incluye cada plan y qué pasa después del lanzamiento."
+        keywords="preguntas frecuentes TuWebAI, tiempos de entrega, precios desarrollo web, planes web, soporte"
+        url="https://tuweb-ai.com/faq"
+        ogType="website"
+        ogImage="/logo-tuwebai.png"
+      />
+      <main className="bg-[#0a0a0f] text-white min-h-screen">
       {/* Hero Section */}
       <section className="relative bg-gradient-1 pt-24 pb-16">
         <AnimatedShape type={1} className="top-[10%] right-[-150px]" delay={1} />
@@ -614,7 +624,8 @@ export default function FAQ() {
           </div>
         </div>
       </section>
-    </main>
+      </main>
+    </>
   );
 }
 
