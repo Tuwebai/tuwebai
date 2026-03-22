@@ -124,8 +124,8 @@ export default function ImpactSection({ setRef }: ImpactSectionProps) {
           style={{ transitionDelay: '200ms' }}
         >
           <p className="text-base leading-7 text-gray-300 sm:text-lg sm:leading-8">
-            Estas no son promesas de marketing. Son las condiciones con las que trabajamos
-            todos los proyectos, con todos los clientes.
+            Estas no son promesas de marketing. Son las condiciones con las que trabajamos todos
+            los proyectos, con todos los clientes.
           </p>
 
           <div className="mt-8 transition-transform duration-200 hover:scale-[1.03]">

@@ -373,7 +373,9 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
             <div
               key={project.id}
               className={`h-full cursor-pointer overflow-hidden rounded-xl border border-gray-800 bg-[#121217] transition-all duration-500 ${
-                hasShownProjects ? 'translate-y-0 opacity-100 hover:-translate-y-1' : 'translate-y-5 opacity-0'
+                hasShownProjects
+                  ? 'translate-y-0 opacity-100 hover:-translate-y-1'
+                  : 'translate-y-5 opacity-0'
               }`}
               style={{ transitionDelay: `${300 + index * 100}ms` }}
               onClick={() => handleProjectClick(project)}
@@ -461,10 +463,13 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
                 selectedProjectIndex >= 0 && selectedProjectIndex < filteredProjects.length - 1
               }
               prevLabel={
-                selectedProjectIndex > 0 ? filteredProjects[selectedProjectIndex - 1].title : undefined
+                selectedProjectIndex > 0
+                  ? filteredProjects[selectedProjectIndex - 1].title
+                  : undefined
               }
               nextLabel={
-                selectedProjectIndex >= 0 && selectedProjectIndex < filteredProjects.length - 1
+                selectedProjectIndex >= 0 &&
+                selectedProjectIndex < filteredProjects.length - 1
                   ? filteredProjects[selectedProjectIndex + 1].title
                   : undefined
               }
@@ -480,7 +485,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
             ¿Tenés un proyecto en mente?
           </p>
           <p className="mx-auto mb-6 mt-4 max-w-2xl text-gray-300">
-            Contanos qué necesita tu negocio y te decimos si podemos construirlo y cómo.
+            Contanos qué necesita tu negocio y te decimos si podemos construirlo, y cómo.
           </p>
 
           <div className="transition-transform duration-200 hover:scale-[1.05]">
@@ -488,7 +493,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
               to="/consulta"
               className="inline-block rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-8 py-4 font-medium text-white shadow-lg hover:shadow-[#00CCFF]/20"
             >
-              Quiero una solución similar -&gt;
+              Quiero una solución similar →
             </Link>
           </div>
         </div>

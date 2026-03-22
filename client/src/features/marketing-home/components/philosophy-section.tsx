@@ -108,7 +108,7 @@ export default function PhilosophySection({ setRef }: PhilosophySectionProps) {
             to="/consulta"
             className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-6 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(0,204,255,0.18)] transition-transform duration-200 hover:scale-[1.02]"
           >
-            Diagnóstico gratuito -&gt;
+            Diagnóstico gratuito →
           </Link>
         </div>
       </div>

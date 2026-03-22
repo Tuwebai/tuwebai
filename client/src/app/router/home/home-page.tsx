@@ -5,9 +5,9 @@ export default function HomePage() {
   return (
     <>
       <MetaTags
-        title="TuWeb.ai - Desarrollo Web Profesional para Negocios en Argentina"
-        description="Desarrollamos sitios web, e-commerce y sistemas web para negocios que necesitan una presencia digital profesional, confiable y preparada para vender."
-        keywords="desarrollo web argentina, desarrollo web profesional, sitios web para negocios, ecommerce argentina, sistemas web, diseno web profesional, React, Node.js, TuWeb.ai"
+        title="TuWeb.ai | Sitios web para negocios que quieren vender más online"
+        description="Construimos sitios web, e-commerce y sistemas a medida para negocios argentinos que necesitan vender online, generar consultas y crecer con código real."
+        keywords="desarrollo web argentina, sitios web para negocios, ecommerce argentina, sistemas a medida, diseño web argentina, landing pages, React, Node.js, TuWeb.ai"
         ogImage="/logo-tuwebai.png"
         ogType="website"
         twitterCard="summary_large_image"

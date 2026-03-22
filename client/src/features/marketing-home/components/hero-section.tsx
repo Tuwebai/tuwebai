@@ -13,9 +13,9 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
   const [activeMessageIndex, setActiveMessageIndex] = useState(0);
   const heroMessages = useMemo(
     () => [
-      'Creamos sitios web, e-commerce y sistemas web que transmiten confianza y convierten visitas en oportunidades reales.',
-      'Tu negocio necesita una presencia digital seria, rápida y preparada para crecer sin improvisaciones.',
-      'Trabajamos con foco en negocio, rendimiento y una experiencia web profesional de punta a punta.',
+      'Construimos sitios web para negocios argentinos que necesitan vender más online, no solo existir.',
+      'Código a medida, foco en conversión y una base sólida para que tu negocio crezca sin improvisaciones.',
+      'Sitios corporativos, e-commerce y sistemas web pensados para generar consultas y sostener operación real.',
     ],
     [],
   );
@@ -72,7 +72,7 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
       <div className="container mx-auto z-10 px-4 text-center" style={{ opacity: heroOpacity }}>
         <div className="mb-5 inline-flex max-w-full items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs text-gray-300 sm:px-4 sm:text-sm lg:backdrop-blur-sm">
           <span className="h-2 w-2 rounded-full bg-[#00CCFF] shadow-[0_0_10px_rgba(0,204,255,0.8)]" />
-          <span className="font-medium">Diseñamos el futuro de tu negocio</span>
+          <span className="font-medium">Código a medida para negocios argentinos</span>
         </div>
 
         <div className="mb-6">
@@ -83,13 +83,17 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
           </div>
 
           <h1 className="mx-auto max-w-5xl font-rajdhani text-[2.35rem] font-bold leading-[0.98] sm:text-5xl md:text-6xl xl:text-7xl">
-            <span className="text-white">Desarrollo web profesional para negocios que quieren </span>
-            <span className="gradient-text">vender mejor online</span>
+            <span className="text-white">Tu web debería traerte clientes.</span>
+            <br />
+            <span className="gradient-text">Si no lo hace, algo está mal.</span>
           </h1>
         </div>
 
         <div className="mx-auto mb-8 min-h-[6.5rem] max-w-4xl px-2 font-rajdhani text-base text-gray-300 sm:min-h-[5rem] sm:text-lg md:min-h-[3.5rem] md:px-0 md:text-2xl">
-          <p key={heroMessages[activeMessageIndex]} className="mx-auto max-w-4xl text-gray-300 transition-opacity duration-300 ease-in-out">
+          <p
+            key={heroMessages[activeMessageIndex]}
+            className="mx-auto max-w-4xl text-gray-300 transition-opacity duration-300 ease-in-out"
+          >
             {heroMessages[activeMessageIndex]}
           </p>
         </div>
@@ -115,9 +119,15 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
         </div>
 
         <div className="flex flex-wrap items-center justify-center gap-2 text-sm text-gray-300 sm:gap-3">
-          <span className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs sm:px-4 sm:text-sm">Sitios corporativos</span>
-          <span className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs sm:px-4 sm:text-sm">E-commerce</span>
-          <span className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs sm:px-4 sm:text-sm">Sistemas web</span>
+          <span className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs sm:px-4 sm:text-sm">
+            Sitios corporativos
+          </span>
+          <span className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs sm:px-4 sm:text-sm">
+            E-commerce
+          </span>
+          <span className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs sm:px-4 sm:text-sm">
+            Sistemas web
+          </span>
         </div>
 
         <div className="mt-10">
@@ -132,8 +142,19 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
             <span className="mr-2 text-gray-300 transition-colors duration-300 hover:text-[#00CCFF]">
               Conocer cómo trabajamos
             </span>
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 animate-bounce text-[#00CCFF]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6 animate-bounce text-[#00CCFF]"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 14l-7 7m0 0l-7-7m7 7V3"
+              />
             </svg>
           </ScrollLink>
         </div>

@@ -14,7 +14,7 @@ export const HOME_SECTIONS: HomeSectionItem[] = [
   { id: 'process', label: 'Proceso' },
   { id: 'showroom', label: 'Proyectos' },
   { id: 'pricing', label: 'Planes' },
-  { id: 'impact', label: 'Impacto' },
+  { id: 'impact', label: 'Diferenciales' },
   { id: 'contact', label: 'Contacto' },
 ];
 
@@ -45,8 +45,6 @@ export function useHomeSectionNavigation() {
     const sectionParam = searchParams.get('section');
     const hashSection = location.hash ? location.hash.substring(1) : null;
     const targetSection = hashSection || sectionParam;
-
-
 
     if (targetSection && HOME_SECTIONS.some((section) => section.id === targetSection)) {
       let attempts = 0;

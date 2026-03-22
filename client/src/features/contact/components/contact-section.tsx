@@ -44,7 +44,7 @@ function ContactForm({ delay }: ContactFormProps) {
     if (!formState.email.trim()) {
       newErrors.email = 'El email es requerido';
     } else if (!/\S+@\S+\.\S+/.test(formState.email)) {
-      newErrors.email = 'El email no es valido';
+      newErrors.email = 'El email no es válido';
     }
 
     if (!formState.message.trim()) {
@@ -108,7 +108,7 @@ function ContactForm({ delay }: ContactFormProps) {
           title: 'Error al enviar',
           description: getContactErrorMessage(
             error,
-            'Ha ocurrido un problema al enviar tu mensaje. Por favor, intentalo de nuevo.',
+            'Ha ocurrido un problema al enviar tu mensaje. Por favor, inténtalo de nuevo.',
           ),
           variant: 'destructive',
         });
@@ -178,7 +178,7 @@ function ContactForm({ delay }: ContactFormProps) {
               className={`w-full resize-none rounded-lg border bg-[#0a0a0f]/70 px-4 py-3 text-white transition-all duration-200 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#00CCFF] ${
                 errors.message ? 'border-red-500' : 'border-gray-700'
               }`}
-              placeholder="Tu mensaje aqui..."
+              placeholder="Tu mensaje aquí..."
             />
             {errors.message && <p className="mt-1 text-xs text-red-500">{errors.message}</p>}
           </div>
@@ -221,7 +221,9 @@ function ContactInfo({ delay }: ContactInfoProps) {
 
       <div className="mb-8 space-y-4">
         <div className="flex items-center space-x-3">
-          <span className="text-lg">📱</span>
+          <span className="text-lg" aria-hidden="true">
+            📱
+          </span>
           <a
             href={`tel:${TUWEBAI_WHATSAPP_TEL}`}
             className="text-gray-300 transition-colors hover:text-white"
@@ -231,7 +233,9 @@ function ContactInfo({ delay }: ContactInfoProps) {
         </div>
 
         <div className="flex items-center space-x-3">
-          <span className="text-lg">📧</span>
+          <span className="text-lg" aria-hidden="true">
+            📧
+          </span>
           <a
             href={`mailto:${TUWEBAI_EMAIL}`}
             className="text-gray-300 transition-colors hover:text-white"
@@ -241,7 +245,9 @@ function ContactInfo({ delay }: ContactInfoProps) {
         </div>
 
         <div className="flex items-center space-x-3">
-          <span className="text-lg">🕐</span>
+          <span className="text-lg" aria-hidden="true">
+            🕐
+          </span>
           <span className="text-gray-300">{TUWEBAI_BUSINESS_HOURS}</span>
         </div>
       </div>
@@ -253,12 +259,8 @@ function ContactInfo({ delay }: ContactInfoProps) {
       <ul className="space-y-3">
         <li className="text-gray-300">→ Te respondemos en menos de 24hs</li>
         <li className="text-gray-300">→ Una llamada o chat de 20 minutos para entender tu proyecto</li>
-        <li className="text-gray-300">
-          → Te decimos si podemos ayudarte y cómo, sin rodeos
-        </li>
-        <li className="text-gray-300">
-          → Presupuesto cerrado por escrito antes de que pagues un peso
-        </li>
+        <li className="text-gray-300">→ Te decimos si podemos ayudarte y cómo, sin rodeos</li>
+        <li className="text-gray-300">→ Presupuesto cerrado por escrito antes de que pagues un peso</li>
       </ul>
 
       <div className="mt-8 border-t border-gray-800 pt-4">

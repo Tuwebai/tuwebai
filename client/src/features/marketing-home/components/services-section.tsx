@@ -13,12 +13,14 @@ function ServiceCard({ title, description, icon, delayMs }: ServiceCardProps) {
   return (
     <RevealBlock className="h-full" delayMs={delayMs}>
       <div className="h-full rounded-xl bg-gradient-to-br from-[#00CCFF]/10 to-[#9933FF]/10 p-[1px]">
-        <div className="flex h-full flex-col rounded-xl bg-[#121217] p-5 sm:p-6 transition-transform duration-300 hover:scale-[1.01]">
+        <div className="flex h-full flex-col rounded-xl bg-[#121217] p-5 transition-transform duration-300 hover:scale-[1.01] sm:p-6">
           <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF]">
             {icon}
           </div>
 
-          <h3 className="mb-3 font-rajdhani text-xl font-bold text-white sm:text-[1.35rem]">{title}</h3>
+          <h3 className="mb-3 font-rajdhani text-xl font-bold text-white sm:text-[1.35rem]">
+            {title}
+          </h3>
 
           <div className="flex-grow text-gray-300">{description}</div>
         </div>
@@ -59,7 +61,7 @@ export default function ServicesSection({ setRef }: ServicesSectionProps) {
         <div className="mx-auto grid max-w-6xl gap-8 md:grid-cols-2 xl:grid-cols-3">
           <ServiceCard
             title="Sitios corporativos"
-            description={(
+            description={
               <>
                 <p className="leading-7">
                   Para el negocio que necesita transmitir seriedad y generar consultas desde
@@ -69,18 +71,29 @@ export default function ServicesSection({ setRef }: ServicesSectionProps) {
                   Diseño a medida · SEO técnico · Entrega en 2 semanas
                 </p>
               </>
-            )}
+            }
             delayMs={80}
-            icon={(
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            icon={
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-7 w-7 text-white"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                />
               </svg>
-            )}
+            }
           />
 
           <ServiceCard
             title="E-commerce"
-            description={(
+            description={
               <>
                 <p className="leading-7">
                   Para el negocio que quiere vender online con MercadoPago integrado y sin
@@ -90,18 +103,29 @@ export default function ServicesSection({ setRef }: ServicesSectionProps) {
                   Carrito · Pagos · Panel de stock · Mobile-first
                 </p>
               </>
-            )}
+            }
             delayMs={180}
-            icon={(
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+            icon={
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-7 w-7 text-white"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                />
               </svg>
-            )}
+            }
           />
 
           <ServiceCard
             title="Sistemas a medida"
-            description={(
+            description={
               <>
                 <p className="leading-7">
                   Para el negocio que necesita algo que no existe: paneles, flujos,
@@ -111,13 +135,24 @@ export default function ServicesSection({ setRef }: ServicesSectionProps) {
                   Diagnóstico gratuito incluido antes de arrancar
                 </p>
               </>
-            )}
+            }
             delayMs={280}
-            icon={(
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            icon={
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-7 w-7 text-white"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                />
               </svg>
-            )}
+            }
           />
         </div>
 
