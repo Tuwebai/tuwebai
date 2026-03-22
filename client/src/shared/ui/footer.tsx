@@ -87,10 +87,10 @@ function DeferredFooterNewsletter() {
   return (
     <div
       ref={ref}
-      className="rounded-3xl border border-white/10 bg-[linear-gradient(180deg,rgba(18,18,26,0.9)_0%,rgba(11,11,17,0.96)_100%)] p-5"
+      className="w-full max-w-[420px] justify-self-start rounded-3xl border border-white/10 bg-[linear-gradient(180deg,rgba(18,18,26,0.9)_0%,rgba(11,11,17,0.96)_100%)] p-5 lg:justify-self-end"
     >
       <p className="mb-2 text-[11px] uppercase tracking-[0.22em] text-[#9BE7FF]">Newsletter</p>
-      <p className="mb-3 text-sm leading-6 text-gray-400">
+      <p className="mb-4 text-sm leading-6 text-gray-400">
         Recibí publicaciones, análisis y recursos concretos sobre conversión web para negocios en
         Argentina.
       </p>
@@ -101,10 +101,10 @@ function DeferredFooterNewsletter() {
         >
           <NewsletterForm
             source="footer"
-            className="text-xs"
+            className="w-full"
             buttonText="Sumarme"
             inputPlaceholder="Tu email"
-            disclaimerClassName="text-gray-500"
+            disclaimerClassName="text-left text-gray-500"
           />
         </Suspense>
       ) : (
@@ -120,7 +120,7 @@ export default function Footer() {
   return (
     <footer className="relative z-10 animate-fadeIn border-t border-gray-800 bg-[#0a0a0f] pb-8 pt-10 text-sm text-gray-400 sm:pt-12">
       <div className="container mx-auto px-3 sm:px-4">
-        <div className="mb-10 grid gap-8 border-b border-gray-800/80 pb-10 lg:grid-cols-[minmax(0,1.4fr)_minmax(340px,0.9fr)] lg:items-start">
+        <div className="mb-10 grid gap-8 border-b border-gray-800/80 pb-10 lg:grid-cols-[minmax(0,1.2fr)_minmax(320px,420px)] lg:items-start">
           <div className="max-w-2xl">
             <h3 className="mb-4 font-rajdhani text-2xl font-bold text-white">TuWeb.ai</h3>
             <p className="max-w-xl text-base leading-7 text-gray-300">
@@ -137,7 +137,10 @@ export default function Footer() {
               </p>
               <p>
                 📱{' '}
-                <a href={`tel:${TUWEBAI_WHATSAPP_TEL}`} className="transition-colors hover:text-white">
+                <a
+                  href={`tel:${TUWEBAI_WHATSAPP_TEL}`}
+                  className="transition-colors hover:text-white"
+                >
                   {TUWEBAI_WHATSAPP_DISPLAY}
                 </a>
               </p>
