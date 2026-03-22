@@ -73,7 +73,7 @@ export default function PoliticaCookies() {
         title="Política de Cookies"
         description="Información técnica sobre las cookies que usa TuWebAI, para qué sirven y cómo podés administrarlas."
         keywords="política de cookies, cookies TuWebAI, cookies sitio web, preferencias de cookies"
-        url={`${TUWEBAI_SITE_FULL_URL}/cookies`}
+        url={`${TUWEBAI_SITE_FULL_URL}/politica-cookies`}
         ogType="website"
       />
 

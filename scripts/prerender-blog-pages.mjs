@@ -29,6 +29,169 @@ const staticRoutes = [
   { url: '/politica-cookies', changefreq: 'yearly', priority: '0.3', lastmod: '2024-12-15' },
 ];
 
+const staticRouteHead = {
+  '/nosotros': {
+    title: 'Nosotros - Juanchi López, Desarrollador Web Córdoba',
+    description:
+      'Conocé a Juanchi, fundador de TuWebAI. Desarrollador fullstack de Río Tercero, Córdoba. Casi 6 años construyendo webs que venden para negocios argentinos.',
+    keywords:
+      'nosotros tuwebai, juanchi lópez, juanchiidev, juan esteban lópez, desarrollador web córdoba, desarrollo web argentina',
+    url: `${siteUrl}/nosotros`,
+    ogType: 'website',
+    ogImage: defaultOgImage,
+  },
+  '/proceso': {
+    title: 'Proceso de Trabajo | TuWebAI - Cómo Construimos tu Proyecto Web',
+    description:
+      'Conocé las 5 etapas del proceso de TuWebAI: consulta, propuesta, desarrollo, revisión y lanzamiento. Tiempos reales, entregables concretos y sin sorpresas al final.',
+    keywords:
+      'proceso de trabajo TuWebAI, cómo trabajamos en TuWebAI, etapas proyecto web, desarrollo web Argentina, entregables proyecto web',
+    url: `${siteUrl}/proceso`,
+    ogType: 'website',
+    ogImage: defaultOgImage,
+    structuredData: [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'HowTo',
+        name: 'Cómo trabajamos en TuWebAI',
+        description: 'Proceso de 5 etapas para desarrollar un proyecto web profesional',
+        step: [
+          {
+            '@type': 'HowToStep',
+            position: 1,
+            name: 'Consulta inicial',
+            text: 'Una llamada de 20 a 30 minutos para entender el proyecto.',
+          },
+          {
+            '@type': 'HowToStep',
+            position: 2,
+            name: 'Propuesta y alcance',
+            text: 'Propuesta escrita con precio cerrado y cronograma.',
+          },
+          {
+            '@type': 'HowToStep',
+            position: 3,
+            name: 'Diseño y desarrollo',
+            text: 'Construcción completa del proyecto en 2 a 4 semanas según tipo.',
+          },
+          {
+            '@type': 'HowToStep',
+            position: 4,
+            name: 'Revisión y ajustes',
+            text: 'Una ronda de revisión completa incluida en todos los planes.',
+          },
+          {
+            '@type': 'HowToStep',
+            position: 5,
+            name: 'Lanzamiento y entrega',
+            text: 'Deploy en producción y entrega de todos los accesos al cliente.',
+          },
+        ],
+      },
+    ],
+  },
+  '/corporativos': {
+    title: 'Sitios Web Corporativos',
+    description:
+      'Webs corporativas a medida para empresas argentinas. Diseño profesional, SEO técnico y optimización para convertir visitas en consultas. Desde $420.000 ARS.',
+    keywords:
+      'sitios web corporativos, desarrollo web Córdoba, webs corporativas Argentina, SEO técnico, TuWebAI',
+    url: `${siteUrl}/corporativos`,
+    ogType: 'website',
+    ogImage: defaultOgImage,
+  },
+  '/uxui': {
+    title: 'Diseño UX/UI Web',
+    description:
+      'Diseño de interfaces web centradas en conversión. Wireframes, prototipos y diseño visual alineado al objetivo comercial del negocio.',
+    keywords:
+      'diseño UX UI web, interfaces que convierten, wireframes, prototipos, diseño visual, TuWebAI',
+    url: `${siteUrl}/uxui`,
+    ogType: 'website',
+    ogImage: defaultOgImage,
+  },
+  '/ecommerce': {
+    title: 'E-commerce a Medida',
+    description:
+      'Tiendas online con MercadoPago integrado, panel de stock y checkout optimizado. Desarrollo e-commerce a medida para negocios argentinos. Sin plugins. Código real.',
+    keywords:
+      'e-commerce a medida, tiendas online Argentina, MercadoPago integrado, checkout optimizado, TuWebAI',
+    url: `${siteUrl}/ecommerce`,
+    ogType: 'website',
+    ogImage: defaultOgImage,
+  },
+  '/consulta': {
+    title: 'Consulta y propuesta inicial',
+    description:
+      'Contanos qué necesita tu negocio y te respondemos con un diagnóstico claro. Consulta inicial sin cargo para webs, e-commerce y sistemas a medida.',
+    keywords:
+      'consulta desarrollo web, propuesta web, diagnóstico gratuito, proyecto web Argentina, TuWebAI',
+    url: `${siteUrl}/consulta`,
+    ogType: 'website',
+    ogImage: defaultOgImage,
+  },
+  '/servicios/desarrollo-web': {
+    title: 'Desarrollo Web Profesional',
+    description:
+      'Desarrollo web profesional para negocios argentinos: sitios corporativos, landing pages optimizadas y tecnología a medida para convertir visitas en clientes.',
+    keywords:
+      'desarrollo web profesional, desarrollo web argentina, landing pages optimizadas, sitios corporativos, TuWebAI',
+    url: `${siteUrl}/servicios/desarrollo-web`,
+    ogType: 'website',
+    ogImage: defaultOgImage,
+  },
+  '/faq': {
+    title: 'Preguntas Frecuentes',
+    description:
+      'Respondemos las dudas más comunes antes de arrancar: tiempos de entrega, precios, qué incluye cada plan y qué pasa después del lanzamiento.',
+    keywords:
+      'preguntas frecuentes TuWebAI, tiempos de entrega, precios desarrollo web, planes web, soporte',
+    url: `${siteUrl}/faq`,
+    ogType: 'website',
+    ogImage: defaultOgImage,
+  },
+  '/contacto': {
+    title: 'Contacto',
+    description:
+      'Consulta gratuita sin compromiso. Contanos qué necesita tu negocio y te respondemos en menos de 24 horas. Río Tercero, Córdoba. Atención lunes a sábado.',
+    keywords:
+      'contacto TuWebAI, consulta gratuita, proyecto web, Río Tercero, Córdoba',
+    url: `${siteUrl}/contacto`,
+    ogType: 'website',
+    ogImage: defaultOgImage,
+  },
+  '/terminos-condiciones': {
+    title: 'Términos y Condiciones',
+    description:
+      'Leé las condiciones de uso, contratación, pagos y propiedad intelectual que rigen los servicios de TuWebAI.',
+    keywords:
+      'términos y condiciones, contratación web, pagos TuWebAI, propiedad intelectual',
+    url: `${siteUrl}/terminos-condiciones`,
+    ogType: 'website',
+    ogImage: defaultOgImage,
+  },
+  '/politica-privacidad': {
+    title: 'Política de Privacidad',
+    description:
+      'Conocé cómo TuWebAI recopila, usa y protege tus datos personales al navegar o contratar nuestros servicios.',
+    keywords:
+      'política de privacidad, protección de datos, tratamiento de datos personales, TuWebAI',
+    url: `${siteUrl}/politica-privacidad`,
+    ogType: 'website',
+    ogImage: defaultOgImage,
+  },
+  '/politica-cookies': {
+    title: 'Política de Cookies',
+    description:
+      'Información técnica sobre las cookies que usa TuWebAI, para qué sirven y cómo podés administrarlas.',
+    keywords:
+      'política de cookies, cookies TuWebAI, cookies sitio web, preferencias de cookies',
+    url: `${siteUrl}/politica-cookies`,
+    ogType: 'website',
+    ogImage: defaultOgImage,
+  },
+};
+
 function escapeHtml(value) {
   return value
     .replaceAll('&', '&amp;')
@@ -380,6 +543,7 @@ async function main() {
   const posts = buildBlogPosts(docsDir);
   const publicPosts = posts.filter((post) => !post.noindex);
   const indexHtml = await fs.readFile(path.join(distDir, 'index.html'), 'utf8');
+  const deferredIndexHtml = deferSpaBootstrap(indexHtml);
 
   const blogIndexHtml = applyHeadMetadata(
     deferSpaBootstrap(injectPrerenderContent(indexHtml, renderListPageContent(publicPosts))),
@@ -396,6 +560,16 @@ async function main() {
   );
 
   await writePage('blog', blogIndexHtml);
+
+  for (const [route, metadata] of Object.entries(staticRouteHead)) {
+    const routeHtml = applyHeadMetadata(deferredIndexHtml, {
+      ...metadata,
+      robots: 'index, follow',
+      structuredData: metadata.structuredData ?? [],
+    });
+
+    await writePage(route === '/' ? '' : route.slice(1), routeHtml);
+  }
 
   for (const article of publicPosts) {
     const articleHtml = applyHeadMetadata(

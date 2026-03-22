@@ -83,7 +83,7 @@ export default function TerminosCondiciones() {
         title="Términos y Condiciones"
         description="Leé las condiciones de uso, contratación, pagos y propiedad intelectual que rigen los servicios de TuWebAI."
         keywords="términos y condiciones, contratación web, pagos TuWebAI, propiedad intelectual"
-        url={`${TUWEBAI_SITE_FULL_URL}/terminos`}
+        url={`${TUWEBAI_SITE_FULL_URL}/terminos-condiciones`}
         ogType="website"
       />
 

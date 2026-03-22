@@ -88,7 +88,7 @@ export default function PrivacyPolicyPage() {
         title="Política de Privacidad"
         description="Conocé cómo TuWebAI recopila, usa y protege tus datos personales al navegar o contratar nuestros servicios."
         keywords="política de privacidad, protección de datos, tratamiento de datos personales, TuWebAI"
-        url={`${TUWEBAI_SITE_FULL_URL}/privacidad`}
+        url={`${TUWEBAI_SITE_FULL_URL}/politica-privacidad`}
         ogType="website"
       />
 
