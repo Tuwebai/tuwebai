@@ -1,5 +1,4 @@
 import { useRef } from 'react';
-import { motion } from 'framer-motion';
 import { useIntersectionObserver } from '@/core/hooks/use-intersection-observer';
 
 interface TrustCardProps {
@@ -12,32 +11,20 @@ interface TrustCardProps {
 function TrustCard({ eyebrow, title, description, delay }: TrustCardProps) {
   const { ref, hasIntersected } = useIntersectionObserver<HTMLDivElement>();
 
-  const cardVariants = {
-    hidden: { opacity: 0, y: 24 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-        delay: delay * 0.12,
-      },
-    },
-  };
-
   return (
-    <motion.div
+    <div
       ref={ref}
-      initial="hidden"
-      animate={hasIntersected ? 'visible' : 'hidden'}
-      variants={cardVariants}
-      className="rounded-xl border border-gray-800 bg-[#121217] p-5 sm:p-6"
+      className={`rounded-xl border border-gray-800 bg-[#121217] p-5 transition-all duration-500 sm:p-6 ${
+        hasIntersected ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
+      }`}
+      style={{ transitionDelay: `${delay * 120}ms` }}
     >
       <p className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-[#00CCFF]">
         {eyebrow}
       </p>
       <h3 className="mb-3 font-rajdhani text-xl font-bold text-white sm:text-2xl">{title}</h3>
       <p className="text-sm leading-7 text-gray-300">{description}</p>
-    </motion.div>
+    </div>
   );
 }
 
@@ -54,16 +41,6 @@ export default function ImpactSection({ setRef }: ImpactSectionProps) {
     setRef(sectionRef.current);
     sectionRef.current.setAttribute('data-ref-set', 'true');
   }
-
-  const titleVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
-  };
-
-  const textVariants = {
-    hidden: { opacity: 0, y: 24 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.7, delay: 0.2 } },
-  };
 
   const trustCards: TrustCardProps[] = [
     {
@@ -103,12 +80,11 @@ export default function ImpactSection({ setRef }: ImpactSectionProps) {
       className="landing-anchor-section relative flex items-center justify-center bg-gradient-2"
     >
       <div className="container relative z-10 mx-auto px-3 py-14 sm:px-4 sm:py-16">
-        <motion.div
+        <div
           ref={titleRef}
-          className="mx-auto mb-12 max-w-4xl text-center"
-          initial="hidden"
-          animate={titleVisible ? 'visible' : 'hidden'}
-          variants={titleVariants}
+          className={`mx-auto mb-12 max-w-4xl text-center transition-all duration-700 ${
+            titleVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+          }`}
         >
           <h2 className="mb-6 font-rajdhani text-3xl font-bold sm:text-4xl md:text-5xl">
             <span className="gradient-text gradient-border inline-block pb-2">
@@ -119,7 +95,7 @@ export default function ImpactSection({ setRef }: ImpactSectionProps) {
           <p className="mx-auto max-w-3xl text-base leading-7 text-gray-300 sm:text-xl sm:leading-8">
             Un proyecto serio no depende solo del diseño. Necesita claridad comercial, una experiencia cuidada y una base técnica preparada para crecer con el negocio.
           </p>
-        </motion.div>
+        </div>
 
         <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 md:grid-cols-2">
           {trustCards.map((card) => (
@@ -133,17 +109,17 @@ export default function ImpactSection({ setRef }: ImpactSectionProps) {
           ))}
         </div>
 
-        <motion.div
+        <div
           ref={textRef}
-          className="mx-auto mt-12 max-w-3xl text-center"
-          initial="hidden"
-          animate={textVisible ? 'visible' : 'hidden'}
-          variants={textVariants}
+          className={`mx-auto mt-12 max-w-3xl text-center transition-all duration-700 ${
+            textVisible ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
+          }`}
+          style={{ transitionDelay: '200ms' }}
         >
           <p className="text-base leading-7 text-gray-300 sm:text-lg sm:leading-8">
             Los casos del showroom muestran cómo esto baja a proyectos reales. Este bloque existe para dejar claro que detrás de cada entrega hay criterio, estructura y una forma de trabajo pensada para sostener resultados.
           </p>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
 import { useIntersectionObserver } from '@/core/hooks/use-intersection-observer';
 import PaymentErrorDialog from '@/features/payments/components/payment-error-dialog';
 import PaymentModalFrame from '@/features/payments/components/payment-modal-frame';
@@ -99,12 +98,12 @@ function PricingCard({ plan, delay, isProcessing, onCheckout, onProposal }: Pric
     : 'inline-flex w-full items-center justify-center rounded-xl border border-gray-700 bg-[#181a24] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:border-cyan-400/35 hover:bg-[#1d2030] disabled:cursor-wait disabled:opacity-70';
 
   return (
-    <motion.article
+    <article
       ref={ref}
-      initial={{ opacity: 0, y: 28 }}
-      animate={hasIntersected ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
-      transition={{ duration: 0.65, delay: delay * 0.12 }}
-      className={wrapperClasses}
+      className={`${wrapperClasses} transition-all duration-700 ${
+        hasIntersected ? 'translate-y-0 opacity-100' : 'translate-y-7 opacity-0'
+      }`}
+      style={{ transitionDelay: `${delay * 120}ms` }}
     >
       {plan.highlight && (
         <div className="absolute inset-x-6 -top-3 flex justify-center">
@@ -152,7 +151,7 @@ function PricingCard({ plan, delay, isProcessing, onCheckout, onProposal }: Pric
           <p>Tarjeta o transferencia</p>
         </div>
       </div>
-    </motion.article>
+    </article>
   );
 }
 
@@ -222,33 +221,32 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
       className="landing-anchor-section relative flex items-center justify-center bg-gradient-1 py-20"
     >
       <div className="container relative z-10 mx-auto px-3 sm:px-4">
-        <motion.div
+        <div
           ref={titleRef}
-          initial={{ opacity: 0, y: 30 }}
-          animate={titleVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.8 }}
-          className="mx-auto max-w-4xl text-center"
+          className={`mx-auto max-w-4xl text-center transition-all duration-700 ${
+            titleVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+          }`}
         >
           <h2 className="font-rajdhani text-3xl font-bold sm:text-4xl md:text-5xl">
             <span className="gradient-text gradient-border inline-block pb-2">
               Planes para lanzar o escalar tu presencia web
             </span>
           </h2>
-        </motion.div>
+        </div>
 
-        <motion.div
+        <div
           ref={subtitleRef}
-          initial={{ opacity: 0, y: 20 }}
-          animate={subtitleVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.8, delay: 0.12 }}
-          className="mx-auto mb-14 max-w-3xl text-center"
+          className={`mx-auto mb-14 max-w-3xl text-center transition-all duration-700 ${
+            subtitleVisible ? 'translate-y-0 opacity-100' : 'translate-y-5 opacity-0'
+          }`}
+          style={{ transitionDelay: '120ms' }}
         >
           <p className="text-base leading-7 text-gray-300 sm:text-xl sm:leading-8">
             Elegí el nivel de desarrollo que necesita tu negocio.
             <br />
             Podés pagar online y comenzar hoy mismo.
           </p>
-        </motion.div>
+        </div>
 
         <div className="mx-auto grid max-w-6xl auto-rows-fr grid-cols-1 gap-6 lg:grid-cols-3">
           {pricingPlans.map((plan, index) => (

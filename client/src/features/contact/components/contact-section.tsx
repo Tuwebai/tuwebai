@@ -1,5 +1,4 @@
 import { useRef, useState } from 'react';
-import { motion } from 'framer-motion';
 import { useIntersectionObserver } from '@/core/hooks/use-intersection-observer';
 import { useToast } from '@/shared/ui/use-toast';
 import AnimatedShape from '@/shared/ui/animated-shape';
@@ -25,18 +24,6 @@ function ContactForm({ delay }: ContactFormProps) {
   });
   const [submitState, setSubmitState] = useState<'idle' | 'submitting' | 'sent'>('idle');
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-
-  const formVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        delay: delay * 0.15
-      }
-    }
-  };
 
   const validateForm = () => {
     const newErrors: { [key: string]: string } = {};
@@ -122,14 +109,12 @@ function ContactForm({ delay }: ContactFormProps) {
   };
 
   return (
-    <motion.div
+    <div
       ref={ref as React.RefObject<HTMLDivElement>}
-      className="p-px bg-gradient-to-br from-[#00CCFF] to-[#9933FF] rounded-xl"
-      initial="hidden"
-      animate={hasIntersected ? 'visible' : 'hidden'}
-      variants={formVariants}
-      whileHover={{ scale: 1.01 }}
-      transition={{ duration: 0.3 }}
+      className={`rounded-xl bg-gradient-to-br from-[#00CCFF] to-[#9933FF] p-px transition-all duration-500 ${
+        hasIntersected ? 'translate-y-0 opacity-100 hover:scale-[1.01]' : 'translate-y-8 opacity-0'
+      }`}
+      style={{ transitionDelay: `${delay * 150}ms` }}
     >
       <div className="bg-glass rounded-xl p-5 shadow-xl backdrop-blur-md sm:p-8">
         <h3 className="mb-6 font-rajdhani text-xl font-bold text-white sm:text-2xl">Contanos tu proyecto</h3>
@@ -183,23 +168,20 @@ function ContactForm({ delay }: ContactFormProps) {
             {errors.message && <p className="text-red-500 text-xs mt-1">{errors.message}</p>}
           </div>
 
-          <motion.button
+          <button
             type="submit"
             disabled={submitState === 'submitting'}
-            className="w-full px-6 py-3 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-lg text-white font-medium disabled:cursor-wait disabled:opacity-70 shadow-lg shadow-[#00CCFF]/20 hover:shadow-[#9933FF]/30"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            transition={{ duration: 0.2 }}
+            className="w-full rounded-lg bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-6 py-3 font-medium text-white shadow-lg shadow-[#00CCFF]/20 transition-all duration-200 hover:scale-[1.02] hover:shadow-[#9933FF]/30 active:scale-[0.98] disabled:cursor-wait disabled:opacity-70"
           >
             {submitState === 'submitting'
               ? 'Enviando...'
               : submitState === 'sent'
                 ? 'Enviado'
                 : 'Quiero una propuesta inicial'}
-          </motion.button>
+          </button>
         </form>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
@@ -210,25 +192,13 @@ interface ContactInfoProps {
 function ContactInfo({ delay }: ContactInfoProps) {
   const { ref, hasIntersected } = useIntersectionObserver();
 
-  const infoVariants = {
-    hidden: { opacity: 0, x: 30 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: {
-        duration: 0.6,
-        delay: delay * 0.15
-      }
-    }
-  };
-
   return (
-    <motion.div
+    <div
       ref={ref as React.RefObject<HTMLDivElement>}
-      className="text-left"
-      initial="hidden"
-      animate={hasIntersected ? 'visible' : 'hidden'}
-      variants={infoVariants}
+      className={`text-left transition-all duration-500 ${
+        hasIntersected ? 'translate-x-0 opacity-100' : 'translate-x-8 opacity-0'
+      }`}
+      style={{ transitionDelay: `${delay * 150}ms` }}
     >
       <h3 className="mb-6 font-rajdhani text-xl font-bold text-white sm:text-2xl">Contacto directo</h3>
 
@@ -294,7 +264,7 @@ function ContactInfo({ delay }: ContactInfoProps) {
           Hablar con un asesor en WhatsApp
         </a>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
@@ -311,11 +281,6 @@ export default function ContactSection({ setRef }: ContactSectionProps) {
     sectionRef.current.setAttribute('data-ref-set', 'true');
   }
 
-  const titleVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }
-  };
-
   return (
     <section
       id="contact"
@@ -326,12 +291,11 @@ export default function ContactSection({ setRef }: ContactSectionProps) {
       <AnimatedShape type={2} className="bottom-[10%] right-[-100px]" delay={2} />
 
       <div className="container z-10 mx-auto px-3 py-14 sm:px-4 sm:py-16">
-        <motion.div
+        <div
           ref={titleRef as React.RefObject<HTMLDivElement>}
-          className="mb-12 text-center sm:mb-16"
-          initial="hidden"
-          animate={titleVisible ? 'visible' : 'hidden'}
-          variants={titleVariants}
+          className={`mb-12 text-center transition-all duration-700 sm:mb-16 ${
+            titleVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+          }`}
         >
           <h2 className="mb-6 font-rajdhani text-3xl font-bold sm:text-4xl md:text-5xl">
             <span className="gradient-text gradient-border inline-block pb-2">¿Listo para impulsar tu negocio con una web profesional?</span>
@@ -340,7 +304,7 @@ export default function ContactSection({ setRef }: ContactSectionProps) {
           <p className="mx-auto max-w-2xl text-base leading-7 text-gray-300 sm:text-xl sm:leading-8">
             Contanos qué necesitás y te ayudamos a definir el mejor camino para tu proyecto web.
           </p>
-        </motion.div>
+        </div>
 
         <div className="mx-auto grid max-w-5xl gap-8 md:grid-cols-2">
           <ContactForm delay={1} />
