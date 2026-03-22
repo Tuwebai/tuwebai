@@ -10,17 +10,6 @@ const BLOG_FULL_VIRTUAL_MODULE_ID = "virtual:blog-posts-full";
 const RESOLVED_BLOG_INDEX_VIRTUAL_MODULE_ID = `\0${BLOG_INDEX_VIRTUAL_MODULE_ID}`;
 const RESOLVED_BLOG_FULL_VIRTUAL_MODULE_ID = `\0${BLOG_FULL_VIRTUAL_MODULE_ID}`;
 
-function getRadixChunkName(id: string): string | null {
-  const normalizedId = id.replace(/\\/g, "/");
-  const match = normalizedId.match(/node_modules\/@radix-ui\/([^/]+)/);
-
-  if (!match) {
-    return null;
-  }
-
-  return `radix-${match[1]}`;
-}
-
 function isVendorModule(id: string): boolean {
   const normalizedId = id.replace(/\\/g, "/");
 
@@ -129,6 +118,7 @@ export default defineConfig({
   },
   build: {
     outDir: "../dist",
+    emptyOutDir: true,
     sourcemap: false,
     modulePreload: {
       resolveDependencies: (_url: string, deps: string[]) =>
@@ -156,8 +146,7 @@ export default defineConfig({
             return 'motion';
           }
           // Radix UI — chunk propio para componentes UI pesados
-          const radixChunkName = getRadixChunkName(id);
-          if (radixChunkName) {
+          if (id.includes('/node_modules/@radix-ui/')) {
             return 'radix';
           }
         },
