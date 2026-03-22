@@ -13,6 +13,7 @@ const ProposalRequestPage = lazy(() => import('@/features/proposals/components/p
 
 const WebDevelopmentPage = lazy(() => import('@/app/router/services/web-development-page'));
 const AboutPage = lazy(() => import('@/app/router/about/about-page'));
+const ProcessPage = lazy(() => import('@/app/router/company/process-page'));
 
 const FaqPage = lazy(() => import('@/app/router/knowledge/faq-page'));
 const BlogPage = lazy(() => import('@/app/router/blog/blog-page'));
@@ -39,6 +40,7 @@ export default function AppRoutes() {
       <Route path="/ecommerce" element={<LazyRoute><EcommerceSolutionsPage /></LazyRoute>} />
       <Route path="/consulta" element={<LazyRoute><ProposalRequestPage /></LazyRoute>} />
       <Route path="/nosotros" element={<LazyRoute><AboutPage /></LazyRoute>} />
+      <Route path="/proceso" element={<LazyRoute><ProcessPage /></LazyRoute>} />
 
       <Route path="/servicios/desarrollo-web" element={<LazyRoute><WebDevelopmentPage /></LazyRoute>} />
       <Route path="/servicios/estrategia-digital" element={<Navigate to="/consulta" replace />} />
