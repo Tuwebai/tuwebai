@@ -2,6 +2,7 @@ type PrefetchLoader = () => Promise<unknown>;
 
 const routeLoaders: Record<string, PrefetchLoader> = {
   '/consulta': () => import('@/features/proposals/components/proposal-request-page'),
+  '/checklist-web-gratis': () => import('@/features/checklist/components/checklist-web-gratis-page'),
   '/panel': () => import('@/features/users/components/user-dashboard-page'),
 };
 

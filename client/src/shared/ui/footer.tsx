@@ -47,7 +47,7 @@ const footerColumns: Array<{ title: string; links: FooterLink[] }> = [
       { label: 'Blog', href: '/blog' },
       { label: 'FAQ', href: '/faq' },
       { label: 'Diagnóstico gratuito', href: '/diagnostico-gratuito' },
-      { label: 'Checklist web gratis', href: '/blog' },
+      { label: 'Checklist web gratis', href: '/checklist-web-gratis' },
       { label: 'Recursos', href: '/blog' },
     ],
   },

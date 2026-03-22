@@ -1,0 +1,175 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+2 0 obj
+<< /Length 877 >>
+stream
+BT
+/F1 12 Tf
+50 780 Td
+16 TL
+(Checklist Web Gratis - TuWebAI) Tj
+T*
+() Tj
+T*
+(35 puntos para saber si tu web esta lista para vender.) Tj
+T*
+() Tj
+T*
+(Velocidad y performance) Tj
+T*
+(1. La web carga en menos de 3 segundos en celular con datos moviles) Tj
+T*
+(2. Las imagenes estan comprimidas y en formato WebP) Tj
+T*
+(3. No hay scripts de terceros bloqueando el render inicial) Tj
+T*
+(4. El puntaje de PageSpeed en mobile es mayor a 70) Tj
+T*
+(5. No hay fuentes externas cargando sin display=swap) Tj
+T*
+() Tj
+T*
+(Mobile y responsive) Tj
+T*
+(6. El diseno se ve correctamente en pantallas de 375px de ancho) Tj
+T*
+(7. Los botones tienen al menos 44px de area tactil) Tj
+T*
+(8. El texto es legible sin necesidad de hacer zoom) Tj
+T*
+(9. Los formularios son usables desde el teclado del celular) Tj
+T*
+(10. No hay elementos que se superpongan o se corten en mobile) Tj
+T*
+() Tj
+ET
+endstream
+endobj
+3 0 obj
+<< /Type /Page /Parent 8 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R >> >> /Contents 2 0 R >>
+endobj
+4 0 obj
+<< /Length 1149 >>
+stream
+BT
+/F1 12 Tf
+50 780 Td
+16 TL
+(Conversion y CTAs) Tj
+T*
+(11. Hay un CTA visible sin necesidad de hacer scroll en la home) Tj
+T*
+(12. El CTA dice exactamente que pasa cuando se hace clic) Tj
+T*
+(13. Hay un numero de WhatsApp o boton de contacto siempre visible) Tj
+T*
+(14. El formulario de contacto tiene 5 campos o menos) Tj
+T*
+(15. La pagina de inicio deja claro que hace el negocio en 5 segundos) Tj
+T*
+() Tj
+T*
+(SEO basico) Tj
+T*
+(16. Cada pagina tiene un titulo unico y descriptivo) Tj
+T*
+(17. Cada pagina tiene una meta description unica) Tj
+T*
+(18. El sitio tiene un sitemap.xml enviado a Google Search Console) Tj
+T*
+(19. El sitio esta verificado en Google Search Console) Tj
+T*
+(20. Google Business Profile esta completo y verificado) Tj
+T*
+() Tj
+T*
+(Contenido y mensaje) Tj
+T*
+(21. La propuesta de valor esta clara en el hero de la home) Tj
+T*
+(22. Los servicios tienen descripciones especificas, no genericas) Tj
+T*
+(23. Hay al menos 3 testimonios o casos reales visibles) Tj
+T*
+(24. Los precios o rangos de precio son accesibles sin tener que consultar) Tj
+T*
+(25. El nosotros humaniza la empresa con nombres y fotos reales) Tj
+T*
+() Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 8 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R >> >> /Contents 4 0 R >>
+endobj
+6 0 obj
+<< /Length 805 >>
+stream
+BT
+/F1 12 Tf
+50 780 Td
+16 TL
+(Tecnico y seguridad) Tj
+T*
+(26. El sitio tiene HTTPS activo) Tj
+T*
+(27. No hay errores 404 en paginas importantes) Tj
+T*
+(28. El sitio tiene robots.txt configurado correctamente) Tj
+T*
+(29. Las imagenes tienen texto alternativo) Tj
+T*
+(30. El HTML tiene el atributo lang definido correctamente) Tj
+T*
+() Tj
+T*
+(Analytics y medicion) Tj
+T*
+(31. Google Analytics o equivalente esta instalado y verificado) Tj
+T*
+(32. Las conversiones estan trackeadas) Tj
+T*
+(33. Se revisan las metricas del sitio al menos una vez por mes) Tj
+T*
+(34. Se sabe de donde viene el trafico) Tj
+T*
+(35. Se conoce la tasa de conversion actual del sitio) Tj
+T*
+() Tj
+T*
+(TuWebAI) Tj
+T*
+(Si encontraste problemas, pedi tu diagnostico gratuito en https://tuweb-ai.com/diagnostico-gratuito) Tj
+T*
+() Tj
+ET
+endstream
+endobj
+7 0 obj
+<< /Type /Page /Parent 8 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R >> >> /Contents 6 0 R >>
+endobj
+8 0 obj
+<< /Type /Pages /Kids [3 0 R 5 0 R 7 0 R] /Count 3 >>
+endobj
+9 0 obj
+<< /Type /Catalog /Pages 8 0 R >>
+endobj
+xref
+0 10
+0000000000 65535 f 
+0000000009 00000 n 
+0000000079 00000 n 
+0000001007 00000 n 
+0000001133 00000 n 
+0000002334 00000 n 
+0000002460 00000 n 
+0000003316 00000 n 
+0000003442 00000 n 
+0000003511 00000 n 
+trailer
+<< /Size 10 /Root 9 0 R >>
+startxref
+3560
+%%EOF

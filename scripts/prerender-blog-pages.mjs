@@ -18,6 +18,7 @@ const staticRoutes = [
   { url: '/ecommerce', changefreq: 'monthly', priority: '0.9', lastmod: '2024-12-15' },
   { url: '/consulta', changefreq: 'monthly', priority: '0.8', lastmod: '2024-12-15' },
   { url: '/diagnostico-gratuito', changefreq: 'monthly', priority: '0.9', lastmod: '2026-03-22' },
+  { url: '/checklist-web-gratis', changefreq: 'monthly', priority: '0.8', lastmod: '2026-03-22' },
   { url: '/servicios/desarrollo-web', changefreq: 'monthly', priority: '0.8', lastmod: '2024-12-15' },
   { url: '/faq', changefreq: 'monthly', priority: '0.7', lastmod: '2024-12-15' },
   { url: '/contacto', changefreq: 'monthly', priority: '0.7', lastmod: '2024-12-15' },
@@ -248,6 +249,77 @@ const staticRouteHead = {
             position: 2,
             name: 'Diagnóstico gratuito',
             item: `${siteUrl}/diagnostico-gratuito`,
+          },
+        ],
+      },
+    ],
+  },
+  '/checklist-web-gratis': {
+    title: 'Checklist Web Gratis | TuWebAI — 35 puntos para auditar tu sitio',
+    description:
+      'Descargá gratis el checklist de 35 puntos que usamos en TuWebAI para auditar sitios web. Velocidad, mobile, conversión, SEO y más. Sin registro obligatorio.',
+    ogTitle: 'Checklist Web Gratis | TuWebAI',
+    ogDescription: '35 puntos para saber si tu web está lista para vender.',
+    twitterTitle: 'Checklist Web Gratis | TuWebAI',
+    twitterDescription: '35 puntos para auditar tu sitio y detectar qué está frenando tus consultas.',
+    ogSiteName: 'TuWebAI',
+    keywords:
+      'checklist web gratis, auditoría web, checklist sitio web, conversión web, seo técnico, TuWebAI',
+    url: `${siteUrl}/checklist-web-gratis`,
+    ogType: 'website',
+    ogImage: defaultOgImage,
+    structuredData: [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'HowTo',
+        name: 'Cómo auditar tu sitio web en 10 minutos',
+        description:
+          'Checklist de 35 puntos para evaluar velocidad, mobile, conversión, SEO y analytics de cualquier sitio web.',
+        totalTime: 'PT10M',
+        supply: [],
+        tool: [],
+        step: [
+          {
+            '@type': 'HowToSection',
+            name: 'Velocidad y performance',
+            position: 1,
+            itemListElement: [
+              {
+                '@type': 'HowToStep',
+                position: 1,
+                text: 'La web carga en menos de 3 segundos en celular con datos móviles',
+              },
+            ],
+          },
+          {
+            '@type': 'HowToSection',
+            name: 'Mobile y responsive',
+            position: 2,
+            itemListElement: [
+              {
+                '@type': 'HowToStep',
+                position: 1,
+                text: 'El diseño se ve correctamente en pantallas de 375px de ancho',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: 'Inicio',
+            item: siteUrl,
+          },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: 'Checklist web gratis',
+            item: `${siteUrl}/checklist-web-gratis`,
           },
         ],
       },
