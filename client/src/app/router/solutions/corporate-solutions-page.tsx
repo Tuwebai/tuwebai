@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import WhatsAppButton from "@/shared/ui/whatsapp-button";
 import { TUWEBAI_WHATSAPP_URL } from '@/shared/constants/contact';
@@ -9,12 +8,7 @@ export default function Corporativos() {
       <WhatsAppButton />
       
       {/* Header */}
-      <motion.header 
-        className="bg-gradient-to-b from-[#0f0f19] to-[#0a0a0f] pt-24 pb-16 px-4"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
+      <header className="bg-gradient-to-b from-[#0f0f19] to-[#0a0a0f] px-4 pb-16 pt-24 animate-in fade-in slide-in-from-top-2 duration-500">
         <div className="container mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="mb-8 md:mb-0 md:mr-8">
@@ -29,45 +23,30 @@ export default function Corporativos() {
               </p>
             </div>
 
-            <motion.div 
-              className="w-40 h-40 bg-gradient-to-br from-[#00CCFF]/30 to-[#9933FF]/30 rounded-full flex items-center justify-center"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-            >
+            <div className="flex h-40 w-40 items-center justify-center rounded-full bg-gradient-to-br from-[#00CCFF]/30 to-[#9933FF]/30 animate-in fade-in zoom-in-95 duration-500">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-24 w-24 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
               </svg>
-            </motion.div>
+            </div>
           </div>
         </div>
-      </motion.header>
+      </header>
 
       {/* Descripción extendida */}
       <section className="py-16 px-4 bg-[#0a0a0f]">
         <div className="container mx-auto">
-          <motion.div 
-            className="max-w-4xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
+          <div className="mx-auto max-w-4xl animate-in fade-in slide-in-from-bottom-2 duration-500">
             <h2 className="text-3xl font-rajdhani font-bold mb-6 text-white">¿Por qué necesitás un sitio corporativo?</h2>
             <p className="text-lg text-gray-300 mb-8">
               Tu sitio web es la base de tu presencia digital. En un mercado donde la primera impresión se forma online, necesitás una web clara, confiable y alineada con tu identidad. En TuWeb.ai creamos sitios corporativos que ordenan tu propuesta, refuerzan credibilidad y preparan el camino para la conversión.
             </p>
-          </motion.div>
+          </div>
 
           {/* Beneficios clave */}
           <div className="mt-16">
-            <motion.h3 
-              className="text-2xl font-rajdhani font-bold mb-8 text-center text-white"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-            >
+            <h3 className="mb-8 text-center text-2xl font-rajdhani font-bold text-white animate-in fade-in duration-500">
               Beneficios principales
-            </motion.h3>
+            </h3>
 
             <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
               {[
@@ -99,12 +78,10 @@ export default function Corporativos() {
                   description: "Recorridos simples y CTAs claros para convertir visitas en consultas reales."
                 }
               ].map((benefit, index) => (
-                <motion.div
+                <div
                   key={index}
-                  className="bg-gradient-to-br from-[#00CCFF]/10 to-[#9933FF]/10 rounded-xl p-[1px]"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
+                  className="rounded-xl bg-gradient-to-br from-[#00CCFF]/10 to-[#9933FF]/10 p-[1px] animate-in fade-in slide-in-from-bottom-2 duration-500"
+                  style={{ animationDelay: `${0.2 + index * 0.1}s` }}
                 >
                   <div className="bg-[#121217] rounded-xl p-6 h-full">
                     <div className="h-16 w-16 rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] flex items-center justify-center mb-4">
@@ -115,7 +92,7 @@ export default function Corporativos() {
                     <h4 className="text-xl font-rajdhani font-bold mb-3 text-white">{benefit.title}</h4>
                     <p className="text-gray-300">{benefit.description}</p>
                   </div>
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>
@@ -125,17 +102,12 @@ export default function Corporativos() {
       {/* Casos destacados */}
       <section className="py-16 px-4 bg-gradient-to-b from-[#0a0a0f] to-[#0f0f19]">
         <div className="container mx-auto">
-          <motion.div 
-            className="text-center mb-12"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6 }}
-          >
+          <div className="mb-12 text-center animate-in fade-in duration-500">
             <h2 className="text-3xl font-rajdhani font-bold mb-4 text-white">Casos destacados</h2>
             <p className="text-lg text-gray-300 max-w-2xl mx-auto">
               Proyectos reales que muestran cómo ordenamos presencia y mensaje.
             </p>
-          </motion.div>
+          </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {[
@@ -168,12 +140,10 @@ export default function Corporativos() {
                 results: "Mejor control operativo en tiempo real"
               }
             ].map((caseStudy, index) => (
-              <motion.div
+              <div
                 key={index}
-                className="rounded-xl overflow-hidden"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
+                className="overflow-hidden rounded-xl animate-in fade-in slide-in-from-bottom-2 duration-500"
+                style={{ animationDelay: `${0.3 + index * 0.1}s` }}
               >
                 <div className="bg-gradient-to-br from-[#00CCFF]/10 to-[#9933FF]/10 p-[1px] rounded-xl">
                   <div className="bg-[#121217] rounded-xl p-6">
@@ -203,7 +173,7 @@ export default function Corporativos() {
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
@@ -212,12 +182,7 @@ export default function Corporativos() {
       {/* Call to action */}
       <section className="py-20 px-4 bg-[#0a0a0f]">
         <div className="container mx-auto">
-          <motion.div 
-            className="max-w-4xl mx-auto text-center"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
+          <div className="mx-auto max-w-4xl text-center animate-in fade-in slide-in-from-bottom-2 duration-500">
             <h2 className="text-3xl md:text-4xl font-rajdhani font-bold mb-6 text-white">
               ¿Listo para llevar tu presencia corporativa al siguiente nivel?
             </h2>
@@ -240,7 +205,7 @@ export default function Corporativos() {
                 Contactar por WhatsApp
               </a>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
     </div>
