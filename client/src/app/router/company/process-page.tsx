@@ -3,6 +3,12 @@ import { Link } from 'react-router-dom';
 import AnimatedShape from '@/shared/ui/animated-shape';
 import MetaTags from '@/shared/ui/meta-tags';
 import RevealBlock from '@/shared/ui/reveal-block';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/shared/ui/accordion';
 import { TUWEBAI_SITE_FULL_URL } from '@/shared/constants/contact';
 
 const PROCESS_PAGE_URL = `${TUWEBAI_SITE_FULL_URL}/proceso`;
@@ -100,6 +106,33 @@ const CLIENT_REQUIREMENTS = [
     title: 'Una sola voz',
     description:
       'Si hay más de una persona tomando decisiones del lado del cliente, definan internamente quién aprueba antes de enviarnos feedback. Los cambios de dirección a último momento tienen costo adicional.',
+  },
+];
+
+const PROCESS_FAQS = [
+  {
+    value: 'faq-1',
+    question: '¿Qué pasa si quiero cambiar algo que ya estaba aprobado?',
+    answer:
+      'Los cambios dentro del alcance definido en la propuesta están incluidos en la ronda de revisión. Si el cambio implica rehacer algo ya aprobado o agregar funcionalidad nueva, te avisamos el costo antes de hacerlo. Nunca facturamos extras sin avisarte primero.',
+  },
+  {
+    value: 'faq-2',
+    question: '¿Necesito tener todo el contenido antes de arrancar?',
+    answer:
+      'No necesitás tenerlo antes de firmar. Pero sí necesitás tenerlo listo en los primeros 3 días de iniciado el proyecto. Si el contenido llega tarde, la fecha de entrega se corre la misma cantidad de días.',
+  },
+  {
+    value: 'faq-3',
+    question: '¿Puedo pedir cambios después del lanzamiento?',
+    answer:
+      'Sí. Tenemos planes de mantenimiento mensual para clientes que necesitan actualizaciones frecuentes. Para cambios puntuales, los cotizamos por separado según el alcance.',
+  },
+  {
+    value: 'faq-4',
+    question: '¿Qué pasa si el diseño inicial no me convence?',
+    answer:
+      'Una ronda de revisión completa está incluida en todos los planes. Si después de esa ronda el diseño sigue sin convencerte, lo rehacemos sin costo adicional. Es parte de nuestro compromiso.',
   },
 ];
 
@@ -279,6 +312,38 @@ export default function ProcessPage() {
                   </RevealBlock>
                 ))}
               </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-[#0a0a0f] py-16 sm:py-20">
+          <div className="container mx-auto px-4">
+            <div className="mx-auto max-w-4xl">
+              <RevealBlock className="text-center">
+                <p className="mb-4 text-xs uppercase tracking-[0.24em] text-cyan-300">
+                  Preguntas frecuentes del proceso
+                </p>
+                <h2 className="font-rajdhani text-3xl font-bold text-white sm:text-4xl md:text-5xl">
+                  Las dudas que aparecen antes de contratar.
+                </h2>
+              </RevealBlock>
+
+              <RevealBlock delayMs={90}>
+                <div className="mt-12 rounded-2xl border border-white/6 bg-[#12121f] p-3 sm:p-4">
+                  <Accordion type="single" collapsible className="w-full">
+                    {PROCESS_FAQS.map((faq) => (
+                      <AccordionItem key={faq.value} value={faq.value} className="border-white/8 px-2">
+                        <AccordionTrigger className="py-5 text-left font-rajdhani text-xl font-bold text-white hover:no-underline">
+                          {faq.question}
+                        </AccordionTrigger>
+                        <AccordionContent className="pb-5 text-base leading-7 text-gray-300">
+                          {faq.answer}
+                        </AccordionContent>
+                      </AccordionItem>
+                    ))}
+                  </Accordion>
+                </div>
+              </RevealBlock>
             </div>
           </div>
         </section>
