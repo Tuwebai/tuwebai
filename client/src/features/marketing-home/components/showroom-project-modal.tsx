@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import type { ShowroomProject } from './showroom-types';
@@ -43,12 +42,7 @@ export default function ShowroomProjectModal({
       className="fixed inset-0 z-50 overflow-y-auto bg-transparent p-3 sm:p-4 md:p-6"
       onClick={onClose}
     >
-      <motion.div
-        className="relative mx-auto flex min-h-[calc(100dvh-1.5rem)] w-full max-w-[min(92rem,100vw-1.5rem)] items-center justify-center sm:min-h-[calc(100dvh-2rem)] sm:max-w-[min(92rem,100vw-2rem)] md:min-h-[calc(100dvh-3rem)]"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-      >
+      <div className="relative mx-auto flex min-h-[calc(100dvh-1.5rem)] w-full max-w-[min(92rem,100vw-1.5rem)] items-center justify-center animate-in fade-in duration-300 sm:min-h-[calc(100dvh-2rem)] sm:max-w-[min(92rem,100vw-2rem)] md:min-h-[calc(100dvh-3rem)]">
         <button
           type="button"
           onClick={(event) => {
@@ -64,11 +58,8 @@ export default function ShowroomProjectModal({
           </svg>
         </button>
 
-        <motion.div
-          className="relative w-full max-w-6xl overflow-hidden rounded-[24px] border border-white/10 bg-[#121217] shadow-[0_34px_90px_rgba(0,0,0,0.55)] sm:rounded-[28px]"
-          initial={{ opacity: 0, scale: 0.96, y: 12 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 0.24, ease: 'easeOut' }}
+        <div
+          className="relative w-full max-w-6xl overflow-hidden rounded-[24px] border border-white/10 bg-[#121217] shadow-[0_34px_90px_rgba(0,0,0,0.55)] animate-in fade-in zoom-in-95 duration-300 sm:rounded-[28px]"
           onClick={(event) => event.stopPropagation()}
         >
           <button
@@ -241,7 +232,7 @@ export default function ShowroomProjectModal({
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
 
         <button
           type="button"
@@ -257,7 +248,7 @@ export default function ShowroomProjectModal({
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.2} d="M9 5l7 7-7 7" />
           </svg>
         </button>
-      </motion.div>
+      </div>
     </div>,
     document.body
   );
