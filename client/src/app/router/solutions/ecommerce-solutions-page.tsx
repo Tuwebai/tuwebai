@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { TUWEBAI_WHATSAPP_URL } from "@/shared/constants/contact";
 import WhatsAppButton from "@/shared/ui/whatsapp-button";
+import MetaTags from '@/shared/ui/meta-tags';
 import "./ecommerce-solutions-page.css";
 
 const benefits = [
@@ -53,8 +54,17 @@ const benefits = [
 
 export default function Ecommerce() {
   return (
-    <div className="ecommerce-page">
-      <WhatsAppButton />
+    <>
+      <MetaTags
+        title="E-commerce a Medida"
+        description="Tiendas online con MercadoPago integrado, panel de stock y checkout optimizado. Desarrollo e-commerce a medida para negocios argentinos. Sin plugins. Código real."
+        keywords="e-commerce a medida, tiendas online Argentina, MercadoPago integrado, checkout optimizado, TuWebAI"
+        url="https://tuweb-ai.com/ecommerce"
+        ogType="website"
+        ogImage="/logo-tuwebai.png"
+      />
+      <div className="ecommerce-page">
+        <WhatsAppButton />
 
       <header className="ecommerce-header animate-in fade-in slide-in-from-top-2 duration-500">
         <div className="container mx-auto">
@@ -171,6 +181,7 @@ export default function Ecommerce() {
           </div>
         </div>
       </section>
-    </div>
+      </div>
+    </>
   );
 }

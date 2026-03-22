@@ -1,11 +1,21 @@
 import { Link } from "react-router-dom";
 import WhatsAppButton from "@/shared/ui/whatsapp-button";
 import { TUWEBAI_WHATSAPP_URL } from '@/shared/constants/contact';
+import MetaTags from '@/shared/ui/meta-tags';
 
 export default function Corporativos() {
   return (
-    <div className="min-h-screen bg-[#0a0a0f] text-white">
-      <WhatsAppButton />
+    <>
+      <MetaTags
+        title="Sitios Web Corporativos"
+        description="Webs corporativas a medida para empresas argentinas. Diseño profesional, SEO técnico y optimización para convertir visitas en consultas. Desde $420.000 ARS."
+        keywords="sitios web corporativos, desarrollo web Córdoba, webs corporativas Argentina, SEO técnico, TuWebAI"
+        url="https://tuweb-ai.com/corporativos"
+        ogType="website"
+        ogImage="/logo-tuwebai.png"
+      />
+      <div className="min-h-screen bg-[#0a0a0f] text-white">
+        <WhatsAppButton />
       
       {/* Header */}
       <header className="bg-gradient-to-b from-[#0f0f19] to-[#0a0a0f] px-4 pb-16 pt-24 animate-in fade-in slide-in-from-top-2 duration-500">
@@ -208,7 +218,8 @@ export default function Corporativos() {
           </div>
         </div>
       </section>
-    </div>
+      </div>
+    </>
   );
 }
 

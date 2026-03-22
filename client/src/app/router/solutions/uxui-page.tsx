@@ -4,6 +4,7 @@ import { useIsMobile } from "@/core/hooks/use-mobile";
 import ScrollProgress from "@/shared/ui/scroll-progress";
 import WhatsAppButton from "@/shared/ui/whatsapp-button";
 import { TUWEBAI_WHATSAPP_URL } from '@/shared/constants/contact';
+import MetaTags from '@/shared/ui/meta-tags';
 import "./uxui-page.css";
 
 // Tipos para proyectos UX/UI
@@ -294,9 +295,18 @@ export default function UXUI() {
   const isUsingGlobalNav = (window as WindowWithGlobalNav).isUsingGlobalNav !== false;
   
   return (
-    <div className="uxui-page">
-      <ScrollProgress color="#00CCFF" />
-      <WhatsAppButton />
+    <>
+      <MetaTags
+        title="Diseño UX/UI Web"
+        description="Diseño de interfaces web centradas en conversión. Wireframes, prototipos y diseño visual alineado al objetivo comercial del negocio."
+        keywords="diseño UX UI web, interfaces que convierten, wireframes, prototipos, diseño visual, TuWebAI"
+        url="https://tuweb-ai.com/uxui"
+        ogType="website"
+        ogImage="/logo-tuwebai.png"
+      />
+      <div className="uxui-page">
+        <ScrollProgress color="#00CCFF" />
+        <WhatsAppButton />
       
       {/* Header flotante para desktop y móvil (solo si no se usa GlobalNavbar) */}
       {!isUsingGlobalNav && (
@@ -709,7 +719,8 @@ export default function UXUI() {
             </div>
           </div>
         )}
-    </div>
+      </div>
+    </>
   );
 }
 
