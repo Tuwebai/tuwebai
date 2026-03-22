@@ -1,4 +1,4 @@
-import { useAuthActions } from '@/features/auth/context/AuthContext';
+import { useOptionalAuthActions } from '@/features/auth/context/auth-context';
 import { useLoginModal } from '@/features/auth/hooks/use-login-modal';
 
 interface PublicNavbarActionsProps {
@@ -11,7 +11,7 @@ export function PublicNavbarActions({
   onAction,
 }: PublicNavbarActionsProps) {
   const { openModal } = useLoginModal();
-  const { ensureAuthReady } = useAuthActions();
+  const { ensureAuthReady } = useOptionalAuthActions();
 
   const handleAuthIntent = async (mode: 'login' | 'register') => {
     onAction?.();
