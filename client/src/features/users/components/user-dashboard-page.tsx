@@ -238,8 +238,9 @@ export default function UserDashboardPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
       <MetaTags
-        title="Panel de usuario | TuWeb.ai"
+        title="Panel de usuario"
         description="Gestioná tu cuenta, privacidad y seguridad en TuWeb.ai."
+        robots="noindex,follow"
       />
 
       <div className="container mx-auto px-3 pb-8 pt-24 sm:px-4 sm:pb-10 sm:pt-28 lg:pt-32">

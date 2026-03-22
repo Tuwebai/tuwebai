@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import AnimatedShape from '@/shared/ui/animated-shape';
+import MetaTags from '@/shared/ui/meta-tags';
+import { TUWEBAI_SITE_FULL_URL } from '@/shared/constants/contact';
 import '@/app/router/services/service-detail-page.css';
 
 export default function DesarrolloWeb() {
@@ -12,7 +14,15 @@ export default function DesarrolloWeb() {
   }, []);
 
   return (
-    <main className="service-detail-page">
+    <>
+      <MetaTags
+        title="Desarrollo Web Profesional"
+        description="Desarrollo web profesional para negocios argentinos: sitios corporativos, landing pages optimizadas y tecnología a medida para convertir visitas en clientes."
+        keywords="desarrollo web profesional, desarrollo web argentina, landing pages optimizadas, sitios corporativos, TuWebAI"
+        url={`${TUWEBAI_SITE_FULL_URL}/servicios/desarrollo-web`}
+        ogType="website"
+      />
+      <main className="service-detail-page">
       {/* Hero Section */}
       <section className="service-detail-hero bg-gradient-1">
         <AnimatedShape type={1} className="top-[10%] right-[-150px]" delay={1} />
@@ -886,6 +896,7 @@ export default function DesarrolloWeb() {
           </div>
         </div>
       </section>
-    </main>
+      </main>
+    </>
   );
 }

@@ -8,9 +8,16 @@ import { Input } from "@/shared/ui/input";
 import { Textarea } from "@/shared/ui/textarea";
 import { useToast } from "@/shared/ui/use-toast";
 import WhatsAppButton from "@/shared/ui/whatsapp-button";
-import { TUWEBAI_WHATSAPP_DISPLAY, TUWEBAI_WHATSAPP_TEL, TUWEBAI_WHATSAPP_URL, TUWEBAI_EMAIL } from '@/shared/constants/contact';
+import {
+  TUWEBAI_EMAIL,
+  TUWEBAI_SITE_FULL_URL,
+  TUWEBAI_WHATSAPP_DISPLAY,
+  TUWEBAI_WHATSAPP_TEL,
+  TUWEBAI_WHATSAPP_URL,
+} from '@/shared/constants/contact';
 import analytics from "@/lib/analytics";
 import { getProposalErrorMessage, submitProposal } from '@/features/proposals/services/proposals.service';
+import MetaTags from '@/shared/ui/meta-tags';
 import '@/features/proposals/components/proposal-request-page.css';
 
 const formSchema = z.object({
@@ -282,7 +289,15 @@ export default function Consulta() {
   };
 
   return (
-    <div className="proposal-request-page">
+    <>
+      <MetaTags
+        title="Consulta y propuesta inicial"
+        description="Contanos qué necesita tu negocio y te respondemos con un diagnóstico claro. Consulta inicial sin cargo para webs, e-commerce y sistemas a medida."
+        keywords="consulta desarrollo web, propuesta web, diagnóstico gratuito, proyecto web Argentina, TuWebAI"
+        url={`${TUWEBAI_SITE_FULL_URL}/consulta`}
+        ogType="website"
+      />
+      <div className="proposal-request-page">
       <WhatsAppButton />
       
       {/* Header */}
@@ -830,7 +845,8 @@ export default function Consulta() {
           </div>
         </div>
       </section>
-    </div>
+      </div>
+    </>
   );
 }
 
