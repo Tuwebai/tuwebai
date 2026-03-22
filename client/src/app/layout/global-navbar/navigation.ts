@@ -16,6 +16,8 @@ export const MAIN_NAVIGATION: NavigationLink[] = [
       { id: 'services', label: 'Servicios' },
       { id: 'process', label: 'Proceso' },
       { id: 'showroom', label: 'Proyectos' },
+      { id: 'impact', label: 'Diferenciales' },
+      { id: 'contact', label: 'Contacto' },
     ],
   },
   { name: 'Corporativos', href: '/corporativos' },
