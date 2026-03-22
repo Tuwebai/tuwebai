@@ -425,6 +425,42 @@ const buildNewsletterWelcomeEmail = () => {
   return { subject, text, html };
 };
 
+const buildChecklistWebGratisEmail = (name: string) => {
+  const frontendBaseUrl = env.FRONTEND_URL.replace(/\/+$/, '');
+  const actionUrl = `${frontendBaseUrl}/checklist-web-tuwebai.pdf`;
+  const firstName = name.trim().split(/\s+/)[0] || 'Hola';
+  const subject = 'Tu checklist web gratis de TuWeb.ai';
+  const text = [
+    `${firstName}, aca tenes tu checklist web gratis de TuWeb.ai.`,
+    '',
+    'Descargalo desde este enlace:',
+    actionUrl,
+    '',
+    'Tambien podes usar la version interactiva en:',
+    `${frontendBaseUrl}/checklist-web-gratis`,
+    '',
+    `Si queres que revisemos tu caso puntual, pedi tu diagnostico gratuito desde ${frontendBaseUrl}/diagnostico-gratuito`,
+  ].join('\n');
+
+  const html = buildNewsletterEmailShell({
+    preheader: 'Tu checklist web gratis ya esta listo para descargar.',
+    eyebrow: 'Recurso TuWeb.ai',
+    title: `${firstName}, aca tenes tu checklist`,
+    intro:
+      'Preparamos este recurso para que puedas revisar tu sitio con criterio concreto y detectar rapido que esta frenando conversiones, confianza o performance.',
+    body: [
+      'El PDF incluye los 35 puntos que usamos en TuWeb.ai para auditar sitios antes de proponer mejoras. Te conviene recorrerlo completo y marcar todo lo que hoy no esta resuelto.',
+      'Si al terminar detectas varios puntos flojos, podes seguir con la version interactiva o pedir un diagnostico gratuito para revisar prioridades con contexto real de negocio.',
+    ],
+    actionLabel: 'Descargar checklist',
+    actionUrl,
+    actionHint: 'Si el boton no funciona, copia y pega esta URL en tu navegador:',
+    footerNote: 'Recibis este email porque solicitaste el checklist web gratis desde tuweb-ai.com.',
+  });
+
+  return { subject, text, html };
+};
+
 export const queueNewsletterConfirmationEmail = (
   email: string,
   confirmationUrl: string,
@@ -568,4 +604,33 @@ export const sendNewsletterWelcomeEmail = async (email: string, options: Backgro
   });
 
   return result;
+};
+
+export const queueChecklistWebGratisEmail = (
+  name: string,
+  email: string,
+  options: BackgroundEmailOptions,
+): void => {
+  if (isSmtpDeliveryDisabled()) {
+    appLogger.info(`${options.event}.smtp_disabled`, options.meta || {});
+    return;
+  }
+
+  if (!isMailerConfigured()) {
+    appLogger.warn(`${options.event}.smtp_not_configured`, options.meta || {});
+    return;
+  }
+
+  const emailPayload = buildChecklistWebGratisEmail(name);
+  enqueueTransactionalEmailOutbox(
+    {
+      to: email,
+      subject: emailPayload.subject,
+      html: emailPayload.html,
+      text: emailPayload.text,
+      from: getNewsletterFrom(),
+      attachments: buildNewsletterAttachments(),
+    },
+    options,
+  );
 };

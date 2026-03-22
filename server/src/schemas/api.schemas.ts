@@ -59,6 +59,14 @@ export const newsletterSchema = z.object({
   })
 });
 
+export const checklistWebGratisDownloadSchema = z.object({
+  body: z.object({
+    name: z.string({ required_error: 'El nombre es requerido' }).min(2, 'El nombre debe tener al menos 2 caracteres'),
+    email: z.string({ required_error: 'El email es requerido' }).email('Email invalido'),
+    source: z.string().min(1, 'Source invalido').max(100).optional().default('website'),
+  }),
+});
+
 export const newsletterConfirmParamsSchema = z.object({
   params: z.object({
     token: z.string({ required_error: 'Token requerido' }).min(6, 'Token invalido'),

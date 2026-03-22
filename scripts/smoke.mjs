@@ -188,6 +188,19 @@ const run = async () => {
       assert(data?.success === true, 'Expected success=true');
     });
 
+    await runCase('checklist_web_gratis.valid.accepted', async () => {
+      const { response, data } = await request('/newsletter/resources/checklist-web-gratis', {
+        method: 'POST',
+        body: JSON.stringify({
+          name: 'Smoke QA',
+          email: 'qa@example.com',
+          source: 'smoke-suite',
+        }),
+      });
+      assert([200, 202].includes(response.status), `Expected 200/202, got ${response.status}`);
+      assert(data?.success === true, 'Expected success=true');
+    });
+
     await runCase('testimonials.valid.created', async () => {
       const { response, data } = await request('/api/testimonials', {
         method: 'POST',
@@ -224,6 +237,14 @@ const run = async () => {
       const { response } = await request('/newsletter', {
         method: 'POST',
         body: JSON.stringify({ email: 'bad-email' }),
+      });
+      assert(response.status === 400, `Expected 400, got ${response.status}`);
+    });
+
+    await runCase('checklist_web_gratis.invalid.400', async () => {
+      const { response } = await request('/newsletter/resources/checklist-web-gratis', {
+        method: 'POST',
+        body: JSON.stringify({ name: 'A', email: 'bad-email' }),
       });
       assert(response.status === 400, `Expected 400, got ${response.status}`);
     });

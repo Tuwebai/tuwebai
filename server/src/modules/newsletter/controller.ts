@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { env } from '../../config/env.config';
 import {
   queueContactEmail,
+  queueChecklistWebGratisEmail,
   sendNewsletterConfirmationEmail,
   sendNewsletterUnsubscribeEmail,
   sendNewsletterWelcomeEmail,
@@ -84,6 +85,50 @@ export const handleNewsletter = async (req: Request, res: Response) => {
       success: false,
       message: 'No se pudo procesar la suscripcion en este momento.',
       details: env.NODE_ENV === 'development' ? getErrorMessage(error, 'unknown_newsletter_error') : undefined,
+    });
+  }
+};
+
+export const handleChecklistWebGratisDownload = async (req: Request, res: Response) => {
+  try {
+    const { name, email, source } = req.body;
+
+    queueChecklistWebGratisEmail(name, email, {
+      event: 'public.checklist_web_gratis',
+      meta: { route: req.path, method: req.method, source: source || 'website' },
+    });
+
+    queueContactEmail(
+      {
+        name,
+        email,
+        title: 'Nueva solicitud de checklist web gratis',
+        message: `Nombre: ${name}\nEmail: ${email}\nSource: ${source || 'website'}`,
+      },
+      {
+        event: 'public.checklist_web_gratis_lead',
+        meta: { route: req.path, method: req.method, source: source || 'website' },
+      },
+    );
+
+    return res.status(202).json({
+      success: true,
+      message: 'Solicitud recibida. Te enviamos el checklist por email.',
+    });
+  } catch (error: unknown) {
+    appLogger.error('public.checklist_web_gratis_failed', {
+      error: getErrorMessage(error, 'unknown_checklist_web_gratis_error'),
+      route: req.path,
+      method: req.method,
+    });
+
+    return res.status(500).json({
+      success: false,
+      message: 'No se pudo enviar el checklist en este momento.',
+      details:
+        env.NODE_ENV === 'development'
+          ? getErrorMessage(error, 'unknown_checklist_web_gratis_error')
+          : undefined,
     });
   }
 };

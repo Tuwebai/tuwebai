@@ -2,8 +2,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowDownToLine, CheckCircle2, Download } from 'lucide-react';
 
-import { useNewsletterSubmission } from '@/features/newsletter/hooks/use-newsletter-submission';
-import { getNewsletterErrorMessage } from '@/features/newsletter/services/newsletter.service';
+import { useChecklistDownloadSubmission } from '@/features/checklist/hooks/use-checklist-download-submission';
+import { getChecklistWebGratisErrorMessage } from '@/features/checklist/services/checklist-download.service';
 import { cn } from '@/lib/utils';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/shared/ui/accordion';
 import AnimatedShape from '@/shared/ui/animated-shape';
@@ -173,15 +173,6 @@ const INITIAL_FORM_STATE: DownloadFormState = {
   email: '',
 };
 
-function triggerPdfDownload() {
-  const link = document.createElement('a');
-  link.href = CHECKLIST_PDF_PATH;
-  link.download = 'checklist-web-tuwebai.pdf';
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-}
-
 function getResultContent(completedCount: number) {
   if (completedCount <= 12) {
     return {
@@ -213,7 +204,7 @@ function getResultContent(completedCount: number) {
 }
 
 export default function ChecklistWebGratisPage() {
-  const { subscribeToNewsletter } = useNewsletterSubmission();
+  const { requestChecklistWebGratis } = useChecklistDownloadSubmission();
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
   const [form, setForm] = useState<DownloadFormState>(INITIAL_FORM_STATE);
   const [submitState, setSubmitState] = useState<'idle' | 'submitting' | 'sent'>('idle');
@@ -269,7 +260,8 @@ export default function ChecklistWebGratisPage() {
     setFeedback(null);
 
     try {
-      await subscribeToNewsletter({
+      await requestChecklistWebGratis({
+        name: form.name.trim(),
         email: form.email.trim(),
         source: 'checklist_web_gratis',
       });
@@ -277,11 +269,10 @@ export default function ChecklistWebGratisPage() {
       setSuccessEmail(form.email.trim());
       setSubmitState('sent');
       setForm(INITIAL_FORM_STATE);
-      triggerPdfDownload();
     } catch (error) {
       setSubmitState('idle');
       setFeedback(
-        getNewsletterErrorMessage(
+        getChecklistWebGratisErrorMessage(
           error,
           'No pudimos procesar la descarga en este momento. Intentá de nuevo.',
         ),

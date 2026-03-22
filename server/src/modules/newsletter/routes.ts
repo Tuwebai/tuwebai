@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import {
   handleBrevoWebhook,
+  handleChecklistWebGratisDownload,
   handleNewsletter,
   handleNewsletterBrevoReconcile,
   handleNewsletterConfirm,
@@ -11,6 +12,7 @@ import { apiLimiter } from '../../middlewares/rate-limit.middleware';
 import { requireInternalApiKey } from '../../middlewares/internal-auth.middleware';
 import {
   brevoWebhookSchema,
+  checklistWebGratisDownloadSchema,
   newsletterConfirmParamsSchema,
   newsletterReconcileSchema,
   newsletterSchema,
@@ -20,6 +22,12 @@ import {
 const router = Router();
 
 router.post('/newsletter', apiLimiter, validatePayload(newsletterSchema), handleNewsletter);
+router.post(
+  '/newsletter/resources/checklist-web-gratis',
+  apiLimiter,
+  validatePayload(checklistWebGratisDownloadSchema),
+  handleChecklistWebGratisDownload,
+);
 router.get('/newsletter/confirm/:token', apiLimiter, validatePayload(newsletterConfirmParamsSchema), handleNewsletterConfirm);
 router.get(
   '/newsletter/unsubscribe/:token',

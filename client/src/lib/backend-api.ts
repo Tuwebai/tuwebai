@@ -160,6 +160,13 @@ export const backendApi = {
       timeoutMs: 15000,
     }),
 
+  requestChecklistWebGratis: (payload: { name: string; email: string; source?: string }) =>
+    apiFetch<{ success?: boolean; message?: string }>('/newsletter/resources/checklist-web-gratis', {
+      method: 'POST',
+      body: payload,
+      timeoutMs: 15000,
+    }),
+
   confirmNewsletter: (token: string) =>
     apiFetch<{ success: boolean; message: string; unsubscribeToken?: string | null; justConfirmed?: boolean }>(
       `/newsletter/confirm/${encodeURIComponent(token)}`,
