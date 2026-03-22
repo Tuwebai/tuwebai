@@ -197,4 +197,4 @@ Este checklist no es de un solo uso. Cada vez que hagas cambios en tu web, volv�
 
 ---
 
-*Si tu puntaje fue menor a 22 y querés un diagnóstico más profundo con recomendaciones específicas para tu negocio, en TuWebAI lo hacemos sin cargo. Analizamos tu sitio, identificamos las oportunidades más importantes y te decimos exactamente qué hacer — sin venderte nada que no necesitás primero. [Pedí tu diagnóstico acá →](/consulta)*
+*Si tu puntaje fue menor a 22 y querés un diagnóstico más profundo con recomendaciones específicas para tu negocio, en TuWebAI lo hacemos sin cargo. Analizamos tu sitio, identificamos las oportunidades más importantes y te decimos exactamente qué hacer — sin venderte nada que no necesitás primero. [Pedí tu diagnóstico gratuito →](/diagnostico-gratuito)*

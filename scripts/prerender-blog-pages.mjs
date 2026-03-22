@@ -130,7 +130,12 @@ const staticRouteHead = {
   '/diagnostico-gratuito': {
     title: 'Diagnóstico Web Gratuito | TuWebAI — Descubrí qué falla en tu sitio',
     description:
-      'Revisamos tu web sin cargo y te decimos exactamente qué está frenando tus consultas. Velocidad, conversión y SEO básico. Sin compromiso.',
+      'Revisamos tu web sin cargo y te decimos exactamente qué está frenando tus consultas. Velocidad, conversión y SEO básico. Sin compromiso. Respondemos en menos de 24 horas.',
+    ogTitle: 'Diagnóstico Web Gratuito | TuWebAI',
+    ogDescription: 'Descubrí qué está frenando las consultas de tu web. Sin cargo, sin compromiso.',
+    twitterTitle: 'Diagnóstico Web Gratuito | TuWebAI',
+    twitterDescription: 'Descubrí qué está frenando las consultas de tu web.',
+    ogSiteName: 'TuWebAI',
     keywords:
       'diagnóstico web gratuito, auditoría web inicial, velocidad web, conversión web, SEO básico, TuWebAI',
     url: `${siteUrl}/diagnostico-gratuito`,
@@ -141,17 +146,92 @@ const staticRouteHead = {
         '@context': 'https://schema.org',
         '@type': 'Service',
         name: 'Diagnóstico Web Gratuito',
+        alternateName: 'Diagnóstico gratuito de sitio web',
         provider: {
           '@type': 'LocalBusiness',
           name: 'TuWebAI',
+          url: siteUrl,
         },
         description:
-          'Revisión gratuita del sitio web para identificar problemas de velocidad, conversión y SEO básico.',
+          'Revisión gratuita del sitio web para identificar problemas de velocidad, conversión y SEO básico. Sin cargo y sin compromiso.',
+        url: `${siteUrl}/diagnostico-gratuito`,
         offers: {
           '@type': 'Offer',
           price: '0',
           priceCurrency: 'ARS',
+          availability: 'https://schema.org/InStock',
+          description: 'Diagnóstico gratuito sin cargo ni compromiso',
         },
+        areaServed: {
+          '@type': 'Country',
+          name: 'Argentina',
+        },
+        serviceType: 'Diagnóstico web',
+        hasOfferCatalog: {
+          '@type': 'OfferCatalog',
+          name: 'Qué incluye el diagnóstico',
+          itemListElement: [
+            {
+              '@type': 'Offer',
+              itemOffered: {
+                '@type': 'Service',
+                name: 'Análisis de velocidad de carga',
+              },
+            },
+            {
+              '@type': 'Offer',
+              itemOffered: {
+                '@type': 'Service',
+                name: 'Revisión de conversión y CTA',
+              },
+            },
+            {
+              '@type': 'Offer',
+              itemOffered: {
+                '@type': 'Service',
+                name: 'Diagnóstico SEO básico',
+              },
+            },
+          ],
+        },
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: [
+          {
+            '@type': 'Question',
+            name: '¿El diagnóstico es realmente gratis?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'Sí, completamente gratis y sin compromiso. No hay ningún costo oculto ni obligación de contratar después.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: '¿Cuánto tarda en llegar el diagnóstico?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'Respondemos en menos de 24 horas hábiles con un resumen de los principales problemas encontrados.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: '¿Qué incluye el diagnóstico gratuito?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'Revisamos velocidad de carga en mobile, elementos de conversión y diagnóstico SEO básico para detectar qué frena las consultas.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: '¿Necesito tener una web para pedir el diagnóstico?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'No. Si no tenés web todavía, igualmente podemos evaluar tu presencia digital actual y recomendarte el mejor punto de partida.',
+            },
+          },
+        ],
       },
       {
         '@context': 'https://schema.org',
@@ -305,6 +385,11 @@ function deferSpaBootstrap(html) {
 
 function applyHeadMetadata(html, metadata) {
   let nextHtml = html;
+  const ogTitle = metadata.ogTitle ?? metadata.title;
+  const ogDescription = metadata.ogDescription ?? metadata.description;
+  const twitterTitle = metadata.twitterTitle ?? ogTitle;
+  const twitterDescription = metadata.twitterDescription ?? ogDescription;
+  const ogSiteName = metadata.ogSiteName ?? 'TuWeb.ai';
 
   nextHtml = replaceTag(nextHtml, /<title>[\s\S]*?<\/title>/i, `<title>${escapeHtml(metadata.title)}</title>`);
   nextHtml = replaceTag(nextHtml, /<meta\s+name="description"\s+content="[^"]*"\s*\/?>/i, `<meta name="description" content="${escapeHtml(metadata.description)}" />`);
@@ -312,12 +397,13 @@ function applyHeadMetadata(html, metadata) {
   nextHtml = replaceTag(nextHtml, /<meta\s+name="robots"\s+content="[^"]*"\s*\/?>/i, `<meta name="robots" content="${metadata.robots}" />`);
   nextHtml = replaceTag(nextHtml, /<meta\s+property="og:type"\s+content="[^"]*"\s*\/?>/i, `<meta property="og:type" content="${metadata.ogType}" />`);
   nextHtml = replaceTag(nextHtml, /<meta\s+property="og:url"\s+content="[^"]*"\s*\/?>/i, `<meta property="og:url" content="${metadata.url}" />`);
-  nextHtml = replaceTag(nextHtml, /<meta\s+property="og:title"\s+content="[^"]*"\s*\/?>/i, `<meta property="og:title" content="${escapeHtml(metadata.title)}" />`);
-  nextHtml = replaceTag(nextHtml, /<meta\s+property="og:description"\s+content="[^"]*"\s*\/?>/i, `<meta property="og:description" content="${escapeHtml(metadata.description)}" />`);
+  nextHtml = replaceTag(nextHtml, /<meta\s+property="og:title"\s+content="[^"]*"\s*\/?>/i, `<meta property="og:title" content="${escapeHtml(ogTitle)}" />`);
+  nextHtml = replaceTag(nextHtml, /<meta\s+property="og:description"\s+content="[^"]*"\s*\/?>/i, `<meta property="og:description" content="${escapeHtml(ogDescription)}" />`);
   nextHtml = replaceTag(nextHtml, /<meta\s+property="og:image"\s+content="[^"]*"\s*\/?>/i, `<meta property="og:image" content="${metadata.ogImage}" />`);
+  nextHtml = replaceTag(nextHtml, /<meta\s+property="og:site_name"\s+content="[^"]*"\s*\/?>/i, `<meta property="og:site_name" content="${escapeHtml(ogSiteName)}" />`);
   nextHtml = replaceTag(nextHtml, /<meta\s+name="twitter:url"\s+content="[^"]*"\s*\/?>/i, `<meta name="twitter:url" content="${metadata.url}" />`);
-  nextHtml = replaceTag(nextHtml, /<meta\s+name="twitter:title"\s+content="[^"]*"\s*\/?>/i, `<meta name="twitter:title" content="${escapeHtml(metadata.title)}" />`);
-  nextHtml = replaceTag(nextHtml, /<meta\s+name="twitter:description"\s+content="[^"]*"\s*\/?>/i, `<meta name="twitter:description" content="${escapeHtml(metadata.description)}" />`);
+  nextHtml = replaceTag(nextHtml, /<meta\s+name="twitter:title"\s+content="[^"]*"\s*\/?>/i, `<meta name="twitter:title" content="${escapeHtml(twitterTitle)}" />`);
+  nextHtml = replaceTag(nextHtml, /<meta\s+name="twitter:description"\s+content="[^"]*"\s*\/?>/i, `<meta name="twitter:description" content="${escapeHtml(twitterDescription)}" />`);
   nextHtml = replaceTag(nextHtml, /<meta\s+name="twitter:image"\s+content="[^"]*"\s*\/?>/i, `<meta name="twitter:image" content="${metadata.ogImage}" />`);
   nextHtml = replaceTag(nextHtml, /<link\s+rel="canonical"\s+href="[^"]*"\s*\/?>/i, `<link rel="canonical" href="${metadata.url}" />`);
 

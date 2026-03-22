@@ -14,6 +14,7 @@ import {
   TUWEBAI_WHATSAPP_NUMBER,
   TUWEBAI_WHATSAPP_URL,
 } from '@/shared/constants/contact';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/shared/ui/accordion';
 import AnimatedShape from '@/shared/ui/animated-shape';
 import { Badge } from '@/shared/ui/badge';
 import { Button } from '@/shared/ui/button';
@@ -71,17 +72,92 @@ const DIAGNOSTICO_STRUCTURED_DATA = [
     '@context': 'https://schema.org',
     '@type': 'Service',
     name: 'Diagnóstico Web Gratuito',
+    alternateName: 'Diagnóstico gratuito de sitio web',
     provider: {
       '@type': 'LocalBusiness',
       name: 'TuWebAI',
+      url: TUWEBAI_SITE_FULL_URL,
     },
     description:
-      'Revisión gratuita del sitio web para identificar problemas de velocidad, conversión y SEO básico.',
+      'Revisión gratuita del sitio web para identificar problemas de velocidad, conversión y SEO básico. Sin cargo y sin compromiso.',
+    url: `${TUWEBAI_SITE_FULL_URL}/diagnostico-gratuito`,
     offers: {
       '@type': 'Offer',
       price: '0',
       priceCurrency: 'ARS',
+      availability: 'https://schema.org/InStock',
+      description: 'Diagnóstico gratuito sin cargo ni compromiso',
     },
+    areaServed: {
+      '@type': 'Country',
+      name: 'Argentina',
+    },
+    serviceType: 'Diagnóstico web',
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: 'Qué incluye el diagnóstico',
+      itemListElement: [
+        {
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: 'Análisis de velocidad de carga',
+          },
+        },
+        {
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: 'Revisión de conversión y CTA',
+          },
+        },
+        {
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: 'Diagnóstico SEO básico',
+          },
+        },
+      ],
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: '¿El diagnóstico es realmente gratis?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Sí, completamente gratis y sin compromiso. No hay ningún costo oculto ni obligación de contratar después.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '¿Cuánto tarda en llegar el diagnóstico?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Respondemos en menos de 24 horas hábiles con un resumen de los principales problemas encontrados.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '¿Qué incluye el diagnóstico gratuito?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Revisamos velocidad de carga en mobile, elementos de conversión y diagnóstico SEO básico para detectar qué frena las consultas.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '¿Necesito tener una web para pedir el diagnóstico?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'No. Si no tenés web todavía, igualmente podemos evaluar tu presencia digital actual y recomendarte el mejor punto de partida.',
+        },
+      },
+    ],
   },
   {
     '@context': 'https://schema.org',
@@ -102,6 +178,33 @@ const DIAGNOSTICO_STRUCTURED_DATA = [
     ],
   },
 ];
+
+const DIAGNOSTICO_FAQS = [
+  {
+    value: 'faq-1',
+    question: '¿El diagnóstico es realmente gratis?',
+    answer:
+      'Sí, completamente gratis y sin compromiso. No hay ningún costo oculto ni obligación de contratar después.',
+  },
+  {
+    value: 'faq-2',
+    question: '¿Cuánto tarda en llegar el diagnóstico?',
+    answer:
+      'Respondemos en menos de 24 horas hábiles con un resumen de los principales problemas encontrados.',
+  },
+  {
+    value: 'faq-3',
+    question: '¿Qué incluye el diagnóstico gratuito?',
+    answer:
+      'Revisamos velocidad de carga en mobile, elementos de conversión como CTA visible y formulario accesible, y un diagnóstico SEO básico para detectar qué falla en tu web.',
+  },
+  {
+    value: 'faq-4',
+    question: '¿Necesito tener una web para pedir el diagnóstico?',
+    answer:
+      'No. Si no tenés web todavía, igualmente podemos evaluar tu presencia digital actual y recomendarte el mejor punto de partida para tu negocio en Argentina.',
+  },
+] as const;
 
 const INITIAL_FORM_STATE: DiagnosisFormState = {
   name: '',
@@ -254,11 +357,18 @@ export default function DiagnosticoGratuitoPage() {
   return (
     <>
       <MetaTags
-        title="Diagnóstico Web Gratuito"
-        description="Revisamos tu web sin cargo y te decimos exactamente qué está frenando tus consultas. Velocidad, conversión y SEO básico. Sin compromiso."
+        title="Diagnóstico Web Gratuito | TuWebAI — Descubrí qué falla en tu sitio"
+        description="Revisamos tu web sin cargo y te decimos exactamente qué está frenando tus consultas. Velocidad, conversión y SEO básico. Sin compromiso. Respondemos en menos de 24 horas."
         keywords="diagnóstico web gratuito, auditoría web inicial, velocidad web, conversión web, SEO básico, TuWebAI"
         url={`${TUWEBAI_SITE_FULL_URL}/diagnostico-gratuito`}
         ogType="website"
+        disableTitleSuffix
+        ogTitle="Diagnóstico Web Gratuito | TuWebAI"
+        ogDescription="Descubrí qué está frenando las consultas de tu web. Sin cargo, sin compromiso."
+        twitterTitle="Diagnóstico Web Gratuito | TuWebAI"
+        twitterDescription="Descubrí qué está frenando las consultas de tu web."
+        ogSiteName="TuWebAI"
+        ogImage="/logo-tuwebai.png"
         structuredData={DIAGNOSTICO_STRUCTURED_DATA}
       />
 
@@ -279,8 +389,9 @@ export default function DiagnosticoGratuitoPage() {
             </h1>
 
             <p className="mt-6 max-w-2xl text-base leading-7 text-gray-300 sm:text-xl sm:leading-8">
-              Revisamos tu sitio y te decimos exactamente qué está fallando: sin rodeos, sin cargo
-              y sin obligación de contratar.
+              En TuWebAI revisamos tu sitio y te decimos exactamente qué falla en tu web: sin
+              rodeos, sin cargo, sin compromiso y con respuesta en menos de 24 horas para negocios
+              de Argentina.
             </p>
 
             <div className="mt-8">
@@ -301,8 +412,13 @@ export default function DiagnosticoGratuitoPage() {
                 Qué incluye el diagnóstico
               </p>
               <h2 className="font-rajdhani text-3xl font-bold sm:text-4xl">
-                Tres señales claras para saber si tu web está frenando ventas.
+                Tres señales claras para saber si tu web está frenando consultas y ventas.
               </h2>
+              <p className="mt-4 max-w-2xl text-base leading-7 text-gray-300">
+                Este diagnóstico web gratuito de TuWebAI está pensado para negocios argentinos que
+                necesitan detectar rápido qué falla en su web antes de seguir invirtiendo en
+                campañas o tráfico sin retorno.
+              </p>
             </div>
 
             <div className="mt-10 grid gap-5 md:grid-cols-3">
@@ -504,10 +620,38 @@ export default function DiagnosticoGratuitoPage() {
               <p>No lo hacemos por filantropía.</p>
               <p>
                 Lo hacemos porque el 90% de los negocios que hablan con nosotros no saben
-                exactamente qué tiene roto su web. El diagnóstico resuelve eso antes de que arranque
-                cualquier conversación comercial.
+                exactamente qué tiene roto su web. El diagnóstico web gratuito resuelve eso antes de
+                que arranque cualquier conversación comercial con TuWebAI.
               </p>
               <p>Si podemos ayudarte, te lo vamos a decir. Si no podemos, también.</p>
+            </div>
+          </div>
+        </section>
+
+        <section className="border-t border-white/10 px-4 py-16 sm:py-20">
+          <div className="mx-auto max-w-4xl">
+            <div className="text-center">
+              <p className="mb-3 text-sm uppercase tracking-[0.24em] text-[#9BE7FF]">
+                Preguntas frecuentes
+              </p>
+              <h2 className="font-rajdhani text-3xl font-bold sm:text-4xl">
+                Lo que suelen preguntar antes de pedir el diagnóstico.
+              </h2>
+            </div>
+
+            <div className="mt-10 rounded-[28px] border border-white/10 bg-[#0f1017]/92 p-3 sm:p-4">
+              <Accordion type="single" collapsible className="w-full">
+                {DIAGNOSTICO_FAQS.map((faq) => (
+                  <AccordionItem key={faq.value} value={faq.value} className="border-white/10 px-3">
+                    <AccordionTrigger className="text-left font-rajdhani text-xl font-bold text-white hover:no-underline">
+                      {faq.question}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-base leading-7 text-gray-300">
+                      {faq.answer}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
             </div>
           </div>
         </section>

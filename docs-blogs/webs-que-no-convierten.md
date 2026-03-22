@@ -166,4 +166,4 @@ La diferencia entre una web que acumula visitas y una web que genera negocios no
 
 ---
 
-*¿Querés saber exactamente qué está frenando la conversión de tu web? En TuWebAI hacemos un diagnóstico gratuito donde analizamos tu sitio y te decimos con precisión qué está fallando y cómo resolverlo. [Pedí tu diagnóstico acá →](#)*
+*¿Querés saber exactamente qué está frenando la conversión de tu web? En TuWebAI hacemos un diagnóstico web gratuito donde analizamos tu sitio y te decimos con precisión qué está fallando y cómo resolverlo. [Pedí tu diagnóstico gratuito →](/diagnostico-gratuito)*

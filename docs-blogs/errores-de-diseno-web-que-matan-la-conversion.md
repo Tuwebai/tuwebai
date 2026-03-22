@@ -161,4 +161,4 @@ Si marcaste menos de 4, tu web está frenando activamente las conversiones. No h
 
 ---
 
-*¿Querés saber exactamente cuáles de estos errores tiene tu web y qué impacto están teniendo en tus resultados? En TuWebAI hacemos diagnósticos gratuitos con recomendaciones concretas — sin rodeos y sin venderte nada que no necesitás. [Pedí el tuyo acá →](/consulta)*
+*¿Querés saber exactamente cuáles de estos errores tiene tu web y qué impacto están teniendo en tus resultados? En TuWebAI hacemos diagnósticos web gratuitos con recomendaciones concretas — sin rodeos y sin venderte nada que no necesitás. [Pedí tu diagnóstico gratuito →](/diagnostico-gratuito)*

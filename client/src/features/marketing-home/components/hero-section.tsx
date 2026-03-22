@@ -101,6 +101,15 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
           </ScrollLink>
         </div>
 
+        <div className="mb-8">
+          <RouterLink
+            to="/diagnostico-gratuito"
+            className="inline-flex min-h-11 items-center justify-center text-sm font-medium text-[#9BE7FF] transition-colors hover:text-white"
+          >
+            Pedí tu diagnóstico gratuito →
+          </RouterLink>
+        </div>
+
         <div className="flex flex-wrap items-center justify-center gap-2 text-sm text-gray-300 sm:gap-3">
           <span className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs sm:px-4 sm:text-sm">
             Sitios corporativos

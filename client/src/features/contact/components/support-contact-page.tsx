@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import { getContactErrorMessage, submitContactForm } from '@/features/contact/services/contact.service';
 import { Input } from '@/shared/ui/input';
@@ -55,6 +56,12 @@ export default function SupportContactPage() {
       <div className="bg-[#18181b] rounded-xl shadow-lg p-8 max-w-md w-full flex flex-col items-center">
         <h1 className="text-3xl font-bold text-[#00ccff] mb-2 font-rajdhani">Contacto de Soporte</h1>
         <p className="text-gray-400 mb-6 text-center">¿Tenés dudas, problemas o necesitás ayuda? Completá el formulario y nuestro equipo de soporte te responderá a la brevedad.</p>
+        <p className="mb-6 text-center text-sm text-gray-400">
+          Si querés revisar qué falla en tu web antes de escribirnos,{' '}
+          <Link to="/diagnostico-gratuito" className="text-[#9BE7FF] underline underline-offset-4">
+            Pedí tu diagnóstico gratuito →
+          </Link>
+        </p>
         {alert && (
           <div className={`w-full mb-4 px-4 py-3 rounded text-center font-semibold ${alert.type === 'success' ? 'bg-green-600 text-white' : 'bg-red-600 text-white'}`}>{alert.message}</div>
         )}

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 import { useBlogArticle } from '@/features/blog/hooks/use-blog-article';
 import NewsletterForm from '@/features/newsletter/components/newsletter-form';
-import { TUWEBAI_SITE_FULL_URL, TUWEBAI_WHATSAPP_URL } from '@/shared/constants/contact';
+import { TUWEBAI_SITE_FULL_URL } from '@/shared/constants/contact';
 import MetaTags from '@/shared/ui/meta-tags';
 
 import './blog-pages.css';
@@ -64,13 +64,7 @@ export default function BlogArticlePage({ slug }: BlogArticlePageProps) {
   }
 
   const articleUrl = `${TUWEBAI_SITE_FULL_URL}/blog/${article.slug}/`;
-  const whatsappMessage = encodeURIComponent(
-    `Hola TuWebAI, vengo desde el articulo "${article.title}" y quiero hablar sobre una web que convierta mejor para mi negocio.`,
-  );
-  const whatsappCtaUrl = `${TUWEBAI_WHATSAPP_URL}?text=${whatsappMessage}`;
-  const articleHtml = article.html
-    .replace(/^<h1[\s\S]*?<\/h1>\n?/, '')
-    .replace(/href="\/consulta"/g, `href="${whatsappCtaUrl}" target="_blank" rel="noopener noreferrer"`);
+  const articleHtml = article.html.replace(/^<h1[\s\S]*?<\/h1>\n?/, '');
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -204,12 +198,10 @@ export default function BlogArticlePage({ slug }: BlogArticlePageProps) {
                 </p>
                 <div className="mt-6 flex flex-col gap-3">
                   <a
-                    href={whatsappCtaUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href="/diagnostico-gratuito"
                     className="blog-primary-button px-5 py-3"
                   >
-                    Pedir diagnostico
+                    Pedí tu diagnóstico gratuito →
                     <ArrowRight className="h-4 w-4" />
                   </a>
                   <Link

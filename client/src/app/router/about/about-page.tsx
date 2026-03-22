@@ -477,10 +477,10 @@ export default function AboutPage() {
 
               <div className="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
                 <Link
-                  to="/contacto"
+                  to="/diagnostico-gratuito"
                   className="inline-flex min-h-12 items-center justify-center rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-6 py-3 font-semibold text-white shadow-[0_12px_30px_rgba(0,204,255,0.18)] transition-transform duration-200 hover:scale-[1.02]"
                 >
-                  Contar mi proyecto →
+                  Pedí tu diagnóstico gratuito →
                 </Link>
                 <Link
                   to="/?section=showroom"

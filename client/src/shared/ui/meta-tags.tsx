@@ -18,13 +18,19 @@ interface MetaTagsProps {
   url?: string;
   type?: 'website' | 'article';
   twitterCard?: 'summary' | 'summary_large_image';
+  twitterTitle?: string;
+  twitterDescription?: string;
   ogImage?: string;
   ogType?: string;
+  ogTitle?: string;
+  ogDescription?: string;
+  ogSiteName?: string;
   author?: string;
   robots?: string;
   language?: string;
   geoRegion?: string;
   geoPlacename?: string;
+  disableTitleSuffix?: boolean;
   structuredData?: Record<string, unknown> | Array<Record<string, unknown>>;
 }
 
@@ -36,16 +42,22 @@ const MetaTags: React.FC<MetaTagsProps> = ({
   url = typeof window !== 'undefined' ? window.location.href : TUWEBAI_SITE_FULL_URL,
   type = 'website',
   twitterCard = 'summary_large_image',
+  twitterTitle,
+  twitterDescription,
   ogImage,
   ogType,
+  ogTitle,
+  ogDescription,
+  ogSiteName = 'TuWeb.ai',
   author = 'TuWeb.ai',
   robots = 'index, follow',
   language = 'es-AR',
   geoRegion = 'AR',
   geoPlacename = 'Argentina',
+  disableTitleSuffix = false,
   structuredData,
 }) => {
-  const fullTitle = `${title} | Tuweb.ai`;
+  const fullTitle = disableTitleSuffix ? title : `${title} | Tuweb.ai`;
 
   return (
     <Helmet>
@@ -60,15 +72,15 @@ const MetaTags: React.FC<MetaTagsProps> = ({
 
       <meta property="og:type" content={ogType || type} />
       <meta property="og:url" content={url} />
-      <meta property="og:title" content={fullTitle} />
-      <meta property="og:description" content={description} />
+      <meta property="og:title" content={ogTitle || fullTitle} />
+      <meta property="og:description" content={ogDescription || description} />
       <meta property="og:image" content={ogImage || image} />
-      <meta property="og:site_name" content="TuWeb.ai" />
+      <meta property="og:site_name" content={ogSiteName} />
       <meta property="og:locale" content="es_AR" />
 
       <meta name="twitter:card" content={twitterCard} />
-      <meta name="twitter:title" content={fullTitle} />
-      <meta name="twitter:description" content={description} />
+      <meta name="twitter:title" content={twitterTitle || ogTitle || fullTitle} />
+      <meta name="twitter:description" content={twitterDescription || ogDescription || description} />
       <meta name="twitter:image" content={ogImage || image} />
       <meta name="twitter:site" content="@tuwebai" />
 
