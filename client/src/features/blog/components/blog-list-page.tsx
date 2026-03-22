@@ -8,6 +8,8 @@ import NewsletterForm from '@/features/newsletter/components/newsletter-form';
 import { TUWEBAI_SITE_FULL_URL } from '@/shared/constants/contact';
 import MetaTags from '@/shared/ui/meta-tags';
 
+import './blog-pages.css';
+
 export default function BlogListPage() {
   const posts = useBlogPosts().filter((post) => !post.noindex);
   const pageUrl = `${TUWEBAI_SITE_FULL_URL}/blog/`;
@@ -47,14 +49,14 @@ export default function BlogListPage() {
         ]}
       />
 
-      <main className="min-h-screen bg-[#0a0a0f] px-4 pb-20 pt-28 text-white">
+      <main className="blog-page-shell px-4 pb-20 pt-28">
         <section className="mx-auto max-w-6xl">
-          <div className="relative overflow-hidden rounded-[28px] border border-white/10 bg-[radial-gradient(circle_at_top_left,_rgba(0,204,255,0.18),_transparent_38%),radial-gradient(circle_at_top_right,_rgba(153,51,255,0.14),_transparent_32%),linear-gradient(180deg,_rgba(18,18,23,0.98),_rgba(10,10,15,0.98))] px-5 py-10 shadow-2xl shadow-black/30 sm:rounded-[32px] sm:px-6 md:px-10 md:py-12">
+          <div className="blog-hero-card px-5 py-10 sm:px-6 md:px-10 md:py-12">
             <div className="flex flex-wrap items-center gap-3">
-              <span className="inline-flex rounded-full border border-[#00CCFF]/30 bg-[#00CCFF]/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.28em] text-[#9BE7FF]">
+              <span className="blog-pill blog-pill-accent">
                 Blog TuWeb.ai
               </span>
-              <span className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-1 text-xs font-medium uppercase tracking-[0.18em] text-gray-300">
+              <span className="blog-pill blog-pill-muted">
                 {publishedArticlesLabel}
               </span>
             </div>
@@ -72,7 +74,7 @@ export default function BlogListPage() {
             {posts.map((post) => (
               <article
                 key={post.slug}
-                className="group rounded-[28px] border border-white/10 bg-white/[0.03] p-6 transition-all duration-300 hover:-translate-y-1 hover:border-[#00CCFF]/40 hover:bg-white/[0.05]"
+                className="blog-surface-link group rounded-[28px] p-6"
               >
                 <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                   <div className="max-w-3xl">
@@ -80,7 +82,7 @@ export default function BlogListPage() {
                       {format(parseISO(post.publishedAt), "d 'de' MMMM 'de' yyyy", { locale: es })}
                     </p>
                     <h2 className="mt-3 font-rajdhani text-2xl font-bold text-white sm:text-3xl">
-                      <Link to={`/blog/${post.slug}`} className="transition-colors group-hover:text-[#9BE7FF]">
+                      <Link to={`/blog/${post.slug}`} className="blog-link-accent">
                         {post.title}
                       </Link>
                     </h2>
@@ -96,7 +98,7 @@ export default function BlogListPage() {
                     </span>
                     <Link
                       to={`/blog/${post.slug}`}
-                      className="inline-flex items-center gap-2 rounded-full border border-white/10 px-4 py-2 text-sm font-medium text-white transition-colors hover:border-[#00CCFF]/40 hover:bg-[#00CCFF]/10"
+                      className="blog-secondary-button px-4 py-2 text-sm"
                     >
                       Leer articulo
                       <ArrowRight className="h-4 w-4" />
@@ -109,9 +111,9 @@ export default function BlogListPage() {
         </section>
 
         <section className="mx-auto mt-10 max-w-6xl">
-          <div className="overflow-hidden rounded-[28px] border border-[#00CCFF]/20 bg-[radial-gradient(circle_at_left_top,_rgba(0,204,255,0.16),_transparent_32%),radial-gradient(circle_at_right_bottom,_rgba(153,51,255,0.14),_transparent_30%),linear-gradient(180deg,_rgba(16,19,27,0.98),_rgba(10,10,15,0.98))] px-5 py-8 shadow-2xl shadow-black/30 sm:rounded-[32px] sm:px-6 md:px-10 md:py-10">
+          <div className="blog-newsletter-card px-5 py-8 sm:px-6 md:px-10 md:py-10">
             <div className="max-w-3xl">
-              <span className="inline-flex rounded-full border border-[#00CCFF]/30 bg-[#00CCFF]/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.26em] text-[#9BE7FF]">
+              <span className="blog-pill blog-pill-accent">
                 Newsletter editorial
               </span>
               <h2 className="mt-5 font-rajdhani text-3xl font-bold leading-tight text-white sm:text-4xl md:text-5xl">

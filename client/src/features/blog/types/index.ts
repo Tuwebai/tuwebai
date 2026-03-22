@@ -12,7 +12,7 @@ export interface BlogArticleSeo {
   ogType: 'article';
 }
 
-export interface BlogArticle {
+export interface BlogArticleSummary {
   slug: string;
   title: string;
   description: string;
@@ -20,11 +20,14 @@ export interface BlogArticle {
   publishedAt: string;
   updatedAt: string;
   readingTimeMinutes: number;
-  html: string;
-  markdown: string;
-  headings: BlogHeading[];
   keywords: string[];
   sourceFile: string;
   seo: BlogArticleSeo;
   noindex?: boolean;
+}
+
+export interface BlogArticle extends BlogArticleSummary {
+  html: string;
+  markdown: string;
+  headings: BlogHeading[];
 }

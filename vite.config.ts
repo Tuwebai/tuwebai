@@ -5,8 +5,10 @@ import type { Plugin } from "vite";
 
 import { buildBlogPosts } from "./scripts/blog-content-utils.mjs";
 
-const BLOG_VIRTUAL_MODULE_ID = "virtual:blog-posts";
-const RESOLVED_BLOG_VIRTUAL_MODULE_ID = `\0${BLOG_VIRTUAL_MODULE_ID}`;
+const BLOG_INDEX_VIRTUAL_MODULE_ID = "virtual:blog-posts-index";
+const BLOG_FULL_VIRTUAL_MODULE_ID = "virtual:blog-posts-full";
+const RESOLVED_BLOG_INDEX_VIRTUAL_MODULE_ID = `\0${BLOG_INDEX_VIRTUAL_MODULE_ID}`;
+const RESOLVED_BLOG_FULL_VIRTUAL_MODULE_ID = `\0${BLOG_FULL_VIRTUAL_MODULE_ID}`;
 
 function getRadixChunkName(id: string): string | null {
   const normalizedId = id.replace(/\\/g, "/");
@@ -27,19 +29,29 @@ function blogContentPlugin(): Plugin {
   return {
     name: "tuwebai-blog-content",
     resolveId(id) {
-      if (id === BLOG_VIRTUAL_MODULE_ID) {
-        return RESOLVED_BLOG_VIRTUAL_MODULE_ID;
+      if (id === BLOG_INDEX_VIRTUAL_MODULE_ID) {
+        return RESOLVED_BLOG_INDEX_VIRTUAL_MODULE_ID;
+      }
+
+      if (id === BLOG_FULL_VIRTUAL_MODULE_ID) {
+        return RESOLVED_BLOG_FULL_VIRTUAL_MODULE_ID;
       }
 
       return null;
     },
     load(id) {
-      if (id !== RESOLVED_BLOG_VIRTUAL_MODULE_ID) {
-        return null;
+      const posts = buildBlogPosts(docsDir);
+
+      if (id === RESOLVED_BLOG_INDEX_VIRTUAL_MODULE_ID) {
+        const postsIndex = posts.map(({ html, markdown, headings, ...summary }) => summary);
+        return `export const blogPostsIndex = ${JSON.stringify(postsIndex, null, 2)};`;
       }
 
-      const posts = buildBlogPosts(docsDir);
-      return `export const blogPosts = ${JSON.stringify(posts, null, 2)};`;
+      if (id === RESOLVED_BLOG_FULL_VIRTUAL_MODULE_ID) {
+        return `export const blogPostsFull = ${JSON.stringify(posts, null, 2)};`;
+      }
+
+      return null;
     },
     buildStart() {
       this.addWatchFile(docsDir);
@@ -54,9 +66,15 @@ function blogContentPlugin(): Plugin {
           return;
         }
 
-        const virtualModule = server.moduleGraph.getModuleById(RESOLVED_BLOG_VIRTUAL_MODULE_ID);
-        if (virtualModule) {
-          server.moduleGraph.invalidateModule(virtualModule);
+        const virtualModules = [
+          server.moduleGraph.getModuleById(RESOLVED_BLOG_INDEX_VIRTUAL_MODULE_ID),
+          server.moduleGraph.getModuleById(RESOLVED_BLOG_FULL_VIRTUAL_MODULE_ID),
+        ];
+
+        for (const virtualModule of virtualModules) {
+          if (virtualModule) {
+            server.moduleGraph.invalidateModule(virtualModule);
+          }
         }
 
         server.ws.send({ type: "full-reload" });
@@ -70,9 +88,15 @@ function blogContentPlugin(): Plugin {
         return;
       }
 
-      const virtualModule = context.server.moduleGraph.getModuleById(RESOLVED_BLOG_VIRTUAL_MODULE_ID);
-      if (virtualModule) {
-        context.server.moduleGraph.invalidateModule(virtualModule);
+      const virtualModules = [
+        context.server.moduleGraph.getModuleById(RESOLVED_BLOG_INDEX_VIRTUAL_MODULE_ID),
+        context.server.moduleGraph.getModuleById(RESOLVED_BLOG_FULL_VIRTUAL_MODULE_ID),
+      ];
+
+      for (const virtualModule of virtualModules) {
+        if (virtualModule) {
+          context.server.moduleGraph.invalidateModule(virtualModule);
+        }
       }
 
       context.server.ws.send({ type: "full-reload" });

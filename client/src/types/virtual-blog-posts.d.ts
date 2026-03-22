@@ -1,5 +1,11 @@
-declare module 'virtual:blog-posts' {
+declare module 'virtual:blog-posts-index' {
+  import type { BlogArticleSummary } from '@/features/blog/types';
+
+  export const blogPostsIndex: BlogArticleSummary[];
+}
+
+declare module 'virtual:blog-posts-full' {
   import type { BlogArticle } from '@/features/blog/types';
 
-  export const blogPosts: BlogArticle[];
+  export const blogPostsFull: BlogArticle[];
 }

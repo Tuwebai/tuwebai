@@ -1,6 +1,6 @@
-import { getAllBlogPosts } from '@/features/blog/services/blog.service';
-import type { BlogArticle } from '@/features/blog/types';
+import { getAllBlogPosts } from '@/features/blog/services/blog-index.service';
+import type { BlogArticleSummary } from '@/features/blog/types';
 
-export function useBlogPosts(): BlogArticle[] {
+export function useBlogPosts(): BlogArticleSummary[] {
   return getAllBlogPosts();
 }
