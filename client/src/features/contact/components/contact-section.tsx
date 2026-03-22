@@ -1,14 +1,21 @@
 import { useRef, useState } from 'react';
+
 import { useIntersectionObserver } from '@/core/hooks/use-intersection-observer';
-import { useToast } from '@/shared/ui/use-toast';
-import AnimatedShape from '@/shared/ui/animated-shape';
-import analytics from '@/lib/analytics';
-import { TUWEBAI_WHATSAPP_DISPLAY, TUWEBAI_WHATSAPP_TEL, TUWEBAI_WHATSAPP_URL, TUWEBAI_EMAIL } from '@/shared/constants/contact';
 import {
   getContactErrorMessage,
   getContactFieldErrors,
   submitContactForm,
 } from '@/features/contact/services/contact.service';
+import analytics from '@/lib/analytics';
+import {
+  TUWEBAI_BUSINESS_HOURS,
+  TUWEBAI_EMAIL,
+  TUWEBAI_WHATSAPP_DISPLAY,
+  TUWEBAI_WHATSAPP_TEL,
+  TUWEBAI_WHATSAPP_URL,
+} from '@/shared/constants/contact';
+import AnimatedShape from '@/shared/ui/animated-shape';
+import { useToast } from '@/shared/ui/use-toast';
 
 interface ContactFormProps {
   delay: number;
@@ -20,7 +27,7 @@ function ContactForm({ delay }: ContactFormProps) {
   const [formState, setFormState] = useState({
     name: '',
     email: '',
-    message: ''
+    message: '',
   });
   const [submitState, setSubmitState] = useState<'idle' | 'submitting' | 'sent'>('idle');
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -37,7 +44,7 @@ function ContactForm({ delay }: ContactFormProps) {
     if (!formState.email.trim()) {
       newErrors.email = 'El email es requerido';
     } else if (!/\S+@\S+\.\S+/.test(formState.email)) {
-      newErrors.email = 'El email no es válido';
+      newErrors.email = 'El email no es valido';
     }
 
     if (!formState.message.trim()) {
@@ -56,9 +63,9 @@ function ContactForm({ delay }: ContactFormProps) {
 
     if (errors[name]) {
       setErrors((prev) => {
-        const newErrors = { ...prev };
-        delete newErrors[name];
-        return newErrors;
+        const nextErrors = { ...prev };
+        delete nextErrors[name];
+        return nextErrors;
       });
     }
   };
@@ -101,7 +108,7 @@ function ContactForm({ delay }: ContactFormProps) {
           title: 'Error al enviar',
           description: getContactErrorMessage(
             error,
-            'Ha ocurrido un problema al enviar tu mensaje. Por favor, intentalo de nuevo.'
+            'Ha ocurrido un problema al enviar tu mensaje. Por favor, intentalo de nuevo.',
           ),
           variant: 'destructive',
         });
@@ -117,7 +124,9 @@ function ContactForm({ delay }: ContactFormProps) {
       style={{ transitionDelay: `${delay * 150}ms` }}
     >
       <div className="bg-glass rounded-xl p-5 shadow-xl backdrop-blur-md sm:p-8">
-        <h3 className="mb-6 font-rajdhani text-xl font-bold text-white sm:text-2xl">Contanos tu proyecto</h3>
+        <h3 className="mb-6 font-rajdhani text-xl font-bold text-white sm:text-2xl">
+          Contanos tu proyecto
+        </h3>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
@@ -130,10 +139,12 @@ function ContactForm({ delay }: ContactFormProps) {
               name="name"
               value={formState.name}
               onChange={handleChange}
-              className={`w-full px-4 py-3 bg-[#0a0a0f]/70 border ${errors.name ? 'border-red-500' : 'border-gray-700'} rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00CCFF] focus:border-transparent text-white transition-all duration-200`}
+              className={`w-full rounded-lg border bg-[#0a0a0f]/70 px-4 py-3 text-white transition-all duration-200 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#00CCFF] ${
+                errors.name ? 'border-red-500' : 'border-gray-700'
+              }`}
               placeholder="Tu nombre"
             />
-            {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
+            {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name}</p>}
           </div>
 
           <div className="space-y-2">
@@ -146,10 +157,12 @@ function ContactForm({ delay }: ContactFormProps) {
               name="email"
               value={formState.email}
               onChange={handleChange}
-              className={`w-full px-4 py-3 bg-[#0a0a0f]/70 border ${errors.email ? 'border-red-500' : 'border-gray-700'} rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00CCFF] focus:border-transparent text-white transition-all duration-200`}
+              className={`w-full rounded-lg border bg-[#0a0a0f]/70 px-4 py-3 text-white transition-all duration-200 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#00CCFF] ${
+                errors.email ? 'border-red-500' : 'border-gray-700'
+              }`}
               placeholder="tu@email.com"
             />
-            {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
+            {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email}</p>}
           </div>
 
           <div className="space-y-2">
@@ -162,10 +175,12 @@ function ContactForm({ delay }: ContactFormProps) {
               value={formState.message}
               onChange={handleChange}
               rows={4}
-              className={`w-full px-4 py-3 bg-[#0a0a0f]/70 border ${errors.message ? 'border-red-500' : 'border-gray-700'} rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00CCFF] focus:border-transparent text-white resize-none transition-all duration-200`}
-              placeholder="Tu mensaje aquí..."
+              className={`w-full resize-none rounded-lg border bg-[#0a0a0f]/70 px-4 py-3 text-white transition-all duration-200 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#00CCFF] ${
+                errors.message ? 'border-red-500' : 'border-gray-700'
+              }`}
+              placeholder="Tu mensaje aqui..."
             />
-            {errors.message && <p className="text-red-500 text-xs mt-1">{errors.message}</p>}
+            {errors.message && <p className="mt-1 text-xs text-red-500">{errors.message}</p>}
           </div>
 
           <button
@@ -177,7 +192,7 @@ function ContactForm({ delay }: ContactFormProps) {
               ? 'Enviando...'
               : submitState === 'sent'
                 ? 'Enviado'
-                : 'Quiero una propuesta inicial'}
+                : 'Enviar consulta →'}
           </button>
         </form>
       </div>
@@ -200,68 +215,73 @@ function ContactInfo({ delay }: ContactInfoProps) {
       }`}
       style={{ transitionDelay: `${delay * 150}ms` }}
     >
-      <h3 className="mb-6 font-rajdhani text-xl font-bold text-white sm:text-2xl">Contacto directo</h3>
+      <h3 className="mb-6 font-rajdhani text-xl font-bold text-white sm:text-2xl">
+        CONTACTO DIRECTO
+      </h3>
 
-      <div className="space-y-4 mb-8">
+      <div className="mb-8 space-y-4">
         <div className="flex items-center space-x-3">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#00CCFF]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-          </svg>
-          <a href={`tel:${TUWEBAI_WHATSAPP_TEL}`} className="text-gray-300 hover:text-white transition-colors">
+          <span className="text-lg">📱</span>
+          <a
+            href={`tel:${TUWEBAI_WHATSAPP_TEL}`}
+            className="text-gray-300 transition-colors hover:text-white"
+          >
             {TUWEBAI_WHATSAPP_DISPLAY}
           </a>
         </div>
 
         <div className="flex items-center space-x-3">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#9933FF]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-          </svg>
-          <a href={`mailto:${TUWEBAI_EMAIL}`} className="text-gray-300 hover:text-white transition-colors">
+          <span className="text-lg">📧</span>
+          <a
+            href={`mailto:${TUWEBAI_EMAIL}`}
+            className="text-gray-300 transition-colors hover:text-white"
+          >
             {TUWEBAI_EMAIL}
           </a>
         </div>
 
         <div className="flex items-center space-x-3">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#00CCFF]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <span className="text-gray-300">
-            Atención de lunes a sábado
-          </span>
+          <span className="text-lg">🕐</span>
+          <span className="text-gray-300">{TUWEBAI_BUSINESS_HOURS}</span>
         </div>
       </div>
 
-      <h4 className="font-rajdhani font-bold text-xl mb-4 text-white">¿Qué obtenés en esta primera conversación?</h4>
+      <h4 className="mb-4 font-rajdhani text-xl font-bold text-white">
+        QUÉ PASA DESPUÉS DE QUE ENVIÁS
+      </h4>
 
       <ul className="space-y-3">
-        <li className="flex items-center space-x-3">
-          <div className="h-2 w-2 rounded-full bg-[#00CCFF]"></div>
-          <span className="text-gray-300">Diagnóstico personalizado de tu situación actual</span>
+        <li className="text-gray-300">→ Te respondemos en menos de 24hs</li>
+        <li className="text-gray-300">→ Una llamada o chat de 20 minutos para entender tu proyecto</li>
+        <li className="text-gray-300">
+          → Te decimos si podemos ayudarte y cómo, sin rodeos
         </li>
-
-        <li className="flex items-center space-x-3">
-          <div className="h-2 w-2 rounded-full bg-[#9933FF]"></div>
-          <span className="text-gray-300">Identificación de oportunidades de mejora</span>
-        </li>
-
-        <li className="flex items-center space-x-3">
-          <div className="h-2 w-2 rounded-full bg-[#00CCFF]"></div>
-          <span className="text-gray-300">Plan de acción concreto adaptado a tu negocio</span>
-        </li>
-
-        <li className="flex items-center space-x-3">
-          <div className="h-2 w-2 rounded-full bg-[#9933FF]"></div>
-          <span className="text-gray-300">Estimación de resultados potenciales y ROI esperado</span>
+        <li className="text-gray-300">
+          → Presupuesto cerrado por escrito antes de que pagues un peso
         </li>
       </ul>
 
-      <div className="mt-8 pt-4 border-t border-gray-800">
-        <h5 className="font-medium text-white mb-2">¿Preferís hablar directamente?</h5>
-        <a href={TUWEBAI_WHATSAPP_URL} className="text-[#00CCFF] hover:underline flex items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+      <div className="mt-8 border-t border-gray-800 pt-4">
+        <h5 className="mb-3 font-medium text-white">¿PREFERÍS HABLAR AHORA?</h5>
+        <a
+          href={TUWEBAI_WHATSAPP_URL}
+          className="inline-flex items-center text-[#00CCFF] hover:underline"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="mr-2 h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+            />
           </svg>
-          Hablar con un asesor en WhatsApp
+          Escribinos por WhatsApp →
         </a>
       </div>
     </div>
@@ -274,7 +294,8 @@ interface ContactSectionProps {
 
 export default function ContactSection({ setRef }: ContactSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
-  const { ref: titleRef, hasIntersected: titleVisible } = useIntersectionObserver();
+  const { ref: titleRef, hasIntersected: titleVisible } =
+    useIntersectionObserver<HTMLDivElement>();
 
   if (sectionRef.current && !sectionRef.current.hasAttribute('data-ref-set')) {
     setRef(sectionRef.current);
@@ -285,7 +306,7 @@ export default function ContactSection({ setRef }: ContactSectionProps) {
     <section
       id="contact"
       ref={sectionRef}
-        className="landing-anchor-section flex items-center justify-center relative bg-gradient-2"
+      className="landing-anchor-section relative flex items-center justify-center bg-gradient-2"
     >
       <AnimatedShape type={1} className="top-[20%] left-[-150px]" delay={1} />
       <AnimatedShape type={2} className="bottom-[10%] right-[-100px]" delay={2} />
@@ -298,11 +319,16 @@ export default function ContactSection({ setRef }: ContactSectionProps) {
           }`}
         >
           <h2 className="mb-6 font-rajdhani text-3xl font-bold sm:text-4xl md:text-5xl">
-            <span className="gradient-text gradient-border inline-block pb-2">¿Listo para impulsar tu negocio con una web profesional?</span>
+            <span className="gradient-text gradient-border inline-block pb-2">
+              Hablemos de tu proyecto.
+              <br />
+              Sin compromiso, sin cargo.
+            </span>
           </h2>
 
           <p className="mx-auto max-w-2xl text-base leading-7 text-gray-300 sm:text-xl sm:leading-8">
-            Contanos qué necesitás y te ayudamos a definir el mejor camino para tu proyecto web.
+            Contanos qué necesita tu negocio y te respondemos en menos de 24 horas con un
+            diagnóstico claro.
           </p>
         </div>
 
@@ -314,4 +340,3 @@ export default function ContactSection({ setRef }: ContactSectionProps) {
     </section>
   );
 }
-

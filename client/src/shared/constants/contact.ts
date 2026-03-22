@@ -2,6 +2,7 @@ export const TUWEBAI_WHATSAPP_NUMBER = '5493571417960';
 export const TUWEBAI_WHATSAPP_DISPLAY = '+54 9 3571 417960';
 export const TUWEBAI_WHATSAPP_URL = `https://wa.me/${TUWEBAI_WHATSAPP_NUMBER}`;
 export const TUWEBAI_WHATSAPP_TEL = `+${TUWEBAI_WHATSAPP_NUMBER}`;
+export const TUWEBAI_BUSINESS_HOURS = 'Lunes a sabado · 9 a 18hs';
 
 // Source of Truth - Contact Data
 export const TUWEBAI_EMAIL = 'tuwebai@gmail.com';
