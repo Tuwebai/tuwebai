@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet';
 import { useEffect, useState } from 'react';
 import PageBanner from '@/shared/ui/page-banner';
@@ -119,12 +118,7 @@ export default function PoliticaCookies() {
 
             {/* Main Content */}
             <main className="flex-1 w-full relative">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="w-full max-w-[820px] mx-auto pb-32"
-              >
+              <div className="w-full max-w-[820px] mx-auto pb-32 transition-all duration-500 animate-in fade-in slide-in-from-bottom-2">
                 <div className="text-gray-400 text-sm mb-12 pb-6 border-b border-white/10">
                   Última actualización: {new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}
                 </div>
@@ -262,7 +256,7 @@ export default function PoliticaCookies() {
                   </section>
                   
                 </div>
-              </motion.div>
+              </div>
             </main>
           </div>
         </div>
