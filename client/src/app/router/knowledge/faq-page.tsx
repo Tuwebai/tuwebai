@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import AnimatedShape from '@/shared/ui/animated-shape';
 import { useToast } from '@/shared/ui/use-toast';
@@ -303,11 +302,7 @@ export default function FAQ() {
         
         <div className="container mx-auto px-4 relative z-10">
           <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-            >
+            <div className="animate-in fade-in slide-in-from-bottom-2 duration-700">
               <Link to="/" className="inline-flex items-center text-gray-400 hover:text-white mb-8">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -347,7 +342,7 @@ export default function FAQ() {
                   className="w-full pl-10 pr-4 py-3 bg-[#121217]/70 border border-gray-700 rounded-full focus:outline-none focus:ring-2 focus:ring-[#00CCFF] focus:border-transparent text-white"
                 />
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
@@ -446,13 +441,10 @@ export default function FAQ() {
               </div>
             ) : (
               <div className="space-y-4">
-                {filteredFAQs.map((faq, index) => (
-                  <motion.div
+                {filteredFAQs.map((faq) => (
+                  <div
                     id={`faq-${faq.id}`}
                     key={faq.id}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, delay: index * 0.05 }}
                     className="bg-[#121217] rounded-xl overflow-hidden border border-gray-800"
                   >
                     <button
@@ -484,15 +476,8 @@ export default function FAQ() {
                       </svg>
                     </button>
                     
-                    <AnimatePresence>
-                      {expandedId === faq.id && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: 'auto', opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.3 }}
-                          className="overflow-hidden"
-                        >
+                    {expandedId === faq.id && (
+                        <div className="overflow-hidden">
                           <div className="px-6 pb-4">
                             <div className="border-t border-gray-800 pt-4 text-gray-300">
                               {faq.answer}
@@ -524,23 +509,12 @@ export default function FAQ() {
                             
                             {/* Feedback section */}
                             <div className="mt-6 pt-4 border-t border-gray-800">
-                              <AnimatePresence>
                                 {showThanks[faq.id] ? (
-                                  <motion.div
-                                    initial={{ opacity: 0, y: 10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    exit={{ opacity: 0, y: -10 }}
-                                    className="text-center py-2"
-                                  >
+                                  <div className="text-center py-2">
                                     <p className="text-[#00CCFF] font-medium">¡Gracias por tu feedback!</p>
-                                  </motion.div>
+                                  </div>
                                 ) : (
-                                  <motion.div
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    exit={{ opacity: 0 }}
-                                    className="flex flex-col sm:flex-row sm:items-center justify-between gap-3"
-                                  >
+                                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                                     <p className="text-sm text-gray-400">¿Te ha resultado útil esta respuesta?</p>
                                     <div className="flex items-center gap-2">
                                       <button
@@ -582,9 +556,8 @@ export default function FAQ() {
                                         )}
                                       </button>
                                     </div>
-                                  </motion.div>
+                                  </div>
                                 )}
-                              </AnimatePresence>
                             </div>
                             
                             {/* Tags/keywords */}
@@ -601,10 +574,9 @@ export default function FAQ() {
                               </div>
                             )}
                           </div>
-                        </motion.div>
+                        </div>
                       )}
-                    </AnimatePresence>
-                  </motion.div>
+                  </div>
                 ))}
               </div>
             )}
