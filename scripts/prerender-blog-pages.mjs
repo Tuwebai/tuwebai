@@ -17,6 +17,7 @@ const staticRoutes = [
   { url: '/uxui', changefreq: 'monthly', priority: '0.9', lastmod: '2024-12-15' },
   { url: '/ecommerce', changefreq: 'monthly', priority: '0.9', lastmod: '2024-12-15' },
   { url: '/consulta', changefreq: 'monthly', priority: '0.8', lastmod: '2024-12-15' },
+  { url: '/diagnostico-gratuito', changefreq: 'monthly', priority: '0.9', lastmod: '2026-03-22' },
   { url: '/servicios/desarrollo-web', changefreq: 'monthly', priority: '0.8', lastmod: '2024-12-15' },
   { url: '/faq', changefreq: 'monthly', priority: '0.7', lastmod: '2024-12-15' },
   { url: '/contacto', changefreq: 'monthly', priority: '0.7', lastmod: '2024-12-15' },
@@ -125,6 +126,52 @@ const staticRouteHead = {
     url: `${siteUrl}/consulta`,
     ogType: 'website',
     ogImage: defaultOgImage,
+  },
+  '/diagnostico-gratuito': {
+    title: 'Diagnóstico Web Gratuito | TuWebAI — Descubrí qué falla en tu sitio',
+    description:
+      'Revisamos tu web sin cargo y te decimos exactamente qué está frenando tus consultas. Velocidad, conversión y SEO básico. Sin compromiso.',
+    keywords:
+      'diagnóstico web gratuito, auditoría web inicial, velocidad web, conversión web, SEO básico, TuWebAI',
+    url: `${siteUrl}/diagnostico-gratuito`,
+    ogType: 'website',
+    ogImage: defaultOgImage,
+    structuredData: [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'Service',
+        name: 'Diagnóstico Web Gratuito',
+        provider: {
+          '@type': 'LocalBusiness',
+          name: 'TuWebAI',
+        },
+        description:
+          'Revisión gratuita del sitio web para identificar problemas de velocidad, conversión y SEO básico.',
+        offers: {
+          '@type': 'Offer',
+          price: '0',
+          priceCurrency: 'ARS',
+        },
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: 'Inicio',
+            item: siteUrl,
+          },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: 'Diagnóstico gratuito',
+            item: `${siteUrl}/diagnostico-gratuito`,
+          },
+        ],
+      },
+    ],
   },
   '/servicios/desarrollo-web': {
     title: 'Desarrollo Web Profesional',

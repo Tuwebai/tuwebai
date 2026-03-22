@@ -25,6 +25,7 @@ const NewsletterConfirmationLandingPage = lazy(() => import('@/features/newslett
 const NewsletterUnsubscribePage = lazy(() => import('@/features/newsletter/components/newsletter-unsubscribe-page'));
 
 const SupportContactPage = lazy(() => import('@/features/contact/components/support-contact-page'));
+const DiagnosticoGratuitoPage = lazy(() => import('@/features/contact/components/diagnostico-gratuito-page'));
 
 const TermsAndConditionsPage = lazy(() => import('@/app/router/legal/terms-and-conditions-page'));
 const PrivacyPolicyPage = lazy(() => import('@/app/router/legal/privacy-policy-page'));
@@ -57,6 +58,7 @@ export default function PublicRoutes() {
       <Route path="/newsletter/confirmacion" element={<LazyRoute><NewsletterConfirmationLandingPage /></LazyRoute>} />
       <Route path="/newsletter/confirm/:token" element={<LazyRoute><NewsletterConfirmPage /></LazyRoute>} />
       <Route path="/newsletter/unsubscribe/:token" element={<LazyRoute><NewsletterUnsubscribePage /></LazyRoute>} />
+      <Route path="/diagnostico-gratuito" element={<LazyRoute><DiagnosticoGratuitoPage /></LazyRoute>} />
 
       <Route
         path="/pago-exitoso"
