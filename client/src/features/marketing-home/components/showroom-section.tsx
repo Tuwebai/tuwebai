@@ -172,6 +172,62 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
       detailsUrl: '/showroom',
       externalUrl: 'https://trading.tuweb-ai.com/',
     },
+    {
+      id: 5,
+      title: 'Captiva',
+      category: 'landing-pages',
+      description:
+        'Landing orientada a conversión para presentar una propuesta clara, filtrar interés real y empujar consultas de negocio.',
+      clientNeed:
+        'Validar una oferta digital con una página enfocada en captar leads calificados sin distracciones ni navegación innecesaria.',
+      solutionSummary:
+        'Desarrollamos una landing page de conversión con propuesta de valor directa, estructura comercial y CTA visibles desde el primer scroll.',
+      valueSummary:
+        'La solución ayuda a comunicar mejor la oferta, reducir fricción en la decisión y transformar visitas en consultas concretas.',
+      features: [
+        'Hero con propuesta de valor clara',
+        'CTA visibles en los puntos críticos',
+        'Secciones pensadas para objeciones y confianza',
+        'Diseño mobile-first enfocado en conversión',
+        'Landing lista para campañas y tráfico pago',
+      ],
+      results: [
+        { label: 'Formato', value: 'Landing' },
+        { label: 'Objetivo', value: 'Más leads' },
+        { label: 'Enfoque', value: 'Conversión' },
+      ],
+      image: '/captiva.png',
+      detailsUrl: '/showroom',
+      externalUrl: 'https://captiva.tuweb-ai.com/captiva',
+    },
+    {
+      id: 6,
+      title: 'Instadetox',
+      category: 'experimental',
+      description:
+        'Experimento web centrado en una propuesta simple, visual y directa para validar interés en una idea digital específica.',
+      clientNeed:
+        'Probar una hipótesis de producto con una experiencia rápida de lanzar, fácil de entender y lista para medir respuesta real.',
+      solutionSummary:
+        'Construimos una landing experimental con narrativa breve, foco visual y estructura mínima para testear interés sin sobrecargar la experiencia.',
+      valueSummary:
+        'El proyecto permite iterar rápido, validar mensaje y detectar si la idea genera atención antes de invertir en una plataforma mayor.',
+      features: [
+        'Enfoque experimental de validación rápida',
+        'Narrativa breve y visual',
+        'Estructura simple para medir interés',
+        'Experiencia optimizada para mobile',
+        'Base liviana para iterar nuevas versiones',
+      ],
+      results: [
+        { label: 'Tipo', value: 'Experimental' },
+        { label: 'Objetivo', value: 'Validación' },
+        { label: 'Velocidad', value: 'Iteración rápida' },
+      ],
+      image: '/instadetox.png',
+      detailsUrl: '/showroom',
+      externalUrl: 'https://instadetox.netlify.app/',
+    },
   ];
 
   const filteredProjects =
@@ -222,7 +278,9 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
   const categoryNames: Record<string, string> = {
     all: 'Todos',
     'e-commerce': 'E-commerce',
+    'landing-pages': 'Landing Pages',
     saas: 'SaaS',
+    experimental: 'Experimental',
     'seguridad-ciudadana': 'Seguridad Ciudadana',
     muebleria: 'Mueblerías',
     'tienda-online': 'Tiendas Online',
