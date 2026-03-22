@@ -5,7 +5,7 @@ export const TUWEBAI_WHATSAPP_TEL = `+${TUWEBAI_WHATSAPP_NUMBER}`;
 export const TUWEBAI_BUSINESS_HOURS = 'Lunes a sábado · 9 a 18hs';
 
 // Source of Truth - Contact Data
-export const TUWEBAI_EMAIL = 'tuwebai@gmail.com';
+export const TUWEBAI_EMAIL = 'hola@tuweb-ai.com';
 export const TUWEBAI_LOCATION = 'Río Tercero, Córdoba, Argentina';
 export const TUWEBAI_SITE_URL = 'tuweb-ai.com';
 export const TUWEBAI_SITE_FULL_URL = 'https://tuweb-ai.com';

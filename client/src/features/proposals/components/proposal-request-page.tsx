@@ -822,7 +822,7 @@ export default function Consulta() {
                       </a>
                       
                       <a
-                        href="mailto:tuwebai@gmail.com"
+                        href={`mailto:${TUWEBAI_EMAIL}`}
                         className="flex flex-col items-center rounded-xl border border-[#9933FF]/30 bg-[#9933FF]/10 p-4 text-white transition-transform transition-colors duration-200 hover:-translate-y-1 hover:bg-[#9933FF]/20"
                       >
                         <div className="w-12 h-12 bg-[#9933FF] rounded-full flex items-center justify-center mb-3">
