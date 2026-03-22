@@ -4,7 +4,7 @@ import RevealBlock from '@/shared/ui/reveal-block';
 
 interface ServiceCardProps {
   title: string;
-  description: string;
+  description: React.ReactNode;
   icon: React.ReactNode;
   delayMs: number;
 }
@@ -20,7 +20,7 @@ function ServiceCard({ title, description, icon, delayMs }: ServiceCardProps) {
 
           <h3 className="mb-3 font-rajdhani text-xl font-bold text-white sm:text-[1.35rem]">{title}</h3>
 
-          <p className="flex-grow text-gray-300">{description}</p>
+          <div className="flex-grow text-gray-300">{description}</div>
         </div>
       </div>
     </RevealBlock>
@@ -49,20 +49,27 @@ export default function ServicesSection({ setRef }: ServicesSectionProps) {
         <RevealBlock className="mb-16 text-center">
           <h2 className="mb-6 font-rajdhani text-3xl font-bold leading-tight sm:text-4xl md:text-5xl">
             <span className="gradient-text gradient-border mx-auto block max-w-4xl pb-2">
-              Servicios web pensados para vender, operar y crecer
+              Tres servicios. Un solo objetivo:
+              <br />
+              que tu negocio venda más online.
             </span>
           </h2>
-
-          <p className="mx-auto max-w-3xl text-base leading-7 text-gray-300 sm:text-xl sm:leading-8">
-            Nos enfocamos en tres tipos de soluciones: sitios corporativos, e-commerce
-            y sistemas web para negocios que necesitan una presencia digital profesional.
-          </p>
         </RevealBlock>
 
         <div className="mx-auto grid max-w-6xl gap-8 md:grid-cols-2 xl:grid-cols-3">
           <ServiceCard
             title="Sitios corporativos"
-            description="Webs profesionales para empresas que necesitan transmitir confianza, presentar mejor su oferta y generar consultas con una imagen seria."
+            description={(
+              <>
+                <p className="leading-7">
+                  Para el negocio que necesita transmitir seriedad y generar consultas desde
+                  Google.
+                </p>
+                <p className="mt-4 text-sm font-medium text-gray-200">
+                  Diseño a medida · SEO técnico · Entrega en 2 semanas
+                </p>
+              </>
+            )}
             delayMs={80}
             icon={(
               <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -73,7 +80,17 @@ export default function ServicesSection({ setRef }: ServicesSectionProps) {
 
           <ServiceCard
             title="E-commerce"
-            description="Tiendas online rapidas, claras y preparadas para convertir mejor, facilitar la compra y sostener crecimiento sin friccion tecnica."
+            description={(
+              <>
+                <p className="leading-7">
+                  Para el negocio que quiere vender online con MercadoPago integrado y sin
+                  depender de Mercado Libre.
+                </p>
+                <p className="mt-4 text-sm font-medium text-gray-200">
+                  Carrito · Pagos · Panel de stock · Mobile-first
+                </p>
+              </>
+            )}
             delayMs={180}
             icon={(
               <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -83,8 +100,18 @@ export default function ServicesSection({ setRef }: ServicesSectionProps) {
           />
 
           <ServiceCard
-            title="Sistemas web para negocios"
-            description="Plataformas, paneles y flujos web a medida para organizar procesos, conectar herramientas y operar con mas claridad."
+            title="Sistemas a medida"
+            description={(
+              <>
+                <p className="leading-7">
+                  Para el negocio que necesita algo que no existe: paneles, flujos,
+                  integraciones propias.
+                </p>
+                <p className="mt-4 text-sm font-medium text-gray-200">
+                  Diagnóstico gratuito incluido antes de arrancar
+                </p>
+              </>
+            )}
             delayMs={280}
             icon={(
               <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
