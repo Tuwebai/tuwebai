@@ -9,9 +9,12 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/shared/ui/accordion';
-import { TUWEBAI_SITE_FULL_URL } from '@/shared/constants/contact';
+import { TUWEBAI_SITE_FULL_URL, TUWEBAI_WHATSAPP_URL } from '@/shared/constants/contact';
 
 const PROCESS_PAGE_URL = `${TUWEBAI_SITE_FULL_URL}/proceso`;
+const PROCESS_WHATSAPP_URL = `${TUWEBAI_WHATSAPP_URL}?text=${encodeURIComponent(
+  'Hola Juanchi, vengo de la página de Proceso y quiero contarte mi proyecto.',
+)}`;
 
 interface ProcessTimelineItem {
   step: string;
@@ -175,12 +178,14 @@ export default function ProcessPage() {
                 </p>
 
                 <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-                  <Link
-                    to="/contacto"
+                  <a
+                    href={PROCESS_WHATSAPP_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#00CCFF] to-[#7C3AED] px-6 py-3 text-sm font-semibold text-white shadow-[0_18px_45px_rgba(0,204,255,0.22)] transition-transform duration-200 hover:-translate-y-0.5"
                   >
                     Contar mi proyecto
-                  </Link>
+                  </a>
                   <Link
                     to="/?section=showroom"
                     className="inline-flex items-center justify-center rounded-full border border-white/12 px-6 py-3 text-sm font-semibold text-[#DCE7FF] transition-colors duration-200 hover:border-[#00CCFF]/45 hover:text-white"
@@ -345,6 +350,40 @@ export default function ProcessPage() {
                 </div>
               </RevealBlock>
             </div>
+          </div>
+        </section>
+
+        <section className="bg-[#0f0f1a] py-16 sm:py-20">
+          <div className="container mx-auto px-4">
+            <RevealBlock className="mx-auto max-w-4xl text-center">
+              <p className="mb-4 text-xs uppercase tracking-[0.24em] text-cyan-300">
+                Cierre
+              </p>
+              <h2 className="font-rajdhani text-3xl font-bold text-white sm:text-4xl md:text-5xl">
+                ¿Listo para arrancar?
+              </h2>
+              <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-gray-300 sm:text-lg sm:leading-8">
+                La consulta inicial es siempre sin cargo. Te contamos si tu proyecto encaja con lo
+                que hacemos y cómo.
+              </p>
+
+              <div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row">
+                <a
+                  href={PROCESS_WHATSAPP_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#00CCFF] to-[#7C3AED] px-6 py-3 text-sm font-semibold text-white shadow-[0_18px_45px_rgba(0,204,255,0.22)] transition-transform duration-200 hover:-translate-y-0.5"
+                >
+                  Contar mi proyecto
+                </a>
+                <Link
+                  to="/?section=showroom"
+                  className="inline-flex items-center justify-center rounded-full border border-white/12 px-6 py-3 text-sm font-semibold text-[#DCE7FF] transition-colors duration-200 hover:border-[#00CCFF]/45 hover:text-white"
+                >
+                  Ver proyectos reales
+                </Link>
+              </div>
+            </RevealBlock>
           </div>
         </section>
       </main>
