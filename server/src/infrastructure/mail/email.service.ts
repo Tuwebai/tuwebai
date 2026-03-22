@@ -427,7 +427,7 @@ const buildNewsletterWelcomeEmail = () => {
 
 const buildChecklistWebGratisEmail = (name: string) => {
   const frontendBaseUrl = env.FRONTEND_URL.replace(/\/+$/, '');
-  const actionUrl = `${frontendBaseUrl}/checklist-web-tuwebai.pdf`;
+  const actionUrl = `${frontendBaseUrl}/checklist-web-tuwebai-branded.pdf`;
   const firstName = name.trim().split(/\s+/)[0] || 'Hola';
   const subject = 'Tu checklist web gratis de TuWeb.ai';
   const text = [

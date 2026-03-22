@@ -29,7 +29,7 @@ interface DownloadFormState {
   email: string;
 }
 
-const CHECKLIST_PDF_PATH = '/checklist-web-tuwebai.pdf';
+const CHECKLIST_PDF_PATH = '/checklist-web-tuwebai-branded.pdf';
 
 const CHECKLIST_CATEGORIES: ChecklistCategory[] = [
   {
