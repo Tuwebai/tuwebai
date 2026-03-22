@@ -10,13 +10,9 @@ interface HeroSectionProps {
 export default function HeroSection({ setRef, children }: HeroSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const [heroOpacity, setHeroOpacity] = useState(1);
-  const [activeMessageIndex, setActiveMessageIndex] = useState(0);
-  const heroMessages = useMemo(
-    () => [
-      'Construimos sitios web para negocios argentinos que necesitan vender más online, no solo existir.',
-      'Código a medida, foco en conversión y una base sólida para que tu negocio crezca sin improvisaciones.',
-      'Sitios corporativos, e-commerce y sistemas web pensados para generar consultas y sostener operación real.',
-    ],
+  const heroMessage = useMemo(
+    () =>
+      'Sitios corporativos, e-commerce y sistemas web construidos a medida para negocios argentinos. Sin templates. Sin atajos.',
     [],
   );
 
@@ -55,14 +51,6 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => {
-    const rotationInterval = window.setInterval(() => {
-      setActiveMessageIndex((currentIndex) => (currentIndex + 1) % heroMessages.length);
-    }, 3200);
-
-    return () => window.clearInterval(rotationInterval);
-  }, [heroMessages.length]);
-
   return (
     <section
       id="intro"
@@ -83,19 +71,14 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
           </div>
 
           <h1 className="mx-auto max-w-5xl font-rajdhani text-[2.35rem] font-bold leading-[0.98] sm:text-5xl md:text-6xl xl:text-7xl">
-            <span className="text-white">Tu web debería traerte clientes.</span>
+            <span className="text-white">Webs que venden.</span>
             <br />
-            <span className="gradient-text">Si no lo hace, algo está mal.</span>
+            <span className="gradient-text">No que decoran.</span>
           </h1>
         </div>
 
         <div className="mx-auto mb-8 min-h-[6.5rem] max-w-4xl px-2 font-rajdhani text-base text-gray-300 sm:min-h-[5rem] sm:text-lg md:min-h-[3.5rem] md:px-0 md:text-2xl">
-          <p
-            key={heroMessages[activeMessageIndex]}
-            className="mx-auto max-w-4xl text-gray-300 transition-opacity duration-300 ease-in-out"
-          >
-            {heroMessages[activeMessageIndex]}
-          </p>
+          <p className="mx-auto max-w-4xl text-gray-300">{heroMessage}</p>
         </div>
 
         <div className="mb-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
