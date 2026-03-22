@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -287,12 +286,7 @@ export default function Consulta() {
       <WhatsAppButton />
       
       {/* Header */}
-      <motion.header 
-        className="proposal-request-header"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
+      <header className="proposal-request-header animate-in fade-in slide-in-from-top-2 duration-500">
         <div className="container mx-auto">
           <div className="text-center">
             <Link to="/" className="text-3xl font-rajdhani font-bold mb-10 inline-block">
@@ -309,26 +303,16 @@ export default function Consulta() {
             </p>
           </div>
         </div>
-      </motion.header>
+      </header>
 
       {/* Formulario de consulta */}
       <section className="py-16 px-4 bg-[#0a0a0f]">
         <div className="container mx-auto">
           <div className="max-w-3xl mx-auto">
-            <motion.div
-              className="proposal-request-frame"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
+            <div className="proposal-request-frame animate-in fade-in slide-in-from-bottom-2 duration-500">
               <div className="proposal-request-card">
                 {submitted ? (
-                  <motion.div
-                    className="text-center py-16"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5 }}
-                  >
+                  <div className="text-center py-16 animate-in fade-in zoom-in-95 duration-300">
                     <div className="proposal-request-success-icon">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -344,7 +328,7 @@ export default function Consulta() {
                     >
                       Volver al inicio
                     </Link>
-                  </motion.div>
+                  </div>
                 ) : (
                   <>
                     {/* Barra de progreso */}
@@ -354,11 +338,9 @@ export default function Consulta() {
                         <span className="text-sm text-gray-400">Paso {currentStep} de {totalSteps}</span>
                       </div>
                       <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
-                        <motion.div 
-                          className="proposal-request-progress-fill"
-                          initial={{ width: `${(1 / totalSteps) * 100}%` }}
-                          animate={{ width: `${(currentStep / totalSteps) * 100}%` }}
-                          transition={{ duration: 0.3 }}
+                        <div
+                          className="proposal-request-progress-fill transition-[width] duration-300"
+                          style={{ width: `${(currentStep / totalSteps) * 100}%` }}
                         />
                       </div>
                       
@@ -371,16 +353,8 @@ export default function Consulta() {
                     </div>
                     
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                      <AnimatePresence mode="wait">
                         {currentStep === 1 && (
-                          <motion.div 
-                            key="step1"
-                            initial={{ opacity: 0, x: 20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            exit={{ opacity: 0, x: -20 }}
-                            transition={{ duration: 0.3 }}
-                            className="space-y-6"
-                          >
+                          <div className="space-y-6 animate-in fade-in slide-in-from-right-2 duration-300">
                             <h3 className="text-xl font-medium text-white mb-4">Tus datos de contacto</h3>
                             
                             <div>
@@ -469,18 +443,11 @@ export default function Consulta() {
                                 ))}
                               </div>
                             </div>
-                          </motion.div>
+                          </div>
                         )}
                         
                         {currentStep === 2 && (
-                          <motion.div 
-                            key="step2"
-                            initial={{ opacity: 0, x: 20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            exit={{ opacity: 0, x: -20 }}
-                            transition={{ duration: 0.3 }}
-                            className="space-y-6"
-                          >
+                          <div className="space-y-6 animate-in fade-in slide-in-from-right-2 duration-300">
                             <h3 className="text-xl font-medium text-white mb-4">Tipo de proyecto</h3>
                             
                             <div>
@@ -525,11 +492,7 @@ export default function Consulta() {
                             </div>
                             
                             {watchTipoProyecto && (
-                              <motion.div
-                                initial={{ opacity: 0, height: 0 }}
-                                animate={{ opacity: 1, height: 'auto' }}
-                                transition={{ duration: 0.3 }}
-                              >
+                              <div className="animate-in fade-in slide-in-from-top-2 duration-300">
                                 <label className="block text-white font-medium mb-3">
                                   Servicios específicos que necesitas <span className="text-[#00CCFF]">*</span>
                                 </label>
@@ -567,7 +530,7 @@ export default function Consulta() {
                                 {errors.detalleServicio && (
                                   <p className="text-[#00CCFF] text-sm mt-1">Selecciona al menos un servicio</p>
                                 )}
-                              </motion.div>
+                              </div>
                             )}
                             
                             <div className="flex items-center mt-4">
@@ -587,10 +550,10 @@ export default function Consulta() {
                                     watchUrgente ? 'bg-[#00CCFF]' : 'bg-gray-700'
                                   }`}
                                 >
-                                  <motion.div 
-                                    className="bg-white w-4 h-4 rounded-full shadow-md"
-                                    animate={{ x: watchUrgente ? 16 : 0 }}
-                                    transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                                  <div
+                                    className={`h-4 w-4 rounded-full bg-white shadow-md transition-transform duration-200 ${
+                                      watchUrgente ? 'translate-x-4' : 'translate-x-0'
+                                    }`}
                                   />
                                 </div>
                                 <span className="ml-2 text-gray-300">Es un proyecto urgente</span>
@@ -599,31 +562,20 @@ export default function Consulta() {
                             
                             {/* Mostrar estimador si hay suficiente información */}
                             {showEstimador && (
-                              <motion.div
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.3 }}
-                              >
+                              <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
                                 <PresupuestoEstimado 
                                   tipoProyecto={watchTipoProyecto}
                                   detalleServicio={watchDetalleServicio}
                                   presupuestoSeleccionado={watchPresupuesto}
                                   urgente={watchUrgente}
                                 />
-                              </motion.div>
+                              </div>
                             )}
-                          </motion.div>
+                          </div>
                         )}
                         
                         {currentStep === 3 && (
-                          <motion.div 
-                            key="step3"
-                            initial={{ opacity: 0, x: 20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            exit={{ opacity: 0, x: -20 }}
-                            transition={{ duration: 0.3 }}
-                            className="space-y-6"
-                          >
+                          <div className="space-y-6 animate-in fade-in slide-in-from-right-2 duration-300">
                             <h3 className="text-xl font-medium text-white mb-4">Presupuesto y plazos</h3>
                             
                             <div>
@@ -697,31 +649,20 @@ export default function Consulta() {
                             
                             {/* Mostrar estimador nuevamente en esta sección */}
                             {showEstimador && (
-                              <motion.div
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.3 }}
-                              >
+                              <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
                                 <PresupuestoEstimado 
                                   tipoProyecto={watchTipoProyecto}
                                   detalleServicio={watchDetalleServicio}
                                   presupuestoSeleccionado={watchPresupuesto}
                                   urgente={watchUrgente}
                                 />
-                              </motion.div>
+                              </div>
                             )}
-                          </motion.div>
+                          </div>
                         )}
                         
                         {currentStep === 4 && (
-                          <motion.div 
-                            key="step4"
-                            initial={{ opacity: 0, x: 20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            exit={{ opacity: 0, x: -20 }}
-                            transition={{ duration: 0.3 }}
-                            className="space-y-6"
-                          >
+                          <div className="space-y-6 animate-in fade-in slide-in-from-right-2 duration-300">
                             <h3 className="text-xl font-medium text-white mb-4">Detalles finales</h3>
                             
                             <div>
@@ -781,9 +722,8 @@ export default function Consulta() {
                                 {watchUrgente && <li className="text-[#00CCFF]">Proyecto urgente</li>}
                               </ul>
                             </div>
-                          </motion.div>
+                          </div>
                         )}
-                      </AnimatePresence>
                       
                       {/* Botones de navegación */}
                         <div className="flex flex-col gap-3 pt-4 sm:flex-row sm:justify-between">
@@ -814,11 +754,7 @@ export default function Consulta() {
                             </svg>
                           </Button>
                         ) : (
-                          <motion.div
-                            whileHover={{ scale: 1.02 }}
-                            transition={{ duration: 0.2 }}
-                            className="w-full sm:w-auto"
-                          >
+                          <div className="w-full transition-transform duration-200 hover:scale-[1.02] sm:w-auto">
                               <Button
                                 type="submit"
                                 className="proposal-request-primary-submit"
@@ -826,7 +762,7 @@ export default function Consulta() {
                                 >
                                 {isSubmitting ? 'Enviando...' : 'Solicitar propuesta personalizada'}
                               </Button>
-                          </motion.div>
+                          </div>
                         )}
                       </div>
                     </form>
@@ -842,13 +778,11 @@ export default function Consulta() {
                     </p>
                     
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-2xl">
-                      <motion.a
+                      <a
                         href={`${TUWEBAI_WHATSAPP_URL}?text=Hola,%20estoy%20interesado%20en%20sus%20servicios`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex flex-col items-center p-4 bg-[#25D366]/10 border border-[#25D366]/30 rounded-xl text-white hover:bg-[#25D366]/20 transition-colors"
-                        whileHover={{ y: -5 }}
-                        transition={{ duration: 0.2 }}
+                        className="flex flex-col items-center rounded-xl border border-[#25D366]/30 bg-[#25D366]/10 p-4 text-white transition-transform transition-colors duration-200 hover:-translate-y-1 hover:bg-[#25D366]/20"
                       >
                         <div className="w-12 h-12 bg-[#25D366] rounded-full flex items-center justify-center mb-3">
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" className="w-6 h-6">
@@ -857,13 +791,11 @@ export default function Consulta() {
                         </div>
                         <span className="font-medium mb-1">WhatsApp</span>
                         <span className="text-sm text-gray-300">Respuesta inmediata</span>
-                      </motion.a>
+                      </a>
                       
-                      <motion.a
+                      <a
                         href={`tel:${TUWEBAI_WHATSAPP_TEL}`}
-                        className="flex flex-col items-center p-4 bg-[#00CCFF]/10 border border-[#00CCFF]/30 rounded-xl text-white hover:bg-[#00CCFF]/20 transition-colors"
-                        whileHover={{ y: -5 }}
-                        transition={{ duration: 0.2 }}
+                        className="flex flex-col items-center rounded-xl border border-[#00CCFF]/30 bg-[#00CCFF]/10 p-4 text-white transition-transform transition-colors duration-200 hover:-translate-y-1 hover:bg-[#00CCFF]/20"
                       >
                         <div className="w-12 h-12 bg-[#00CCFF] rounded-full flex items-center justify-center mb-3">
                           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -872,13 +804,11 @@ export default function Consulta() {
                         </div>
                         <span className="font-medium mb-1">Teléfono</span>
                         <span className="text-sm text-gray-300">{TUWEBAI_WHATSAPP_DISPLAY}</span>
-                      </motion.a>
+                      </a>
                       
-                      <motion.a
+                      <a
                         href="mailto:tuwebai@gmail.com"
-                        className="flex flex-col items-center p-4 bg-[#9933FF]/10 border border-[#9933FF]/30 rounded-xl text-white hover:bg-[#9933FF]/20 transition-colors"
-                        whileHover={{ y: -5 }}
-                        transition={{ duration: 0.2 }}
+                        className="flex flex-col items-center rounded-xl border border-[#9933FF]/30 bg-[#9933FF]/10 p-4 text-white transition-transform transition-colors duration-200 hover:-translate-y-1 hover:bg-[#9933FF]/20"
                       >
                         <div className="w-12 h-12 bg-[#9933FF] rounded-full flex items-center justify-center mb-3">
                           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -887,7 +817,7 @@ export default function Consulta() {
                         </div>
                         <span className="font-medium mb-1">Email</span>
                         <span className="text-sm text-gray-300">{TUWEBAI_EMAIL}</span>
-                      </motion.a>
+                      </a>
                     </div>
                     
                     <p className="text-gray-400 text-sm mt-6">
@@ -896,7 +826,7 @@ export default function Consulta() {
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
