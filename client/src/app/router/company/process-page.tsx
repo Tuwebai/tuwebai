@@ -85,6 +85,24 @@ const PROCESS_TIMELINE: ProcessTimelineItem[] = [
   },
 ];
 
+const CLIENT_REQUIREMENTS = [
+  {
+    title: 'El contenido a tiempo',
+    description:
+      'Textos, fotos y logo en los primeros 3 días. Sin contenido no podemos avanzar y el tiempo del proyecto corre igual.',
+  },
+  {
+    title: 'Feedback claro y oportuno',
+    description:
+      'Cuando te mostramos avances, necesitamos respuesta en menos de 48 horas. El feedback vago sin una dirección concreta no nos permite mejorar nada.',
+  },
+  {
+    title: 'Una sola voz',
+    description:
+      'Si hay más de una persona tomando decisiones del lado del cliente, definan internamente quién aprueba antes de enviarnos feedback. Los cambios de dirección a último momento tienen costo adicional.',
+  },
+];
+
 export default function ProcessPage() {
   return (
     <>
@@ -224,6 +242,39 @@ export default function ProcessPage() {
                           </div>
                         </div>
                       </div>
+                    </article>
+                  </RevealBlock>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-[#0f0f1a] py-16 sm:py-20">
+          <div className="container mx-auto px-4">
+            <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-16">
+              <RevealBlock>
+                <div className="lg:sticky lg:top-28">
+                  <p className="mb-4 text-xs uppercase tracking-[0.24em] text-cyan-300">
+                    Lo que necesitamos de vos
+                  </p>
+                  <h2 className="font-rajdhani text-3xl font-bold text-white sm:text-4xl md:text-5xl">
+                    Para que el proyecto salga bien, necesitamos estas tres cosas de tu parte.
+                  </h2>
+                </div>
+              </RevealBlock>
+
+              <div className="space-y-4">
+                {CLIENT_REQUIREMENTS.map((item, index) => (
+                  <RevealBlock key={item.title} delayMs={index * 90}>
+                    <article className="rounded-2xl border border-white/6 bg-[#12121f] p-6 sm:p-7">
+                      <p className="text-xs uppercase tracking-[0.22em] text-cyan-300">
+                        Punto {index + 1}
+                      </p>
+                      <h3 className="mt-3 font-rajdhani text-2xl font-bold text-white">
+                        {item.title}
+                      </h3>
+                      <p className="mt-4 text-base leading-7 text-gray-300">{item.description}</p>
                     </article>
                   </RevealBlock>
                 ))}
