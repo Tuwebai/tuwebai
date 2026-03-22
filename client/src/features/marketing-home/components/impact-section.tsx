@@ -1,4 +1,6 @@
 import { useRef } from 'react';
+import { Link } from 'react-router-dom';
+
 import { useIntersectionObserver } from '@/core/hooks/use-intersection-observer';
 
 interface TrustCardProps {
@@ -34,8 +36,10 @@ interface ImpactSectionProps {
 
 export default function ImpactSection({ setRef }: ImpactSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
-  const { ref: titleRef, hasIntersected: titleVisible } = useIntersectionObserver<HTMLDivElement>();
-  const { ref: textRef, hasIntersected: textVisible } = useIntersectionObserver<HTMLDivElement>();
+  const { ref: titleRef, hasIntersected: titleVisible } =
+    useIntersectionObserver<HTMLDivElement>();
+  const { ref: textRef, hasIntersected: textVisible } =
+    useIntersectionObserver<HTMLDivElement>();
 
   if (sectionRef.current && !sectionRef.current.hasAttribute('data-ref-set')) {
     setRef(sectionRef.current);
@@ -44,31 +48,31 @@ export default function ImpactSection({ setRef }: ImpactSectionProps) {
 
   const trustCards: TrustCardProps[] = [
     {
-      eyebrow: 'Claridad comercial',
-      title: 'Webs pensadas para vender mejor',
+      eyebrow: 'CÓDIGO 100% A MEDIDA',
+      title: 'Ningún proyecto usa templates',
       description:
-        'Cada solución se organiza para que un negocio pueda presentar mejor su oferta, generar confianza y llevar al usuario hacia una acción concreta.',
+        'Ningún proyecto de TuWebAI usa templates, constructores de página ni código heredado. Lo que construimos es tuyo y solo tuyo.',
       delay: 1,
     },
     {
-      eyebrow: 'Operación más ordenada',
-      title: 'Menos fricción en el día a día',
+      eyebrow: 'VOS TENÉS EL CONTROL TOTAL',
+      title: 'No quedás atado a nosotros',
       description:
-        'No trabajamos solo la parte visual. Priorizamos recorridos claros, integraciones útiles y una estructura que simplifique soporte, gestión y seguimiento.',
+        'Al cerrar el proyecto recibís el acceso completo: hosting, dominio y código fuente. No dependés de nosotros para nada después.',
       delay: 2,
     },
     {
-      eyebrow: 'Base técnica seria',
-      title: 'Soluciones mantenibles y escalables',
+      eyebrow: 'PRESUPUESTO CERRADO ANTES DE ARRANCAR',
+      title: 'Sin extras al final',
       description:
-        'La tecnología debe sostener el crecimiento, no convertirse en una carga. Por eso buscamos rendimiento, orden técnico y una base lista para evolucionar.',
+        'Te decimos exactamente cuánto cuesta y cuánto tarda antes de que pagues un peso. Sin sorpresas. Sin "extras" al final.',
       delay: 3,
     },
     {
-      eyebrow: 'Acompañamiento real',
-      title: 'Criterio profesional en cada etapa',
+      eyebrow: 'SI EL DISEÑO INICIAL NO TE CONVENCE, LO REHACEMOS.',
+      title: 'Una revisión completa incluida',
       description:
-        'Desde el planteo inicial hasta la implementación, trabajamos con foco en decisiones útiles para negocio, no en humo ni en promesas infladas.',
+        'Una ronda de revisión completa incluida en todos los planes. Sin costo adicional. Sin discusión.',
       delay: 4,
     },
   ];
@@ -88,12 +92,15 @@ export default function ImpactSection({ setRef }: ImpactSectionProps) {
         >
           <h2 className="mb-6 font-rajdhani text-3xl font-bold sm:text-4xl md:text-5xl">
             <span className="gradient-text gradient-border inline-block pb-2">
-              Lo que sostiene una solución web profesional
+              Lo que nos diferencia.
+              <br />
+              Sin humo.
             </span>
           </h2>
 
           <p className="mx-auto max-w-3xl text-base leading-7 text-gray-300 sm:text-xl sm:leading-8">
-            Un proyecto serio no depende solo del diseño. Necesita claridad comercial, una experiencia cuidada y una base técnica preparada para crecer con el negocio.
+            No somos la agencia más grande ni la más barata. Somos los que te dicen la verdad
+            antes de arrancar y la cumplen al entregar.
           </p>
         </div>
 
@@ -117,8 +124,18 @@ export default function ImpactSection({ setRef }: ImpactSectionProps) {
           style={{ transitionDelay: '200ms' }}
         >
           <p className="text-base leading-7 text-gray-300 sm:text-lg sm:leading-8">
-            Los casos del showroom muestran cómo esto baja a proyectos reales. Este bloque existe para dejar claro que detrás de cada entrega hay criterio, estructura y una forma de trabajo pensada para sostener resultados.
+            Estas no son promesas de marketing. Son las condiciones con las que trabajamos
+            todos los proyectos, con todos los clientes.
           </p>
+
+          <div className="mt-8 transition-transform duration-200 hover:scale-[1.03]">
+            <Link
+              to="/consulta"
+              className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-8 py-4 font-medium text-white shadow-lg hover:shadow-[#00CCFF]/20"
+            >
+              Consultá sin cargo →
+            </Link>
+          </div>
         </div>
       </div>
     </section>
