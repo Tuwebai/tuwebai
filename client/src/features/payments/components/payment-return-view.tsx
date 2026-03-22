@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { usePaymentStatus } from '@/features/payments/hooks/use-payment-status';
+import MetaTags from '@/shared/ui/meta-tags';
 
 type Variant = 'success' | 'failure' | 'pending';
 
@@ -60,6 +61,16 @@ const iconByVariant: Record<Variant, JSX.Element> = {
 export default function PaymentReturnView({ variant, title, description, ctaLabel }: PaymentReturnViewProps) {
   const styles = variantStyles[variant];
   const [searchParams] = useSearchParams();
+  const metaTitleByVariant: Record<Variant, string> = {
+    success: 'Pago realizado con éxito',
+    failure: 'Pago fallido',
+    pending: 'Pago pendiente',
+  };
+  const metaDescriptionByVariant: Record<Variant, string> = {
+    success: 'Tu pago fue procesado correctamente. Esta pantalla es informativa y no se indexa.',
+    failure: 'No pudimos procesar tu pago. Esta pantalla es informativa y no se indexa.',
+    pending: 'Tu pago está en proceso de acreditación. Esta pantalla es informativa y no se indexa.',
+  };
 
   const paymentId = useMemo(
     () => searchParams.get('payment_id') || searchParams.get('collection_id') || searchParams.get('paymentId'),
@@ -68,8 +79,14 @@ export default function PaymentReturnView({ variant, title, description, ctaLabe
   const { isRefreshingStatus, status, statusError } = usePaymentStatus(paymentId);
 
   return (
-    <div className={`min-h-screen flex flex-col items-center justify-center p-4 ${styles.bg}`}>
-      <div className={`${styles.card} rounded-xl shadow-lg p-8 max-w-md w-full flex flex-col items-center`}>
+    <>
+      <MetaTags
+        title={metaTitleByVariant[variant]}
+        description={metaDescriptionByVariant[variant]}
+        robots="noindex,follow"
+      />
+      <div className={`min-h-screen flex flex-col items-center justify-center p-4 ${styles.bg}`}>
+        <div className={`${styles.card} rounded-xl shadow-lg p-8 max-w-md w-full flex flex-col items-center`}>
         <div className={`mb-4 ${styles.icon}`}>{iconByVariant[variant]}</div>
         <h1 className={`text-2xl font-bold mb-2 text-center ${styles.title}`}>{title}</h1>
         <p className="text-gray-700 mb-4 text-center">{description}</p>
@@ -94,7 +111,8 @@ export default function PaymentReturnView({ variant, title, description, ctaLabe
         <Link to="/" className={`${styles.button} text-white font-semibold py-2 px-6 rounded transition-colors`}>
           {ctaLabel}
         </Link>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -64,8 +64,8 @@ export default function AppRoutes() {
           <LazyRoute>
             <PaymentReturnView
               variant="success"
-              title="Pago realizado con exito"
-              description="Tu pago fue procesado correctamente. En breve recibiras la confirmacion por email."
+              title="Pago realizado con éxito"
+              description="Tu pago fue procesado correctamente. En breve recibirás la confirmación por email."
               ctaLabel="Volver al inicio"
             />
           </LazyRoute>
@@ -91,7 +91,7 @@ export default function AppRoutes() {
             <PaymentReturnView
               variant="pending"
               title="Pago pendiente"
-              description="Tu pago esta en proceso de acreditacion. Te notificaremos por email cuando se confirme."
+              description="Tu pago está en proceso de acreditación. Te notificaremos por email cuando se confirme."
               ctaLabel="Volver al inicio"
             />
           </LazyRoute>
