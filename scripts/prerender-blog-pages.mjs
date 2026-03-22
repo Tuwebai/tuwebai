@@ -12,6 +12,7 @@ const defaultOgImage = `${siteUrl}/logo-tuwebai.png`;
 const staticRoutes = [
   { url: '/', changefreq: 'weekly', priority: '1.0', lastmod: '2024-12-19' },
   { url: '/nosotros', changefreq: 'monthly', priority: '0.8', lastmod: '2026-03-22' },
+  { url: '/proceso', changefreq: 'monthly', priority: '0.8', lastmod: '2026-03-22' },
   { url: '/corporativos', changefreq: 'monthly', priority: '0.9', lastmod: '2024-12-15' },
   { url: '/uxui', changefreq: 'monthly', priority: '0.9', lastmod: '2024-12-15' },
   { url: '/ecommerce', changefreq: 'monthly', priority: '0.9', lastmod: '2024-12-15' },

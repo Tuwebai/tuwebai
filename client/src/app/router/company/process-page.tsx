@@ -15,6 +15,44 @@ const PROCESS_PAGE_URL = `${TUWEBAI_SITE_FULL_URL}/proceso`;
 const PROCESS_WHATSAPP_URL = `${TUWEBAI_WHATSAPP_URL}?text=${encodeURIComponent(
   'Hola Juanchi, vengo de la página de Proceso y quiero contarte mi proyecto.',
 )}`;
+const PROCESS_HOWTO_SCHEMA = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: 'Cómo trabajamos en TuWebAI',
+  description: 'Proceso de 5 etapas para desarrollar un proyecto web profesional',
+  step: [
+    {
+      '@type': 'HowToStep',
+      position: 1,
+      name: 'Consulta inicial',
+      text: 'Una llamada de 20 a 30 minutos para entender el proyecto.',
+    },
+    {
+      '@type': 'HowToStep',
+      position: 2,
+      name: 'Propuesta y alcance',
+      text: 'Propuesta escrita con precio cerrado y cronograma.',
+    },
+    {
+      '@type': 'HowToStep',
+      position: 3,
+      name: 'Diseño y desarrollo',
+      text: 'Construcción completa del proyecto en 2 a 4 semanas según tipo.',
+    },
+    {
+      '@type': 'HowToStep',
+      position: 4,
+      name: 'Revisión y ajustes',
+      text: 'Una ronda de revisión completa incluida en todos los planes.',
+    },
+    {
+      '@type': 'HowToStep',
+      position: 5,
+      name: 'Lanzamiento y entrega',
+      text: 'Deploy en producción y entrega de todos los accesos al cliente.',
+    },
+  ],
+};
 
 interface ProcessTimelineItem {
   step: string;
@@ -143,11 +181,12 @@ export default function ProcessPage() {
   return (
     <>
       <MetaTags
-        title="Proceso de Trabajo"
-        description="Conocé cómo trabaja TuWebAI en cada proyecto: etapas, tiempos reales, entregables concretos y qué esperamos del cliente en cada paso."
-        keywords="proceso de trabajo, desarrollo web argentina, etapas proyecto web, entregables TuWebAI"
+        title="Proceso de Trabajo | TuWebAI - Cómo Construimos tu Proyecto Web"
+        description="Conocé las 5 etapas del proceso de TuWebAI: consulta, propuesta, desarrollo, revisión y lanzamiento. Tiempos reales, entregables concretos y sin sorpresas al final."
+        keywords="proceso de trabajo TuWebAI, cómo trabajamos en TuWebAI, etapas proyecto web, desarrollo web Argentina, entregables proyecto web"
         url={PROCESS_PAGE_URL}
         ogType="website"
+        structuredData={PROCESS_HOWTO_SCHEMA}
       />
 
       <main className="min-h-screen bg-[#0a0a0f] text-gray-300">
