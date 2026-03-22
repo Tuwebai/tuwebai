@@ -1,5 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
+
 import {
   TUWEBAI_EMAIL,
   TUWEBAI_INSTAGRAM_URL,
@@ -27,9 +28,6 @@ interface MetaTagsProps {
   structuredData?: Record<string, unknown> | Array<Record<string, unknown>>;
 }
 
-/**
- * Componente para manejar metadatos SEO en las páginas
- */
 const MetaTags: React.FC<MetaTagsProps> = ({
   title,
   description,
@@ -47,12 +45,10 @@ const MetaTags: React.FC<MetaTagsProps> = ({
   geoPlacename = 'Argentina',
   structuredData,
 }) => {
-  // Construimos el título completo con el nombre del sitio
   const fullTitle = `${title} | Tuweb.ai`;
 
   return (
     <Helmet>
-      {/* Metadatos básicos */}
       <title>{fullTitle}</title>
       <meta name="description" content={description} />
       {keywords && <meta name="keywords" content={keywords} />}
@@ -61,8 +57,7 @@ const MetaTags: React.FC<MetaTagsProps> = ({
       <meta name="language" content={language} />
       <meta name="geo.region" content={geoRegion} />
       <meta name="geo.placename" content={geoPlacename} />
-      
-      {/* Open Graph / Facebook */}
+
       <meta property="og:type" content={ogType || type} />
       <meta property="og:url" content={url} />
       <meta property="og:title" content={fullTitle} />
@@ -70,23 +65,19 @@ const MetaTags: React.FC<MetaTagsProps> = ({
       <meta property="og:image" content={ogImage || image} />
       <meta property="og:site_name" content="TuWeb.ai" />
       <meta property="og:locale" content="es_AR" />
-      
-      {/* Twitter */}
+
       <meta name="twitter:card" content={twitterCard} />
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={ogImage || image} />
       <meta name="twitter:site" content="@tuwebai" />
-      
-      {/* Canonical URL */}
+
       <link rel="canonical" href={url} />
-      
-      {/* Metadatos adicionales para SEO */}
+
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <meta name="theme-color" content="#00CCFF" />
       <meta name="msapplication-TileColor" content="#00CCFF" />
-      
-      {/* Schema.org structured data */}
+
       <script type="application/ld+json">
         {JSON.stringify({
           '@context': 'https://schema.org',
@@ -139,9 +130,7 @@ const MetaTags: React.FC<MetaTagsProps> = ({
         })}
       </script>
       {structuredData && (
-        <script type="application/ld+json">
-          {JSON.stringify(structuredData)}
-        </script>
+        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
       )}
     </Helmet>
   );

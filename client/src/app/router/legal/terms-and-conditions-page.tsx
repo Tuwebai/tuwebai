@@ -88,7 +88,7 @@ export default function TerminosCondiciones() {
       <div className="bg-[#080810] min-h-screen">
         <PageBanner 
           title="Términos y Condiciones" 
-          subtitle="Conoce los términos y condiciones que rigen nuestros servicios"
+          subtitle="Conocé los términos y condiciones que rigen nuestros servicios"
         />
 
         <div className="container mx-auto px-4 lg:px-8 py-16 max-w-[1280px]">

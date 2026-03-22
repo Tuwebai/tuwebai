@@ -124,8 +124,8 @@ const ABOUT_PAGE_URL = `${TUWEBAI_SITE_FULL_URL}/nosotros`;
 const ABOUT_PERSON_SCHEMA = {
   '@context': 'https://schema.org',
   '@type': 'Person',
-  name: 'Juan Esteban Lopez Pachao',
-  alternateName: ['Juanchi', 'Juanchi Lopez', 'Juanchi Dev', 'juanchiidev'],
+  name: 'Juan Esteban López Pachao',
+  alternateName: ['Juanchi', 'Juanchi López', 'Juanchi Dev', 'juanchiidev'],
   jobTitle: 'Fundador y Desarrollador Fullstack',
   worksFor: {
     '@type': 'Organization',
@@ -136,8 +136,8 @@ const ABOUT_PERSON_SCHEMA = {
   sameAs: [TUWEBAI_LINKEDIN_URL],
   address: {
     '@type': 'PostalAddress',
-    addressLocality: 'Rio Tercero',
-    addressRegion: 'Cordoba',
+    addressLocality: 'Río Tercero',
+    addressRegion: 'Córdoba',
     addressCountry: 'AR',
   },
   knowsAbout: [
@@ -147,7 +147,7 @@ const ABOUT_PERSON_SCHEMA = {
     'Supabase',
     'Firebase',
     'Tailwind CSS',
-    'SEO tecnico',
+    'SEO técnico',
     'E-commerce Argentina',
     'MercadoPago',
   ],
@@ -157,9 +157,9 @@ export default function AboutPage() {
   return (
     <>
       <MetaTags
-        title="Nosotros - Juanchi Lopez, Desarrollador Web Cordoba"
-        description="Conoce a Juanchi, fundador de TuWebAI. Desarrollador fullstack de Rio Tercero, Cordoba. Casi 6 anos construyendo webs que venden para negocios argentinos."
-        keywords="nosotros tuwebai, juanchi lopez, juanchiidev, juan esteban lopez, desarrollador web cordoba, desarrollo web argentina"
+        title="Nosotros - Juanchi López, Desarrollador Web Córdoba"
+        description="Conocé a Juanchi, fundador de TuWebAI. Desarrollador fullstack de Río Tercero, Córdoba. Casi 6 años construyendo webs que venden para negocios argentinos."
+        keywords="nosotros tuwebai, juanchi lópez, juanchiidev, juan esteban lópez, desarrollador web córdoba, desarrollo web argentina"
         ogType="website"
         ogImage="/logo-tuwebai.png"
         url={ABOUT_PAGE_URL}
@@ -304,13 +304,13 @@ export default function AboutPage() {
                 <RevealBlock delayMs={80}>
                   <div className="space-y-6 text-base leading-8 text-gray-300 sm:text-lg">
                     <p>
-                      TuWebAI es Juan Esteban Lopez, Juanchi para los que nos conocen. Desarrollador fullstack y desarrollador web Cordoba desde Rio Tercero, Cordoba.
+                      TuWebAI es Juan Esteban López, Juanchi para los que nos conocen. Desarrollador fullstack y desarrollador web Córdoba desde Río Tercero, Córdoba.
                     </p>
                     <p>
-                      Diseno, frontend, backend, bases de datos, deploys. Juan Esteban Lopez lleva TuWebAI de punta a punta: un solo interlocutor desde el primer wireframe hasta el lanzamiento. Sin capas de intermediarios, sin "te consulto con el equipo tecnico".
+                      Diseño, frontend, backend, bases de datos, deploys. Juan Esteban López lleva TuWebAI de punta a punta: un solo interlocutor desde el primer wireframe hasta el lanzamiento. Sin capas de intermediarios, sin "te consulto con el equipo técnico".
                     </p>
                     <p>
-                      Cuando hablas con TuWebAI, hablas directamente con Juanchi, la persona que va a construir tu proyecto. Asi trabajamos desarrollo web Argentina sin vendedores en el medio.
+                      Cuando hablás con TuWebAI, hablás directamente con Juanchi, la persona que va a construir tu proyecto. Así trabajamos desarrollo web Argentina sin vendedores en el medio.
                     </p>
                   </div>
                 </RevealBlock>

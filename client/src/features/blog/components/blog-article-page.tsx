@@ -171,7 +171,7 @@ export default function BlogArticlePage({ slug }: BlogArticlePageProps) {
                       Si este articulo te sirvio, recibi los proximos por email.
                     </h2>
                     <p className="mt-3 max-w-2xl text-sm leading-7 text-gray-300 md:text-base">
-                      Te enviamos nuevas publicaciones, aprendizajes de conversion y recursos tecnicos aplicables a negocios reales. Confirmas tu alta por email y podes darte de baja cuando quieras.
+                      Te enviamos nuevas publicaciones, aprendizajes de conversión y recursos técnicos aplicables a negocios reales. Confirmás tu alta por email y podés darte de baja cuando quieras.
                     </p>
                     <div className="mt-6 max-w-2xl">
                       <NewsletterForm
@@ -198,9 +198,9 @@ export default function BlogArticlePage({ slug }: BlogArticlePageProps) {
             <aside className="space-y-6">
               <div className="blog-side-surface-accent p-6">
                 <p className="blog-heading-kicker text-xs">Diagnostico gratuito</p>
-                <h2 className="mt-3 font-rajdhani text-2xl font-bold text-white sm:text-3xl">Descubri por que tu web no convierte.</h2>
+                <h2 className="mt-3 font-rajdhani text-2xl font-bold text-white sm:text-3xl">Descubrí por qué tu web no convierte.</h2>
                 <p className="mt-4 text-sm leading-7 text-gray-300">
-                  Si tu sitio recibe trafico web sin conversiones, revisamos estructura, CTA, mobile y velocidad para decirte que esta frenando las consultas.
+                  Si tu sitio recibe tráfico web sin conversiones, revisamos estructura, CTA, mobile y velocidad para decirte qué está frenando las consultas.
                 </p>
                 <div className="mt-6 flex flex-col gap-3">
                   <a

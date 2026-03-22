@@ -13,7 +13,7 @@ import './blog-pages.css';
 export default function BlogListPage() {
   const posts = useBlogPosts().filter((post) => !post.noindex);
   const pageUrl = `${TUWEBAI_SITE_FULL_URL}/blog/`;
-  const publishedArticlesLabel = `${posts.length} articulos publicados`;
+  const publishedArticlesLabel = `${posts.length} artículos publicados`;
 
   return (
     <>
@@ -28,7 +28,7 @@ export default function BlogListPage() {
             '@context': 'https://schema.org',
             '@type': 'Blog',
             name: 'Blog TuWeb.ai',
-            description: 'Guias y articulos sobre conversion web, SEO tecnico y estrategia digital en Argentina.',
+            description: 'Guías y artículos sobre conversión web, SEO técnico y estrategia digital en Argentina.',
             url: pageUrl,
             publisher: {
               '@type': 'Organization',
@@ -64,7 +64,7 @@ export default function BlogListPage() {
               Recursos para corregir una web que no convierte y vender mejor.
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-7 text-gray-300 md:text-lg">
-              Publicamos contenido pensado para negocios argentinos que necesitan diagnosticar por que su sitio recibe trafico web sin conversiones y como mejorarlo con estrategia.
+              Publicamos contenido pensado para negocios argentinos que necesitan diagnosticar por qué su sitio recibe tráfico web sin conversiones y cómo mejorarlo con estrategia.
             </p>
           </div>
         </section>
@@ -117,10 +117,10 @@ export default function BlogListPage() {
                 Newsletter editorial
               </span>
               <h2 className="mt-5 font-rajdhani text-3xl font-bold leading-tight text-white sm:text-4xl md:text-5xl">
-                Recibi nuevos articulos y criterios concretos para mejorar tu web.
+                Recibí nuevos artículos y criterios concretos para mejorar tu web.
               </h2>
               <p className="mt-4 max-w-2xl text-base leading-7 text-gray-300 md:text-lg">
-                Enviamos una seleccion breve con analisis, errores frecuentes y oportunidades de conversion para negocios en Argentina. Sin spam y con confirmacion por email.
+                Enviamos una selección breve con análisis, errores frecuentes y oportunidades de conversión para negocios en Argentina. Sin spam y con confirmación por email.
               </p>
             </div>
 
