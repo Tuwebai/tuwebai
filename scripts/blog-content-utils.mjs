@@ -353,7 +353,7 @@ export function buildBlogPosts(docsDir) {
     const excerpt = frontmatter.excerpt?.trim() || extractExcerpt(content);
     const publishedAt = frontmatter.publishedAt?.trim() || stats.birthtime.toISOString();
     const updatedAt = frontmatter.updatedAt?.trim() || stats.mtime.toISOString();
-    const canonicalUrl = `${SITE_URL}/blog/${slug}`;
+    const canonicalUrl = `${SITE_URL}/blog/${slug}/`;
     const ogImage = frontmatter.ogImage?.trim() || DEFAULT_OG_IMAGE;
     const { html, headings } = parseMarkdown(content);
     const keywords = normalizeKeywords(frontmatter.keywords, extractKeywords(content));

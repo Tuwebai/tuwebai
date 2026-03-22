@@ -63,7 +63,7 @@ export default function BlogArticlePage({ slug }: BlogArticlePageProps) {
     );
   }
 
-  const articleUrl = `${TUWEBAI_SITE_FULL_URL}/blog/${article.slug}`;
+  const articleUrl = `${TUWEBAI_SITE_FULL_URL}/blog/${article.slug}/`;
   const whatsappMessage = encodeURIComponent(
     `Hola TuWebAI, vengo desde el articulo "${article.title}" y quiero hablar sobre una web que convierta mejor para mi negocio.`,
   );
@@ -245,7 +245,7 @@ export default function BlogArticlePage({ slug }: BlogArticlePageProps) {
                     {relatedArticles.map((relatedArticle) => (
                       <Link
                         key={relatedArticle.slug}
-                        to={`/blog/${relatedArticle.slug}`}
+                        to={`/blog/${relatedArticle.slug}/`}
                         className="blog-surface-link block rounded-2xl p-4"
                       >
                         <p className="font-rajdhani text-xl font-bold text-white">{relatedArticle.title}</p>

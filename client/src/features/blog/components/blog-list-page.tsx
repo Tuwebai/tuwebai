@@ -42,7 +42,7 @@ export default function BlogListPage() {
             itemListElement: posts.map((post, index) => ({
               '@type': 'ListItem',
               position: index + 1,
-              url: `${TUWEBAI_SITE_FULL_URL}/blog/${post.slug}`,
+              url: `${TUWEBAI_SITE_FULL_URL}/blog/${post.slug}/`,
               name: post.title,
             })),
           },
@@ -82,7 +82,7 @@ export default function BlogListPage() {
                       {format(parseISO(post.publishedAt), "d 'de' MMMM 'de' yyyy", { locale: es })}
                     </p>
                     <h2 className="mt-3 font-rajdhani text-2xl font-bold text-white sm:text-3xl">
-                      <Link to={`/blog/${post.slug}`} className="blog-link-accent">
+                      <Link to={`/blog/${post.slug}/`} className="blog-link-accent">
                         {post.title}
                       </Link>
                     </h2>
@@ -97,7 +97,7 @@ export default function BlogListPage() {
                       {post.readingTimeMinutes} min
                     </span>
                     <Link
-                      to={`/blog/${post.slug}`}
+                      to={`/blog/${post.slug}/`}
                       className="blog-secondary-button px-4 py-2 text-sm"
                     >
                       Leer articulo
