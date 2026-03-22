@@ -13,6 +13,7 @@ Disallow: /_redirects
 Disallow: /netlify.toml
 
 # Allow important pages
+Allow: /nosotros
 Allow: /corporativos
 Allow: /uxui
 Allow: /ecommerce
