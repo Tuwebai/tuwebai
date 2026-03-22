@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useIsMobile } from "@/core/hooks/use-mobile";
 import ScrollProgress from "@/shared/ui/scroll-progress";
@@ -242,12 +241,7 @@ export default function UXUI() {
   
   // Renderizar componentes de navegación móvil
   const renderMobileMenu = () => (
-    <motion.div
-      className={`fixed inset-0 bg-[#0a0a0f] z-50 flex flex-col ${isMenuOpen ? 'block' : 'hidden'}`}
-      initial={{ opacity: 0, x: "100%" }}
-      animate={{ opacity: isMenuOpen ? 1 : 0, x: isMenuOpen ? 0 : "100%" }}
-      transition={{ duration: 0.3 }}
-    >
+    <div className="fixed inset-0 z-50 flex flex-col bg-[#0a0a0f] animate-in fade-in slide-in-from-right duration-300">
       <div className="flex justify-between items-center p-4 border-b border-gray-800">
         <Link to="/" className="text-2xl font-rajdhani font-bold">
           TuWeb<span className="text-[#00CCFF]">.ai</span>
@@ -293,7 +287,7 @@ export default function UXUI() {
           Solicitar propuesta
         </Link>
       </div>
-    </motion.div>
+    </div>
   );
 
   // Verificar si se está utilizando el navbar global
@@ -359,46 +353,26 @@ export default function UXUI() {
           </header>
           
           {/* Menú móvil */}
-          {renderMobileMenu()}
+          {isMenuOpen && renderMobileMenu()}
         </>
       )}
       
       {/* Hero Section */}
-      <motion.section 
-        className="uxui-hero"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6 }}
-      >
+      <section className="uxui-hero animate-in fade-in duration-500">
         <div className="container mx-auto">
           <div className="uxui-hero-layout">
             <div className="uxui-hero-copy">
-              <motion.h1 
-                className="uxui-hero-title"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-              >
+              <h1 className="uxui-hero-title animate-in fade-in slide-in-from-bottom-2 duration-500">
                 <span className="gradient-text">Diseño UX/UI</span> que <br />
                 transforma visitantes <br />
                 en clientes fieles
-              </motion.h1>
+              </h1>
               
-              <motion.p 
-                className="uxui-hero-subtitle"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-              >
+              <p className="uxui-hero-subtitle animate-in fade-in slide-in-from-bottom-2 duration-500">
                 Creamos experiencias digitales intuitivas, atractivas y efectivas que encantan a tus usuarios y mejoran tus métricas de conversión.
-              </motion.p>
+              </p>
               
-              <motion.div
-                className="uxui-hero-actions"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-              >
+              <div className="uxui-hero-actions animate-in fade-in slide-in-from-bottom-2 duration-500">
                 <button
                   onClick={() => setActiveTab("servicios")}
                   className="uxui-hero-primary"
@@ -411,15 +385,10 @@ export default function UXUI() {
                 >
                   Ver proyectos
                 </button>
-              </motion.div>
+              </div>
             </div>
             
-            <motion.div 
-              className="uxui-hero-visual"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-            >
+            <div className="uxui-hero-visual animate-in fade-in zoom-in-95 duration-500">
               <div className="uxui-hero-visual-glow uxui-hero-visual-glow--main"></div>
               <div className="uxui-hero-visual-center">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-32 w-32 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -429,36 +398,29 @@ export default function UXUI() {
               
               <div className="uxui-hero-visual-glow uxui-hero-visual-glow--top"></div>
               <div className="uxui-hero-visual-glow uxui-hero-visual-glow--bottom"></div>
-            </motion.div>
+            </div>
           </div>
         </div>
-      </motion.section>
+      </section>
       
       {/* Servicios Section */}
       <section ref={serviciosRef} id="servicios" className="uxui-section">
         <div className="container mx-auto">
-          <motion.div 
-            className="uxui-section-heading"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
+          <div className="uxui-section-heading animate-in fade-in slide-in-from-bottom-2 duration-500">
             <h2 className="uxui-section-title">
               <span className="gradient-text">Servicios</span> de diseño UX/UI
             </h2>
             <p className="uxui-section-copy">
               Ofrecemos soluciones completas de experiencia de usuario para crear productos digitales que conectan con tus clientes y generan resultados.
             </p>
-          </motion.div>
+          </div>
           
           <div className="uxui-services-grid">
             {uxuiServices.map((service, index) => (
-              <motion.div
+              <div
                 key={service.id}
-                className="uxui-service-frame"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 + index * 0.1 }}
+                className="uxui-service-frame animate-in fade-in slide-in-from-bottom-2 duration-500"
+                style={{ animationDelay: `${0.1 + index * 0.1}s` }}
               >
                 <div className="uxui-service-card">
                   <div className="uxui-service-icon">
@@ -484,7 +446,7 @@ export default function UXUI() {
                     </ul>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
@@ -493,28 +455,21 @@ export default function UXUI() {
       {/* Proceso Section */}
       <section ref={procesosRef} id="procesos" className="uxui-section uxui-section--alt">
         <div className="container mx-auto">
-          <motion.div 
-            className="uxui-section-heading"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
+          <div className="uxui-section-heading animate-in fade-in slide-in-from-bottom-2 duration-500">
             <h2 className="uxui-section-title">
               Nuestro <span className="gradient-text">proceso</span> de diseño
             </h2>
             <p className="uxui-section-copy">
               Seguimos una metodología ágil y centrada en el usuario para entregar diseños que superan expectativas.
             </p>
-          </motion.div>
+          </div>
           
           <div className="uxui-process-grid">
             {uxuiProcesses.map((process, index) => (
-              <motion.div
+              <div
                 key={process.id}
-                className="uxui-process-item"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 + index * 0.1 }}
+                className="uxui-process-item animate-in fade-in slide-in-from-bottom-2 duration-500"
+                style={{ animationDelay: `${0.1 + index * 0.1}s` }}
               >
                 <div className="uxui-process-step">
                   {process.id}
@@ -539,7 +494,7 @@ export default function UXUI() {
                     <div className="uxui-process-connector-dot"></div>
                   </div>
                 )}
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
@@ -548,29 +503,21 @@ export default function UXUI() {
       {/* Proyectos Section */}
       <section ref={proyectosRef} id="proyectos" className="py-20 px-4 bg-[#0a0a0f]">
         <div className="container mx-auto">
-          <motion.div 
-            className="text-center max-w-3xl mx-auto mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
+          <div className="mx-auto mb-16 max-w-3xl text-center animate-in fade-in slide-in-from-bottom-2 duration-500">
             <h2 className="text-3xl md:text-4xl font-rajdhani font-bold mb-4">
               <span className="gradient-text">Proyectos</span> destacados
             </h2>
             <p className="text-gray-300 text-lg">
               Diseños que transforman negocios y generan resultados medibles para nuestros clientes.
             </p>
-          </motion.div>
+          </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {uxuiProjects.map((project, index) => (
-              <motion.div
+              <div
                 key={project.id}
-                className="bg-[#121217] rounded-xl overflow-hidden cursor-pointer h-full flex flex-col"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 + index * 0.1 }}
-                whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                className="flex h-full cursor-pointer flex-col overflow-hidden rounded-xl bg-[#121217] transition-transform duration-200 hover:-translate-y-1 animate-in fade-in slide-in-from-bottom-2"
+                style={{ animationDelay: `${0.1 + index * 0.1}s` }}
                 onClick={() => openProjectModal(project)}
               >
                 <div 
@@ -609,7 +556,7 @@ export default function UXUI() {
                     </button>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
@@ -618,12 +565,7 @@ export default function UXUI() {
       {/* CTA Section */}
       <section ref={contactoRef} id="contacto" className="uxui-section uxui-section--cta">
         <div className="container mx-auto">
-          <motion.div 
-            className="uxui-cta-card"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
+          <div className="uxui-cta-card animate-in fade-in slide-in-from-bottom-2 duration-500">
             <div className="uxui-cta-header">
               <h2 className="uxui-cta-title gradient-text">
                 Transformá la experiencia de tus usuarios
@@ -649,26 +591,18 @@ export default function UXUI() {
                 Contactar por WhatsApp
               </a>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
       
       {/* Modal de proyecto */}
-      <AnimatePresence>
-        {selectedProject && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 md:p-8"
+      {selectedProject && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 md:p-8 animate-in fade-in duration-300"
             onClick={closeProjectModal}
           >
-            <motion.div
-              initial={{ opacity: 0, y: 20, scale: 0.9 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 20, scale: 0.9 }}
-              transition={{ duration: 0.3 }}
-              className="bg-[#121217] max-w-4xl w-full rounded-xl overflow-hidden"
+            <div
+              className="w-full max-w-4xl overflow-hidden rounded-xl bg-[#121217] animate-in fade-in zoom-in-95 duration-300"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="relative h-64 md:h-80 overflow-hidden">
@@ -772,10 +706,9 @@ export default function UXUI() {
                   </div>
                 </div>
               </div>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         )}
-      </AnimatePresence>
     </div>
   );
 }
