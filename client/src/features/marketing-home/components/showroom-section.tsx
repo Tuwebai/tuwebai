@@ -4,7 +4,9 @@ import { Link } from 'react-router-dom';
 import { useIntersectionObserver } from '@/core/hooks/use-intersection-observer';
 import type { ShowroomProject } from '@/features/marketing-home/components/showroom-types';
 
-const ShowroomProjectModal = lazy(() => import('@/features/marketing-home/components/showroom-project-modal'));
+const ShowroomProjectModal = lazy(
+  () => import('@/features/marketing-home/components/showroom-project-modal'),
+);
 
 interface ShowroomSectionProps {
   setRef: (ref: HTMLElement | null) => void;
@@ -12,9 +14,12 @@ interface ShowroomSectionProps {
 
 export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
-  const { ref: titleRef, hasIntersected: titleVisible } = useIntersectionObserver<HTMLDivElement>();
-  const { ref: subtitleRef, hasIntersected: subtitleVisible } = useIntersectionObserver<HTMLDivElement>();
-  const { ref: projectsRef, hasIntersected: projectsVisible } = useIntersectionObserver<HTMLDivElement>();
+  const { ref: titleRef, hasIntersected: titleVisible } =
+    useIntersectionObserver<HTMLDivElement>();
+  const { ref: subtitleRef, hasIntersected: subtitleVisible } =
+    useIntersectionObserver<HTMLDivElement>();
+  const { ref: projectsRef, hasIntersected: projectsVisible } =
+    useIntersectionObserver<HTMLDivElement>();
 
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [selectedProject, setSelectedProject] = useState<ShowroomProject | null>(null);
@@ -60,7 +65,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
       title: 'LH Decants',
       category: 'e-commerce',
       description:
-        'Explora el arte del perfume sin comprar a ciegas: decants 100% originales para descubrir fragancias exclusivas por mililitro.',
+        'Tienda de decants con catálogo por mililitro, checkout con MercadoPago y panel de stock propio.',
       clientNeed:
         'Vender fragancias premium con una experiencia clara, elegante y confiable para usuarios que necesitan decidir sin probar el perfume físicamente.',
       solutionSummary:
@@ -71,8 +76,8 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
         'Decants 100% originales',
         'Fragancias exclusivas del mundo',
         'Preserva calidad e intensidad',
-        'Frascos autenticos',
-        'Elegancia en su forma mas pura',
+        'Frascos auténticos',
+        'Elegancia en su forma más pura',
       ],
       results: [
         { label: 'Satisfacción', value: '98%' },
@@ -88,7 +93,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
       title: 'TuWeb.ai Dashboard',
       category: 'saas',
       description:
-        'Plataforma operativa del ecosistema TuWeb.ai para centralizar proyectos, soporte, pagos y visibilidad interna en una sola interfaz.',
+        'Panel interno para gestión de proyectos, soporte, pagos y visibilidad del ecosistema TuWebAI.',
       sectionLabels: {
         clientNeed: 'Qué necesitábamos resolver',
         solutionSummary: 'Qué desarrollamos en TuWeb.ai',
@@ -121,7 +126,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
       title: 'SafeSpot',
       category: 'seguridad-ciudadana',
       description:
-        'Plataforma de seguridad ciudadana para reportar objetos robados, generar alertas y conectar a la comunidad en tiempo real.',
+        'Plataforma de reporte colaborativo de objetos robados con alertas y mapa en tiempo real.',
       clientNeed:
         'Dar a la comunidad una herramienta concreta para reportar, alertar y seguir casos de seguridad sin depender de canales fragmentados.',
       solutionSummary:
@@ -130,15 +135,15 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
         'La solución mejora la velocidad de respuesta, ordena la información crítica y fortalece la colaboración entre usuarios.',
       features: [
         'Reportes de objetos robados geolocalizados',
-        'Busqueda por categoria, zona y descripcion',
+        'Búsqueda por categoría, zona y descripción',
         'Alertas y notificaciones en tiempo real',
         'Canal comunitario para seguimiento de casos',
-        'Panel administrable para moderacion y soporte',
+        'Panel administrable para moderación y soporte',
       ],
       results: [
         { label: 'Foco', value: 'Seguridad 24/7' },
         { label: 'Cobertura', value: 'Comunidad activa' },
-        { label: 'Objetivo', value: 'Recuperacion rapida' },
+        { label: 'Objetivo', value: 'Recuperación rápida' },
       ],
       image: '/safespot.webp',
       detailsUrl: '/showroom',
@@ -149,7 +154,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
       title: 'Trading TuWeb.ai',
       category: 'saas',
       description:
-        'Dashboard de trading para monitoreo de mercado, gestión de operaciones y seguimiento de rendimiento en tiempo real.',
+        'Dashboard de trading para monitoreo de mercado, gestión de operaciones y seguimiento en tiempo real.',
       clientNeed:
         'Tomar decisiones con datos visibles y seguimiento continuo, sin dashboards confusos ni información fragmentada.',
       solutionSummary:
@@ -157,7 +162,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
       valueSummary:
         'El sistema mejora claridad operativa, velocidad de lectura y control diario sobre balances, riesgo y movimientos.',
       features: [
-        'Panel de mercado con metricas en vivo',
+        'Panel de mercado con métricas en vivo',
         'Seguimiento de operaciones y posiciones',
         'Resumen de rendimiento y riesgo',
         'Vista clara de balances y movimientos',
@@ -166,7 +171,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
       results: [
         { label: 'Visibilidad', value: 'Tiempo real' },
         { label: 'Control', value: 'Operaciones 24/7' },
-        { label: 'Analisis', value: 'Rendimiento continuo' },
+        { label: 'Análisis', value: 'Rendimiento continuo' },
       ],
       image: '/trading-tuwebai.webp',
       detailsUrl: '/showroom',
@@ -177,7 +182,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
       title: 'Captiva',
       category: 'landing-pages',
       description:
-        'Landing orientada a conversión para presentar una propuesta clara, filtrar interés real y empujar consultas de negocio.',
+        'Sistema de generación de demos y landing pages orientadas a conversión para negocios locales.',
       clientNeed:
         'Validar una oferta digital con una página enfocada en captar leads calificados sin distracciones ni navegación innecesaria.',
       solutionSummary:
@@ -205,7 +210,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
       title: 'Instadetox',
       category: 'experimental',
       description:
-        'Experimento web centrado en una propuesta simple, visual y directa para validar interés en una idea digital específica.',
+        'Experimento para validar una idea digital: propuesta simple, visual y directa al usuario.',
       clientNeed:
         'Probar una hipótesis de producto con una experiencia rápida de lanzar, fácil de entender y lista para medir respuesta real.',
       solutionSummary:
@@ -281,7 +286,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
     'landing-pages': 'Landing Pages',
     saas: 'SaaS',
     experimental: 'Experimental',
-    'seguridad-ciudadana': 'Seguridad Ciudadana',
+    'seguridad-ciudadana': 'Seguridad',
     muebleria: 'Mueblerías',
     'tienda-online': 'Tiendas Online',
     'salud-bienestar': 'Salud y Bienestar',
@@ -326,7 +331,9 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
           }`}
         >
           <h2 className="mb-4 font-rajdhani text-3xl font-bold md:text-5xl">
-            <span className="gradient-text gradient-border inline-block pb-2">Casos reales pensados para negocio</span>
+            <span className="gradient-text gradient-border inline-block pb-2">
+              Lo que construimos
+            </span>
           </h2>
         </div>
 
@@ -338,8 +345,8 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
           style={{ transitionDelay: '200ms' }}
         >
           <p className="mx-auto max-w-3xl text-xl text-gray-300">
-            Mira ejemplos de sitios, dashboards y plataformas web donde combinamos claridad comercial,
-            operación más ordenada y una experiencia digital profesional.
+            Proyectos propios y de clientes desarrollados a medida. Sin templates. Con código
+            real.
           </p>
         </div>
 
@@ -371,14 +378,14 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
               style={{ transitionDelay: `${300 + index * 100}ms` }}
               onClick={() => handleProjectClick(project)}
             >
-              <div className="relative h-48 overflow-hidden group">
+              <div className="group relative h-48 overflow-hidden">
                 <img
                   src={project.image}
                   alt={project.title}
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/60 to-transparent p-3">
-                  <span className="text-sm font-medium text-white">Vista Previa</span>
+                  <span className="text-sm font-medium text-white">Vista previa</span>
                 </div>
                 {project.externalUrl && (
                   <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
@@ -393,10 +400,22 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
               </div>
 
               <div className="p-6">
-                <div className="mb-3 flex items-start justify-between">
+                <div className="mb-3 flex items-start justify-between gap-3">
                   <h3 className="font-rajdhani text-xl font-bold text-white">{project.title}</h3>
+                </div>
+
+                <div className="mb-3 flex flex-wrap items-center gap-2">
                   <span className="rounded bg-[#1a1a23] px-2 py-1 text-xs text-gray-400">
                     {categoryNames[project.category] || project.category}
+                  </span>
+                  <span
+                    className={`rounded px-2 py-1 text-xs font-medium ${
+                      project.id === 1
+                        ? 'bg-amber-500/15 text-amber-300'
+                        : 'bg-white/8 text-gray-300'
+                    }`}
+                  >
+                    {project.id === 1 ? 'Cliente' : 'Proyecto propio'}
                   </span>
                 </div>
 
@@ -410,8 +429,19 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
                   className="flex items-center text-sm font-medium text-[#00CCFF] transition-colors hover:text-[#9933FF]"
                 >
                   <span>Ver detalles</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" className="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="ml-1 h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M14 5l7 7m0 0l-7 7m7-7H3"
+                    />
                   </svg>
                 </button>
               </div>
@@ -427,8 +457,12 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
               currentIndex={selectedProjectIndex}
               totalProjects={filteredProjects.length}
               hasPrev={selectedProjectIndex > 0}
-              hasNext={selectedProjectIndex >= 0 && selectedProjectIndex < filteredProjects.length - 1}
-              prevLabel={selectedProjectIndex > 0 ? filteredProjects[selectedProjectIndex - 1].title : undefined}
+              hasNext={
+                selectedProjectIndex >= 0 && selectedProjectIndex < filteredProjects.length - 1
+              }
+              prevLabel={
+                selectedProjectIndex > 0 ? filteredProjects[selectedProjectIndex - 1].title : undefined
+              }
               nextLabel={
                 selectedProjectIndex >= 0 && selectedProjectIndex < filteredProjects.length - 1
                   ? filteredProjects[selectedProjectIndex + 1].title
@@ -442,9 +476,11 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
         )}
 
         <div className="mt-14 text-center">
-          <p className="mx-auto mb-6 max-w-2xl text-gray-300">
-            Si buscas una solución similar para tu negocio, podemos ayudarte a definir el mejor enfoque
-            según tu etapa, tus objetivos y la complejidad real del proyecto.
+          <p className="font-rajdhani text-2xl font-bold text-white sm:text-3xl">
+            ¿Tenés un proyecto en mente?
+          </p>
+          <p className="mx-auto mb-6 mt-4 max-w-2xl text-gray-300">
+            Contanos qué necesita tu negocio y te decimos si podemos construirlo y cómo.
           </p>
 
           <div className="transition-transform duration-200 hover:scale-[1.05]">
@@ -452,7 +488,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
               to="/consulta"
               className="inline-block rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-8 py-4 font-medium text-white shadow-lg hover:shadow-[#00CCFF]/20"
             >
-              Quiero una solución similar
+              Quiero una solución similar -&gt;
             </Link>
           </div>
         </div>
