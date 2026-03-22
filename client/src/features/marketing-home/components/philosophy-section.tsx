@@ -28,15 +28,15 @@ export default function PhilosophySection({ setRef }: PhilosophySectionProps) {
         <div className="mb-10 max-w-4xl">
           <h2 className="mb-5 font-rajdhani text-3xl font-bold sm:text-4xl md:text-5xl">
             <span className="gradient-text gradient-border inline-block pb-2">
-              Tu web deberia traerte clientes.
+              Tu web debería traerte clientes.
               <br />
-              Si no lo hace, algo esta mal.
+              Si no lo hace, algo está mal.
             </span>
           </h2>
 
           <p className="max-w-3xl text-base font-medium leading-7 text-gray-200 sm:text-lg md:text-xl">
             Construimos sitios web para negocios argentinos que quieren vender online, no solo
-            existir. Codigo a medida, entrega en 2 a 4 semanas.
+            existir. Código a medida, entrega en 2 a 4 semanas.
           </p>
         </div>
 
@@ -51,22 +51,22 @@ export default function PhilosophySection({ setRef }: PhilosophySectionProps) {
             </p>
 
             <p className="mb-6 text-gray-300">
-              Cada proyecto empieza entendiendo que necesita el negocio, no que esta de moda en
-              diseno web.
+              Cada proyecto empieza entendiendo qué necesita el negocio, no qué está de moda en
+              diseño web.
             </p>
 
             <div className="mb-2 inline-flex items-center space-x-3">
               <div className="h-1 w-12 bg-[#00CCFF]" />
               <span className="font-rajdhani text-sm uppercase tracking-wider text-gray-400">
-                Como trabajamos
+                Cómo trabajamos
               </span>
             </div>
 
             <ul className="mb-4 space-y-3">
-              <li className="text-gray-300">- Entendemos el negocio antes de disenar</li>
+              <li className="text-gray-300">- Entendemos el negocio antes de diseñar</li>
               <li className="text-gray-300">- Mobile-first desde el primer wireframe</li>
-              <li className="text-gray-300">- Analytics configurado desde el dia 1</li>
-              <li className="text-gray-300">- Entrega en 2 a 4 semanas segun el proyecto</li>
+              <li className="text-gray-300">- Analytics configurado desde el día 1</li>
+              <li className="text-gray-300">- Entrega en 2 a 4 semanas según el proyecto</li>
             </ul>
           </RevealBlock>
 
@@ -81,18 +81,18 @@ export default function PhilosophySection({ setRef }: PhilosophySectionProps) {
                   Lo que vemos en el 80% de los sitios que nos llegan:
                 </p>
                 <ul className="mb-4 space-y-3">
-                  <li className="text-gray-300">- Diseno bonito que no convierte nada</li>
+                  <li className="text-gray-300">- Diseño bonito que no convierte nada</li>
                   <li className="text-gray-300">- Sin CTA visible en el primer scroll</li>
-                  <li className="text-gray-300">- Carga en mas de 4 segundos en celular</li>
-                  <li className="text-gray-300">- Sin analitica configurada</li>
+                  <li className="text-gray-300">- Carga en más de 4 segundos en celular</li>
+                  <li className="text-gray-300">- Sin analítica configurada</li>
                 </ul>
                 <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-4">
                   <p className="text-sm leading-relaxed text-gray-300">
-                    El problema no es que tengas web. Es que tu web no esta trabajando para vos.
+                    El problema no es que tengas web. Es que tu web no está trabajando para vos.
                   </p>
                   <p className="mt-4 text-sm leading-relaxed text-gray-300">
-                    Por eso trabajamos con una logica simple: entender el problema primero,
-                    construir la solucion despues.
+                    Por eso trabajamos con una lógica simple: entender el problema primero,
+                    construir la solución después.
                   </p>
                 </div>
               </div>
@@ -102,13 +102,13 @@ export default function PhilosophySection({ setRef }: PhilosophySectionProps) {
 
         <div className="mt-10 flex flex-col items-start gap-4 border-t border-white/10 pt-8 sm:flex-row sm:items-center sm:justify-between">
           <p className="font-rajdhani text-2xl font-bold text-white sm:text-3xl">
-            Tu web tiene estos problemas?
+            ¿Tu web tiene estos problemas?
           </p>
           <Link
             to="/consulta"
             className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-6 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(0,204,255,0.18)] transition-transform duration-200 hover:scale-[1.02]"
           >
-            Diagnostico gratuito -&gt;
+            Diagnóstico gratuito -&gt;
           </Link>
         </div>
       </div>
