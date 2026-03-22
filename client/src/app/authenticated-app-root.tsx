@@ -1,30 +1,31 @@
-import { Suspense, lazy, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import GlobalNavbar from '@/app/layout/global-navbar';
-import { ThirdPartyScriptManager } from '@/app/performance';
 import AppRoutes from '@/app/router/AppRoutes';
+import { MemoryManager, ThirdPartyScriptManager } from '@/app/performance';
 import { ThemeProvider } from '@/core/theme/ThemeContext';
-import { AuthProvider } from '@/features/auth/context/AuthContext';
+import { AuthProvider, useAuthState } from '@/features/auth/context/AuthContext';
 import { LoginModalProvider } from '@/features/auth/hooks/use-login-modal';
+import { useUserPrivacyQuery } from '@/features/users/hooks/use-privacy-settings';
+import { DEFAULT_USER_PRIVACY_SETTINGS } from '@/features/users/types/privacy';
 import analytics from '@/lib/analytics';
 import { runWhenIdle } from '@/lib/performance';
-import Footer from '@/shared/ui/footer';
+import GlobalNavbar from '@/app/layout/global-navbar';
 import { SkipLink } from '@/shared/ui/skip-link';
+import Footer from '@/shared/ui/footer';
 import { Toaster } from '@/shared/ui/toaster';
 
-const AuthenticatedAppRoot = lazy(() => import('@/app/authenticated-app-root'));
-
-const shouldUseAuthenticatedShell = (pathname: string) =>
+const shouldEagerlyRunAnalytics = (pathname: string) =>
   pathname.startsWith('/panel') || pathname.startsWith('/auth/');
 
-function PublicShellFrame() {
+function AuthenticatedShellFrame() {
   if (typeof window !== 'undefined') {
     (window as Window & { isUsingGlobalNav?: boolean }).isUsingGlobalNav = true;
   }
 
   return (
     <>
+      <MemoryManager thresholdMB={150} debug={false} />
       <ThirdPartyScriptManager />
       <SkipLink />
       <GlobalNavbar />
@@ -35,14 +36,30 @@ function PublicShellFrame() {
   );
 }
 
-function PublicAppRoot() {
+function AuthenticatedAppShell() {
   const location = useLocation();
+  const { user, isAuthenticated, isLoading } = useAuthState();
+  const {
+    data: privacySettings = DEFAULT_USER_PRIVACY_SETTINGS,
+    isLoading: isLoadingPrivacy,
+  } = useUserPrivacyQuery(user?.uid);
+  const isPrivacyResolved = !isAuthenticated || !isLoadingPrivacy;
+  const canTrackAnalytics = !isLoading && isPrivacyResolved && (!isAuthenticated || privacySettings.analyticsConsent);
 
   useEffect(() => {
-    analytics.setConsent(true);
-  }, []);
+    analytics.setConsent(canTrackAnalytics);
+  }, [canTrackAnalytics]);
 
   useEffect(() => {
+    if (!canTrackAnalytics) {
+      return;
+    }
+
+    if (shouldEagerlyRunAnalytics(location.pathname)) {
+      analytics.initialize('G-H3MG4C5T12');
+      return;
+    }
+
     let settled = false;
 
     const initializeAnalytics = () => {
@@ -73,11 +90,21 @@ function PublicAppRoot() {
       window.removeEventListener('keydown', onUserIntent);
       window.removeEventListener('scroll', onUserIntent);
     };
-  }, [location.pathname]);
+  }, [canTrackAnalytics, location.pathname]);
 
   useEffect(() => {
+    if (!canTrackAnalytics) {
+      return;
+    }
+
     const path = location.pathname + location.search;
     const pageTitle = document.title || 'Tuweb.ai';
+
+    if (shouldEagerlyRunAnalytics(location.pathname)) {
+      analytics.pageview(path, pageTitle);
+      analytics.event('Navigation', 'Page View', path);
+      return;
+    }
 
     let settled = false;
 
@@ -110,29 +137,19 @@ function PublicAppRoot() {
       window.removeEventListener('keydown', onUserIntent);
       window.removeEventListener('scroll', onUserIntent);
     };
-  }, [location]);
+  }, [location, canTrackAnalytics]);
 
+  return <AuthenticatedShellFrame />;
+}
+
+export default function AuthenticatedAppRoot() {
   return (
     <ThemeProvider>
       <AuthProvider>
         <LoginModalProvider>
-          <PublicShellFrame />
+          <AuthenticatedAppShell />
         </LoginModalProvider>
       </AuthProvider>
     </ThemeProvider>
   );
-}
-
-export default function App() {
-  const location = useLocation();
-
-  if (shouldUseAuthenticatedShell(location.pathname)) {
-    return (
-      <Suspense fallback={null}>
-        <AuthenticatedAppRoot />
-      </Suspense>
-    );
-  }
-
-  return <PublicAppRoot />;
 }

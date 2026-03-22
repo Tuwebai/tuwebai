@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { useAuthActions, useAuthState } from '@/features/auth/context/AuthContext';
+import { useAuthActions, useAuthState } from '@/features/auth/context/auth-context';
 import PasswordStrength from '@/features/auth/components/PasswordStrength';
 
 interface LoginModalProps {
@@ -17,6 +17,7 @@ export default function LoginModal({
   defaultMode = 'login',
   redirectUrl
 }: LoginModalProps) {
+  const canDismissRef = React.useRef(false);
   const [isRegistering, setIsRegistering] = useState(defaultMode === 'register');
   const [rememberMe, setRememberMe] = useState(false);
   const [formState, setFormState] = useState({
@@ -36,6 +37,7 @@ export default function LoginModal({
 
   React.useEffect(() => {
     if (isOpen) {
+      canDismissRef.current = false;
       setFormState({
         username: '',
         name: '',
@@ -45,6 +47,15 @@ export default function LoginModal({
       });
       setErrors({});
       clearError();
+
+      const frameId = window.requestAnimationFrame(() => {
+        canDismissRef.current = true;
+      });
+
+      return () => {
+        window.cancelAnimationFrame(frameId);
+        canDismissRef.current = false;
+      };
     }
   }, [isOpen, isRegistering, clearError]);
 
@@ -154,12 +165,24 @@ export default function LoginModal({
     }
   };
 
+  const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (!canDismissRef.current) {
+      return;
+    }
+
+    if (event.target !== event.currentTarget) {
+      return;
+    }
+
+    onClose();
+  };
+
   if (!isOpen) return null;
 
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75 p-3 sm:p-4"
-      onClick={onClose}
+      onClick={handleOverlayClick}
     >
       <motion.div
         className="max-h-[calc(100dvh-1.5rem)] w-full max-w-md overflow-y-auto rounded-xl bg-white dark:bg-gray-800 sm:max-h-[calc(100dvh-2rem)]"

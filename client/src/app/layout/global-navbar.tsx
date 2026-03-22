@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Instagram, Linkedin } from 'lucide-react';
 
 import { useIsMobile } from '@/core/hooks/use-mobile';
-import { useAuthState } from '@/features/auth/context/AuthContext';
+import { useOptionalAuthState } from '@/features/auth/context/auth-context';
 import { scrollToHomeSection } from '@/features/marketing-home/utils/scroll-to-home-section';
 import {
   TUWEBAI_INSTAGRAM_URL,
@@ -40,13 +40,18 @@ function NavbarMetaLinks({ onClick }: { onClick?: () => void }) {
   );
 }
 
-export default function GlobalNavbar() {
+interface GlobalNavbarProps {
+  authMode?: 'auto' | 'public';
+}
+
+export default function GlobalNavbar({ authMode = 'auto' }: GlobalNavbarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activePage, setActivePage] = useState('');
   const location = useLocation();
   const isMobile = useIsMobile();
-  const { isAuthenticated } = useAuthState();
+  const { isAuthenticated } = useOptionalAuthState();
+  const shouldShowAuthenticatedActions = authMode === 'auto' && isAuthenticated;
 
   useEffect(() => {
     const nextActivePage = MAIN_NAVIGATION.find((item) => item.href === location.pathname)?.name || '';
@@ -104,11 +109,11 @@ export default function GlobalNavbar() {
     console.warn('No se encontro pagina para la seccion:', sectionId);
   };
 
-  const navbarActions = isAuthenticated
+  const navbarActions = shouldShowAuthenticatedActions
     ? <AuthenticatedNavbarActions />
     : <PublicNavbarActions />;
 
-  const mobileNavbarActions = isAuthenticated
+  const mobileNavbarActions = shouldShowAuthenticatedActions
     ? <AuthenticatedNavbarActions isMobileMenu onAction={() => setIsMenuOpen(false)} />
     : <PublicNavbarActions isMobileMenu onAction={() => setIsMenuOpen(false)} />;
 

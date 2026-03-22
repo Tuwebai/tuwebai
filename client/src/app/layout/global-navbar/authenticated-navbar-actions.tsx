@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { useAuthActions, useAuthState } from '@/features/auth/context/AuthContext';
+import { useAuthActions, useAuthState } from '@/features/auth/context/auth-context';
 import { UserAvatar } from '@/shared/ui/user-avatar';
 
 import { prefetchNavigationPath } from './navigation';

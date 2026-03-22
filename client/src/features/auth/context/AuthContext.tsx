@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { User as FirebaseUser } from 'firebase/auth';
 import { useToast } from '@/shared/ui/use-toast';
 import {
@@ -13,6 +13,14 @@ import {
 import { isGoogleAuthUser, mergeFirebaseUserData } from '../services/auth-avatar';
 import { getAuthErrorMessage } from '../services/auth-error';
 import type { PasswordInfo, RegisterData, User } from '../types';
+import {
+  AuthActionsContext,
+  AuthStateContext,
+  type AuthActions,
+  type AuthState,
+} from './auth-context';
+
+export { useAuth, useAuthActions, useAuthState, useOptionalAuthState } from './auth-context';
 
 type FirebaseModule = typeof import('@/lib/firebase');
 type FirebaseAuthModule = typeof import('firebase/auth');
@@ -35,55 +43,6 @@ const getFirebaseAuth = () => {
 const getUsersService = () => {
   if (!usersServicePromise) usersServicePromise = import('@/features/users/services/users.service');
   return usersServicePromise;
-};
-
-interface AuthState {
-  user: User | null;
-  passwordInfo: PasswordInfo;
-  isLoading: boolean;
-  isMutatingAuth: boolean;
-  isLoadingPasswordInfo: boolean;
-  isAuthenticated: boolean;
-  error: string | null;
-}
-
-interface AuthActions {
-  login: (email: string, password: string, remember?: boolean) => Promise<void>;
-  loginWithGoogle: () => Promise<void>;
-  logout: () => Promise<void>;
-  register: (userData: RegisterData) => Promise<void>;
-  requestPasswordReset: (email: string) => Promise<void>;
-  resetPassword: (token: string, newPassword: string) => Promise<void>;
-  updateUserProfile: (data: Partial<User>) => Promise<void>;
-  fetchPasswordInfo: () => Promise<void>;
-  uploadProfileImage: (imageFile: File) => Promise<void>;
-  clearError: () => void;
-  setUserImage: (imageUrl: string) => void;
-}
-
-const AuthStateContext = createContext<AuthState | undefined>(undefined);
-const AuthActionsContext = createContext<AuthActions | undefined>(undefined);
-
-export const useAuthState = () => {
-  const context = useContext(AuthStateContext);
-  if (context === undefined) {
-    throw new Error('useAuthState must be used within an AuthProvider');
-  }
-  return context;
-};
-
-export const useAuthActions = () => {
-  const context = useContext(AuthActionsContext);
-  if (context === undefined) {
-    throw new Error('useAuthActions must be used within an AuthProvider');
-  }
-  return context;
-};
-
-export const useAuth = () => {
-  const state = useAuthState();
-  const actions = useAuthActions();
-  return useMemo(() => ({ ...state, ...actions }), [state, actions]);
 };
 
 const AUTH_TIMEOUT_MS = 2500;
@@ -159,6 +118,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     daysSinceChange: null,
   });
   const [isLoadingPasswordInfo, setIsLoadingPasswordInfo] = useState(false);
+  const latestUserRef = useRef<User | null>(null);
+  const authResolvedRef = useRef(false);
+  const authReadyPromiseRef = useRef<Promise<User | null> | null>(null);
+  const authReadyResolverRef = useRef<((value: User | null) => void) | null>(null);
+  const startAuthRef = useRef<(() => void) | null>(null);
 
   const loginMutation = useLoginMutation();
   const googleLoginMutation = useGoogleLoginMutation();
@@ -181,6 +145,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const isMutatingAuth = isAnyMutationPending;
 
   useEffect(() => {
+    latestUserRef.current = user;
     setPasswordInfo(derivePasswordInfo(user));
     setIsLoadingPasswordInfo(false);
   }, [user]);
@@ -206,6 +171,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (idleTimeoutId) {
         clearTimeout(idleTimeoutId);
         idleTimeoutId = null;
+      }
+    };
+
+    const resolveAuthReady = (nextUser: User | null) => {
+      authResolvedRef.current = true;
+
+      if (authReadyResolverRef.current) {
+        authReadyResolverRef.current(nextUser);
+        authReadyResolverRef.current = null;
       }
     };
 
@@ -252,8 +226,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
               await setUser(dbUser);
             }
             if (isMounted) setUserState(dbUser);
+            resolveAuthReady(dbUser);
           } else {
             setUserState(null);
+            resolveAuthReady(null);
           }
 
           if (isMounted) setIsLoadingAuth(false);
@@ -263,6 +239,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         else unsubscribe();
       } catch (err) {
         console.error('Error inicializando Auth:', err);
+        resolveAuthReady(null);
         if (isMounted) setIsLoadingAuth(false);
       }
     };
@@ -270,6 +247,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const startAuth = () => {
       void initAuth();
     };
+
+    startAuthRef.current = startAuth;
 
     if (shouldEagerlyInitializeAuth()) {
       startAuth();
@@ -297,6 +276,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     return () => {
       isMounted = false;
+      startAuthRef.current = null;
+      if (!authResolvedRef.current && authReadyResolverRef.current) {
+        authReadyResolverRef.current(null);
+        authReadyResolverRef.current = null;
+      }
       cleanupDeferredBoot();
       if (unsubscribeFn) {
         unsubscribeFn();
@@ -414,6 +398,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const clearError = useCallback(() => setError(null), []);
 
+  const ensureAuthReady = useCallback(async () => {
+    if (authResolvedRef.current) {
+      return latestUserRef.current;
+    }
+
+    if (!authReadyPromiseRef.current) {
+      authReadyPromiseRef.current = new Promise<User | null>((resolve) => {
+        authReadyResolverRef.current = resolve;
+      });
+    }
+
+    startAuthRef.current?.();
+
+    return authReadyPromiseRef.current;
+  }, []);
+
   const stateValue = useMemo<AuthState>(() => ({
     user,
     passwordInfo,
@@ -432,6 +432,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   ]);
 
   const actionsValue = useMemo<AuthActions>(() => ({
+    ensureAuthReady,
     login,
     loginWithGoogle,
     logout,
@@ -444,6 +445,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     clearError,
     setUserImage,
   }), [
+    ensureAuthReady,
     login,
     loginWithGoogle,
     logout,
