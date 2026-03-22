@@ -161,4 +161,6 @@ Si marcaste menos de 4, tu web está frenando activamente las conversiones. No h
 
 ---
 
+*Si querés revisar estos puntos por tu cuenta antes de pedir ayuda, empezá por el [Checklist web gratuito de 35 puntos →](/checklist-web-gratis). Te sirve para auditar sitio web, detectar errores de conversión y priorizar fixes reales.*
+
 *¿Querés saber exactamente cuáles de estos errores tiene tu web y qué impacto están teniendo en tus resultados? En TuWebAI hacemos diagnósticos web gratuitos con recomendaciones concretas — sin rodeos y sin venderte nada que no necesitás. [Pedí tu diagnóstico gratuito →](/diagnostico-gratuito)*

@@ -402,6 +402,17 @@ export default function DiagnosticoGratuitoPage() {
                 Quiero mi diagnóstico gratuito →
               </a>
             </div>
+
+            <p className="mt-4 max-w-3xl text-sm leading-7 text-gray-400 sm:text-base">
+              ¿Querés hacer una auditoría web inicial por tu cuenta antes de pedir ayuda? Probá el{' '}
+              <Link
+                to="/checklist-web-gratis"
+                className="font-semibold text-[#9BE7FF] transition hover:text-white"
+              >
+                Checklist web gratuito de 35 puntos →
+              </Link>
+              .
+            </p>
           </div>
         </section>
 

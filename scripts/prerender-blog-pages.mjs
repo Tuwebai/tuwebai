@@ -255,16 +255,16 @@ const staticRouteHead = {
     ],
   },
   '/checklist-web-gratis': {
-    title: 'Checklist Web Gratis | TuWebAI — 35 puntos para auditar tu sitio',
+    title: 'Checklist Web Gratis | TuWebAI - 35 puntos para auditar tu sitio',
     description:
-      'Descargá gratis el checklist de 35 puntos que usamos en TuWebAI para auditar sitios web. Velocidad, mobile, conversión, SEO y más. Sin registro obligatorio.',
-    ogTitle: 'Checklist Web Gratis | TuWebAI',
-    ogDescription: '35 puntos para saber si tu web está lista para vender.',
+      'Descarg\u00e1 gratis el checklist de 35 puntos que usamos en TuWebAI para auditar sitios web. Velocidad, mobile, conversi\u00f3n, SEO y analytics. Usalo online o descargalo en PDF. Sin registro obligatorio.',
+    ogTitle: 'Checklist Web Gratis | TuWebAI - 35 puntos para auditar tu sitio',
+    ogDescription: 'El checklist que usamos para auditar sitios web. 35 puntos, 7 categor\u00edas, resultado instant\u00e1neo.',
     twitterTitle: 'Checklist Web Gratis | TuWebAI',
-    twitterDescription: '35 puntos para auditar tu sitio y detectar qué está frenando tus consultas.',
+    twitterDescription: '35 puntos para saber si tu web est\u00e1 lista para vender.',
     ogSiteName: 'TuWebAI',
     keywords:
-      'checklist web gratis, auditoría web, checklist sitio web, conversión web, seo técnico, TuWebAI',
+      'checklist web gratis, auditor\u00eda web, checklist sitio web, conversi\u00f3n web, seo t\u00e9cnico, TuWebAI',
     url: `${siteUrl}/checklist-web-gratis`,
     ogType: 'website',
     ogImage: defaultOgImage,
@@ -272,36 +272,105 @@ const staticRouteHead = {
       {
         '@context': 'https://schema.org',
         '@type': 'HowTo',
-        name: 'Cómo auditar tu sitio web en 10 minutos',
+        name: 'C\u00f3mo auditar tu sitio web en 10 minutos',
         description:
-          'Checklist de 35 puntos para evaluar velocidad, mobile, conversión, SEO y analytics de cualquier sitio web.',
+          'Checklist de 35 puntos para evaluar velocidad, mobile, conversi\u00f3n, SEO y analytics de cualquier sitio web argentino.',
         totalTime: 'PT10M',
-        supply: [],
-        tool: [],
+        estimatedCost: {
+          '@type': 'MonetaryAmount',
+          currency: 'ARS',
+          value: '0',
+        },
         step: [
           {
             '@type': 'HowToSection',
             name: 'Velocidad y performance',
             position: 1,
+            url: `${siteUrl}/checklist-web-gratis#velocidad`,
             itemListElement: [
-              {
-                '@type': 'HowToStep',
-                position: 1,
-                text: 'La web carga en menos de 3 segundos en celular con datos móviles',
-              },
+              { '@type': 'HowToStep', position: 1, text: 'Verificar que la web carga en menos de 3 segundos en mobile' },
+              { '@type': 'HowToStep', position: 2, text: 'Comprimir im\u00e1genes y convertir a formato WebP' },
+              { '@type': 'HowToStep', position: 3, text: 'Eliminar scripts de terceros bloqueantes' },
+              { '@type': 'HowToStep', position: 4, text: 'Medir el puntaje de PageSpeed en mobile' },
+              { '@type': 'HowToStep', position: 5, text: 'Verificar que las fuentes cargan con display=swap' },
             ],
           },
           {
             '@type': 'HowToSection',
             name: 'Mobile y responsive',
             position: 2,
+            url: `${siteUrl}/checklist-web-gratis#mobile`,
             itemListElement: [
-              {
-                '@type': 'HowToStep',
-                position: 1,
-                text: 'El diseño se ve correctamente en pantallas de 375px de ancho',
-              },
+              { '@type': 'HowToStep', position: 1, text: 'Verificar el dise\u00f1o en pantallas de 375px de ancho' },
+              { '@type': 'HowToStep', position: 2, text: 'Comprobar que los botones tienen \u00e1rea t\u00e1ctil suficiente' },
+              { '@type': 'HowToStep', position: 3, text: 'Confirmar que el texto es legible sin zoom' },
+              { '@type': 'HowToStep', position: 4, text: 'Probar los formularios desde el teclado del celular' },
+              { '@type': 'HowToStep', position: 5, text: 'Verificar que no hay elementos superpuestos en mobile' },
             ],
+          },
+          {
+            '@type': 'HowToSection',
+            name: 'Conversi\u00f3n y CTAs',
+            position: 3,
+            url: `${siteUrl}/checklist-web-gratis#conversion`,
+            itemListElement: [
+              { '@type': 'HowToStep', position: 1, text: 'Verificar CTA visible sin scroll en la home' },
+              { '@type': 'HowToStep', position: 2, text: 'Comprobar que el CTA describe qu\u00e9 pasa al hacer clic' },
+              { '@type': 'HowToStep', position: 3, text: 'Confirmar que el formulario tiene 5 campos o menos' },
+              { '@type': 'HowToStep', position: 4, text: 'Verificar que el negocio se entiende en 5 segundos' },
+              { '@type': 'HowToStep', position: 5, text: 'Comprobar que hay un bot\u00f3n de WhatsApp siempre visible' },
+            ],
+          },
+          {
+            '@type': 'HowToSection',
+            name: 'SEO b\u00e1sico',
+            position: 4,
+            url: `${siteUrl}/checklist-web-gratis#seo`,
+            itemListElement: [
+              { '@type': 'HowToStep', position: 1, text: 'Verificar t\u00edtulos \u00fanicos en cada p\u00e1gina' },
+              { '@type': 'HowToStep', position: 2, text: 'Confirmar meta descriptions \u00fanicas' },
+              { '@type': 'HowToStep', position: 3, text: 'Verificar sitemap.xml enviado a Search Console' },
+              { '@type': 'HowToStep', position: 4, text: 'Confirmar verificaci\u00f3n en Google Search Console' },
+              { '@type': 'HowToStep', position: 5, text: 'Verificar Google Business Profile completo' },
+            ],
+          },
+        ],
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: [
+          {
+            '@type': 'Question',
+            name: '\u00bfEl checklist es realmente gratis?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'S\u00ed, completamente gratis. Pod\u00e9s usarlo online sin registro o descargarlo en PDF dejando tu email.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: '\u00bfPara qu\u00e9 tipo de sitio web sirve este checklist?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'Para cualquier sitio web de negocio: tiendas online, sitios corporativos, profesionales independientes o sistemas web. Los 35 puntos aplican a cualquier web que quiera generar consultas o ventas.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: '\u00bfNecesito conocimientos t\u00e9cnicos para usarlo?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'No. El checklist est\u00e1 escrito en lenguaje simple para que cualquier due\u00f1o de negocio pueda completarlo sin ayuda t\u00e9cnica.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: '\u00bfQu\u00e9 hago si encuentro problemas en el checklist?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'Pod\u00e9s pedir un diagn\u00f3stico gratuito en TuWebAI donde revisamos los problemas identificados y te decimos c\u00f3mo resolverlos.',
+            },
           },
         ],
       },
@@ -318,6 +387,12 @@ const staticRouteHead = {
           {
             '@type': 'ListItem',
             position: 2,
+            name: 'Recursos',
+            item: `${siteUrl}/blog`,
+          },
+          {
+            '@type': 'ListItem',
+            position: 3,
             name: 'Checklist web gratis',
             item: `${siteUrl}/checklist-web-gratis`,
           },
@@ -325,6 +400,7 @@ const staticRouteHead = {
       },
     ],
   },
+
   '/servicios/desarrollo-web': {
     title: 'Desarrollo Web Profesional',
     description:

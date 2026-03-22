@@ -151,4 +151,6 @@ Cada uno de estos puntos se puede hacer en horas. El conjunto construye una base
 
 ---
 
+*Si antes querés auditar la base técnica y de conversión de tu sitio, usá el [Checklist web gratuito de 35 puntos →](/checklist-web-gratis). Te ayuda a revisar velocidad web, mobile, SEO y analytics sin costo.*
+
 *Si querés que revisemos cómo aparece tu negocio hoy en las búsquedas locales y qué oportunidades estás dejando pasar, en TuWebAI hacemos ese diagnóstico sin cargo. [Pedilo acá →](/consulta)*

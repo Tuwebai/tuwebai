@@ -166,4 +166,6 @@ La diferencia entre una web que acumula visitas y una web que genera negocios no
 
 ---
 
+*Antes de pedir ayuda, podés usar nuestro [Checklist web gratuito de 35 puntos →](/checklist-web-gratis) para auditar tu sitio web, detectar fallas de conversión y ordenar prioridades.*
+
 *¿Querés saber exactamente qué está frenando la conversión de tu web? En TuWebAI hacemos un diagnóstico web gratuito donde analizamos tu sitio y te decimos con precisión qué está fallando y cómo resolverlo. [Pedí tu diagnóstico gratuito →](/diagnostico-gratuito)*
