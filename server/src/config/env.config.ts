@@ -14,6 +14,8 @@ const envSchema = z
       .transform((str) => str.split(',').map((s) => s.trim())),
     FRONTEND_URL: z.string().url('FRONTEND_URL debe ser una URL valida').default('https://tuweb-ai.com'),
     BACKEND_URL: z.string().url('BACKEND_URL debe ser una URL valida').optional(),
+    PULSE_SSO_URL: z.string().url('PULSE_SSO_URL debe ser una URL valida').default('https://pulse.tuweb-ai.com/auth/sso'),
+    TUWEBAI_WEBHOOK_SECRET: z.string().min(16, 'TUWEBAI_WEBHOOK_SECRET debe tener al menos 16 caracteres').optional(),
     CONTACT_TO_EMAIL: z.string().email('CONTACT_TO_EMAIL debe ser un email valido').optional(),
     SMTP_USER: z.string().optional(),
     SMTP_PASS: z.string().optional(),
@@ -81,6 +83,13 @@ const envSchema = z
           code: z.ZodIssueCode.custom,
           message: 'SMTP_FROM_EMAIL es requerido en produccion para remitente visible',
           path: ['SMTP_FROM_EMAIL'],
+        });
+      }
+      if (!data.TUWEBAI_WEBHOOK_SECRET?.trim()) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'TUWEBAI_WEBHOOK_SECRET es requerido en produccion para integracion Pulse',
+          path: ['TUWEBAI_WEBHOOK_SECRET'],
         });
       }
     }
