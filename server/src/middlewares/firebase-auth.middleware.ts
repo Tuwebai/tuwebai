@@ -40,6 +40,32 @@ const getAdminClaim = (decoded: DecodedIdToken): boolean => {
   return decoded.admin === true;
 };
 
+const resolveUserEmail = async (
+  auth: ReturnType<typeof getAdminAuth>,
+  decoded: DecodedIdToken
+): Promise<string | undefined> => {
+  if (typeof decoded.email === 'string' && decoded.email.trim()) {
+    return decoded.email;
+  }
+
+  if (!auth) {
+    return undefined;
+  }
+
+  try {
+    const userRecord = await auth.getUser(decoded.uid);
+    return typeof userRecord.email === 'string' && userRecord.email.trim()
+      ? userRecord.email
+      : undefined;
+  } catch (error: unknown) {
+    appLogger.warn('auth.firebase_user_lookup_failed', {
+      uid: decoded.uid,
+      error: getErrorMessage(error, 'unknown_auth_lookup_error'),
+    });
+    return undefined;
+  }
+};
+
 const getDecodedToken = async (req: Request): Promise<AuthUser | null> => {
   if (!shouldEnforceFirebaseAuth()) return null;
 
@@ -52,9 +78,11 @@ const getDecodedToken = async (req: Request): Promise<AuthUser | null> => {
   }
 
   const decoded = await auth.verifyIdToken(token);
+  const email = await resolveUserEmail(auth, decoded);
+
   return {
     uid: decoded.uid,
-    email: decoded.email,
+    email,
     admin: getAdminClaim(decoded),
   };
 };
