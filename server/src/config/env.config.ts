@@ -3,6 +3,10 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+const nodeEnv = process.env.NODE_ENV ?? 'development';
+dotenv.config({ path: '.env.local', override: true });
+dotenv.config({ path: `.env.${nodeEnv}.local`, override: true });
+
 const DEFAULT_PULSE_SSO_URL_BY_ENV = {
   development: 'http://localhost:8083/auth/sso',
   production: 'https://pulse.tuweb-ai.com/auth/sso',
