@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { BarChart3 } from 'lucide-react';
 import { Button } from '@/shared/ui/button';
 import { Skeleton } from '@/shared/ui/skeleton';
+import { usePulseAccessStatus } from '@/features/users/hooks/use-pulse-access-status';
 import { usePulsePreview } from '@/features/users/hooks/use-pulse-preview';
 import { openPulseAccess } from '@/features/users/services/pulse.service';
 
@@ -41,7 +42,13 @@ function PulseLogo() {
 
 export function PulseDashboardCard({ email }: PulseDashboardCardProps) {
   const { data, isLoading, isError } = usePulsePreview(email);
+  const {
+    data: pulseAccess,
+    isLoading: isLoadingPulseAccess,
+  } = usePulseAccessStatus(Boolean(email));
   const [isOpeningPulse, setIsOpeningPulse] = useState(false);
+
+  const isPendingActivation = pulseAccess?.status === 'pending_activation';
 
   const handleOpenPulse = async () => {
     setIsOpeningPulse(true);
@@ -97,25 +104,33 @@ export function PulseDashboardCard({ email }: PulseDashboardCardProps) {
           </div>
 
           <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
-            {isLoading ? <Skeleton className="h-10 w-full rounded-md bg-white/10 sm:w-36" /> : null}
+            {isLoading || isLoadingPulseAccess ? (
+              <Skeleton className="h-10 w-full rounded-md bg-white/10 sm:w-36" />
+            ) : null}
 
-            <Button
-              type="button"
-              onClick={() => {
-                void handleOpenPulse();
-              }}
-              disabled={isOpeningPulse}
-              className="min-w-[170px] bg-white text-slate-950 hover:bg-cyan-100"
-            >
-              {isOpeningPulse ? (
-                'Abriendo Pulse...'
-              ) : (
-                <>
-                  <BarChart3 className="h-4 w-4" />
-                  Abrir Pulse -&gt;
-                </>
-              )}
-            </Button>
+            {isPendingActivation ? (
+              <div className="rounded-full border border-amber-400/30 bg-amber-400/10 px-4 py-2 text-sm font-medium text-amber-100">
+                Pendiente de activacion
+              </div>
+            ) : (
+              <Button
+                type="button"
+                onClick={() => {
+                  void handleOpenPulse();
+                }}
+                disabled={isOpeningPulse}
+                className="min-w-[170px] bg-white text-slate-950 hover:bg-cyan-100"
+              >
+                {isOpeningPulse ? (
+                  'Abriendo Pulse...'
+                ) : (
+                  <>
+                    <BarChart3 className="h-4 w-4" />
+                    Abrir Pulse -&gt;
+                  </>
+                )}
+              </Button>
+            )}
           </div>
         </div>
       </div>

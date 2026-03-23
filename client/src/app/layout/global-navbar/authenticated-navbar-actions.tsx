@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { useAuthActions, useAuthState } from '@/features/auth/context/auth-context';
+import { usePulseAccessStatus } from '@/features/users/hooks/use-pulse-access-status';
 import { openPulseAccess } from '@/features/users/services/pulse.service';
 import { UserAvatar } from '@/shared/ui/user-avatar';
 
@@ -20,6 +21,8 @@ export function AuthenticatedNavbarActions({
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const { user, isAuthenticated } = useAuthState();
   const { logout } = useAuthActions();
+  const { data: pulseAccess } = usePulseAccessStatus(Boolean(isAuthenticated && user?.email));
+  const isPendingActivation = pulseAccess?.status === 'pending_activation';
 
   if (!isAuthenticated) {
     return <PublicNavbarActions isMobileMenu={isMobileMenu} onAction={onAction} />;
@@ -55,21 +58,27 @@ export function AuthenticatedNavbarActions({
             Mi Perfil
           </div>
         </Link>
-        <button
-          type="button"
-          className="block w-full py-2 px-4 text-left rounded-md text-gray-300 hover:bg-gray-800 transition-colors"
-          onClick={() => {
-            void openPulseAccess();
-            onAction?.();
-          }}
-        >
-          <div className="flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-            </svg>
-            Panel de Control
+        {isPendingActivation ? (
+          <div className="block w-full py-2 px-4 text-left rounded-md text-amber-300 bg-amber-500/10 border border-amber-500/20">
+            Pulse pendiente de activacion
           </div>
-        </button>
+        ) : (
+          <button
+            type="button"
+            className="block w-full py-2 px-4 text-left rounded-md text-gray-300 hover:bg-gray-800 transition-colors"
+            onClick={() => {
+              void openPulseAccess();
+              onAction?.();
+            }}
+          >
+            <div className="flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+              Panel de Control
+            </div>
+          </button>
+        )}
         <button
           onClick={() => {
             void logout();
@@ -125,21 +134,27 @@ export function AuthenticatedNavbarActions({
                 Mi Perfil
               </div>
             </Link>
-            <button
-              type="button"
-              className="block px-4 py-2 text-sm text-gray-300 hover:bg-[#23232b] hover:text-white rounded-lg transition-colors"
-              onClick={() => {
-                void openPulseAccess();
-                setShowProfileMenu(false);
-              }}
-            >
-              <div className="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                </svg>
-                Panel de Control
+            {isPendingActivation ? (
+              <div className="mx-2 rounded-lg border border-amber-500/20 bg-amber-500/10 px-4 py-2 text-sm text-amber-300">
+                Pulse pendiente de activacion
               </div>
-            </button>
+            ) : (
+              <button
+                type="button"
+                className="block px-4 py-2 text-sm text-gray-300 hover:bg-[#23232b] hover:text-white rounded-lg transition-colors"
+                onClick={() => {
+                  void openPulseAccess();
+                  setShowProfileMenu(false);
+                }}
+              >
+                <div className="flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                  </svg>
+                  Panel de Control
+                </div>
+              </button>
+            )}
             <button
               onClick={() => {
                 void logout();

@@ -1,5 +1,5 @@
 import { backendApi } from '@/lib/backend-api';
-import type { PulsePreviewData, PulseTokenData } from '@/features/users/types/pulse';
+import type { PulsePreviewData, PulseStatusData, PulseTokenData } from '@/features/users/types/pulse';
 
 const DEFAULT_PULSE_BASE_URL = import.meta.env.DEV ? 'http://localhost:8083' : 'https://pulse.tuweb-ai.com';
 const PULSE_BASE_URL = (import.meta.env.VITE_PULSE_BASE_URL || DEFAULT_PULSE_BASE_URL).replace(/\/+$/, '');
@@ -11,6 +11,15 @@ function isPulsePreviewData(value: unknown): value is PulsePreviewData {
 
   const payload = value as Record<string, unknown>;
   return typeof payload.hasData === 'boolean';
+}
+
+function isPulseStatusData(value: unknown): value is PulseStatusData {
+  if (!value || typeof value !== 'object') {
+    return false;
+  }
+
+  const payload = value as Record<string, unknown>;
+  return payload.status === 'enabled' || payload.status === 'pending_activation';
 }
 
 export function getPulseBaseUrl(): string {
@@ -45,6 +54,17 @@ export async function getPulseToken(): Promise<PulseTokenData> {
 
   if (!data?.redirect_url || !data?.token) {
     throw new Error('No pudimos preparar el acceso a Pulse.');
+  }
+
+  return data;
+}
+
+export async function getPulseStatus(): Promise<PulseStatusData> {
+  const response = await backendApi.getPulseStatus();
+  const data = response?.data;
+
+  if (!isPulseStatusData(data)) {
+    throw new Error('No pudimos validar el estado de acceso a Pulse.');
   }
 
   return data;
