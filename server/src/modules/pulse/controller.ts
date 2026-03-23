@@ -40,8 +40,8 @@ function buildRedirectUrl(token: string): string {
 }
 
 function buildPulseVerifyUrl(): string {
-  const pulseUrl = new URL(env.PULSE_SSO_URL);
-  pulseUrl.pathname = '/functions/v1/verify-sso-token';
+  const pulseUrl = new URL(env.PULSE_FUNCTIONS_BASE_URL);
+  pulseUrl.pathname = `${pulseUrl.pathname.replace(/\/$/, '')}/verify-sso-token`;
   pulseUrl.search = '';
   return pulseUrl.toString();
 }

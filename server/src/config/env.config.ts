@@ -13,6 +13,12 @@ const DEFAULT_PULSE_SSO_URL_BY_ENV = {
   test: 'http://localhost:8083/auth/sso',
 } as const;
 
+const DEFAULT_PULSE_FUNCTIONS_BASE_URL_BY_ENV = {
+  development: 'https://vgrnwxeakiszctvpnnck.supabase.co/functions/v1',
+  production: 'https://vgrnwxeakiszctvpnnck.supabase.co/functions/v1',
+  test: 'https://vgrnwxeakiszctvpnnck.supabase.co/functions/v1',
+} as const;
+
 const envSchema = z
   .object({
     NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
@@ -25,6 +31,10 @@ const envSchema = z
     FRONTEND_URL: z.string().url('FRONTEND_URL debe ser una URL valida').default('https://tuweb-ai.com'),
     BACKEND_URL: z.string().url('BACKEND_URL debe ser una URL valida').optional(),
     PULSE_SSO_URL: z.string().url('PULSE_SSO_URL debe ser una URL valida').optional(),
+    PULSE_FUNCTIONS_BASE_URL: z
+      .string()
+      .url('PULSE_FUNCTIONS_BASE_URL debe ser una URL valida')
+      .optional(),
     TUWEBAI_WEBHOOK_SECRET: z.string().min(16, 'TUWEBAI_WEBHOOK_SECRET debe tener al menos 16 caracteres').optional(),
     CONTACT_TO_EMAIL: z.string().email('CONTACT_TO_EMAIL debe ser un email valido').optional(),
     SMTP_USER: z.string().optional(),
@@ -126,8 +136,15 @@ try {
 
 const pulseSsoUrl =
   envVariables.PULSE_SSO_URL || DEFAULT_PULSE_SSO_URL_BY_ENV[envVariables.NODE_ENV];
+const pulseFunctionsBaseUrl =
+  envVariables.PULSE_FUNCTIONS_BASE_URL ||
+  DEFAULT_PULSE_FUNCTIONS_BASE_URL_BY_ENV[envVariables.NODE_ENV];
 
-export const env: EnvConfig & { PULSE_SSO_URL: string } = {
+export const env: EnvConfig & {
+  PULSE_SSO_URL: string;
+  PULSE_FUNCTIONS_BASE_URL: string;
+} = {
   ...envVariables,
   PULSE_SSO_URL: pulseSsoUrl,
+  PULSE_FUNCTIONS_BASE_URL: pulseFunctionsBaseUrl,
 };
