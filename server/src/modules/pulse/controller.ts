@@ -7,7 +7,15 @@ import { appLogger } from '../../utils/app-logger';
 const TOKEN_ISSUER = 'tuweb-ai.com';
 const TOKEN_TTL_SECONDS = 60 * 5;
 
-type PulseAccessStatus = 'enabled' | 'pending_activation';
+type PulseAccessStatus = 'enabled' | 'pending_activation' | 'disabled';
+
+interface PulseVerifyErrorPayload {
+  error?: string;
+}
+
+function isPulseVerifyErrorPayload(value: unknown): value is PulseVerifyErrorPayload {
+  return typeof value === 'object' && value !== null;
+}
 
 function resolveAuthenticatedEmail(req: Request, res: Response): string | null {
   const authUser = res.locals.authUser as AuthUser | undefined;
@@ -87,7 +95,14 @@ async function resolvePulseAccessStatus(
     }),
   });
 
-  if (response.status === 404) {
+  if (response.status === 404 || response.status === 403) {
+    const payload = (await response.json().catch(() => null)) as unknown;
+    const errorCode = isPulseVerifyErrorPayload(payload) ? payload.error : undefined;
+
+    if (errorCode === 'ACCESS_DISABLED') {
+      return 'disabled';
+    }
+
     return 'pending_activation';
   }
 
@@ -95,8 +110,9 @@ async function resolvePulseAccessStatus(
     return 'enabled';
   }
 
-  const payload = (await response.json().catch(() => null)) as { error?: string } | null;
-  throw new Error(payload?.error || 'No pudimos validar el acceso a Pulse');
+  const payload = (await response.json().catch(() => null)) as unknown;
+  const errorCode = isPulseVerifyErrorPayload(payload) ? payload.error : undefined;
+  throw new Error(errorCode || 'No pudimos validar el acceso a Pulse');
 }
 
 export const handleGetPulseToken = async (req: Request, res: Response) => {

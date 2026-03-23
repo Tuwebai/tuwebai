@@ -25,7 +25,11 @@ function isPulseStatusData(value: unknown): value is PulseStatusData {
   }
 
   const payload = value as Record<string, unknown>;
-  return payload.status === 'enabled' || payload.status === 'pending_activation';
+  return (
+    payload.status === 'enabled' ||
+    payload.status === 'pending_activation' ||
+    payload.status === 'disabled'
+  );
 }
 
 export function getPulseBaseUrl(): string {

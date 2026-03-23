@@ -51,6 +51,7 @@ export function PulseDashboardCard({ email }: PulseDashboardCardProps) {
   const [isOpeningPulse, setIsOpeningPulse] = useState(false);
 
   const isPendingActivation = pulseAccess?.status === 'pending_activation';
+  const isAccessDisabled = pulseAccess?.status === 'disabled';
 
   const handleOpenPulse = async () => {
     setIsOpeningPulse(true);
@@ -119,6 +120,10 @@ export function PulseDashboardCard({ email }: PulseDashboardCardProps) {
             {isPendingActivation ? (
               <div className="rounded-full border border-amber-400/30 bg-amber-400/10 px-4 py-2 text-sm font-medium text-amber-100">
                 Pendiente de activacion
+              </div>
+            ) : isAccessDisabled ? (
+              <div className="rounded-full border border-rose-400/30 bg-rose-400/10 px-4 py-2 text-sm font-medium text-rose-100">
+                Acceso revocado
               </div>
             ) : (
               <Button

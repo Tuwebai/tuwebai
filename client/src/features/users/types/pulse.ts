@@ -4,7 +4,7 @@ export interface PulsePreviewData {
   month?: string;
 }
 
-export type PulseAccessStatus = 'enabled' | 'pending_activation';
+export type PulseAccessStatus = 'enabled' | 'pending_activation' | 'disabled';
 
 export interface PulseStatusData {
   status: PulseAccessStatus;

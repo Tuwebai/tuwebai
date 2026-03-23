@@ -25,6 +25,7 @@ export function AuthenticatedNavbarActions({
   const { toast } = useToast();
   const { data: pulseAccess } = usePulseAccessState(isAuthenticated ? user?.email : undefined);
   const isPendingActivation = pulseAccess?.status === 'pending_activation';
+  const isAccessDisabled = pulseAccess?.status === 'disabled';
 
   if (!isAuthenticated) {
     return <PublicNavbarActions isMobileMenu={isMobileMenu} onAction={onAction} />;
@@ -63,6 +64,10 @@ export function AuthenticatedNavbarActions({
         {isPendingActivation ? (
           <div className="block w-full py-2 px-4 text-left rounded-md text-amber-300 bg-amber-500/10 border border-amber-500/20">
             Pulse pendiente de activacion
+          </div>
+        ) : isAccessDisabled ? (
+          <div className="block w-full py-2 px-4 text-left rounded-md text-rose-300 bg-rose-500/10 border border-rose-500/20">
+            Acceso a Pulse revocado
           </div>
         ) : (
           <button
@@ -145,6 +150,10 @@ export function AuthenticatedNavbarActions({
             {isPendingActivation ? (
               <div className="mx-2 rounded-lg border border-amber-500/20 bg-amber-500/10 px-4 py-2 text-sm text-amber-300">
                 Pulse pendiente de activacion
+              </div>
+            ) : isAccessDisabled ? (
+              <div className="mx-2 rounded-lg border border-rose-500/20 bg-rose-500/10 px-4 py-2 text-sm text-rose-300">
+                Acceso a Pulse revocado
               </div>
             ) : (
               <button
