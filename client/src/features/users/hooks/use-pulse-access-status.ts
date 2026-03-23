@@ -7,7 +7,11 @@ export function usePulseAccessStatus(email?: string) {
     queryKey: ['pulse-access-status', email ?? null],
     queryFn: () => getPulseStatus(email),
     enabled: Boolean(email),
-    staleTime: 1000 * 60 * 5,
+    staleTime: 1000 * 10,
+    refetchInterval: (query) =>
+      query.state.data?.status === 'pending_activation' ? 10000 : false,
+    refetchIntervalInBackground: true,
+    refetchOnWindowFocus: true,
     retry: 1,
   });
 }

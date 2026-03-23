@@ -5,6 +5,7 @@ import { Skeleton } from '@/shared/ui/skeleton';
 import { usePulseAccessStatus } from '@/features/users/hooks/use-pulse-access-status';
 import { usePulsePreview } from '@/features/users/hooks/use-pulse-preview';
 import { openPulseAccess } from '@/features/users/services/pulse.service';
+import { useToast } from '@/shared/ui/use-toast';
 
 interface PulseDashboardCardProps {
   email?: string;
@@ -41,6 +42,7 @@ function PulseLogo() {
 }
 
 export function PulseDashboardCard({ email }: PulseDashboardCardProps) {
+  const { toast } = useToast();
   const { data, isLoading, isError } = usePulsePreview(email);
   const {
     data: pulseAccess,
@@ -55,6 +57,12 @@ export function PulseDashboardCard({ email }: PulseDashboardCardProps) {
 
     try {
       await openPulseAccess(email);
+    } catch {
+      toast({
+        title: 'Error',
+        description: 'No pudimos abrir Pulse en este momento.',
+        variant: 'destructive',
+      });
     } finally {
       setIsOpeningPulse(false);
     }

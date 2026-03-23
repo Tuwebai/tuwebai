@@ -81,10 +81,6 @@ export async function getPulseStatus(email?: string): Promise<PulseStatusData> {
 }
 
 export async function openPulseAccess(email?: string): Promise<void> {
-  try {
-    const response = await getPulseToken(email);
-    window.location.assign(response.redirect_url);
-  } catch {
-    window.location.assign(`${getPulseBaseUrl()}/login`);
-  }
+  const response = await getPulseToken(email);
+  window.location.assign(response.redirect_url);
 }

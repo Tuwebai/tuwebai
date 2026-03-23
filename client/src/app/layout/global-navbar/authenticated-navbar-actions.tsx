@@ -5,6 +5,7 @@ import { useAuthActions, useAuthState } from '@/features/auth/context/auth-conte
 import { usePulseAccessState } from '@/features/users/hooks/use-pulse-access-state';
 import { openPulseAccess } from '@/features/users/services/pulse.service';
 import { UserAvatar } from '@/shared/ui/user-avatar';
+import { useToast } from '@/shared/ui/use-toast';
 
 import { prefetchNavigationPath } from './navigation';
 import { PublicNavbarActions } from './public-navbar-actions';
@@ -21,6 +22,7 @@ export function AuthenticatedNavbarActions({
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const { user, isAuthenticated } = useAuthState();
   const { logout } = useAuthActions();
+  const { toast } = useToast();
   const { data: pulseAccess } = usePulseAccessState(isAuthenticated ? user?.email : undefined);
   const isPendingActivation = pulseAccess?.status === 'pending_activation';
 
@@ -67,9 +69,15 @@ export function AuthenticatedNavbarActions({
             type="button"
             className="block w-full py-2 px-4 text-left rounded-md text-gray-300 hover:bg-gray-800 transition-colors"
               onClick={() => {
-              void openPulseAccess(user?.email);
-              onAction?.();
-            }}
+                void openPulseAccess(user?.email).catch(() => {
+                  toast({
+                    title: 'Error',
+                    description: 'No pudimos abrir Pulse en este momento.',
+                    variant: 'destructive',
+                  });
+                });
+                onAction?.();
+              }}
           >
             <div className="flex items-center gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -143,7 +151,13 @@ export function AuthenticatedNavbarActions({
                 type="button"
                 className="block px-4 py-2 text-sm text-gray-300 hover:bg-[#23232b] hover:text-white rounded-lg transition-colors"
                 onClick={() => {
-                  void openPulseAccess(user?.email);
+                  void openPulseAccess(user?.email).catch(() => {
+                    toast({
+                      title: 'Error',
+                      description: 'No pudimos abrir Pulse en este momento.',
+                      variant: 'destructive',
+                    });
+                  });
                   setShowProfileMenu(false);
                 }}
               >

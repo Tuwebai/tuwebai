@@ -17,6 +17,7 @@ export function usePulseAccessState(email?: string): UsePulseAccessStateResult {
 
   useEffect(() => {
     let active = true;
+    let intervalId: number | null = null;
 
     if (!isEnabled) {
       setData(undefined);
@@ -30,13 +31,15 @@ export function usePulseAccessState(email?: string): UsePulseAccessStateResult {
     setIsLoading(true);
     setIsError(false);
 
-    void getPulseStatus(email)
+    const runPulseStatusCheck = () =>
+      getPulseStatus(email)
       .then((nextData) => {
         if (!active) {
           return;
         }
 
         setData(nextData);
+        setIsError(false);
       })
       .catch(() => {
         if (!active) {
@@ -54,8 +57,17 @@ export function usePulseAccessState(email?: string): UsePulseAccessStateResult {
         setIsLoading(false);
       });
 
+    void runPulseStatusCheck();
+
+    intervalId = window.setInterval(() => {
+      void runPulseStatusCheck();
+    }, 10000);
+
     return () => {
       active = false;
+      if (intervalId !== null) {
+        window.clearInterval(intervalId);
+      }
     };
   }, [email, isEnabled]);
 
