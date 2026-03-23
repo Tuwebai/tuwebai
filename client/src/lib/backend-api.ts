@@ -1,6 +1,7 @@
 import { apiFetch } from '@/lib/http-client';
 import type { User } from '@/features/users/types';
 import type { UserPrivacySettings, UpdateUserPrivacyPayload } from '@/features/users/types/privacy';
+import type { PulseTokenData } from '@/features/users/types/pulse';
 
 export type PaymentPlan = 'esencial' | 'avanzado' | 'premium';
 
@@ -43,6 +44,9 @@ export const backendApi = {
 
   getUserProject: (uid: string) =>
     apiFetch<{ success: boolean; data?: unknown | null }>(`/api/users/${encodeURIComponent(uid)}/project`),
+
+  getPulseToken: () =>
+    apiFetch<{ success: boolean; data?: PulseTokenData }>('/api/pulse-token'),
 
   getUserPayments: (uid: string, limit?: number) =>
     apiFetch<{ success: boolean; data?: unknown[] }>(

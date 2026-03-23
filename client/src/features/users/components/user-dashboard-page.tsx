@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 
 import { useAuth } from '@/features/auth/context/AuthContext';
 import { UserDashboardHeader } from '@/features/users/components/user-dashboard-header';
+import { PulseDashboardCard } from '@/features/users/components/pulse-dashboard-card';
 import { UserDashboardTabPanel } from '@/features/users/components/user-dashboard-tab-panel';
 import { UserDashboardTabsNav } from '@/features/users/components/user-dashboard-tabs-nav';
 import { useUpdateUserPrivacyMutation, useUserPrivacyQuery } from '@/features/users/hooks/use-privacy-settings';
@@ -259,6 +260,8 @@ export default function UserDashboardPage() {
             onTriggerImageUpload={() => fileInputRef.current?.click()}
             onLogout={handleLogout}
           />
+
+          <PulseDashboardCard email={user?.email} />
 
           <UserDashboardTabsNav activeTab={activeTab} onTabChange={handleTabChange} />
 
