@@ -2,11 +2,11 @@ import { useQuery } from '@tanstack/react-query';
 import { getPulseStatus } from '@/features/users/services/pulse.service';
 import type { PulseStatusData } from '@/features/users/types/pulse';
 
-export function usePulseAccessStatus(enabled: boolean) {
+export function usePulseAccessStatus(email?: string) {
   return useQuery<PulseStatusData>({
-    queryKey: ['pulse-access-status'],
-    queryFn: () => getPulseStatus(),
-    enabled,
+    queryKey: ['pulse-access-status', email ?? null],
+    queryFn: () => getPulseStatus(email),
+    enabled: Boolean(email),
     staleTime: 1000 * 60 * 5,
     retry: 1,
   });

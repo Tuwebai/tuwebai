@@ -86,6 +86,7 @@ export async function apiFetch<T>(path: string, options: ApiRequestOptions = {})
       requestHeaders.set('Authorization', `Bearer ${firebaseToken}`);
     }
   }
+
   let requestBody: BodyInit | undefined;
 
   if (body !== undefined && body !== null) {

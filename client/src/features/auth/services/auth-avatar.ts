@@ -15,6 +15,9 @@ export const isGoogleAuthUser = (firebaseUser: FirebaseUser | null) =>
 const isPasswordAuthUser = (firebaseUser: FirebaseUser | null) =>
   !!firebaseUser?.providerData.some((provider) => provider.providerId === PASSWORD_PROVIDER_ID);
 
+const getIdentityLabel = (firebaseUser: FirebaseUser | null) =>
+  firebaseUser?.displayName?.trim() || '';
+
 export const resolveAuthAvatar = (firebaseUser: FirebaseUser | null, persistedImage?: string) => {
   if (!firebaseUser) {
     return persistedImage?.trim() || '';
@@ -30,21 +33,26 @@ export const resolveAuthAvatar = (firebaseUser: FirebaseUser | null, persistedIm
   return storedPhoto || providerPhoto;
 };
 
-export const mergeFirebaseUserData = (firebaseUser: FirebaseUser, persistedUser?: Partial<User> | null): User => ({
-  authProvider: isGoogleAuthUser(firebaseUser)
-    ? 'google'
-    : (persistedUser?.authProvider || (isPasswordAuthUser(firebaseUser) ? 'password' : 'password')),
-  uid: firebaseUser.uid,
-  email: firebaseUser.email || persistedUser?.email || '',
-  username: persistedUser?.username || firebaseUser.displayName || '',
-  name: persistedUser?.name || firebaseUser.displayName || '',
-  image: resolveAuthAvatar(firebaseUser, persistedUser?.image),
-  passwordChangedAt: isGoogleAuthUser(firebaseUser)
-    ? null
-    : (persistedUser?.passwordChangedAt || persistedUser?.createdAt || firebaseUser.metadata.creationTime || new Date().toISOString()),
-  role: persistedUser?.role,
-  isActive: persistedUser?.isActive ?? true,
-  projectId: persistedUser?.projectId,
-  createdAt: persistedUser?.createdAt || new Date().toISOString(),
-  updatedAt: new Date().toISOString(),
-});
+export const mergeFirebaseUserData = (firebaseUser: FirebaseUser, persistedUser?: Partial<User> | null): User => {
+  const isGoogleUser = isGoogleAuthUser(firebaseUser);
+  const identityLabel = getIdentityLabel(firebaseUser);
+
+  return {
+    authProvider: isGoogleUser
+      ? 'google'
+      : (persistedUser?.authProvider || (isPasswordAuthUser(firebaseUser) ? 'password' : 'password')),
+    uid: firebaseUser.uid,
+    email: firebaseUser.email || persistedUser?.email || '',
+    username: isGoogleUser ? (identityLabel || persistedUser?.username || '') : (persistedUser?.username || identityLabel || ''),
+    name: isGoogleUser ? (identityLabel || persistedUser?.name || '') : (persistedUser?.name || identityLabel || ''),
+    image: resolveAuthAvatar(firebaseUser, persistedUser?.image),
+    passwordChangedAt: isGoogleUser
+      ? null
+      : (persistedUser?.passwordChangedAt || persistedUser?.createdAt || firebaseUser.metadata.creationTime || new Date().toISOString()),
+    role: persistedUser?.role,
+    isActive: persistedUser?.isActive ?? true,
+    projectId: persistedUser?.projectId,
+    createdAt: persistedUser?.createdAt || new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+};

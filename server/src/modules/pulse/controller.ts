@@ -9,6 +9,22 @@ const TOKEN_TTL_SECONDS = 60 * 5;
 
 type PulseAccessStatus = 'enabled' | 'pending_activation';
 
+function resolveAuthenticatedEmail(req: Request, res: Response): string | null {
+  const authUser = res.locals.authUser as AuthUser | undefined;
+  const authEmail = authUser?.email?.trim();
+
+  if (authEmail) {
+    return authEmail.toLowerCase();
+  }
+
+  if (env.NODE_ENV === 'production') {
+    return null;
+  }
+
+  const queryEmail = typeof req.query.email === 'string' ? req.query.email.trim() : '';
+  return queryEmail ? queryEmail.toLowerCase() : null;
+}
+
 function buildRedirectUrl(token: string): string {
   const redirectUrl = new URL(env.PULSE_SSO_URL);
   redirectUrl.searchParams.set('token', token);
@@ -22,14 +38,20 @@ function buildPulseVerifyUrl(): string {
   return pulseUrl.toString();
 }
 
-function getPulseSharedSecret(requestId: string | undefined, uid?: string): string | null {
+function getPulseSharedSecret(
+  requestId: string | undefined,
+  uid?: string,
+  options?: { suppressMissingLog?: boolean }
+): string | null {
   const sharedSecret = env.TUWEBAI_WEBHOOK_SECRET;
 
   if (!sharedSecret) {
-    appLogger.error('pulse.token_secret_missing', {
-      requestId,
-      uid,
-    });
+    if (!options?.suppressMissingLog) {
+      appLogger.error('pulse.token_secret_missing', {
+        requestId,
+        uid,
+      });
+    }
 
     return null;
   }
@@ -77,17 +99,18 @@ async function resolvePulseAccessStatus(
   throw new Error(payload?.error || 'No pudimos validar el acceso a Pulse');
 }
 
-export const handleGetPulseToken = async (_req: Request, res: Response) => {
+export const handleGetPulseToken = async (req: Request, res: Response) => {
   const authUser = res.locals.authUser as AuthUser | undefined;
+  const email = resolveAuthenticatedEmail(req, res);
 
-  if (!authUser?.email?.trim()) {
+  if (!email) {
     return res.status(400).json({
       success: false,
       message: 'No pudimos resolver el email del usuario autenticado',
     });
   }
 
-  const sharedSecret = getPulseSharedSecret(res.locals.requestId, authUser.uid);
+  const sharedSecret = getPulseSharedSecret(res.locals.requestId, authUser?.uid);
   if (!sharedSecret) {
     return res.status(500).json({
       success: false,
@@ -95,7 +118,6 @@ export const handleGetPulseToken = async (_req: Request, res: Response) => {
     });
   }
 
-  const email = authUser.email.trim().toLowerCase();
   const token = signPulseToken(email, sharedSecret);
 
   return res.json({
@@ -107,18 +129,35 @@ export const handleGetPulseToken = async (_req: Request, res: Response) => {
   });
 };
 
-export const handleGetPulseStatus = async (_req: Request, res: Response) => {
+export const handleGetPulseStatus = async (req: Request, res: Response) => {
   const authUser = res.locals.authUser as AuthUser | undefined;
+  const email = resolveAuthenticatedEmail(req, res);
 
-  if (!authUser?.email?.trim()) {
+  if (!email) {
     return res.status(400).json({
       success: false,
       message: 'No pudimos resolver el email del usuario autenticado',
     });
   }
 
-  const sharedSecret = getPulseSharedSecret(res.locals.requestId, authUser.uid);
+  const sharedSecret = getPulseSharedSecret(res.locals.requestId, authUser?.uid, {
+    suppressMissingLog: env.NODE_ENV !== 'production',
+  });
   if (!sharedSecret) {
+    if (env.NODE_ENV !== 'production') {
+      appLogger.warn('pulse.status_secret_missing_dev', {
+        requestId: res.locals.requestId,
+        uid: authUser?.uid,
+      });
+
+      return res.json({
+        success: true,
+        data: {
+          status: 'pending_activation',
+        },
+      });
+    }
+
     return res.status(500).json({
       success: false,
       message: 'La integracion con Pulse no esta configurada',
@@ -126,7 +165,6 @@ export const handleGetPulseStatus = async (_req: Request, res: Response) => {
   }
 
   try {
-    const email = authUser.email.trim().toLowerCase();
     const status = await resolvePulseAccessStatus(email, sharedSecret);
 
     return res.json({
@@ -138,7 +176,7 @@ export const handleGetPulseStatus = async (_req: Request, res: Response) => {
   } catch (error: unknown) {
     appLogger.warn('pulse.status_check_failed', {
       requestId: res.locals.requestId,
-      uid: authUser.uid,
+      uid: authUser?.uid,
       error: error instanceof Error ? error.message : 'unknown_pulse_status_error',
     });
 

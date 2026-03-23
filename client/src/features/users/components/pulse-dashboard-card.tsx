@@ -45,7 +45,7 @@ export function PulseDashboardCard({ email }: PulseDashboardCardProps) {
   const {
     data: pulseAccess,
     isLoading: isLoadingPulseAccess,
-  } = usePulseAccessStatus(Boolean(email));
+  } = usePulseAccessStatus(email);
   const [isOpeningPulse, setIsOpeningPulse] = useState(false);
 
   const isPendingActivation = pulseAccess?.status === 'pending_activation';
@@ -54,7 +54,7 @@ export function PulseDashboardCard({ email }: PulseDashboardCardProps) {
     setIsOpeningPulse(true);
 
     try {
-      await openPulseAccess();
+      await openPulseAccess(email);
     } finally {
       setIsOpeningPulse(false);
     }

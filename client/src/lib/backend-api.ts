@@ -18,6 +18,15 @@ export interface PaymentStatusResponse {
   };
 }
 
+const withEmailQuery = (basePath: string, email?: string) => {
+  if (!email?.trim()) {
+    return basePath;
+  }
+
+  const separator = basePath.includes('?') ? '&' : '?';
+  return `${basePath}${separator}email=${encodeURIComponent(email.trim().toLowerCase())}`;
+};
+
 export const backendApi = {
   withLimit: (basePath: string, limit?: number) =>
     typeof limit === 'number' && Number.isFinite(limit) && limit > 0
@@ -45,11 +54,11 @@ export const backendApi = {
   getUserProject: (uid: string) =>
     apiFetch<{ success: boolean; data?: unknown | null }>(`/api/users/${encodeURIComponent(uid)}/project`),
 
-  getPulseToken: () =>
-    apiFetch<{ success: boolean; data?: PulseTokenData }>('/api/pulse-token'),
+  getPulseToken: (email?: string) =>
+    apiFetch<{ success: boolean; data?: PulseTokenData }>(withEmailQuery('/api/pulse-token', email)),
 
-  getPulseStatus: () =>
-    apiFetch<{ success: boolean; data?: PulseStatusData }>('/api/pulse-status'),
+  getPulseStatus: (email?: string) =>
+    apiFetch<{ success: boolean; data?: PulseStatusData }>(withEmailQuery('/api/pulse-status', email)),
 
   getUserPayments: (uid: string, limit?: number) =>
     apiFetch<{ success: boolean; data?: unknown[] }>(

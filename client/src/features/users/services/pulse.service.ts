@@ -3,6 +3,12 @@ import type { PulsePreviewData, PulseStatusData, PulseTokenData } from '@/featur
 
 const DEFAULT_PULSE_BASE_URL = import.meta.env.DEV ? 'http://localhost:8083' : 'https://pulse.tuweb-ai.com';
 const PULSE_BASE_URL = (import.meta.env.VITE_PULSE_BASE_URL || DEFAULT_PULSE_BASE_URL).replace(/\/+$/, '');
+const RAW_PULSE_FUNCTIONS_BASE_URL = import.meta.env.VITE_PULSE_FUNCTIONS_BASE_URL?.trim() || '';
+const PULSE_FUNCTIONS_BASE_URL = RAW_PULSE_FUNCTIONS_BASE_URL.replace(/\/+$/, '');
+
+function shouldSkipLocalPulsePreview(): boolean {
+  return import.meta.env.DEV && PULSE_FUNCTIONS_BASE_URL.length === 0;
+}
 
 function isPulsePreviewData(value: unknown): value is PulsePreviewData {
   if (!value || typeof value !== 'object') {
@@ -27,8 +33,12 @@ export function getPulseBaseUrl(): string {
 }
 
 export async function getPulsePreview(email: string): Promise<PulsePreviewData> {
+  if (shouldSkipLocalPulsePreview()) {
+    return { hasData: false };
+  }
+
   const safeEmail = email.trim().toLowerCase();
-  const response = await fetch(`${PULSE_BASE_URL}/functions/v1/pulse-preview?email=${encodeURIComponent(safeEmail)}`, {
+  const response = await fetch(`${PULSE_FUNCTIONS_BASE_URL}/pulse-preview?email=${encodeURIComponent(safeEmail)}`, {
     method: 'GET',
     headers: {
       Accept: 'application/json',
@@ -48,8 +58,8 @@ export async function getPulsePreview(email: string): Promise<PulsePreviewData> 
   return data;
 }
 
-export async function getPulseToken(): Promise<PulseTokenData> {
-  const response = await backendApi.getPulseToken();
+export async function getPulseToken(email?: string): Promise<PulseTokenData> {
+  const response = await backendApi.getPulseToken(email);
   const data = response?.data;
 
   if (!data?.redirect_url || !data?.token) {
@@ -59,8 +69,8 @@ export async function getPulseToken(): Promise<PulseTokenData> {
   return data;
 }
 
-export async function getPulseStatus(): Promise<PulseStatusData> {
-  const response = await backendApi.getPulseStatus();
+export async function getPulseStatus(email?: string): Promise<PulseStatusData> {
+  const response = await backendApi.getPulseStatus(email);
   const data = response?.data;
 
   if (!isPulseStatusData(data)) {
@@ -70,9 +80,9 @@ export async function getPulseStatus(): Promise<PulseStatusData> {
   return data;
 }
 
-export async function openPulseAccess(): Promise<void> {
+export async function openPulseAccess(email?: string): Promise<void> {
   try {
-    const response = await getPulseToken();
+    const response = await getPulseToken(email);
     window.location.assign(response.redirect_url);
   } catch {
     window.location.assign(`${getPulseBaseUrl()}/login`);

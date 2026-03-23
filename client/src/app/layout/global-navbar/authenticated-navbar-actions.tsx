@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { useAuthActions, useAuthState } from '@/features/auth/context/auth-context';
-import { usePulseAccessStatus } from '@/features/users/hooks/use-pulse-access-status';
+import { usePulseAccessState } from '@/features/users/hooks/use-pulse-access-state';
 import { openPulseAccess } from '@/features/users/services/pulse.service';
 import { UserAvatar } from '@/shared/ui/user-avatar';
 
@@ -21,7 +21,7 @@ export function AuthenticatedNavbarActions({
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const { user, isAuthenticated } = useAuthState();
   const { logout } = useAuthActions();
-  const { data: pulseAccess } = usePulseAccessStatus(Boolean(isAuthenticated && user?.email));
+  const { data: pulseAccess } = usePulseAccessState(isAuthenticated ? user?.email : undefined);
   const isPendingActivation = pulseAccess?.status === 'pending_activation';
 
   if (!isAuthenticated) {
@@ -66,8 +66,8 @@ export function AuthenticatedNavbarActions({
           <button
             type="button"
             className="block w-full py-2 px-4 text-left rounded-md text-gray-300 hover:bg-gray-800 transition-colors"
-            onClick={() => {
-              void openPulseAccess();
+              onClick={() => {
+              void openPulseAccess(user?.email);
               onAction?.();
             }}
           >
@@ -143,7 +143,7 @@ export function AuthenticatedNavbarActions({
                 type="button"
                 className="block px-4 py-2 text-sm text-gray-300 hover:bg-[#23232b] hover:text-white rounded-lg transition-colors"
                 onClick={() => {
-                  void openPulseAccess();
+                  void openPulseAccess(user?.email);
                   setShowProfileMenu(false);
                 }}
               >
