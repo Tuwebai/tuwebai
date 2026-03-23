@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { useAuthActions, useAuthState } from '@/features/auth/context/auth-context';
+import { openPulseAccess } from '@/features/users/services/pulse.service';
 import { UserAvatar } from '@/shared/ui/user-avatar';
 
 import { prefetchNavigationPath } from './navigation';
@@ -11,17 +12,6 @@ interface AuthenticatedNavbarActionsProps {
   isMobileMenu?: boolean;
   onAction?: () => void;
 }
-
-const buildDashboardTokenUrl = (email?: string | null, name?: string | null) =>
-  `https://dashboard.tuweb-ai.com/?token=${encodeURIComponent(
-    btoa(
-      JSON.stringify({
-        email,
-        name,
-        timestamp: Date.now(),
-      }),
-    ),
-  )}`;
 
 export function AuthenticatedNavbarActions({
   isMobileMenu = false,
@@ -34,8 +24,6 @@ export function AuthenticatedNavbarActions({
   if (!isAuthenticated) {
     return <PublicNavbarActions isMobileMenu={isMobileMenu} onAction={onAction} />;
   }
-
-  const dashboardUrl = buildDashboardTokenUrl(user?.email, user?.username || user?.name);
 
   if (isMobileMenu) {
     return (
@@ -67,12 +55,13 @@ export function AuthenticatedNavbarActions({
             Mi Perfil
           </div>
         </Link>
-        <a
-          href={dashboardUrl}
-          target="_blank"
-          rel="noopener noreferrer"
+        <button
+          type="button"
           className="block w-full py-2 px-4 text-left rounded-md text-gray-300 hover:bg-gray-800 transition-colors"
-          onClick={onAction}
+          onClick={() => {
+            void openPulseAccess();
+            onAction?.();
+          }}
         >
           <div className="flex items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -80,7 +69,7 @@ export function AuthenticatedNavbarActions({
             </svg>
             Panel de Control
           </div>
-        </a>
+        </button>
         <button
           onClick={() => {
             void logout();
@@ -136,12 +125,13 @@ export function AuthenticatedNavbarActions({
                 Mi Perfil
               </div>
             </Link>
-            <a
-              href={dashboardUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              type="button"
               className="block px-4 py-2 text-sm text-gray-300 hover:bg-[#23232b] hover:text-white rounded-lg transition-colors"
-              onClick={() => setShowProfileMenu(false)}
+              onClick={() => {
+                void openPulseAccess();
+                setShowProfileMenu(false);
+              }}
             >
               <div className="flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -149,7 +139,7 @@ export function AuthenticatedNavbarActions({
                 </svg>
                 Panel de Control
               </div>
-            </a>
+            </button>
             <button
               onClick={() => {
                 void logout();

@@ -1,7 +1,8 @@
 import { backendApi } from '@/lib/backend-api';
 import type { PulsePreviewData, PulseTokenData } from '@/features/users/types/pulse';
 
-const PULSE_BASE_URL = (import.meta.env.VITE_PULSE_BASE_URL || 'https://pulse.tuweb-ai.com').replace(/\/+$/, '');
+const DEFAULT_PULSE_BASE_URL = import.meta.env.DEV ? 'http://localhost:8083' : 'https://pulse.tuweb-ai.com';
+const PULSE_BASE_URL = (import.meta.env.VITE_PULSE_BASE_URL || DEFAULT_PULSE_BASE_URL).replace(/\/+$/, '');
 
 function isPulsePreviewData(value: unknown): value is PulsePreviewData {
   if (!value || typeof value !== 'object') {
@@ -47,4 +48,13 @@ export async function getPulseToken(): Promise<PulseTokenData> {
   }
 
   return data;
+}
+
+export async function openPulseAccess(): Promise<void> {
+  try {
+    const response = await getPulseToken();
+    window.location.assign(response.redirect_url);
+  } catch {
+    window.location.assign(`${getPulseBaseUrl()}/login`);
+  }
 }

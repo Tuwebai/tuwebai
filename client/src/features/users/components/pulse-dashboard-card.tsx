@@ -2,9 +2,8 @@ import { useState } from 'react';
 import { BarChart3 } from 'lucide-react';
 import { Button } from '@/shared/ui/button';
 import { Skeleton } from '@/shared/ui/skeleton';
-import { useToast } from '@/shared/ui/use-toast';
 import { usePulsePreview } from '@/features/users/hooks/use-pulse-preview';
-import { getPulseBaseUrl, getPulseToken } from '@/features/users/services/pulse.service';
+import { openPulseAccess } from '@/features/users/services/pulse.service';
 
 interface PulseDashboardCardProps {
   email?: string;
@@ -41,7 +40,6 @@ function PulseLogo() {
 }
 
 export function PulseDashboardCard({ email }: PulseDashboardCardProps) {
-  const { toast } = useToast();
   const { data, isLoading, isError } = usePulsePreview(email);
   const [isOpeningPulse, setIsOpeningPulse] = useState(false);
 
@@ -49,14 +47,7 @@ export function PulseDashboardCard({ email }: PulseDashboardCardProps) {
     setIsOpeningPulse(true);
 
     try {
-      const response = await getPulseToken();
-      window.location.assign(response.redirect_url);
-    } catch {
-      toast({
-        title: 'No pudimos abrir Pulse',
-        description: 'Te llevamos al login de Pulse para que puedas continuar.',
-      });
-      window.location.assign(`${getPulseBaseUrl()}/login`);
+      await openPulseAccess();
     } finally {
       setIsOpeningPulse(false);
     }

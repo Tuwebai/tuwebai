@@ -3,6 +3,12 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+const DEFAULT_PULSE_SSO_URL_BY_ENV = {
+  development: 'http://localhost:8083/auth/sso',
+  production: 'https://pulse.tuweb-ai.com/auth/sso',
+  test: 'http://localhost:8083/auth/sso',
+} as const;
+
 const envSchema = z
   .object({
     NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
@@ -14,7 +20,7 @@ const envSchema = z
       .transform((str) => str.split(',').map((s) => s.trim())),
     FRONTEND_URL: z.string().url('FRONTEND_URL debe ser una URL valida').default('https://tuweb-ai.com'),
     BACKEND_URL: z.string().url('BACKEND_URL debe ser una URL valida').optional(),
-    PULSE_SSO_URL: z.string().url('PULSE_SSO_URL debe ser una URL valida').default('https://pulse.tuweb-ai.com/auth/sso'),
+    PULSE_SSO_URL: z.string().url('PULSE_SSO_URL debe ser una URL valida').optional(),
     TUWEBAI_WEBHOOK_SECRET: z.string().min(16, 'TUWEBAI_WEBHOOK_SECRET debe tener al menos 16 caracteres').optional(),
     CONTACT_TO_EMAIL: z.string().email('CONTACT_TO_EMAIL debe ser un email valido').optional(),
     SMTP_USER: z.string().optional(),
@@ -114,4 +120,10 @@ try {
   }
 }
 
-export const env = envVariables;
+const pulseSsoUrl =
+  envVariables.PULSE_SSO_URL || DEFAULT_PULSE_SSO_URL_BY_ENV[envVariables.NODE_ENV];
+
+export const env: EnvConfig & { PULSE_SSO_URL: string } = {
+  ...envVariables,
+  PULSE_SSO_URL: pulseSsoUrl,
+};
