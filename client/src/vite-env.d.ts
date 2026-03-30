@@ -1,6 +1,9 @@
 /// <reference types="vite/client" />
 
+declare const __GA_MEASUREMENT_ID__: string;
+
 interface ImportMetaEnv {
+  readonly GA_MEASUREMENT_ID: string
   readonly VITE_FIREBASE_API_KEY: string
   readonly VITE_FIREBASE_AUTH_DOMAIN: string
   readonly VITE_FIREBASE_PROJECT_ID: string

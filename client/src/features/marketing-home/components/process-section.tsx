@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 
+import { useTrackSectionView } from '@/core/hooks/use-track-section-view';
 import RevealBlock from '@/shared/ui/reveal-block';
 
 interface ProcessStepProps {
@@ -34,6 +35,7 @@ interface ProcessSectionProps {
 
 export default function ProcessSection({ setRef }: ProcessSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
+  useTrackSectionView(sectionRef, 'process');
 
   if (sectionRef.current && !sectionRef.current.hasAttribute('data-ref-set')) {
     setRef(sectionRef.current);

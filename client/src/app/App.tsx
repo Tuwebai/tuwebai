@@ -62,7 +62,7 @@ function PublicAppRoot() {
       }
 
       settled = true;
-      analytics.initialize('G-H3MG4C5T12');
+      analytics.initialize();
     };
 
     runWhenIdle(initializeAnalytics, 2500);
@@ -87,6 +87,10 @@ function PublicAppRoot() {
   }, [location.pathname]);
 
   useEffect(() => {
+    if (!analytics.isConfigured()) {
+      return;
+    }
+
     const path = location.pathname + location.search;
     const pageTitle = document.title || 'Tuweb.ai';
 
@@ -99,7 +103,6 @@ function PublicAppRoot() {
 
       settled = true;
       analytics.pageview(path, pageTitle);
-      analytics.event('Navigation', 'Page View', path);
     };
 
     runWhenIdle(trackPageView, 3000);

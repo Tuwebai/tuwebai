@@ -1,4 +1,4 @@
-import { defineConfig } from "vite";
+import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 import type { Plugin } from "vite";
@@ -107,8 +107,14 @@ function blogContentPlugin(): Plugin {
 }
 
 // https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [react(), blogContentPlugin()],
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), '');
+
+  return {
+    define: {
+      __GA_MEASUREMENT_ID__: JSON.stringify(env.GA_MEASUREMENT_ID ?? ''),
+    },
+    plugins: [react(), blogContentPlugin()],
   root: "./client",
   envDir: "..",
   resolve: {
@@ -153,13 +159,14 @@ export default defineConfig({
       },
     },
   },
-  server: {
-    port: 5173,
-    host: true,
-    watch: {
-      // En Windows, el watcher puede perder eventos; polling evita reinicios manuales.
-      usePolling: true,
-      interval: 100,
+    server: {
+      port: 5173,
+      host: true,
+      watch: {
+        // En Windows, el watcher puede perder eventos; polling evita reinicios manuales.
+        usePolling: true,
+        interval: 100,
+      },
     },
-  },
+  };
 });

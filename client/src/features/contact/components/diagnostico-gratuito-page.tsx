@@ -7,6 +7,7 @@ import {
   getContactFieldErrors,
 } from '@/features/contact/services/contact.service';
 import { useContactSubmission } from '@/features/contact/hooks/use-contact-submission';
+import analytics from '@/lib/analytics';
 import { cn } from '@/lib/utils';
 import {
   TUWEBAI_EMAIL,
@@ -326,6 +327,7 @@ export default function DiagnosticoGratuitoPage() {
       setSuccessEmail(form.email.trim());
       setSubmitState('sent');
       setForm(INITIAL_FORM_STATE);
+      analytics.trackFormSubmit('diagnostico_gratuito', 'diagnostico_page');
     } catch (error) {
       const serverErrors = getContactFieldErrors(error);
       const nextErrors: DiagnosisFieldErrors = {};
@@ -397,6 +399,13 @@ export default function DiagnosticoGratuitoPage() {
             <div className="mt-8">
               <a
                 href="#formulario-diagnostico"
+                onClick={() =>
+                  analytics.trackCtaClick(
+                    'quiero_mi_diagnostico_gratuito',
+                    'diagnostico_hero',
+                    '#formulario-diagnostico',
+                  )
+                }
                 className="inline-flex min-h-11 items-center justify-center rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-[#00CCFF]/20 transition-transform duration-200 hover:scale-[1.02]"
               >
                 Quiero mi diagnóstico gratuito →
@@ -606,6 +615,13 @@ export default function DiagnosticoGratuitoPage() {
                     <Button
                       type="submit"
                       disabled={submitState === 'submitting'}
+                      onClick={() =>
+                        analytics.trackCtaClick(
+                          'quiero_mi_diagnostico_gratuito',
+                          'diagnostico_form',
+                          'diagnostico_gratuito',
+                        )
+                      }
                       className="min-h-11 w-full rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-6 text-base font-semibold text-white"
                     >
                       {submitState === 'submitting'
@@ -684,6 +700,10 @@ export default function DiagnosticoGratuitoPage() {
                 href={whatsappHref}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => {
+                  analytics.trackCtaClick('whatsapp_diagnostico', 'diagnostico_direct_cta', whatsappHref);
+                  analytics.trackOutboundClick(whatsappHref, 'diagnostico_direct_cta', 'Escribinos por WhatsApp', 'whatsapp');
+                }}
                 className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-[#25D366]/40 bg-[#25D366]/12 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#25D366]/20"
               >
                 <BarChart3 className="h-4 w-4" />

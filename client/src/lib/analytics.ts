@@ -1,11 +1,13 @@
 const isDev = Boolean(import.meta.env?.DEV);
 const GTAG_SCRIPT_ID = 'tuwebai-gtag-script';
-const isLocalEnvironment = () =>
-  typeof window !== 'undefined' &&
-  ['localhost', '127.0.0.1', '[::1]'].includes(window.location.hostname);
+const MEASUREMENT_ID = typeof __GA_MEASUREMENT_ID__ === 'string' ? __GA_MEASUREMENT_ID__.trim() : '';
 
 const configuredMeasurementIds = new Set<string>();
+const trackedSectionViews = new Set<string>();
 let analyticsConsentGranted = false;
+
+type AnalyticsValue = string | number | boolean | undefined;
+type AnalyticsEventParams = Record<string, AnalyticsValue>;
 
 declare global {
   interface Window {
@@ -35,8 +37,16 @@ const applyAnalyticsConsent = () => {
   });
 };
 
+const getMeasurementId = (measurementId?: string) => (measurementId?.trim() || MEASUREMENT_ID);
+
+const sanitizeEventParams = (params: AnalyticsEventParams): Record<string, string | number | boolean> =>
+  Object.fromEntries(Object.entries(params).filter(([, value]) => value !== undefined)) as Record<
+    string,
+    string | number | boolean
+  >;
+
 const loadAnalyticsScript = (measurementId: string) => {
-  if (typeof document === 'undefined' || isLocalEnvironment()) return;
+  if (typeof document === 'undefined') return;
   if (document.getElementById(GTAG_SCRIPT_ID)) return;
 
   const script = document.createElement('script');
@@ -59,32 +69,44 @@ export const setAnalyticsConsent = (enabled: boolean): void => {
 
 export const isAnalyticsEnabled = (): boolean => analyticsConsentGranted;
 
-export const initializeAnalytics = (measurementId: string): void => {
-  if (typeof window === 'undefined' || !analyticsConsentGranted) return;
-  ensureGtagQueue();
-  loadAnalyticsScript(measurementId);
+export const getAnalyticsMeasurementId = (): string => MEASUREMENT_ID;
 
-  if (!configuredMeasurementIds.has(measurementId)) {
-    window.gtag?.('js', new Date());
-    applyAnalyticsConsent();
-    window.gtag?.('config', measurementId, {
-      debug_mode: isDev,
-      anonymize_ip: true,
-    });
-    configuredMeasurementIds.add(measurementId);
+export const isAnalyticsConfigured = (): boolean => Boolean(MEASUREMENT_ID);
+
+const trackNamedEvent = (eventName: string, params: AnalyticsEventParams = {}): void => {
+  if (typeof window === 'undefined' || !analyticsConsentGranted || !isAnalyticsConfigured()) return;
+  ensureGtagQueue();
+  window.gtag?.('event', eventName, sanitizeEventParams(params));
+};
+
+export const initializeAnalytics = (measurementId?: string): void => {
+  const resolvedMeasurementId = getMeasurementId(measurementId);
+
+  if (!resolvedMeasurementId) {
+    return;
   }
 
+  if (typeof window === 'undefined' || !analyticsConsentGranted) return;
+  ensureGtagQueue();
+  loadAnalyticsScript(resolvedMeasurementId);
 
+  if (!configuredMeasurementIds.has(resolvedMeasurementId)) {
+    window.gtag?.('js', new Date());
+    applyAnalyticsConsent();
+    window.gtag?.('config', resolvedMeasurementId, {
+      debug_mode: isDev,
+      anonymize_ip: true,
+      send_page_view: false,
+    });
+    configuredMeasurementIds.add(resolvedMeasurementId);
+  }
 };
 
 export const trackPageView = (path: string, title?: string): void => {
-  if (typeof window === 'undefined' || !analyticsConsentGranted) return;
-  ensureGtagQueue();
-  window.gtag?.('event', 'page_view', {
+  trackNamedEvent('page_view', {
     page_path: path,
     page_title: title,
   });
-
 };
 
 export const trackEvent = (
@@ -93,14 +115,11 @@ export const trackEvent = (
   label?: string,
   value?: number
 ): void => {
-  if (typeof window === 'undefined' || !analyticsConsentGranted) return;
-  ensureGtagQueue();
-  window.gtag?.('event', action, {
+  trackNamedEvent(action, {
     event_category: category,
     event_label: label,
     value,
   });
-
 };
 
 export const trackException = (description: string, fatal: boolean = false): void => {
@@ -112,13 +131,10 @@ export const setUser = (userId: string): void => {
   if (typeof window === 'undefined' || !analyticsConsentGranted) return;
   ensureGtagQueue();
   window.gtag?.('set', { user_id: userId });
-
 };
 
 export const trackWebVital = (metricName: string, value: number): void => {
-  if (typeof window === 'undefined' || !analyticsConsentGranted) return;
-  ensureGtagQueue();
-  window.gtag?.('event', 'web_vitals', {
+  trackNamedEvent('web_vitals', {
     event_category: 'Web Vitals',
     event_label: metricName,
     value: Math.round(value),
@@ -126,8 +142,60 @@ export const trackWebVital = (metricName: string, value: number): void => {
   });
 };
 
+export const trackCtaClick = (
+  ctaName: string,
+  location: string,
+  destination?: string,
+): void => {
+  trackNamedEvent('click_cta', {
+    cta_name: ctaName,
+    location,
+    destination,
+  });
+};
+
+export const trackFormSubmit = (formName: string, location: string): void => {
+  trackNamedEvent('form_submit', {
+    form_name: formName,
+    location,
+  });
+};
+
+export const trackSectionView = (sectionName: string, pagePath?: string): void => {
+  const path =
+    pagePath ??
+    (typeof window !== 'undefined' ? `${window.location.pathname}${window.location.search}` : '');
+  const viewKey = `${path}::${sectionName}`;
+
+  if (trackedSectionViews.has(viewKey)) {
+    return;
+  }
+
+  trackedSectionViews.add(viewKey);
+  trackNamedEvent('section_view', {
+    section_name: sectionName,
+    page_path: path,
+  });
+};
+
+export const trackOutboundClick = (
+  linkUrl: string,
+  location: string,
+  linkText?: string,
+  linkType?: string,
+): void => {
+  trackNamedEvent('outbound_click', {
+    link_url: linkUrl,
+    location,
+    link_text: linkText,
+    link_type: linkType,
+  });
+};
+
 export default {
+  getMeasurementId: getAnalyticsMeasurementId,
   initialize: initializeAnalytics,
+  isConfigured: isAnalyticsConfigured,
   isEnabled: isAnalyticsEnabled,
   setConsent: setAnalyticsConsent,
   pageview: trackPageView,
@@ -135,4 +203,8 @@ export default {
   exception: trackException,
   setUser,
   trackWebVital,
+  trackCtaClick,
+  trackFormSubmit,
+  trackSectionView,
+  trackOutboundClick,
 };

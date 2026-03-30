@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 
+import { useTrackSectionView } from '@/core/hooks/use-track-section-view';
 import { useIntersectionObserver } from '@/core/hooks/use-intersection-observer';
 import {
   getContactErrorMessage,
@@ -88,7 +89,7 @@ function ContactForm({ delay }: ContactFormProps) {
       .then(() => {
         setSubmitState('sent');
         setFormState({ name: '', email: '', message: '' });
-        analytics.event('engagement', 'submit_form', 'contact_form');
+        analytics.trackFormSubmit('contact_form', 'contact_section');
         toast({
           title: 'Solicitud recibida',
           description: 'Te vamos a contactar a la brevedad para revisar tu consulta.',
@@ -186,6 +187,7 @@ function ContactForm({ delay }: ContactFormProps) {
           <button
             type="submit"
             disabled={submitState === 'submitting'}
+            onClick={() => analytics.trackCtaClick('enviar_consulta', 'contact_section', 'contact_form')}
             className="w-full rounded-lg bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-6 py-3 font-medium text-white shadow-lg shadow-[#00CCFF]/20 transition-all duration-200 hover:scale-[1.02] hover:shadow-[#9933FF]/30 active:scale-[0.98] disabled:cursor-wait disabled:opacity-70"
           >
             {submitState === 'submitting'
@@ -226,6 +228,9 @@ function ContactInfo({ delay }: ContactInfoProps) {
           </span>
           <a
             href={`tel:${TUWEBAI_WHATSAPP_TEL}`}
+            onClick={() =>
+              analytics.trackOutboundClick(`tel:${TUWEBAI_WHATSAPP_TEL}`, 'contact_section', TUWEBAI_WHATSAPP_DISPLAY, 'phone')
+            }
             className="text-gray-300 transition-colors hover:text-white"
           >
             {TUWEBAI_WHATSAPP_DISPLAY}
@@ -238,6 +243,9 @@ function ContactInfo({ delay }: ContactInfoProps) {
           </span>
           <a
             href={`mailto:${TUWEBAI_EMAIL}`}
+            onClick={() =>
+              analytics.trackOutboundClick(`mailto:${TUWEBAI_EMAIL}`, 'contact_section', TUWEBAI_EMAIL, 'email')
+            }
             className="text-gray-300 transition-colors hover:text-white"
           >
             {TUWEBAI_EMAIL}
@@ -267,6 +275,9 @@ function ContactInfo({ delay }: ContactInfoProps) {
         <h5 className="mb-3 font-medium text-white">¿PREFERÍS HABLAR AHORA?</h5>
         <a
           href={TUWEBAI_WHATSAPP_URL}
+          onClick={() =>
+            analytics.trackOutboundClick(TUWEBAI_WHATSAPP_URL, 'contact_section', 'Escribinos por WhatsApp', 'whatsapp')
+          }
           className="inline-flex items-center text-[#00CCFF] hover:underline"
         >
           <svg
@@ -298,6 +309,7 @@ export default function ContactSection({ setRef }: ContactSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const { ref: titleRef, hasIntersected: titleVisible } =
     useIntersectionObserver<HTMLDivElement>();
+  useTrackSectionView(sectionRef, 'contact');
 
   if (sectionRef.current && !sectionRef.current.hasAttribute('data-ref-set')) {
     setRef(sectionRef.current);

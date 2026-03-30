@@ -2,6 +2,9 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Link as ScrollLink } from 'react-scroll';
 
+import { useTrackSectionView } from '@/core/hooks/use-track-section-view';
+import analytics from '@/lib/analytics';
+
 interface HeroSectionProps {
   setRef: (ref: HTMLElement | null) => void;
   children?: React.ReactNode;
@@ -10,6 +13,7 @@ interface HeroSectionProps {
 export default function HeroSection({ setRef, children }: HeroSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const [heroOpacity, setHeroOpacity] = useState(1);
+  useTrackSectionView(sectionRef, 'hero');
   const heroMessage = useMemo(
     () =>
       'Sitios corporativos, e-commerce y sistemas web construidos a medida para negocios argentinos. Sin templates. Sin atajos.',
@@ -84,6 +88,7 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
         <div className="mb-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
           <RouterLink
             to="/consulta"
+            onClick={() => analytics.trackCtaClick('contar_mi_proyecto', 'hero', '/consulta')}
             className="inline-flex min-h-12 items-center justify-center rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-6 py-3 text-center font-semibold text-white shadow-[0_10px_30px_rgba(0,204,255,0.22)] transition-transform duration-300 hover:scale-[1.02] sm:px-7"
           >
             Contar mi proyecto
@@ -95,6 +100,7 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
             smooth={true}
             offset={-70}
             duration={1000}
+            onClick={() => analytics.trackCtaClick('ver_proyectos_reales', 'hero', '#showroom')}
             className="inline-flex min-h-12 cursor-pointer items-center justify-center rounded-full border border-white/15 bg-white/5 px-6 py-3 text-center font-medium text-gray-200 transition-colors duration-300 hover:border-[#00CCFF]/50 hover:text-white sm:px-7 lg:backdrop-blur-sm"
           >
             Ver proyectos reales
@@ -104,6 +110,7 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
         <div className="mb-8">
           <RouterLink
             to="/diagnostico-gratuito"
+            onClick={() => analytics.trackCtaClick('pedir_diagnostico_gratuito', 'hero', '/diagnostico-gratuito')}
             className="inline-flex min-h-11 items-center justify-center text-sm font-medium text-[#9BE7FF] transition-colors hover:text-white"
           >
             Pedí tu diagnóstico gratuito →

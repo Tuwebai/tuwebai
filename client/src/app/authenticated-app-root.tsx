@@ -57,7 +57,7 @@ function AuthenticatedAppShell() {
     }
 
     if (shouldEagerlyRunAnalytics(location.pathname)) {
-      analytics.initialize('G-H3MG4C5T12');
+      analytics.initialize();
       return;
     }
 
@@ -69,7 +69,7 @@ function AuthenticatedAppShell() {
       }
 
       settled = true;
-      analytics.initialize('G-H3MG4C5T12');
+      analytics.initialize();
     };
 
     runWhenIdle(initializeAnalytics, 2500);
@@ -94,7 +94,7 @@ function AuthenticatedAppShell() {
   }, [canTrackAnalytics, location.pathname]);
 
   useEffect(() => {
-    if (!canTrackAnalytics) {
+    if (!canTrackAnalytics || !analytics.isConfigured()) {
       return;
     }
 
@@ -103,7 +103,6 @@ function AuthenticatedAppShell() {
 
     if (shouldEagerlyRunAnalytics(location.pathname)) {
       analytics.pageview(path, pageTitle);
-      analytics.event('Navigation', 'Page View', path);
       return;
     }
 
@@ -116,7 +115,6 @@ function AuthenticatedAppShell() {
 
       settled = true;
       analytics.pageview(path, pageTitle);
-      analytics.event('Navigation', 'Page View', path);
     };
 
     runWhenIdle(trackPageView, 3000);

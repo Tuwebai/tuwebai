@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+import analytics from '@/lib/analytics';
 import { TUWEBAI_WHATSAPP_NUMBER } from '@/shared/constants/contact';
 import { WhatsAppIcon } from '@/shared/ui/whatsapp-icon';
 
@@ -90,6 +91,7 @@ export default function WhatsAppButton({
             href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => analytics.trackOutboundClick(whatsappUrl, 'floating_whatsapp_popup', 'Chatear ahora', 'whatsapp')}
             className="flex-1 rounded-md bg-[#25D366] px-3 py-1.5 text-center text-xs text-white transition-colors hover:bg-[#20b959]"
           >
             Chatear ahora
@@ -101,8 +103,12 @@ export default function WhatsAppButton({
         href={whatsappUrl}
         target="_blank"
         rel="noopener noreferrer"
-          className="flex h-12 w-12 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-all duration-200 ease-out hover:scale-110 hover:shadow-xl active:scale-95 sm:h-14 sm:w-14"
-        onClick={() => setIsPopupVisible(false)}
+        className="flex h-12 w-12 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-all duration-200 ease-out hover:scale-110 hover:shadow-xl active:scale-95 sm:h-14 sm:w-14"
+        onClick={() => {
+          analytics.trackCtaClick('floating_whatsapp', 'floating_button', whatsappUrl);
+          analytics.trackOutboundClick(whatsappUrl, 'floating_button', 'WhatsApp flotante', 'whatsapp');
+          setIsPopupVisible(false);
+        }}
         onMouseEnter={() => !isPopupVisible && setIsPopupVisible(true)}
         aria-label="Contactar por WhatsApp"
       >
