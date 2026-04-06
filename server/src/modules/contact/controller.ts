@@ -3,8 +3,8 @@ import { env } from '../../config/env.config';
 import { queueContactEmail } from '../../infrastructure/mail/email.service';
 import { getErrorMessage } from '../../shared/utils/error-message';
 import { appLogger } from '../../utils/app-logger';
-import { storeSubmission } from '../../utils/submission-store';
 import { dispatchPublicSubmission, handlePublicSubmissionError } from './submission-ops';
+import { storePublicSubmission } from './submission-store.service';
 
 export { handleContact, handleConsulta, handleTestEmail } from '../../controllers/contact.controller';
 
@@ -24,7 +24,7 @@ export const handlePropuesta = async (req: Request, res: Response) => {
       detalles,
     ].join('\n');
 
-    return dispatchPublicSubmission(res, {
+    return await dispatchPublicSubmission(res, {
       req,
       channel: 'propuesta',
       event: 'public.propuesta',
@@ -74,7 +74,15 @@ export const handleApplicationSubmission = async (req: Request, res: Response) =
       source: 'website',
     };
 
-    storeSubmission('applications', payload);
+    await storePublicSubmission({
+      channel: 'applications',
+      name: payload.name,
+      email: payload.email,
+      title: `Aplicacion: ${payload.position}`,
+      message: payload.message || '',
+      source: payload.source,
+      payload,
+    });
     queueContactEmail(
       {
         name: payload.name,

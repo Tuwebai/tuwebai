@@ -7,7 +7,7 @@ import { appLogger } from '../utils/app-logger';
 export const handleContact = async (req: Request, res: Response) => {
   try {
     const { name, email, title, message } = req.body;
-    return dispatchPublicSubmission(res, {
+    return await dispatchPublicSubmission(res, {
       req,
       channel: 'contact',
       event: 'contact',
@@ -34,7 +34,7 @@ export const handleContact = async (req: Request, res: Response) => {
 export const handleConsulta = async (req: Request, res: Response) => {
   try {
     const { name, email, title, message } = req.body;
-    return dispatchPublicSubmission(res, {
+    return await dispatchPublicSubmission(res, {
       req,
       channel: 'consulta',
       event: 'consulta',

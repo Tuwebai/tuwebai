@@ -1,41 +1,30 @@
 import { Request, Response } from 'express';
 import { env } from '../../config/env.config';
-import { getFirestore as getAdminFirestore } from '../../infrastructure/firebase/firestore';
 import { queueContactEmail } from '../../infrastructure/mail/email.service';
 import { getErrorMessage } from '../../shared/utils/error-message';
 import { appLogger } from '../../utils/app-logger';
-import { storeSubmission } from '../../utils/submission-store';
 import { resolveOptionalLimit } from '../../shared/utils/list-limit';
-
-type TestimonialDocument = {
-  id?: string;
-  name?: string;
-  company?: string;
-  testimonial?: string;
-  createdAt?: string;
-  updatedAt?: string;
-  deletedAt?: string;
-  deletedBy?: string;
-  isDeleted?: boolean;
-  status?: string;
-  source?: string;
-} & Record<string, unknown>;
-
-const isSoftDeleted = (data: Record<string, unknown> | undefined): boolean =>
-  Boolean(data?.deletedAt || data?.isDeleted === true || data?.status === 'deleted');
+import {
+  createTestimonialRecord,
+  getTestimonialById as getTestimonialRecordById,
+  getTestimonials,
+  softDeleteTestimonial,
+  updateTestimonial,
+} from './supabase.repository';
 
 export const handleTestimonialSubmission = async (req: Request, res: Response) => {
   try {
     const payload = {
       name: req.body.name,
-      company: req.body.company,
+      company: req.body.company || 'Cliente',
       testimonial: req.body.testimonial,
-      createdAt: new Date().toISOString(),
       status: 'pending_review',
       source: 'website',
+      isApproved: false,
+      isNew: true,
     };
 
-    storeSubmission('testimonials', payload);
+    const created = await createTestimonialRecord(payload);
     queueContactEmail(
       {
         name: payload.name,
@@ -48,6 +37,7 @@ export const handleTestimonialSubmission = async (req: Request, res: Response) =
 
     return res.status(201).json({
       success: true,
+      id: created.id,
       message: 'Testimonio recibido y pendiente de revision.',
     });
   } catch (error: unknown) {
@@ -66,19 +56,9 @@ export const handleTestimonialSubmission = async (req: Request, res: Response) =
 };
 
 export const handleGetTestimonials = async (req: Request, res: Response) => {
-  const db = getAdminFirestore();
-  if (!db) return res.status(503).json({ success: false, message: 'Firestore admin no disponible' });
-
   try {
     const limit = resolveOptionalLimit(req.query?.limit);
-    const snap = await db.collection('testimonials').get();
-    let data: TestimonialDocument[] = snap.docs
-      .map((doc) => ({ id: doc.id, ...(doc.data() as Record<string, unknown>) }))
-      .filter((testimonial) => !isSoftDeleted(testimonial));
-    data.sort((a, b) => String(b.createdAt || '').localeCompare(String(a.createdAt || '')));
-    if (limit !== null) {
-      data = data.slice(0, limit);
-    }
+    const data = await getTestimonials(limit ?? undefined);
     return res.json({ success: true, data });
   } catch (error: unknown) {
     appLogger.error('public.get_testimonials_failed', {
@@ -89,17 +69,13 @@ export const handleGetTestimonials = async (req: Request, res: Response) => {
 };
 
 export const handleGetTestimonialById = async (req: Request, res: Response) => {
-  const db = getAdminFirestore();
-  if (!db) return res.status(503).json({ success: false, message: 'Firestore admin no disponible' });
-
   try {
     const { testimonialId } = req.params;
-    const snap = await db.collection('testimonials').doc(testimonialId).get();
-    const data = snap.data() as Record<string, unknown> | undefined;
-    if (!snap.exists || isSoftDeleted(data)) {
+    const data = await getTestimonialRecordById(testimonialId);
+    if (!data) {
       return res.status(404).json({ success: false, message: 'Testimonio no encontrado' });
     }
-    return res.json({ success: true, data: { id: snap.id, ...data } });
+    return res.json({ success: true, data });
   } catch (error: unknown) {
     appLogger.error('public.get_testimonial_by_id_failed', {
       error: getErrorMessage(error, 'unknown_get_testimonial_by_id_error'),
@@ -110,19 +86,18 @@ export const handleGetTestimonialById = async (req: Request, res: Response) => {
 };
 
 export const handleUpdateTestimonial = async (req: Request, res: Response) => {
-  const db = getAdminFirestore();
-  if (!db) return res.status(503).json({ success: false, message: 'Firestore admin no disponible' });
-
   try {
     const { testimonialId } = req.params;
-    const payload = (req.body ?? {}) as Partial<TestimonialDocument>;
-    await db.collection('testimonials').doc(testimonialId).set(
-      {
-        ...payload,
-        updatedAt: new Date().toISOString(),
-      },
-      { merge: true }
-    );
+    const payload = (req.body ?? {}) as Record<string, unknown>;
+    await updateTestimonial(testimonialId, {
+      name: typeof payload.name === 'string' ? payload.name : undefined,
+      company: typeof payload.company === 'string' ? payload.company : undefined,
+      testimonial: typeof payload.testimonial === 'string' ? payload.testimonial : undefined,
+      isNew: typeof payload.isNew === 'boolean' ? payload.isNew : undefined,
+      isApproved: typeof payload.isApproved === 'boolean' ? payload.isApproved : undefined,
+      status: typeof payload.status === 'string' ? payload.status : undefined,
+      updatedAt: new Date().toISOString(),
+    });
     return res.json({ success: true });
   } catch (error: unknown) {
     appLogger.error('public.update_testimonial_failed', {
@@ -134,28 +109,12 @@ export const handleUpdateTestimonial = async (req: Request, res: Response) => {
 };
 
 export const handleDeleteTestimonial = async (req: Request, res: Response) => {
-  const db = getAdminFirestore();
-  if (!db) return res.status(503).json({ success: false, message: 'Firestore admin no disponible' });
-
   try {
     const { testimonialId } = req.params;
-    const testimonialRef = db.collection('testimonials').doc(testimonialId);
-    const snapshot = await testimonialRef.get();
-
-    if (!snapshot.exists) {
+    const deleted = await softDeleteTestimonial(testimonialId);
+    if (!deleted) {
       return res.status(404).json({ success: false, message: 'Testimonio no encontrado' });
     }
-
-    await testimonialRef.set(
-      {
-        deletedAt: new Date().toISOString(),
-        deletedBy: 'internal_api',
-        isDeleted: true,
-        status: 'deleted',
-        updatedAt: new Date().toISOString(),
-      },
-      { merge: true }
-    );
 
     appLogger.info('public.delete_testimonial_soft_deleted', {
       testimonialId,

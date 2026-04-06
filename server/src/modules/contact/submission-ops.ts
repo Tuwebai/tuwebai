@@ -3,13 +3,14 @@ import { env } from '../../config/env.config';
 import { queueContactEmail, type EmailData } from '../../infrastructure/mail/email.service';
 import { getErrorMessage } from '../../shared/utils/error-message';
 import { appLogger } from '../../utils/app-logger';
-import { storeSubmission } from '../../utils/submission-store';
-
-type SubmissionChannel = 'contact' | 'consulta' | 'propuesta';
+import {
+  storePublicSubmission,
+  type PublicSubmissionChannel,
+} from './submission-store.service';
 
 interface DispatchPublicSubmissionOptions {
   req: Pick<Request, 'path' | 'method'>;
-  channel: SubmissionChannel;
+  channel: PublicSubmissionChannel;
   event: string;
   storePayload: Record<string, unknown>;
   emailPayload: EmailData;
@@ -24,14 +25,22 @@ interface HandlePublicSubmissionErrorOptions {
   userMessage: string;
 }
 
-export const dispatchPublicSubmission = (
+export const dispatchPublicSubmission = async (
   res: Response,
   options: DispatchPublicSubmissionOptions,
 ) => {
-  storeSubmission(options.channel, {
-    ...options.storePayload,
-    createdAt: new Date().toISOString(),
+  await storePublicSubmission({
+    channel: options.channel,
+    name: typeof options.storePayload.name === 'string' ? options.storePayload.name : undefined,
+    email: typeof options.storePayload.email === 'string' ? options.storePayload.email : undefined,
+    title: typeof options.storePayload.title === 'string' ? options.storePayload.title : undefined,
+    message: typeof options.storePayload.message === 'string' ? options.storePayload.message : undefined,
     source: 'website',
+    payload: {
+      ...options.storePayload,
+      createdAt: new Date().toISOString(),
+      source: 'website',
+    },
   });
 
   queueContactEmail(options.emailPayload, {
