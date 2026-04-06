@@ -7,7 +7,12 @@ import {
   getContactFieldErrors,
 } from '@/features/contact/services/contact.service';
 import { useContactSubmission } from '@/features/contact/hooks/use-contact-submission';
-import analytics from '@/lib/analytics';
+import {
+  trackFreeDiagnosisFormClick,
+  trackFreeDiagnosisFormSubmit,
+  trackFreeDiagnosisHeroClick,
+  trackFreeDiagnosisWhatsAppClick,
+} from '@/features/contact/services/contact-analytics.service';
 import { cn } from '@/lib/utils';
 import {
   TUWEBAI_EMAIL,
@@ -327,7 +332,7 @@ export default function DiagnosticoGratuitoPage() {
       setSuccessEmail(form.email.trim());
       setSubmitState('sent');
       setForm(INITIAL_FORM_STATE);
-      analytics.trackFormSubmit('diagnostico_gratuito', 'diagnostico_page');
+      trackFreeDiagnosisFormSubmit();
     } catch (error) {
       const serverErrors = getContactFieldErrors(error);
       const nextErrors: DiagnosisFieldErrors = {};
@@ -374,13 +379,13 @@ export default function DiagnosticoGratuitoPage() {
         structuredData={DIAGNOSTICO_STRUCTURED_DATA}
       />
 
-      <main className="relative overflow-hidden bg-[#0a0a0f] text-white">
+      <main className="page-shell-surface relative overflow-hidden text-white">
         <AnimatedShape type={1} className="left-[-170px] top-16" delay={0.2} />
         <AnimatedShape type={2} className="right-[-140px] top-[28rem]" delay={0.5} />
 
         <section className="relative border-b border-white/10 px-4 pb-16 pt-28 sm:pb-20 sm:pt-32">
           <div className="mx-auto max-w-5xl">
-            <Badge className="mb-6 border-[#00CCFF]/30 bg-[#00CCFF]/10 px-4 py-1.5 text-[11px] uppercase tracking-[0.24em] text-[#9BE7FF]">
+            <Badge className="mb-6 border-[var(--signal-border)] bg-[var(--signal-glow)] px-4 py-1.5 text-[11px] uppercase tracking-[0.24em] text-[var(--signal)]">
               Gratis · Sin compromiso
             </Badge>
 
@@ -399,14 +404,8 @@ export default function DiagnosticoGratuitoPage() {
             <div className="mt-8">
               <a
                 href="#formulario-diagnostico"
-                onClick={() =>
-                  analytics.trackCtaClick(
-                    'quiero_mi_diagnostico_gratuito',
-                    'diagnostico_hero',
-                    '#formulario-diagnostico',
-                  )
-                }
-                className="inline-flex min-h-11 items-center justify-center rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-[#00CCFF]/20 transition-transform duration-200 hover:scale-[1.02]"
+                onClick={trackFreeDiagnosisHeroClick}
+                className="inline-flex min-h-11 items-center justify-center rounded-full bg-[image:var(--gradient-brand)] px-6 py-3 text-sm font-semibold text-white shadow-[var(--glow-signal)] transition-transform duration-200 hover:scale-[1.02]"
               >
                 Quiero mi diagnóstico gratuito →
               </a>
@@ -416,7 +415,7 @@ export default function DiagnosticoGratuitoPage() {
               ¿Querés hacer una auditoría web inicial por tu cuenta antes de pedir ayuda? Probá el{' '}
               <Link
                 to="/checklist-web-gratis"
-                className="font-semibold text-[#9BE7FF] transition hover:text-white"
+                className="font-semibold text-[var(--signal)] transition hover:text-white"
               >
                 Checklist web gratuito de 35 puntos →
               </Link>
@@ -428,7 +427,7 @@ export default function DiagnosticoGratuitoPage() {
         <section className="px-4 py-16 sm:py-20">
           <div className="mx-auto max-w-6xl">
             <div className="max-w-3xl">
-              <p className="mb-3 text-sm uppercase tracking-[0.24em] text-[#9BE7FF]">
+              <p className="mb-3 text-sm uppercase tracking-[0.24em] text-[var(--signal)]">
                 Qué incluye el diagnóstico
               </p>
               <h2 className="font-rajdhani text-3xl font-bold sm:text-4xl">
@@ -445,10 +444,10 @@ export default function DiagnosticoGratuitoPage() {
               {DIAGNOSIS_FEATURES.map(({ title, description, icon: Icon }) => (
                 <Card
                   key={title}
-                  className="border-white/10 bg-[linear-gradient(180deg,rgba(19,19,28,0.92)_0%,rgba(12,12,18,0.96)_100%)] text-white shadow-[0_20px_50px_rgba(0,0,0,0.24)]"
+                  className="border-white/10 bg-[var(--bg-surface)] text-white shadow-[var(--shadow-elevated)]"
                 >
                   <CardHeader className="space-y-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#00CCFF]/12 text-[#9BE7FF]">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--signal-glow)] text-[var(--signal)]">
                       <Icon className="h-6 w-6" />
                     </div>
                     <CardTitle className="font-rajdhani text-2xl">{title}</CardTitle>
@@ -464,11 +463,11 @@ export default function DiagnosticoGratuitoPage() {
 
         <section
           id="formulario-diagnostico"
-          className="border-y border-white/10 bg-[linear-gradient(180deg,rgba(17,17,25,0.95)_0%,rgba(10,10,15,0.98)_100%)] px-4 py-16 sm:py-20"
+          className="border-y border-white/10 bg-[var(--bg-overlay)] px-4 py-16 sm:py-20"
         >
           <div className="mx-auto max-w-3xl">
             <div className="mb-10 text-center">
-              <p className="mb-3 text-sm uppercase tracking-[0.24em] text-[#9BE7FF]">Formulario</p>
+              <p className="mb-3 text-sm uppercase tracking-[0.24em] text-[var(--signal)]">Formulario</p>
               <h2 className="font-rajdhani text-3xl font-bold sm:text-4xl">
                 Completá el formulario y te respondemos
                 <br />
@@ -476,7 +475,7 @@ export default function DiagnosticoGratuitoPage() {
               </h2>
             </div>
 
-            <div className="rounded-[28px] border border-white/10 bg-[#0f1017]/92 p-6 shadow-[0_30px_70px_rgba(0,0,0,0.35)] sm:p-8">
+            <div className="rounded-[28px] border border-white/10 bg-[var(--bg-surface)] p-6 shadow-[var(--shadow-modal)] sm:p-8">
               {submitState === 'sent' ? (
                 <div className="space-y-5 text-center">
                   <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-500/15 text-emerald-300">
@@ -489,7 +488,7 @@ export default function DiagnosticoGratuitoPage() {
                     <p className="text-base leading-7 text-gray-300">
                       Te respondemos en menos de 24 horas a <span className="text-white">{successEmail}</span>.
                       Mientras tanto, podés ver cómo trabajamos en{' '}
-                      <Link to="/proceso" className="text-[#9BE7FF] underline underline-offset-4">
+                      <Link to="/proceso" className="text-[var(--signal)] underline underline-offset-4">
                         /proceso
                       </Link>
                       .
@@ -498,7 +497,7 @@ export default function DiagnosticoGratuitoPage() {
                   <Button
                     type="button"
                     onClick={() => setSubmitState('idle')}
-                    className="min-h-11 rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-6 text-white"
+                    className="min-h-11 rounded-full bg-[image:var(--gradient-brand)] px-6 text-white shadow-[var(--glow-signal)]"
                   >
                     Enviar otra solicitud
                   </Button>
@@ -522,7 +521,7 @@ export default function DiagnosticoGratuitoPage() {
                       placeholder="Tu nombre"
                       autoComplete="name"
                       className={cn(
-                        'min-h-11 border-white/10 bg-[#12131b] text-white placeholder:text-gray-500',
+                        'min-h-11 border-white/10 bg-[var(--bg-elevated)] text-white placeholder:text-gray-500',
                         errors.name && 'border-red-400 focus-visible:ring-red-400',
                       )}
                     />
@@ -541,7 +540,7 @@ export default function DiagnosticoGratuitoPage() {
                       placeholder="tu@email.com"
                       autoComplete="email"
                       className={cn(
-                        'min-h-11 border-white/10 bg-[#12131b] text-white placeholder:text-gray-500',
+                        'min-h-11 border-white/10 bg-[var(--bg-elevated)] text-white placeholder:text-gray-500',
                         errors.email && 'border-red-400 focus-visible:ring-red-400',
                       )}
                     />
@@ -559,7 +558,7 @@ export default function DiagnosticoGratuitoPage() {
                       placeholder="https://tusitio.com"
                       inputMode="url"
                       className={cn(
-                        'min-h-11 border-white/10 bg-[#12131b] text-white placeholder:text-gray-500',
+                        'min-h-11 border-white/10 bg-[var(--bg-elevated)] text-white placeholder:text-gray-500',
                         errors.website && 'border-red-400 focus-visible:ring-red-400',
                       )}
                     />
@@ -582,11 +581,11 @@ export default function DiagnosticoGratuitoPage() {
                         <label
                           key={option}
                           className={cn(
-                            'flex min-h-11 cursor-pointer items-start gap-3 rounded-2xl border border-white/10 bg-[#12131b] px-4 py-3 text-sm text-gray-300 transition-colors hover:border-[#00CCFF]/40 hover:bg-[#151826]',
-                            form.mainProblem === option && 'border-[#00CCFF]/60 bg-[#00CCFF]/10 text-white',
+                            'flex min-h-11 cursor-pointer items-start gap-3 rounded-2xl border border-white/10 bg-[var(--bg-elevated)] px-4 py-3 text-sm text-gray-300 transition-colors hover:border-[var(--signal-border)] hover:bg-[var(--bg-subtle)]',
+                            form.mainProblem === option && 'border-[var(--signal-border)] bg-[var(--signal-glow)] text-white',
                           )}
                         >
-                          <RadioGroupItem value={option} className="mt-1 border-[#00CCFF] text-[#00CCFF]" />
+                          <RadioGroupItem value={option} className="mt-1 border-[var(--signal)] text-[var(--signal)]" />
                           <span>{option}</span>
                         </label>
                       ))}
@@ -604,7 +603,7 @@ export default function DiagnosticoGratuitoPage() {
                       placeholder="Contanos cualquier detalle extra que quieras que sepamos"
                       rows={5}
                       className={cn(
-                        'min-h-[132px] border-white/10 bg-[#12131b] text-white placeholder:text-gray-500',
+                        'min-h-[132px] border-white/10 bg-[var(--bg-elevated)] text-white placeholder:text-gray-500',
                         errors.message && 'border-red-400 focus-visible:ring-red-400',
                       )}
                     />
@@ -615,14 +614,8 @@ export default function DiagnosticoGratuitoPage() {
                     <Button
                       type="submit"
                       disabled={submitState === 'submitting'}
-                      onClick={() =>
-                        analytics.trackCtaClick(
-                          'quiero_mi_diagnostico_gratuito',
-                          'diagnostico_form',
-                          'diagnostico_gratuito',
-                        )
-                      }
-                      className="min-h-11 w-full rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-6 text-base font-semibold text-white"
+                      onClick={trackFreeDiagnosisFormClick}
+                      className="min-h-11 w-full rounded-full bg-[image:var(--gradient-brand)] px-6 text-base font-semibold text-white shadow-[var(--glow-signal)]"
                     >
                       {submitState === 'submitting'
                         ? 'Enviando...'
@@ -640,7 +633,7 @@ export default function DiagnosticoGratuitoPage() {
 
         <section className="px-4 py-16 sm:py-20">
           <div className="mx-auto max-w-3xl text-center">
-            <p className="mb-3 text-sm uppercase tracking-[0.24em] text-[#9BE7FF]">
+            <p className="mb-3 text-sm uppercase tracking-[0.24em] text-[var(--signal)]">
               Por qué hacemos esto gratis
             </p>
             <div className="space-y-5 text-base leading-8 text-gray-300 sm:text-lg">
@@ -658,7 +651,7 @@ export default function DiagnosticoGratuitoPage() {
         <section className="border-t border-white/10 px-4 py-16 sm:py-20">
           <div className="mx-auto max-w-4xl">
             <div className="text-center">
-              <p className="mb-3 text-sm uppercase tracking-[0.24em] text-[#9BE7FF]">
+              <p className="mb-3 text-sm uppercase tracking-[0.24em] text-[var(--signal)]">
                 Preguntas frecuentes
               </p>
               <h2 className="font-rajdhani text-3xl font-bold sm:text-4xl">
@@ -666,7 +659,7 @@ export default function DiagnosticoGratuitoPage() {
               </h2>
             </div>
 
-            <div className="mt-10 rounded-[28px] border border-white/10 bg-[#0f1017]/92 p-3 sm:p-4">
+            <div className="mt-10 rounded-[28px] border border-white/10 bg-[var(--bg-surface)] p-3 sm:p-4">
               <Accordion type="single" collapsible className="w-full">
                 {DIAGNOSTICO_FAQS.map((faq) => (
                   <AccordionItem key={faq.value} value={faq.value} className="border-white/10 px-3">
@@ -684,8 +677,8 @@ export default function DiagnosticoGratuitoPage() {
         </section>
 
         <section className="border-t border-white/10 px-4 py-16 sm:py-20">
-          <div className="mx-auto max-w-4xl rounded-[28px] border border-white/10 bg-[linear-gradient(180deg,rgba(19,19,28,0.92)_0%,rgba(11,11,17,0.96)_100%)] p-8 text-center shadow-[0_30px_70px_rgba(0,0,0,0.28)]">
-            <p className="mb-3 text-sm uppercase tracking-[0.24em] text-[#9BE7FF]">
+          <div className="mx-auto max-w-4xl rounded-[28px] border border-white/10 bg-[var(--bg-surface)] p-8 text-center shadow-[var(--shadow-modal)]">
+            <p className="mb-3 text-sm uppercase tracking-[0.24em] text-[var(--signal)]">
               CTA directo
             </p>
             <h2 className="font-rajdhani text-3xl font-bold sm:text-4xl">
@@ -700,11 +693,8 @@ export default function DiagnosticoGratuitoPage() {
                 href={whatsappHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={() => {
-                  analytics.trackCtaClick('whatsapp_diagnostico', 'diagnostico_direct_cta', whatsappHref);
-                  analytics.trackOutboundClick(whatsappHref, 'diagnostico_direct_cta', 'Escribinos por WhatsApp', 'whatsapp');
-                }}
-                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-[#25D366]/40 bg-[#25D366]/12 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#25D366]/20"
+                onClick={() => trackFreeDiagnosisWhatsAppClick(whatsappHref)}
+                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-[var(--border-default)] bg-[var(--bg-elevated)] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[var(--bg-subtle)]"
               >
                 <BarChart3 className="h-4 w-4" />
                 Escribinos por WhatsApp →

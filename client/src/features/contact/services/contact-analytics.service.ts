@@ -35,3 +35,30 @@ export const trackContactWhatsAppClick = () =>
     'Escribinos por WhatsApp',
     'whatsapp',
   );
+
+export const trackFreeDiagnosisHeroClick = () =>
+  analytics.trackCtaClick(
+    'quiero_mi_diagnostico_gratuito',
+    'diagnostico_hero',
+    '#formulario-diagnostico',
+  );
+
+export const trackFreeDiagnosisFormSubmit = () =>
+  analytics.trackFormSubmit('diagnostico_gratuito', 'diagnostico_page');
+
+export const trackFreeDiagnosisFormClick = () =>
+  analytics.trackCtaClick(
+    'quiero_mi_diagnostico_gratuito',
+    'diagnostico_form',
+    'diagnostico_gratuito',
+  );
+
+export const trackFreeDiagnosisWhatsAppClick = (whatsappHref: string) => {
+  analytics.trackCtaClick('whatsapp_diagnostico', 'diagnostico_direct_cta', whatsappHref);
+  analytics.trackOutboundClick(
+    whatsappHref,
+    'diagnostico_direct_cta',
+    'Escribinos por WhatsApp',
+    'whatsapp',
+  );
+};
