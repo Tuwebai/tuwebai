@@ -13,7 +13,7 @@ import {
 import { TUWEBAI_SITE_FULL_URL } from '@/shared/constants/contact';
 import type { User, RegisterData } from '../types';
 import { getAuthErrorMessage } from '../services/auth-error';
-import { getAuthUsersService, syncAuthSessionUser } from '../services/auth-user-sync';
+import { getAuthUsersService } from '../services/auth-user-sync';
 
 const getAuthActionBaseUrl = () => {
   if (typeof window !== 'undefined' && window.location.origin) {
@@ -44,19 +44,13 @@ export const useGoogleLoginMutation = () => {
 
   return useMutation({
     mutationFn: async () => {
-      const result = await signInWithGooglePopup();
-      const dbUser = await syncAuthSessionUser(result.user, { reloadBeforeSync: true });
-      if (!dbUser) {
-        throw new Error('No pudimos sincronizar la sesion de Google.');
-      }
-
-      const firebaseUser = result.user;
-      return { firebaseUser, dbUser };
+      await signInWithGooglePopup();
+      return { redirected: true };
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       toast({
-        title: 'Inicio de sesión exitoso',
-        description: `Bienvenido${data.firebaseUser.displayName ? `, ${data.firebaseUser.displayName}` : ''}!`,
+        title: 'Continuá con Google',
+        description: 'Te estamos redirigiendo para completar el acceso seguro.',
       });
     },
     onError: (error: unknown) => {

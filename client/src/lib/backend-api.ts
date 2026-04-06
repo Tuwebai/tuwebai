@@ -18,6 +18,15 @@ export interface PaymentStatusResponse {
   };
 }
 
+export interface AuthMeResponse {
+  success: boolean;
+  data?: {
+    admin?: boolean;
+    email?: string;
+    uid: string;
+  };
+}
+
 const withEmailQuery = (basePath: string, email?: string) => {
   if (!email?.trim()) {
     return basePath;
@@ -35,6 +44,9 @@ export const backendApi = {
 
   getUser: (uid: string) =>
     apiFetch<{ success: boolean; data?: User }>(`/api/users/${encodeURIComponent(uid)}`),
+
+  getAuthMe: () =>
+    apiFetch<AuthMeResponse>('/api/auth/me'),
 
   upsertUser: (uid: string, payload: Partial<User>) =>
     apiFetch<{ success: boolean }>(`/api/users/${encodeURIComponent(uid)}`, {

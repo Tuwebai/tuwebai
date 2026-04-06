@@ -133,7 +133,7 @@ export default function AuthActionPage() {
   const handleResetPassword = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (pageState.kind !== 'ready' || pageState.action.mode !== 'resetPassword' || resolvedAction.kind !== 'firebase') {
+    if (pageState.kind !== 'ready' || pageState.action.mode !== 'resetPassword' || resolvedAction.kind !== 'supabase') {
       return;
     }
 
@@ -151,7 +151,7 @@ export default function AuthActionPage() {
     setIsSubmitting(true);
 
     try {
-      await resetPassword(resolvedAction.code, newPassword);
+      await resetPassword(resolvedAction.tokenHash, newPassword);
       await recordPasswordReset({
         email: pageState.action.email,
         passwordChangedAt: new Date().toISOString(),

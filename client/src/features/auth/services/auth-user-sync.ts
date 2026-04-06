@@ -3,6 +3,7 @@ import {
   reloadAuthUser,
   type AuthSessionUser,
 } from '@/core/auth/auth-client';
+import { backendApi } from '@/lib/backend-api';
 import type { User } from '@/features/auth/types';
 
 import { isGoogleAuthUser, mergeFirebaseUserData } from './auth-avatar';
@@ -93,11 +94,18 @@ export const syncAuthSessionUser = async (
     await reloadAuthUser(authUser);
   }
 
-  const currentAuthUser = getCurrentAuthUser() ?? authUser;
+  const currentAuthUser = (await getCurrentAuthUser()) ?? authUser;
+  const authIdentity = timeoutMs
+    ? await withTimeout(backendApi.getAuthMe().then((response) => response.data ?? null), timeoutMs, null)
+    : await backendApi.getAuthMe().then((response) => response.data ?? null);
+  const resolvedUid = authIdentity?.uid ?? currentAuthUser.uid;
   const persistedUser = timeoutMs
-    ? await withTimeout(getUser(currentAuthUser.uid), timeoutMs, null)
-    : await getUser(currentAuthUser.uid);
+    ? await withTimeout(getUser(resolvedUid), timeoutMs, null)
+    : await getUser(resolvedUid);
   const nextUser = mergeFirebaseUserData(currentAuthUser, persistedUser);
+  nextUser.uid = resolvedUid;
+  nextUser.email = authIdentity?.email || nextUser.email;
+  nextUser.role = authIdentity?.admin ? 'admin' : nextUser.role;
 
   if (shouldPersistMergedUser(currentAuthUser, nextUser, persistedUser)) {
     await setUser(nextUser);

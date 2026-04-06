@@ -1,10 +1,10 @@
-export type FirebaseAuthActionMode = 'resetPassword' | 'verifyEmail' | 'recoverEmail';
+export type SupabaseAuthActionMode = 'resetPassword' | 'verifyEmail' | 'recoverEmail';
 
 export type ResolvedAuthAction =
   | {
-    kind: 'firebase';
-    mode: FirebaseAuthActionMode;
-    code: string;
+    kind: 'supabase';
+    mode: SupabaseAuthActionMode;
+    tokenHash: string;
   }
   | {
     kind: 'legacy-verify';

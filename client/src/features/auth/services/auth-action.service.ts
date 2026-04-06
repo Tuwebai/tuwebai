@@ -1,6 +1,7 @@
-import { applyActionCode, checkActionCode, verifyPasswordResetCode } from 'firebase/auth';
-
-import { auth } from '@/lib/firebase';
+import {
+  verifyAuthPasswordResetCode,
+  verifyAuthTokenHash,
+} from '@/core/auth/auth-client';
 import type { PreparedAuthAction, ResolvedAuthAction } from '@/features/auth/types/auth-action';
 
 interface ResolveAuthActionInput {
@@ -8,20 +9,28 @@ interface ResolveAuthActionInput {
   token?: string;
 }
 
-interface FirebaseActionData {
+interface SupabaseActionData {
   email?: string;
   previousEmail?: string;
 }
 
-const getActionEmail = (data: FirebaseActionData): string | null => data.email ?? data.previousEmail ?? null;
+const getActionEmail = (data: SupabaseActionData): string | null => data.email ?? data.previousEmail ?? null;
 
 export const resolveAuthAction = ({ searchParams, token }: ResolveAuthActionInput): ResolvedAuthAction => {
-  const mode = searchParams.get('mode');
-  const code = searchParams.get('oobCode');
+  const type = searchParams.get('type');
+  const tokenHash = searchParams.get('token_hash');
 
-  if (mode && code) {
-    if (mode === 'resetPassword' || mode === 'verifyEmail' || mode === 'recoverEmail') {
-      return { kind: 'firebase', mode, code };
+  if (type && tokenHash) {
+    if (type === 'recovery') {
+      return { kind: 'supabase', mode: 'resetPassword', tokenHash };
+    }
+
+    if (type === 'signup' || type === 'email') {
+      return { kind: 'supabase', mode: 'verifyEmail', tokenHash };
+    }
+
+    if (type === 'email_change') {
+      return { kind: 'supabase', mode: 'recoverEmail', tokenHash };
     }
 
     return { kind: 'invalid', reason: 'La acción solicitada no está soportada.' };
@@ -34,17 +43,23 @@ export const resolveAuthAction = ({ searchParams, token }: ResolveAuthActionInpu
   return { kind: 'invalid', reason: 'El enlace no contiene un código de acción válido.' };
 };
 
-export const prepareAuthAction = async (action: Extract<ResolvedAuthAction, { kind: 'firebase' }>): Promise<PreparedAuthAction> => {
+export const prepareAuthAction = async (action: Extract<ResolvedAuthAction, { kind: 'supabase' }>): Promise<PreparedAuthAction> => {
   if (action.mode === 'resetPassword') {
-    const email = await verifyPasswordResetCode(auth, action.code);
+    const result = await verifyAuthTokenHash(action.tokenHash, 'recovery');
+    const email = result.user.email ?? (await verifyAuthPasswordResetCode(action.tokenHash));
     return {
       mode: 'resetPassword',
       email,
     };
   }
 
-  const info = await checkActionCode(auth, action.code);
-  const email = getActionEmail(info.data as FirebaseActionData);
+  const result = await verifyAuthTokenHash(
+    action.tokenHash,
+    action.mode === 'recoverEmail' ? 'email_change' : 'email',
+  );
+  const email = getActionEmail({
+    email: result.user.email ?? undefined,
+  });
 
   return {
     mode: action.mode,
@@ -52,8 +67,4 @@ export const prepareAuthAction = async (action: Extract<ResolvedAuthAction, { ki
   };
 };
 
-export const applyPreparedAuthAction = async (action: Extract<ResolvedAuthAction, { kind: 'firebase' }>) => {
-  if (action.mode === 'verifyEmail' || action.mode === 'recoverEmail') {
-    await applyActionCode(auth, action.code);
-  }
-};
+export const applyPreparedAuthAction = async (_action: Extract<ResolvedAuthAction, { kind: 'supabase' }>) => {};

@@ -65,13 +65,12 @@ export const useAuthProviderActions = ({
   const loginWithGoogle = useCallback(async () => {
     setError(null);
     try {
-      const { dbUser } = await googleLoginMutation.mutateAsync();
-      setUserState(dbUser);
+      await googleLoginMutation.mutateAsync();
     } catch (error: unknown) {
       setError(getAuthErrorMessage(error, 'Error al iniciar sesión con Google'));
       throw error;
     }
-  }, [googleLoginMutation, setError, setUserState]);
+  }, [googleLoginMutation, setError]);
 
   const logout = useCallback(async () => {
     setError(null);
