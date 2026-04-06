@@ -1,8 +1,14 @@
 import { Request, Response } from 'express';
-import { getFirestore as getAdminFirestore } from '../../infrastructure/firebase/firestore';
 import { getErrorMessage } from '../../shared/utils/error-message';
 import { appLogger } from '../../utils/app-logger';
 import { resolveOptionalLimit } from '../../shared/utils/list-limit';
+import {
+  createSupportTicket,
+  getAllSupportTickets,
+  getSupportTicketById,
+  getSupportTicketsByUserId,
+  updateSupportTicket,
+} from './supabase.repository';
 
 type TicketResponseDocument = {
   id: string;
@@ -25,17 +31,17 @@ type SupportTicketDocument = {
 } & Record<string, unknown>;
 
 export const handleCreateTicket = async (req: Request, res: Response) => {
-  const db = getAdminFirestore();
-  if (!db) return res.status(503).json({ success: false, message: 'Firestore admin no disponible' });
-
   try {
     const payload = (req.body ?? {}) as Partial<SupportTicketDocument>;
-    const ref = await db.collection('support_tickets').add({
-      ...payload,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+    const created = await createSupportTicket({
+      userId: String(payload.userId || ''),
+      subject: String(payload.subject || ''),
+      message: String(payload.message || ''),
+      status: payload.status ?? 'open',
+      priority: payload.priority ?? 'medium',
+      responses: payload.responses ?? [],
     });
-    return res.status(201).json({ success: true, id: ref.id });
+    return res.status(201).json({ success: true, id: created.id });
   } catch (error: unknown) {
     appLogger.error('public.create_ticket_failed', {
       error: getErrorMessage(error, 'unknown_create_ticket_error'),
@@ -45,19 +51,13 @@ export const handleCreateTicket = async (req: Request, res: Response) => {
 };
 
 export const handleUpdateTicket = async (req: Request, res: Response) => {
-  const db = getAdminFirestore();
-  if (!db) return res.status(503).json({ success: false, message: 'Firestore admin no disponible' });
-
   try {
     const { ticketId } = req.params;
     const payload = (req.body ?? {}) as Partial<SupportTicketDocument>;
-    await db.collection('support_tickets').doc(ticketId).set(
-      {
-        ...payload,
-        updatedAt: new Date().toISOString(),
-      },
-      { merge: true }
-    );
+    await updateSupportTicket(ticketId, {
+      ...payload,
+      updatedAt: new Date().toISOString(),
+    });
     return res.json({ success: true });
   } catch (error: unknown) {
     appLogger.error('public.update_ticket_failed', {
@@ -69,12 +69,8 @@ export const handleUpdateTicket = async (req: Request, res: Response) => {
 };
 
 export const handleAddTicketResponse = async (req: Request, res: Response) => {
-  const db = getAdminFirestore();
-  if (!db) return res.status(503).json({ success: false, message: 'Firestore admin no disponible' });
-
   try {
     const { ticketId } = req.params;
-    const ref = db.collection('support_tickets').doc(ticketId);
     const preloadedResource = res.locals.resourceDocument as
       | { data?: SupportTicketDocument }
       | undefined;
@@ -84,27 +80,32 @@ export const handleAddTicketResponse = async (req: Request, res: Response) => {
         return null;
       })();
 
-    const snapshot = currentData ? null : await ref.get();
-    if (!currentData && !snapshot?.exists) {
+    const loadedTicket = currentData ?? (await getSupportTicketById(ticketId));
+    if (!loadedTicket) {
       return res.status(404).json({ success: false, message: 'Ticket no encontrado' });
     }
 
-    const sourceData = currentData || (((snapshot?.data() as SupportTicketDocument | undefined) ?? {}) as SupportTicketDocument);
+    const sourceData = loadedTicket;
     const currentResponses = sourceData.responses ?? [];
     const incomingResponse = (req.body ?? {}) as Omit<TicketResponseDocument, 'id'>;
-    const newResponse = {
+    const newResponse: TicketResponseDocument = {
       id: Date.now().toString(),
-      ...incomingResponse,
-      createdAt: incomingResponse.createdAt || new Date().toISOString(),
+      message: typeof incomingResponse.message === 'string' ? incomingResponse.message : undefined,
+      author: typeof incomingResponse.author === 'string' ? incomingResponse.author : undefined,
+      authorType:
+        incomingResponse.authorType === 'client' || incomingResponse.authorType === 'admin'
+          ? incomingResponse.authorType
+          : undefined,
+      createdAt:
+        typeof incomingResponse.createdAt === 'string'
+          ? incomingResponse.createdAt
+          : new Date().toISOString(),
     };
 
-    await ref.set(
-      {
-        responses: [...currentResponses, newResponse],
-        updatedAt: new Date().toISOString(),
-      },
-      { merge: true }
-    );
+    await updateSupportTicket(ticketId, {
+      responses: [...currentResponses, newResponse],
+      updatedAt: new Date().toISOString(),
+    });
 
     return res.json({ success: true });
   } catch (error: unknown) {
@@ -117,21 +118,10 @@ export const handleAddTicketResponse = async (req: Request, res: Response) => {
 };
 
 export const handleGetUserTickets = async (req: Request, res: Response) => {
-  const db = getAdminFirestore();
-  if (!db) return res.status(503).json({ success: false, message: 'Firestore admin no disponible' });
-
   try {
     const { uid } = req.params;
     const limit = resolveOptionalLimit(req.query?.limit);
-    const snap = await db.collection('support_tickets').where('userId', '==', uid).get();
-    let data: SupportTicketDocument[] = snap.docs.map((doc) => ({
-      id: doc.id,
-      ...(doc.data() as Record<string, unknown>),
-    }));
-    data.sort((a, b) => String(b.createdAt || '').localeCompare(String(a.createdAt || '')));
-    if (limit !== null) {
-      data = data.slice(0, limit);
-    }
+    const data = await getSupportTicketsByUserId(uid, limit ?? undefined);
     return res.json({ success: true, data });
   } catch (error: unknown) {
     appLogger.error('public.get_user_tickets_failed', {
@@ -143,14 +133,11 @@ export const handleGetUserTickets = async (req: Request, res: Response) => {
 };
 
 export const handleGetTicketById = async (req: Request, res: Response) => {
-  const db = getAdminFirestore();
-  if (!db) return res.status(503).json({ success: false, message: 'Firestore admin no disponible' });
-
   try {
     const { ticketId } = req.params;
-    const snap = await db.collection('support_tickets').doc(ticketId).get();
-    if (!snap.exists) return res.status(404).json({ success: false, message: 'Ticket no encontrado' });
-    return res.json({ success: true, data: { id: snap.id, ...(snap.data() as Record<string, unknown>) } });
+    const ticket = await getSupportTicketById(ticketId);
+    if (!ticket) return res.status(404).json({ success: false, message: 'Ticket no encontrado' });
+    return res.json({ success: true, data: ticket });
   } catch (error: unknown) {
     appLogger.error('public.get_ticket_by_id_failed', {
       error: getErrorMessage(error, 'unknown_get_ticket_by_id_error'),
@@ -161,20 +148,9 @@ export const handleGetTicketById = async (req: Request, res: Response) => {
 };
 
 export const handleGetAllTickets = async (req: Request, res: Response) => {
-  const db = getAdminFirestore();
-  if (!db) return res.status(503).json({ success: false, message: 'Firestore admin no disponible' });
-
   try {
     const limit = resolveOptionalLimit(req.query?.limit);
-    const snap = await db.collection('support_tickets').get();
-    let data: SupportTicketDocument[] = snap.docs.map((doc) => ({
-      id: doc.id,
-      ...(doc.data() as Record<string, unknown>),
-    }));
-    data.sort((a, b) => String(b.createdAt || '').localeCompare(String(a.createdAt || '')));
-    if (limit !== null) {
-      data = data.slice(0, limit);
-    }
+    const data = await getAllSupportTickets(limit ?? undefined);
     return res.json({ success: true, data });
   } catch (error: unknown) {
     appLogger.error('public.get_all_tickets_failed', {

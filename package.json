@@ -38,6 +38,7 @@
     "supabase:backfill:users": "npx tsx scripts/backfill-users-to-supabase.ts",
     "supabase:backfill:newsletter": "npx tsx scripts/backfill-newsletter-to-supabase.ts",
     "supabase:backfill:testimonials": "npx tsx scripts/backfill-testimonials-to-supabase.ts",
+    "supabase:backfill:projects-support": "npx tsx scripts/backfill-projects-support-to-supabase.ts",
     "supabase:sync:auth": "npx tsx scripts/supabase-sync-auth-identities.ts",
     "supabase:init:storage": "npx tsx scripts/supabase-init-storage.ts"
   },

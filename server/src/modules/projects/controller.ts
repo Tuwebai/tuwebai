@@ -1,8 +1,12 @@
 import { Request, Response } from 'express';
-import { getFirestore as getAdminFirestore } from '../../infrastructure/firebase/firestore';
 import { getErrorMessage } from '../../shared/utils/error-message';
 import { appLogger } from '../../utils/app-logger';
 import { resolveOptionalLimit } from '../../shared/utils/list-limit';
+import {
+  getAllProjects as getAllProjectsRecords,
+  getProjectByUserId,
+  updateProjectRecord,
+} from './supabase.repository';
 
 type ProjectDocument = {
   id?: string;
@@ -12,19 +16,13 @@ type ProjectDocument = {
 } & Record<string, unknown>;
 
 export const handleUpdateProject = async (req: Request, res: Response) => {
-  const db = getAdminFirestore();
-  if (!db) return res.status(503).json({ success: false, message: 'Firestore admin no disponible' });
-
   try {
     const { projectId } = req.params;
     const payload = (req.body ?? {}) as Partial<ProjectDocument>;
-    await db.collection('projects').doc(projectId).set(
-      {
-        ...payload,
-        updatedAt: new Date().toISOString(),
-      },
-      { merge: true }
-    );
+    await updateProjectRecord(projectId, {
+      ...payload,
+      updatedAt: new Date().toISOString(),
+    });
     return res.json({ success: true });
   } catch (error: unknown) {
     appLogger.error('public.update_project_failed', {
@@ -36,15 +34,10 @@ export const handleUpdateProject = async (req: Request, res: Response) => {
 };
 
 export const handleGetUserProject = async (req: Request, res: Response) => {
-  const db = getAdminFirestore();
-  if (!db) return res.status(503).json({ success: false, message: 'Firestore admin no disponible' });
-
   try {
     const { uid } = req.params;
-    const snap = await db.collection('projects').where('userId', '==', uid).limit(1).get();
-    if (snap.empty) return res.json({ success: true, data: null });
-    const doc = snap.docs[0];
-    return res.json({ success: true, data: { id: doc.id, ...(doc.data() as Record<string, unknown>) } });
+    const project = await getProjectByUserId(uid);
+    return res.json({ success: true, data: project });
   } catch (error: unknown) {
     appLogger.error('public.get_user_project_failed', {
       error: getErrorMessage(error, 'unknown_get_user_project_error'),
@@ -55,20 +48,9 @@ export const handleGetUserProject = async (req: Request, res: Response) => {
 };
 
 export const handleGetAllProjects = async (req: Request, res: Response) => {
-  const db = getAdminFirestore();
-  if (!db) return res.status(503).json({ success: false, message: 'Firestore admin no disponible' });
-
   try {
     const limit = resolveOptionalLimit(req.query?.limit);
-    const snap = await db.collection('projects').get();
-    let data: ProjectDocument[] = snap.docs.map((doc) => ({
-      id: doc.id,
-      ...(doc.data() as Record<string, unknown>),
-    }));
-    data.sort((a, b) => String(b.createdAt || '').localeCompare(String(a.createdAt || '')));
-    if (limit !== null) {
-      data = data.slice(0, limit);
-    }
+    const data = await getAllProjectsRecords(limit ?? undefined);
     return res.json({ success: true, data });
   } catch (error: unknown) {
     appLogger.error('public.get_all_projects_failed', {

@@ -1,6 +1,5 @@
 import { type NextFunction, type Request, type Response } from 'express';
 import { env } from '../config/env.config';
-import { getFirestore as getAdminFirestore } from '../infrastructure/firebase/firestore';
 import type { AuthUser } from '../shared/types/auth-user';
 import { appLogger } from '../utils/app-logger';
 import {
@@ -9,6 +8,8 @@ import {
   type AccessRole,
   type ResourceType,
 } from '../security/access-policy';
+import { getProjectById } from '../modules/projects/supabase.repository';
+import { getSupportTicketById } from '../modules/support/supabase.repository';
 
 type ResourceDocument = {
   id: string;
@@ -68,37 +69,26 @@ const hasRequiredRole = (requiredRoles: readonly AccessRole[], authUser: AuthUse
   return false;
 };
 
-const getResourceConfig = (resourceType: ResourceType): { collectionName: string; ownerField: string } => {
-  if (resourceType === 'tickets') {
-    return { collectionName: 'support_tickets', ownerField: 'userId' };
-  }
-
-  return { collectionName: 'projects', ownerField: 'userId' };
-};
-
 const loadResourceDocument = async (
   resourceType: ResourceType,
   resourceId: string
 ): Promise<ResourceDocument | null> => {
-  const db = getAdminFirestore();
-  if (!db) return null;
+  const resource =
+    resourceType === 'tickets'
+      ? await getSupportTicketById(resourceId)
+      : await getProjectById(resourceId);
 
-  const { collectionName, ownerField } = getResourceConfig(resourceType);
-  const snapshot = await db.collection(collectionName).doc(resourceId).get();
-  if (!snapshot.exists) {
+  if (!resource) {
     return {
       id: resourceId,
       data: {},
     };
   }
 
-  const data = (snapshot.data() || {}) as Record<string, unknown>;
-  const ownerValue = data[ownerField];
-
   return {
-    id: snapshot.id,
-    ownerUid: typeof ownerValue === 'string' ? ownerValue : undefined,
-    data,
+    id: resource.id,
+    ownerUid: typeof resource.userId === 'string' ? resource.userId : undefined,
+    data: resource as unknown as Record<string, unknown>,
   };
 };
 
@@ -154,16 +144,6 @@ export const checkResourceOwnership =
       return res.status(403).json({ success: false, message: 'No autorizado para este recurso' });
     }
 
-    if (!getAdminFirestore()) {
-      logAccessRejected(req, res, {
-        statusCode: 503,
-        reason: 'firestore_admin_unavailable',
-        resourceType,
-        resourceId,
-      });
-      return res.status(503).json({ success: false, message: 'Firestore admin no disponible' });
-    }
-
     const resourceDocument = await loadResourceDocument(resourceType, resourceId);
     if (!resourceDocument) {
       logAccessRejected(req, res, {
@@ -172,7 +152,7 @@ export const checkResourceOwnership =
         resourceType,
         resourceId,
       });
-      return res.status(503).json({ success: false, message: 'Firestore admin no disponible' });
+      return res.status(503).json({ success: false, message: 'Persistencia no disponible' });
     }
 
     if (Object.keys(resourceDocument.data).length === 0) {
