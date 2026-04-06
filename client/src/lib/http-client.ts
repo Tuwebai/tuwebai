@@ -1,4 +1,6 @@
 import { API_URL } from '@/lib/api';
+import { getCurrentAccessToken } from '@/core/auth/auth-client';
+import type { ApiErrorResponse, ApiResponse } from '@/core/contracts/api-response';
 
 type PrimitiveBody = string | FormData | URLSearchParams | Blob | ArrayBuffer | null | undefined;
 
@@ -45,17 +47,7 @@ const createRequestId = (): string => {
   return `req_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
 };
 
-const resolveFirebaseBearerToken = async (): Promise<string | null> => {
-  try {
-    const { auth } = await import('@/lib/firebase');
-    const currentUser = auth.currentUser;
-    if (!currentUser) return null;
-    const token = await currentUser.getIdToken();
-    return token || null;
-  } catch {
-    return null;
-  }
-};
+const resolveAuthBearerToken = async (): Promise<string | null> => getCurrentAccessToken().catch(() => null);
 
 const parseBody = async (response: Response): Promise<unknown> => {
   const contentType = response.headers.get('content-type') || '';
@@ -68,9 +60,9 @@ const parseBody = async (response: Response): Promise<unknown> => {
 
 const extractErrorMessage = (payload: unknown, fallback: string): string => {
   if (payload && typeof payload === 'object') {
-    const obj = payload as Record<string, unknown>;
-    if (typeof obj.message === 'string' && obj.message.trim().length > 0) return obj.message;
-    if (typeof obj.error === 'string' && obj.error.trim().length > 0) return obj.error;
+    const responsePayload = payload as Partial<ApiErrorResponse> & Record<string, unknown>;
+    if (typeof responsePayload.message === 'string' && responsePayload.message.trim().length > 0) return responsePayload.message;
+    if (typeof responsePayload.error === 'string' && responsePayload.error.trim().length > 0) return responsePayload.error;
   }
   return fallback;
 };
@@ -81,9 +73,9 @@ export async function apiFetch<T>(path: string, options: ApiRequestOptions = {})
   const requestId = requestHeaders.get('X-Request-Id') || requestHeaders.get('x-request-id') || createRequestId();
   requestHeaders.set('X-Request-Id', requestId);
   if (!requestHeaders.has('Authorization')) {
-    const firebaseToken = await resolveFirebaseBearerToken();
-    if (firebaseToken) {
-      requestHeaders.set('Authorization', `Bearer ${firebaseToken}`);
+    const authToken = await resolveAuthBearerToken();
+    if (authToken) {
+      requestHeaders.set('Authorization', `Bearer ${authToken}`);
     }
   }
 
@@ -149,5 +141,5 @@ export async function apiFetch<T>(path: string, options: ApiRequestOptions = {})
     );
   }
 
-  return payload as T;
+  return payload as ApiResponse<T> as T;
 }

@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { sendError, sendSuccess, sendSuccessWithoutData } from '../../core/contracts/api-response';
 import { getErrorMessage } from '../../shared/utils/error-message';
 import { appLogger } from '../../utils/app-logger';
 import { resolveOptionalLimit } from '../../shared/utils/list-limit';
@@ -36,13 +37,13 @@ export const handleUpdateProject = async (req: Request, res: Response) => {
       ...payload,
       updatedAt: new Date().toISOString(),
     });
-    return res.json({ success: true });
+    return sendSuccessWithoutData(res);
   } catch (error: unknown) {
     appLogger.error('public.update_project_failed', {
       error: getErrorMessage(error, 'unknown_update_project_error'),
       projectId: req.params?.projectId,
     });
-    return res.status(500).json({ success: false, message: 'No se pudo actualizar el proyecto' });
+    return sendError(res, 500, 'No se pudo actualizar el proyecto');
   }
 };
 
@@ -51,13 +52,13 @@ export const handleGetUserProject = async (req: Request, res: Response) => {
     const { uid } = req.params;
     const ownerIds = await getUsersService().resolveOwnerIds(uid);
     const project = await getProjectByOwnerIds(ownerIds);
-    return res.json({ success: true, data: project });
+    return sendSuccess(res, project);
   } catch (error: unknown) {
     appLogger.error('public.get_user_project_failed', {
       error: getErrorMessage(error, 'unknown_get_user_project_error'),
       uid: req.params?.uid,
     });
-    return res.status(500).json({ success: false, message: 'No se pudo obtener el proyecto' });
+    return sendError(res, 500, 'No se pudo obtener el proyecto');
   }
 };
 
@@ -65,11 +66,11 @@ export const handleGetAllProjects = async (req: Request, res: Response) => {
   try {
     const limit = resolveOptionalLimit(req.query?.limit);
     const data = await getAllProjectsRecords(limit ?? undefined);
-    return res.json({ success: true, data });
+    return sendSuccess(res, data);
   } catch (error: unknown) {
     appLogger.error('public.get_all_projects_failed', {
       error: getErrorMessage(error, 'unknown_get_all_projects_error'),
     });
-    return res.status(500).json({ success: false, message: 'No se pudieron obtener proyectos' });
+    return sendError(res, 500, 'No se pudieron obtener proyectos');
   }
 };
