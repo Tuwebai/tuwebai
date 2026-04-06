@@ -25,6 +25,18 @@ const upsertNewsletterSubscriberById = async (
   await db.collection(NEWSLETTER_COLLECTION).doc(subscriberId).set(subscriber, { merge: true });
 };
 
+const updateNewsletterBrevoSyncById = async (
+  subscriberId: string,
+  brevoSync: NonNullable<NewsletterSubscriberRecord['brevoSync']>,
+): Promise<void> => {
+  const db = getAdminFirestore();
+  if (!db) {
+    throw new Error('newsletter_repository_unavailable');
+  }
+
+  await db.collection(NEWSLETTER_COLLECTION).doc(subscriberId).set({ brevoSync }, { merge: true });
+};
+
 const listNewsletterSubscribersForReconcile = async (
   limit: number,
 ): Promise<NewsletterSubscriberRecord[]> => {
@@ -46,5 +58,6 @@ export const createNewsletterFirestoreRepository = (): NewsletterRepository => (
   findById: getNewsletterSubscriberById,
   isAvailable: () => !!getAdminFirestore(),
   listForReconcile: listNewsletterSubscribersForReconcile,
+  updateBrevoSyncById: updateNewsletterBrevoSyncById,
   upsertById: upsertNewsletterSubscriberById,
 });

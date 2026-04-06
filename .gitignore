@@ -104,3 +104,5 @@ outputs/*
 plans/*
 docs/*
 proyecto-template/*
+*.md
+*.sql

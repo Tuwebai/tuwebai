@@ -39,5 +39,9 @@ export interface NewsletterRepository {
   findById(subscriberId: string): Promise<NewsletterSubscriberRecord | null>;
   isAvailable(): boolean;
   listForReconcile(limit: number): Promise<NewsletterSubscriberRecord[]>;
+  updateBrevoSyncById(
+    subscriberId: string,
+    brevoSync: NonNullable<NewsletterSubscriberRecord['brevoSync']>,
+  ): Promise<void>;
   upsertById(subscriberId: string, subscriber: NewsletterSubscriberRecord): Promise<void>;
 }
