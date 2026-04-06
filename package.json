@@ -33,7 +33,9 @@
     "docker:build": "docker compose build",
     "docker:up": "docker compose up -d",
     "docker:down": "docker compose down",
-    "deploy:rules": "npx firebase-tools deploy --only firestore:rules --project tuwebai-db"
+    "deploy:rules": "npx firebase-tools deploy --only firestore:rules --project tuwebai-db",
+    "supabase:migrate": "npx tsx scripts/supabase-run-migrations.ts",
+    "supabase:backfill:users": "npx tsx scripts/backfill-users-to-supabase.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
