@@ -3,9 +3,10 @@ import { useLocation } from 'react-router-dom';
 
 import GlobalNavbar from '@/app/layout/global-navbar';
 import { ThirdPartyScriptManager } from '@/app/performance';
+import { AppQueryProvider } from '@/app/providers/app-query-provider';
 import HomePage from '@/app/router/home/home-page';
 import { ThemeProvider } from '@/core/theme/ThemeContext';
-import { PublicNavbarAuthProvider } from '@/features/auth/context/public-navbar-auth-provider';
+import { AuthProvider } from '@/features/auth/context/AuthContext';
 import { LoginModalProvider } from '@/features/auth/hooks/use-login-modal';
 import analytics from '@/lib/analytics';
 import { runWhenIdle } from '@/lib/performance';
@@ -27,12 +28,10 @@ function PublicShellFrame() {
   }
 
   return (
-    <>
+    <div data-surface="marketing" className="app-global-surface">
       <ThirdPartyScriptManager />
       <SkipLink />
-      <PublicNavbarAuthProvider>
-        <GlobalNavbar />
-      </PublicNavbarAuthProvider>
+      <GlobalNavbar />
       {location.pathname === '/' ? (
         <HomePage />
       ) : (
@@ -42,7 +41,7 @@ function PublicShellFrame() {
       )}
       <Footer />
       <Toaster />
-    </>
+    </div>
   );
 }
 
@@ -127,11 +126,15 @@ function PublicAppRoot() {
   }, [location]);
 
   return (
-    <ThemeProvider>
-      <LoginModalProvider mountAuthProvider>
-      <PublicShellFrame />
-      </LoginModalProvider>
-    </ThemeProvider>
+    <AppQueryProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <LoginModalProvider>
+            <PublicShellFrame />
+          </LoginModalProvider>
+        </AuthProvider>
+      </ThemeProvider>
+    </AppQueryProvider>
   );
 }
 

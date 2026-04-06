@@ -1,3 +1,4 @@
+import { useOptionalAuthState } from '@/features/auth/context/auth-context';
 import { useOptionalAuthActions } from '@/features/auth/context/auth-context';
 import { useLoginModal } from '@/features/auth/hooks/use-login-modal';
 
@@ -12,17 +13,23 @@ export function PublicNavbarActions({
 }: PublicNavbarActionsProps) {
   const { openModal } = useLoginModal();
   const { ensureAuthReady } = useOptionalAuthActions();
+  const { isAuthenticated, user } = useOptionalAuthState();
 
-  const handleAuthIntent = async (mode: 'login' | 'register') => {
+  const handleAuthIntent = (mode: 'login' | 'register') => {
     onAction?.();
 
-    const currentUser = await ensureAuthReady();
-    if (currentUser) {
+    if (isAuthenticated && user) {
       window.location.href = '/panel';
       return;
     }
 
     openModal(undefined, mode);
+
+    void ensureAuthReady().then((currentUser) => {
+      if (currentUser) {
+        window.location.href = '/panel';
+      }
+    });
   };
 
   if (isMobileMenu) {
@@ -30,13 +37,13 @@ export function PublicNavbarActions({
       <div className="flex gap-2 my-4">
         <button
           onClick={() => { void handleAuthIntent('login'); }}
-          className="flex-1 py-3 border border-gray-700 rounded-lg text-gray-300 font-medium text-center"
+          className="flex-1 rounded-lg border border-[var(--border-default)] py-3 text-center font-medium text-gray-300"
         >
           Iniciar sesion
         </button>
         <button
           onClick={() => { void handleAuthIntent('register'); }}
-          className="flex-1 py-3 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-lg text-white font-medium text-center"
+          className="flex-1 rounded-lg bg-[image:var(--gradient-brand)] py-3 text-center font-medium text-white shadow-[var(--glow-signal)]"
         >
           Registrarse
         </button>
@@ -48,13 +55,13 @@ export function PublicNavbarActions({
     <div className="flex items-center gap-2">
       <button
         onClick={() => { void handleAuthIntent('login'); }}
-        className="rounded-md border border-gray-600 px-3 py-1.5 text-sm font-medium text-gray-300 transition-colors hover:border-gray-400 hover:text-white xl:px-4"
+        className="rounded-md border border-[var(--border-default)] px-3 py-1.5 text-sm font-medium text-gray-300 transition-colors hover:border-[var(--border-strong)] hover:text-white xl:px-4"
       >
         Iniciar sesion
       </button>
       <button
         onClick={() => { void handleAuthIntent('register'); }}
-        className="rounded-md bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-3 py-1.5 text-sm font-medium text-white shadow-lg shadow-[#00CCFF]/20 transition-all hover:shadow-[#9933FF]/30 xl:px-4"
+        className="rounded-md bg-[image:var(--gradient-brand)] px-3 py-1.5 text-sm font-medium text-white shadow-[var(--glow-signal)] transition-all xl:px-4"
       >
         Registrarse
       </button>
