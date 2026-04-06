@@ -50,7 +50,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isLoadingPasswordInfo, setIsLoadingPasswordInfo] = useState(false);
   const syncUser = useCallback(
     (authUser: AuthSessionUser | null) =>
-      syncAuthSessionUser(authUser, { reloadBeforeSync: true, timeoutMs: AUTH_TIMEOUT_MS }),
+      syncAuthSessionUser(authUser, { timeoutMs: AUTH_TIMEOUT_MS }),
     [],
   );
   const { user, setUserState, isLoadingAuth, ensureAuthReady } = useAuthSessionRuntime({ syncUser });
@@ -138,4 +138,3 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     </AuthStateContext.Provider>
   );
 };
-
