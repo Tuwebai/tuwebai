@@ -2,6 +2,7 @@ import { Router } from 'express';
 import express from 'express';
 import {
   handleAvatarProxy,
+  handleGetStoredAvatar,
   handlePasswordResetMetadata,
   handleGetUser,
   handleGetUserPayments,
@@ -28,6 +29,7 @@ const router = Router();
 
 router.post('/api/auth/password-reset-metadata', strictApiLimiter, validatePayload(authPasswordResetMetadataSchema), handlePasswordResetMetadata);
 router.get('/api/users/avatar', apiLimiter, handleAvatarProxy);
+router.get('/api/users/:uid/avatar', apiLimiter, validatePayload(userUidParamsSchema), handleGetStoredAvatar);
 router.get('/api/users/:uid', apiLimiter, requireAuthForUidParam, validatePayload(userUidParamsSchema), handleGetUser);
 router.get('/api/users/:uid/payments', apiLimiter, requireAuthForUidParam, validatePayload(userUidParamsSchema), handleGetUserPayments);
 router.post(

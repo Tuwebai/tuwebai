@@ -17,7 +17,15 @@ const isGoogleAvatarHost = (host: string) =>
 const resolveAvatarSrc = (image?: string) => {
   const source = image?.trim();
   if (!source) return '';
-  if (source.startsWith('data:') || source.startsWith('blob:') || source.startsWith('/')) {
+  if (source.startsWith('data:') || source.startsWith('blob:')) {
+    return source;
+  }
+
+  if (source.startsWith('/api/')) {
+    return `${API_URL}${source}`;
+  }
+
+  if (source.startsWith('/')) {
     return source;
   }
 

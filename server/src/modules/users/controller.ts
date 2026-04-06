@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { getErrorMessage } from '../../shared/utils/error-message';
 import { appLogger } from '../../utils/app-logger';
 import { resolveOptionalLimit } from '../../shared/utils/list-limit';
-import { uploadUserAvatar } from '../../infrastructure/storage/avatar-storage.service';
+import { getUserAvatar, uploadUserAvatar } from '../../infrastructure/storage/avatar-storage.service';
 import {
   getChangedPrivacyFields,
   getUsersService,
@@ -118,6 +118,29 @@ export const handleAvatarProxy = async (req: Request, res: Response) => {
     return res.status(502).json({ success: false, message: 'No se pudo obtener el avatar remoto' });
   } finally {
     clearTimeout(timeout);
+  }
+};
+
+export const handleGetStoredAvatar = async (req: Request, res: Response) => {
+  try {
+    const { uid } = req.params;
+    const avatar = await getUserAvatar(uid);
+
+    res.setHeader('Content-Type', avatar.contentType);
+    res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=3600');
+    res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+    return res.send(avatar.buffer);
+  } catch (error: unknown) {
+    const message = getErrorMessage(error, 'unknown_avatar_read_error');
+    if (message === 'avatar_not_found') {
+      return res.status(404).json({ success: false, message: 'Avatar no encontrado' });
+    }
+
+    appLogger.warn('users.avatar_read_failed', {
+      uid: req.params?.uid,
+      error: message,
+    });
+    return res.status(502).json({ success: false, message: 'No se pudo obtener el avatar' });
   }
 };
 
