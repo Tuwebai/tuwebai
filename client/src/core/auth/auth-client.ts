@@ -1,5 +1,6 @@
 import type { AuthChangeEvent } from '@supabase/supabase-js';
 
+import { publicEnv } from '@/core/config/public-env';
 import { supabaseBrowserClient } from '@/core/auth/supabase-browser-client';
 import {
   mapSupabaseUserToAuthSessionUser,
@@ -8,20 +9,30 @@ import {
   type AuthSessionUser,
 } from '@/core/auth/auth-session-user';
 
-const getAuthRedirectUrl = (path = '/auth/action') => {
+const getAuthBaseUrl = () => {
   if (typeof window === 'undefined') {
     return undefined;
   }
 
-  return new URL(path, window.location.origin).toString();
+  return publicEnv.authRedirectBaseUrl ?? window.location.origin;
+};
+
+const getAuthRedirectUrl = (path = '/auth/action') => {
+  const authBaseUrl = getAuthBaseUrl();
+  if (!authBaseUrl) {
+    return undefined;
+  }
+
+  return new URL(path, authBaseUrl).toString();
 };
 
 const getAuthDashboardUrl = () => {
-  if (typeof window === 'undefined') {
+  const authBaseUrl = getAuthBaseUrl();
+  if (!authBaseUrl) {
     return undefined;
   }
 
-  return new URL('/panel', window.location.origin).toString();
+  return new URL('/panel', authBaseUrl).toString();
 };
 
 const ensureAuthSessionUser = (
