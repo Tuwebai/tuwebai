@@ -1,11 +1,13 @@
 export interface ApiSuccessResponse<T = undefined> {
   data: T;
+  requestId?: string;
   success: true;
 }
 
 export interface ApiErrorResponse {
   details?: string;
   message: string;
+  requestId?: string;
   success: false;
 }
 

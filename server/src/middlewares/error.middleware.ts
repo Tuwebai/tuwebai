@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { env } from '../config/env.config';
+import { type ApiErrorResponse } from '../core/contracts/api-response';
 import { appLogger } from '../utils/app-logger';
 
 interface DefaultError extends Error {
@@ -26,10 +27,9 @@ export const globalErrorHandler = (
   });
 
   res.status(statusCode).json({
-    error: 'Error Interno del Servidor',
+    success: false,
     message: statusCode === 500 ? 'Ha ocurrido un error inesperado al procesar la solicitud.' : err.message,
     requestId,
     ...(env.NODE_ENV === 'development' && { details: err.stack }),
-  });
+  } satisfies ApiErrorResponse);
 };
-

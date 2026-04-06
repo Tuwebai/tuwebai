@@ -15,6 +15,7 @@ import helmet from "helmet";
 
 import appRoutes from "./src/app/routes";
 
+import { sendError, sendSuccess } from "./src/core/contracts/api-response";
 import { globalErrorHandler } from "./src/middlewares/error.middleware";
 import { appLogger } from "./src/utils/app-logger";
 import { requireInternalApiKey } from "./src/middlewares/internal-auth.middleware";
@@ -93,7 +94,7 @@ if (env.NODE_ENV === "production") {
       method: req.method,
       path: req.path,
     });
-    return res.status(403).json({ error: "Forbidden", message: "Origin header required" });
+    return sendError(res, 403, "Origin header required");
   });
 }
 
@@ -155,7 +156,7 @@ if (env.NODE_ENV === "production") {
       method: req.method,
       path: req.path,
     });
-    return res.status(403).json({ error: "Forbidden", message: "Not allowed by CORS" });
+    return sendError(res, 403, "Not allowed by CORS");
   });
 }
 
@@ -277,33 +278,30 @@ app.use((req, res, next) => {
 
 // Health
 app.get("/api/health", (_req, res) => {
-  res.json({
+  return sendSuccess(res, {
     status: "OK",
     message: "Servidor funcionando correctamente",
     timestamp: new Date().toISOString(),
-    requestId: res.locals.requestId,
   });
 });
 
 // Test endpoints
 app.get("/test", requireInternalApiKey, (_req, res) => {
-  res.json({
+  return sendSuccess(res, {
     status: "OK",
     message: "Test endpoint funcionando",
     timestamp: new Date().toISOString(),
     env: env.NODE_ENV,
-    requestId: res.locals.requestId,
   });
 });
 
 app.post("/test", requireInternalApiKey, (req, res) => {
   appLogger.info("test.post_received", { body: req.body });
-  res.json({
+  return sendSuccess(res, {
     status: "OK",
     message: "Test POST funcionando",
     receivedData: req.body,
     timestamp: new Date().toISOString(),
-    requestId: res.locals.requestId,
   });
 });
 
