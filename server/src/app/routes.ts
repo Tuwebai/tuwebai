@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import architectureRoutes from '../modules/architecture/routes';
 import authRoutes from '../modules/auth/routes';
 import contactRoutes from '../modules/contact/routes';
 import newsletterRoutes from '../modules/newsletter/routes';
@@ -11,6 +12,7 @@ import paymentRoutes from '../routes/payment.routes';
 
 const router = Router();
 
+router.use(architectureRoutes);
 router.use(authRoutes);
 router.use(contactRoutes);
 router.use(newsletterRoutes);
