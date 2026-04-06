@@ -35,11 +35,6 @@
     "docker:down": "docker compose down",
     "supabase:migrate": "npx tsx scripts/supabase-run-migrations.ts",
     "supabase:hardening": "npx tsx scripts/supabase-apply-security-hardening.ts",
-    "supabase:backfill:users": "npx tsx scripts/backfill-users-to-supabase.ts",
-    "supabase:backfill:newsletter": "npx tsx scripts/backfill-newsletter-to-supabase.ts",
-    "supabase:backfill:testimonials": "npx tsx scripts/backfill-testimonials-to-supabase.ts",
-    "supabase:backfill:projects-support": "npx tsx scripts/backfill-projects-support-to-supabase.ts",
-    "supabase:sync:auth": "npx tsx scripts/supabase-sync-auth-identities.ts",
     "supabase:init:storage": "npx tsx scripts/supabase-init-storage.ts"
   },
   "dependencies": {
@@ -88,7 +83,6 @@
     "express": "^4.21.2",
     "express-rate-limit": "^8.2.1",
     "express-session": "^1.18.1",
-    "firebase-admin": "^13.6.1",
     "framer-motion": "^10.12.5",
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.3",
