@@ -131,18 +131,6 @@ export const performanceBeaconSchema = z.object({
   }),
 });
 
-export const authVerifyParamsSchema = z.object({
-  params: z.object({
-    token: z.string({ required_error: 'Token requerido' }).min(6, 'Token invalido')
-  })
-});
-
-export const authDevVerifyParamsSchema = z.object({
-  params: z.object({
-    email: z.string({ required_error: 'Email requerido' }).email('Email invalido')
-  })
-});
-
 export const authPasswordResetMetadataSchema = z.object({
   body: z.object({
     email: z.string({ required_error: 'Email requerido' }).email('Email invalido'),

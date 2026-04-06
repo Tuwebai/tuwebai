@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { FormEvent } from 'react';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { useAuthActions } from '@/features/auth/context/AuthContext';
 import { AuthActionStatus } from '@/features/auth/components/auth-action-status';
@@ -10,7 +10,7 @@ import {
   prepareAuthAction,
   resolveAuthAction,
 } from '@/features/auth/services/auth-action.service';
-import { recordPasswordReset, verifyAuthToken } from '@/features/auth/services/auth.service';
+import { recordPasswordReset } from '@/features/auth/services/auth.service';
 import type { PreparedAuthAction } from '@/features/auth/types/auth-action';
 import MetaTags from '@/shared/ui/meta-tags';
 import { TUWEBAI_EMAIL, TUWEBAI_WHATSAPP_DISPLAY, TUWEBAI_WHATSAPP_URL } from '@/shared/constants/contact';
@@ -45,15 +45,14 @@ const successCopy: Record<
 };
 
 export default function AuthActionPage() {
-  const { token } = useParams<{ token?: string }>();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { toast } = useToast();
   const { resetPassword } = useAuthActions();
 
   const resolvedAction = useMemo(
-    () => resolveAuthAction({ searchParams, token }),
-    [searchParams, token],
+    () => resolveAuthAction({ searchParams }),
+    [searchParams],
   );
 
   const [pageState, setPageState] = useState<PageState>({ kind: 'loading' });
@@ -76,19 +75,6 @@ export default function AuthActionPage() {
       }
 
       try {
-        if (resolvedAction.kind === 'legacy-verify') {
-          const result = await verifyAuthToken(resolvedAction.token);
-
-          if (isCancelled) return;
-
-          setPageState({
-            kind: result.success ? 'success' : 'error',
-            title: result.success ? 'Cuenta verificada' : 'No se pudo verificar la cuenta',
-            description: result.message,
-          });
-          return;
-        }
-
         const prepared = await prepareAuthAction(resolvedAction);
 
         if (isCancelled) return;

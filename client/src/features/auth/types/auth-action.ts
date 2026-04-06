@@ -7,10 +7,6 @@ export type ResolvedAuthAction =
     tokenHash: string;
   }
   | {
-    kind: 'legacy-verify';
-    token: string;
-  }
-  | {
     kind: 'invalid';
     reason: string;
   };

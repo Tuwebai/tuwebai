@@ -6,7 +6,6 @@ import type { PreparedAuthAction, ResolvedAuthAction } from '@/features/auth/typ
 
 interface ResolveAuthActionInput {
   searchParams: URLSearchParams;
-  token?: string;
 }
 
 interface SupabaseActionData {
@@ -16,7 +15,7 @@ interface SupabaseActionData {
 
 const getActionEmail = (data: SupabaseActionData): string | null => data.email ?? data.previousEmail ?? null;
 
-export const resolveAuthAction = ({ searchParams, token }: ResolveAuthActionInput): ResolvedAuthAction => {
+export const resolveAuthAction = ({ searchParams }: ResolveAuthActionInput): ResolvedAuthAction => {
   const type = searchParams.get('type');
   const tokenHash = searchParams.get('token_hash');
 
@@ -34,10 +33,6 @@ export const resolveAuthAction = ({ searchParams, token }: ResolveAuthActionInpu
     }
 
     return { kind: 'invalid', reason: 'La acción solicitada no está soportada.' };
-  }
-
-  if (token) {
-    return { kind: 'legacy-verify', token };
   }
 
   return { kind: 'invalid', reason: 'El enlace no contiene un código de acción válido.' };

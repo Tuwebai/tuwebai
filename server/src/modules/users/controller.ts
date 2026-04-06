@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import { env } from '../../config/env.config';
 import { getErrorMessage } from '../../shared/utils/error-message';
 import { appLogger } from '../../utils/app-logger';
 import { resolveOptionalLimit } from '../../shared/utils/list-limit';
@@ -22,28 +21,6 @@ const isAllowedAvatarHost = (host: string) =>
   host.endsWith('.ggpht.com');
 
 const usersService = getUsersService();
-
-export const handleAuthVerify = (_req: Request, res: Response) => {
-  return res.json({
-    success: false,
-    message: 'La verificacion de cuenta se gestiona con Firebase Auth.',
-  });
-};
-
-export const handleAuthDevVerify = (req: Request, res: Response) => {
-  if (env.NODE_ENV !== 'development') {
-    return res.status(403).json({
-      success: false,
-      message: 'Este endpoint solo esta disponible en desarrollo.',
-    });
-  }
-
-  const { email } = req.params;
-  return res.json({
-    success: true,
-    message: `Verificacion de desarrollo simulada para ${email}.`,
-  });
-};
 
 export const handlePasswordResetMetadata = async (req: Request, res: Response) => {
   if (!usersService.isAvailable()) {

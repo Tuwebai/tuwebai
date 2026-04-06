@@ -228,12 +228,6 @@ export const backendApi = {
       body: payload,
     }),
 
-  verifyAuthToken: (token: string) =>
-    apiFetch<{ success: boolean; message: string }>(`/api/auth/verify/${encodeURIComponent(token)}`),
-
-  verifyAuthDevEmail: (email: string) =>
-    apiFetch<{ success: boolean; message: string }>(`/api/auth/dev-verify/${encodeURIComponent(email)}`),
-
   recordPasswordReset: (payload: { email: string; passwordChangedAt: string }) =>
     apiFetch<{ success: boolean }>('/api/auth/password-reset-metadata', {
       method: 'POST',
