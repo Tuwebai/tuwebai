@@ -5,7 +5,7 @@ import type { AuthUser } from '../shared/types/auth-user';
 import { getErrorMessage } from '../shared/utils/error-message';
 import { appLogger } from '../utils/app-logger';
 
-const shouldEnforceServerAuth = (): boolean => env.NODE_ENV === 'production' || env.ENFORCE_FIREBASE_AUTH;
+const shouldEnforceServerAuth = (): boolean => env.NODE_ENV === 'production' || env.ENFORCE_SERVER_AUTH;
 const AUTH_PROVIDER_UNAVAILABLE_MESSAGE = 'Proveedor de autenticacion no disponible';
 
 const logAuthRejected = (

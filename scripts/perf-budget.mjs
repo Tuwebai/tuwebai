@@ -10,7 +10,6 @@ const BUDGETS = [
   { name: 'entry-css', pattern: /^index-.*\.css$/, maxBytes: 113_500, required: true },
   { name: 'motion-vendor', pattern: /^motion-.*\.js$/, maxBytes: 132_500, required: true },
   { name: 'radix-vendor', pattern: /^radix-react-primitive-.*\.js$/, maxBytes: 287_000, required: true },
-  { name: 'firebase-vendor', pattern: /^firebase--.*\.js$/, maxBytes: 430_000, required: true },
 ];
 
 function formatKiB(bytes) {

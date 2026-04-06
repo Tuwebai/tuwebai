@@ -39,7 +39,6 @@ export default [
   },
   {
     files: [
-      'client/src/lib/firebase.ts',
       'client/src/core/auth/auth-client.ts',
       'client/src/features/auth/services/auth-avatar.ts',
       'client/src/features/auth/context/AuthContext.tsx',

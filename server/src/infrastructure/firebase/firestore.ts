@@ -1,7 +1,6 @@
 import fs from 'fs';
 import path from 'path';
 import admin from 'firebase-admin';
-import { env } from '../../config/env.config';
 import { appLogger } from '../../utils/app-logger';
 
 let firestoreInstance: admin.firestore.Firestore | null = null;
@@ -36,7 +35,7 @@ const normalizeServiceAccount = (
 };
 
 const resolveServiceAccountFromFile = (): admin.ServiceAccount | null => {
-  const configuredPath = env.FIREBASE_SERVICE_ACCOUNT_KEY?.trim();
+  const configuredPath = process.env.FIREBASE_SERVICE_ACCOUNT_KEY?.trim();
   if (!configuredPath) return null;
 
   const absolutePath = path.isAbsolute(configuredPath)
@@ -61,7 +60,7 @@ const resolveServiceAccountFromFile = (): admin.ServiceAccount | null => {
 };
 
 const resolveServiceAccount = (): admin.ServiceAccount | null => {
-  const inlineJson = env.FIREBASE_SERVICE_ACCOUNT_JSON?.trim();
+  const inlineJson = process.env.FIREBASE_SERVICE_ACCOUNT_JSON?.trim();
   if (inlineJson) {
     try {
       return normalizeServiceAccount(JSON.parse(inlineJson) as FirebaseServiceAccountJson);
@@ -79,7 +78,7 @@ const ensureAppInitialized = (): boolean => {
   if (initAttempted) return false;
   initAttempted = true;
 
-  if (env.DISABLE_FIREBASE_ADMIN) {
+  if (process.env.DISABLE_FIREBASE_ADMIN === 'true') {
     appLogger.info('firebase_admin.disabled_by_env', {
       reason: 'DISABLE_FIREBASE_ADMIN=true',
     });
@@ -92,12 +91,12 @@ const ensureAppInitialized = (): boolean => {
       if (serviceAccount) {
         admin.initializeApp({
           credential: admin.credential.cert(serviceAccount),
-          projectId: env.FIREBASE_PROJECT_ID || serviceAccount.projectId,
+          projectId: process.env.FIREBASE_PROJECT_ID || serviceAccount.projectId,
         });
       } else {
         admin.initializeApp({
           credential: admin.credential.applicationDefault(),
-          projectId: env.FIREBASE_PROJECT_ID,
+          projectId: process.env.FIREBASE_PROJECT_ID,
         });
       }
     }
@@ -106,7 +105,7 @@ const ensureAppInitialized = (): boolean => {
   } catch (error: unknown) {
     appLogger.warn('firebase_admin.unavailable', {
       error: error instanceof Error ? error.message : String(error),
-      hint: 'Idempotencia distribuida usara fallback local',
+      hint: 'Firebase admin quedó solo para scripts legacy de backfill',
     });
     return false;
   }
@@ -120,13 +119,13 @@ export const getFirestore = (): admin.firestore.Firestore | null => {
     firestoreInstance = admin.firestore();
     const adminApp = admin.app();
     appLogger.info('firebase_admin.initialized', {
-      projectId: env.FIREBASE_PROJECT_ID || adminApp.options.projectId,
+      projectId: process.env.FIREBASE_PROJECT_ID || adminApp.options.projectId,
     });
     return firestoreInstance;
   } catch (error: unknown) {
     appLogger.warn('firebase_admin.unavailable', {
       error: error instanceof Error ? error.message : String(error),
-      hint: 'Idempotencia distribuida usara fallback local',
+      hint: 'Firebase admin quedó solo para scripts legacy de backfill',
     });
     return null;
   }

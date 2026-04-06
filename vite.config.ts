@@ -130,7 +130,6 @@ export default defineConfig(({ mode }) => {
       resolveDependencies: (_url: string, deps: string[]) =>
         deps.filter(
           (dep) =>
-            !dep.includes('firebase-') &&
             !dep.includes('motion-') &&
             !dep.includes('radix-'),
         ),
@@ -142,10 +141,6 @@ export default defineConfig(({ mode }) => {
         manualChunks(id) {
           if (isVendorModule(id)) {
             return 'vendor';
-          }
-          // Firebase SDK — chunk propio para no contaminar el bundle principal
-          if (id.includes('node_modules/firebase') || id.includes('node_modules/@firebase')) {
-            return 'firebase';
           }
           // framer-motion — chunk propio (~100kB separado del boot)
           if (id.includes('node_modules/framer-motion')) {

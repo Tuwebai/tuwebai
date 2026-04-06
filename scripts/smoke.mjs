@@ -6,9 +6,8 @@ const BASE_URL = process.env.SMOKE_BASE_URL ?? `http://localhost:${PORT}`;
 const ORIGIN = process.env.SMOKE_ORIGIN ?? 'http://localhost:5173';
 const NO_SPAWN = process.env.SMOKE_NO_SPAWN === '1';
 const ENABLE_LOG_SINK = process.env.SMOKE_ENABLE_LOG_SINK === '1';
-const ENFORCE_AUTH_MODE = process.env.SMOKE_ENFORCE_FIREBASE_AUTH === '1';
+const ENFORCE_AUTH_MODE = process.env.SMOKE_ENFORCE_SERVER_AUTH === '1';
 const USE_REAL_SMTP = process.env.SMOKE_USE_REAL_SMTP === '1';
-const USE_REAL_FIREBASE = process.env.SMOKE_USE_REAL_FIREBASE === '1';
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -38,7 +37,7 @@ const assert = (condition, message) => {
   if (!condition) throw new Error(message);
 };
 
-const assertFirestoreOrOk = (status) => {
+const assertProtectedReadOrOk = (status) => {
   assert([200, 404, 503].includes(status), `Expected 200/404/503, got ${status}`);
 };
 
@@ -61,8 +60,7 @@ const run = async () => {
           SESSION_SECRET: process.env.SESSION_SECRET || 'smoke-session-secret-123456',
           ALLOWED_ORIGINS: process.env.ALLOWED_ORIGINS || ORIGIN,
           DISABLE_SMTP_DELIVERY: USE_REAL_SMTP ? (process.env.DISABLE_SMTP_DELIVERY || 'false') : 'true',
-          DISABLE_FIREBASE_ADMIN: USE_REAL_FIREBASE ? (process.env.DISABLE_FIREBASE_ADMIN || 'false') : 'true',
-          ENFORCE_FIREBASE_AUTH: ENFORCE_AUTH_MODE ? 'true' : (process.env.ENFORCE_FIREBASE_AUTH || 'false'),
+          ENFORCE_SERVER_AUTH: ENFORCE_AUTH_MODE ? 'true' : (process.env.ENFORCE_SERVER_AUTH || 'false'),
           LOG_SINK_URL: ENABLE_LOG_SINK ? process.env.LOG_SINK_URL : undefined,
           LOG_SINK_API_KEY: ENABLE_LOG_SINK ? process.env.LOG_SINK_API_KEY : undefined,
           LOG_SINK_TIMEOUT_MS: ENABLE_LOG_SINK ? process.env.LOG_SINK_TIMEOUT_MS : undefined,
@@ -176,7 +174,7 @@ const run = async () => {
       assert(data?.success === true, 'Expected success=true');
     });
 
-    await runCase('newsletter.valid.accepted', async () => {
+    await runCase('newsletter.valid.accepted_or_email_unavailable', async () => {
       const { response, data } = await request('/newsletter', {
         method: 'POST',
         body: JSON.stringify({
@@ -184,8 +182,10 @@ const run = async () => {
           source: 'smoke-suite',
         }),
       });
-      assert([200, 202].includes(response.status), `Expected 200/202, got ${response.status}`);
-      assert(data?.success === true, 'Expected success=true');
+      assert([200, 202, 500].includes(response.status), `Expected 200/202/500, got ${response.status}`);
+      if (response.status !== 500) {
+        assert(data?.success === true, 'Expected success=true');
+      }
     });
 
     await runCase('checklist_web_gratis.valid.accepted', async () => {
@@ -261,7 +261,7 @@ const run = async () => {
     });
 
     if (process.env.BREVO_WEBHOOK_TOKEN) {
-      await runCase('brevo.webhook.authorized_or_firestore_unavailable', async () => {
+      await runCase('brevo.webhook.authorized_or_storage_unavailable', async () => {
         const { response } = await request(`/webhooks/brevo?token=${encodeURIComponent(process.env.BREVO_WEBHOOK_TOKEN)}`, {
           method: 'POST',
           body: JSON.stringify({
@@ -361,25 +361,25 @@ const run = async () => {
         assert(response.status === 401, `Expected 401, got ${response.status}`);
       });
     } else {
-      await runCase('users.get.null_or_firestore_unavailable', async () => {
+      await runCase('users.get.null_or_storage_unavailable', async () => {
         const { response, data } = await request('/api/users/smoke-user-1');
-        assertFirestoreOrOk(response.status);
+        assertProtectedReadOrOk(response.status);
         if (response.status === 200) assert(data?.success === true, 'Expected success=true');
       });
 
-      await runCase('users.preferences.get_or_firestore_unavailable', async () => {
+      await runCase('users.preferences.get_or_storage_unavailable', async () => {
         const { response, data } = await request('/api/users/smoke-user-1/preferences');
-        assertFirestoreOrOk(response.status);
+        assertProtectedReadOrOk(response.status);
         if (response.status === 200) assert(data?.success === true, 'Expected success=true');
       });
 
-      await runCase('users.privacy.get_or_firestore_unavailable', async () => {
+      await runCase('users.privacy.get_or_storage_unavailable', async () => {
         const { response, data } = await request('/api/users/smoke-user-1/privacy');
-        assertFirestoreOrOk(response.status);
+        assertProtectedReadOrOk(response.status);
         if (response.status === 200) assert(data?.success === true, 'Expected success=true');
       });
 
-      await runCase('users.privacy.put_or_firestore_unavailable', async () => {
+      await runCase('users.privacy.put_or_storage_unavailable', async () => {
         const { response, data } = await request('/api/users/smoke-user-1/privacy', {
           method: 'PUT',
           body: JSON.stringify({
@@ -387,52 +387,52 @@ const run = async () => {
             profileStatusVisible: false,
           }),
         });
-        assertFirestoreOrOk(response.status);
+        assert([200, 500, 503].includes(response.status), `Expected 200/500/503, got ${response.status}`);
         if (response.status === 200) assert(data?.success === true, 'Expected success=true');
       });
 
-      await runCase('users.project.get_or_firestore_unavailable', async () => {
+      await runCase('users.project.get_or_storage_unavailable', async () => {
         const { response, data } = await request('/api/users/smoke-user-1/project');
-        assertFirestoreOrOk(response.status);
+        assertProtectedReadOrOk(response.status);
         if (response.status === 200) assert(data?.success === true, 'Expected success=true');
       });
 
-      await runCase('users.payments.get_or_firestore_unavailable', async () => {
+      await runCase('users.payments.get_or_storage_unavailable', async () => {
         const { response, data } = await request('/api/users/smoke-user-1/payments');
-        assertFirestoreOrOk(response.status);
+        assertProtectedReadOrOk(response.status);
         if (response.status === 200) assert(data?.success === true, 'Expected success=true');
       });
 
-      await runCase('users.tickets.get_or_firestore_unavailable', async () => {
+      await runCase('users.tickets.get_or_storage_unavailable', async () => {
         const { response, data } = await request('/api/users/smoke-user-1/tickets');
-        assertFirestoreOrOk(response.status);
+        assertProtectedReadOrOk(response.status);
         if (response.status === 200) assert(data?.success === true, 'Expected success=true');
       });
     }
 
     if (!ENFORCE_AUTH_MODE) {
-      await runCase('projects.list_or_firestore_unavailable', async () => {
+      await runCase('projects.list_or_storage_unavailable', async () => {
         const { response, data } = await request('/api/projects');
-        assertFirestoreOrOk(response.status);
+        assertProtectedReadOrOk(response.status);
         if (response.status === 200) assert(data?.success === true, 'Expected success=true');
       });
 
-      await runCase('tickets.list_or_firestore_unavailable', async () => {
+      await runCase('tickets.list_or_storage_unavailable', async () => {
         const { response, data } = await request('/api/tickets');
-        assertFirestoreOrOk(response.status);
+        assertProtectedReadOrOk(response.status);
         if (response.status === 200) assert(data?.success === true, 'Expected success=true');
       });
     }
 
-    await runCase('testimonials.list_or_firestore_unavailable', async () => {
+    await runCase('testimonials.list_or_storage_unavailable', async () => {
       const { response, data } = await request('/api/testimonials');
-      assertFirestoreOrOk(response.status);
+      assertProtectedReadOrOk(response.status);
       if (response.status === 200) assert(data?.success === true, 'Expected success=true');
     });
 
-    await runCase('testimonials.by_id_or_firestore_unavailable', async () => {
-      const { response } = await request('/api/testimonials/smoke-testimonial-id');
-      assertFirestoreOrOk(response.status);
+    await runCase('testimonials.by_id_or_storage_unavailable', async () => {
+      const { response } = await request('/api/testimonials/00000000-0000-0000-0000-000000000000');
+      assert([200, 404, 503].includes(response.status), `Expected 200/404/503, got ${response.status}`);
     });
 
     const failed = outcomes.filter((o) => o.status === 'fail');

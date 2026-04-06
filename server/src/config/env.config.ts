@@ -71,14 +71,7 @@ const envSchema = z
       .string()
       .min(1, 'MERCADOPAGO_WEBHOOK_SECRET es requerido para produccion')
       .optional(),
-    FIREBASE_PROJECT_ID: z.string().optional(),
-    FIREBASE_SERVICE_ACCOUNT_KEY: z.string().optional(),
-    FIREBASE_SERVICE_ACCOUNT_JSON: z.string().optional(),
-    DISABLE_FIREBASE_ADMIN: z
-      .string()
-      .optional()
-      .transform((v) => v === 'true'),
-    ENFORCE_FIREBASE_AUTH: z
+    ENFORCE_SERVER_AUTH: z
       .string()
       .optional()
       .transform((v) => v === 'true'),

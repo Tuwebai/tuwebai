@@ -23,7 +23,7 @@ type ResourceAccessConfig = {
   resourceIdParam: string;
 };
 
-const shouldEnforceFirebaseAuth = (): boolean => env.NODE_ENV === 'production' || env.ENFORCE_FIREBASE_AUTH;
+const shouldEnforceServerAuth = (): boolean => env.NODE_ENV === 'production' || env.ENFORCE_SERVER_AUTH;
 
 const getAuthUser = (res: Response): AuthUser | null => {
   const authUser = res.locals.authUser;
@@ -93,7 +93,7 @@ const loadResourceDocument = async (
 };
 
 export const requireAdmin = (req: Request, res: Response, next: NextFunction) => {
-  if (!shouldEnforceFirebaseAuth()) {
+  if (!shouldEnforceServerAuth()) {
     return next();
   }
 
@@ -114,7 +114,7 @@ export const requireAdmin = (req: Request, res: Response, next: NextFunction) =>
 export const checkResourceOwnership =
   ({ resourceType, action, resourceIdParam }: ResourceAccessConfig) =>
   async (req: Request, res: Response, next: NextFunction) => {
-    if (!shouldEnforceFirebaseAuth()) {
+    if (!shouldEnforceServerAuth()) {
       return next();
     }
 
