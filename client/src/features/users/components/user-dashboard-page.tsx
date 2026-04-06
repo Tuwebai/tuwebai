@@ -261,7 +261,7 @@ export default function UserDashboardPage() {
             onLogout={handleLogout}
           />
 
-          <PulseDashboardCard email={user?.email} />
+          <PulseDashboardCard email={user?.email} userUid={user?.uid} />
 
           <UserDashboardTabsNav activeTab={activeTab} onTabChange={handleTabChange} />
 

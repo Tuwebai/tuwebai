@@ -9,6 +9,7 @@ import { useToast } from '@/shared/ui/use-toast';
 
 interface PulseDashboardCardProps {
   email?: string;
+  userUid?: string;
 }
 
 function PulseLogo() {
@@ -41,13 +42,13 @@ function PulseLogo() {
   );
 }
 
-export function PulseDashboardCard({ email }: PulseDashboardCardProps) {
+export function PulseDashboardCard({ email, userUid }: PulseDashboardCardProps) {
   const { toast } = useToast();
   const { data, isLoading, isError } = usePulsePreview(email);
   const {
     data: pulseAccess,
     isLoading: isLoadingPulseAccess,
-  } = usePulseAccessStatus(email);
+  } = usePulseAccessStatus(email, userUid);
   const [isOpeningPulse, setIsOpeningPulse] = useState(false);
 
   const isPendingActivation = pulseAccess?.status === 'pending_activation';
