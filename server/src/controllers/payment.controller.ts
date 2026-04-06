@@ -1,11 +1,13 @@
 import { Request, Response } from 'express';
 import { env } from '../config/env.config';
-import { createPaymentPreference, verifyWebhookSignature, getPaymentDetails } from '../services/payment.service';
-import {
-  registerPaymentWebhookReceipt,
-  syncMercadoPagoPaymentToSupabase,
-} from '../services/payment-webhook-store.service';
 import { type PaymentPlan } from '../constants/payment-plans';
+import {
+  buildPaymentWebhookHeaders,
+  processMercadoPagoWebhook,
+} from '../modules/payments/application/payment-webhook.service';
+import { createPaymentPreferenceForPlan } from '../modules/payments/application/payment-preference.service';
+import { getPaymentStatusDetails } from '../modules/payments/application/payment-status.service';
+import { sendError, sendSuccess } from '../core/contracts/api-response';
 import { getErrorMessage } from '../shared/utils/error-message';
 import { writeLog } from '../utils/logger';
 import { appLogger } from '../utils/app-logger';
@@ -14,7 +16,7 @@ export const handleCreatePreference = async (req: Request, res: Response) => {
   try {
     const { plan } = req.body as { plan: PaymentPlan };
 
-    const mpRes = await createPaymentPreference(plan);
+    const mpRes = await createPaymentPreferenceForPlan(plan);
     return res.json({ init_point: mpRes.init_point });
   } catch (error: unknown) {
     appLogger.error('payment.preference_failed', {
@@ -24,9 +26,9 @@ export const handleCreatePreference = async (req: Request, res: Response) => {
     });
 
     if (getErrorMessage(error, 'unknown_payment_preference_error') === 'Plan invalido') {
-      return res.status(400).json({ error: 'Plan invalido' });
+      return sendError(res, 400, 'Plan invalido');
     }
-    return res.status(500).json({ error: 'Error al crear preferencia de pago' });
+    return sendError(res, 500, 'Error al crear preferencia de pago');
   }
 };
 
@@ -39,25 +41,19 @@ export const handleGetPaymentStatus = async (req: Request, res: Response) => {
     const { paymentId } = req.params as { paymentId: string };
 
     if (!env.MERCADOPAGO_ACCESS_TOKEN) {
-      return res.status(503).json({
-        success: false,
-        error: 'Mercado Pago no configurado',
-      });
+      return sendError(res, 503, 'Mercado Pago no configurado');
     }
 
-    const paymentDetails = await getPaymentDetails(paymentId);
+    const paymentDetails = await getPaymentStatusDetails(paymentId);
 
-    return res.json({
-      success: true,
-      data: {
-        id: paymentDetails.id,
-        status: paymentDetails.status,
-        status_detail: paymentDetails.status_detail,
-        transaction_amount: paymentDetails.transaction_amount,
-        currency_id: paymentDetails.currency_id,
-        date_approved: paymentDetails.date_approved,
-        payment_method_id: paymentDetails.payment_method_id,
-      },
+    return sendSuccess(res, {
+      id: paymentDetails.id,
+      status: paymentDetails.status,
+      status_detail: paymentDetails.status_detail,
+      transaction_amount: paymentDetails.transaction_amount,
+      currency_id: paymentDetails.currency_id,
+      date_approved: paymentDetails.date_approved,
+      payment_method_id: paymentDetails.payment_method_id,
     });
   } catch (error: unknown) {
     appLogger.warn('payment.status_lookup_failed', {
@@ -65,10 +61,7 @@ export const handleGetPaymentStatus = async (req: Request, res: Response) => {
       error: getErrorMessage(error, 'unknown_payment_status_lookup_error'),
     });
 
-    return res.status(404).json({
-      success: false,
-      error: 'No se pudo obtener el estado del pago',
-    });
+    return sendError(res, 404, 'No se pudo obtener el estado del pago');
   }
 };
 
@@ -79,128 +72,22 @@ export const handleWebhook = async (req: Request, res: Response) => {
   res.status(200).json({ received: true });
 
   try {
-    const headers = {
-      xSignature: req.headers['x-signature'],
-      xRequestId: req.headers['x-request-id'],
-      userAgent: req.headers['user-agent'],
-    };
+    const headers = buildPaymentWebhookHeaders(req);
 
-    appLogger.info('payment.webhook_received', {
+    await processMercadoPagoWebhook({
+      body: req.body,
+      headers,
+      ip: req.ip,
+      logWriter: {
+        audit: (payload) => writeLog(payload),
+        elapsedMs: () => Date.now() - startTime,
+        error: (event, payload) => appLogger.error(event, payload),
+        info: (event, payload) => appLogger.info(event, payload),
+        warn: (event, payload) => appLogger.warn(event, payload),
+      },
       path: req.path,
       method: req.method,
-      headers,
-      ip: req.ip,
     });
-
-    writeLog({
-      event: 'webhook_received',
-      timestamp: new Date().toISOString(),
-      headers,
-      body: req.body,
-      ip: req.ip,
-    });
-
-    const webhookSecret = env.MERCADOPAGO_WEBHOOK_SECRET;
-    if (webhookSecret) {
-      const signature = req.headers['x-signature'] as string | undefined;
-      const payload = JSON.stringify(req.body);
-
-      if (!signature || !verifyWebhookSignature(payload, signature, webhookSecret)) {
-        appLogger.warn('payment.webhook_invalid_signature', {
-          path: req.path,
-          method: req.method,
-          headers,
-        });
-
-        writeLog({
-          event: 'webhook_invalid_signature',
-          timestamp: new Date().toISOString(),
-          headers,
-          body: req.body,
-        });
-        return;
-      }
-    }
-
-    const { type, data } = req.body as { type?: string; data?: { id?: string | number } };
-
-    if (!data?.id || !type) {
-      appLogger.warn('payment.webhook_invalid_payload', {
-        body: req.body,
-      });
-      return;
-    }
-
-    if (type !== 'payment') {
-      appLogger.info('payment.webhook_ignored_event', { type, paymentId: data.id });
-      return;
-    }
-
-    const paymentId = data.id;
-
-    if (!env.MERCADOPAGO_ACCESS_TOKEN) {
-      appLogger.error('payment.access_token_missing', { paymentId });
-      return;
-    }
-
-    try {
-      const paymentDetails = await getPaymentDetails(paymentId);
-      await syncMercadoPagoPaymentToSupabase(paymentDetails);
-
-      const isNewReceipt = await registerPaymentWebhookReceipt({
-        eventType: 'payment',
-        paymentId,
-        paymentStatus: paymentDetails.status,
-        paymentStatusDetail: paymentDetails.status_detail,
-        payload: req.body,
-        requestId: typeof headers.xRequestId === 'string' ? headers.xRequestId : undefined,
-      });
-
-      if (!isNewReceipt) {
-        appLogger.info('payment.webhook_duplicate_received', {
-          paymentId,
-          requestId: headers.xRequestId,
-          status: paymentDetails.status,
-        });
-      }
-
-      const orderData = {
-        payment_id: paymentId,
-        status: paymentDetails.status,
-        amount: paymentDetails.transaction_amount,
-        currency: paymentDetails.currency_id,
-        payer_email: paymentDetails.payer?.email,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      };
-
-      appLogger.info('payment.webhook_processed', {
-        paymentId,
-        status: paymentDetails.status,
-        processingTimeMs: Date.now() - startTime,
-      });
-
-      writeLog({
-        event: 'webhook_processed',
-        timestamp: new Date().toISOString(),
-        payment_id: paymentId,
-        status: paymentDetails.status,
-        processing_time_ms: Date.now() - startTime,
-        orderData,
-      });
-    } catch (apiError: unknown) {
-      appLogger.error('payment.webhook_mp_lookup_failed', {
-        paymentId,
-        error: getErrorMessage(apiError, 'unknown_payment_webhook_lookup_error'),
-      });
-
-      writeLog({
-        event: 'webhook_mp_lookup_failed',
-        timestamp: new Date().toISOString(),
-        payment_id: paymentId,
-        error: getErrorMessage(apiError, 'unknown_payment_webhook_lookup_error'),
-      });
-    }
   } catch (error: unknown) {
     appLogger.error('payment.webhook_unhandled_error', {
       error: getErrorMessage(error, 'unknown_payment_webhook_error'),
