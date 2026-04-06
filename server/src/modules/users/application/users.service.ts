@@ -5,7 +5,7 @@ import type {
   UserPrivacyDocument,
   UsersRepository,
 } from '../domain/users.repository';
-import { createUsersFirestoreRepository } from '../infrastructure/users-firestore.repository';
+import { createUsersSupabaseRepository } from '../infrastructure/users-supabase.repository';
 
 const DEFAULT_USER_PRIVACY_SETTINGS: Required<
   Pick<UserPrivacyDocument, 'marketingConsent' | 'analyticsConsent' | 'profileEmailVisible' | 'profileStatusVisible'>
@@ -104,7 +104,7 @@ let usersServiceInstance: UsersService | null = null;
 
 export const getUsersService = (): UsersService => {
   if (!usersServiceInstance) {
-    usersServiceInstance = buildUsersService(createUsersFirestoreRepository());
+    usersServiceInstance = buildUsersService(createUsersSupabaseRepository());
   }
 
   return usersServiceInstance;

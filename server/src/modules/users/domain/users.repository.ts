@@ -12,7 +12,7 @@ export interface UserPrivacyDocument {
   profileEmailVisible?: boolean;
   profileStatusVisible?: boolean;
   updatedAt?: string;
-  updatedBy?: 'self';
+  updatedBy?: 'self' | 'admin' | 'system';
 }
 
 export interface UserDocument {

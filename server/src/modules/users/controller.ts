@@ -14,6 +14,7 @@ import type {
   UserPrivacyDocument,
 } from './domain/users.repository';
 const GOOGLE_AVATAR_TIMEOUT_MS = 8000;
+const USERS_REPOSITORY_UNAVAILABLE_MESSAGE = 'Persistencia de usuarios no disponible';
 
 const isAllowedAvatarHost = (host: string) =>
   host === 'lh3.googleusercontent.com' ||
@@ -46,7 +47,7 @@ export const handleAuthDevVerify = (req: Request, res: Response) => {
 
 export const handlePasswordResetMetadata = async (req: Request, res: Response) => {
   if (!usersService.isAvailable()) {
-    return res.status(503).json({ success: false, message: 'Firestore admin no disponible' });
+    return res.status(503).json({ success: false, message: USERS_REPOSITORY_UNAVAILABLE_MESSAGE });
   }
 
   try {
@@ -137,7 +138,7 @@ export const handleAvatarProxy = async (req: Request, res: Response) => {
 
 export const handleGetUser = async (req: Request, res: Response) => {
   if (!usersService.isAvailable()) {
-    return res.status(503).json({ success: false, message: 'Firestore admin no disponible' });
+    return res.status(503).json({ success: false, message: USERS_REPOSITORY_UNAVAILABLE_MESSAGE });
   }
 
   try {
@@ -155,7 +156,7 @@ export const handleGetUser = async (req: Request, res: Response) => {
 
 export const handleUpsertUser = async (req: Request, res: Response) => {
   if (!usersService.isAvailable()) {
-    return res.status(503).json({ success: false, message: 'Firestore admin no disponible' });
+    return res.status(503).json({ success: false, message: USERS_REPOSITORY_UNAVAILABLE_MESSAGE });
   }
 
   try {
@@ -174,7 +175,7 @@ export const handleUpsertUser = async (req: Request, res: Response) => {
 
 export const handleGetUserPreferences = async (req: Request, res: Response) => {
   if (!usersService.isAvailable()) {
-    return res.status(503).json({ success: false, message: 'Firestore admin no disponible' });
+    return res.status(503).json({ success: false, message: USERS_REPOSITORY_UNAVAILABLE_MESSAGE });
   }
 
   try {
@@ -192,7 +193,7 @@ export const handleGetUserPreferences = async (req: Request, res: Response) => {
 
 export const handleSetUserPreferences = async (req: Request, res: Response) => {
   if (!usersService.isAvailable()) {
-    return res.status(503).json({ success: false, message: 'Firestore admin no disponible' });
+    return res.status(503).json({ success: false, message: USERS_REPOSITORY_UNAVAILABLE_MESSAGE });
   }
 
   try {
@@ -211,7 +212,7 @@ export const handleSetUserPreferences = async (req: Request, res: Response) => {
 
 export const handleGetUserPrivacy = async (req: Request, res: Response) => {
   if (!usersService.isAvailable()) {
-    return res.status(503).json({ success: false, message: 'Firestore admin no disponible' });
+    return res.status(503).json({ success: false, message: USERS_REPOSITORY_UNAVAILABLE_MESSAGE });
   }
 
   try {
@@ -260,7 +261,7 @@ export const handleSetUserPrivacy = async (req: Request, res: Response) => {
 };
 
 export const handleGetUserPayments = async (req: Request, res: Response) => {
-  if (!usersService.isAvailable()) return res.status(503).json({ success: false, message: 'Firestore admin no disponible' });
+  if (!usersService.isAvailable()) return res.status(503).json({ success: false, message: USERS_REPOSITORY_UNAVAILABLE_MESSAGE });
 
   try {
     const { uid } = req.params;
