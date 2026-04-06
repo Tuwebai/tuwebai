@@ -6,6 +6,7 @@ import { getErrorMessage } from '../shared/utils/error-message';
 import { appLogger } from '../utils/app-logger';
 
 const shouldEnforceServerAuth = (): boolean => env.NODE_ENV === 'production' || env.ENFORCE_FIREBASE_AUTH;
+const AUTH_PROVIDER_UNAVAILABLE_MESSAGE = 'Proveedor de autenticacion no disponible';
 
 const logAuthRejected = (
   req: Request,
@@ -66,7 +67,7 @@ export const requireAuth = async (req: Request, res: Response, next: NextFunctio
         statusCode: 503,
         reason: 'auth_provider_unavailable',
       });
-      return res.status(503).json({ success: false, message: 'Auth admin no disponible' });
+      return res.status(503).json({ success: false, message: AUTH_PROVIDER_UNAVAILABLE_MESSAGE });
     }
     appLogger.warn('auth.verify_failed', {
       path: req.path,
@@ -114,7 +115,7 @@ export const requireAuthForUidParam = async (req: Request, res: Response, next: 
         statusCode: 503,
         reason: 'auth_provider_unavailable',
       });
-      return res.status(503).json({ success: false, message: 'Auth admin no disponible' });
+      return res.status(503).json({ success: false, message: AUTH_PROVIDER_UNAVAILABLE_MESSAGE });
     }
     appLogger.warn('auth.verify_failed', {
       path: req.path,

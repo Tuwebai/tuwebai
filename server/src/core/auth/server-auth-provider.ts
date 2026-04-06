@@ -1,5 +1,5 @@
 import type { AuthUser } from '../../shared/types/auth-user';
-import { createFirebaseServerAuthProvider } from '../../infrastructure/auth/firebase-admin-provider';
+import { createSupabaseServerAuthProvider } from '../../infrastructure/auth/supabase-auth-provider';
 
 export interface ServerAuthProvider {
   verifyAccessToken(token: string): Promise<AuthUser>;
@@ -8,8 +8,7 @@ export interface ServerAuthProvider {
 let providerInstance: ServerAuthProvider | null = null;
 
 const createServerAuthProvider = (): ServerAuthProvider => {
-  // Punto unico de swap cuando Supabase Auth reemplace al provider legacy.
-  return createFirebaseServerAuthProvider();
+  return createSupabaseServerAuthProvider();
 };
 
 export const getServerAuthProvider = (): ServerAuthProvider => {
