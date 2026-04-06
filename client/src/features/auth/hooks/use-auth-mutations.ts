@@ -1,32 +1,19 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useToast } from '@/shared/ui/use-toast';
+import {
+  confirmAuthPasswordReset,
+  registerAuthUser,
+  sendAuthPasswordResetEmail,
+  sendAuthVerificationEmail,
+  signInWithEmailPassword,
+  signInWithGooglePopup,
+  signOutAuthSession,
+  updateAuthUserProfile,
+} from '@/core/auth/auth-client';
 import { TUWEBAI_SITE_FULL_URL } from '@/shared/constants/contact';
 import type { User, RegisterData } from '../types';
-import { mergeFirebaseUserData } from '../services/auth-avatar';
 import { getAuthErrorMessage } from '../services/auth-error';
-
-type FirebaseModule = typeof import('@/lib/firebase');
-type FirebaseAuthModule = typeof import('firebase/auth');
-type UsersServiceModule = typeof import('@/features/users/services/users.service');
-
-let firebasePromise: Promise<FirebaseModule> | null = null;
-let fireauthPromise: Promise<FirebaseAuthModule> | null = null;
-let usersServicePromise: Promise<UsersServiceModule> | null = null;
-
-const getFirebase = () => {
-  if (!firebasePromise) firebasePromise = import('@/lib/firebase');
-  return firebasePromise;
-};
-
-const getFirebaseAuth = () => {
-  if (!fireauthPromise) fireauthPromise = import('firebase/auth');
-  return fireauthPromise;
-};
-
-const getUsersService = () => {
-  if (!usersServicePromise) usersServicePromise = import('@/features/users/services/users.service');
-  return usersServicePromise;
-};
+import { getAuthUsersService, syncAuthSessionUser } from '../services/auth-user-sync';
 
 const getAuthActionBaseUrl = () => {
   if (typeof window !== 'undefined' && window.location.origin) {
@@ -41,9 +28,7 @@ export const useLoginMutation = () => {
 
   return useMutation({
     mutationFn: async ({ email, password }: { email: string; password: string }) => {
-      const { auth } = await getFirebase();
-      const { signInWithEmailAndPassword } = await getFirebaseAuth();
-      return await signInWithEmailAndPassword(auth, email, password);
+      return await signInWithEmailPassword(email, password);
     },
     onSuccess: () => {
       toast({ title: 'Sesión iniciada', description: 'Has iniciado sesión correctamente.' });
@@ -59,33 +44,13 @@ export const useGoogleLoginMutation = () => {
 
   return useMutation({
     mutationFn: async () => {
-      const { auth, googleProvider } = await getFirebase();
-      const { signInWithPopup, reload } = await getFirebaseAuth();
-      const { getUser, setUser } = await getUsersService();
-
-      const result = await signInWithPopup(auth, googleProvider);
-      try {
-        await reload(result.user);
-      } catch {
-        // Si Google no refresca metadata en este instante, usamos el snapshot disponible.
+      const result = await signInWithGooglePopup();
+      const dbUser = await syncAuthSessionUser(result.user, { reloadBeforeSync: true });
+      if (!dbUser) {
+        throw new Error('No pudimos sincronizar la sesion de Google.');
       }
-      const firebaseUser = auth.currentUser ?? result.user;
-      const persistedUser = await getUser(firebaseUser.uid);
-      const dbUser = mergeFirebaseUserData(firebaseUser, persistedUser);
 
-      if (!persistedUser) {
-        await setUser(dbUser);
-      } else if (
-        dbUser.uid !== persistedUser.uid ||
-        dbUser.email !== persistedUser.email ||
-        dbUser.name !== persistedUser.name ||
-        dbUser.username !== persistedUser.username ||
-        dbUser.image !== persistedUser.image ||
-        dbUser.authProvider !== persistedUser.authProvider ||
-        dbUser.passwordChangedAt !== persistedUser.passwordChangedAt
-      ) {
-        await setUser(dbUser);
-      }
+      const firebaseUser = result.user;
       return { firebaseUser, dbUser };
     },
     onSuccess: (data) => {
@@ -106,9 +71,7 @@ export const useLogoutMutation = () => {
 
   return useMutation({
     mutationFn: async () => {
-      const { auth } = await getFirebase();
-      const { signOut } = await getFirebaseAuth();
-      await signOut(auth);
+      await signOutAuthSession();
     },
     onSuccess: () => {
       queryClient.clear();
@@ -125,13 +88,11 @@ export const useRegisterMutation = () => {
 
   return useMutation({
     mutationFn: async (userData: RegisterData) => {
-      const { auth } = await getFirebase();
-      const { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } = await getFirebaseAuth();
-      const { setUser } = await getUsersService();
+      const { setUser } = await getAuthUsersService();
 
-      const userCredential = await createUserWithEmailAndPassword(auth, userData.email, userData.password);
+      const userCredential = await registerAuthUser(userData.email, userData.password);
 
-      await updateProfile(userCredential.user, {
+      await updateAuthUserProfile(userCredential.user, {
         displayName: userData.name || userData.username,
       });
 
@@ -149,7 +110,7 @@ export const useRegisterMutation = () => {
       };
 
       await setUser(newUser);
-      await sendEmailVerification(userCredential.user, {
+      await sendAuthVerificationEmail(userCredential.user, {
         url: `${getAuthActionBaseUrl()}/auth/action`,
         handleCodeInApp: false,
       });
@@ -169,7 +130,7 @@ export const useUpdateProfileMutation = () => {
 
   return useMutation({
     mutationFn: async ({ uid, data }: { uid: string; data: Partial<User> }) => {
-      const { updateUser } = await getUsersService();
+      const { updateUser } = await getAuthUsersService();
       await updateUser(uid, data);
       return data;
     },
@@ -187,9 +148,7 @@ export const useResetPasswordMutation = () => {
 
   return useMutation({
     mutationFn: async (email: string) => {
-      const { auth } = await getFirebase();
-      const { sendPasswordResetEmail } = await getFirebaseAuth();
-      await sendPasswordResetEmail(auth, email, {
+      await sendAuthPasswordResetEmail(email, {
         url: `${getAuthActionBaseUrl()}/auth/action`,
         handleCodeInApp: false,
       });
@@ -208,9 +167,7 @@ export const useConfirmPasswordResetMutation = () => {
 
   return useMutation({
     mutationFn: async ({ code, newPassword }: { code: string; newPassword: string }) => {
-      const { auth } = await getFirebase();
-      const { confirmPasswordReset } = await getFirebaseAuth();
-      await confirmPasswordReset(auth, code, newPassword);
+      await confirmAuthPasswordReset(code, newPassword);
     },
     onSuccess: () => {
       // Evitamos un doble toast si el componente que llama ya lanza uno, pero dejamos este por consistencia
