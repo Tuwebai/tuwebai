@@ -1,7 +1,10 @@
 import { Request, Response } from 'express';
 import { env } from '../config/env.config';
 import { createPaymentPreference, verifyWebhookSignature, getPaymentDetails } from '../services/payment.service';
-import { registerProcessedPayment } from '../services/webhook-idempotency.service';
+import {
+  registerPaymentWebhookReceipt,
+  syncMercadoPagoPaymentToSupabase,
+} from '../services/payment-webhook-store.service';
 import { type PaymentPlan } from '../constants/payment-plans';
 import { getErrorMessage } from '../shared/utils/error-message';
 import { writeLog } from '../utils/logger';
@@ -135,16 +138,6 @@ export const handleWebhook = async (req: Request, res: Response) => {
 
     const paymentId = data.id;
 
-    const shouldProcess = await registerProcessedPayment(paymentId, {
-      source: 'mercadopago-webhook',
-      requestId: headers.xRequestId,
-    });
-
-    if (!shouldProcess) {
-      appLogger.info('payment.webhook_duplicate_ignored', { paymentId });
-      return;
-    }
-
     if (!env.MERCADOPAGO_ACCESS_TOKEN) {
       appLogger.error('payment.access_token_missing', { paymentId });
       return;
@@ -152,6 +145,24 @@ export const handleWebhook = async (req: Request, res: Response) => {
 
     try {
       const paymentDetails = await getPaymentDetails(paymentId);
+      await syncMercadoPagoPaymentToSupabase(paymentDetails);
+
+      const isNewReceipt = await registerPaymentWebhookReceipt({
+        eventType: 'payment',
+        paymentId,
+        paymentStatus: paymentDetails.status,
+        paymentStatusDetail: paymentDetails.status_detail,
+        payload: req.body,
+        requestId: typeof headers.xRequestId === 'string' ? headers.xRequestId : undefined,
+      });
+
+      if (!isNewReceipt) {
+        appLogger.info('payment.webhook_duplicate_received', {
+          paymentId,
+          requestId: headers.xRequestId,
+          status: paymentDetails.status,
+        });
+      }
 
       const orderData = {
         payment_id: paymentId,
