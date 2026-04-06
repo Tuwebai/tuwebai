@@ -9,7 +9,7 @@ const normalizeApiBaseUrl = (rawUrl: string): string => {
 
 const defaultApiBase = viteEnv?.DEV
   ? 'http://localhost:5000'
-  : 'https://tuwebai-backend.onrender.com';
+  : '';
 
 const configuredApiBase = viteApiUrl && viteApiUrl.length > 0 ? viteApiUrl : defaultApiBase;
 const hadApiSuffix = /\/api\/?$/i.test(configuredApiBase.trim());
