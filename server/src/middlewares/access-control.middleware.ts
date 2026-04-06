@@ -9,7 +9,6 @@ import {
   type ResourceType,
 } from '../security/access-policy';
 import { getProjectById } from '../modules/projects/supabase.repository';
-import { getSupportTicketById } from '../modules/support/supabase.repository';
 
 type ResourceDocument = {
   id: string;
@@ -74,13 +73,10 @@ const hasRequiredRole = (requiredRoles: readonly AccessRole[], authUser: AuthUse
 };
 
 const loadResourceDocument = async (
-  resourceType: ResourceType,
+  _resourceType: ResourceType,
   resourceId: string
 ): Promise<ResourceDocument | null> => {
-  const resource =
-    resourceType === 'tickets'
-      ? await getSupportTicketById(resourceId)
-      : await getProjectById(resourceId);
+  const resource = await getProjectById(resourceId);
 
   if (!resource) {
     return {
@@ -176,7 +172,7 @@ export const checkResourceOwnership =
       });
       return res.status(404).json({
         success: false,
-        message: resourceType === 'tickets' ? 'Ticket no encontrado' : 'Proyecto no encontrado',
+        message: 'Proyecto no encontrado',
       });
     }
 

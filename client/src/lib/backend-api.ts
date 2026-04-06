@@ -84,19 +84,8 @@ export const backendApi = {
       backendApi.withLimit(`/api/users/${encodeURIComponent(uid)}/payments`, limit)
     ),
 
-  getUserTickets: (uid: string, limit?: number) =>
-    apiFetch<{ success: boolean; data?: unknown[] }>(
-      backendApi.withLimit(`/api/users/${encodeURIComponent(uid)}/tickets`, limit)
-    ),
-
-  getTicketById: (ticketId: string) =>
-    apiFetch<{ success: boolean; data?: Record<string, unknown> }>(`/api/tickets/${encodeURIComponent(ticketId)}`),
-
   getAllProjects: (limit?: number) =>
     apiFetch<{ success: boolean; data?: unknown[] }>(backendApi.withLimit('/api/projects', limit)),
-
-  getAllTickets: (limit?: number) =>
-    apiFetch<{ success: boolean; data?: unknown[] }>(backendApi.withLimit('/api/tickets', limit)),
 
   getTestimonials: (limit?: number) =>
     apiFetch<{ success: boolean; data?: unknown[] }>(backendApi.withLimit('/api/testimonials', limit)),
@@ -116,42 +105,6 @@ export const backendApi = {
     apiFetch<{ success: boolean }>(`/api/testimonials/${encodeURIComponent(testimonialId)}`, {
       method: 'DELETE',
     }),
-
-  createTicket: (
-    uid: string,
-    payload: {
-      userId: string;
-      subject: string;
-      message: string;
-      status?: 'open' | 'in-progress' | 'resolved';
-      priority?: 'low' | 'medium' | 'high';
-      responses?: unknown[];
-    }
-  ) =>
-    apiFetch<{ success: boolean; id: string }>(`/api/users/${encodeURIComponent(uid)}/tickets`, {
-      method: 'POST',
-      body: payload as Record<string, unknown>,
-    }),
-
-  updateTicket: (
-    uid: string,
-    ticketId: string,
-    payload: Record<string, unknown>
-  ) =>
-    apiFetch<{ success: boolean }>(
-      `/api/users/${encodeURIComponent(uid)}/tickets/${encodeURIComponent(ticketId)}`,
-      { method: 'PUT', body: payload }
-    ),
-
-  addTicketResponse: (
-    uid: string,
-    ticketId: string,
-    payload: { message: string; author: string; authorType: 'client' | 'admin'; createdAt?: string }
-  ) =>
-    apiFetch<{ success: boolean }>(
-      `/api/users/${encodeURIComponent(uid)}/tickets/${encodeURIComponent(ticketId)}/responses`,
-      { method: 'POST', body: payload as Record<string, unknown> }
-    ),
 
   updateProject: (projectId: string, payload: Record<string, unknown>) =>
     apiFetch<{ success: boolean }>(`/api/projects/${encodeURIComponent(projectId)}`, {
