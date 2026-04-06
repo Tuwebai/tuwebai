@@ -16,6 +16,7 @@ import {
   registerNewsletterSubscription,
   unsubscribeNewsletterSubscription,
 } from './service';
+import { relayBrevoWebhookToEdge } from './brevo-webhook-edge.service';
 
 const resolveIpAddress = (req: Request): string | null => {
   const forwardedFor = req.headers['x-forwarded-for'];
@@ -229,6 +230,15 @@ export const handleBrevoWebhook = async (req: Request, res: Response) => {
         method: req.method,
       });
       return res.status(401).json({ success: false, message: 'Webhook no autorizado.' });
+    }
+
+    const edgeResult = await relayBrevoWebhookToEdge(req.body, {
+      requestId: res.locals.requestId,
+      webhookToken: providedToken,
+    });
+
+    if (edgeResult) {
+      return res.status(edgeResult.status).json(edgeResult.body);
     }
 
     const mappedEvent = mapBrevoEvent(req.body.event);
