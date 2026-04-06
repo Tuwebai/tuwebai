@@ -7,7 +7,13 @@ import {
   getContactFieldErrors,
   submitContactForm,
 } from '@/features/contact/services/contact.service';
-import analytics from '@/lib/analytics';
+import {
+  trackContactEmailClick,
+  trackContactFormClick,
+  trackContactFormSubmit,
+  trackContactPhoneClick,
+  trackContactWhatsAppClick,
+} from '@/features/contact/services/contact-analytics.service';
 import {
   TUWEBAI_BUSINESS_HOURS,
   TUWEBAI_EMAIL,
@@ -89,7 +95,7 @@ function ContactForm({ delay }: ContactFormProps) {
       .then(() => {
         setSubmitState('sent');
         setFormState({ name: '', email: '', message: '' });
-        analytics.trackFormSubmit('contact_form', 'contact_section');
+        trackContactFormSubmit();
         toast({
           title: 'Solicitud recibida',
           description: 'Te vamos a contactar a la brevedad para revisar tu consulta.',
@@ -187,7 +193,7 @@ function ContactForm({ delay }: ContactFormProps) {
           <button
             type="submit"
             disabled={submitState === 'submitting'}
-            onClick={() => analytics.trackCtaClick('enviar_consulta', 'contact_section', 'contact_form')}
+            onClick={trackContactFormClick}
             className="w-full rounded-lg bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-6 py-3 font-medium text-white shadow-lg shadow-[#00CCFF]/20 transition-all duration-200 hover:scale-[1.02] hover:shadow-[#9933FF]/30 active:scale-[0.98] disabled:cursor-wait disabled:opacity-70"
           >
             {submitState === 'submitting'
@@ -228,9 +234,7 @@ function ContactInfo({ delay }: ContactInfoProps) {
           </span>
           <a
             href={`tel:${TUWEBAI_WHATSAPP_TEL}`}
-            onClick={() =>
-              analytics.trackOutboundClick(`tel:${TUWEBAI_WHATSAPP_TEL}`, 'contact_section', TUWEBAI_WHATSAPP_DISPLAY, 'phone')
-            }
+            onClick={trackContactPhoneClick}
             className="text-gray-300 transition-colors hover:text-white"
           >
             {TUWEBAI_WHATSAPP_DISPLAY}
@@ -243,9 +247,7 @@ function ContactInfo({ delay }: ContactInfoProps) {
           </span>
           <a
             href={`mailto:${TUWEBAI_EMAIL}`}
-            onClick={() =>
-              analytics.trackOutboundClick(`mailto:${TUWEBAI_EMAIL}`, 'contact_section', TUWEBAI_EMAIL, 'email')
-            }
+            onClick={trackContactEmailClick}
             className="text-gray-300 transition-colors hover:text-white"
           >
             {TUWEBAI_EMAIL}
@@ -275,9 +277,7 @@ function ContactInfo({ delay }: ContactInfoProps) {
         <h5 className="mb-3 font-medium text-white">¿PREFERÍS HABLAR AHORA?</h5>
         <a
           href={TUWEBAI_WHATSAPP_URL}
-          onClick={() =>
-            analytics.trackOutboundClick(TUWEBAI_WHATSAPP_URL, 'contact_section', 'Escribinos por WhatsApp', 'whatsapp')
-          }
+          onClick={trackContactWhatsAppClick}
           className="inline-flex items-center text-[#00CCFF] hover:underline"
         >
           <svg
