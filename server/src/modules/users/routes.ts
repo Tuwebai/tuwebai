@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import express from 'express';
 import {
   handleAvatarProxy,
   handlePasswordResetMetadata,
@@ -8,6 +9,7 @@ import {
   handleGetUserPreferences,
   handleSetUserPrivacy,
   handleSetUserPreferences,
+  handleUploadUserAvatar,
   handleUpsertUser,
 } from './controller';
 import { validatePayload } from '../../middlewares/validate.middleware';
@@ -15,6 +17,7 @@ import { apiLimiter, strictApiLimiter } from '../../middlewares/rate-limit.middl
 import { requireAuthForUidParam } from '../../middlewares/auth.middleware';
 import {
   authPasswordResetMetadataSchema,
+  userAvatarUploadSchema,
   userPrivacyUpdateSchema,
   userPreferencesUpdateSchema,
   userUidParamsSchema,
@@ -27,6 +30,15 @@ router.post('/api/auth/password-reset-metadata', strictApiLimiter, validatePaylo
 router.get('/api/users/avatar', apiLimiter, handleAvatarProxy);
 router.get('/api/users/:uid', apiLimiter, requireAuthForUidParam, validatePayload(userUidParamsSchema), handleGetUser);
 router.get('/api/users/:uid/payments', apiLimiter, requireAuthForUidParam, validatePayload(userUidParamsSchema), handleGetUserPayments);
+router.post(
+  '/api/users/:uid/avatar',
+  strictApiLimiter,
+  requireAuthForUidParam,
+  express.json({ limit: '6mb' }),
+  validatePayload(userUidParamsSchema),
+  validatePayload(userAvatarUploadSchema),
+  handleUploadUserAvatar
+);
 router.put(
   '/api/users/:uid',
   strictApiLimiter,

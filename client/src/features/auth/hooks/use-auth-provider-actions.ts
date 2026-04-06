@@ -1,6 +1,7 @@
 import { useCallback, type Dispatch, type SetStateAction } from 'react';
 
 import { useToast } from '@/shared/ui/use-toast';
+import { backendApi } from '@/lib/backend-api';
 
 import {
   useConfirmPasswordResetMutation,
@@ -137,8 +138,9 @@ export const useAuthProviderActions = ({
     setError(null);
     try {
       const imageData = await readFileAsDataUrl(imageFile);
-      await updateProfileMutation.mutateAsync({ uid: user.uid, data: { image: imageData } });
-      setUserState((prevUser) => (prevUser ? { ...prevUser, image: imageData } : null));
+      const response = await backendApi.uploadUserAvatar(user.uid, imageData);
+      const imageUrl = response.data?.image ?? imageData;
+      setUserState((prevUser) => (prevUser ? { ...prevUser, image: imageUrl } : null));
       toast({ title: 'Imagen actualizada', description: 'Tu foto de perfil ha sido actualizada.' });
     } catch (error: unknown) {
       const message = getAuthErrorMessage(error, 'Error al subir imagen');
@@ -146,7 +148,7 @@ export const useAuthProviderActions = ({
       toast({ title: 'Error', description: message, variant: 'destructive' });
       throw error;
     }
-  }, [setError, setUserState, toast, updateProfileMutation, user]);
+  }, [setError, setUserState, toast, user]);
 
   const setUserImage = useCallback((imageUrl: string) => {
     if (!user) {

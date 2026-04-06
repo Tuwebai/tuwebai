@@ -167,6 +167,12 @@ export const userUpdateSchema = z.object({
   }),
 });
 
+export const userAvatarUploadSchema = z.object({
+  body: z.object({
+    dataUrl: z.string().min(32).max(7_000_000),
+  }),
+});
+
 export const userPreferencesUpdateSchema = z.object({
   body: z.object({
     emailNotifications: z.boolean().optional(),

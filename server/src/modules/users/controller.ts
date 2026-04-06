@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { getErrorMessage } from '../../shared/utils/error-message';
 import { appLogger } from '../../utils/app-logger';
 import { resolveOptionalLimit } from '../../shared/utils/list-limit';
+import { uploadUserAvatar } from '../../infrastructure/storage/avatar-storage.service';
 import {
   getChangedPrivacyFields,
   getUsersService,
@@ -255,5 +256,44 @@ export const handleGetUserPayments = async (req: Request, res: Response) => {
       uid: req.params?.uid,
     });
     return res.status(500).json({ success: false, message: 'No se pudieron obtener pagos' });
+  }
+};
+
+export const handleUploadUserAvatar = async (req: Request, res: Response) => {
+  if (!usersService.isAvailable()) {
+    return res.status(503).json({ success: false, message: USERS_REPOSITORY_UNAVAILABLE_MESSAGE });
+  }
+
+  try {
+    const { uid } = req.params;
+    const dataUrl = String(req.body?.dataUrl || '');
+    const imageUrl = await uploadUserAvatar(uid, dataUrl);
+
+    await usersService.upsertUserByUid(uid, {
+      image: imageUrl,
+    });
+
+    return res.json({
+      success: true,
+      data: {
+        image: imageUrl,
+      },
+    });
+  } catch (error: unknown) {
+    const message = getErrorMessage(error, 'unknown_upload_avatar_error');
+    appLogger.warn('users.avatar_upload_failed', {
+      uid: req.params?.uid,
+      error: message,
+    });
+
+    if (
+      message === 'avatar_invalid_data_url' ||
+      message === 'avatar_invalid_mime_type' ||
+      message === 'avatar_invalid_size'
+    ) {
+      return res.status(400).json({ success: false, message: 'La imagen no cumple con el formato permitido.' });
+    }
+
+    return res.status(500).json({ success: false, message: 'No se pudo subir la imagen de perfil.' });
   }
 };

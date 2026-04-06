@@ -54,6 +54,13 @@ export const backendApi = {
       body: payload as Record<string, unknown>,
     }),
 
+  uploadUserAvatar: (uid: string, dataUrl: string) =>
+    apiFetch<{ success: boolean; data?: { image?: string } }>(`/api/users/${encodeURIComponent(uid)}/avatar`, {
+      method: 'POST',
+      body: { dataUrl },
+      timeoutMs: 20000,
+    }),
+
   getUserPrivacy: (uid: string) =>
     apiFetch<{ success: boolean; data?: UserPrivacySettings }>(`/api/users/${encodeURIComponent(uid)}/privacy`),
 
