@@ -1,50 +1,17 @@
 import crypto from 'crypto';
 
-import { getFirestore as getAdminFirestore } from '../../infrastructure/firebase/firestore';
 import {
   queueBrevoNewsletterSubscribeSync,
   queueBrevoNewsletterUnsubscribeSync,
 } from '../../infrastructure/mail/brevo-newsletter.service';
+import { getNewsletterRepositoryService } from './application/newsletter.repository-service';
 import { env } from '../../config/env.config';
 import { appLogger } from '../../utils/app-logger';
 import { storeSubmission } from '../../utils/submission-store';
-
-export interface NewsletterSubscriptionContext {
-  email: string;
-  source: string;
-  ipAddress?: string | null;
-  userAgent?: string | null;
-}
-
-export interface NewsletterSubscriberRecord {
-  email: string;
-  emailNormalized: string;
-  status: 'pending_confirmation' | 'subscribed' | 'unsubscribed' | 'bounced' | 'complained';
-  createdAt: string;
-  confirmedAt?: string;
-  unsubscribedAt?: string;
-  bouncedAt?: string;
-  complainedAt?: string;
-  updatedAt: string;
-  lastSubmittedAt: string;
-  firstSource: string;
-  lastSource: string;
-  sources: string[];
-  submissionCount: number;
-  consent: {
-    ipAddress: string | null;
-    userAgent: string | null;
-    submittedAt: string;
-  };
-  brevoSync?: {
-    status: 'pending' | 'synced' | 'failed';
-    lastOperation: 'subscribe' | 'unsubscribe';
-    lastAttemptAt: string;
-    lastSyncedAt?: string;
-    lastError?: string;
-    retryCount: number;
-  };
-}
+import type {
+  NewsletterSubscriberRecord,
+  NewsletterSubscriptionContext,
+} from './domain/newsletter.repository';
 
 export interface NewsletterSubscriptionResult {
   isExistingSubscriber: boolean;
@@ -79,8 +46,8 @@ interface NewsletterActionResult {
   justConfirmed?: boolean;
 }
 
-const NEWSLETTER_COLLECTION = 'newsletter_subscribers';
 const NEWSLETTER_CONFIRM_TOKEN_TTL_MS = 1000 * 60 * 60 * 24 * 2;
+const newsletterRepository = getNewsletterRepositoryService();
 
 const normalizeEmail = (email: string): string => email.trim().toLowerCase();
 
@@ -210,9 +177,7 @@ export const registerNewsletterSubscription = async (
     ...context,
     source,
   };
-  const db = getAdminFirestore();
-
-  if (!db) {
+  if (!newsletterRepository.isAvailable()) {
     appLogger.warn('newsletter.firestore_unavailable_using_fallback', {
       emailNormalized: normalizeEmail(context.email),
     });
@@ -223,15 +188,13 @@ export const registerNewsletterSubscription = async (
 
   const emailNormalized = normalizeEmail(context.email);
   const subscriberId = getSubscriberDocumentId(emailNormalized);
-  const subscriberRef = db.collection(NEWSLETTER_COLLECTION).doc(subscriberId);
-  const snapshot = await subscriberRef.get();
-  const existing = snapshot.exists ? (snapshot.data() as Partial<NewsletterSubscriberRecord>) : undefined;
-  const subscriber = buildSubscriberRecord(existing, normalizedContext, nowIso);
+  const existing = await newsletterRepository.getSubscriberById(subscriberId);
+  const subscriber = buildSubscriberRecord(existing ?? undefined, normalizedContext, nowIso);
 
-  await subscriberRef.set(subscriber, { merge: true });
+  await newsletterRepository.upsertSubscriberById(subscriberId, subscriber);
 
   return {
-    isExistingSubscriber: snapshot.exists,
+    isExistingSubscriber: !!existing,
     persistedIn: 'firestore',
     subscriber,
     confirmationToken: encodeNewsletterToken(emailNormalized, 'newsletter-confirmation'),
@@ -249,25 +212,21 @@ export const confirmNewsletterSubscription = async (
     };
   }
 
-  const db = getAdminFirestore();
-  if (!db) {
+  if (!newsletterRepository.isAvailable()) {
     return {
       success: false,
       message: 'No se pudo confirmar la suscripcion en este momento.',
     };
   }
 
-  const subscriberRef = db.collection(NEWSLETTER_COLLECTION).doc(getSubscriberDocumentId(decoded.emailNormalized));
-  const snapshot = await subscriberRef.get();
-
-  if (!snapshot.exists) {
+  const subscriberId = getSubscriberDocumentId(decoded.emailNormalized);
+  const existing = await newsletterRepository.getSubscriberById(subscriberId);
+  if (!existing) {
     return {
       success: false,
       message: 'No encontramos una suscripcion pendiente para este enlace.',
     };
   }
-
-  const existing = snapshot.data() as NewsletterSubscriberRecord;
   const nowIso = new Date().toISOString();
   const nextSubscriber = omitUndefinedFields({
     ...existing,
@@ -281,7 +240,7 @@ export const confirmNewsletterSubscription = async (
     },
   }) as NewsletterSubscriberRecord;
 
-  await subscriberRef.set(nextSubscriber, { merge: true });
+  await newsletterRepository.upsertSubscriberById(subscriberId, nextSubscriber);
   queueBrevoNewsletterSubscribeSync(nextSubscriber, {
     event: 'newsletter.brevo_subscribe',
     meta: { source: nextSubscriber.lastSource },
@@ -310,25 +269,21 @@ export const unsubscribeNewsletterSubscription = async (
     };
   }
 
-  const db = getAdminFirestore();
-  if (!db) {
+  if (!newsletterRepository.isAvailable()) {
     return {
       success: false,
       message: 'No se pudo procesar la baja en este momento.',
     };
   }
 
-  const subscriberRef = db.collection(NEWSLETTER_COLLECTION).doc(getSubscriberDocumentId(decoded.emailNormalized));
-  const snapshot = await subscriberRef.get();
-
-  if (!snapshot.exists) {
+  const subscriberId = getSubscriberDocumentId(decoded.emailNormalized);
+  const existing = await newsletterRepository.getSubscriberById(subscriberId);
+  if (!existing) {
     return {
       success: false,
       message: 'No encontramos una suscripcion activa para este enlace.',
     };
   }
-
-  const existing = snapshot.data() as NewsletterSubscriberRecord;
   const nowIso = new Date().toISOString();
   const nextSubscriber: NewsletterSubscriberRecord = {
     ...existing,
@@ -337,7 +292,7 @@ export const unsubscribeNewsletterSubscription = async (
     updatedAt: nowIso,
   };
 
-  await subscriberRef.set(nextSubscriber, { merge: true });
+  await newsletterRepository.upsertSubscriberById(subscriberId, nextSubscriber);
   queueBrevoNewsletterUnsubscribeSync(nextSubscriber, {
     event: 'newsletter.brevo_unsubscribe',
     meta: { source: nextSubscriber.lastSource },
@@ -357,8 +312,7 @@ export const applyNewsletterProviderEvent = async (
   email: string,
   providerEvent: 'hard_bounce' | 'soft_bounce' | 'complaint' | 'unsubscribe',
 ): Promise<NewsletterWebhookResult> => {
-  const db = getAdminFirestore();
-  if (!db) {
+  if (!newsletterRepository.isAvailable()) {
     return {
       success: false,
       message: 'No se pudo procesar el webhook en este momento.',
@@ -366,17 +320,14 @@ export const applyNewsletterProviderEvent = async (
   }
 
   const emailNormalized = normalizeEmail(email);
-  const subscriberRef = db.collection(NEWSLETTER_COLLECTION).doc(getSubscriberDocumentId(emailNormalized));
-  const snapshot = await subscriberRef.get();
-
-  if (!snapshot.exists) {
+  const subscriberId = getSubscriberDocumentId(emailNormalized);
+  const existing = await newsletterRepository.getSubscriberById(subscriberId);
+  if (!existing) {
     return {
       success: false,
       message: 'No encontramos un suscriptor para este evento.',
     };
   }
-
-  const existing = snapshot.data() as NewsletterSubscriberRecord;
   const nowIso = new Date().toISOString();
 
   const nextSubscriber = omitUndefinedFields({
@@ -394,7 +345,7 @@ export const applyNewsletterProviderEvent = async (
     updatedAt: nowIso,
   }) as NewsletterSubscriberRecord;
 
-  await subscriberRef.set(nextSubscriber, { merge: true });
+  await newsletterRepository.upsertSubscriberById(subscriberId, nextSubscriber);
 
   return {
     success: true,
@@ -404,8 +355,7 @@ export const applyNewsletterProviderEvent = async (
 };
 
 export const reconcileNewsletterBrevoSync = async (limit = 50): Promise<NewsletterReconcileResult> => {
-  const db = getAdminFirestore();
-  if (!db) {
+  if (!newsletterRepository.isAvailable()) {
     return {
       success: false,
       message: 'No se pudo reconciliar newsletter en este momento.',
@@ -416,16 +366,11 @@ export const reconcileNewsletterBrevoSync = async (limit = 50): Promise<Newslett
   }
 
   const safeLimit = Math.max(1, Math.min(limit, 100));
-  const snapshot = await db
-    .collection(NEWSLETTER_COLLECTION)
-    .where('status', 'in', ['subscribed', 'unsubscribed'])
-    .limit(safeLimit * 3)
-    .get();
+  const subscribers = await newsletterRepository.listSubscribersForReconcile(safeLimit * 3);
 
   const items: NewsletterReconcileResult['items'] = [];
 
-  for (const doc of snapshot.docs) {
-    const subscriber = doc.data() as NewsletterSubscriberRecord;
+  for (const subscriber of subscribers) {
     const syncStatus = subscriber.brevoSync?.status;
     if (syncStatus === 'synced') continue;
 
@@ -457,7 +402,7 @@ export const reconcileNewsletterBrevoSync = async (limit = 50): Promise<Newslett
       items.length > 0
         ? 'Reconciliacion de Brevo programada correctamente.'
         : 'No encontramos suscriptores pendientes de reconciliacion con Brevo.',
-    scanned: snapshot.size,
+    scanned: subscribers.length,
     scheduled: items.length,
     items,
   };
