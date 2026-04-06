@@ -34,6 +34,7 @@
     "docker:up": "docker compose up -d",
     "docker:down": "docker compose down",
     "supabase:migrate": "npx tsx scripts/supabase-run-migrations.ts",
+    "supabase:hardening": "npx tsx scripts/supabase-apply-security-hardening.ts",
     "supabase:backfill:users": "npx tsx scripts/backfill-users-to-supabase.ts",
     "supabase:backfill:newsletter": "npx tsx scripts/backfill-newsletter-to-supabase.ts",
     "supabase:backfill:testimonials": "npx tsx scripts/backfill-testimonials-to-supabase.ts",

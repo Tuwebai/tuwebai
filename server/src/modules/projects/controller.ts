@@ -15,10 +15,22 @@ type ProjectDocument = {
   updatedAt?: string;
 } & Record<string, unknown>;
 
+const sanitizeProjectUpdatePayload = (payload: Partial<ProjectDocument>): Partial<ProjectDocument> => ({
+  ...(typeof payload.name === 'string' ? { name: payload.name } : {}),
+  ...(typeof payload.type === 'string' ? { type: payload.type } : {}),
+  ...(typeof payload.startDate === 'string' ? { startDate: payload.startDate } : {}),
+  ...(typeof payload.estimatedEndDate === 'string' ? { estimatedEndDate: payload.estimatedEndDate } : {}),
+  ...(typeof payload.overallProgress === 'number' ? { overallProgress: payload.overallProgress } : {}),
+  ...(payload.status === 'active' || payload.status === 'completed' || payload.status === 'on-hold'
+    ? { status: payload.status }
+    : {}),
+  ...(Array.isArray(payload.phases) ? { phases: payload.phases } : {}),
+});
+
 export const handleUpdateProject = async (req: Request, res: Response) => {
   try {
     const { projectId } = req.params;
-    const payload = (req.body ?? {}) as Partial<ProjectDocument>;
+    const payload = sanitizeProjectUpdatePayload((req.body ?? {}) as Partial<ProjectDocument>);
     await updateProjectRecord(projectId, {
       ...payload,
       updatedAt: new Date().toISOString(),

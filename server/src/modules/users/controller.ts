@@ -23,6 +23,13 @@ const isAllowedAvatarHost = (host: string) =>
 
 const usersService = getUsersService();
 
+const sanitizeUserSelfUpdate = (payload: Partial<UserDocument>): Partial<UserDocument> => ({
+  ...(typeof payload.email === 'string' ? { email: payload.email } : {}),
+  ...(typeof payload.username === 'string' ? { username: payload.username } : {}),
+  ...(typeof payload.name === 'string' ? { name: payload.name } : {}),
+  ...(typeof payload.image === 'string' ? { image: payload.image } : {}),
+});
+
 export const handlePasswordResetMetadata = async (req: Request, res: Response) => {
   if (!usersService.isAvailable()) {
     return res.status(503).json({ success: false, message: USERS_REPOSITORY_UNAVAILABLE_MESSAGE });
@@ -139,7 +146,7 @@ export const handleUpsertUser = async (req: Request, res: Response) => {
 
   try {
     const { uid } = req.params;
-    const payload = (req.body ?? {}) as Partial<UserDocument>;
+    const payload = sanitizeUserSelfUpdate((req.body ?? {}) as Partial<UserDocument>);
     await usersService.upsertUserByUid(uid, payload);
     return res.json({ success: true });
   } catch (error: unknown) {
@@ -208,7 +215,7 @@ export const handleGetUserPrivacy = async (req: Request, res: Response) => {
 
 export const handleSetUserPrivacy = async (req: Request, res: Response) => {
   if (!usersService.isAvailable()) {
-    return res.status(503).json({ success: false, message: 'Firestore admin no disponible' });
+    return res.status(503).json({ success: false, message: USERS_REPOSITORY_UNAVAILABLE_MESSAGE });
   }
 
   try {

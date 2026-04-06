@@ -30,17 +30,41 @@ type SupportTicketDocument = {
   responses?: TicketResponseDocument[];
 } & Record<string, unknown>;
 
+const sanitizeTicketCreatePayload = (
+  uid: string,
+  payload: Partial<SupportTicketDocument>,
+): {
+  userId: string;
+  subject: string;
+  message: string;
+  status: 'open';
+  priority: 'low' | 'medium' | 'high';
+  responses: TicketResponseDocument[];
+} => ({
+  userId: uid,
+  subject: String(payload.subject || ''),
+  message: String(payload.message || ''),
+  status: 'open',
+  priority: payload.priority ?? 'medium',
+  responses: [],
+});
+
+const sanitizeTicketUpdatePayload = (payload: Partial<SupportTicketDocument>): Partial<SupportTicketDocument> => ({
+  ...(typeof payload.subject === 'string' ? { subject: payload.subject } : {}),
+  ...(typeof payload.message === 'string' ? { message: payload.message } : {}),
+  ...(payload.status === 'open' || payload.status === 'in-progress' || payload.status === 'resolved'
+    ? { status: payload.status }
+    : {}),
+  ...(payload.priority === 'low' || payload.priority === 'medium' || payload.priority === 'high'
+    ? { priority: payload.priority }
+    : {}),
+});
+
 export const handleCreateTicket = async (req: Request, res: Response) => {
   try {
-    const payload = (req.body ?? {}) as Partial<SupportTicketDocument>;
-    const created = await createSupportTicket({
-      userId: String(payload.userId || ''),
-      subject: String(payload.subject || ''),
-      message: String(payload.message || ''),
-      status: payload.status ?? 'open',
-      priority: payload.priority ?? 'medium',
-      responses: payload.responses ?? [],
-    });
+    const { uid } = req.params;
+    const payload = sanitizeTicketCreatePayload(uid, (req.body ?? {}) as Partial<SupportTicketDocument>);
+    const created = await createSupportTicket(payload);
     return res.status(201).json({ success: true, id: created.id });
   } catch (error: unknown) {
     appLogger.error('public.create_ticket_failed', {
@@ -53,7 +77,7 @@ export const handleCreateTicket = async (req: Request, res: Response) => {
 export const handleUpdateTicket = async (req: Request, res: Response) => {
   try {
     const { ticketId } = req.params;
-    const payload = (req.body ?? {}) as Partial<SupportTicketDocument>;
+    const payload = sanitizeTicketUpdatePayload((req.body ?? {}) as Partial<SupportTicketDocument>);
     await updateSupportTicket(ticketId, {
       ...payload,
       updatedAt: new Date().toISOString(),
@@ -92,10 +116,7 @@ export const handleAddTicketResponse = async (req: Request, res: Response) => {
       id: Date.now().toString(),
       message: typeof incomingResponse.message === 'string' ? incomingResponse.message : undefined,
       author: typeof incomingResponse.author === 'string' ? incomingResponse.author : undefined,
-      authorType:
-        incomingResponse.authorType === 'client' || incomingResponse.authorType === 'admin'
-          ? incomingResponse.authorType
-          : undefined,
+      authorType: res.locals.authUser?.admin ? 'admin' : 'client',
       createdAt:
         typeof incomingResponse.createdAt === 'string'
           ? incomingResponse.createdAt
