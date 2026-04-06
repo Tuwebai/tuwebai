@@ -82,6 +82,17 @@ export const getProjectByUserId = async (userId: string): Promise<ProjectRecord 
   return rows[0] ? mapProjectRow(rows[0]) : null;
 };
 
+export const getProjectByOwnerIds = async (ownerIds: string[]): Promise<ProjectRecord | null> => {
+  for (const ownerId of ownerIds) {
+    const project = await getProjectByUserId(ownerId);
+    if (project) {
+      return project;
+    }
+  }
+
+  return null;
+};
+
 export const getAllProjects = async (limit?: number): Promise<ProjectRecord[]> => {
   const rows = await supabaseAdminRestRequest<ProjectRow[]>(
     `/projects?select=${PROJECTS_SELECT}&order=created_at.desc${

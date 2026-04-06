@@ -175,6 +175,33 @@ const findUserByAuthUserId = async (authUserId: string): Promise<UserDocument | 
   return rows[0] ? mapRowToDocument(rows[0]) : null;
 };
 
+const getPaymentsByOwnerIds = async (ownerIds: string[]): Promise<PaymentDocument[]> => {
+  const paymentsById = new Map<string, PaymentDocument>();
+
+  for (const ownerId of ownerIds) {
+    try {
+      const rows = await supabaseAdminRestRequest<PaymentDocument[]>(
+        `/payments?select=*&user_id=eq.${encodeURIComponent(ownerId)}`,
+      );
+      for (const row of rows) {
+        paymentsById.set(String(row.id), row);
+      }
+    } catch (error) {
+      if (
+        error instanceof Error &&
+        (error.message.includes('relation "public.payments" does not exist') ||
+          error.message.includes("Could not find the table 'public.payments'"))
+      ) {
+        return [];
+      }
+
+      throw error;
+    }
+  }
+
+  return Array.from(paymentsById.values());
+};
+
 const upsertUserByUid = async (uid: string, payload: Partial<UserDocument>): Promise<void> => {
   const current = await findUserByUid(uid);
   const nextPayload: Partial<UserDocument> = {
@@ -206,21 +233,10 @@ const upsertUserByUid = async (uid: string, payload: Partial<UserDocument>): Pro
 };
 
 const getUserPaymentsByUid = async (uid: string): Promise<PaymentDocument[]> => {
-  try {
-    return await supabaseAdminRestRequest<PaymentDocument[]>(
-      `/payments?select=*&user_id=eq.${encodeURIComponent(uid)}`,
-    );
-  } catch (error) {
-    if (
-      error instanceof Error &&
-      (error.message.includes('relation "public.payments" does not exist') ||
-        error.message.includes("Could not find the table 'public.payments'"))
-    ) {
-      return [];
-    }
-
-    throw error;
-  }
+  const ownerIds = Array.from(
+    new Set([uid, (await findUserByUid(uid))?.appUserId].filter((value): value is string => typeof value === 'string' && value.length > 0)),
+  );
+  return getPaymentsByOwnerIds(ownerIds);
 };
 
 export const createUsersSupabaseRepository = (): UsersRepository => ({

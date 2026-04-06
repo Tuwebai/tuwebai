@@ -88,6 +88,22 @@ export const getSupportTicketsByUserId = async (
   return rows.map(mapTicketRow);
 };
 
+export const getSupportTicketsByOwnerIds = async (
+  ownerIds: string[],
+  limit?: number,
+): Promise<SupportTicketRecord[]> => {
+  const ticketsById = new Map<string, SupportTicketRecord>();
+
+  for (const ownerId of ownerIds) {
+    const rows = await getSupportTicketsByUserId(ownerId, limit);
+    for (const row of rows) {
+      ticketsById.set(row.id, row);
+    }
+  }
+
+  return Array.from(ticketsById.values()).sort((left, right) => right.createdAt.localeCompare(left.createdAt));
+};
+
 export const getAllSupportTickets = async (limit?: number): Promise<SupportTicketRecord[]> => {
   const rows = await supabaseAdminRestRequest<SupportTicketRow[]>(
     `/support_tickets?select=${SUPPORT_TICKETS_SELECT}&order=created_at.desc${

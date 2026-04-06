@@ -6,9 +6,10 @@ import {
   createSupportTicket,
   getAllSupportTickets,
   getSupportTicketById,
-  getSupportTicketsByUserId,
+  getSupportTicketsByOwnerIds,
   updateSupportTicket,
 } from './supabase.repository';
+import { getUsersService } from '../users/application/users.service';
 
 type TicketResponseDocument = {
   id: string;
@@ -63,7 +64,8 @@ const sanitizeTicketUpdatePayload = (payload: Partial<SupportTicketDocument>): P
 export const handleCreateTicket = async (req: Request, res: Response) => {
   try {
     const { uid } = req.params;
-    const payload = sanitizeTicketCreatePayload(uid, (req.body ?? {}) as Partial<SupportTicketDocument>);
+    const appUserId = await getUsersService().resolveCanonicalAppUserId(uid);
+    const payload = sanitizeTicketCreatePayload(appUserId, (req.body ?? {}) as Partial<SupportTicketDocument>);
     const created = await createSupportTicket(payload);
     return res.status(201).json({ success: true, id: created.id });
   } catch (error: unknown) {
@@ -142,7 +144,8 @@ export const handleGetUserTickets = async (req: Request, res: Response) => {
   try {
     const { uid } = req.params;
     const limit = resolveOptionalLimit(req.query?.limit);
-    const data = await getSupportTicketsByUserId(uid, limit ?? undefined);
+    const ownerIds = await getUsersService().resolveOwnerIds(uid);
+    const data = await getSupportTicketsByOwnerIds(ownerIds, limit ?? undefined);
     return res.json({ success: true, data });
   } catch (error: unknown) {
     appLogger.error('public.get_user_tickets_failed', {

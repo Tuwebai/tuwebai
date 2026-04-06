@@ -2,6 +2,7 @@ import {
   isSupabaseAdminRestReady,
   supabaseAdminRestRequest,
 } from '../infrastructure/database/supabase/supabase-admin-rest';
+import { createUsersSupabaseRepository } from '../modules/users/infrastructure/users-supabase.repository';
 
 type JsonRecord = Record<string, unknown>;
 type UnknownObject = object;
@@ -17,6 +18,7 @@ interface PaymentWebhookReceiptInput {
 
 const PROVIDER = 'mercadopago';
 const PAYMENT_PLAN_PATTERN = /^tuwebai-([a-z]+)-\d+$/i;
+const usersRepository = createUsersSupabaseRepository();
 
 const readValue = (source: UnknownObject, key: string): unknown => Reflect.get(source, key);
 
@@ -40,13 +42,25 @@ const resolvePlanCode = (externalReference: string | null): string | null => {
   return match?.[1]?.toLowerCase() ?? null;
 };
 
-const resolveUserId = (metadata: JsonRecord | null): string | null => {
+const resolveUserId = async (metadata: JsonRecord | null): Promise<string | null> => {
   if (!metadata) {
     return null;
   }
 
-  const userId = readString(metadata.user_id) ?? readString(metadata.user_uid) ?? readString(metadata.uid);
-  return userId ? userId.toLowerCase() : null;
+  const legacyUid = readString(metadata.user_uid) ?? readString(metadata.uid);
+  const rawUserId = readString(metadata.user_id) ?? legacyUid;
+
+  if (!rawUserId) {
+    return null;
+  }
+
+  const normalizedUserId = rawUserId.toLowerCase();
+  const userByUid = await usersRepository.findByUid(normalizedUserId);
+  if (userByUid?.appUserId) {
+    return userByUid.appUserId;
+  }
+
+  return normalizedUserId;
 };
 
 const buildReceiptKey = ({
@@ -113,7 +127,7 @@ export const syncMercadoPagoPaymentToSupabase = async (
   const paymentRow = {
     provider: PROVIDER,
     external_payment_id: String(readValue(paymentDetails, 'id')),
-    user_id: resolveUserId(metadata),
+    user_id: await resolveUserId(metadata),
     external_reference: externalReference,
     plan_code: resolvePlanCode(externalReference),
     status: readString(readValue(paymentDetails, 'status')) ?? 'unknown',

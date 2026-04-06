@@ -25,6 +25,8 @@ const PRIVACY_FIELDS: Array<keyof typeof DEFAULT_USER_PRIVACY_SETTINGS> = [
 
 export interface UsersService {
   getUserByAuthUserId(authUserId: string): Promise<UserDocument | null>;
+  resolveOwnerIds(uid: string): Promise<string[]>;
+  resolveCanonicalAppUserId(uid: string): Promise<string>;
   findUserByEmail(email: string): Promise<{ id: string; data: UserDocument } | null>;
   getPaymentsByUid(uid: string): Promise<PaymentDocument[]>;
   getPrivacyByUid(uid: string): Promise<UserPrivacyDocument>;
@@ -39,6 +41,14 @@ export interface UsersService {
 
 const buildUsersService = (repository: UsersRepository): UsersService => ({
   getUserByAuthUserId: (authUserId) => repository.findByAuthUserId(authUserId),
+  async resolveOwnerIds(uid) {
+    const user = await repository.findByUid(uid);
+    return Array.from(new Set([user?.appUserId, uid].filter((value): value is string => typeof value === 'string' && value.length > 0)));
+  },
+  async resolveCanonicalAppUserId(uid) {
+    const user = await repository.findByUid(uid);
+    return user?.appUserId ?? uid;
+  },
   findUserByEmail: (email) => repository.findByEmail(email),
   getPaymentsByUid: (uid) => repository.getPaymentsByUid(uid),
   async getPrivacyByUid(uid) {

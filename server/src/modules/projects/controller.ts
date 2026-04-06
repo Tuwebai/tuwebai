@@ -4,9 +4,10 @@ import { appLogger } from '../../utils/app-logger';
 import { resolveOptionalLimit } from '../../shared/utils/list-limit';
 import {
   getAllProjects as getAllProjectsRecords,
-  getProjectByUserId,
+  getProjectByOwnerIds,
   updateProjectRecord,
 } from './supabase.repository';
+import { getUsersService } from '../users/application/users.service';
 
 type ProjectDocument = {
   id?: string;
@@ -48,7 +49,8 @@ export const handleUpdateProject = async (req: Request, res: Response) => {
 export const handleGetUserProject = async (req: Request, res: Response) => {
   try {
     const { uid } = req.params;
-    const project = await getProjectByUserId(uid);
+    const ownerIds = await getUsersService().resolveOwnerIds(uid);
+    const project = await getProjectByOwnerIds(ownerIds);
     return res.json({ success: true, data: project });
   } catch (error: unknown) {
     appLogger.error('public.get_user_project_failed', {
