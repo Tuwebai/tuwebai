@@ -1,5 +1,6 @@
 export interface ApiSuccessResponse<T = undefined> {
   data: T;
+  message?: string;
   requestId?: string;
   success: true;
 }

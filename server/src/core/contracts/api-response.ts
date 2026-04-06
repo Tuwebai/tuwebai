@@ -2,6 +2,7 @@ import type { Response } from 'express';
 
 export interface ApiSuccessResponse<T = undefined> {
   data: T;
+  message?: string;
   requestId?: string;
   success: true;
 }
@@ -27,11 +28,32 @@ export const sendSuccess = <T>(res: Response, data: T, status = 200) =>
     ...(resolveResponseRequestId(res) ? { requestId: resolveResponseRequestId(res) } : {}),
   } satisfies ApiSuccessResponse<T>);
 
+export const sendSuccessWithMessage = <T>(
+  res: Response,
+  data: T,
+  message: string,
+  status = 200,
+) =>
+  res.status(status).json({
+    success: true,
+    data,
+    message,
+    ...(resolveResponseRequestId(res) ? { requestId: resolveResponseRequestId(res) } : {}),
+  } satisfies ApiSuccessResponse<T>);
+
 export const sendSuccessWithoutData = (res: Response, status = 200) =>
   res.status(status).json({
     success: true,
     ...(resolveResponseRequestId(res) ? { requestId: resolveResponseRequestId(res) } : {}),
   });
+
+export const sendSuccessWithoutDataWithMessage = (res: Response, message: string, status = 200) =>
+  res.status(status).json({
+    success: true,
+    data: undefined,
+    message,
+    ...(resolveResponseRequestId(res) ? { requestId: resolveResponseRequestId(res) } : {}),
+  } satisfies ApiSuccessResponse<undefined>);
 
 export const sendError = (
   res: Response,

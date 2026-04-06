@@ -1,6 +1,11 @@
 import { Request, Response } from 'express';
 import { env } from '../../config/env.config';
 import {
+  sendError,
+  sendSuccessWithMessage,
+} from '../../core/contracts/api-response';
+import { createUseCaseLogger } from '../../core/observability/use-case-logger';
+import {
   queueContactEmail,
   queueChecklistWebGratisEmail,
   sendNewsletterConfirmationEmail,
@@ -8,7 +13,6 @@ import {
   sendNewsletterWelcomeEmail,
 } from '../../infrastructure/mail/email.service';
 import { getErrorMessage } from '../../shared/utils/error-message';
-import { appLogger } from '../../utils/app-logger';
 import {
   confirmNewsletterSubscription,
   applyNewsletterProviderEvent,
@@ -17,6 +21,12 @@ import {
   unsubscribeNewsletterSubscription,
 } from './service';
 import { relayBrevoWebhookToEdge } from './brevo-webhook-edge.service';
+import {
+  serializeNewsletterActionResult,
+  serializeNewsletterReconcileResult,
+  serializeNewsletterSubscriptionResult,
+  serializeNewsletterWebhookResult,
+} from './presentation/newsletter.serializers';
 
 const resolveIpAddress = (req: Request): string | null => {
   const forwardedFor = req.headers['x-forwarded-for'];
@@ -33,6 +43,12 @@ const resolveIpAddress = (req: Request): string | null => {
 };
 
 export const handleNewsletter = async (req: Request, res: Response) => {
+  const logger = createUseCaseLogger({
+    module: 'newsletter',
+    requestId: res.locals.requestId as string | undefined,
+    useCase: 'register_subscription',
+  });
+
   try {
     const { email, source } = req.body;
     const result = await registerNewsletterSubscription({
@@ -71,26 +87,41 @@ export const handleNewsletter = async (req: Request, res: Response) => {
       );
     }
 
-    return res.status(202).json({
-      success: true,
-      message: 'Suscripcion registrada. Procesaremos la confirmacion en breve.',
+    logger.info('newsletter.subscription_registered', {
+      email,
+      isExistingSubscriber: result.isExistingSubscriber,
+      persistedIn: result.persistedIn,
     });
+
+    return sendSuccessWithMessage(
+      res,
+      serializeNewsletterSubscriptionResult(result),
+      'Suscripcion registrada. Procesaremos la confirmacion en breve.',
+      202,
+    );
   } catch (error: unknown) {
-    appLogger.error('public.newsletter_failed', {
+    logger.error('public.newsletter_failed', {
       error: getErrorMessage(error, 'unknown_newsletter_error'),
       route: req.path,
       method: req.method,
     });
 
-    return res.status(500).json({
-      success: false,
-      message: 'No se pudo procesar la suscripcion en este momento.',
-      details: env.NODE_ENV === 'development' ? getErrorMessage(error, 'unknown_newsletter_error') : undefined,
-    });
+    return sendError(
+      res,
+      500,
+      'No se pudo procesar la suscripcion en este momento.',
+      env.NODE_ENV === 'development' ? getErrorMessage(error, 'unknown_newsletter_error') : undefined,
+    );
   }
 };
 
 export const handleChecklistWebGratisDownload = async (req: Request, res: Response) => {
+  const logger = createUseCaseLogger({
+    module: 'newsletter',
+    requestId: res.locals.requestId as string | undefined,
+    useCase: 'checklist_download_request',
+  });
+
   try {
     const { name, email, source } = req.body;
 
@@ -112,29 +143,45 @@ export const handleChecklistWebGratisDownload = async (req: Request, res: Respon
       },
     );
 
-    return res.status(202).json({
-      success: true,
-      message: 'Solicitud recibida. Te enviamos el checklist por email.',
+    logger.info('newsletter.checklist_request_accepted', {
+      email,
+      source: source || 'website',
     });
+
+    return sendSuccessWithMessage(
+      res,
+      {
+        email,
+        source: source || 'website',
+      },
+      'Solicitud recibida. Te enviamos el checklist por email.',
+      202,
+    );
   } catch (error: unknown) {
-    appLogger.error('public.checklist_web_gratis_failed', {
+    logger.error('public.checklist_web_gratis_failed', {
       error: getErrorMessage(error, 'unknown_checklist_web_gratis_error'),
       route: req.path,
       method: req.method,
     });
 
-    return res.status(500).json({
-      success: false,
-      message: 'No se pudo enviar el checklist en este momento.',
-      details:
-        env.NODE_ENV === 'development'
-          ? getErrorMessage(error, 'unknown_checklist_web_gratis_error')
-          : undefined,
-    });
+    return sendError(
+      res,
+      500,
+      'No se pudo enviar el checklist en este momento.',
+      env.NODE_ENV === 'development'
+        ? getErrorMessage(error, 'unknown_checklist_web_gratis_error')
+        : undefined,
+    );
   }
 };
 
 export const handleNewsletterConfirm = async (req: Request, res: Response) => {
+  const logger = createUseCaseLogger({
+    module: 'newsletter',
+    requestId: res.locals.requestId as string | undefined,
+    useCase: 'confirm_subscription',
+  });
+
   try {
     const result = await confirmNewsletterSubscription(req.params.token);
 
@@ -146,28 +193,49 @@ export const handleNewsletterConfirm = async (req: Request, res: Response) => {
         });
       }
 
-      return res.status(200).json(result);
+      logger.info('newsletter.confirmation_processed', {
+        justConfirmed: result.justConfirmed,
+        tokenProvided: true,
+      });
+
+      return sendSuccessWithMessage(
+        res,
+        serializeNewsletterActionResult(result),
+        result.message,
+      );
     }
 
     const isAvailabilityError = result.message.includes('en este momento');
 
-    return res.status(isAvailabilityError ? 503 : 400).json(result);
+    logger.warn('newsletter.confirmation_rejected', {
+      isAvailabilityError,
+      tokenProvided: true,
+    });
+
+    return sendError(res, isAvailabilityError ? 503 : 400, result.message);
   } catch (error: unknown) {
-    appLogger.error('public.newsletter_confirm_failed', {
+    logger.error('public.newsletter_confirm_failed', {
       error: getErrorMessage(error, 'unknown_newsletter_confirm_error'),
       route: req.path,
       method: req.method,
     });
 
-    return res.status(500).json({
-      success: false,
-      message: 'No se pudo confirmar la suscripcion en este momento.',
-      details: env.NODE_ENV === 'development' ? getErrorMessage(error, 'unknown_newsletter_confirm_error') : undefined,
-    });
+    return sendError(
+      res,
+      500,
+      'No se pudo confirmar la suscripcion en este momento.',
+      env.NODE_ENV === 'development' ? getErrorMessage(error, 'unknown_newsletter_confirm_error') : undefined,
+    );
   }
 };
 
 export const handleNewsletterUnsubscribe = async (req: Request, res: Response) => {
+  const logger = createUseCaseLogger({
+    module: 'newsletter',
+    requestId: res.locals.requestId as string | undefined,
+    useCase: 'unsubscribe_subscription',
+  });
+
   try {
     const result = await unsubscribeNewsletterSubscription(req.params.token);
     const frontendBaseUrl = env.FRONTEND_URL.replace(/\/+$/, '');
@@ -184,27 +252,40 @@ export const handleNewsletterUnsubscribe = async (req: Request, res: Response) =
         );
       }
 
-      return res.status(200).json(result);
+      logger.info('newsletter.unsubscribe_processed', {
+        tokenProvided: true,
+      });
+
+      return sendSuccessWithMessage(
+        res,
+        serializeNewsletterActionResult(result),
+        result.message,
+      );
     }
 
     const isAvailabilityError = result.message.includes('en este momento');
 
-    return res.status(isAvailabilityError ? 503 : 400).json(result);
+    logger.warn('newsletter.unsubscribe_rejected', {
+      isAvailabilityError,
+      tokenProvided: true,
+    });
+
+    return sendError(res, isAvailabilityError ? 503 : 400, result.message);
   } catch (error: unknown) {
-    appLogger.error('public.newsletter_unsubscribe_failed', {
+    logger.error('public.newsletter_unsubscribe_failed', {
       error: getErrorMessage(error, 'unknown_newsletter_unsubscribe_error'),
       route: req.path,
       method: req.method,
     });
 
-    return res.status(500).json({
-      success: false,
-      message: 'No se pudo procesar la baja en este momento.',
-      details:
-        env.NODE_ENV === 'development'
-          ? getErrorMessage(error, 'unknown_newsletter_unsubscribe_error')
-          : undefined,
-    });
+    return sendError(
+      res,
+      500,
+      'No se pudo procesar la baja en este momento.',
+      env.NODE_ENV === 'development'
+        ? getErrorMessage(error, 'unknown_newsletter_unsubscribe_error')
+        : undefined,
+    );
   }
 };
 
@@ -220,16 +301,22 @@ const mapBrevoEvent = (event: string): 'hard_bounce' | 'soft_bounce' | 'complain
 };
 
 export const handleBrevoWebhook = async (req: Request, res: Response) => {
+  const logger = createUseCaseLogger({
+    module: 'newsletter',
+    requestId: res.locals.requestId as string | undefined,
+    useCase: 'brevo_webhook',
+  });
+
   try {
     const configuredToken = env.BREVO_WEBHOOK_TOKEN?.trim();
     const providedToken = typeof req.query.token === 'string' ? req.query.token.trim() : '';
 
     if (configuredToken && configuredToken !== providedToken) {
-      appLogger.warn('newsletter.brevo_webhook.unauthorized', {
+      logger.warn('newsletter.brevo_webhook.unauthorized', {
         route: req.path,
         method: req.method,
       });
-      return res.status(401).json({ success: false, message: 'Webhook no autorizado.' });
+      return sendError(res, 401, 'Webhook no autorizado.');
     }
 
     const edgeResult = await relayBrevoWebhookToEdge(req.body, {
@@ -243,47 +330,85 @@ export const handleBrevoWebhook = async (req: Request, res: Response) => {
 
     const mappedEvent = mapBrevoEvent(req.body.event);
     if (!mappedEvent) {
-      return res.status(202).json({ success: true, message: 'Evento ignorado.' });
+      logger.info('newsletter.brevo_webhook_ignored', {
+        rawEvent: req.body?.event,
+      });
+      return sendSuccessWithMessage(res, { ignored: true }, 'Evento ignorado.', 202);
     }
 
     const result = await applyNewsletterProviderEvent(req.body.email, mappedEvent);
 
     if (result.success) {
-      return res.status(200).json(result);
+      logger.info('newsletter.brevo_webhook_applied', {
+        mappedEvent,
+      });
+      return sendSuccessWithMessage(
+        res,
+        serializeNewsletterWebhookResult(result),
+        result.message,
+      );
     }
 
     const notFound = result.message.includes('No encontramos');
-    return res.status(notFound ? 404 : 503).json(result);
+    logger.warn('newsletter.brevo_webhook_rejected', {
+      mappedEvent,
+      notFound,
+    });
+    return sendError(res, notFound ? 404 : 503, result.message);
   } catch (error: unknown) {
-    appLogger.error('newsletter.brevo_webhook.failed', {
+    logger.error('newsletter.brevo_webhook.failed', {
       error: getErrorMessage(error, 'unknown_brevo_webhook_error'),
       route: req.path,
       method: req.method,
     });
 
-    return res.status(500).json({
-      success: false,
-      message: 'No se pudo procesar el webhook de Brevo.',
-      details: env.NODE_ENV === 'development' ? getErrorMessage(error, 'unknown_brevo_webhook_error') : undefined,
-    });
+    return sendError(
+      res,
+      500,
+      'No se pudo procesar el webhook de Brevo.',
+      env.NODE_ENV === 'development' ? getErrorMessage(error, 'unknown_brevo_webhook_error') : undefined,
+    );
   }
 };
 
 export const handleNewsletterBrevoReconcile = async (req: Request, res: Response) => {
+  const logger = createUseCaseLogger({
+    module: 'newsletter',
+    requestId: res.locals.requestId as string | undefined,
+    useCase: 'brevo_reconcile',
+  });
+
   try {
     const result = await reconcileNewsletterBrevoSync(req.body.limit);
-    return res.status(result.success ? 200 : 503).json(result);
+    if (result.success) {
+      logger.info('newsletter.brevo_reconcile_scheduled', {
+        scanned: result.scanned,
+        scheduled: result.scheduled,
+      });
+      return sendSuccessWithMessage(
+        res,
+        serializeNewsletterReconcileResult(result),
+        result.message,
+      );
+    }
+
+    logger.warn('newsletter.brevo_reconcile_rejected', {
+      scanned: result.scanned,
+      scheduled: result.scheduled,
+    });
+    return sendError(res, 503, result.message);
   } catch (error: unknown) {
-    appLogger.error('newsletter.brevo_reconcile.failed', {
+    logger.error('newsletter.brevo_reconcile.failed', {
       error: getErrorMessage(error, 'unknown_brevo_reconcile_error'),
       route: req.path,
       method: req.method,
     });
 
-    return res.status(500).json({
-      success: false,
-      message: 'No se pudo reconciliar newsletter con Brevo.',
-      details: env.NODE_ENV === 'development' ? getErrorMessage(error, 'unknown_brevo_reconcile_error') : undefined,
-    });
+    return sendError(
+      res,
+      500,
+      'No se pudo reconciliar newsletter con Brevo.',
+      env.NODE_ENV === 'development' ? getErrorMessage(error, 'unknown_brevo_reconcile_error') : undefined,
+    );
   }
 };
