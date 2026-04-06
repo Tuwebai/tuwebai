@@ -22,7 +22,10 @@ export interface AuthMeResponse {
   success: boolean;
   data?: {
     admin?: boolean;
-    email?: string;
+    appUserId?: string | null;
+    authUserId?: string | null;
+    email?: string | null;
+    role?: 'admin' | 'user';
     uid: string;
   };
 }
