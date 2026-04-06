@@ -16,7 +16,9 @@ export interface UserPrivacyDocument {
 }
 
 export interface UserDocument {
+  appUserId?: string;
   uid?: string;
+  authUserId?: string;
   email?: string;
   username?: string;
   name?: string;
@@ -38,6 +40,7 @@ export type PaymentDocument = {
 } & Record<string, unknown>;
 
 export interface UsersRepository {
+  findByAuthUserId(authUserId: string): Promise<UserDocument | null>;
   findByEmail(email: string): Promise<{ id: string; data: UserDocument } | null>;
   findByUid(uid: string): Promise<UserDocument | null>;
   getPaymentsByUid(uid: string): Promise<PaymentDocument[]>;

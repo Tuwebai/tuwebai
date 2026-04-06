@@ -13,6 +13,7 @@ import type {
 } from '../domain/users.repository';
 
 interface UserRow {
+  id: string;
   auth_provider: string;
   created_at: string;
   email: string;
@@ -23,6 +24,7 @@ interface UserRow {
   legacy_project_id: string | null;
   password_changed_at: string | null;
   role: string;
+  supabase_auth_user_id: string | null;
   updated_at: string;
   username: string | null;
   user_preferences: {
@@ -43,7 +45,7 @@ interface UserRow {
 }
 
 const USERS_SELECT =
-  'firebase_uid,email,username,full_name,image_url,auth_provider,password_changed_at,role,is_active,legacy_project_id,created_at,updated_at,user_preferences(email_notifications,newsletter,dark_mode,language,updated_at),user_privacy_settings(marketing_consent,analytics_consent,profile_email_visible,profile_status_visible,updated_at,updated_by)';
+  'id,firebase_uid,supabase_auth_user_id,email,username,full_name,image_url,auth_provider,password_changed_at,role,is_active,legacy_project_id,created_at,updated_at,user_preferences(email_notifications,newsletter,dark_mode,language,updated_at),user_privacy_settings(marketing_consent,analytics_consent,profile_email_visible,profile_status_visible,updated_at,updated_by)';
 
 const createDeterministicUuid = (input: string): string => {
   const hash = createHash('sha256').update(input).digest('hex');
@@ -83,7 +85,9 @@ const mapPrivacy = (privacy: UserRow['user_privacy_settings']): UserPrivacyDocum
 };
 
 const mapRowToDocument = (row: UserRow): UserDocument => ({
+  appUserId: row.id,
   uid: row.firebase_uid,
+  authUserId: row.supabase_auth_user_id ?? undefined,
   email: row.email,
   username: row.username ?? undefined,
   name: row.full_name ?? row.username ?? undefined,
@@ -100,9 +104,9 @@ const mapRowToDocument = (row: UserRow): UserDocument => ({
 });
 
 const buildUserRow = (uid: string, payload: Partial<UserDocument>) => ({
-  id: createDeterministicUuid(`user:${uid}`),
+  id: payload.appUserId ?? createDeterministicUuid(`user:${uid}`),
   profile_id: createDeterministicUuid(`profile:${uid}`),
-  supabase_auth_user_id: null,
+  supabase_auth_user_id: payload.authUserId ?? null,
   firebase_uid: uid,
   email: payload.email?.trim().toLowerCase(),
   username: payload.username?.trim() || null,
@@ -163,6 +167,14 @@ const findUserByUid = async (uid: string): Promise<UserDocument | null> => {
   return rows[0] ? mapRowToDocument(rows[0]) : null;
 };
 
+const findUserByAuthUserId = async (authUserId: string): Promise<UserDocument | null> => {
+  const rows = await supabaseAdminRestRequest<UserRow[]>(
+    `/users?select=${USERS_SELECT}&supabase_auth_user_id=eq.${encodeURIComponent(authUserId)}&limit=1`,
+  );
+
+  return rows[0] ? mapRowToDocument(rows[0]) : null;
+};
+
 const upsertUserByUid = async (uid: string, payload: Partial<UserDocument>): Promise<void> => {
   const current = await findUserByUid(uid);
   const nextPayload: Partial<UserDocument> = {
@@ -212,6 +224,7 @@ const getUserPaymentsByUid = async (uid: string): Promise<PaymentDocument[]> => 
 };
 
 export const createUsersSupabaseRepository = (): UsersRepository => ({
+  findByAuthUserId: findUserByAuthUserId,
   findByEmail: findUserByEmail,
   findByUid: findUserByUid,
   getPaymentsByUid: getUserPaymentsByUid,

@@ -9,6 +9,7 @@ interface SupabaseAuthApiUser {
 }
 
 interface AppUserLookupRow {
+  id: string;
   email: string;
   firebase_uid: string;
   role: string;
@@ -16,7 +17,7 @@ interface AppUserLookupRow {
 }
 
 const SUPABASE_AUTH_TIMEOUT_MS = 8000;
-const APP_USER_SELECT = 'firebase_uid,email,role,supabase_auth_user_id';
+const APP_USER_SELECT = 'id,firebase_uid,email,role,supabase_auth_user_id';
 
 const buildSupabaseAuthHeaders = (token: string): Record<string, string> => ({
   apikey: supabaseConfig.anonKey ?? supabaseConfig.serviceRoleKey!,
@@ -86,7 +87,9 @@ const resolveAppAuthUser = async (authUser: SupabaseAuthApiUser): Promise<AuthUs
   const directMatch = await findAppUserBySupabaseAuthId(authUser.id);
   if (directMatch) {
     return {
+      appUserId: directMatch.id,
       uid: directMatch.firebase_uid,
+      authUserId: directMatch.supabase_auth_user_id ?? authUser.id,
       email: directMatch.email,
       admin: directMatch.role === 'admin',
     };
@@ -96,6 +99,7 @@ const resolveAppAuthUser = async (authUser: SupabaseAuthApiUser): Promise<AuthUs
   if (!normalizedEmail) {
     return {
       uid: authUser.id,
+      authUserId: authUser.id,
     };
   }
 
@@ -103,6 +107,7 @@ const resolveAppAuthUser = async (authUser: SupabaseAuthApiUser): Promise<AuthUs
   if (!emailMatch) {
     return {
       uid: authUser.id,
+      authUserId: authUser.id,
       email: normalizedEmail,
       admin: false,
     };
@@ -113,7 +118,9 @@ const resolveAppAuthUser = async (authUser: SupabaseAuthApiUser): Promise<AuthUs
   }
 
   return {
+    appUserId: emailMatch.id,
     uid: emailMatch.firebase_uid,
+    authUserId: emailMatch.supabase_auth_user_id ?? authUser.id,
     email: emailMatch.email,
     admin: emailMatch.role === 'admin',
   };

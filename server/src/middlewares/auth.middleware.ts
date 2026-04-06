@@ -25,6 +25,8 @@ const logAuthRejected = (
     method: req.method,
     path: req.path,
     userId: payload.userId,
+    appUserId: res.locals.authUser?.appUserId,
+    authUserId: res.locals.authUser?.authUserId,
     userEmail: payload.userEmail,
   });
 };

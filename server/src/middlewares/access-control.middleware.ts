@@ -13,7 +13,7 @@ import { getSupportTicketById } from '../modules/support/supabase.repository';
 
 type ResourceDocument = {
   id: string;
-  ownerUid?: string;
+  ownerUserId?: string;
   data: Record<string, unknown>;
 };
 
@@ -33,6 +33,8 @@ const getAuthUser = (res: Response): AuthUser | null => {
   if (typeof candidate.uid !== 'string' || candidate.uid.length === 0) return null;
 
   return {
+    appUserId: typeof candidate.appUserId === 'string' ? candidate.appUserId : undefined,
+    authUserId: typeof candidate.authUserId === 'string' ? candidate.authUserId : undefined,
     uid: candidate.uid,
     email: typeof candidate.email === 'string' ? candidate.email : undefined,
     admin: candidate.admin === true,
@@ -59,6 +61,8 @@ const logAccessRejected = (
     resourceType: payload.resourceType,
     resourceId: payload.resourceId,
     userId: authUser?.uid,
+    appUserId: authUser?.appUserId,
+    authUserId: authUser?.authUserId,
     userEmail: authUser?.email,
   });
 };
@@ -87,9 +91,17 @@ const loadResourceDocument = async (
 
   return {
     id: resource.id,
-    ownerUid: typeof resource.userId === 'string' ? resource.userId : undefined,
+    ownerUserId: typeof resource.userId === 'string' ? resource.userId : undefined,
     data: resource as unknown as Record<string, unknown>,
   };
+};
+
+const isResourceOwner = (authUser: AuthUser, resourceDocument: ResourceDocument): boolean => {
+  if (!resourceDocument.ownerUserId) {
+    return false;
+  }
+
+  return resourceDocument.ownerUserId === authUser.uid || resourceDocument.ownerUserId === authUser.appUserId;
 };
 
 export const requireAdmin = (req: Request, res: Response, next: NextFunction) => {
@@ -183,7 +195,7 @@ export const checkResourceOwnership =
       return res.status(403).json({ success: false, message: 'No autorizado para este recurso' });
     }
 
-    if (!resourceDocument.ownerUid || resourceDocument.ownerUid !== authUser.uid) {
+    if (!isResourceOwner(authUser, resourceDocument)) {
       logAccessRejected(req, res, {
         statusCode: 403,
         reason: 'resource_owner_mismatch',
