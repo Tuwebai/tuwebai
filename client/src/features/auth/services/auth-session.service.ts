@@ -1,11 +1,35 @@
 import {
+  confirmAuthPasswordReset,
+  getCurrentAuthUser,
   observeAuthState as observeAuthSessionState,
+  registerAuthUser,
+  reloadAuthUser,
+  sendAuthPasswordResetEmail,
+  sendAuthVerificationEmail,
+  signInWithEmailPassword,
+  signInWithGooglePopup,
   signOutAuthSession as signOutCurrentAuthSession,
+  updateAuthUserProfile,
+  verifyAuthPasswordResetCode,
+  verifyAuthTokenHash,
   type AuthSessionUser,
 } from '@/core/auth/auth-client';
+import type { AuthSessionProviderInfo } from '@/core/auth/auth-session-user';
 
 export {
+  confirmAuthPasswordReset,
+  getCurrentAuthUser,
   observeAuthSessionState,
+  registerAuthUser,
+  reloadAuthUser,
+  sendAuthPasswordResetEmail,
+  sendAuthVerificationEmail,
+  signInWithEmailPassword,
+  signInWithGooglePopup,
   signOutCurrentAuthSession,
+  updateAuthUserProfile,
+  verifyAuthPasswordResetCode,
+  verifyAuthTokenHash,
+  type AuthSessionProviderInfo,
   type AuthSessionUser,
 };

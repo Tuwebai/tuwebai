@@ -2,7 +2,7 @@ import {
   getCurrentAuthUser,
   reloadAuthUser,
   type AuthSessionUser,
-} from '@/core/auth/auth-client';
+} from '@/features/auth/services/auth-session.service';
 import { backendApi } from '@/lib/backend-api';
 import type { User } from '@/features/auth/types';
 

@@ -1,7 +1,7 @@
 import {
   verifyAuthPasswordResetCode,
   verifyAuthTokenHash,
-} from '@/core/auth/auth-client';
+} from '@/features/auth/services/auth-session.service';
 import type { PreparedAuthAction, ResolvedAuthAction } from '@/features/auth/types/auth-action';
 
 interface ResolveAuthActionInput {

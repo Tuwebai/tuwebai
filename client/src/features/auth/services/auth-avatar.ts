@@ -1,4 +1,7 @@
-import type { AuthSessionProviderInfo, AuthSessionUser } from '@/core/auth/auth-session-user';
+import type {
+  AuthSessionProviderInfo,
+  AuthSessionUser,
+} from '@/features/auth/services/auth-session.service';
 import type { User } from '@/features/users/types';
 
 const GOOGLE_PROVIDER_ID = 'google.com';

@@ -7,9 +7,9 @@ import {
   sendAuthVerificationEmail,
   signInWithEmailPassword,
   signInWithGooglePopup,
-  signOutAuthSession,
+  signOutCurrentAuthSession,
   updateAuthUserProfile,
-} from '@/core/auth/auth-client';
+} from '../services/auth-session.service';
 import { TUWEBAI_SITE_FULL_URL } from '@/shared/constants/contact';
 import type { User, RegisterData } from '../types';
 import { getAuthErrorMessage } from '../services/auth-error';
@@ -65,7 +65,7 @@ export const useLogoutMutation = () => {
 
   return useMutation({
     mutationFn: async () => {
-      await signOutAuthSession();
+      await signOutCurrentAuthSession();
     },
     onSuccess: () => {
       queryClient.clear();
