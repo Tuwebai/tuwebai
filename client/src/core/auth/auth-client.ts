@@ -2,6 +2,7 @@ import type { AuthChangeEvent } from '@supabase/supabase-js';
 
 import { publicEnv } from '@/core/config/public-env';
 import { supabaseBrowserClient } from '@/core/auth/supabase-browser-client';
+import { TUWEBAI_SITE_FULL_URL } from '@/shared/constants/contact';
 import {
   mapSupabaseUserToAuthSessionUser,
   type AuthActionInfo,
@@ -11,10 +12,10 @@ import {
 
 const getAuthBaseUrl = () => {
   if (typeof window === 'undefined') {
-    return undefined;
+    return publicEnv.authRedirectBaseUrl ?? TUWEBAI_SITE_FULL_URL;
   }
 
-  return publicEnv.authRedirectBaseUrl ?? window.location.origin;
+  return publicEnv.authRedirectBaseUrl ?? TUWEBAI_SITE_FULL_URL;
 };
 
 const getAuthRedirectUrl = (path = '/auth/action') => {
