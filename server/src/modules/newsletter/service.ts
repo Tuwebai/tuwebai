@@ -7,7 +7,6 @@ import {
 import { getNewsletterRepositoryService } from './application/newsletter.repository-service';
 import { env } from '../../config/env.config';
 import { appLogger } from '../../utils/app-logger';
-import { storeSubmission } from '../../utils/submission-store';
 import type {
   NewsletterSubscriberRecord,
   NewsletterSubscriptionContext,
@@ -15,7 +14,7 @@ import type {
 
 export interface NewsletterSubscriptionResult {
   isExistingSubscriber: boolean;
-  persistedIn: 'firestore' | 'fallback';
+  persistedIn: 'supabase';
   subscriber: NewsletterSubscriberRecord;
   confirmationToken: string | null;
 }
@@ -155,19 +154,6 @@ const buildSubscriberRecord = (
   }) as NewsletterSubscriberRecord;
 };
 
-const persistNewsletterFallback = (
-  subscriber: NewsletterSubscriberRecord,
-): NewsletterSubscriptionResult => {
-  storeSubmission('newsletter', subscriber);
-
-  return {
-    isExistingSubscriber: false,
-    persistedIn: 'fallback',
-    subscriber,
-    confirmationToken: null,
-  };
-};
-
 export const registerNewsletterSubscription = async (
   context: NewsletterSubscriptionContext,
 ): Promise<NewsletterSubscriptionResult> => {
@@ -178,12 +164,10 @@ export const registerNewsletterSubscription = async (
     source,
   };
   if (!newsletterRepository.isAvailable()) {
-    appLogger.warn('newsletter.firestore_unavailable_using_fallback', {
+    appLogger.error('newsletter.supabase_repository_unavailable', {
       emailNormalized: normalizeEmail(context.email),
     });
-
-    const subscriber = buildSubscriberRecord(undefined, normalizedContext, nowIso);
-    return persistNewsletterFallback(subscriber);
+    throw new Error('newsletter_repository_unavailable');
   }
 
   const emailNormalized = normalizeEmail(context.email);
@@ -195,7 +179,7 @@ export const registerNewsletterSubscription = async (
 
   return {
     isExistingSubscriber: !!existing,
-    persistedIn: 'firestore',
+    persistedIn: 'supabase',
     subscriber,
     confirmationToken: encodeNewsletterToken(emailNormalized, 'newsletter-confirmation'),
   };
