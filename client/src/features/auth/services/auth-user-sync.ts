@@ -95,20 +95,25 @@ export const syncAuthSessionUser = async (
   }
 
   const currentAuthUser = (await getCurrentAuthUser()) ?? authUser;
+  const authIdentityPromise = backendApi
+    .getAuthMe()
+    .then((response) => response.data ?? null)
+    .catch(() => null);
   const authIdentity = timeoutMs
-    ? await withTimeout(backendApi.getAuthMe().then((response) => response.data ?? null), timeoutMs, null)
-    : await backendApi.getAuthMe().then((response) => response.data ?? null);
+    ? await withTimeout(authIdentityPromise, timeoutMs, null)
+    : await authIdentityPromise;
   const resolvedUid = authIdentity?.uid ?? currentAuthUser.uid;
+  const persistedUserPromise = getUser(resolvedUid).catch(() => null);
   const persistedUser = timeoutMs
-    ? await withTimeout(getUser(resolvedUid), timeoutMs, null)
-    : await getUser(resolvedUid);
+    ? await withTimeout(persistedUserPromise, timeoutMs, null)
+    : await persistedUserPromise;
   const nextUser = mergeFirebaseUserData(currentAuthUser, persistedUser);
   nextUser.uid = resolvedUid;
   nextUser.email = authIdentity?.email || nextUser.email;
   nextUser.role = authIdentity?.admin ? 'admin' : nextUser.role;
 
   if (shouldPersistMergedUser(currentAuthUser, nextUser, persistedUser)) {
-    await setUser(nextUser);
+    await setUser(nextUser).catch(() => undefined);
   }
 
   return nextUser;
