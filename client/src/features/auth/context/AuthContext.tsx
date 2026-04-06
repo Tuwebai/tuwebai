@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import type { AuthSessionUser } from '@/core/auth/auth-client';
 import { useAuthProviderActions } from '../hooks/use-auth-provider-actions';
 import { useAuthSessionRuntime } from '../hooks/use-auth-session-runtime';
+import type { AuthSessionUser } from '../services/auth-session.service';
 import { syncAuthSessionUser } from '../services/auth-user-sync';
 import type { PasswordInfo, User } from '../types';
 import {

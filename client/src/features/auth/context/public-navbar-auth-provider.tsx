@@ -1,5 +1,4 @@
 import { useCallback, useMemo, type ReactNode } from 'react';
-import { signOutAuthSession, type AuthSessionUser } from '@/core/auth/auth-client';
 import { useAuthSessionRuntime } from '@/features/auth/hooks/use-auth-session-runtime';
 import {
   AuthActionsContext,
@@ -9,6 +8,10 @@ import {
   type AuthActions,
   type AuthState,
 } from '@/features/auth/context/auth-context';
+import {
+  signOutCurrentAuthSession,
+  type AuthSessionUser,
+} from '@/features/auth/services/auth-session.service';
 import { syncAuthSessionUser } from '@/features/auth/services/auth-user-sync';
 
 interface PublicNavbarAuthProviderProps {
@@ -20,7 +23,7 @@ export function PublicNavbarAuthProvider({ children }: PublicNavbarAuthProviderP
   const { user, setUserState, isLoadingAuth, ensureAuthReady } = useAuthSessionRuntime({ syncUser });
 
   const logout = useCallback(async () => {
-    await signOutAuthSession();
+    await signOutCurrentAuthSession();
     setUserState(null);
   }, []);
 

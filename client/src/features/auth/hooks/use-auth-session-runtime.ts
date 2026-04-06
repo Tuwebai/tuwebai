@@ -1,6 +1,9 @@
 import { useCallback, useEffect, useRef, useState, type Dispatch, type SetStateAction } from 'react';
 
-import { observeAuthState, type AuthSessionUser } from '@/core/auth/auth-client';
+import {
+  observeAuthSessionState,
+  type AuthSessionUser,
+} from '@/features/auth/services/auth-session.service';
 import type { User } from '@/features/auth/types';
 
 const PUBLIC_AUTH_BOOT_DELAY_MS = 2500;
@@ -103,7 +106,7 @@ export const useAuthSessionRuntime = ({
       setIsLoadingAuth(true);
 
       try {
-        const unsubscribe = observeAuthState(async (authUser) => {
+        const unsubscribe = observeAuthSessionState(async (authUser) => {
           if (!isMounted) {
             return;
           }
