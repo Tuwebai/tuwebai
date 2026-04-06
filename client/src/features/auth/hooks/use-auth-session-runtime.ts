@@ -5,13 +5,31 @@ import type { User } from '@/features/auth/types';
 
 const PUBLIC_AUTH_BOOT_DELAY_MS = 2500;
 
+const hasAuthCallbackState = (): boolean => {
+  if (typeof window === 'undefined') {
+    return false;
+  }
+
+  const searchParams = new URLSearchParams(window.location.search);
+  const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+
+  return (
+    searchParams.has('code') ||
+    searchParams.has('token_hash') ||
+    searchParams.has('error') ||
+    hashParams.has('access_token') ||
+    hashParams.has('refresh_token') ||
+    hashParams.has('type')
+  );
+};
+
 const shouldEagerlyInitializeAuth = (): boolean => {
   if (typeof window === 'undefined') {
     return true;
   }
 
   const { pathname } = window.location;
-  return pathname.startsWith('/panel') || pathname.startsWith('/auth/');
+  return pathname.startsWith('/panel') || pathname.startsWith('/auth/') || hasAuthCallbackState();
 };
 
 interface UseAuthSessionRuntimeOptions {
