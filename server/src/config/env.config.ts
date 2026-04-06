@@ -30,6 +30,10 @@ const envSchema = z
       .transform((str) => str.split(',').map((s) => s.trim())),
     FRONTEND_URL: z.string().url('FRONTEND_URL debe ser una URL valida').default('https://tuweb-ai.com'),
     BACKEND_URL: z.string().url('BACKEND_URL debe ser una URL valida').optional(),
+    SUPABASE_URL: z.string().url('SUPABASE_URL debe ser una URL valida').optional(),
+    SUPABASE_ANON_KEY: z.string().min(1, 'SUPABASE_ANON_KEY no puede estar vacia').optional(),
+    SUPABASE_SERVICE_ROLE_KEY: z.string().min(1, 'SUPABASE_SERVICE_ROLE_KEY no puede estar vacia').optional(),
+    SUPABASE_DB_URL: z.string().min(1, 'SUPABASE_DB_URL no puede estar vacia').optional(),
     PULSE_SSO_URL: z.string().url('PULSE_SSO_URL debe ser una URL valida').optional(),
     PULSE_FUNCTIONS_BASE_URL: z
       .string()
