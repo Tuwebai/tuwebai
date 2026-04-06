@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { usePaymentStatus } from '@/features/payments/hooks/use-payment-status';
+import { getPaymentStatusSummary } from '@/features/payments/services/payment-status-presenter.service';
 import MetaTags from '@/shared/ui/meta-tags';
 
 type Variant = 'success' | 'failure' | 'pending';
@@ -77,6 +78,7 @@ export default function PaymentReturnView({ variant, title, description, ctaLabe
     [searchParams]
   );
   const { isRefreshingStatus, status, statusError } = usePaymentStatus(paymentId);
+  const paymentStatusSummary = getPaymentStatusSummary(status);
 
   return (
     <>

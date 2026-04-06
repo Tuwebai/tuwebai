@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useToast } from '@/shared/ui/use-toast';
-import analytics from '@/lib/analytics';
+import { trackNewsletterSignup } from '@/features/newsletter/services/newsletter-analytics.service';
 import {
   getNewsletterErrorMessage,
   subscribeToNewsletter,
+  validateNewsletterEmail,
 } from '@/features/newsletter/services/newsletter.service';
 
 interface NewsletterFormProps {
@@ -31,8 +32,9 @@ export default function NewsletterForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!email.trim() || !/\S+@\S+\.\S+/.test(email)) {
-      setError('Por favor, introduce un email valido');
+    const nextError = validateNewsletterEmail(email);
+    if (nextError) {
+      setError(nextError);
       return;
     }
 
@@ -42,7 +44,7 @@ export default function NewsletterForm({
 
     try {
       await subscribeToNewsletter({ email: emailSnapshot, source });
-      analytics.event('engagement', 'newsletter_signup', source);
+      trackNewsletterSignup(source);
       setEmail('');
       setSubmitState('sent');
       toast({
