@@ -4,8 +4,11 @@ import type { AuthUser } from '../../shared/types/auth-user';
 import { supabaseAdminRestRequest } from '../database/supabase/supabase-admin-rest';
 
 interface SupabaseAuthApiUser {
+  app_metadata?: Record<string, unknown>;
   email?: string;
   id: string;
+  role?: string;
+  user_metadata?: Record<string, unknown>;
 }
 
 interface AppUserLookupRow {
@@ -18,6 +21,21 @@ interface AppUserLookupRow {
 
 const SUPABASE_AUTH_TIMEOUT_MS = 8000;
 const APP_USER_SELECT = 'id,firebase_uid,email,role,supabase_auth_user_id';
+
+const resolveClaimRole = (authUser: SupabaseAuthApiUser): 'admin' | 'user' | null => {
+  const appMetadataRole = authUser.app_metadata?.role;
+  const directRole = authUser.role;
+  const userMetadataRole = authUser.user_metadata?.role;
+  const candidate = [appMetadataRole, directRole, userMetadataRole].find(
+    (value) => typeof value === 'string' && value.trim().length > 0,
+  );
+
+  if (typeof candidate !== 'string') {
+    return null;
+  }
+
+  return candidate.trim().toLowerCase() === 'admin' ? 'admin' : 'user';
+};
 
 const buildSupabaseAuthHeaders = (token: string): Record<string, string> => ({
   apikey: supabaseConfig.anonKey ?? supabaseConfig.serviceRoleKey!,
@@ -84,32 +102,40 @@ const linkSupabaseAuthUser = async (firebaseUid: string, supabaseAuthUserId: str
 };
 
 const resolveAppAuthUser = async (authUser: SupabaseAuthApiUser): Promise<AuthUser> => {
+  const claimRole = resolveClaimRole(authUser);
   const directMatch = await findAppUserBySupabaseAuthId(authUser.id);
   if (directMatch) {
+    const role = directMatch.role === 'admin' || claimRole === 'admin' ? 'admin' : 'user';
     return {
       appUserId: directMatch.id,
       uid: directMatch.firebase_uid,
       authUserId: directMatch.supabase_auth_user_id ?? authUser.id,
       email: directMatch.email,
-      admin: directMatch.role === 'admin',
+      admin: role === 'admin',
+      role,
     };
   }
 
   const normalizedEmail = authUser.email?.trim().toLowerCase();
   if (!normalizedEmail) {
+    const role = claimRole ?? 'user';
     return {
       uid: authUser.id,
       authUserId: authUser.id,
+      admin: role === 'admin',
+      role,
     };
   }
 
   const emailMatch = await findAppUserByEmail(normalizedEmail);
   if (!emailMatch) {
+    const role = claimRole ?? 'user';
     return {
       uid: authUser.id,
       authUserId: authUser.id,
       email: normalizedEmail,
-      admin: false,
+      admin: role === 'admin',
+      role,
     };
   }
 
@@ -117,12 +143,14 @@ const resolveAppAuthUser = async (authUser: SupabaseAuthApiUser): Promise<AuthUs
     await linkSupabaseAuthUser(emailMatch.firebase_uid, authUser.id);
   }
 
+  const role = emailMatch.role === 'admin' || claimRole === 'admin' ? 'admin' : 'user';
   return {
     appUserId: emailMatch.id,
     uid: emailMatch.firebase_uid,
     authUserId: emailMatch.supabase_auth_user_id ?? authUser.id,
     email: emailMatch.email,
-    admin: emailMatch.role === 'admin',
+    admin: role === 'admin',
+    role,
   };
 };
 

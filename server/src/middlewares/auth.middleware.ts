@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import { env } from '../config/env.config';
 import { getServerAuthProvider } from '../core/auth/server-auth-provider';
+import { sendError } from '../core/contracts/api-response';
+import { auditSecurityEvent } from '../core/observability/security-audit';
 import type { AuthUser } from '../shared/types/auth-user';
 import { getErrorMessage } from '../shared/utils/error-message';
 import { appLogger } from '../utils/app-logger';
@@ -57,10 +59,13 @@ export const requireAuth = async (req: Request, res: Response, next: NextFunctio
         statusCode: 401,
         reason: 'missing_bearer_token',
       });
-      return res.status(401).json({ success: false, message: 'Token de autenticacion requerido' });
+      return sendError(res, 401, 'Token de autenticacion requerido');
     }
 
     res.locals.authUser = decoded;
+    auditSecurityEvent(req, res, 'auth.access_granted', {
+      accessType: 'authenticated_route',
+    });
     return next();
   } catch (error: unknown) {
     const errorMessage = getErrorMessage(error, 'unknown_auth_error');
@@ -69,14 +74,14 @@ export const requireAuth = async (req: Request, res: Response, next: NextFunctio
         statusCode: 503,
         reason: 'auth_provider_unavailable',
       });
-      return res.status(503).json({ success: false, message: AUTH_PROVIDER_UNAVAILABLE_MESSAGE });
+      return sendError(res, 503, AUTH_PROVIDER_UNAVAILABLE_MESSAGE);
     }
     appLogger.warn('auth.verify_failed', {
       path: req.path,
       method: req.method,
       error: errorMessage,
     });
-    return res.status(401).json({ success: false, message: 'Token de autenticacion invalido' });
+    return sendError(res, 401, 'Token de autenticacion invalido');
   }
 };
 
@@ -90,12 +95,12 @@ export const requireAuthForUidParam = async (req: Request, res: Response, next: 
         statusCode: 401,
         reason: 'missing_bearer_token',
       });
-      return res.status(401).json({ success: false, message: 'Token de autenticacion requerido' });
+      return sendError(res, 401, 'Token de autenticacion requerido');
     }
 
     const uid = req.params?.uid;
     if (!uid) {
-      return res.status(400).json({ success: false, message: 'uid requerido' });
+      return sendError(res, 400, 'uid requerido');
     }
 
     if (decoded.uid !== uid && !decoded.admin) {
@@ -105,10 +110,16 @@ export const requireAuthForUidParam = async (req: Request, res: Response, next: 
         userId: decoded.uid,
         userEmail: decoded.email,
       });
-      return res.status(403).json({ success: false, message: 'No autorizado para este recurso' });
+      auditSecurityEvent(req, res, 'auth.uid_scope_rejected', {
+        targetUid: uid,
+      });
+      return sendError(res, 403, 'No autorizado para este recurso');
     }
 
     res.locals.authUser = decoded;
+    auditSecurityEvent(req, res, 'auth.uid_scope_granted', {
+      targetUid: uid,
+    });
     return next();
   } catch (error: unknown) {
     const errorMessage = getErrorMessage(error, 'unknown_auth_error');
@@ -117,13 +128,13 @@ export const requireAuthForUidParam = async (req: Request, res: Response, next: 
         statusCode: 503,
         reason: 'auth_provider_unavailable',
       });
-      return res.status(503).json({ success: false, message: AUTH_PROVIDER_UNAVAILABLE_MESSAGE });
+      return sendError(res, 503, AUTH_PROVIDER_UNAVAILABLE_MESSAGE);
     }
     appLogger.warn('auth.verify_failed', {
       path: req.path,
       method: req.method,
       error: errorMessage,
     });
-    return res.status(401).json({ success: false, message: 'Token de autenticacion invalido' });
+    return sendError(res, 401, 'Token de autenticacion invalido');
   }
 };

@@ -4,4 +4,5 @@ export type AuthUser = {
   authUserId?: string;
   email?: string;
   admin?: boolean;
+  role?: 'admin' | 'user';
 };

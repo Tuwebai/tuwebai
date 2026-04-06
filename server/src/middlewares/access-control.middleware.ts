@@ -1,5 +1,7 @@
 import { type NextFunction, type Request, type Response } from 'express';
 import { env } from '../config/env.config';
+import { sendError } from '../core/contracts/api-response';
+import { auditSecurityEvent } from '../core/observability/security-audit';
 import type { AuthUser } from '../shared/types/auth-user';
 import { appLogger } from '../utils/app-logger';
 import {
@@ -37,6 +39,7 @@ const getAuthUser = (res: Response): AuthUser | null => {
     uid: candidate.uid,
     email: typeof candidate.email === 'string' ? candidate.email : undefined,
     admin: candidate.admin === true,
+    role: candidate.role === 'admin' ? 'admin' : 'user',
   };
 };
 
@@ -108,14 +111,16 @@ export const requireAdmin = (req: Request, res: Response, next: NextFunction) =>
   const authUser = getAuthUser(res);
   if (!authUser) {
     logAccessRejected(req, res, { statusCode: 401, reason: 'missing_auth_user' });
-    return res.status(401).json({ success: false, message: 'Token de autenticacion requerido' });
+    return sendError(res, 401, 'Token de autenticacion requerido');
   }
 
   if (!authUser.admin) {
     logAccessRejected(req, res, { statusCode: 403, reason: 'admin_required' });
-    return res.status(403).json({ success: false, message: 'No autorizado para este recurso' });
+    auditSecurityEvent(req, res, 'auth.admin_access_rejected');
+    return sendError(res, 403, 'No autorizado para este recurso');
   }
 
+  auditSecurityEvent(req, res, 'auth.admin_access_granted');
   return next();
 };
 
@@ -133,12 +138,12 @@ export const checkResourceOwnership =
         reason: 'missing_auth_user',
         resourceType,
       });
-      return res.status(401).json({ success: false, message: 'Token de autenticacion requerido' });
+      return sendError(res, 401, 'Token de autenticacion requerido');
     }
 
     const resourceId = req.params?.[resourceIdParam];
     if (!resourceId) {
-      return res.status(400).json({ success: false, message: `${resourceIdParam} requerido` });
+      return sendError(res, 400, `${resourceIdParam} requerido`);
     }
 
     const requiredRoles = accessPolicy[resourceType][action];
@@ -149,7 +154,12 @@ export const checkResourceOwnership =
         resourceType,
         resourceId,
       });
-      return res.status(403).json({ success: false, message: 'No autorizado para este recurso' });
+      auditSecurityEvent(req, res, 'auth.resource_policy_rejected', {
+        action,
+        resourceId,
+        resourceType,
+      });
+      return sendError(res, 403, 'No autorizado para este recurso');
     }
 
     const resourceDocument = await loadResourceDocument(resourceType, resourceId);
@@ -160,7 +170,7 @@ export const checkResourceOwnership =
         resourceType,
         resourceId,
       });
-      return res.status(503).json({ success: false, message: 'Persistencia no disponible' });
+      return sendError(res, 503, 'Persistencia no disponible');
     }
 
     if (Object.keys(resourceDocument.data).length === 0) {
@@ -170,13 +180,16 @@ export const checkResourceOwnership =
         resourceType,
         resourceId,
       });
-      return res.status(404).json({
-        success: false,
-        message: 'Proyecto no encontrado',
-      });
+      return sendError(res, 404, 'Proyecto no encontrado');
     }
 
     if (authUser.admin) {
+      auditSecurityEvent(req, res, 'auth.resource_access_granted', {
+        action,
+        resourceId,
+        resourceType,
+        via: 'admin',
+      });
       res.locals.resourceDocument = resourceDocument;
       return next();
     }
@@ -188,7 +201,7 @@ export const checkResourceOwnership =
         resourceType,
         resourceId,
       });
-      return res.status(403).json({ success: false, message: 'No autorizado para este recurso' });
+      return sendError(res, 403, 'No autorizado para este recurso');
     }
 
     if (!isResourceOwner(authUser, resourceDocument)) {
@@ -198,9 +211,21 @@ export const checkResourceOwnership =
         resourceType,
         resourceId,
       });
-      return res.status(403).json({ success: false, message: 'No autorizado para este recurso' });
+      auditSecurityEvent(req, res, 'auth.resource_access_rejected', {
+        action,
+        resourceId,
+        resourceType,
+        via: 'owner',
+      });
+      return sendError(res, 403, 'No autorizado para este recurso');
     }
 
+    auditSecurityEvent(req, res, 'auth.resource_access_granted', {
+      action,
+      resourceId,
+      resourceType,
+      via: 'owner',
+    });
     res.locals.resourceDocument = resourceDocument;
     return next();
   };
