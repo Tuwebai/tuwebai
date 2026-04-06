@@ -14,7 +14,7 @@ import {
 } from './controller';
 import { validatePayload } from '../../middlewares/validate.middleware';
 import { apiLimiter, strictApiLimiter } from '../../middlewares/rate-limit.middleware';
-import { requireFirebaseAuthForUidParam } from '../../middlewares/firebase-auth.middleware';
+import { requireAuthForUidParam } from '../../middlewares/auth.middleware';
 import {
   authDevVerifyParamsSchema,
   authPasswordResetMetadataSchema,
@@ -31,12 +31,12 @@ router.get('/api/auth/verify/:token', apiLimiter, validatePayload(authVerifyPara
 router.get('/api/auth/dev-verify/:email', strictApiLimiter, validatePayload(authDevVerifyParamsSchema), handleAuthDevVerify);
 router.post('/api/auth/password-reset-metadata', strictApiLimiter, validatePayload(authPasswordResetMetadataSchema), handlePasswordResetMetadata);
 router.get('/api/users/avatar', apiLimiter, handleAvatarProxy);
-router.get('/api/users/:uid', apiLimiter, requireFirebaseAuthForUidParam, validatePayload(userUidParamsSchema), handleGetUser);
-router.get('/api/users/:uid/payments', apiLimiter, requireFirebaseAuthForUidParam, validatePayload(userUidParamsSchema), handleGetUserPayments);
+router.get('/api/users/:uid', apiLimiter, requireAuthForUidParam, validatePayload(userUidParamsSchema), handleGetUser);
+router.get('/api/users/:uid/payments', apiLimiter, requireAuthForUidParam, validatePayload(userUidParamsSchema), handleGetUserPayments);
 router.put(
   '/api/users/:uid',
   strictApiLimiter,
-  requireFirebaseAuthForUidParam,
+  requireAuthForUidParam,
   validatePayload(userUidParamsSchema),
   validatePayload(userUpdateSchema),
   handleUpsertUser
@@ -44,14 +44,14 @@ router.put(
 router.get(
   '/api/users/:uid/privacy',
   apiLimiter,
-  requireFirebaseAuthForUidParam,
+  requireAuthForUidParam,
   validatePayload(userUidParamsSchema),
   handleGetUserPrivacy
 );
 router.put(
   '/api/users/:uid/privacy',
   strictApiLimiter,
-  requireFirebaseAuthForUidParam,
+  requireAuthForUidParam,
   validatePayload(userUidParamsSchema),
   validatePayload(userPrivacyUpdateSchema),
   handleSetUserPrivacy
@@ -59,14 +59,14 @@ router.put(
 router.get(
   '/api/users/:uid/preferences',
   apiLimiter,
-  requireFirebaseAuthForUidParam,
+  requireAuthForUidParam,
   validatePayload(userUidParamsSchema),
   handleGetUserPreferences
 );
 router.put(
   '/api/users/:uid/preferences',
   strictApiLimiter,
-  requireFirebaseAuthForUidParam,
+  requireAuthForUidParam,
   validatePayload(userUidParamsSchema),
   validatePayload(userPreferencesUpdateSchema),
   handleSetUserPreferences

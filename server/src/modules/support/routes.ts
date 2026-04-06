@@ -9,7 +9,7 @@ import {
 } from './controller';
 import { validatePayload } from '../../middlewares/validate.middleware';
 import { apiLimiter, strictApiLimiter } from '../../middlewares/rate-limit.middleware';
-import { requireFirebaseAuth, requireFirebaseAuthForUidParam } from '../../middlewares/firebase-auth.middleware';
+import { requireAuth, requireAuthForUidParam } from '../../middlewares/auth.middleware';
 import { checkResourceOwnership, requireAdmin } from '../../middlewares/access-control.middleware';
 import {
   ticketCreateSchema,
@@ -22,12 +22,12 @@ import {
 
 const router = Router();
 
-router.get('/api/users/:uid/tickets', apiLimiter, requireFirebaseAuthForUidParam, validatePayload(userUidParamsSchema), handleGetUserTickets);
-router.post('/api/users/:uid/tickets', strictApiLimiter, requireFirebaseAuthForUidParam, validatePayload(userUidParamsSchema), validatePayload(ticketCreateSchema), handleCreateTicket);
+router.get('/api/users/:uid/tickets', apiLimiter, requireAuthForUidParam, validatePayload(userUidParamsSchema), handleGetUserTickets);
+router.post('/api/users/:uid/tickets', strictApiLimiter, requireAuthForUidParam, validatePayload(userUidParamsSchema), validatePayload(ticketCreateSchema), handleCreateTicket);
 router.get(
   '/api/tickets/:ticketId',
   apiLimiter,
-  requireFirebaseAuth,
+  requireAuth,
   validatePayload(ticketOnlyParamsSchema),
   checkResourceOwnership({ resourceType: 'tickets', action: 'read', resourceIdParam: 'ticketId' }),
   handleGetTicketById
@@ -35,7 +35,7 @@ router.get(
 router.put(
   '/api/users/:uid/tickets/:ticketId',
   strictApiLimiter,
-  requireFirebaseAuthForUidParam,
+  requireAuthForUidParam,
   validatePayload(ticketIdParamsSchema),
   validatePayload(ticketUpdateSchema),
   checkResourceOwnership({ resourceType: 'tickets', action: 'update', resourceIdParam: 'ticketId' }),
@@ -44,12 +44,12 @@ router.put(
 router.post(
   '/api/users/:uid/tickets/:ticketId/responses',
   strictApiLimiter,
-  requireFirebaseAuthForUidParam,
+  requireAuthForUidParam,
   validatePayload(ticketIdParamsSchema),
   validatePayload(ticketResponseSchema),
   checkResourceOwnership({ resourceType: 'tickets', action: 'update', resourceIdParam: 'ticketId' }),
   handleAddTicketResponse
 );
-router.get('/api/tickets', apiLimiter, requireFirebaseAuth, requireAdmin, handleGetAllTickets);
+router.get('/api/tickets', apiLimiter, requireAuth, requireAdmin, handleGetAllTickets);
 
 export default router;
