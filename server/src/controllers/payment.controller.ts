@@ -1,26 +1,15 @@
 import { Request, Response } from 'express';
 import { env } from '../config/env.config';
+import { sendError, sendSuccess, sendSuccessWithMessage } from '../core/contracts/api-response';
 import { relayEdgeFunction } from '../infrastructure/supabase/supabase-edge-relay';
 import { type PaymentPlan } from '../constants/payment-plans';
-import {
-  buildPaymentWebhookHeaders,
-  processMercadoPagoWebhook,
-} from '../modules/payments/application/payment-webhook.service';
-import { createPaymentPreferenceForPlan } from '../modules/payments/application/payment-preference.service';
 import { getPaymentStatusDetails } from '../modules/payments/application/payment-status.service';
-import {
-  sendError,
-  sendSuccess,
-  sendSuccessWithMessage,
-} from '../core/contracts/api-response';
 import { createUseCaseLogger } from '../core/observability/use-case-logger';
 import {
   serializePaymentHealthResult,
-  serializePaymentPreferenceResult,
   serializePaymentStatusResult,
 } from '../modules/payments/presentation/payment.serializers';
 import { getErrorMessage } from '../shared/utils/error-message';
-import { writeLog } from '../utils/logger';
 import { appLogger } from '../utils/app-logger';
 
 export const handleCreatePreference = async (req: Request, res: Response) => {
@@ -40,10 +29,7 @@ export const handleCreatePreference = async (req: Request, res: Response) => {
     if (edgeResult) {
       return res.status(edgeResult.status).json(edgeResult.body);
     }
-
-    const mpRes = await createPaymentPreferenceForPlan(plan);
-    logger.info('payment.preference_created', { plan });
-    return sendSuccess(res, serializePaymentPreferenceResult(mpRes.init_point ?? ''));
+    return sendError(res, 503, 'La preferencia de pago no esta disponible en este momento.');
   } catch (error: unknown) {
     logger.error('payment.preference_failed', {
       error: getErrorMessage(error, 'unknown_payment_preference_error'),
@@ -91,8 +77,6 @@ export const handleGetPaymentStatus = async (req: Request, res: Response) => {
 };
 
 export const handleWebhook = async (req: Request, res: Response) => {
-  const startTime = Date.now();
-
   // ACK immediately to avoid retries due to timeout.
   void sendSuccessWithMessage(res, { received: true }, 'Webhook recibido.');
 
@@ -108,33 +92,14 @@ export const handleWebhook = async (req: Request, res: Response) => {
     if (edgeResult) {
       return;
     }
-
-    const headers = buildPaymentWebhookHeaders(req);
-
-    await processMercadoPagoWebhook({
-      body: req.body,
-      headers,
-      ip: req.ip,
-      logWriter: {
-        audit: (payload) => writeLog(payload),
-        elapsedMs: () => Date.now() - startTime,
-        error: (event, payload) => appLogger.error(event, payload),
-        info: (event, payload) => appLogger.info(event, payload),
-        warn: (event, payload) => appLogger.warn(event, payload),
-      },
-      path: req.path,
+    appLogger.warn('payment.webhook.edge_unavailable', {
+      route: req.path,
       method: req.method,
     });
   } catch (error: unknown) {
     appLogger.error('payment.webhook_unhandled_error', {
       error: getErrorMessage(error, 'unknown_payment_webhook_error'),
       stack: error instanceof Error ? error.stack : undefined,
-    });
-
-    writeLog({
-      event: 'webhook_unhandled_error',
-      timestamp: new Date().toISOString(),
-      error: getErrorMessage(error, 'unknown_payment_webhook_error'),
     });
   }
 };

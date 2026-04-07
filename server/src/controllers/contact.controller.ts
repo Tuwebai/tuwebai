@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
+import { sendError } from '../core/contracts/api-response';
 import { relayEdgeFunction } from '../infrastructure/supabase/supabase-edge-relay';
-import { dispatchPublicSubmission, handlePublicSubmissionError } from '../modules/contact/submission-ops';
 import { getErrorMessage } from '../shared/utils/error-message';
 import { sendContactEmail } from '../services/email.service';
 import { appLogger } from '../utils/app-logger';
@@ -16,28 +16,14 @@ export const handleContact = async (req: Request, res: Response) => {
     if (edgeResult) {
       return res.status(edgeResult.status).json(edgeResult.body);
     }
-
-    return await dispatchPublicSubmission(res, {
-      req,
-      channel: 'contact',
-      event: 'contact',
-      storePayload: {
-        name,
-        email,
-        title,
-        message,
-      },
-      emailPayload: { name, email, title, message },
-      successMessage: 'Mensaje recibido. Procesaremos el envio en breve.',
-    });
+    return sendError(res, 503, 'El servicio de contacto no esta disponible en este momento.');
   } catch (error: unknown) {
-    return handlePublicSubmissionError(res, {
-      req,
-      error,
-      logEvent: 'contact.submit_failed',
-      fallbackError: 'unknown_contact_submit_error',
-      userMessage: 'No se pudo enviar el mensaje en este momento.',
+    appLogger.error('contact.submit_failed', {
+      error: getErrorMessage(error, 'unknown_contact_submit_error'),
+      route: req.path,
+      method: req.method,
     });
+    return sendError(res, 500, 'No se pudo enviar el mensaje en este momento.');
   }
 };
 
@@ -52,28 +38,14 @@ export const handleConsulta = async (req: Request, res: Response) => {
     if (edgeResult) {
       return res.status(edgeResult.status).json(edgeResult.body);
     }
-
-    return await dispatchPublicSubmission(res, {
-      req,
-      channel: 'consulta',
-      event: 'consulta',
-      storePayload: {
-        name,
-        email,
-        title,
-        message,
-      },
-      emailPayload: { name, email, title, message },
-      successMessage: 'Consulta recibida. Procesaremos el envio en breve.',
-    });
+    return sendError(res, 503, 'El servicio de consulta no esta disponible en este momento.');
   } catch (error: unknown) {
-    return handlePublicSubmissionError(res, {
-      req,
-      error,
-      logEvent: 'consultation.submit_failed',
-      fallbackError: 'unknown_consultation_submit_error',
-      userMessage: 'No se pudo enviar la consulta en este momento.',
+    appLogger.error('consultation.submit_failed', {
+      error: getErrorMessage(error, 'unknown_consultation_submit_error'),
+      route: req.path,
+      method: req.method,
     });
+    return sendError(res, 500, 'No se pudo enviar la consulta en este momento.');
   }
 };
 

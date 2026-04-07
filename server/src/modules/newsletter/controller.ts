@@ -9,39 +9,17 @@ import { createUseCaseLogger } from '../../core/observability/use-case-logger';
 import {
   queueContactEmail,
   queueChecklistWebGratisEmail,
-  sendNewsletterConfirmationEmail,
-  sendNewsletterUnsubscribeEmail,
-  sendNewsletterWelcomeEmail,
 } from '../../infrastructure/mail/email.service';
 import { getErrorMessage } from '../../shared/utils/error-message';
 import {
-  confirmNewsletterSubscription,
   applyNewsletterProviderEvent,
   reconcileNewsletterBrevoSync,
-  registerNewsletterSubscription,
-  unsubscribeNewsletterSubscription,
 } from './service';
 import { relayBrevoWebhookToEdge } from './brevo-webhook-edge.service';
 import {
-  serializeNewsletterActionResult,
   serializeNewsletterReconcileResult,
-  serializeNewsletterSubscriptionResult,
   serializeNewsletterWebhookResult,
 } from './presentation/newsletter.serializers';
-
-const resolveIpAddress = (req: Request): string | null => {
-  const forwardedFor = req.headers['x-forwarded-for'];
-
-  if (typeof forwardedFor === 'string') {
-    return forwardedFor.split(',')[0]?.trim() || null;
-  }
-
-  if (Array.isArray(forwardedFor) && forwardedFor[0]) {
-    return forwardedFor[0];
-  }
-
-  return req.ip || null;
-};
 
 export const handleNewsletter = async (req: Request, res: Response) => {
   const logger = createUseCaseLogger({
@@ -60,55 +38,7 @@ export const handleNewsletter = async (req: Request, res: Response) => {
     if (edgeResult) {
       return res.status(edgeResult.status).json(edgeResult.body);
     }
-
-    const result = await registerNewsletterSubscription({
-      email,
-      source: source || 'website',
-      ipAddress: resolveIpAddress(req),
-      userAgent: req.get('user-agent') || null,
-    });
-    const frontendBaseUrl = env.FRONTEND_URL.replace(/\/+$/, '');
-
-    if (result.confirmationToken && result.subscriber.status === 'pending_confirmation') {
-      await sendNewsletterConfirmationEmail(
-        result.subscriber.email,
-        `${frontendBaseUrl}/newsletter/confirm/${encodeURIComponent(result.confirmationToken)}`,
-        {
-          event: 'public.newsletter_confirmation',
-          meta: {
-            route: req.path,
-            method: req.method,
-            persistedIn: result.persistedIn,
-            isExistingSubscriber: result.isExistingSubscriber,
-          },
-        },
-      );
-    }
-
-    if (!result.isExistingSubscriber) {
-      queueContactEmail(
-        {
-          name: 'Newsletter',
-          email,
-          title: 'Nueva suscripcion a newsletter',
-          message: `Email: ${result.subscriber.email}\nSource: ${result.subscriber.lastSource}\nTimestamp: ${result.subscriber.createdAt}\nPersistencia: ${result.persistedIn}`,
-        },
-        { event: 'public.newsletter', meta: { route: req.path, method: req.method } }
-      );
-    }
-
-    logger.info('newsletter.subscription_registered', {
-      email,
-      isExistingSubscriber: result.isExistingSubscriber,
-      persistedIn: result.persistedIn,
-    });
-
-    return sendSuccessWithMessage(
-      res,
-      serializeNewsletterSubscriptionResult(result),
-      'Suscripcion registrada. Procesaremos la confirmacion en breve.',
-      202,
-    );
+    return sendError(res, 503, 'El newsletter no esta disponible en este momento.');
   } catch (error: unknown) {
     logger.error('public.newsletter_failed', {
       error: getErrorMessage(error, 'unknown_newsletter_error'),
@@ -206,37 +136,7 @@ export const handleNewsletterConfirm = async (req: Request, res: Response) => {
     if (edgeResult) {
       return res.status(edgeResult.status).json(edgeResult.body);
     }
-
-    const result = await confirmNewsletterSubscription(req.params.token);
-
-    if (result.success) {
-      if (result.justConfirmed && result.subscriber?.email) {
-        await sendNewsletterWelcomeEmail(result.subscriber.email, {
-          event: 'public.newsletter_welcome',
-          meta: { route: req.path, method: req.method },
-        });
-      }
-
-      logger.info('newsletter.confirmation_processed', {
-        justConfirmed: result.justConfirmed,
-        tokenProvided: true,
-      });
-
-      return sendSuccessWithMessage(
-        res,
-        serializeNewsletterActionResult(result),
-        result.message,
-      );
-    }
-
-    const isAvailabilityError = result.message.includes('en este momento');
-
-    logger.warn('newsletter.confirmation_rejected', {
-      isAvailabilityError,
-      tokenProvided: true,
-    });
-
-    return sendError(res, isAvailabilityError ? 503 : 400, result.message);
+    return sendError(res, 503, 'La confirmacion de newsletter no esta disponible en este momento.');
   } catch (error: unknown) {
     logger.error('public.newsletter_confirm_failed', {
       error: getErrorMessage(error, 'unknown_newsletter_confirm_error'),
@@ -269,41 +169,7 @@ export const handleNewsletterUnsubscribe = async (req: Request, res: Response) =
     if (edgeResult) {
       return res.status(edgeResult.status).json(edgeResult.body);
     }
-
-    const result = await unsubscribeNewsletterSubscription(req.params.token);
-    const frontendBaseUrl = env.FRONTEND_URL.replace(/\/+$/, '');
-
-    if (result.success) {
-      if (result.subscriber?.email) {
-        await sendNewsletterUnsubscribeEmail(
-          result.subscriber.email,
-          `${frontendBaseUrl}/newsletter/unsubscribe/${encodeURIComponent(req.params.token)}`,
-          {
-            event: 'public.newsletter_unsubscribe',
-            meta: { route: req.path, method: req.method },
-          },
-        );
-      }
-
-      logger.info('newsletter.unsubscribe_processed', {
-        tokenProvided: true,
-      });
-
-      return sendSuccessWithMessage(
-        res,
-        serializeNewsletterActionResult(result),
-        result.message,
-      );
-    }
-
-    const isAvailabilityError = result.message.includes('en este momento');
-
-    logger.warn('newsletter.unsubscribe_rejected', {
-      isAvailabilityError,
-      tokenProvided: true,
-    });
-
-    return sendError(res, isAvailabilityError ? 503 : 400, result.message);
+    return sendError(res, 503, 'La baja de newsletter no esta disponible en este momento.');
   } catch (error: unknown) {
     logger.error('public.newsletter_unsubscribe_failed', {
       error: getErrorMessage(error, 'unknown_newsletter_unsubscribe_error'),
