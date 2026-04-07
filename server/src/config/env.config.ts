@@ -75,9 +75,6 @@ const envSchema = z
       .string()
       .optional()
       .transform((v) => v === 'true'),
-    LOG_SINK_URL: z.string().url('LOG_SINK_URL debe ser una URL valida').optional(),
-    LOG_SINK_API_KEY: z.string().optional(),
-    LOG_SINK_TIMEOUT_MS: z.string().transform(Number).default('2000'),
   })
   .superRefine((data, ctx) => {
     if (data.NODE_ENV === 'production') {

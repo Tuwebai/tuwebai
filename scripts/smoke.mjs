@@ -5,7 +5,6 @@ const PORT = process.env.SMOKE_PORT ?? process.env.PORT ?? '5077';
 const BASE_URL = process.env.SMOKE_BASE_URL ?? `http://localhost:${PORT}`;
 const ORIGIN = process.env.SMOKE_ORIGIN ?? 'http://localhost:5173';
 const NO_SPAWN = process.env.SMOKE_NO_SPAWN === '1';
-const ENABLE_LOG_SINK = process.env.SMOKE_ENABLE_LOG_SINK === '1';
 const ENFORCE_AUTH_MODE = process.env.SMOKE_ENFORCE_SERVER_AUTH === '1';
 const USE_REAL_SMTP = process.env.SMOKE_USE_REAL_SMTP === '1';
 
@@ -61,9 +60,6 @@ const run = async () => {
           ALLOWED_ORIGINS: process.env.ALLOWED_ORIGINS || ORIGIN,
           DISABLE_SMTP_DELIVERY: USE_REAL_SMTP ? (process.env.DISABLE_SMTP_DELIVERY || 'false') : 'true',
           ENFORCE_SERVER_AUTH: ENFORCE_AUTH_MODE ? 'true' : (process.env.ENFORCE_SERVER_AUTH || 'false'),
-          LOG_SINK_URL: ENABLE_LOG_SINK ? process.env.LOG_SINK_URL : undefined,
-          LOG_SINK_API_KEY: ENABLE_LOG_SINK ? process.env.LOG_SINK_API_KEY : undefined,
-          LOG_SINK_TIMEOUT_MS: ENABLE_LOG_SINK ? process.env.LOG_SINK_TIMEOUT_MS : undefined,
         },
       }
       );
