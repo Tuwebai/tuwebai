@@ -2,9 +2,24 @@ import { backendApi } from '@/lib/backend-api';
 import type { PulsePreviewData, PulseStatusData, PulseTokenData } from '@/features/users/types/pulse';
 
 const DEFAULT_PULSE_BASE_URL = import.meta.env.DEV ? 'http://localhost:8083' : 'https://pulse.tuweb-ai.com';
-const PULSE_BASE_URL = (import.meta.env.VITE_PULSE_BASE_URL || DEFAULT_PULSE_BASE_URL).replace(/\/+$/, '');
+const RAW_PULSE_BASE_URL = (import.meta.env.VITE_PULSE_BASE_URL || DEFAULT_PULSE_BASE_URL).replace(/\/+$/, '');
 const RAW_PULSE_FUNCTIONS_BASE_URL = import.meta.env.VITE_PULSE_FUNCTIONS_BASE_URL?.trim() || '';
 const PULSE_FUNCTIONS_BASE_URL = RAW_PULSE_FUNCTIONS_BASE_URL.replace(/\/+$/, '');
+
+function resolvePulseBaseUrl(): string {
+  if (
+    import.meta.env.DEV &&
+    RAW_PULSE_BASE_URL.includes('localhost') &&
+    PULSE_FUNCTIONS_BASE_URL.length > 0 &&
+    !PULSE_FUNCTIONS_BASE_URL.includes('localhost')
+  ) {
+    return 'https://pulse.tuweb-ai.com';
+  }
+
+  return RAW_PULSE_BASE_URL;
+}
+
+const PULSE_BASE_URL = resolvePulseBaseUrl();
 
 function shouldSkipLocalPulsePreview(): boolean {
   return import.meta.env.DEV && PULSE_FUNCTIONS_BASE_URL.length === 0;

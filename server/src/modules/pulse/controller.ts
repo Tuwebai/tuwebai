@@ -6,6 +6,7 @@ import { appLogger } from '../../utils/app-logger';
 
 const TOKEN_ISSUER = 'tuweb-ai.com';
 const TOKEN_TTL_SECONDS = 60 * 5;
+const CANONICAL_PULSE_SSO_URL = 'https://pulse.tuweb-ai.com/auth/sso';
 
 type PulseAccessStatus = 'enabled' | 'pending_activation' | 'disabled';
 
@@ -34,9 +35,24 @@ function resolveAuthenticatedEmail(req: Request, res: Response): string | null {
 }
 
 function buildRedirectUrl(token: string): string {
-  const redirectUrl = new URL(env.PULSE_SSO_URL);
+  const redirectUrl = new URL(resolvePulseSsoUrl());
   redirectUrl.searchParams.set('token', token);
   return redirectUrl.toString();
+}
+
+function resolvePulseSsoUrl(): string {
+  const configuredUrl = env.PULSE_SSO_URL;
+  const configuredFunctionsUrl = env.PULSE_FUNCTIONS_BASE_URL;
+
+  if (
+    env.NODE_ENV === 'development' &&
+    configuredUrl.includes('localhost') &&
+    !configuredFunctionsUrl.includes('localhost')
+  ) {
+    return CANONICAL_PULSE_SSO_URL;
+  }
+
+  return configuredUrl;
 }
 
 function buildPulseVerifyUrl(): string {
