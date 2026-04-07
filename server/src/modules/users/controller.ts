@@ -8,7 +8,6 @@ export {
   handleGetUserPayments,
   handleGetUserPrivacy,
   handleGetUserPreferences,
-  handlePasswordResetMetadata,
   handleSetUserPrivacy,
   handleSetUserPreferences,
   handleUpsertUser,

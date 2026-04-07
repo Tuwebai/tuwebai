@@ -3,7 +3,6 @@ import express from 'express';
 import {
   handleAvatarProxy,
   handleGetStoredAvatar,
-  handlePasswordResetMetadata,
   handleGetUser,
   handleGetUserPayments,
   handleGetUserPrivacy,
@@ -17,7 +16,6 @@ import { validatePayload } from '../../middlewares/validate.middleware';
 import { apiLimiter, strictApiLimiter } from '../../middlewares/rate-limit.middleware';
 import { requireAuthForUidParam } from '../../middlewares/auth.middleware';
 import {
-  authPasswordResetMetadataSchema,
   userAvatarUploadSchema,
   userPrivacyUpdateSchema,
   userPreferencesUpdateSchema,
@@ -27,7 +25,6 @@ import {
 
 const router = Router();
 
-router.post('/api/auth/password-reset-metadata', strictApiLimiter, validatePayload(authPasswordResetMetadataSchema), handlePasswordResetMetadata);
 router.get('/api/users/avatar', apiLimiter, handleAvatarProxy);
 router.get('/api/users/:uid/avatar', apiLimiter, validatePayload(userUidParamsSchema), handleGetStoredAvatar);
 router.get('/api/users/:uid', apiLimiter, requireAuthForUidParam, validatePayload(userUidParamsSchema), handleGetUser);

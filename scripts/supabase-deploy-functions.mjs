@@ -14,6 +14,7 @@ const functionNames = [
   'newsletter-unsubscribe',
   'payment-preference',
   'payment-webhook-intake',
+  'password-reset-metadata',
 ];
 
 const supabaseUrl = process.env.SUPABASE_URL?.trim();
