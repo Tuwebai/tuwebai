@@ -125,7 +125,7 @@ function ContactForm({ delay }: ContactFormProps) {
   return (
     <div
       ref={ref as React.RefObject<HTMLDivElement>}
-      className={`rounded-xl bg-gradient-to-br from-[#00CCFF] to-[#9933FF] p-px transition-all duration-500 ${
+      className={`rounded-xl bg-[image:var(--gradient-brand)] p-px transition-all duration-500 ${
         hasIntersected ? 'translate-y-0 opacity-100 hover:scale-[1.01]' : 'translate-y-8 opacity-0'
       }`}
       style={{ transitionDelay: `${delay * 150}ms` }}
@@ -146,8 +146,8 @@ function ContactForm({ delay }: ContactFormProps) {
               name="name"
               value={formState.name}
               onChange={handleChange}
-              className={`w-full rounded-lg border bg-[#0a0a0f]/70 px-4 py-3 text-white transition-all duration-200 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#00CCFF] ${
-                errors.name ? 'border-red-500' : 'border-gray-700'
+              className={`w-full rounded-lg border bg-[var(--bg-elevated)]/82 px-4 py-3 text-white transition-all duration-200 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[var(--signal)] ${
+                errors.name ? 'border-red-500' : 'border-[var(--border-default)]'
               }`}
               placeholder="Tu nombre"
             />
@@ -164,8 +164,8 @@ function ContactForm({ delay }: ContactFormProps) {
               name="email"
               value={formState.email}
               onChange={handleChange}
-              className={`w-full rounded-lg border bg-[#0a0a0f]/70 px-4 py-3 text-white transition-all duration-200 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#00CCFF] ${
-                errors.email ? 'border-red-500' : 'border-gray-700'
+              className={`w-full rounded-lg border bg-[var(--bg-elevated)]/82 px-4 py-3 text-white transition-all duration-200 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[var(--signal)] ${
+                errors.email ? 'border-red-500' : 'border-[var(--border-default)]'
               }`}
               placeholder="tu@email.com"
             />
@@ -182,8 +182,8 @@ function ContactForm({ delay }: ContactFormProps) {
               value={formState.message}
               onChange={handleChange}
               rows={4}
-              className={`w-full resize-none rounded-lg border bg-[#0a0a0f]/70 px-4 py-3 text-white transition-all duration-200 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#00CCFF] ${
-                errors.message ? 'border-red-500' : 'border-gray-700'
+              className={`w-full resize-none rounded-lg border bg-[var(--bg-elevated)]/82 px-4 py-3 text-white transition-all duration-200 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[var(--signal)] ${
+                errors.message ? 'border-red-500' : 'border-[var(--border-default)]'
               }`}
               placeholder="Tu mensaje aquí..."
             />
@@ -194,7 +194,7 @@ function ContactForm({ delay }: ContactFormProps) {
             type="submit"
             disabled={submitState === 'submitting'}
             onClick={trackContactFormClick}
-            className="w-full rounded-lg bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-6 py-3 font-medium text-white shadow-lg shadow-[#00CCFF]/20 transition-all duration-200 hover:scale-[1.02] hover:shadow-[#9933FF]/30 active:scale-[0.98] disabled:cursor-wait disabled:opacity-70"
+            className="w-full rounded-lg bg-[image:var(--gradient-brand)] px-6 py-3 font-medium text-white shadow-[var(--glow-signal)] transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] disabled:cursor-wait disabled:opacity-70"
           >
             {submitState === 'submitting'
               ? 'Enviando...'
@@ -273,12 +273,12 @@ function ContactInfo({ delay }: ContactInfoProps) {
         <li className="text-gray-300">→ Presupuesto cerrado por escrito antes de que pagues un peso</li>
       </ul>
 
-      <div className="mt-8 border-t border-gray-800 pt-4">
+      <div className="mt-8 border-t border-[var(--border-subtle)] pt-4">
         <h5 className="mb-3 font-medium text-white">¿PREFERÍS HABLAR AHORA?</h5>
         <a
           href={TUWEBAI_WHATSAPP_URL}
           onClick={trackContactWhatsAppClick}
-          className="inline-flex items-center text-[#00CCFF] hover:underline"
+          className="inline-flex items-center text-[var(--signal)] hover:underline"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -320,7 +320,7 @@ export default function ContactSection({ setRef }: ContactSectionProps) {
     <section
       id="contact"
       ref={sectionRef}
-      className="landing-anchor-section relative flex items-center justify-center bg-gradient-2"
+      className="landing-anchor-section relative flex items-center justify-center bg-transparent"
     >
       <AnimatedShape type={1} className="top-[20%] left-[-150px]" delay={1} />
       <AnimatedShape type={2} className="bottom-[10%] right-[-100px]" delay={2} />

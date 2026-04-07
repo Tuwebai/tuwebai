@@ -50,7 +50,7 @@ export default function PaymentModalFrame({
       onClick={onClose}
     >
       <div
-        className={`w-full rounded-2xl border border-cyan-500/30 bg-[#0f111a] text-white shadow-[0_30px_80px_rgba(0,0,0,0.45)] ${
+        className={`w-full rounded-2xl border border-[var(--border-strong)] bg-[var(--bg-overlay)] text-white shadow-[var(--shadow-modal)] ${
           size === 'wide' ? 'max-w-lg' : 'max-w-md'
         }`}
         onClick={(event) => event.stopPropagation()}

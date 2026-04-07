@@ -22,7 +22,7 @@ function NavbarMetaLinks({ onClick }: { onClick?: () => void }) {
     <>
       <Link
         to="/politica-privacidad"
-        className="hover:text-[#00CCFF] transition-colors"
+        className="transition-colors hover:text-[var(--signal)]"
         onClick={onClick}
       >
         Politica de Privacidad
@@ -30,7 +30,7 @@ function NavbarMetaLinks({ onClick }: { onClick?: () => void }) {
       <span className="text-gray-600">•</span>
       <Link
         to="/terminos-condiciones"
-        className="hover:text-[#9933FF] transition-colors"
+        className="transition-colors hover:text-white"
         onClick={onClick}
       >
         Terminos y Condiciones
@@ -135,13 +135,13 @@ export default function GlobalNavbar({ authMode = 'auto' }: GlobalNavbarProps) {
     <>
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled ? 'bg-[#0a0a0f]/95 lg:bg-[#0a0a0f]/90 lg:backdrop-blur-sm shadow-lg' : 'bg-transparent'
+          isScrolled ? 'border-b border-[var(--border-subtle)] bg-[var(--bg-base)]/96 shadow-[var(--shadow-card)] lg:backdrop-blur-md' : 'bg-transparent'
         }`}
       >
         <div className="container mx-auto px-3 sm:px-4">
           <div className="flex items-center justify-between gap-3 py-3 sm:py-4">
             <Link to="/" className="shrink-0 text-xl font-rajdhani font-bold sm:text-2xl">
-              TuWeb<span className="text-[#00CCFF]">.ai</span>
+              TuWeb<span className="text-[var(--signal)]">.ai</span>
             </Link>
 
             <div className="hidden items-center space-x-4 text-xs text-gray-400 xl:flex">
@@ -162,7 +162,7 @@ export default function GlobalNavbar({ authMode = 'auto' }: GlobalNavbarProps) {
                   onMouseEnter={() => prefetchNavigationPath('/consulta')}
                   onFocus={() => prefetchNavigationPath('/consulta')}
                   onTouchStart={() => prefetchNavigationPath('/consulta')}
-                  className="rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-4 py-2 text-sm font-medium text-white shadow-lg shadow-[#00CCFF]/20 transition-all whitespace-nowrap hover:shadow-[#9933FF]/30 xl:px-5"
+                  className="rounded-full bg-[image:var(--gradient-brand)] px-4 py-2 text-sm font-medium text-white shadow-[var(--glow-signal)] transition-all whitespace-nowrap xl:px-5"
                 >
                   Consultanos
                 </Link>
@@ -171,7 +171,7 @@ export default function GlobalNavbar({ authMode = 'auto' }: GlobalNavbarProps) {
 
             <button
               onClick={() => setIsMenuOpen(true)}
-              className="rounded-md p-2 text-gray-200 hover:bg-gray-800/30 lg:hidden"
+              className="rounded-md p-2 text-gray-200 transition-colors hover:bg-[var(--bg-elevated)]/70 lg:hidden"
               aria-label="Abrir menu de navegacion"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -183,15 +183,15 @@ export default function GlobalNavbar({ authMode = 'auto' }: GlobalNavbarProps) {
       </header>
 
       {isMenuOpen ? (
-        <div className="fixed inset-0 z-50 overflow-y-auto bg-[#0a0a0f] transition-transform duration-300 ease-out translate-x-0 opacity-100">
+        <div className="page-shell-surface fixed inset-0 z-50 overflow-y-auto transition-transform duration-300 ease-out translate-x-0 opacity-100">
           <div className="min-h-screen flex flex-col">
-            <div className="flex justify-between items-center p-4 border-b border-gray-800">
+            <div className="flex items-center justify-between border-b border-[var(--border-subtle)] p-4">
               <Link to="/" className="text-xl font-rajdhani font-bold sm:text-2xl" onClick={() => setIsMenuOpen(false)}>
-                TuWeb<span className="text-[#00CCFF]">.ai</span>
+                TuWeb<span className="text-[var(--signal)]">.ai</span>
               </Link>
               <button
                 onClick={() => setIsMenuOpen(false)}
-                className="p-2 rounded-md text-gray-200 hover:bg-gray-800/30"
+                className="rounded-md p-2 text-gray-200 transition-colors hover:bg-[var(--bg-elevated)]/70"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -209,7 +209,7 @@ export default function GlobalNavbar({ authMode = 'auto' }: GlobalNavbarProps) {
               </nav>
             </div>
 
-            <div className="p-4 border-t border-gray-800">
+            <div className="border-t border-[var(--border-subtle)] p-4">
               <div className="mb-6 text-center">
                 <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 text-sm text-gray-400">
                   <NavbarMetaLinks onClick={() => setIsMenuOpen(false)} />
@@ -223,7 +223,7 @@ export default function GlobalNavbar({ authMode = 'auto' }: GlobalNavbarProps) {
                 onMouseEnter={() => prefetchNavigationPath('/consulta')}
                 onFocus={() => prefetchNavigationPath('/consulta')}
                 onTouchStart={() => prefetchNavigationPath('/consulta')}
-                className="block w-full py-3 bg-gradient-to-r from-[#00CCFF] to-[#9933FF] rounded-lg text-white font-medium text-center"
+                className="block w-full rounded-lg bg-[image:var(--gradient-brand)] py-3 text-center font-medium text-white shadow-[var(--glow-signal)]"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Consultanos

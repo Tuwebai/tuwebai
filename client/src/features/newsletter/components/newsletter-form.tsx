@@ -49,20 +49,20 @@ export default function NewsletterForm({
       setSubmitState('sent');
       toast({
         title: 'Revisa tu email',
-        description: 'Te enviamos un enlace para confirmar la suscripcion al newsletter.',
+        description: 'Te enviamos un enlace para confirmar la suscripción al newsletter.',
       });
 
       setTimeout(() => {
         setSubmitState('idle');
       }, 3000);
     } catch (submitError: unknown) {
-      console.error('Error al procesar la suscripcion:', submitError);
+      console.error('Error al procesar la suscripción:', submitError);
       setSubmitState('idle');
       toast({
         title: 'Error al suscribirse',
         description: getNewsletterErrorMessage(
           submitError,
-          'Ha ocurrido un problema al procesar tu suscripcion. Por favor, intentalo de nuevo.'
+          'Ha ocurrido un problema al procesar tu suscripción. Por favor, intentalo de nuevo.'
         ),
         variant: 'destructive',
       });
@@ -70,11 +70,11 @@ export default function NewsletterForm({
   };
 
   const inputClasses = theme === 'dark'
-    ? 'bg-[#0a0a0f]/70 border-gray-700 text-white placeholder-gray-400 focus:ring-[#00CCFF]'
+    ? 'border-[var(--border-default)] bg-[var(--bg-elevated)] text-white placeholder-gray-400 focus:ring-[var(--signal)]'
     : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:ring-blue-500';
 
   const buttonClasses = theme === 'dark'
-    ? 'bg-gradient-to-r from-[#00CCFF] to-[#9933FF] text-white'
+    ? 'bg-[image:var(--gradient-brand)] text-white shadow-[var(--glow-signal)]'
     : 'bg-blue-600 hover:bg-blue-700 text-white';
 
   return (
@@ -102,7 +102,7 @@ export default function NewsletterForm({
       </div>
 
       <p className={`text-xs mt-3 text-center ${disclaimerClassName}`}>
-        Al suscribirte, aceptas nuestra politica de privacidad.
+        Al suscribirte, aceptas nuestra política de privacidad.
       </p>
     </form>
   );

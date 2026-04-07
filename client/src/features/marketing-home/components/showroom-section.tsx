@@ -321,7 +321,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
     <section
       id="showroom"
       ref={sectionRef}
-      className="landing-anchor-section relative flex items-center justify-center bg-gradient-1 py-20"
+      className="landing-anchor-section relative flex items-center justify-center bg-transparent py-20"
     >
       <div className="container z-10 mx-auto px-4">
         <div
@@ -358,8 +358,8 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
                 onClick={() => setActiveCategory(category)}
                 className={`rounded-full px-4 py-2 text-sm ${
                   activeCategory === category
-                    ? 'bg-gradient-to-r from-[#00CCFF] to-[#9933FF] text-white'
-                    : 'bg-[#121217] text-gray-400 transition-colors hover:bg-[#1a1a23] hover:text-white'
+                    ? 'bg-[image:var(--gradient-brand)] text-white'
+                    : 'border border-[var(--border-default)] bg-[var(--bg-surface)]/88 text-gray-400 transition-colors hover:bg-[var(--bg-elevated)]/88 hover:text-white'
                 }`}
               >
                 {categoryNames[category] || category}
@@ -372,7 +372,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
           {filteredProjects.map((project, index) => (
             <div
               key={project.id}
-              className={`h-full cursor-pointer overflow-hidden rounded-xl border border-gray-800 bg-[#121217] transition-all duration-500 ${
+              className={`h-full cursor-pointer overflow-hidden rounded-xl border border-[var(--border-default)] bg-[var(--bg-surface)]/88 transition-all duration-500 ${
                 hasShownProjects
                   ? 'translate-y-0 opacity-100 hover:-translate-y-1'
                   : 'translate-y-5 opacity-0'
@@ -393,7 +393,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
                   <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                     <button
                       onClick={(event) => handleVisitWebsite(project.externalUrl!, event)}
-                      className="transform rounded-lg bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-4 py-2 font-medium text-white transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-[#00CCFF]/20"
+                      className="transform rounded-lg bg-[image:var(--gradient-brand)] px-4 py-2 font-medium text-white transition-all duration-200 hover:scale-105 hover:shadow-[var(--glow-signal)]"
                     >
                       Visitar página web
                     </button>
@@ -407,7 +407,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
                 </div>
 
                 <div className="mb-3 flex flex-wrap items-center gap-2">
-                  <span className="rounded bg-[#1a1a23] px-2 py-1 text-xs text-gray-400">
+                  <span className="rounded bg-[var(--bg-elevated)]/88 px-2 py-1 text-xs text-gray-400">
                     {categoryNames[project.category] || project.category}
                   </span>
                   <span
@@ -428,7 +428,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
                     event.stopPropagation();
                     handleProjectClick(project);
                   }}
-                  className="flex items-center text-sm font-medium text-[#00CCFF] transition-colors hover:text-[#9933FF]"
+                  className="flex items-center text-sm font-medium text-[var(--signal)] transition-colors hover:text-white"
                 >
                   <span>Ver detalles</span>
                   <svg
@@ -491,7 +491,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
           <div className="transition-transform duration-200 hover:scale-[1.05]">
             <Link
               to="/consulta"
-              className="inline-block rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-8 py-4 font-medium text-white shadow-lg hover:shadow-[#00CCFF]/20"
+              className="inline-block rounded-full bg-[image:var(--gradient-brand)] px-8 py-4 font-medium text-white shadow-[var(--glow-signal)]"
             >
               Quiero una solución similar →
             </Link>

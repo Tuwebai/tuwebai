@@ -16,12 +16,12 @@ function TrustCard({ eyebrow, title, description, delay }: TrustCardProps) {
   return (
     <div
       ref={ref}
-      className={`rounded-xl border border-gray-800 bg-[#121217] p-5 transition-all duration-500 sm:p-6 ${
+      className={`rounded-xl border border-[var(--border-default)] bg-[var(--bg-surface)]/88 p-5 transition-all duration-500 sm:p-6 ${
         hasIntersected ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
       }`}
       style={{ transitionDelay: `${delay * 120}ms` }}
     >
-      <p className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-[#00CCFF]">
+      <p className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-[var(--signal)]">
         {eyebrow}
       </p>
       <h3 className="mb-3 font-rajdhani text-xl font-bold text-white sm:text-2xl">{title}</h3>
@@ -81,7 +81,7 @@ export default function ImpactSection({ setRef }: ImpactSectionProps) {
     <section
       id="impact"
       ref={sectionRef}
-      className="landing-anchor-section relative flex items-center justify-center bg-gradient-2"
+      className="landing-anchor-section relative flex items-center justify-center bg-transparent"
     >
       <div className="container relative z-10 mx-auto px-3 py-14 sm:px-4 sm:py-16">
         <div
@@ -131,7 +131,7 @@ export default function ImpactSection({ setRef }: ImpactSectionProps) {
           <div className="mt-8 transition-transform duration-200 hover:scale-[1.03]">
             <Link
               to="/consulta"
-              className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-8 py-4 font-medium text-white shadow-lg hover:shadow-[#00CCFF]/20"
+              className="inline-flex items-center justify-center rounded-full bg-[image:var(--gradient-brand)] px-8 py-4 font-medium text-white shadow-[var(--glow-signal)]"
             >
               Consultá sin cargo →
             </Link>

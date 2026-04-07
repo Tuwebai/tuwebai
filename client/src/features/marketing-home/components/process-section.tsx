@@ -13,9 +13,9 @@ interface ProcessStepProps {
 function ProcessStep({ number, title, description, delayMs }: ProcessStepProps) {
   return (
     <RevealBlock className="h-full" delayMs={delayMs}>
-      <div className="flex h-full items-start gap-4 rounded-xl border border-gray-800 bg-[#121217]/70 p-5 sm:gap-5 sm:p-6">
+      <div className="flex h-full items-start gap-4 rounded-xl border border-[var(--border-default)] bg-[var(--bg-surface)]/78 p-5 sm:gap-5 sm:p-6">
         <div className="flex-shrink-0">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] font-rajdhani text-base font-bold text-white sm:h-11 sm:w-11 sm:text-lg">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[image:var(--gradient-brand)] font-rajdhani text-base font-bold text-white sm:h-11 sm:w-11 sm:text-lg">
             {number}
           </div>
         </div>
@@ -93,7 +93,7 @@ export default function ProcessSection({ setRef }: ProcessSectionProps) {
     <section
       id="process"
       ref={sectionRef}
-      className="landing-anchor-section relative flex items-center justify-center bg-gradient-2"
+      className="landing-anchor-section relative flex items-center justify-center bg-transparent"
     >
       <div className="container z-10 mx-auto px-3 py-14 sm:px-4 sm:py-16">
         <RevealBlock className="mx-auto mb-14 max-w-4xl text-center">

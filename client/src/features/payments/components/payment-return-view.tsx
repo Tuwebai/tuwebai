@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
+
 import { usePaymentStatus } from '@/features/payments/hooks/use-payment-status';
 import { getPaymentStatusSummary } from '@/features/payments/services/payment-status-presenter.service';
 import MetaTags from '@/shared/ui/meta-tags';
@@ -13,38 +14,38 @@ interface PaymentReturnViewProps {
   ctaLabel: string;
 }
 
-const variantStyles: Record<Variant, { bg: string; card: string; icon: string; button: string; title: string }> = {
+const variantStyles: Record<
+  Variant,
+  { button: string; icon: string; panel: string; title: string }
+> = {
   success: {
-    bg: 'bg-gradient-to-br from-green-50 to-green-100',
-    card: 'bg-white',
-    icon: 'text-green-500',
-    button: 'bg-green-600 hover:bg-green-700',
-    title: 'text-green-700',
+    button: 'bg-[image:var(--gradient-brand)] shadow-[var(--glow-signal)]',
+    icon: 'text-[var(--success)]',
+    panel: 'border-[var(--border-default)] bg-[var(--bg-overlay)]',
+    title: 'text-[var(--success)]',
   },
   failure: {
-    bg: 'bg-gradient-to-br from-red-50 to-red-100',
-    card: 'bg-white',
-    icon: 'text-red-500',
-    button: 'bg-red-600 hover:bg-red-700',
-    title: 'text-red-700',
+    button: 'bg-[var(--danger)]',
+    icon: 'text-[var(--danger)]',
+    panel: 'border-red-500/30 bg-[var(--bg-overlay)]',
+    title: 'text-[var(--danger)]',
   },
   pending: {
-    bg: 'bg-gradient-to-br from-yellow-50 to-yellow-100',
-    card: 'bg-white',
-    icon: 'text-yellow-500',
-    button: 'bg-yellow-500 hover:bg-yellow-600',
-    title: 'text-yellow-700',
+    button: 'bg-[var(--warning)] text-slate-950',
+    icon: 'text-[var(--warning)]',
+    panel: 'border-[var(--warning-dim)] bg-[var(--bg-overlay)]',
+    title: 'text-[var(--warning)]',
   },
 };
 
 const iconByVariant: Record<Variant, JSX.Element> = {
   success: (
-    <svg className="w-16 h-16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+    <svg className="h-16 w-16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
       <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2l4-4m5 2a9 9 0 1 1-18 0a9 9 0 0 1 18 0z" />
     </svg>
   ),
   failure: (
-    <svg className="w-16 h-16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+    <svg className="h-16 w-16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -53,13 +54,18 @@ const iconByVariant: Record<Variant, JSX.Element> = {
     </svg>
   ),
   pending: (
-    <svg className="w-16 h-16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+    <svg className="h-16 w-16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
       <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6 1a9 9 0 1 1-18 0a9 9 0 0 1 18 0z" />
     </svg>
   ),
 };
 
-export default function PaymentReturnView({ variant, title, description, ctaLabel }: PaymentReturnViewProps) {
+export default function PaymentReturnView({
+  variant,
+  title,
+  description,
+  ctaLabel,
+}: PaymentReturnViewProps) {
   const styles = variantStyles[variant];
   const [searchParams] = useSearchParams();
   const metaTitleByVariant: Record<Variant, string> = {
@@ -74,8 +80,11 @@ export default function PaymentReturnView({ variant, title, description, ctaLabe
   };
 
   const paymentId = useMemo(
-    () => searchParams.get('payment_id') || searchParams.get('collection_id') || searchParams.get('paymentId'),
-    [searchParams]
+    () =>
+      searchParams.get('payment_id') ||
+      searchParams.get('collection_id') ||
+      searchParams.get('paymentId'),
+    [searchParams],
   );
   const { isRefreshingStatus, status, statusError } = usePaymentStatus(paymentId);
   const paymentStatusSummary = getPaymentStatusSummary(status);
@@ -87,32 +96,40 @@ export default function PaymentReturnView({ variant, title, description, ctaLabe
         description={metaDescriptionByVariant[variant]}
         robots="noindex,follow"
       />
-      <div className={`min-h-screen flex flex-col items-center justify-center p-4 ${styles.bg}`}>
-        <div className={`${styles.card} rounded-xl shadow-lg p-8 max-w-md w-full flex flex-col items-center`}>
-        <div className={`mb-4 ${styles.icon}`}>{iconByVariant[variant]}</div>
-        <h1 className={`text-2xl font-bold mb-2 text-center ${styles.title}`}>{title}</h1>
-        <p className="text-gray-700 mb-4 text-center">{description}</p>
+      <div className="page-shell-surface flex min-h-screen flex-col items-center justify-center p-4">
+        <div
+          className={`${styles.panel} flex w-full max-w-md flex-col items-center rounded-xl border p-8 shadow-[var(--shadow-modal)]`}
+        >
+          <div className={`mb-4 ${styles.icon}`}>{iconByVariant[variant]}</div>
+          <h1 className={`mb-2 text-center text-2xl font-bold ${styles.title}`}>{title}</h1>
+          <p className="mb-4 text-center text-[var(--text-primary)]">{description}</p>
 
-        {paymentId && (
-          <div className="w-full mb-5 rounded-lg border border-gray-200 bg-gray-50 p-3 text-sm text-gray-700">
-            <p className="font-semibold mb-1">Referencia de pago</p>
-            <p className="break-all">{paymentId}</p>
-            {status?.status && <p className="mt-2">Estado confirmado: <strong>{status.status}</strong></p>}
-            {status?.transaction_amount && (
-              <p className="mt-1">
-                Monto: <strong>{status.transaction_amount} {status.currency_id || ''}</strong>
-              </p>
-            )}
-            {isRefreshingStatus && !status && !statusError && (
-              <p className="mt-2 text-gray-500">Actualizando estado en segundo plano...</p>
-            )}
-            {statusError && <p className="mt-2 text-red-600">{statusError}</p>}
-          </div>
-        )}
+          {paymentId ? (
+            <div className="mb-5 w-full rounded-lg border border-[var(--border-default)] bg-[var(--bg-elevated)] p-3 text-sm text-[var(--text-primary)]">
+              <p className="mb-1 font-semibold">Referencia de pago</p>
+              <p className="break-all">{paymentId}</p>
+              {paymentStatusSummary.statusLabel ? (
+                <p className="mt-2">
+                  Estado confirmado: <strong>{paymentStatusSummary.statusLabel}</strong>
+                </p>
+              ) : null}
+              {paymentStatusSummary.amountLabel ? (
+                <p className="mt-1">
+                  Monto: <strong>{paymentStatusSummary.amountLabel}</strong>
+                </p>
+              ) : null}
+              {isRefreshingStatus && !status && !statusError ? (
+                <p className="mt-2 text-[var(--text-secondary)]">
+                  Actualizando estado en segundo plano...
+                </p>
+              ) : null}
+              {statusError ? <p className="mt-2 text-red-400">{statusError}</p> : null}
+            </div>
+          ) : null}
 
-        <Link to="/" className={`${styles.button} text-white font-semibold py-2 px-6 rounded transition-colors`}>
-          {ctaLabel}
-        </Link>
+          <Link to="/" className={`${styles.button} rounded px-6 py-2 font-semibold text-white transition-colors`}>
+            {ctaLabel}
+          </Link>
         </div>
       </div>
     </>

@@ -94,7 +94,7 @@ function DeferredFooterNewsletter() {
   return (
     <div
       ref={ref}
-      className="w-full max-w-[420px] justify-self-start rounded-3xl border border-white/10 bg-[linear-gradient(180deg,rgba(18,18,26,0.9)_0%,rgba(11,11,17,0.96)_100%)] p-5 lg:justify-self-end"
+      className="w-full max-w-[420px] justify-self-start rounded-3xl border border-[var(--border-default)] bg-[var(--bg-surface)]/80 p-5 shadow-[0_18px_40px_rgba(2,6,23,0.24)] backdrop-blur lg:justify-self-end"
     >
       <p className="mb-2 text-[11px] uppercase tracking-[0.22em] text-[#9BE7FF]">Newsletter</p>
       <p className="mb-4 text-sm leading-6 text-gray-400">
@@ -104,7 +104,7 @@ function DeferredFooterNewsletter() {
 
       {hasIntersected ? (
         <Suspense
-          fallback={<div className="h-[74px] w-full rounded-lg border border-white/10 bg-[#0a0a0f]/40" />}
+          fallback={<div className="h-[74px] w-full rounded-lg border border-[var(--border-default)] bg-[var(--bg-elevated)]/60" />}
         >
           <NewsletterForm
             source="footer"
@@ -115,7 +115,7 @@ function DeferredFooterNewsletter() {
           />
         </Suspense>
       ) : (
-        <div className="h-[74px] w-full rounded-lg border border-white/10 bg-[#0a0a0f]/40" />
+        <div className="h-[74px] w-full rounded-lg border border-[var(--border-default)] bg-[var(--bg-elevated)]/60" />
       )}
     </div>
   );
@@ -125,16 +125,16 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative z-10 animate-fadeIn border-t border-gray-800 bg-[#0a0a0f] pb-8 pt-10 text-sm text-gray-400 sm:pt-12">
+    <footer className="page-shell-surface relative z-10 animate-fadeIn border-t border-[var(--border-subtle)] pb-8 pt-10 text-sm text-[var(--text-secondary)] sm:pt-12">
       <div className="container mx-auto px-3 sm:px-4">
-        <div className="mb-10 grid gap-8 border-b border-gray-800/80 pb-10 lg:grid-cols-[minmax(0,1.2fr)_minmax(320px,420px)] lg:items-start">
+        <div className="mb-10 grid gap-8 border-b border-[var(--border-subtle)] pb-10 lg:grid-cols-[minmax(0,1.2fr)_minmax(320px,420px)] lg:items-start">
           <div className="max-w-2xl">
             <h3 className="mb-4 font-rajdhani text-2xl font-bold text-white">TuWeb.ai</h3>
-            <p className="max-w-xl text-base leading-7 text-gray-300">
+            <p className="max-w-xl text-base leading-7 text-[var(--text-primary)]">
               Desarrollo web profesional para negocios argentinos que quieren vender online.
             </p>
 
-            <div className="mt-6 space-y-3 text-sm text-gray-300">
+            <div className="mt-6 space-y-3 text-sm text-[var(--text-primary)]">
               <p>📍 {TUWEBAI_LOCATION}</p>
               <p>
                 📧{' '}
@@ -166,7 +166,7 @@ export default function Footer() {
           <DeferredFooterNewsletter />
         </div>
 
-        <div className="grid gap-8 border-b border-gray-800/80 py-10 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid gap-8 border-b border-[var(--border-subtle)] py-10 sm:grid-cols-2 xl:grid-cols-4">
           {footerColumns.map((column) => (
             <div key={column.title}>
               <h4 className="mb-4 font-rajdhani text-lg font-bold uppercase tracking-[0.12em] text-white">
@@ -185,13 +185,13 @@ export default function Footer() {
 
         <div className="flex flex-col gap-5 pt-8 md:flex-row md:items-end md:justify-between">
           <div className="space-y-2">
-            <p className="text-sm text-gray-300">
+            <p className="text-sm text-[var(--text-primary)]">
               © {currentYear} TuWebAI · Desarrollo web profesional
             </p>
-            <p className="text-sm text-gray-400">Hecho en Córdoba, Argentina 🇦🇷</p>
+            <p className="text-sm text-[var(--text-secondary)]">Hecho en Córdoba, Argentina 🇦🇷</p>
           </div>
 
-          <div className="flex flex-wrap gap-5 text-sm text-gray-300">
+          <div className="flex flex-wrap gap-5 text-sm text-[var(--text-primary)]">
             <a
               href={TUWEBAI_LINKEDIN_URL}
               target="_blank"

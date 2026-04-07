@@ -26,14 +26,14 @@ export default function PaymentErrorDialog({
         <button
           type="button"
           onClick={onClose}
-          className="rounded-xl border border-gray-700 bg-[#151925] px-4 py-2 text-sm font-medium text-white transition-colors hover:border-cyan-400/40 hover:bg-[#1b2131]"
+          className="rounded-xl border border-[var(--border-default)] bg-[var(--bg-elevated)] px-4 py-2 text-sm font-medium text-white transition-colors hover:border-[var(--signal-border)] hover:bg-[var(--bg-subtle)]"
         >
           Cerrar
         </button>
         <button
           type="button"
           onClick={onRetry}
-          className="rounded-xl bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-4 py-2 text-sm font-medium text-white shadow-[0_12px_30px_rgba(0,204,255,0.16)]"
+          className="rounded-xl bg-[image:var(--gradient-brand)] px-4 py-2 text-sm font-medium text-white shadow-[var(--glow-signal)]"
         >
           Reintentar
         </button>

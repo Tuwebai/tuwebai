@@ -16,14 +16,14 @@ export function MobileNavbarLinks({
   return (
     <>
       {MAIN_NAVIGATION.map((item) => (
-        <div key={item.name} className="border-b border-gray-800 pb-3">
+        <div key={item.name} className="border-b border-[var(--border-subtle)] pb-3">
           <Link
             to={item.href}
             onMouseEnter={() => prefetchNavigationPath(item.href)}
             onFocus={() => prefetchNavigationPath(item.href)}
             onTouchStart={() => prefetchNavigationPath(item.href)}
             className={`block py-3 text-lg font-medium ${
-              activePage === item.name ? 'text-[#00CCFF]' : 'text-gray-200'
+              activePage === item.name ? 'text-[var(--signal)]' : 'text-gray-200'
             }`}
             onClick={() => {
               if (!item.sections) {

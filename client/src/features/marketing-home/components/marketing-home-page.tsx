@@ -79,7 +79,7 @@ export default function MarketingHomePage() {
         </Suspense>
       ) : null}
 
-      <main id="main-content" className="landing-scroll-shell relative">
+      <main id="main-content" className="landing-scroll-shell page-shell-surface marketing-home-surface relative">
         <HeroSection setRef={(ref: HTMLElement | null) => setSectionRef('intro', ref)} />
 
         <Suspense fallback={null}>

@@ -20,7 +20,7 @@ export default function PhilosophySection({ setRef }: PhilosophySectionProps) {
     <section
       id="philosophy"
       ref={sectionRef}
-      className="landing-anchor-section relative flex items-center justify-center bg-gradient-2"
+      className="landing-anchor-section relative flex items-center justify-center bg-transparent"
     >
       <AnimatedShape type={1} className="top-[30%] left-[-150px]" delay={5} />
 
@@ -56,7 +56,7 @@ export default function PhilosophySection({ setRef }: PhilosophySectionProps) {
             </p>
 
             <div className="mb-2 inline-flex items-center space-x-3">
-              <div className="h-1 w-12 bg-[#00CCFF]" />
+              <div className="h-1 w-12 bg-[var(--signal)]" />
               <span className="font-rajdhani text-sm uppercase tracking-wider text-gray-400">
                 Cómo trabajamos
               </span>
@@ -75,8 +75,8 @@ export default function PhilosophySection({ setRef }: PhilosophySectionProps) {
             visibleClassName="opacity-100 translate-x-0"
             delayMs={160}
           >
-            <div className="relative rounded-lg bg-gradient-to-br from-[#00CCFF] to-[#9933FF] p-1">
-              <div className="rounded-lg bg-[#0a0a0f] p-5 sm:p-8">
+            <div className="relative rounded-lg bg-[var(--gradient-brand)] p-1">
+              <div className="rounded-lg bg-[var(--bg-surface)]/92 p-5 sm:p-8">
                 <p className="mb-5 font-medium leading-7 text-gray-200">
                   Lo que vemos en el 80% de los sitios que nos llegan:
                 </p>
@@ -106,7 +106,7 @@ export default function PhilosophySection({ setRef }: PhilosophySectionProps) {
           </p>
           <Link
             to="/consulta"
-            className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-6 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(0,204,255,0.18)] transition-transform duration-200 hover:scale-[1.02]"
+            className="inline-flex items-center justify-center rounded-full bg-[image:var(--gradient-brand)] px-6 py-3 text-sm font-semibold text-white shadow-[var(--glow-signal)] transition-transform duration-200 hover:scale-[1.02]"
           >
             Diagnóstico gratuito →
           </Link>

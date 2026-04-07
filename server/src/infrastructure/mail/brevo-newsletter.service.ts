@@ -1,5 +1,5 @@
 import { env } from '../../config/env.config';
-import { getFirestore as getAdminFirestore } from '../firebase/firestore';
+import { getNewsletterRepositoryService } from '../../modules/newsletter/application/newsletter.repository-service';
 import { appLogger } from '../../utils/app-logger';
 
 interface BrevoNewsletterSubscriber {
@@ -19,10 +19,10 @@ const omitUndefinedFields = <T extends Record<string, unknown>>(record: T): T =>
   Object.fromEntries(Object.entries(record).filter(([, value]) => value !== undefined)) as T;
 
 const BREVO_TIMEOUT_MS = 8000;
-const NEWSLETTER_COLLECTION = 'newsletter_subscribers';
-
 const getSubscriberDocumentId = (emailNormalized: string): string =>
   Buffer.from(emailNormalized, 'utf8').toString('base64url');
+
+const newsletterRepository = getNewsletterRepositoryService();
 
 const isBrevoNewsletterSyncConfigured = (): boolean =>
   !!env.BREVO_API_KEY?.trim() && Number.isInteger(env.BREVO_NEWSLETTER_LIST_ID);
@@ -62,37 +62,28 @@ const markBrevoSyncState = async (
   state: 'pending' | 'synced' | 'failed',
   errorMessage?: string,
 ): Promise<void> => {
-  const db = getAdminFirestore();
-  if (!db) return;
+  if (!newsletterRepository.isAvailable()) return;
 
-  const subscriberRef = db.collection(NEWSLETTER_COLLECTION).doc(getSubscriberDocumentId(subscriber.emailNormalized));
-  const snapshot = await subscriberRef.get();
-  if (!snapshot.exists) return;
-
-  const existing = snapshot.data() as {
-    brevoSync?: {
-      retryCount?: number;
-    };
-  };
+  const subscriberId = getSubscriberDocumentId(subscriber.emailNormalized);
+  const existing = await newsletterRepository.getSubscriberById(subscriberId);
+  if (!existing) return;
 
   const nowIso = new Date().toISOString();
   const nextRetryCount =
     state === 'pending'
-      ? ((existing?.brevoSync?.retryCount ?? 0) + 1)
-      : (existing?.brevoSync?.retryCount ?? 1);
+      ? ((existing.brevoSync?.retryCount ?? 0) + 1)
+      : (existing.brevoSync?.retryCount ?? 1);
 
-  await subscriberRef.set(
-    {
-      brevoSync: omitUndefinedFields({
-        status: state,
-        lastOperation: operation,
-        lastAttemptAt: nowIso,
-        lastSyncedAt: state === 'synced' ? nowIso : undefined,
-        lastError: state === 'failed' ? errorMessage || 'Unknown Brevo sync error' : undefined,
-        retryCount: nextRetryCount,
-      }),
-    },
-    { merge: true },
+  await newsletterRepository.updateBrevoSyncById(
+    subscriberId,
+    omitUndefinedFields({
+      status: state,
+      lastOperation: operation,
+      lastAttemptAt: nowIso,
+      lastSyncedAt: state === 'synced' ? nowIso : undefined,
+      lastError: state === 'failed' ? errorMessage || 'Unknown Brevo sync error' : undefined,
+      retryCount: nextRetryCount,
+    }),
   );
 };
 

@@ -14,9 +14,9 @@ interface ServiceCardProps {
 function ServiceCard({ title, description, icon, delayMs }: ServiceCardProps) {
   return (
     <RevealBlock className="h-full" delayMs={delayMs}>
-      <div className="h-full rounded-xl bg-gradient-to-br from-[#00CCFF]/10 to-[#9933FF]/10 p-[1px]">
-        <div className="flex h-full flex-col rounded-xl bg-[#121217] p-5 transition-transform duration-300 hover:scale-[1.01] sm:p-6">
-          <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF]">
+      <div className="h-full rounded-xl bg-[image:var(--gradient-subtle)] p-[1px]">
+        <div className="flex h-full flex-col rounded-xl border border-[var(--border-default)] bg-[var(--bg-surface)]/88 p-5 transition-transform duration-300 hover:scale-[1.01] sm:p-6">
+          <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[image:var(--gradient-brand)]">
             {icon}
           </div>
 
@@ -48,7 +48,7 @@ export default function ServicesSection({ setRef }: ServicesSectionProps) {
     <section
       id="services"
       ref={sectionRef}
-      className="landing-anchor-section relative flex items-center justify-center bg-gradient-1"
+      className="landing-anchor-section relative flex items-center justify-center bg-transparent"
     >
       <div className="container z-10 mx-auto px-3 py-14 sm:px-4 sm:py-16">
         <RevealBlock className="mb-16 text-center">
@@ -163,7 +163,7 @@ export default function ServicesSection({ setRef }: ServicesSectionProps) {
           <a
             href="/consulta"
             onClick={() => analytics.trackCtaClick('contar_mi_proyecto', 'services', '/consulta')}
-            className="inline-flex w-full items-center justify-center rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-6 py-4 text-center font-medium text-white shadow-lg transition-transform duration-300 hover:scale-[1.02] hover:shadow-[#00CCFF]/20 sm:w-auto sm:px-8"
+            className="inline-flex w-full items-center justify-center rounded-full bg-[image:var(--gradient-brand)] px-6 py-4 text-center font-medium text-white shadow-[var(--glow-signal)] transition-transform duration-300 hover:scale-[1.02] sm:w-auto sm:px-8"
           >
             Contar mi proyecto
           </a>

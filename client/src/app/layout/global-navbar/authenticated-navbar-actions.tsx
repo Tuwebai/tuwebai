@@ -33,13 +33,13 @@ export function AuthenticatedNavbarActions({
 
   if (isMobileMenu) {
     return (
-      <div className="border-t border-gray-800 my-4 pt-4">
+      <div className="my-4 border-t border-[var(--border-subtle)] pt-4">
         <div className="flex items-center gap-3 mb-3">
           <UserAvatar
             image={user?.image}
             name={user?.username || user?.name}
             username={user?.username}
-            className="w-10 h-10 rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] flex items-center justify-center text-white font-medium overflow-hidden"
+            className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-[image:var(--gradient-brand)] text-white font-medium"
           />
           <div>
             <div className="text-white font-medium">{user?.username || user?.name}</div>
@@ -51,7 +51,7 @@ export function AuthenticatedNavbarActions({
           onMouseEnter={() => prefetchNavigationPath('/panel')}
           onFocus={() => prefetchNavigationPath('/panel')}
           onTouchStart={() => prefetchNavigationPath('/panel')}
-          className="block w-full py-2 px-4 text-left rounded-md text-gray-300 hover:bg-gray-800 transition-colors"
+          className="block w-full rounded-md px-4 py-2 text-left text-gray-300 transition-colors hover:bg-[var(--bg-elevated)]"
           onClick={onAction}
         >
           <div className="flex items-center gap-2">
@@ -72,7 +72,7 @@ export function AuthenticatedNavbarActions({
         ) : (
           <button
             type="button"
-            className="block w-full py-2 px-4 text-left rounded-md text-gray-300 hover:bg-gray-800 transition-colors"
+            className="block w-full rounded-md px-4 py-2 text-left text-gray-300 transition-colors hover:bg-[var(--bg-elevated)]"
               onClick={() => {
                 void openPulseAccess(user?.email).catch(() => {
                   toast({
@@ -97,7 +97,7 @@ export function AuthenticatedNavbarActions({
             void logout();
             onAction?.();
           }}
-          className="block w-full py-2 px-4 text-left rounded-md text-gray-300 hover:bg-gray-800 transition-colors"
+          className="block w-full rounded-md px-4 py-2 text-left text-gray-300 transition-colors hover:bg-[var(--bg-elevated)]"
         >
           Cerrar sesion
         </button>
@@ -109,13 +109,13 @@ export function AuthenticatedNavbarActions({
     <div className="relative flex-shrink-0">
       <button
         onClick={() => setShowProfileMenu((current) => !current)}
-        className="flex items-center gap-2 py-1.5 px-3 rounded-md hover:bg-gray-800/50 transition-colors"
+        className="flex items-center gap-2 rounded-md px-3 py-1.5 transition-colors hover:bg-[var(--bg-elevated)]/70"
       >
         <UserAvatar
           image={user?.image}
           name={user?.username || user?.name}
           username={user?.username}
-          className="w-8 h-8 rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] flex items-center justify-center text-white font-medium overflow-hidden border-2 border-white/20"
+          className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full border-2 border-white/20 bg-[image:var(--gradient-brand)] text-white font-medium"
         />
         <span className="hidden max-w-[12rem] truncate text-sm text-gray-300 xl:inline">{user?.username || user?.name}</span>
         <svg
@@ -130,14 +130,14 @@ export function AuthenticatedNavbarActions({
       </button>
 
       {showProfileMenu ? (
-        <div className="absolute right-0 z-50 mt-2 w-52 rounded-xl border border-white/10 bg-[#18181b] shadow-lg ring-1 ring-black ring-opacity-5 xl:w-56">
+        <div className="absolute right-0 z-50 mt-2 w-52 rounded-xl border border-[var(--border-strong)] bg-[var(--bg-overlay)] shadow-[var(--shadow-elevated)] xl:w-56">
           <div className="py-1">
             <Link
               to="/panel"
               onMouseEnter={() => prefetchNavigationPath('/panel')}
               onFocus={() => prefetchNavigationPath('/panel')}
               onTouchStart={() => prefetchNavigationPath('/panel')}
-              className="block px-4 py-2 text-sm text-gray-300 hover:bg-[#23232b] hover:text-white rounded-lg transition-colors"
+              className="block rounded-lg px-4 py-2 text-sm text-gray-300 transition-colors hover:bg-[var(--bg-elevated)] hover:text-white"
               onClick={() => setShowProfileMenu(false)}
             >
               <div className="flex items-center gap-2">
@@ -158,7 +158,7 @@ export function AuthenticatedNavbarActions({
             ) : (
               <button
                 type="button"
-                className="block px-4 py-2 text-sm text-gray-300 hover:bg-[#23232b] hover:text-white rounded-lg transition-colors"
+                className="block rounded-lg px-4 py-2 text-sm text-gray-300 transition-colors hover:bg-[var(--bg-elevated)] hover:text-white"
                 onClick={() => {
                   void openPulseAccess(user?.email).catch(() => {
                     toast({
@@ -183,7 +183,7 @@ export function AuthenticatedNavbarActions({
                 void logout();
                 setShowProfileMenu(false);
               }}
-              className="block w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-[#23232b] hover:text-white rounded-lg transition-colors"
+              className="block w-full rounded-lg px-4 py-2 text-left text-sm text-gray-300 transition-colors hover:bg-[var(--bg-elevated)] hover:text-white"
             >
               Cerrar sesion
             </button>

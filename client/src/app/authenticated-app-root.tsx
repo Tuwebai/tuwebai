@@ -25,7 +25,7 @@ function AuthenticatedShellFrame() {
   }
 
   return (
-    <>
+    <div data-surface="admin" className="app-global-surface">
       <MemoryManager thresholdMB={150} debug={false} />
       <ThirdPartyScriptManager />
       <SkipLink />
@@ -33,7 +33,7 @@ function AuthenticatedShellFrame() {
       <AppRoutes />
       <Footer />
       <Toaster />
-    </>
+    </div>
   );
 }
 

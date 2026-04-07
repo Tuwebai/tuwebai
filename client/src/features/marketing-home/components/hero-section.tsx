@@ -63,11 +63,11 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
     <section
       id="intro"
       ref={sectionRef}
-      className="landing-anchor-section relative flex items-center justify-center overflow-hidden bg-gradient-1"
+      className="landing-anchor-section relative flex items-center justify-center overflow-hidden bg-transparent"
     >
       <div className="container mx-auto z-10 px-4 text-center" style={{ opacity: heroOpacity }}>
         <div className="mb-5 inline-flex max-w-full items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs text-gray-300 sm:px-4 sm:text-sm lg:backdrop-blur-sm">
-          <span className="h-2 w-2 rounded-full bg-[#00CCFF] shadow-[0_0_10px_rgba(0,204,255,0.8)]" />
+          <span className="h-2 w-2 rounded-full bg-[var(--signal)] shadow-[var(--glow-signal)]" />
           <span className="font-medium">Código a medida para negocios argentinos</span>
         </div>
 
@@ -93,7 +93,7 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
           <RouterLink
             to="/consulta"
             onClick={trackHeroConsultClick}
-            className="inline-flex min-h-12 items-center justify-center rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-6 py-3 text-center font-semibold text-white shadow-[0_10px_30px_rgba(0,204,255,0.22)] transition-transform duration-300 hover:scale-[1.02] sm:px-7"
+            className="inline-flex min-h-12 items-center justify-center rounded-full bg-[image:var(--gradient-brand)] px-6 py-3 text-center font-semibold text-white shadow-[var(--glow-signal)] transition-transform duration-300 hover:scale-[1.02] sm:px-7"
           >
             Contar mi proyecto
           </RouterLink>
@@ -105,7 +105,7 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
             offset={-70}
             duration={1000}
             onClick={trackHeroShowroomClick}
-            className="inline-flex min-h-12 cursor-pointer items-center justify-center rounded-full border border-white/15 bg-white/5 px-6 py-3 text-center font-medium text-gray-200 transition-colors duration-300 hover:border-[#00CCFF]/50 hover:text-white sm:px-7 lg:backdrop-blur-sm"
+            className="inline-flex min-h-12 cursor-pointer items-center justify-center rounded-full border border-white/15 bg-white/5 px-6 py-3 text-center font-medium text-gray-200 transition-colors duration-300 hover:border-[var(--signal-border)] hover:text-white sm:px-7 lg:backdrop-blur-sm"
           >
             Ver proyectos reales
           </ScrollLink>
@@ -115,7 +115,7 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
           <RouterLink
             to="/diagnostico-gratuito"
             onClick={trackHeroDiagnosticClick}
-            className="inline-flex min-h-11 items-center justify-center text-sm font-medium text-[#9BE7FF] transition-colors hover:text-white"
+            className="inline-flex min-h-11 items-center justify-center text-sm font-medium text-[var(--signal)] transition-colors hover:text-white"
           >
             Pedí tu diagnóstico gratuito →
           </RouterLink>
@@ -142,12 +142,12 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
             duration={1000}
             className="inline-flex cursor-pointer items-center"
           >
-            <span className="mr-2 text-gray-300 transition-colors duration-300 hover:text-[#00CCFF]">
+            <span className="mr-2 text-gray-300 transition-colors duration-300 hover:text-[var(--signal)]">
               Conocer cómo trabajamos
             </span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6 animate-bounce text-[#00CCFF]"
+              className="h-6 w-6 animate-bounce text-[var(--signal)]"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"

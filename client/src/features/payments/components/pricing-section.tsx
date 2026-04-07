@@ -100,12 +100,12 @@ function PricingCard({ plan, delay, isProcessing, onCheckout, onProposal }: Pric
   const { ref, hasIntersected } = useIntersectionObserver<HTMLDivElement>();
 
   const wrapperClasses = plan.highlight
-    ? 'relative flex h-full flex-col rounded-[30px] border border-cyan-400/60 bg-[linear-gradient(180deg,rgba(18,22,34,0.98)_0%,rgba(26,20,40,0.98)_100%)] px-5 py-6 shadow-[0_0_0_1px_rgba(0,204,255,0.16),0_28px_80px_rgba(0,204,255,0.16)] sm:px-6 sm:py-7 lg:-translate-y-6 lg:scale-[1.04]'
-    : 'relative flex h-full flex-col rounded-[30px] border border-gray-800 bg-[#121217]/96 px-5 py-5 sm:px-6 sm:py-6';
+    ? 'relative flex h-full flex-col rounded-[30px] border border-cyan-400/60 bg-[linear-gradient(180deg,rgba(17,24,39,0.96)_0%,rgba(30,41,59,0.96)_100%)] px-5 py-6 shadow-[0_0_0_1px_rgba(0,204,255,0.16),0_28px_80px_rgba(0,204,255,0.16)] sm:px-6 sm:py-7 lg:-translate-y-6 lg:scale-[1.04]'
+    : 'relative flex h-full flex-col rounded-[30px] border border-[var(--border-default)] bg-[var(--bg-surface)]/92 px-5 py-5 sm:px-6 sm:py-6';
 
   const actionClasses = plan.highlight
-    ? 'inline-flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-6 py-4 text-base font-semibold text-white shadow-[0_18px_45px_rgba(0,204,255,0.2)] transition-transform hover:scale-[1.02] disabled:cursor-wait disabled:opacity-70'
-    : 'inline-flex w-full items-center justify-center rounded-xl border border-gray-700 bg-[#181a24] px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:border-cyan-400/35 hover:bg-[#1d2030] disabled:cursor-wait disabled:opacity-70';
+    ? 'inline-flex w-full items-center justify-center rounded-xl bg-[image:var(--gradient-brand)] px-6 py-4 text-base font-semibold text-white shadow-[var(--glow-signal)] transition-transform hover:scale-[1.02] disabled:cursor-wait disabled:opacity-70'
+    : 'inline-flex w-full items-center justify-center rounded-xl border border-[var(--border-default)] bg-[var(--bg-elevated)]/88 px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:border-cyan-400/35 hover:bg-[var(--bg-subtle)] disabled:cursor-wait disabled:opacity-70';
 
   return (
     <article
@@ -145,7 +145,7 @@ function PricingCard({ plan, delay, isProcessing, onCheckout, onProposal }: Pric
       </div>
 
       {plan.delivery && (
-        <div className="mt-5 rounded-2xl border border-gray-800 bg-[#0d0e14] px-4 py-3">
+        <div className="mt-5 rounded-2xl border border-[var(--border-default)] bg-[var(--bg-elevated)]/78 px-4 py-3">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300">
             Entrega estimada
           </p>
@@ -238,7 +238,7 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
     <section
       id="pricing"
       ref={sectionRef}
-      className="landing-anchor-section relative flex items-center justify-center bg-gradient-1 py-20"
+      className="landing-anchor-section relative flex items-center justify-center bg-transparent py-20"
     >
       <div className="container relative z-10 mx-auto px-3 sm:px-4">
         <div
@@ -292,7 +292,7 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
       >
         {checkoutSummary && (
           <div className="space-y-5">
-            <div className="rounded-2xl border border-gray-800 bg-[#0b0d14] p-4 text-sm text-gray-300">
+            <div className="rounded-2xl border border-[var(--border-default)] bg-[var(--bg-elevated)]/78 p-4 text-sm text-gray-300">
               <p>
                 Plan: <span className="font-semibold text-white">{checkoutSummary.plan}</span>
               </p>
@@ -329,7 +329,7 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
                   void openCheckout(checkoutPlan.plan);
                 }
               }}
-              className="inline-flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-6 py-3.5 font-medium text-white shadow-[0_16px_35px_rgba(0,204,255,0.2)]"
+              className="inline-flex w-full items-center justify-center rounded-xl bg-[image:var(--gradient-brand)] px-6 py-3.5 font-medium text-white shadow-[var(--glow-signal)]"
             >
               Continuar al pago seguro →
             </button>

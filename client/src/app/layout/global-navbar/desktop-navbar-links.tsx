@@ -21,20 +21,20 @@ export function DesktopNavbarLinks({
             onFocus={() => prefetchNavigationPath(item.href)}
             onTouchStart={() => prefetchNavigationPath(item.href)}
             className={`whitespace-nowrap text-sm font-medium transition-colors ${
-              activePage === item.name ? 'text-[#00CCFF]' : 'text-gray-300 hover:text-white'
+              activePage === item.name ? 'text-[var(--signal)]' : 'text-gray-300 hover:text-white'
             }`}
           >
             {item.name}
           </Link>
 
           {item.sections?.length ? (
-            <div className="absolute left-0 z-50 mt-2 w-56 rounded-md bg-[#0a0a0f] opacity-0 invisible shadow-lg ring-1 ring-black ring-opacity-5 transition-all duration-200 group-hover:visible group-hover:opacity-100">
+            <div className="absolute left-0 z-50 mt-2 invisible w-56 rounded-md border border-[var(--border-strong)] bg-[var(--bg-overlay)] opacity-0 shadow-[var(--shadow-elevated)] transition-all duration-200 group-hover:visible group-hover:opacity-100">
               <div className="py-1">
                 {item.sections.map((section) => (
                   <button
                     key={section.id}
                     onClick={() => onSectionSelect(section.id)}
-                    className="block w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-[#121217] hover:text-white"
+                    className="block w-full px-4 py-2 text-left text-sm text-gray-300 transition-colors hover:bg-[var(--bg-elevated)] hover:text-white"
                   >
                     {section.label}
                   </button>
