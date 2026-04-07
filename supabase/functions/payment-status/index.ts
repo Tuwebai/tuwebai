@@ -1,7 +1,11 @@
-import { buildJsonResponse, normalizeString } from '../_shared/json.ts';
+import { buildCorsPreflightResponse, buildJsonResponse, normalizeString } from '../_shared/json.ts';
 
 Deno.serve(async (request) => {
   const requestId = request.headers.get('x-request-id')?.trim() || crypto.randomUUID();
+
+  if (request.method === 'OPTIONS') {
+    return buildCorsPreflightResponse();
+  }
 
   if (request.method !== 'POST') {
     return buildJsonResponse(405, { success: false, message: 'Metodo no permitido.', requestId });

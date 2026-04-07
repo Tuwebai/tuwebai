@@ -1,4 +1,4 @@
-import { buildJsonResponse, normalizeString } from '../_shared/json.ts';
+import { buildCorsPreflightResponse, buildJsonResponse, normalizeString } from '../_shared/json.ts';
 
 const paymentPlanConfig = {
   avanzado: { title: 'Web Comercial', unitPrice: 780000 },
@@ -24,6 +24,10 @@ const parsePayload = async (request: Request): Promise<{ plan: PaymentPlan } | n
 
 Deno.serve(async (request) => {
   const requestId = request.headers.get('x-request-id')?.trim() || crypto.randomUUID();
+
+  if (request.method === 'OPTIONS') {
+    return buildCorsPreflightResponse();
+  }
 
   if (request.method !== 'POST') {
     return buildJsonResponse(405, { success: false, message: 'Metodo no permitido.', requestId });

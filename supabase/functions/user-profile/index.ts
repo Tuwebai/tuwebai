@@ -1,8 +1,12 @@
-import { buildJsonResponse, normalizeString } from '../_shared/json.ts';
+import { buildCorsPreflightResponse, buildJsonResponse, normalizeString } from '../_shared/json.ts';
 import { createServiceClient, requireAuthenticatedAppUser } from '../_shared/auth.ts';
 
 Deno.serve(async (request) => {
   const requestId = request.headers.get('x-request-id')?.trim() || crypto.randomUUID();
+
+  if (request.method === 'OPTIONS') {
+    return buildCorsPreflightResponse();
+  }
 
   try {
     const appUser = await requireAuthenticatedAppUser(request);

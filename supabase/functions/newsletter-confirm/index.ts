@@ -1,6 +1,6 @@
 import { createClient } from 'npm:@supabase/supabase-js@2.57.4';
 import { sendBrevoTransactionalEmail } from '../_shared/brevo.ts';
-import { buildJsonResponse, normalizeEmail, normalizeString } from '../_shared/json.ts';
+import { buildCorsPreflightResponse, buildJsonResponse, normalizeEmail, normalizeString } from '../_shared/json.ts';
 import {
   decodeNewsletterToken,
   encodeNewsletterToken,
@@ -17,6 +17,10 @@ interface NewsletterSubscriberRow {
 
 Deno.serve(async (request) => {
   const requestId = request.headers.get('x-request-id')?.trim() || crypto.randomUUID();
+
+  if (request.method === 'OPTIONS') {
+    return buildCorsPreflightResponse();
+  }
 
   if (request.method !== 'POST') {
     return buildJsonResponse(405, { success: false, message: 'Metodo no permitido.', requestId });
