@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { env } from '../../config/env.config';
+import { relayEdgeFunction } from '../../infrastructure/supabase/supabase-edge-relay';
 import {
   sendError,
   sendSuccessWithMessage,
@@ -51,6 +52,15 @@ export const handleNewsletter = async (req: Request, res: Response) => {
 
   try {
     const { email, source } = req.body;
+    const edgeResult = await relayEdgeFunction<{ message?: string; success?: boolean }>('newsletter-subscribe', {
+      body: { email, source: source || 'website' },
+      requestId: res.locals.requestId as string | undefined,
+    });
+
+    if (edgeResult) {
+      return res.status(edgeResult.status).json(edgeResult.body);
+    }
+
     const result = await registerNewsletterSubscription({
       email,
       source: source || 'website',
@@ -183,6 +193,20 @@ export const handleNewsletterConfirm = async (req: Request, res: Response) => {
   });
 
   try {
+    const edgeResult = await relayEdgeFunction<{
+      justConfirmed?: boolean;
+      message: string;
+      success: boolean;
+      unsubscribeToken?: string | null;
+    }>('newsletter-confirm', {
+      body: { token: req.params.token },
+      requestId: res.locals.requestId as string | undefined,
+    });
+
+    if (edgeResult) {
+      return res.status(edgeResult.status).json(edgeResult.body);
+    }
+
     const result = await confirmNewsletterSubscription(req.params.token);
 
     if (result.success) {
@@ -237,6 +261,15 @@ export const handleNewsletterUnsubscribe = async (req: Request, res: Response) =
   });
 
   try {
+    const edgeResult = await relayEdgeFunction<{ message: string; success: boolean }>('newsletter-unsubscribe', {
+      body: { token: req.params.token },
+      requestId: res.locals.requestId as string | undefined,
+    });
+
+    if (edgeResult) {
+      return res.status(edgeResult.status).json(edgeResult.body);
+    }
+
     const result = await unsubscribeNewsletterSubscription(req.params.token);
     const frontendBaseUrl = env.FRONTEND_URL.replace(/\/+$/, '');
 

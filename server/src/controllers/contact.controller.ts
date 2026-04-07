@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { relayEdgeFunction } from '../infrastructure/supabase/supabase-edge-relay';
 import { dispatchPublicSubmission, handlePublicSubmissionError } from '../modules/contact/submission-ops';
 import { getErrorMessage } from '../shared/utils/error-message';
 import { sendContactEmail } from '../services/email.service';
@@ -7,6 +8,15 @@ import { appLogger } from '../utils/app-logger';
 export const handleContact = async (req: Request, res: Response) => {
   try {
     const { name, email, title, message } = req.body;
+    const edgeResult = await relayEdgeFunction<{ message?: string; success?: boolean }>('contact-intake', {
+      body: { name, email, title, message },
+      requestId: res.locals.requestId as string | undefined,
+    });
+
+    if (edgeResult) {
+      return res.status(edgeResult.status).json(edgeResult.body);
+    }
+
     return await dispatchPublicSubmission(res, {
       req,
       channel: 'contact',
@@ -34,6 +44,15 @@ export const handleContact = async (req: Request, res: Response) => {
 export const handleConsulta = async (req: Request, res: Response) => {
   try {
     const { name, email, title, message } = req.body;
+    const edgeResult = await relayEdgeFunction<{ message?: string; success?: boolean }>('contact-intake', {
+      body: { name, email, title, message },
+      requestId: res.locals.requestId as string | undefined,
+    });
+
+    if (edgeResult) {
+      return res.status(edgeResult.status).json(edgeResult.body);
+    }
+
     return await dispatchPublicSubmission(res, {
       req,
       channel: 'consulta',

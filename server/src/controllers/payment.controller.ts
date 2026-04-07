@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { env } from '../config/env.config';
+import { relayEdgeFunction } from '../infrastructure/supabase/supabase-edge-relay';
 import { type PaymentPlan } from '../constants/payment-plans';
 import {
   buildPaymentWebhookHeaders,
@@ -31,6 +32,14 @@ export const handleCreatePreference = async (req: Request, res: Response) => {
 
   try {
     const { plan } = req.body as { plan: PaymentPlan };
+    const edgeResult = await relayEdgeFunction<{ init_point?: string; success?: boolean }>('payment-preference', {
+      body: { plan },
+      requestId: res.locals.requestId as string | undefined,
+    });
+
+    if (edgeResult) {
+      return res.status(edgeResult.status).json(edgeResult.body);
+    }
 
     const mpRes = await createPaymentPreferenceForPlan(plan);
     logger.info('payment.preference_created', { plan });
@@ -88,6 +97,18 @@ export const handleWebhook = async (req: Request, res: Response) => {
   void sendSuccessWithMessage(res, { received: true }, 'Webhook recibido.');
 
   try {
+    const edgeResult = await relayEdgeFunction<{ message?: string; success?: boolean }>('payment-webhook-intake', {
+      body: req.body,
+      headers: {
+        ...(typeof req.headers['x-signature'] === 'string' ? { 'x-signature': req.headers['x-signature'] } : {}),
+      },
+      requestId: req.headers['x-request-id'] as string | undefined,
+    });
+
+    if (edgeResult) {
+      return;
+    }
+
     const headers = buildPaymentWebhookHeaders(req);
 
     await processMercadoPagoWebhook({
