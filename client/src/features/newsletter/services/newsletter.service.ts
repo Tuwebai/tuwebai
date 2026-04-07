@@ -1,11 +1,19 @@
 import { backendApi } from '@/lib/backend-api';
 import { getUiErrorMessage } from '@/lib/http-client';
+import { invokeSupabaseEdge } from '@/lib/supabase-edge';
 import type { NewsletterSubscriptionInput } from '../types';
 
-const EMAIL_REGEX = /\\S+@\\S+\\.\\S+/;
+const EMAIL_REGEX = /\S+@\S+\.\S+/;
 
-export const subscribeToNewsletter = (payload: NewsletterSubscriptionInput) =>
-  backendApi.subscribeNewsletter(payload);
+export const subscribeToNewsletter = async (payload: NewsletterSubscriptionInput) => {
+  try {
+    return await invokeSupabaseEdge<{ success?: boolean; message?: string }>('newsletter-subscribe', {
+      body: { ...payload },
+    });
+  } catch {
+    return backendApi.subscribeNewsletter(payload);
+  }
+};
 
 export const confirmNewsletterSubscription = (token: string) =>
   backendApi.confirmNewsletter(token);

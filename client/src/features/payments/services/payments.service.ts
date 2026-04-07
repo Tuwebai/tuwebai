@@ -1,11 +1,20 @@
 import { backendApi } from '@/lib/backend-api';
 import { getUiErrorMessage } from '@/lib/http-client';
+import { invokeSupabaseEdge } from '@/lib/supabase-edge';
 import type { PaymentPlan, PaymentStatusPayload } from '../types';
 
 const CHECKOUT_TIMEOUT_MS = 9000;
 const CHECKOUT_MAX_ATTEMPTS = 2;
 
-export const createPaymentPreference = (plan: PaymentPlan) => backendApi.createPaymentPreference(plan);
+export const createPaymentPreference = async (plan: PaymentPlan) => {
+  try {
+    return await invokeSupabaseEdge<{ init_point?: string }>('payment-preference', {
+      body: { plan },
+    });
+  } catch {
+    return backendApi.createPaymentPreference(plan);
+  }
+};
 
 export const getPaymentStatus = async (paymentId: string): Promise<PaymentStatusPayload | null> => {
   const data = await backendApi.getPaymentStatus(paymentId);
