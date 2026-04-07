@@ -2,6 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { toast } from '@/shared/ui/use-toast';
 import { backendApi } from '@/lib/backend-api';
 import { getUiErrorMessage } from '@/lib/http-client';
+import { invokeSupabaseEdge } from '@/lib/supabase-edge';
 
 interface Vacancy {
   title: string;
@@ -26,12 +27,20 @@ interface ApplicationVariables {
 export const useApplyVacancy = () => {
   return useMutation({
     mutationFn: async ({ application, vacancy }: ApplicationVariables) => {
-      await backendApi.submitApplication({
+      const payload = {
         ...application,
         position: vacancy.title,
         department: vacancy.department,
         type: vacancy.type,
-      });
+      };
+
+      try {
+        await invokeSupabaseEdge<{ success?: boolean; message?: string }>('application-intake', {
+          body: payload,
+        });
+      } catch {
+        await backendApi.submitApplication(payload);
+      }
     },
     onError: (error) => {
       console.error('Error submitting application:', error);

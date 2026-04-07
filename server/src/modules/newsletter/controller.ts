@@ -6,10 +6,6 @@ import {
   sendSuccessWithMessage,
 } from '../../core/contracts/api-response';
 import { createUseCaseLogger } from '../../core/observability/use-case-logger';
-import {
-  queueContactEmail,
-  queueChecklistWebGratisEmail,
-} from '../../infrastructure/mail/email.service';
 import { getErrorMessage } from '../../shared/utils/error-message';
 import {
   applyNewsletterProviderEvent,
@@ -64,39 +60,16 @@ export const handleChecklistWebGratisDownload = async (req: Request, res: Respon
 
   try {
     const { name, email, source } = req.body;
-
-    queueChecklistWebGratisEmail(name, email, {
-      event: 'public.checklist_web_gratis',
-      meta: { route: req.path, method: req.method, source: source || 'website' },
+    const edgeResult = await relayEdgeFunction<{ message?: string; success?: boolean }>('checklist-intake', {
+      body: { name, email, source: source || 'website' },
+      requestId: res.locals.requestId as string | undefined,
     });
 
-    queueContactEmail(
-      {
-        name,
-        email,
-        title: 'Nueva solicitud de checklist web gratis',
-        message: `Nombre: ${name}\nEmail: ${email}\nSource: ${source || 'website'}`,
-      },
-      {
-        event: 'public.checklist_web_gratis_lead',
-        meta: { route: req.path, method: req.method, source: source || 'website' },
-      },
-    );
+    if (edgeResult) {
+      return res.status(edgeResult.status).json(edgeResult.body);
+    }
 
-    logger.info('newsletter.checklist_request_accepted', {
-      email,
-      source: source || 'website',
-    });
-
-    return sendSuccessWithMessage(
-      res,
-      {
-        email,
-        source: source || 'website',
-      },
-      'Solicitud recibida. Te enviamos el checklist por email.',
-      202,
-    );
+    return sendError(res, 503, 'El checklist no esta disponible en este momento.');
   } catch (error: unknown) {
     logger.error('public.checklist_web_gratis_failed', {
       error: getErrorMessage(error, 'unknown_checklist_web_gratis_error'),

@@ -1,5 +1,6 @@
 import { backendApi } from '@/lib/backend-api';
 import { getUiErrorMessage } from '@/lib/http-client';
+import { invokeSupabaseEdge } from '@/lib/supabase-edge';
 
 export interface ChecklistWebGratisDownloadInput {
   name: string;
@@ -7,8 +8,15 @@ export interface ChecklistWebGratisDownloadInput {
   source?: string;
 }
 
-export const requestChecklistWebGratis = (payload: ChecklistWebGratisDownloadInput) =>
-  backendApi.requestChecklistWebGratis(payload);
+export const requestChecklistWebGratis = async (payload: ChecklistWebGratisDownloadInput) => {
+  try {
+    return await invokeSupabaseEdge<{ success?: boolean; message?: string }>('checklist-intake', {
+      body: { ...payload },
+    });
+  } catch {
+    return backendApi.requestChecklistWebGratis(payload);
+  }
+};
 
 export const getChecklistWebGratisErrorMessage = (error: unknown, fallback: string) =>
   getUiErrorMessage(error, fallback);
