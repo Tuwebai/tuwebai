@@ -3,7 +3,6 @@ import {
   reloadAuthUser,
   type AuthSessionUser,
 } from '@/features/auth/services/auth-session.service';
-import { backendApi } from '@/lib/backend-api';
 import type { User } from '@/features/auth/types';
 
 import { isGoogleAuthUser, mergeAuthUserData } from './auth-avatar';
@@ -95,22 +94,14 @@ export const syncAuthSessionUser = async (
   }
 
   const currentAuthUser = (await getCurrentAuthUser()) ?? authUser;
-  const authIdentityPromise = backendApi
-    .getAuthMe()
-    .then((response) => response.data ?? null)
-    .catch(() => null);
-  const authIdentity = timeoutMs
-    ? await withTimeout(authIdentityPromise, timeoutMs, null)
-    : await authIdentityPromise;
-  const resolvedUid = authIdentity?.uid ?? currentAuthUser.uid;
+  const resolvedUid = currentAuthUser.uid;
   const persistedUserPromise = getUser(resolvedUid).catch(() => null);
   const persistedUser = timeoutMs
     ? await withTimeout(persistedUserPromise, timeoutMs, null)
     : await persistedUserPromise;
   const nextUser = mergeAuthUserData(currentAuthUser, persistedUser);
   nextUser.uid = resolvedUid;
-  nextUser.email = authIdentity?.email || nextUser.email;
-  nextUser.role = authIdentity?.admin ? 'admin' : nextUser.role;
+  nextUser.role = persistedUser?.role || nextUser.role;
 
   if (shouldPersistMergedUser(currentAuthUser, nextUser, persistedUser)) {
     await setUser(nextUser).catch(() => undefined);
