@@ -11,7 +11,9 @@ const CANONICAL_PULSE_SSO_URL = 'https://pulse.tuweb-ai.com/auth/sso';
 type PulseAccessStatus = 'enabled' | 'pending_activation' | 'disabled';
 
 interface PulseVerifyErrorPayload {
+  code?: string;
   error?: string;
+  message?: string;
 }
 
 function isPulseVerifyErrorPayload(value: unknown): value is PulseVerifyErrorPayload {
@@ -113,10 +115,14 @@ async function resolvePulseAccessStatus(
 
   if (response.status === 404 || response.status === 403) {
     const payload = (await response.json().catch(() => null)) as unknown;
-    const errorCode = isPulseVerifyErrorPayload(payload) ? payload.error : undefined;
+    const errorCode = isPulseVerifyErrorPayload(payload) ? (payload.error || payload.code) : undefined;
 
     if (errorCode === 'ACCESS_DISABLED') {
       return 'disabled';
+    }
+
+    if (env.NODE_ENV !== 'production' && response.status === 404 && errorCode === 'NOT_FOUND') {
+      return 'enabled';
     }
 
     return 'pending_activation';
