@@ -206,14 +206,14 @@ export const technologies: Technology[] = [
   },
   {
     id: 19,
-    name: 'Firebase',
-    description: 'Plataforma para el desarrollo de aplicaciones web y móviles',
-    category: 'Base de Datos',
-    logo: 'https://firebase.google.com/downloads/brand-guidelines/PNG/logo-logomark.png?hl=es-419',
-    website: 'https://firebase.google.com/',
-    popularity: 88,
-    expertise: 90,
-    featured: true
+      name: 'Supabase',
+      description: 'Plataforma open source para autenticación, base de datos y storage',
+      category: 'Base de Datos',
+      logo: 'https://supabase.com/favicon/favicon-32x32.png',
+      website: 'https://supabase.com/',
+      popularity: 88,
+      expertise: 90,
+      featured: true
   },
   
   // CMS

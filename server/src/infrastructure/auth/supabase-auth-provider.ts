@@ -14,13 +14,13 @@ interface SupabaseAuthApiUser {
 interface AppUserLookupRow {
   id: string;
   email: string;
-  legacy_auth_uid: string;
+  auth_uid: string;
   role: string;
   supabase_auth_user_id: string | null;
 }
 
 const SUPABASE_AUTH_TIMEOUT_MS = 8000;
-const APP_USER_SELECT = 'id,legacy_auth_uid,email,role,supabase_auth_user_id';
+const APP_USER_SELECT = 'id,auth_uid,email,role,supabase_auth_user_id';
 
 const resolveClaimRole = (authUser: SupabaseAuthApiUser): 'admin' | 'user' | null => {
   const appMetadataRole = authUser.app_metadata?.role;
@@ -89,9 +89,9 @@ const findAppUserByEmail = async (email: string): Promise<AppUserLookupRow | nul
   return rows[0] ?? null;
 };
 
-const linkSupabaseAuthUser = async (legacyAuthUid: string, supabaseAuthUserId: string): Promise<void> => {
+const linkSupabaseAuthUser = async (authUid: string, supabaseAuthUserId: string): Promise<void> => {
   await supabaseAdminRestRequest<void>(
-    `/users?legacy_auth_uid=eq.${encodeURIComponent(legacyAuthUid)}`,
+    `/users?auth_uid=eq.${encodeURIComponent(authUid)}`,
     {
       method: 'PATCH',
       body: JSON.stringify({
@@ -108,7 +108,7 @@ const resolveAppAuthUser = async (authUser: SupabaseAuthApiUser): Promise<AuthUs
     const role = directMatch.role === 'admin' || claimRole === 'admin' ? 'admin' : 'user';
     return {
       appUserId: directMatch.id,
-      uid: directMatch.legacy_auth_uid,
+      uid: directMatch.auth_uid,
       authUserId: directMatch.supabase_auth_user_id ?? authUser.id,
       email: directMatch.email,
       admin: role === 'admin',
@@ -140,13 +140,13 @@ const resolveAppAuthUser = async (authUser: SupabaseAuthApiUser): Promise<AuthUs
   }
 
   if (!emailMatch.supabase_auth_user_id) {
-    await linkSupabaseAuthUser(emailMatch.legacy_auth_uid, authUser.id);
+    await linkSupabaseAuthUser(emailMatch.auth_uid, authUser.id);
   }
 
   const role = emailMatch.role === 'admin' || claimRole === 'admin' ? 'admin' : 'user';
   return {
     appUserId: emailMatch.id,
-    uid: emailMatch.legacy_auth_uid,
+    uid: emailMatch.auth_uid,
     authUserId: emailMatch.supabase_auth_user_id ?? authUser.id,
     email: emailMatch.email,
     admin: role === 'admin',

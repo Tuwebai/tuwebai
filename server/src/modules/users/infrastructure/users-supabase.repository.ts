@@ -17,11 +17,11 @@ interface UserRow {
   auth_provider: string;
   created_at: string;
   email: string;
-  legacy_auth_uid: string;
+  auth_uid: string;
   full_name: string | null;
   image_url: string | null;
   is_active: boolean;
-  legacy_project_id: string | null;
+  project_id: string | null;
   password_changed_at: string | null;
   role: string;
   supabase_auth_user_id: string | null;
@@ -45,7 +45,7 @@ interface UserRow {
 }
 
 const USERS_SELECT =
-  'id,legacy_auth_uid,supabase_auth_user_id,email,username,full_name,image_url,auth_provider,password_changed_at,role,is_active,legacy_project_id,created_at,updated_at,user_preferences(email_notifications,newsletter,dark_mode,language,updated_at),user_privacy_settings(marketing_consent,analytics_consent,profile_email_visible,profile_status_visible,updated_at,updated_by)';
+  'id,auth_uid,supabase_auth_user_id,email,username,full_name,image_url,auth_provider,password_changed_at,role,is_active,project_id,created_at,updated_at,user_preferences(email_notifications,newsletter,dark_mode,language,updated_at),user_privacy_settings(marketing_consent,analytics_consent,profile_email_visible,profile_status_visible,updated_at,updated_by)';
 
 const createDeterministicUuid = (input: string): string => {
   const hash = createHash('sha256').update(input).digest('hex');
@@ -86,7 +86,7 @@ const mapPrivacy = (privacy: UserRow['user_privacy_settings']): UserPrivacyDocum
 
 const mapRowToDocument = (row: UserRow): UserDocument => ({
   appUserId: row.id,
-  uid: row.legacy_auth_uid,
+  uid: row.auth_uid,
   authUserId: row.supabase_auth_user_id ?? undefined,
   email: row.email,
   username: row.username ?? undefined,
@@ -96,7 +96,7 @@ const mapRowToDocument = (row: UserRow): UserDocument => ({
   passwordChangedAt: row.password_changed_at,
   role: row.role,
   isActive: row.is_active,
-  projectId: row.legacy_project_id ?? undefined,
+  projectId: row.project_id ?? undefined,
   createdAt: row.created_at,
   updatedAt: row.updated_at,
   preferences: mapPreferences(row.user_preferences),
@@ -107,7 +107,7 @@ const buildUserRow = (uid: string, payload: Partial<UserDocument>) => ({
   id: payload.appUserId ?? createDeterministicUuid(`user:${uid}`),
   profile_id: createDeterministicUuid(`profile:${uid}`),
   supabase_auth_user_id: payload.authUserId ?? null,
-  legacy_auth_uid: uid,
+  auth_uid: uid,
   email: payload.email?.trim().toLowerCase(),
   username: payload.username?.trim() || null,
   full_name: payload.name?.trim() || payload.username?.trim() || null,
@@ -115,7 +115,7 @@ const buildUserRow = (uid: string, payload: Partial<UserDocument>) => ({
   auth_provider: payload.authProvider ?? 'unknown',
   role: payload.role?.trim() || 'user',
   is_active: payload.isActive ?? true,
-  legacy_project_id: payload.projectId?.trim() || null,
+  project_id: payload.projectId?.trim() || null,
   password_changed_at: payload.passwordChangedAt ?? null,
   created_at: payload.createdAt ?? new Date().toISOString(),
   updated_at: payload.updatedAt ?? new Date().toISOString(),
@@ -154,14 +154,14 @@ const findUserByEmail = async (
   }
 
   return {
-    id: rows[0].legacy_auth_uid,
+    id: rows[0].auth_uid,
     data: mapRowToDocument(rows[0]),
   };
 };
 
 const findUserByUid = async (uid: string): Promise<UserDocument | null> => {
   const rows = await supabaseAdminRestRequest<UserRow[]>(
-    `/users?select=${USERS_SELECT}&legacy_auth_uid=eq.${encodeURIComponent(uid)}&limit=1`,
+    `/users?select=${USERS_SELECT}&auth_uid=eq.${encodeURIComponent(uid)}&limit=1`,
   );
 
   return rows[0] ? mapRowToDocument(rows[0]) : null;
@@ -218,7 +218,7 @@ const upsertUserByUid = async (uid: string, payload: Partial<UserDocument>): Pro
     },
   };
 
-  await supabaseAdminRestRequest('/users?on_conflict=legacy_auth_uid', {
+  await supabaseAdminRestRequest('/users?on_conflict=auth_uid', {
     method: 'POST',
     body: JSON.stringify([buildUserRow(uid, nextPayload)]),
   });
