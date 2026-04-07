@@ -14,13 +14,13 @@ interface SupabaseAuthApiUser {
 interface AppUserLookupRow {
   id: string;
   email: string;
-  firebase_uid: string;
+  legacy_auth_uid: string;
   role: string;
   supabase_auth_user_id: string | null;
 }
 
 const SUPABASE_AUTH_TIMEOUT_MS = 8000;
-const APP_USER_SELECT = 'id,firebase_uid,email,role,supabase_auth_user_id';
+const APP_USER_SELECT = 'id,legacy_auth_uid,email,role,supabase_auth_user_id';
 
 const resolveClaimRole = (authUser: SupabaseAuthApiUser): 'admin' | 'user' | null => {
   const appMetadataRole = authUser.app_metadata?.role;
@@ -89,9 +89,9 @@ const findAppUserByEmail = async (email: string): Promise<AppUserLookupRow | nul
   return rows[0] ?? null;
 };
 
-const linkSupabaseAuthUser = async (firebaseUid: string, supabaseAuthUserId: string): Promise<void> => {
+const linkSupabaseAuthUser = async (legacyAuthUid: string, supabaseAuthUserId: string): Promise<void> => {
   await supabaseAdminRestRequest<void>(
-    `/users?firebase_uid=eq.${encodeURIComponent(firebaseUid)}`,
+    `/users?legacy_auth_uid=eq.${encodeURIComponent(legacyAuthUid)}`,
     {
       method: 'PATCH',
       body: JSON.stringify({
@@ -108,7 +108,7 @@ const resolveAppAuthUser = async (authUser: SupabaseAuthApiUser): Promise<AuthUs
     const role = directMatch.role === 'admin' || claimRole === 'admin' ? 'admin' : 'user';
     return {
       appUserId: directMatch.id,
-      uid: directMatch.firebase_uid,
+      uid: directMatch.legacy_auth_uid,
       authUserId: directMatch.supabase_auth_user_id ?? authUser.id,
       email: directMatch.email,
       admin: role === 'admin',
@@ -140,13 +140,13 @@ const resolveAppAuthUser = async (authUser: SupabaseAuthApiUser): Promise<AuthUs
   }
 
   if (!emailMatch.supabase_auth_user_id) {
-    await linkSupabaseAuthUser(emailMatch.firebase_uid, authUser.id);
+    await linkSupabaseAuthUser(emailMatch.legacy_auth_uid, authUser.id);
   }
 
   const role = emailMatch.role === 'admin' || claimRole === 'admin' ? 'admin' : 'user';
   return {
     appUserId: emailMatch.id,
-    uid: emailMatch.firebase_uid,
+    uid: emailMatch.legacy_auth_uid,
     authUserId: emailMatch.supabase_auth_user_id ?? authUser.id,
     email: emailMatch.email,
     admin: role === 'admin',

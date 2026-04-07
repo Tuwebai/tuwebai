@@ -45,7 +45,7 @@ interface UserRow {
 }
 
 const USERS_SELECT =
-  'id,firebase_uid,supabase_auth_user_id,email,username,full_name,image_url,auth_provider,password_changed_at,role,is_active,legacy_project_id,created_at,updated_at,user_preferences(email_notifications,newsletter,dark_mode,language,updated_at),user_privacy_settings(marketing_consent,analytics_consent,profile_email_visible,profile_status_visible,updated_at,updated_by)';
+  'id,legacy_auth_uid,supabase_auth_user_id,email,username,full_name,image_url,auth_provider,password_changed_at,role,is_active,legacy_project_id,created_at,updated_at,user_preferences(email_notifications,newsletter,dark_mode,language,updated_at),user_privacy_settings(marketing_consent,analytics_consent,profile_email_visible,profile_status_visible,updated_at,updated_by)';
 
 const createDeterministicUuid = (input: string): string => {
   const hash = createHash('sha256').update(input).digest('hex');
@@ -107,7 +107,7 @@ const buildUserRow = (uid: string, payload: Partial<UserDocument>) => ({
   id: payload.appUserId ?? createDeterministicUuid(`user:${uid}`),
   profile_id: createDeterministicUuid(`profile:${uid}`),
   supabase_auth_user_id: payload.authUserId ?? null,
-  firebase_uid: uid,
+  legacy_auth_uid: uid,
   email: payload.email?.trim().toLowerCase(),
   username: payload.username?.trim() || null,
   full_name: payload.name?.trim() || payload.username?.trim() || null,
@@ -161,7 +161,7 @@ const findUserByEmail = async (
 
 const findUserByUid = async (uid: string): Promise<UserDocument | null> => {
   const rows = await supabaseAdminRestRequest<UserRow[]>(
-    `/users?select=${USERS_SELECT}&firebase_uid=eq.${encodeURIComponent(uid)}&limit=1`,
+    `/users?select=${USERS_SELECT}&legacy_auth_uid=eq.${encodeURIComponent(uid)}&limit=1`,
   );
 
   return rows[0] ? mapRowToDocument(rows[0]) : null;
@@ -218,7 +218,7 @@ const upsertUserByUid = async (uid: string, payload: Partial<UserDocument>): Pro
     },
   };
 
-  await supabaseAdminRestRequest('/users?on_conflict=firebase_uid', {
+  await supabaseAdminRestRequest('/users?on_conflict=legacy_auth_uid', {
     method: 'POST',
     body: JSON.stringify([buildUserRow(uid, nextPayload)]),
   });

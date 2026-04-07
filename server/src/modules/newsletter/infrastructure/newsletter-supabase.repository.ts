@@ -32,7 +32,7 @@ interface NewsletterSubscriberRow {
 }
 
 const NEWSLETTER_SELECT =
-  'email,email_normalized,status,created_at,confirmed_at,unsubscribed_at,bounced_at,complained_at,updated_at,last_submitted_at,first_source,last_source,sources,submission_count,consent_ip_address,consent_user_agent,consent_submitted_at,brevo_sync_status,brevo_last_operation,brevo_last_attempt_at,brevo_last_synced_at,brevo_last_error,brevo_retry_count,legacy_firestore_id';
+  'email,email_normalized,status,created_at,confirmed_at,unsubscribed_at,bounced_at,complained_at,updated_at,last_submitted_at,first_source,last_source,sources,submission_count,consent_ip_address,consent_user_agent,consent_submitted_at,brevo_sync_status,brevo_last_operation,brevo_last_attempt_at,brevo_last_synced_at,brevo_last_error,brevo_retry_count,legacy_subscriber_id';
 
 const mapRowToRecord = (row: NewsletterSubscriberRow): NewsletterSubscriberRecord => ({
   email: row.email,
@@ -93,14 +93,14 @@ const mapRecordToRow = (
   brevo_last_synced_at: subscriber.brevoSync?.lastSyncedAt ?? null,
   brevo_last_error: subscriber.brevoSync?.lastError ?? null,
   brevo_retry_count: subscriber.brevoSync?.retryCount ?? 0,
-  legacy_firestore_id: subscriberId,
+  legacy_subscriber_id: subscriberId,
 });
 
 const findNewsletterSubscriberById = async (
   subscriberId: string,
 ): Promise<NewsletterSubscriberRecord | null> => {
   const rows = await supabaseAdminRestRequest<NewsletterSubscriberRow[]>(
-    `/newsletter_subscribers?select=${NEWSLETTER_SELECT}&legacy_firestore_id=eq.${encodeURIComponent(subscriberId)}&limit=1`,
+    `/newsletter_subscribers?select=${NEWSLETTER_SELECT}&legacy_subscriber_id=eq.${encodeURIComponent(subscriberId)}&limit=1`,
   );
 
   return rows[0] ? mapRowToRecord(rows[0]) : null;
@@ -124,7 +124,7 @@ const updateNewsletterBrevoSyncById = async (
   brevoSync: NonNullable<NewsletterSubscriberRecord['brevoSync']>,
 ): Promise<void> => {
   await supabaseAdminRestRequest<void>(
-    `/newsletter_subscribers?legacy_firestore_id=eq.${encodeURIComponent(subscriberId)}`,
+    `/newsletter_subscribers?legacy_subscriber_id=eq.${encodeURIComponent(subscriberId)}`,
     {
       method: 'PATCH',
       body: JSON.stringify({

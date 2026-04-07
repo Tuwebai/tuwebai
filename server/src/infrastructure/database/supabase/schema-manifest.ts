@@ -8,7 +8,7 @@ export const SUPABASE_TABLES = {
 } as const;
 
 export const SUPABASE_USER_IDENTITY_COLUMNS = {
-  firebaseUid: 'firebase_uid',
+  legacyAuthUid: 'legacy_auth_uid',
   supabaseAuthUserId: 'supabase_auth_user_id',
 } as const;
 
