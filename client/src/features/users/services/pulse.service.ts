@@ -65,6 +65,10 @@ export async function getPulsePreview(email: string): Promise<PulsePreviewData> 
   });
 
   if (!response.ok) {
+    if (response.status === 404) {
+      return { hasData: false };
+    }
+
     throw new Error('No pudimos consultar el preview de Pulse.');
   }
 

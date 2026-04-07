@@ -7,11 +7,15 @@ const normalizeApiBaseUrl = (rawUrl: string): string => {
   return trimmed.replace(/\/api$/i, '');
 };
 
+const isLocalOrigin = (rawUrl: string): boolean => /https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i.test(rawUrl.trim());
+
 const defaultApiBase = viteEnv?.DEV
   ? 'http://localhost:5000'
   : '';
 
-const configuredApiBase = viteApiUrl && viteApiUrl.length > 0 ? viteApiUrl : defaultApiBase;
+const configuredApiBase = viteApiUrl && viteApiUrl.length > 0
+  ? (viteEnv?.DEV && !isLocalOrigin(viteApiUrl) ? defaultApiBase : viteApiUrl)
+  : defaultApiBase;
 const hadApiSuffix = /\/api\/?$/i.test(configuredApiBase.trim());
 
 export const API_URL = normalizeApiBaseUrl(configuredApiBase);
