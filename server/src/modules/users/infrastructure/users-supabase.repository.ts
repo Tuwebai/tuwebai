@@ -17,7 +17,7 @@ interface UserRow {
   auth_provider: string;
   created_at: string;
   email: string;
-  firebase_uid: string;
+  legacy_auth_uid: string;
   full_name: string | null;
   image_url: string | null;
   is_active: boolean;
@@ -86,7 +86,7 @@ const mapPrivacy = (privacy: UserRow['user_privacy_settings']): UserPrivacyDocum
 
 const mapRowToDocument = (row: UserRow): UserDocument => ({
   appUserId: row.id,
-  uid: row.firebase_uid,
+  uid: row.legacy_auth_uid,
   authUserId: row.supabase_auth_user_id ?? undefined,
   email: row.email,
   username: row.username ?? undefined,
@@ -154,7 +154,7 @@ const findUserByEmail = async (
   }
 
   return {
-    id: rows[0].firebase_uid,
+    id: rows[0].legacy_auth_uid,
     data: mapRowToDocument(rows[0]),
   };
 };

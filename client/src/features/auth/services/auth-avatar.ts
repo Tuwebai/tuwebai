@@ -36,7 +36,7 @@ export const resolveAuthAvatar = (authUser: AuthSessionUser | null, persistedIma
   return storedPhoto || providerPhoto;
 };
 
-export const mergeFirebaseUserData = (
+export const mergeAuthUserData = (
   authUser: AuthSessionUser,
   persistedUser?: Partial<User> | null,
 ): User => {

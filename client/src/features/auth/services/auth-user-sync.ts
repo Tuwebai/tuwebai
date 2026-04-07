@@ -6,7 +6,7 @@ import {
 import { backendApi } from '@/lib/backend-api';
 import type { User } from '@/features/auth/types';
 
-import { isGoogleAuthUser, mergeFirebaseUserData } from './auth-avatar';
+import { isGoogleAuthUser, mergeAuthUserData } from './auth-avatar';
 
 type UsersServiceModule = typeof import('@/features/users/services/users.service');
 
@@ -107,7 +107,7 @@ export const syncAuthSessionUser = async (
   const persistedUser = timeoutMs
     ? await withTimeout(persistedUserPromise, timeoutMs, null)
     : await persistedUserPromise;
-  const nextUser = mergeFirebaseUserData(currentAuthUser, persistedUser);
+  const nextUser = mergeAuthUserData(currentAuthUser, persistedUser);
   nextUser.uid = resolvedUid;
   nextUser.email = authIdentity?.email || nextUser.email;
   nextUser.role = authIdentity?.admin ? 'admin' : nextUser.role;

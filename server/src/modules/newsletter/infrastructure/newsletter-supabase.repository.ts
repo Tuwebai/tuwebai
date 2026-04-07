@@ -23,7 +23,7 @@ interface NewsletterSubscriberRow {
   first_source: string;
   last_source: string;
   last_submitted_at: string;
-  legacy_firestore_id: string | null;
+  legacy_subscriber_id: string | null;
   sources: string[] | null;
   status: NewsletterSubscriberRecord['status'];
   submission_count: number;
