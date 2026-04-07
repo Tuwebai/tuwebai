@@ -15,6 +15,8 @@ const functionNames = [
   'payment-preference',
   'payment-webhook-intake',
   'password-reset-metadata',
+  'user-profile',
+  'user-privacy',
 ];
 
 const supabaseUrl = process.env.SUPABASE_URL?.trim();
