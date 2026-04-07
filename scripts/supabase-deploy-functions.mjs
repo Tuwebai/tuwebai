@@ -17,6 +17,10 @@ const functionNames = [
   'password-reset-metadata',
   'user-profile',
   'user-privacy',
+  'user-preferences',
+  'user-payments',
+  'payment-status',
+  'user-project',
 ];
 
 const supabaseUrl = process.env.SUPABASE_URL?.trim();

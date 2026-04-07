@@ -17,11 +17,21 @@ export const createPaymentPreference = async (plan: PaymentPlan) => {
 };
 
 export const getPaymentStatus = async (paymentId: string): Promise<PaymentStatusPayload | null> => {
-  const data = await backendApi.getPaymentStatus(paymentId);
-  if (!data?.success) {
-    throw new Error('No se pudo validar el estado del pago');
+  try {
+    const data = await invokeSupabaseEdge<{ data?: PaymentStatusPayload | null; success?: boolean }>('payment-status', {
+      body: { paymentId },
+    });
+    if (!data?.success) {
+      throw new Error('No se pudo validar el estado del pago');
+    }
+    return data.data ?? null;
+  } catch {
+    const data = await backendApi.getPaymentStatus(paymentId);
+    if (!data?.success) {
+      throw new Error('No se pudo validar el estado del pago');
+    }
+    return data.data ?? null;
   }
-  return data.data ?? null;
 };
 
 export const getPaymentsErrorMessage = (error: unknown, fallback: string) => getUiErrorMessage(error, fallback);
