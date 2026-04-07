@@ -1,6 +1,7 @@
 import { createClient } from 'npm:@supabase/supabase-js@2.57.4';
 import { sendBrevoTransactionalEmail } from '../_shared/brevo.ts';
 import { buildJsonResponse, normalizeEmail, normalizeString } from '../_shared/json.ts';
+import { encodeNewsletterToken, getSubscriberDocumentId } from '../_shared/newsletter-token.ts';
 
 type SubscriberStatus = 'pending_confirmation' | 'subscribed';
 
@@ -15,37 +16,6 @@ interface NewsletterSubscriberRow {
   status: SubscriberStatus;
   submission_count: number;
 }
-
-const toBase64Url = (value: string): string =>
-  btoa(value).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
-
-const encodeUtf8 = (value: string): Uint8Array => new TextEncoder().encode(value);
-
-const createSignature = async (payloadBase64: string, secret: string): Promise<string> => {
-  const cryptoKey = await crypto.subtle.importKey(
-    'raw',
-    encodeUtf8(secret),
-    { name: 'HMAC', hash: 'SHA-256' },
-    false,
-    ['sign'],
-  );
-  const signature = await crypto.subtle.sign('HMAC', cryptoKey, encodeUtf8(payloadBase64));
-  return toBase64Url(String.fromCharCode(...new Uint8Array(signature)));
-};
-
-const encodeNewsletterToken = async (
-  emailNormalized: string,
-  secret: string,
-): Promise<string> => {
-  const payload = JSON.stringify({
-    emailNormalized,
-    exp: Date.now() + 1000 * 60 * 60 * 24 * 2,
-    purpose: 'newsletter-confirmation',
-  });
-  const payloadBase64 = toBase64Url(payload);
-  const signature = await createSignature(payloadBase64, secret);
-  return `${payloadBase64}.${signature}`;
-};
 
 const parsePayload = async (request: Request): Promise<{ email: string; source: string } | null> => {
   const body = await request.json().catch(() => null) as Record<string, unknown> | null;
@@ -108,7 +78,7 @@ Deno.serve(async (request) => {
   });
 
   const emailNormalized = payload.email;
-  const subscriberId = toBase64Url(emailNormalized);
+  const subscriberId = getSubscriberDocumentId(emailNormalized);
   const nowIso = new Date().toISOString();
   const { data: existing, error: existingError } = await supabase
     .from('newsletter_subscribers')
@@ -148,7 +118,7 @@ Deno.serve(async (request) => {
     return buildJsonResponse(500, { success: false, message: 'No se pudo procesar la suscripcion.', requestId });
   }
 
-  const confirmationToken = await encodeNewsletterToken(emailNormalized, sessionSecret);
+  const confirmationToken = await encodeNewsletterToken(emailNormalized, 'newsletter-confirmation', sessionSecret);
   const confirmationUrl = `${frontendUrl.replace(/\/+$/, '')}/newsletter/confirm/${encodeURIComponent(confirmationToken)}`;
   const emailContent = buildConfirmationEmail(confirmationUrl);
 

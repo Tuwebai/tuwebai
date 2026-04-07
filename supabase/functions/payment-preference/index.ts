@@ -37,6 +37,7 @@ Deno.serve(async (request) => {
   const accessToken = normalizeString(Deno.env.get('MERCADOPAGO_ACCESS_TOKEN'));
   const frontendUrl = normalizeString(Deno.env.get('FRONTEND_URL')) ?? 'https://tuweb-ai.com';
   const backendUrl = normalizeString(Deno.env.get('BACKEND_URL'));
+  const supabaseUrl = normalizeString(Deno.env.get('SUPABASE_URL'));
 
   if (!accessToken) {
     return buildJsonResponse(503, { success: false, message: 'Mercado Pago no esta configurado.', requestId });
@@ -66,7 +67,11 @@ Deno.serve(async (request) => {
         pending: `${frontendUrl.replace(/\/+$/, '')}/pago-pendiente`,
       },
       auto_return: 'approved',
-      ...(backendUrl ? { notification_url: `${backendUrl.replace(/\/+$/, '')}/webhook/mercadopago` } : {}),
+      ...(supabaseUrl
+        ? { notification_url: `${supabaseUrl.replace(/\/+$/, '')}/functions/v1/payment-webhook-intake` }
+        : backendUrl
+          ? { notification_url: `${backendUrl.replace(/\/+$/, '')}/webhook/mercadopago` }
+          : {}),
       external_reference: `tuwebai-${payload.plan}-${Date.now()}`,
     }),
   });

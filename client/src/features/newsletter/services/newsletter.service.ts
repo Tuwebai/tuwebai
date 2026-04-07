@@ -15,11 +15,30 @@ export const subscribeToNewsletter = async (payload: NewsletterSubscriptionInput
   }
 };
 
-export const confirmNewsletterSubscription = (token: string) =>
-  backendApi.confirmNewsletter(token);
+export const confirmNewsletterSubscription = async (token: string) => {
+  try {
+    return await invokeSupabaseEdge<{
+      success: boolean;
+      message: string;
+      unsubscribeToken?: string | null;
+      justConfirmed?: boolean;
+    }>('newsletter-confirm', {
+      body: { token },
+    });
+  } catch {
+    return backendApi.confirmNewsletter(token);
+  }
+};
 
-export const unsubscribeNewsletterSubscription = (token: string) =>
-  backendApi.unsubscribeNewsletter(token);
+export const unsubscribeNewsletterSubscription = async (token: string) => {
+  try {
+    return await invokeSupabaseEdge<{ success: boolean; message: string }>('newsletter-unsubscribe', {
+      body: { token },
+    });
+  } catch {
+    return backendApi.unsubscribeNewsletter(token);
+  }
+};
 
 export const getNewsletterErrorMessage = (error: unknown, fallback: string) =>
   getUiErrorMessage(error, fallback);
