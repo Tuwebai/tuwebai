@@ -38,11 +38,15 @@ export const invokeSupabaseEdge = async <T>(
   options: EdgeInvokeOptions = {},
 ): Promise<T> => {
   const accessToken = await getCurrentAccessToken().catch(() => null);
+  if (!accessToken) {
+    throw new SupabaseEdgeInvokeError('auth_session_unavailable', 401);
+  }
+
   const { data, error } = await supabaseBrowserClient.functions.invoke(functionName, {
     body: options.body,
     headers: {
       ...(supabasePublicConfig.anonKey ? { apikey: supabasePublicConfig.anonKey } : {}),
-      ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+      Authorization: `Bearer ${accessToken}`,
     },
   });
 
