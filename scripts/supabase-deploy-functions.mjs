@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import process from 'node:process';
 import { spawnSync } from 'node:child_process';
 
