@@ -463,6 +463,59 @@ const staticRouteHead = {
   },
 };
 
+const staticRoutePrerenderContent = {
+  '/politica-privacidad': `
+    <main class="mx-auto min-h-screen max-w-4xl px-6 py-16 text-slate-900">
+      <header class="mb-10 border-b border-slate-200 pb-6">
+        <p class="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-cyan-700">Documento legal</p>
+        <h1 class="mb-4 text-4xl font-bold text-slate-950">Politica de Privacidad</h1>
+        <p class="max-w-3xl text-lg leading-8 text-slate-700">
+          Conoce como TuWebAI recopila, utiliza y protege tus datos personales cuando navegas este sitio o solicitas nuestros servicios.
+        </p>
+        <p class="mt-4 text-sm text-slate-500">Ultima actualizacion: 8 de abril de 2026</p>
+      </header>
+      <div class="space-y-8 text-base leading-8 text-slate-700">
+        <section>
+          <h2 class="mb-3 text-2xl font-semibold text-slate-950">1. Responsable del tratamiento</h2>
+          <p>El responsable del tratamiento es TuWebAI. Si necesitas ejercer derechos sobre tus datos, puedes escribirnos a <a class="text-cyan-700 underline" href="mailto:info@tuweb-ai.com">info@tuweb-ai.com</a>.</p>
+        </section>
+        <section>
+          <h2 class="mb-3 text-2xl font-semibold text-slate-950">2. Que datos tratamos</h2>
+          <p>Tratamos los datos que compartes mediante formularios de contacto, consultas comerciales, suscripcion a novedades y uso funcional del sitio. Tambien podemos registrar datos tecnicos minimos para seguridad, prevencion de fraude y funcionamiento del servicio.</p>
+        </section>
+        <section>
+          <h2 class="mb-3 text-2xl font-semibold text-slate-950">3. Finalidad del tratamiento</h2>
+          <p>Usamos tus datos para responder consultas, evaluar solicitudes, gestionar la relacion comercial o contractual, enviar comunicaciones administrativas y mejorar la experiencia tecnica del sitio dentro de limites legales y de seguridad.</p>
+        </section>
+        <section>
+          <h2 class="mb-3 text-2xl font-semibold text-slate-950">4. Base legal</h2>
+          <p>La base legal puede ser tu consentimiento, la ejecucion de medidas precontractuales o contractuales, el cumplimiento de obligaciones legales y nuestro interes legitimo en proteger la plataforma y atender solicitudes operativas.</p>
+        </section>
+        <section>
+          <h2 class="mb-3 text-2xl font-semibold text-slate-950">5. Conservacion</h2>
+          <p>Conservamos los datos solo durante el tiempo necesario para cumplir la finalidad informada, sostener la relacion comercial o contractual y atender obligaciones legales, regulatorias o de resguardo de seguridad.</p>
+        </section>
+        <section>
+          <h2 class="mb-3 text-2xl font-semibold text-slate-950">6. Destinatarios y proveedores</h2>
+          <p>Podemos apoyarnos en proveedores de infraestructura, analitica o correo que actuan como encargados del tratamiento bajo obligaciones de confidencialidad y seguridad. No vendemos tus datos personales.</p>
+        </section>
+        <section>
+          <h2 class="mb-3 text-2xl font-semibold text-slate-950">7. Tus derechos</h2>
+          <p>Puedes solicitar acceso, rectificacion, actualizacion, supresion, oposicion o limitacion del tratamiento de tus datos. Para eso escribenos a <a class="text-cyan-700 underline" href="mailto:info@tuweb-ai.com">info@tuweb-ai.com</a> con el asunto "Privacidad".</p>
+        </section>
+        <section>
+          <h2 class="mb-3 text-2xl font-semibold text-slate-950">8. Cookies y medicion</h2>
+          <p>Este sitio utiliza recursos tecnicos y de medicion compatibles con su funcionamiento. Puedes ampliar el detalle consultando nuestra <a class="text-cyan-700 underline" href="/politica-cookies">Politica de Cookies</a>.</p>
+        </section>
+        <section>
+          <h2 class="mb-3 text-2xl font-semibold text-slate-950">9. Contacto</h2>
+          <p>Si tienes dudas sobre esta politica o sobre el tratamiento de tus datos, escribe a <a class="text-cyan-700 underline" href="mailto:info@tuweb-ai.com">info@tuweb-ai.com</a>.</p>
+        </section>
+      </div>
+    </main>
+  `.trim(),
+};
+
 function escapeHtml(value) {
   return value
     .replaceAll('&', '&amp;')
@@ -839,7 +892,11 @@ async function main() {
   await writePage('blog', blogIndexHtml);
 
   for (const [route, metadata] of Object.entries(staticRouteHead)) {
-    const routeHtml = applyHeadMetadata(deferredIndexHtml, {
+    const prerenderedRouteHtml = staticRoutePrerenderContent[route]
+      ? injectPrerenderContent(deferredIndexHtml, staticRoutePrerenderContent[route])
+      : deferredIndexHtml;
+
+    const routeHtml = applyHeadMetadata(prerenderedRouteHtml, {
       ...metadata,
       robots: 'index, follow',
       structuredData: metadata.structuredData ?? [],

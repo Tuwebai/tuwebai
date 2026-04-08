@@ -50,6 +50,11 @@
   to = "/image_perfil.jpg"
   status = 200
 
+[[redirects]]
+  from = "/politica-de-privacidad"
+  to = "/politica-privacidad"
+  status = 301
+
 [[headers]]
   for = "/image_perfil.jpg"
   [headers.values]
