@@ -86,7 +86,7 @@ const mapPrivacy = (privacy: UserRow['user_privacy_settings']): UserPrivacyDocum
 
 const mapRowToDocument = (row: UserRow): UserDocument => ({
   appUserId: row.id,
-  uid: row.auth_uid,
+  uid: row.supabase_auth_user_id ?? row.auth_uid,
   authUserId: row.supabase_auth_user_id ?? undefined,
   email: row.email,
   username: row.username ?? undefined,
@@ -154,17 +154,30 @@ const findUserByEmail = async (
   }
 
   return {
-    id: rows[0].auth_uid,
+    id: rows[0].supabase_auth_user_id ?? rows[0].auth_uid,
     data: mapRowToDocument(rows[0]),
   };
 };
 
-const findUserByUid = async (uid: string): Promise<UserDocument | null> => {
+const findUserRowByIdentity = async (uid: string): Promise<UserRow | null> => {
+  const byAuthUserId = await supabaseAdminRestRequest<UserRow[]>(
+    `/users?select=${USERS_SELECT}&supabase_auth_user_id=eq.${encodeURIComponent(uid)}&limit=1`,
+  );
+
+  if (byAuthUserId[0]) {
+    return byAuthUserId[0];
+  }
+
   const rows = await supabaseAdminRestRequest<UserRow[]>(
     `/users?select=${USERS_SELECT}&auth_uid=eq.${encodeURIComponent(uid)}&limit=1`,
   );
 
-  return rows[0] ? mapRowToDocument(rows[0]) : null;
+  return rows[0] ?? null;
+};
+
+const findUserByUid = async (uid: string): Promise<UserDocument | null> => {
+  const row = await findUserRowByIdentity(uid);
+  return row ? mapRowToDocument(row) : null;
 };
 
 const findUserByAuthUserId = async (authUserId: string): Promise<UserDocument | null> => {
@@ -203,11 +216,13 @@ const getPaymentsByOwnerIds = async (ownerIds: string[]): Promise<PaymentDocumen
 };
 
 const upsertUserByUid = async (uid: string, payload: Partial<UserDocument>): Promise<void> => {
-  const current = await findUserByUid(uid);
+  const currentRow = await findUserRowByIdentity(uid);
+  const current = currentRow ? mapRowToDocument(currentRow) : null;
+  const persistedAuthUid = currentRow?.auth_uid ?? uid;
   const nextPayload: Partial<UserDocument> = {
     ...current,
     ...payload,
-    uid,
+    uid: payload.authUserId ?? current?.authUserId ?? uid,
     preferences: {
       ...(current?.preferences ?? {}),
       ...(payload.preferences ?? {}),
@@ -220,15 +235,15 @@ const upsertUserByUid = async (uid: string, payload: Partial<UserDocument>): Pro
 
   await supabaseAdminRestRequest('/users?on_conflict=auth_uid', {
     method: 'POST',
-    body: JSON.stringify([buildUserRow(uid, nextPayload)]),
+    body: JSON.stringify([buildUserRow(persistedAuthUid, nextPayload)]),
   });
   await supabaseAdminRestRequest('/user_preferences?on_conflict=user_id', {
     method: 'POST',
-    body: JSON.stringify([buildPreferencesRow(uid, nextPayload)]),
+    body: JSON.stringify([buildPreferencesRow(persistedAuthUid, nextPayload)]),
   });
   await supabaseAdminRestRequest('/user_privacy_settings?on_conflict=user_id', {
     method: 'POST',
-    body: JSON.stringify([buildPrivacyRow(uid, nextPayload)]),
+    body: JSON.stringify([buildPrivacyRow(persistedAuthUid, nextPayload)]),
   });
 };
 
