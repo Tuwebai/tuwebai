@@ -86,7 +86,7 @@ const PRINCIPLES = [
   },
 ];
 
-const STACK_CHIPS = ['React', 'Node.js', 'Supabase', 'Firebase', 'Tailwind'];
+const STACK_CHIPS = ['React', 'Node.js', 'Supabase', 'PostgreSQL', 'Tailwind'];
 
 const FEATURED_PROJECTS = [
   {
@@ -145,7 +145,7 @@ const ABOUT_PERSON_SCHEMA = {
     'React',
     'Node.js',
     'Supabase',
-    'Firebase',
+    'PostgreSQL',
     'Tailwind CSS',
     'SEO técnico',
     'E-commerce Argentina',

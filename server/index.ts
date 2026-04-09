@@ -180,10 +180,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 /**
- * ⚠️ SESIONES cross-site (frontend tuweb-ai.com -> backend onrender.com):
+ * ⚠️ SESIONES cross-site (frontend público -> backend en dominio separado):
  * - sameSite debe ser "none" (si usás cookies)
  * - secure true en prod
- * - NO fijar domain a .tuweb-ai.com si el backend vive en onrender.com
+ * - NO fijar domain compartido si el backend vive en un dominio distinto al frontend
  */
 const Store = MemoryStore(session);
 const sessionStore = new Store({ checkPeriod: 86_400_000 });
@@ -199,7 +199,7 @@ app.use(
       maxAge: 1000 * 60 * 60 * 24,
       sameSite: env.NODE_ENV === "production" ? "none" : "lax",
       httpOnly: true,
-      // domain: undefined (no seteamos domain para onrender.com)
+      // domain: undefined (no seteamos domain cuando backend y frontend viven en dominios distintos)
     },
     store: sessionStore,
     name: "tuwebai.sid",

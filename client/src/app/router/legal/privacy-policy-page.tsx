@@ -199,7 +199,7 @@ export default function PrivacyPolicyPage() {
                     u otros terceros. Solo podrán ser comunicados temporalmente bajo secreto profesional a:
                   </p>
                   <ul className="list-disc pl-6 space-y-3 marker:text-[#00CCFF]">
-                    <li>Proveedores de infraestructura Cloud (encargados del tratamiento), en nuestro caso Google Cloud (Firebase), con altos estándares de seguridad y certificaciones internacionales.</li>
+                    <li>Proveedores de infraestructura cloud encargados del tratamiento, en nuestro caso Supabase y otros servicios técnicos equivalentes con estándares de seguridad y certificaciones internacionales.</li>
                     <li>Administraciones Públicas, tribunales o fuerzas y cuerpos de seguridad exclusivamente cuando exista un mandato u obligación imperativa legalmente constituida.</li>
                   </ul>
                 </section>

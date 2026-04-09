@@ -187,7 +187,7 @@ export function generateEmailTemplate(data: {
             ${isTest ? `
             <div class="info-item">
               <div class="info-label">🖥️ Servidor:</div>
-              <div class="info-value">tuwebai-backend.onrender.com</div>
+              <div class="info-value">backend operativo configurado</div>
             </div>
             ` : ''}
           </div>
