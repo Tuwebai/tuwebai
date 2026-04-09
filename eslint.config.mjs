@@ -8,7 +8,7 @@ const firebaseSdkRestriction = [
       {
         group: ['firebase/*', 'firebase-admin', 'firebase-admin/*'],
         message:
-          'Firebase es legacy temporal en TuWebAI. Importalo solo desde adapters o wrappers autorizados.',
+          'Firebase ya no forma parte del runtime de TuWebAI. No importes SDKs ni adapters legacy.',
       },
     ],
   },
@@ -35,19 +35,6 @@ export default [
       'no-alert': 'error',
       'no-restricted-globals': ['error', 'alert', 'confirm', 'prompt'],
       'no-restricted-imports': firebaseSdkRestriction,
-    },
-  },
-  {
-    files: [
-      'client/src/core/auth/auth-client.ts',
-      'client/src/features/auth/services/auth-avatar.ts',
-      'client/src/features/auth/context/AuthContext.tsx',
-      'client/src/features/auth/context/public-navbar-auth-provider.tsx',
-      'server/src/infrastructure/firebase/**/*.ts',
-      'server/src/infrastructure/auth/firebase-admin-provider.ts',
-    ],
-    rules: {
-      'no-restricted-imports': 'off',
     },
   },
 ];
