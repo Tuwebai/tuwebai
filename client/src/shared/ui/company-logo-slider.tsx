@@ -11,9 +11,9 @@ const featuredProjects = [
     alt: 'Logo de LH Decants',
   },
   {
-    name: 'TuWeb.ai Dashboard',
-    logo: '/dashboardtuwebai.webp',
-    alt: 'Vista de TuWeb.ai Dashboard',
+    name: 'Pulse by TuWebAI',
+    logo: '/pulse-by-tuwebai.png',
+    alt: 'Vista de Pulse by TuWebAI',
   },
   {
     name: 'SafeSpot',

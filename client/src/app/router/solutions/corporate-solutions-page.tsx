@@ -129,11 +129,11 @@ export default function Corporativos() {
                 results: "Presencia digital más clara y profesional"
               },
               {
-                image: "/dashboardtuwebai.webp",
-                title: "TuWeb.ai Dashboard",
-                description: "Plataforma corporativa para clientes con panel de seguimiento de proyectos, tickets y pagos en una sola interfaz.",
-                tags: ["SaaS", "Panel de Clientes"],
-                results: "Gestión operativa centralizada"
+                image: "/pulse-by-tuwebai.png",
+                title: "Pulse by TuWebAI",
+                description: "Dashboard privado para clientes con métricas, proyecto, soporte y contexto útil en una sola vista.",
+                tags: ["SaaS", "Dashboard Privado"],
+                results: "Seguimiento claro de servicio y métricas"
               },
               {
                 image: "/safespot.webp",
