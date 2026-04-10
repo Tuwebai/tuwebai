@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Link as ScrollLink } from 'react-scroll';
 
+import { useIntersectionObserver } from '@/core/hooks/use-intersection-observer';
 import { useTrackSectionView } from '@/core/hooks/use-track-section-view';
 import {
   trackHeroConsultClick,
@@ -16,10 +17,26 @@ interface HeroSectionProps {
 export default function HeroSection({ setRef, children }: HeroSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const [heroOpacity, setHeroOpacity] = useState(1);
+  const [animatedStats, setAnimatedStats] = useState({
+    years: 0,
+    projects: 0,
+    products: 0,
+  });
   useTrackSectionView(sectionRef, 'hero');
+  const { ref: statsRef, hasIntersected: hasShownStats } = useIntersectionObserver<HTMLDivElement>({
+    threshold: 0.35,
+  });
   const heroMessage = useMemo(
     () =>
       'Construimos webs a medida para negocios argentinos y las conectamos con Pulse para que veas resultados, no promesas.',
+    [],
+  );
+  const heroStats = useMemo(
+    () => [
+      { key: 'years', value: 6, label: 'Años construyendo' },
+      { key: 'projects', value: 6, label: 'Proyectos visibles' },
+      { key: 'products', value: 3, label: 'Productos propios' },
+    ],
     [],
   );
 
@@ -58,19 +75,48 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (!hasShownStats) {
+      return;
+    }
+
+    const durationMs = 800;
+    const start = window.performance.now();
+
+    const animate = (now: number) => {
+      const progress = Math.min((now - start) / durationMs, 1);
+
+      setAnimatedStats({
+        years: Math.round(heroStats[0].value * progress),
+        projects: Math.round(heroStats[1].value * progress),
+        products: Math.round(heroStats[2].value * progress),
+      });
+
+      if (progress < 1) {
+        window.requestAnimationFrame(animate);
+      }
+    };
+
+    const frame = window.requestAnimationFrame(animate);
+    return () => window.cancelAnimationFrame(frame);
+  }, [hasShownStats, heroStats]);
+
   return (
     <section
       id="intro"
       ref={sectionRef}
-      className="landing-anchor-section relative flex items-center justify-center overflow-hidden bg-transparent"
+      className="landing-anchor-section relative flex items-start justify-center overflow-hidden bg-transparent pt-28 sm:pt-32 md:pt-36 lg:pt-40"
     >
-      <div className="container mx-auto z-10 px-4 text-center" style={{ opacity: heroOpacity }}>
+      <div
+        className="container mx-auto z-10 px-4 pb-14 text-center sm:pb-16 lg:pb-20"
+        style={{ opacity: heroOpacity }}
+      >
         <div className="mb-5 inline-flex max-w-full items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs text-gray-300 sm:px-4 sm:text-sm lg:backdrop-blur-sm">
           <span className="h-2 w-2 rounded-full bg-[var(--signal)] shadow-[var(--glow-signal)]" />
           <span className="font-medium">Web a medida + Pulse para negocios argentinos</span>
         </div>
 
-        <div className="mb-6">
+        <div className="mb-5 sm:mb-6">
           <div className="mb-4">
             <span className="gradient-text font-rajdhani text-base font-semibold uppercase tracking-[0.18em] sm:text-lg md:text-xl">
               TuWeb.ai
@@ -84,11 +130,11 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
           </h1>
         </div>
 
-        <div className="mx-auto mb-8 min-h-[6.5rem] max-w-4xl px-2 font-rajdhani text-base text-gray-300 sm:min-h-[5rem] sm:text-lg md:min-h-[3.5rem] md:px-0 md:text-2xl">
+        <div className="mx-auto mb-7 min-h-[5.5rem] max-w-4xl px-2 font-rajdhani text-base text-gray-300 sm:min-h-[5rem] sm:text-lg md:min-h-[3.5rem] md:px-0 md:text-2xl">
           <p className="mx-auto max-w-4xl text-gray-300">{heroMessage}</p>
         </div>
 
-        <div className="mb-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
+        <div className="mb-7 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
           <RouterLink
             to="/diagnostico-gratuito"
             onClick={trackHeroDiagnosticClick}
@@ -106,7 +152,7 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
           </RouterLink>
         </div>
 
-        <div className="mb-8 space-y-4">
+        <div className="mb-7 space-y-4">
           <p className="text-sm text-gray-400 sm:text-base">
             Diagnóstico en 48h. Pulse incluido desde el arranque. Sin plantillas genéricas.
           </p>
@@ -124,6 +170,25 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
           </div>
         </div>
 
+        <div
+          ref={statsRef}
+          className="mx-auto mb-7 grid max-w-3xl grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4"
+        >
+          {heroStats.map((stat) => (
+            <div
+              key={stat.key}
+              className="rounded-2xl border border-white/10 bg-white/5 px-3 py-4 text-center"
+            >
+              <p className="font-rajdhani text-3xl font-bold text-white sm:text-4xl">
+                {animatedStats[stat.key as keyof typeof animatedStats]}
+              </p>
+              <p className="mt-2 text-[11px] uppercase tracking-[0.18em] text-gray-400 sm:text-xs">
+                {stat.label}
+              </p>
+            </div>
+          ))}
+        </div>
+
         <div className="flex flex-wrap items-center justify-center gap-2 text-sm text-gray-300 sm:gap-3">
           <span className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs sm:px-4 sm:text-sm">
             Sitios corporativos
@@ -136,7 +201,7 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
           </span>
         </div>
 
-        <div className="mt-10">
+        <div className="mt-8 sm:mt-10">
           <ScrollLink
             to="philosophy"
             spy={true}
