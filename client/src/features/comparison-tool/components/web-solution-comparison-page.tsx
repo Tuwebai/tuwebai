@@ -1,5 +1,10 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
+import {
+  trackComparisonCtaClick,
+  trackComparisonView,
+} from '@/features/marketing-home/services/marketing-home-analytics.service';
 import MetaTags from '@/shared/ui/meta-tags';
 import { TUWEBAI_SITE_FULL_URL } from '@/shared/constants/contact';
 
@@ -75,6 +80,10 @@ const COMPARISON_COLUMNS: ComparisonColumn[] = [
 ];
 
 export default function WebSolutionComparisonPage() {
+  useEffect(() => {
+    trackComparisonView();
+  }, []);
+
   return (
     <>
       <MetaTags
@@ -191,12 +200,16 @@ export default function WebSolutionComparisonPage() {
               <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
                 <Link
                   to="/diagnostico-gratuito"
+                  onClick={() =>
+                    trackComparisonCtaClick('diagnostico_gratis', '/diagnostico-gratuito')
+                  }
                   className="inline-flex min-h-12 items-center justify-center rounded-full bg-[image:var(--gradient-brand)] px-6 py-3 text-sm font-semibold text-white shadow-[var(--glow-signal)]"
                 >
                   ¿Cuál es la correcta para tu negocio? → Diagnóstico gratis
                 </Link>
                 <Link
                   to="/consulta"
+                  onClick={() => trackComparisonCtaClick('contar_proyecto', '/consulta')}
                   className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-medium text-gray-200"
                 >
                   Contar mi proyecto

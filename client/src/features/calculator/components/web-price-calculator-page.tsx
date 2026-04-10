@@ -1,6 +1,13 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import {
+  trackCalculatorCtaClick,
+  trackCalculatorPageRangeSelected,
+  trackCalculatorProjectTypeSelected,
+  trackCalculatorResultUnlocked,
+  trackCalculatorToggleChanged,
+} from '@/features/marketing-home/services/marketing-home-analytics.service';
 import { Input } from '@/shared/ui/input';
 import MetaTags from '@/shared/ui/meta-tags';
 import { TUWEBAI_SITE_FULL_URL } from '@/shared/constants/contact';
@@ -91,6 +98,7 @@ export default function WebPriceCalculatorPage() {
     }
 
     localStorage.setItem('userEmail', email.trim());
+    trackCalculatorResultUnlocked(projectType);
     setIsUnlocked(true);
   };
 
@@ -135,7 +143,10 @@ export default function WebPriceCalculatorPage() {
                         <button
                           key={option.value}
                           type="button"
-                          onClick={() => setProjectType(option.value)}
+                          onClick={() => {
+                            setProjectType(option.value);
+                            trackCalculatorProjectTypeSelected(option.value);
+                          }}
                           className={`rounded-2xl border px-4 py-4 text-left transition-colors ${
                             projectType === option.value
                               ? 'border-[var(--signal-border)] bg-[var(--signal)]/10 text-white'
@@ -157,7 +168,10 @@ export default function WebPriceCalculatorPage() {
                         <button
                           key={option.value}
                           type="button"
-                          onClick={() => setPageRange(option.value)}
+                          onClick={() => {
+                            setPageRange(option.value);
+                            trackCalculatorPageRangeSelected(option.value);
+                          }}
                           className={`rounded-2xl border px-4 py-4 text-left transition-colors ${
                             pageRange === option.value
                               ? 'border-[var(--signal-border)] bg-[var(--signal)]/10 text-white'
@@ -177,7 +191,13 @@ export default function WebPriceCalculatorPage() {
                     <div className="grid gap-3">
                       <button
                         type="button"
-                        onClick={() => setNeedsEcommerce((prev) => !prev)}
+                        onClick={() =>
+                          setNeedsEcommerce((prev) => {
+                            const next = !prev;
+                            trackCalculatorToggleChanged('ecommerce', next);
+                            return next;
+                          })
+                        }
                         className={`rounded-2xl border px-4 py-4 text-left transition-colors ${
                           needsEcommerce
                             ? 'border-[var(--signal-border)] bg-[var(--signal)]/10 text-white'
@@ -188,7 +208,13 @@ export default function WebPriceCalculatorPage() {
                       </button>
                       <button
                         type="button"
-                        onClick={() => setNeedsReservations((prev) => !prev)}
+                        onClick={() =>
+                          setNeedsReservations((prev) => {
+                            const next = !prev;
+                            trackCalculatorToggleChanged('reservations', next);
+                            return next;
+                          })
+                        }
                         className={`rounded-2xl border px-4 py-4 text-left transition-colors ${
                           needsReservations
                             ? 'border-[var(--signal-border)] bg-[var(--signal)]/10 text-white'
@@ -199,7 +225,13 @@ export default function WebPriceCalculatorPage() {
                       </button>
                       <button
                         type="button"
-                        onClick={() => setHasDomainHosting((prev) => !prev)}
+                        onClick={() =>
+                          setHasDomainHosting((prev) => {
+                            const next = !prev;
+                            trackCalculatorToggleChanged('domain_hosting_resolved', next);
+                            return next;
+                          })
+                        }
                         className={`rounded-2xl border px-4 py-4 text-left transition-colors ${
                           !hasDomainHosting
                             ? 'border-[var(--signal-border)] bg-[var(--signal)]/10 text-white'
@@ -235,12 +267,18 @@ export default function WebPriceCalculatorPage() {
                     <div className="mt-8 flex flex-col gap-3">
                       <Link
                         to="/consulta"
+                        onClick={() =>
+                          trackCalculatorCtaClick('cotizacion_exacta', '/consulta')
+                        }
                         className="inline-flex min-h-12 items-center justify-center rounded-full bg-[image:var(--gradient-brand)] px-6 py-3 text-sm font-semibold text-white shadow-[var(--glow-signal)]"
                       >
                         Pedir cotización exacta
                       </Link>
                       <Link
                         to="/diagnostico-gratuito"
+                        onClick={() =>
+                          trackCalculatorCtaClick('diagnostico_gratis', '/diagnostico-gratuito')
+                        }
                         className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-medium text-gray-200"
                       >
                         Diagnóstico gratis

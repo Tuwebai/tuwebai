@@ -1,10 +1,15 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-type VisitorPath = 'sin-web' | 'no-convierte' | 'sistema';
+import {
+  trackVisitorPathComparisonClick,
+  trackVisitorPathCtaClick,
+  trackVisitorPathSelected,
+  type VisitorPathId,
+} from '@/features/marketing-home/services/marketing-home-analytics.service';
 
 type PathContent = {
-  id: VisitorPath;
+  id: VisitorPathId;
   title: string;
   description: string;
   outcome: string;
@@ -46,7 +51,7 @@ const visitorPaths: PathContent[] = [
 ];
 
 export default function VisitorPathSelector() {
-  const [activePath, setActivePath] = useState<VisitorPath>('sin-web');
+  const [activePath, setActivePath] = useState<VisitorPathId>('sin-web');
 
   const currentPath = useMemo(
     () => visitorPaths.find((path) => path.id === activePath) ?? visitorPaths[0],
@@ -71,7 +76,10 @@ export default function VisitorPathSelector() {
               <button
                 key={path.id}
                 type="button"
-                onClick={() => setActivePath(path.id)}
+                onClick={() => {
+                  setActivePath(path.id);
+                  trackVisitorPathSelected(path.id);
+                }}
                 className={`rounded-2xl border px-4 py-5 text-left transition-colors ${
                   activePath === path.id
                     ? 'border-[var(--signal-border)] bg-[var(--signal)]/10 text-white'
@@ -93,12 +101,14 @@ export default function VisitorPathSelector() {
             <div className="flex flex-col gap-3">
               <Link
                 to={currentPath.ctaHref}
+                onClick={() => trackVisitorPathCtaClick(currentPath.id, currentPath.ctaHref)}
                 className="inline-flex min-h-12 items-center justify-center rounded-full bg-[image:var(--gradient-brand)] px-6 py-3 text-sm font-semibold text-white shadow-[var(--glow-signal)]"
               >
                 {currentPath.ctaLabel}
               </Link>
               <Link
                 to="/comparar-opciones-web"
+                onClick={() => trackVisitorPathComparisonClick(currentPath.id)}
                 className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-medium text-gray-200"
               >
                 Comparar opciones

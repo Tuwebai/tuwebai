@@ -1,6 +1,11 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-import analytics from '@/lib/analytics';
+import {
+  trackExitIntentConverted,
+  trackExitIntentDismissed,
+  trackExitIntentOpened,
+} from '@/features/marketing-home/services/marketing-home-analytics.service';
 import {
   Dialog,
   DialogContent,
@@ -15,6 +20,12 @@ interface ExitIntentModalProps {
 }
 
 export default function ExitIntentModal({ open, onOpenChange }: ExitIntentModalProps) {
+  useEffect(() => {
+    if (open) {
+      trackExitIntentOpened();
+    }
+  }, [open]);
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="border-white/10 bg-[var(--bg-overlay)] p-0 text-white shadow-[var(--shadow-modal)] sm:max-w-[640px]">
@@ -51,11 +62,7 @@ export default function ExitIntentModal({ open, onOpenChange }: ExitIntentModalP
             <Link
               to="/diagnostico-gratuito"
               onClick={() => {
-                analytics.trackCtaClick(
-                  'exit_intent_diagnostico',
-                  'exit_intent_modal',
-                  '/diagnostico-gratuito',
-                );
+                trackExitIntentConverted();
                 onOpenChange(false);
               }}
               className="inline-flex min-h-12 items-center justify-center rounded-full bg-[image:var(--gradient-brand)] px-6 py-3 text-sm font-semibold text-white shadow-[var(--glow-signal)]"
@@ -65,7 +72,10 @@ export default function ExitIntentModal({ open, onOpenChange }: ExitIntentModalP
 
             <button
               type="button"
-              onClick={() => onOpenChange(false)}
+              onClick={() => {
+                trackExitIntentDismissed();
+                onOpenChange(false);
+              }}
               className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-medium text-gray-200"
             >
               Seguir explorando
