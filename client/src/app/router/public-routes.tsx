@@ -16,6 +16,10 @@ const WebPricePillarPage = lazy(() => import('@/features/content/components/web-
 const HowToChooseWebAgencyPage = lazy(() => import('@/features/content/components/how-to-choose-web-agency-page'));
 const EcommerceArgentinaPillarPage = lazy(() => import('@/features/content/components/ecommerce-argentina-pillar-page'));
 const SeoLocalArgentinaPillarPage = lazy(() => import('@/features/content/components/seo-local-argentina-pillar-page'));
+const WebParaDentistasArgentinaPage = lazy(() => import('@/features/content/components/web-para-dentistas-argentina-page'));
+const WebParaPsicologosArgentinaPage = lazy(() => import('@/features/content/components/web-para-psicologos-argentina-page'));
+const WebParaKinesiologoArgentinaPage = lazy(() => import('@/features/content/components/web-para-kinesiologo-argentina-page'));
+const TurnosOnlineMedicosArgentinaPage = lazy(() => import('@/features/content/components/turnos-online-medicos-argentina-page'));
 
 const WebDevelopmentPage = lazy(() => import('@/app/router/services/web-development-page'));
 const AboutPage = lazy(() => import('@/app/router/about/about-page'));
@@ -50,6 +54,10 @@ export default function PublicRoutes() {
       <Route path="/como-elegir-agencia-web-argentina" element={<LazyRoute><HowToChooseWebAgencyPage /></LazyRoute>} />
       <Route path="/crear-tienda-online-argentina" element={<LazyRoute><EcommerceArgentinaPillarPage /></LazyRoute>} />
       <Route path="/seo-local-argentina" element={<LazyRoute><SeoLocalArgentinaPillarPage /></LazyRoute>} />
+      <Route path="/web-para-dentistas-argentina" element={<LazyRoute><WebParaDentistasArgentinaPage /></LazyRoute>} />
+      <Route path="/web-para-psicologos-argentina" element={<LazyRoute><WebParaPsicologosArgentinaPage /></LazyRoute>} />
+      <Route path="/web-para-kinesiologo-argentina" element={<LazyRoute><WebParaKinesiologoArgentinaPage /></LazyRoute>} />
+      <Route path="/turnos-online-medicos-argentina" element={<LazyRoute><TurnosOnlineMedicosArgentinaPage /></LazyRoute>} />
       <Route path="/calculadora-precio-web" element={<LazyRoute><WebPriceCalculatorPage /></LazyRoute>} />
       <Route path="/comparar-opciones-web" element={<LazyRoute><WebSolutionComparisonPage /></LazyRoute>} />
       <Route path="/nosotros" element={<LazyRoute><AboutPage /></LazyRoute>} />
