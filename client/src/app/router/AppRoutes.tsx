@@ -19,6 +19,9 @@ const WebParaDentistasArgentinaPage = lazy(() => import('@/features/content/comp
 const WebParaPsicologosArgentinaPage = lazy(() => import('@/features/content/components/web-para-psicologos-argentina-page'));
 const WebParaKinesiologoArgentinaPage = lazy(() => import('@/features/content/components/web-para-kinesiologo-argentina-page'));
 const TurnosOnlineMedicosArgentinaPage = lazy(() => import('@/features/content/components/turnos-online-medicos-argentina-page'));
+const WebInmobiliariaArgentinaPage = lazy(() => import('@/features/content/components/web-inmobiliaria-argentina-page'));
+const PortalPropiedadesDesarrolloWebPage = lazy(() => import('@/features/content/components/portal-propiedades-desarrollo-web-page'));
+const CrmInmobiliarioAMedidaPage = lazy(() => import('@/features/content/components/crm-inmobiliario-a-medida-page'));
 
 const WebDevelopmentPage = lazy(() => import('@/app/router/services/web-development-page'));
 const AboutPage = lazy(() => import('@/app/router/about/about-page'));
@@ -57,6 +60,9 @@ export default function AppRoutes() {
       <Route path="/web-para-psicologos-argentina" element={<LazyRoute><WebParaPsicologosArgentinaPage /></LazyRoute>} />
       <Route path="/web-para-kinesiologo-argentina" element={<LazyRoute><WebParaKinesiologoArgentinaPage /></LazyRoute>} />
       <Route path="/turnos-online-medicos-argentina" element={<LazyRoute><TurnosOnlineMedicosArgentinaPage /></LazyRoute>} />
+      <Route path="/web-inmobiliaria-argentina" element={<LazyRoute><WebInmobiliariaArgentinaPage /></LazyRoute>} />
+      <Route path="/portal-propiedades-desarrollo-web" element={<LazyRoute><PortalPropiedadesDesarrolloWebPage /></LazyRoute>} />
+      <Route path="/crm-inmobiliario-a-medida" element={<LazyRoute><CrmInmobiliarioAMedidaPage /></LazyRoute>} />
       <Route path="/calculadora-precio-web" element={<LazyRoute><WebPriceCalculatorPage /></LazyRoute>} />
       <Route path="/nosotros" element={<LazyRoute><AboutPage /></LazyRoute>} />
       <Route path="/proceso" element={<LazyRoute><ProcessPage /></LazyRoute>} />
