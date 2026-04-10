@@ -3,6 +3,7 @@ import { useIntersectionObserver } from '@/core/hooks/use-intersection-observer'
 import { useHomeSectionNavigation } from '@/features/marketing-home/hooks/use-home-section-navigation';
 import { runWhenIdle } from '@/lib/performance';
 
+import EditorialGuidesSection from '@/features/marketing-home/components/editorial-guides-section';
 import HeroSection from '@/features/marketing-home/components/hero-section';
 import ExitIntentModal from '@/features/marketing-home/components/exit-intent-modal';
 import MobileCtaBar from '@/features/marketing-home/components/mobile-cta-bar';
@@ -156,6 +157,7 @@ export default function MarketingHomePage() {
         <Suspense fallback={null}>
           <CompanyLogoSlider className="pb-2 pt-4" />
           <VisitorPathSelector />
+          <EditorialGuidesSection />
           <PhilosophySection setRef={(ref: HTMLElement | null) => setSectionRef('philosophy', ref)} />
           <ServicesSection setRef={(ref: HTMLElement | null) => setSectionRef('services', ref)} />
           <ProcessSection setRef={(ref: HTMLElement | null) => setSectionRef('process', ref)} />

@@ -48,10 +48,7 @@ const footerColumns: Array<{ title: string; links: FooterLink[] }> = [
       { label: 'Blog', href: '/blog' },
       { label: 'FAQ', href: '/faq' },
       { label: 'Diagnóstico gratuito', href: '/diagnostico-gratuito' },
-      { label: 'Calculadora de precio web', href: '/calculadora-precio-web' },
-      { label: 'Comparar opciones web', href: '/comparar-opciones-web' },
       { label: 'Checklist web gratuito de 35 puntos →', href: '/checklist-web-gratis' },
-      { label: 'Recursos', href: '/blog' },
     ],
   },
   {
@@ -100,8 +97,7 @@ function DeferredFooterNewsletter() {
     >
       <p className="mb-2 text-[11px] uppercase tracking-[0.22em] text-[#9BE7FF]">Newsletter</p>
       <p className="mb-4 text-sm leading-6 text-gray-400">
-        Recibí publicaciones, análisis y recursos concretos sobre conversión web para negocios en
-        Argentina.
+        Recibí publicaciones, análisis y recursos concretos sobre conversión web para negocios en Argentina.
       </p>
 
       {hasIntersected ? (
@@ -137,9 +133,8 @@ export default function Footer() {
             </p>
 
             <div className="mt-6 space-y-3 text-sm text-[var(--text-primary)]">
-              <p>📍 {TUWEBAI_LOCATION}</p>
+              <p>{TUWEBAI_LOCATION}</p>
               <p>
-                📧{' '}
                 <a
                   href={`mailto:${TUWEBAI_EMAIL}`}
                   className="transition-colors hover:text-white"
@@ -151,7 +146,6 @@ export default function Footer() {
                 </a>
               </p>
               <p>
-                📱{' '}
                 <a
                   href={`tel:${TUWEBAI_WHATSAPP_TEL}`}
                   className="transition-colors hover:text-white"
@@ -190,7 +184,7 @@ export default function Footer() {
             <p className="text-sm text-[var(--text-primary)]">
               © {currentYear} TuWebAI · Desarrollo web profesional
             </p>
-            <p className="text-sm text-[var(--text-secondary)]">Hecho en Córdoba, Argentina 🇦🇷</p>
+            <p className="text-sm text-[var(--text-secondary)]">Hecho en Córdoba, Argentina</p>
           </div>
 
           <div className="flex flex-wrap gap-5 text-sm text-[var(--text-primary)]">
