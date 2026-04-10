@@ -179,6 +179,12 @@ export default function WebPricePillarPage() {
               Calcular mi rango
             </Link>
             <Link
+              to="/como-elegir-agencia-web-argentina"
+              className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-medium text-gray-200"
+            >
+              Cómo elegir agencia web
+            </Link>
+            <Link
               to="/consulta"
               className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-medium text-gray-200"
             >

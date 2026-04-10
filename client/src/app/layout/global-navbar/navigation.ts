@@ -32,7 +32,6 @@ export const MAIN_NAVIGATION: NavigationLink[] = [
     ],
   },
   { name: 'E-commerce', href: '/ecommerce' },
-  { name: 'Precios web', href: '/cuanto-cuesta-una-web' },
   { name: 'Blog', href: '/blog/' },
   { name: 'FAQ', href: '/faq' },
 ];

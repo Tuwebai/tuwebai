@@ -222,6 +222,18 @@ export default function WebSolutionComparisonPage() {
                 >
                   Contar mi proyecto
                 </Link>
+                <Link
+                  to="/como-elegir-agencia-web-argentina"
+                  onClick={() =>
+                    trackComparisonCtaClick(
+                      'como_elegir_agencia',
+                      '/como-elegir-agencia-web-argentina',
+                    )
+                  }
+                  className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-medium text-gray-200"
+                >
+                  Cómo elegir agencia web
+                </Link>
               </div>
             </div>
           </div>
