@@ -4,6 +4,7 @@ import { useHomeSectionNavigation } from '@/features/marketing-home/hooks/use-ho
 import { runWhenIdle } from '@/lib/performance';
 
 import HeroSection from '@/features/marketing-home/components/hero-section';
+import ExitIntentModal from '@/features/marketing-home/components/exit-intent-modal';
 import MobileCtaBar from '@/features/marketing-home/components/mobile-cta-bar';
 const NavDots = lazy(() => import('@/shared/ui/nav-dots'));
 const WhatsAppButton = lazy(() => import('@/shared/ui/whatsapp-button'));
@@ -21,6 +22,7 @@ export default function MarketingHomePage() {
   const { sections, setSectionRef } = useHomeSectionNavigation();
   const [showFloatingUi, setShowFloatingUi] = useState(false);
   const [showDeferredSections, setShowDeferredSections] = useState(false);
+  const [isExitIntentOpen, setIsExitIntentOpen] = useState(false);
   const { ref: deferredSectionsGateRef, hasIntersected: shouldRevealDeferredSections } = useIntersectionObserver<HTMLDivElement>({
     rootMargin: '900px 0px',
   });
@@ -61,8 +63,72 @@ export default function MarketingHomePage() {
     }
   }, [shouldRevealDeferredSections]);
 
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    const sessionKey = 'tuwebai_exit_intent_seen_session';
+    const cooldownKey = 'tuwebai_exit_intent_hidden_until';
+    const hiddenUntil = window.localStorage.getItem(cooldownKey);
+
+    if (window.innerWidth < 768) {
+      return;
+    }
+
+    if (window.sessionStorage.getItem(sessionKey) === 'true') {
+      return;
+    }
+
+    if (hiddenUntil && Number(hiddenUntil) > Date.now()) {
+      return;
+    }
+
+    let exitTimer: number | null = null;
+
+    const markAsSeen = () => {
+      window.sessionStorage.setItem(sessionKey, 'true');
+      window.localStorage.setItem(
+        cooldownKey,
+        String(Date.now() + 7 * 24 * 60 * 60 * 1000),
+      );
+    };
+
+    const handleMouseOut = (event: MouseEvent) => {
+      if (event.clientY > 0 || event.relatedTarget) {
+        return;
+      }
+
+      exitTimer = window.setTimeout(() => {
+        markAsSeen();
+        setIsExitIntentOpen(true);
+      }, 300);
+    };
+
+    const handleMouseMove = (event: MouseEvent) => {
+      if (event.clientY > 12 && exitTimer) {
+        window.clearTimeout(exitTimer);
+        exitTimer = null;
+      }
+    };
+
+    window.addEventListener('mouseout', handleMouseOut);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+
+    return () => {
+      if (exitTimer) {
+        window.clearTimeout(exitTimer);
+      }
+
+      window.removeEventListener('mouseout', handleMouseOut);
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
+
   return (
     <>
+      <ExitIntentModal open={isExitIntentOpen} onOpenChange={setIsExitIntentOpen} />
+
       {showFloatingUi ? (
         <Suspense fallback={null}>
           <ScrollProgress />
