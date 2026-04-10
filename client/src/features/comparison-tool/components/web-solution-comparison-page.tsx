@@ -74,25 +74,6 @@ const COMPARISON_COLUMNS: ComparisonColumn[] = [
   },
 ];
 
-const SOURCE_LINKS = [
-  {
-    label: 'Wix Pricing',
-    href: 'https://www.wix.com/plans',
-  },
-  {
-    label: 'Tiendanube planes y precios',
-    href: 'https://www.tiendanube.com/planes-y-precios',
-  },
-  {
-    label: 'WordPress.com pricing',
-    href: 'https://wordpress.com/pricing/',
-  },
-  {
-    label: 'WordPress.org',
-    href: 'https://wordpress.org/',
-  },
-];
-
 export default function WebSolutionComparisonPage() {
   return (
     <>
@@ -124,25 +105,6 @@ export default function WebSolutionComparisonPage() {
             </div>
 
             <div className="mt-10 rounded-[28px] border border-white/10 bg-[var(--bg-surface)]/90 p-6 shadow-[var(--shadow-modal)] sm:p-8">
-              <div className="mb-6 flex flex-col gap-3 text-sm text-gray-300 sm:flex-row sm:items-center sm:justify-between">
-                <p>
-                  Referencia auditada con fuentes oficiales al <strong>10 de abril de 2026</strong>.
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {SOURCE_LINKS.map((source) => (
-                    <a
-                      key={source.href}
-                      href={source.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs text-gray-300 transition-colors hover:border-[var(--signal-border)] hover:text-white"
-                    >
-                      {source.label}
-                    </a>
-                  ))}
-                </div>
-              </div>
-
               <div className="hidden overflow-hidden rounded-3xl border border-white/10 lg:block">
                 <div className="grid grid-cols-[180px_repeat(3,minmax(0,1fr))] bg-white/5">
                   <div className="border-r border-white/10 p-6" />
