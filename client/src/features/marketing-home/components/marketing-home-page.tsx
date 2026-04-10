@@ -7,6 +7,7 @@ import HeroSection from '@/features/marketing-home/components/hero-section';
 const NavDots = lazy(() => import('@/shared/ui/nav-dots'));
 const WhatsAppButton = lazy(() => import('@/shared/ui/whatsapp-button'));
 const ScrollProgress = lazy(() => import('@/shared/ui/scroll-progress'));
+const CompanyLogoSlider = lazy(() => import('@/shared/ui/company-logo-slider'));
 import PhilosophySection from '@/features/marketing-home/components/philosophy-section';
 import ServicesSection from '@/features/marketing-home/components/services-section';
 import ProcessSection from '@/features/marketing-home/components/process-section';
@@ -83,6 +84,7 @@ export default function MarketingHomePage() {
         <HeroSection setRef={(ref: HTMLElement | null) => setSectionRef('intro', ref)} />
 
         <Suspense fallback={null}>
+          <CompanyLogoSlider className="pb-2 pt-4" />
           <PhilosophySection setRef={(ref: HTMLElement | null) => setSectionRef('philosophy', ref)} />
           <ServicesSection setRef={(ref: HTMLElement | null) => setSectionRef('services', ref)} />
           <ProcessSection setRef={(ref: HTMLElement | null) => setSectionRef('process', ref)} />
