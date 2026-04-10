@@ -4,6 +4,7 @@ import { useHomeSectionNavigation } from '@/features/marketing-home/hooks/use-ho
 import { runWhenIdle } from '@/lib/performance';
 
 import HeroSection from '@/features/marketing-home/components/hero-section';
+import MobileCtaBar from '@/features/marketing-home/components/mobile-cta-bar';
 const NavDots = lazy(() => import('@/shared/ui/nav-dots'));
 const WhatsAppButton = lazy(() => import('@/shared/ui/whatsapp-button'));
 const ScrollProgress = lazy(() => import('@/shared/ui/scroll-progress'));
@@ -76,9 +77,11 @@ export default function MarketingHomePage() {
 
       {showFloatingUi ? (
         <Suspense fallback={null}>
-          <WhatsAppButton />
+          <WhatsAppButton hideOnMobile />
         </Suspense>
       ) : null}
+
+      <MobileCtaBar />
 
       <main id="main-content" className="landing-scroll-shell page-shell-surface marketing-home-surface relative">
         <HeroSection setRef={(ref: HTMLElement | null) => setSectionRef('intro', ref)} />
