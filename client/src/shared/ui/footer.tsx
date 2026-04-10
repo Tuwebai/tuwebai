@@ -48,6 +48,7 @@ const footerColumns: Array<{ title: string; links: FooterLink[] }> = [
       { label: 'Blog', href: '/blog' },
       { label: 'FAQ', href: '/faq' },
       { label: 'Diagnóstico gratuito', href: '/diagnostico-gratuito' },
+      { label: 'Calculadora de precio web', href: '/calculadora-precio-web' },
       { label: 'Comparar opciones web', href: '/comparar-opciones-web' },
       { label: 'Checklist web gratuito de 35 puntos →', href: '/checklist-web-gratis' },
       { label: 'Recursos', href: '/blog' },
