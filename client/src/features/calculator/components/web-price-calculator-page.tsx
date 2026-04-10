@@ -129,6 +129,13 @@ export default function WebPriceCalculatorPage() {
                 Esta calculadora te da un rango estimado según el tipo de proyecto, el alcance y
                 las funcionalidades que necesitás.
               </p>
+              <p className="mx-auto mt-4 max-w-2xl text-sm leading-6 text-gray-400 sm:text-base">
+                Si primero querés entender cómo se arma ese precio, podés leer la guía completa.
+                {' '}
+                <Link to="/cuanto-cuesta-una-web" className="text-[var(--signal)] underline underline-offset-4">
+                  Ver guía de precio web
+                </Link>
+              </p>
             </div>
 
             <div className="mt-10 grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_420px]">

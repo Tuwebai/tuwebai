@@ -11,6 +11,7 @@ const UxUiPage = lazy(() => import('@/app/router/solutions/uxui-page'));
 const EcommerceSolutionsPage = lazy(() => import('@/app/router/solutions/ecommerce-solutions-page'));
 const ProposalRequestPage = lazy(() => import('@/features/proposals/components/proposal-request-page'));
 const WebPriceCalculatorPage = lazy(() => import('@/features/calculator/components/web-price-calculator-page'));
+const WebPricePillarPage = lazy(() => import('@/features/content/components/web-price-pillar-page'));
 
 const WebDevelopmentPage = lazy(() => import('@/app/router/services/web-development-page'));
 const AboutPage = lazy(() => import('@/app/router/about/about-page'));
@@ -41,6 +42,7 @@ export default function AppRoutes() {
       <Route path="/uxui" element={<LazyRoute><UxUiPage /></LazyRoute>} />
       <Route path="/ecommerce" element={<LazyRoute><EcommerceSolutionsPage /></LazyRoute>} />
       <Route path="/consulta" element={<LazyRoute><ProposalRequestPage /></LazyRoute>} />
+      <Route path="/cuanto-cuesta-una-web" element={<LazyRoute><WebPricePillarPage /></LazyRoute>} />
       <Route path="/calculadora-precio-web" element={<LazyRoute><WebPriceCalculatorPage /></LazyRoute>} />
       <Route path="/nosotros" element={<LazyRoute><AboutPage /></LazyRoute>} />
       <Route path="/proceso" element={<LazyRoute><ProcessPage /></LazyRoute>} />

@@ -111,6 +111,14 @@ export default function WebSolutionComparisonPage() {
                 No todas las opciones compiten por lo mismo. Algunas priorizan velocidad de salida.
                 Otras priorizan flexibilidad. Y otras están pensadas para resultados medibles.
               </p>
+              <p className="mx-auto mt-4 max-w-2xl text-sm leading-6 text-gray-400 sm:text-base">
+                Si querés bajar esto a números concretos para tu caso, podés arrancar por la
+                {' '}
+                <Link to="/cuanto-cuesta-una-web" className="text-[var(--signal)] underline underline-offset-4">
+                  guía de precio web
+                </Link>
+                .
+              </p>
             </div>
 
             <div className="mt-10 rounded-[28px] border border-white/10 bg-[var(--bg-surface)]/90 p-6 shadow-[var(--shadow-modal)] sm:p-8">
