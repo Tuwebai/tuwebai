@@ -410,15 +410,16 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
                   <span className="rounded bg-[var(--bg-elevated)]/88 px-2 py-1 text-xs text-gray-400">
                     {categoryNames[project.category] || project.category}
                   </span>
-                  <span
-                    className={`rounded px-2 py-1 text-xs font-medium ${
-                      project.id === 1
-                        ? 'bg-amber-500/15 text-amber-300'
-                        : 'bg-white/8 text-gray-300'
-                    }`}
-                  >
-                    {project.id === 1 ? 'Cliente' : 'Proyecto propio'}
-                  </span>
+                  {project.id === 1 ? (
+                    <span className="rounded bg-amber-500/15 px-2 py-1 text-xs font-medium text-amber-300">
+                      Cliente
+                    </span>
+                  ) : null}
+                  {project.id === 2 ? (
+                    <span className="rounded bg-white/8 px-2 py-1 text-xs font-medium text-gray-300">
+                      Producto propio
+                    </span>
+                  ) : null}
                 </div>
 
                 <p className="mb-4 line-clamp-3 text-sm text-gray-400">{project.description}</p>

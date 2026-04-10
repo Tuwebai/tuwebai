@@ -35,7 +35,7 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
     () => [
       { key: 'years', value: 6, label: 'Años construyendo' },
       { key: 'projects', value: 6, label: 'Proyectos visibles' },
-      { key: 'products', value: 3, label: 'Productos propios' },
+      { key: 'products', value: 1, label: 'Producto propio' },
     ],
     [],
   );
