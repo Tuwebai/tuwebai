@@ -6,7 +6,6 @@ import { useTrackSectionView } from '@/core/hooks/use-track-section-view';
 import {
   trackHeroConsultClick,
   trackHeroDiagnosticClick,
-  trackHeroShowroomClick,
 } from '@/features/marketing-home/services/marketing-home-analytics.service';
 
 interface HeroSectionProps {
@@ -20,7 +19,7 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
   useTrackSectionView(sectionRef, 'hero');
   const heroMessage = useMemo(
     () =>
-      'Sitios corporativos, e-commerce y sistemas web construidos a medida para negocios argentinos. Sin templates. Sin atajos.',
+      'Construimos webs a medida para negocios argentinos y las conectamos con Pulse para que veas resultados, no promesas.',
     [],
   );
 
@@ -68,7 +67,7 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
       <div className="container mx-auto z-10 px-4 text-center" style={{ opacity: heroOpacity }}>
         <div className="mb-5 inline-flex max-w-full items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs text-gray-300 sm:px-4 sm:text-sm lg:backdrop-blur-sm">
           <span className="h-2 w-2 rounded-full bg-[var(--signal)] shadow-[var(--glow-signal)]" />
-          <span className="font-medium">Código a medida para negocios argentinos</span>
+          <span className="font-medium">Web a medida + Pulse para negocios argentinos</span>
         </div>
 
         <div className="mb-6">
@@ -91,34 +90,38 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
 
         <div className="mb-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
           <RouterLink
+            to="/diagnostico-gratuito"
+            onClick={trackHeroDiagnosticClick}
+            className="inline-flex min-h-12 items-center justify-center rounded-full bg-[image:var(--gradient-brand)] px-6 py-3 text-center font-semibold text-white shadow-[var(--glow-signal)] transition-transform duration-300 hover:scale-[1.02] sm:px-7"
+          >
+            Pedir diagnóstico gratuito
+          </RouterLink>
+
+          <RouterLink
             to="/consulta"
             onClick={trackHeroConsultClick}
-            className="inline-flex min-h-12 items-center justify-center rounded-full bg-[image:var(--gradient-brand)] px-6 py-3 text-center font-semibold text-white shadow-[var(--glow-signal)] transition-transform duration-300 hover:scale-[1.02] sm:px-7"
+            className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/15 bg-white/5 px-6 py-3 text-center font-medium text-gray-200 transition-colors duration-300 hover:border-[var(--signal-border)] hover:text-white sm:px-7 lg:backdrop-blur-sm"
           >
             Contar mi proyecto
           </RouterLink>
-
-          <ScrollLink
-            to="showroom"
-            spy={true}
-            smooth={true}
-            offset={-70}
-            duration={1000}
-            onClick={trackHeroShowroomClick}
-            className="inline-flex min-h-12 cursor-pointer items-center justify-center rounded-full border border-white/15 bg-white/5 px-6 py-3 text-center font-medium text-gray-200 transition-colors duration-300 hover:border-[var(--signal-border)] hover:text-white sm:px-7 lg:backdrop-blur-sm"
-          >
-            Ver proyectos reales
-          </ScrollLink>
         </div>
 
-        <div className="mb-8">
-          <RouterLink
-            to="/diagnostico-gratuito"
-            onClick={trackHeroDiagnosticClick}
-            className="inline-flex min-h-11 items-center justify-center text-sm font-medium text-[var(--signal)] transition-colors hover:text-white"
-          >
-            Pedí tu diagnóstico gratuito →
-          </RouterLink>
+        <div className="mb-8 space-y-4">
+          <p className="text-sm text-gray-400 sm:text-base">
+            Diagnóstico en 48h. Pulse incluido desde el arranque. Sin plantillas genéricas.
+          </p>
+
+          <div className="flex flex-wrap items-center justify-center gap-2 text-sm text-gray-300 sm:gap-3">
+            <span className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs sm:px-4 sm:text-sm">
+              Diagnóstico en 48h
+            </span>
+            <span className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs sm:px-4 sm:text-sm">
+              Pulse para medir resultados
+            </span>
+            <span className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs sm:px-4 sm:text-sm">
+              Proyectos reales, no humo
+            </span>
+          </div>
         </div>
 
         <div className="flex flex-wrap items-center justify-center gap-2 text-sm text-gray-300 sm:gap-3">
