@@ -23,6 +23,13 @@ const guides = [
     href: '/como-elegir-agencia-web-argentina',
     cta: 'Leer guía',
   },
+  {
+    eyebrow: 'E-commerce',
+    title: 'Crear tienda online en Argentina.',
+    description: 'Qué resolver para vender online sin trabar la operación.',
+    href: '/crear-tienda-online-argentina',
+    cta: 'Ver guía e-commerce',
+  },
 ];
 
 export default function EditorialGuidesSection() {
@@ -34,11 +41,11 @@ export default function EditorialGuidesSection() {
             Guías útiles
           </p>
           <h2 className="mt-4 font-rajdhani text-3xl font-bold leading-tight text-white sm:text-4xl">
-            Tres guías para decidir mejor tu web.
+            Cuatro guías para decidir mejor tu web.
           </h2>
         </div>
 
-        <div className="mt-8 grid gap-4 lg:grid-cols-3">
+        <div className="mt-8 grid gap-4 lg:grid-cols-2 xl:grid-cols-4">
           {guides.map((guide) => (
             <article
               key={guide.href}

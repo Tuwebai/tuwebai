@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
-import MetaTags from '@/shared/ui/meta-tags';
 import { TUWEBAI_SITE_FULL_URL } from '@/shared/constants/contact';
+import MetaTags from '@/shared/ui/meta-tags';
 
 const PAGE_URL = `${TUWEBAI_SITE_FULL_URL}/como-elegir-agencia-web-argentina`;
 
@@ -53,8 +53,7 @@ export default function HowToChooseWebAgencyPage() {
               <span className="gradient-text">sin comprar humo ni pagar dos veces.</span>
             </h1>
             <p className="mt-6 max-w-3xl text-base leading-7 text-gray-300 sm:text-lg sm:leading-8">
-              La mayoría no se equivoca por elegir la opción más cara o la más barata. Se equivoca
-              por elegir sin un criterio claro para comparar.
+              La mayoría no se equivoca por elegir la opción más cara o la más barata. Se equivoca por elegir sin un criterio claro para comparar.
             </p>
           </div>
         </section>
@@ -64,9 +63,8 @@ export default function HowToChooseWebAgencyPage() {
             La primera señal no es el portfolio
           </h2>
           <p className="mt-5 text-base leading-7 text-gray-300 sm:text-lg sm:leading-8">
-            La primera señal es cómo piensan. Si una agencia te muestra pantallas lindas pero no te
-            puede explicar cómo esa web va a captar consultas, ordenar el mensaje o medirse después,
-            el riesgo no está en el diseño: está en la falta de criterio.
+            La primera señal es cómo piensan. Si una agencia te muestra pantallas lindas pero no te puede explicar cómo esa web va a captar consultas,
+            ordenar el mensaje o medirse después, el riesgo no está en el diseño: está en la falta de criterio.
           </p>
         </section>
 
@@ -104,10 +102,7 @@ export default function HowToChooseWebAgencyPage() {
           </h2>
           <div className="mt-8 grid gap-4">
             {questions.map((question, index) => (
-              <article
-                key={question}
-                className="rounded-2xl border border-white/10 bg-white/[0.03] p-5"
-              >
+              <article key={question} className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
                 <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--signal)]">
                   Pregunta {index + 1}
                 </p>
@@ -123,21 +118,17 @@ export default function HowToChooseWebAgencyPage() {
               Cómo comparar con criterio
             </h2>
             <p className="mt-5 text-base leading-7 text-gray-300 sm:text-lg sm:leading-8">
-              No compares solo por precio. Compará por claridad, por proceso, por soporte y por si
-              la solución está pensada para tu negocio o para la comodidad del proveedor.
+              No compares solo por precio. Compará por claridad, por proceso, por soporte y por si la solución está pensada para tu negocio o para la comodidad del proveedor.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link
-                to="/comparar-opciones-web"
-                className="inline-flex min-h-12 items-center justify-center rounded-full bg-[image:var(--gradient-brand)] px-6 py-3 text-sm font-semibold text-white shadow-[var(--glow-signal)]"
-              >
+              <Link to="/comparar-opciones-web" className="inline-flex min-h-12 items-center justify-center rounded-full bg-[image:var(--gradient-brand)] px-6 py-3 text-sm font-semibold text-white shadow-[var(--glow-signal)]">
                 Comparar opciones web
               </Link>
-              <Link
-                to="/cuanto-cuesta-una-web"
-                className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-medium text-gray-200"
-              >
+              <Link to="/cuanto-cuesta-una-web" className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-medium text-gray-200">
                 Ver guía de precio
+              </Link>
+              <Link to="/crear-tienda-online-argentina" className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-medium text-gray-200">
+                Guía para tienda online
               </Link>
             </div>
           </div>
@@ -150,20 +141,13 @@ export default function HowToChooseWebAgencyPage() {
               Te damos una segunda mirada
             </h2>
             <p className="mt-4 text-base leading-7 text-gray-300">
-              Si ya estás evaluando opciones, revisamos tu caso y te decimos qué camino tiene más
-              sentido antes de que cierres mal.
+              Si ya estás evaluando opciones, revisamos tu caso y te decimos qué camino tiene más sentido antes de que cierres mal.
             </p>
             <div className="mt-6 flex flex-col gap-3">
-              <Link
-                to="/diagnostico-gratuito"
-                className="inline-flex min-h-12 items-center justify-center rounded-full bg-[image:var(--gradient-brand)] px-6 py-3 text-sm font-semibold text-white shadow-[var(--glow-signal)]"
-              >
+              <Link to="/diagnostico-gratuito" className="inline-flex min-h-12 items-center justify-center rounded-full bg-[image:var(--gradient-brand)] px-6 py-3 text-sm font-semibold text-white shadow-[var(--glow-signal)]">
                 Pedir diagnóstico
               </Link>
-              <Link
-                to="/consulta"
-                className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-medium text-gray-200"
-              >
+              <Link to="/consulta" className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-medium text-gray-200">
                 Contar mi proyecto
               </Link>
             </div>
