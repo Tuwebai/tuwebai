@@ -221,6 +221,15 @@
       transform: translateY(-20px);
     }
   }
+
+  @keyframes trustbar-marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
 }
 
 @layer components {
@@ -248,5 +257,14 @@
 
   .glow-purple {
     box-shadow: 0 0 15px rgba(153, 51, 255, 0.5);
+  }
+
+  .trustbar-marquee-shell {
+    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  }
+
+  .trustbar-marquee-track {
+    animation: trustbar-marquee 26s linear infinite;
   }
 }
