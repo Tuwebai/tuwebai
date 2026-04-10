@@ -15,6 +15,7 @@ const WebPriceCalculatorPage = lazy(() => import('@/features/calculator/componen
 const WebPricePillarPage = lazy(() => import('@/features/content/components/web-price-pillar-page'));
 const HowToChooseWebAgencyPage = lazy(() => import('@/features/content/components/how-to-choose-web-agency-page'));
 const EcommerceArgentinaPillarPage = lazy(() => import('@/features/content/components/ecommerce-argentina-pillar-page'));
+const SeoLocalArgentinaPillarPage = lazy(() => import('@/features/content/components/seo-local-argentina-pillar-page'));
 
 const WebDevelopmentPage = lazy(() => import('@/app/router/services/web-development-page'));
 const AboutPage = lazy(() => import('@/app/router/about/about-page'));
@@ -48,6 +49,7 @@ export default function PublicRoutes() {
       <Route path="/cuanto-cuesta-una-web" element={<LazyRoute><WebPricePillarPage /></LazyRoute>} />
       <Route path="/como-elegir-agencia-web-argentina" element={<LazyRoute><HowToChooseWebAgencyPage /></LazyRoute>} />
       <Route path="/crear-tienda-online-argentina" element={<LazyRoute><EcommerceArgentinaPillarPage /></LazyRoute>} />
+      <Route path="/seo-local-argentina" element={<LazyRoute><SeoLocalArgentinaPillarPage /></LazyRoute>} />
       <Route path="/calculadora-precio-web" element={<LazyRoute><WebPriceCalculatorPage /></LazyRoute>} />
       <Route path="/comparar-opciones-web" element={<LazyRoute><WebSolutionComparisonPage /></LazyRoute>} />
       <Route path="/nosotros" element={<LazyRoute><AboutPage /></LazyRoute>} />

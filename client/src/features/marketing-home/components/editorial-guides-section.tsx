@@ -10,13 +10,6 @@ const guides = [
     cta: 'Ver guía',
   },
   {
-    eyebrow: 'Comparador',
-    title: 'Wix, WordPress o desarrollo a medida.',
-    description: 'Compará opciones según soporte, flexibilidad y propiedad.',
-    href: '/comparar-opciones-web',
-    cta: 'Comparar opciones',
-  },
-  {
     eyebrow: 'Agencia web',
     title: 'Cómo elegir una agencia web.',
     description: 'Criterios concretos para evaluar propuestas y proveedores.',
@@ -29,6 +22,13 @@ const guides = [
     description: 'Qué resolver para vender online sin trabar la operación.',
     href: '/crear-tienda-online-argentina',
     cta: 'Ver guía e-commerce',
+  },
+  {
+    eyebrow: 'SEO local',
+    title: 'Aparecer en Google Maps Argentina.',
+    description: 'Cómo convertir búsquedas locales en consultas reales.',
+    href: '/seo-local-argentina',
+    cta: 'Ver guía SEO local',
   },
 ];
 

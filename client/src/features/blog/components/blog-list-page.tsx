@@ -3,36 +3,13 @@ import { es } from 'date-fns/locale';
 import { ArrowRight, Clock3 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
+import BlogFeaturedGuidesSection from '@/features/blog/components/blog-featured-guides-section';
 import { useBlogPosts } from '@/features/blog/hooks/use-blog-posts';
 import NewsletterForm from '@/features/newsletter/components/newsletter-form';
 import { TUWEBAI_SITE_FULL_URL } from '@/shared/constants/contact';
 import MetaTags from '@/shared/ui/meta-tags';
 
 import './blog-pages.css';
-
-const featuredGuides = [
-  {
-    eyebrow: 'Precio web',
-    title: 'Cuánto cuesta una web en Argentina',
-    description: 'Entendé rangos, variables y decisiones que mueven un presupuesto real.',
-    href: '/cuanto-cuesta-una-web',
-    cta: 'Ver guía',
-  },
-  {
-    eyebrow: 'Comparador',
-    title: 'Comparar Wix, WordPress y desarrollo a medida',
-    description: 'Resolvé rápido qué opción conviene según soporte, flexibilidad y propiedad.',
-    href: '/comparar-opciones-web',
-    cta: 'Comparar opciones',
-  },
-  {
-    eyebrow: 'Proveedor',
-    title: 'Cómo elegir una agencia web en Argentina',
-    description: 'Usá criterios concretos para filtrar promesas y evaluar propuestas con contexto.',
-    href: '/como-elegir-agencia-web-argentina',
-    cta: 'Leer guía',
-  },
-];
 
 export default function BlogListPage() {
   const posts = useBlogPosts().filter((post) => !post.noindex);
@@ -93,49 +70,12 @@ export default function BlogListPage() {
           </div>
         </section>
 
-        <section className="mx-auto mt-10 max-w-6xl">
-          <div className="blog-newsletter-card px-5 py-8 sm:px-6 md:px-10 md:py-10">
-            <div className="max-w-3xl">
-              <span className="blog-pill blog-pill-accent">
-                Guías clave
-              </span>
-              <h2 className="mt-5 font-rajdhani text-3xl font-bold leading-tight text-white sm:text-4xl">
-                Antes de leer el blog, resolvé las tres decisiones que más traban una web nueva.
-              </h2>
-              <p className="mt-4 max-w-2xl text-base leading-7 text-gray-300 md:text-lg">
-                Si todavía no definiste presupuesto, plataforma o proveedor, entrá primero por estas guías editoriales.
-              </p>
-            </div>
-
-            <div className="mt-8 grid gap-4 lg:grid-cols-3">
-              {featuredGuides.map((guide) => (
-                <article key={guide.href} className="blog-surface-link rounded-[24px] p-5">
-                  <p className="text-[11px] uppercase tracking-[0.24em] text-[#9BE7FF]">
-                    {guide.eyebrow}
-                  </p>
-                  <h3 className="mt-4 font-rajdhani text-2xl font-bold leading-tight text-white">
-                    {guide.title}
-                  </h3>
-                  <p className="mt-3 text-sm leading-7 text-gray-300">
-                    {guide.description}
-                  </p>
-                  <Link to={guide.href} className="blog-link-accent mt-5 inline-flex items-center gap-2">
-                    {guide.cta}
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
+        <BlogFeaturedGuidesSection />
 
         <section className="mx-auto mt-10 max-w-6xl">
           <div className="grid gap-6">
             {posts.map((post) => (
-              <article
-                key={post.slug}
-                className="blog-surface-link group rounded-[28px] p-6"
-              >
+              <article key={post.slug} className="blog-surface-link group rounded-[28px] p-6">
                 <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                   <div className="max-w-3xl">
                     <p className="text-sm text-gray-400">
@@ -156,10 +96,7 @@ export default function BlogListPage() {
                       <Clock3 className="h-4 w-4 text-[#00CCFF]" />
                       {post.readingTimeMinutes} min
                     </span>
-                    <Link
-                      to={`/blog/${post.slug}/`}
-                      className="blog-secondary-button px-4 py-2 text-sm"
-                    >
+                    <Link to={`/blog/${post.slug}/`} className="blog-secondary-button px-4 py-2 text-sm">
                       Leer artículo
                       <ArrowRight className="h-4 w-4" />
                     </Link>
