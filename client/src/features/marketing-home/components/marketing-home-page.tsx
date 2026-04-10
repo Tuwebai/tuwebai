@@ -6,6 +6,7 @@ import { runWhenIdle } from '@/lib/performance';
 import HeroSection from '@/features/marketing-home/components/hero-section';
 import ExitIntentModal from '@/features/marketing-home/components/exit-intent-modal';
 import MobileCtaBar from '@/features/marketing-home/components/mobile-cta-bar';
+import VisitorPathSelector from '@/features/marketing-home/components/visitor-path-selector';
 const NavDots = lazy(() => import('@/shared/ui/nav-dots'));
 const WhatsAppButton = lazy(() => import('@/shared/ui/whatsapp-button'));
 const ScrollProgress = lazy(() => import('@/shared/ui/scroll-progress'));
@@ -154,6 +155,7 @@ export default function MarketingHomePage() {
 
         <Suspense fallback={null}>
           <CompanyLogoSlider className="pb-2 pt-4" />
+          <VisitorPathSelector />
           <PhilosophySection setRef={(ref: HTMLElement | null) => setSectionRef('philosophy', ref)} />
           <ServicesSection setRef={(ref: HTMLElement | null) => setSectionRef('services', ref)} />
           <ProcessSection setRef={(ref: HTMLElement | null) => setSectionRef('process', ref)} />
