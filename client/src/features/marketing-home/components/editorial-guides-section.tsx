@@ -4,27 +4,24 @@ import { Link } from 'react-router-dom';
 const guides = [
   {
     eyebrow: 'Precio web',
-    title: 'Cuánto cuesta una web en Argentina y qué cambia el presupuesto real.',
-    description:
-      'Una guía para entender rangos, variables de precio y cuándo conviene invertir más o recortar alcance.',
+    title: 'Cuánto cuesta una web en Argentina.',
+    description: 'Rangos, variables y decisiones que cambian el presupuesto.',
     href: '/cuanto-cuesta-una-web',
-    cta: 'Ver guía de precios',
+    cta: 'Ver guía',
   },
   {
     eyebrow: 'Comparador',
-    title: 'Wix, WordPress o desarrollo a medida: compará qué te conviene.',
-    description:
-      'Una vista clara para decidir según soporte, flexibilidad, propiedad y resultados esperables para tu negocio.',
+    title: 'Wix, WordPress o desarrollo a medida.',
+    description: 'Compará opciones según soporte, flexibilidad y propiedad.',
     href: '/comparar-opciones-web',
     cta: 'Comparar opciones',
   },
   {
     eyebrow: 'Agencia web',
-    title: 'Cómo elegir una agencia web sin comprar humo ni promesas vacías.',
-    description:
-      'Preguntas, señales y criterios concretos para evaluar proveedores antes de avanzar con una propuesta.',
+    title: 'Cómo elegir una agencia web.',
+    description: 'Criterios concretos para evaluar propuestas y proveedores.',
     href: '/como-elegir-agencia-web-argentina',
-    cta: 'Leer guía para elegir',
+    cta: 'Leer guía',
   },
 ];
 
@@ -34,15 +31,11 @@ export default function EditorialGuidesSection() {
       <div className="rounded-[32px] border border-white/10 bg-[linear-gradient(180deg,rgba(15,23,42,0.94),rgba(15,23,42,0.78))] px-5 py-8 shadow-[0_28px_70px_rgba(2,6,23,0.28)] sm:px-7 lg:px-10">
         <div className="max-w-3xl">
           <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#9BE7FF]">
-            Guías para decidir mejor
+            Guías útiles
           </p>
           <h2 className="mt-4 font-rajdhani text-3xl font-bold leading-tight text-white sm:text-4xl">
-            Entrá por contenido útil, no por un menú cargado.
+            Tres guías para decidir mejor tu web.
           </h2>
-          <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-300 sm:text-base">
-            Si todavía estás comparando opciones o bajando a tierra números, estas guías te ayudan a ordenar decisión,
-            presupuesto y proveedor sin lenguaje técnico.
-          </p>
         </div>
 
         <div className="mt-8 grid gap-4 lg:grid-cols-3">
