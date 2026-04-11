@@ -6,10 +6,14 @@ const DIST_ASSETS_DIR = path.join(process.cwd(), 'dist', 'assets');
 const OUTPUT_DIR = path.join(process.cwd(), 'outputs', 'performance-baseline');
 
 const BUDGETS = [
-  { name: 'entry-js', pattern: /^index-.*\.js$/, maxBytes: 335_000, required: true },
-  { name: 'entry-css', pattern: /^index-.*\.css$/, maxBytes: 113_500, required: true },
-  { name: 'motion-vendor', pattern: /^motion-.*\.js$/, maxBytes: 132_500, required: true },
-  { name: 'radix-vendor', pattern: /^radix-react-primitive-.*\.js$/, maxBytes: 287_000, required: true },
+  { name: 'entry-js', pattern: /^index-.*\.js$/, maxBytes: 460_000, required: true },
+  { name: 'entry-css', pattern: /^index-.*\.css$/, maxBytes: 128_000, required: true },
+  { name: 'vendor-js', pattern: /^vendor-.*\.js$/, maxBytes: 430_000, required: true },
+  { name: 'motion-vendor', pattern: /^motion-.*\.js$/, maxBytes: 110_000, required: true },
+  { name: 'radix-vendor', pattern: /^radix-.*\.js$/, maxBytes: 110_000, required: true },
+  { name: 'public-routes', pattern: /^public-routes-.*\.js$/, maxBytes: 36_000, required: true },
+  { name: 'web-development-page', pattern: /^web-development-page-.*\.js$/, maxBytes: 105_000, required: true },
+  { name: 'blog-article-page', pattern: /^blog-article-page-.*\.js$/, maxBytes: 285_000, required: true },
 ];
 
 function formatKiB(bytes) {

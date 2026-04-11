@@ -9,9 +9,13 @@ const OUTPUT_DIR = path.join(process.cwd(), 'outputs', 'performance-baseline');
 
 const ROUTES = [
   '/',
+  '/corporativos',
+  '/uxui',
+  '/ecommerce',
   '/blog',
   '/blog/landing-page-negocios-locales',
   '/servicios/desarrollo-web',
+  '/politica-privacidad',
 ];
 
 const jsonHeaders = {

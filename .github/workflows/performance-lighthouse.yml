@@ -25,5 +25,8 @@ jobs:
       - name: Build frontend
         run: npm run build:frontend
 
+      - name: Enforce build budgets
+        run: npm run perf:budget
+
       - name: Lighthouse CI
         run: npx @lhci/cli@0.14.x autorun --config=.lighthouserc.json
