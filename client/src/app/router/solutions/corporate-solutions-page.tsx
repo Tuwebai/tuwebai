@@ -22,9 +22,6 @@ export default function Corporativos() {
         <div className="container mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="mb-8 md:mb-0 md:mr-8">
-              <Link to="/" className="text-3xl font-rajdhani font-bold mb-6 inline-block">
-                TuWeb<span className="text-[#00CCFF]">.ai</span>
-              </Link>
               <h1 className="text-4xl md:text-5xl font-rajdhani font-bold mb-4">
                 <span className="gradient-text pb-2">Sitios Corporativos Premium</span>
               </h1>

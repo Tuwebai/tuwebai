@@ -70,9 +70,6 @@ export default function Ecommerce() {
         <div className="container mx-auto">
           <div className="ecommerce-header-layout">
             <div className="ecommerce-header-copy">
-              <Link to="/" className="ecommerce-wordmark">
-                TuWeb<span className="ecommerce-wordmark-accent">.ai</span>
-              </Link>
               <h1 className="ecommerce-title">
                 <span className="gradient-text pb-2">Soluciones E-Commerce</span>
               </h1>
