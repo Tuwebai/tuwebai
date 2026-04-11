@@ -10,12 +10,12 @@ import { AuthProvider } from '@/features/auth/context/AuthContext';
 import { LoginModalProvider } from '@/features/auth/hooks/use-login-modal';
 import analytics from '@/lib/analytics';
 import { runWhenIdle } from '@/lib/performance';
-import Footer from '@/shared/ui/footer';
 import { SkipLink } from '@/shared/ui/skip-link';
-import { Toaster } from '@/shared/ui/toaster';
 
 const AuthenticatedAppRoot = lazy(() => import('@/app/authenticated-app-root'));
 const PublicRoutes = lazy(() => import('@/app/router/public-routes'));
+const Footer = lazy(() => import('@/shared/ui/footer'));
+const Toaster = lazy(() => import('@/shared/ui/toaster').then((module) => ({ default: module.Toaster })));
 
 const shouldUseAuthenticatedShell = (pathname: string) =>
   pathname.startsWith('/panel') || pathname.startsWith('/auth/');
@@ -39,8 +39,12 @@ function PublicShellFrame() {
           <PublicRoutes />
         </Suspense>
       )}
-      <Footer />
-      <Toaster />
+      <Suspense fallback={null}>
+        <Footer />
+      </Suspense>
+      <Suspense fallback={null}>
+        <Toaster />
+      </Suspense>
     </div>
   );
 }

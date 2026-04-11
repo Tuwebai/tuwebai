@@ -1,7 +1,6 @@
 import { lazy } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
-import { AppQueryProvider } from '@/app/providers/app-query-provider';
 import { LazyRoute } from '@/app/router/lazy-route';
 import NotFoundPage from '@/app/router/errors/not-found-page';
 import PaymentReturnView from '@/features/payments/components/payment-return-view';
@@ -53,8 +52,7 @@ const CookiesPolicyPage = lazy(() => import('@/app/router/legal/cookies-policy-p
 
 export default function PublicRoutes() {
   return (
-    <AppQueryProvider>
-      <Routes>
+    <Routes>
       <Route path="/corporativos" element={<LazyRoute><CorporateSolutionsPage /></LazyRoute>} />
       <Route path="/uxui" element={<LazyRoute><UxUiPage /></LazyRoute>} />
       <Route path="/ecommerce" element={<LazyRoute><EcommerceSolutionsPage /></LazyRoute>} />
@@ -147,6 +145,5 @@ export default function PublicRoutes() {
 
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
-    </AppQueryProvider>
   );
 }
