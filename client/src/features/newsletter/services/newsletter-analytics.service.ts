@@ -1,4 +1,4 @@
-import analytics from '@/lib/analytics';
+import { trackRuntimeEvent } from '@/lib/analytics-runtime';
 
 export const trackNewsletterSignup = (source: string) =>
-  analytics.event('engagement', 'newsletter_signup', source);
+  trackRuntimeEvent('engagement', 'newsletter_signup', source);

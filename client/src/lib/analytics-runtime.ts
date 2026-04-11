@@ -41,6 +41,12 @@ export const trackRuntimeCtaClick = (
   });
 };
 
+export const trackRuntimeFormSubmit = (formName: string, location: string): void => {
+  withAnalytics((analytics) => {
+    analytics.trackFormSubmit(formName, location);
+  });
+};
+
 export const trackRuntimeOutboundClick = (
   linkUrl: string,
   location: string,

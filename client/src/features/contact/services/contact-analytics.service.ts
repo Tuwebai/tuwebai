@@ -1,4 +1,8 @@
-import analytics from '@/lib/analytics';
+import {
+  trackRuntimeCtaClick,
+  trackRuntimeFormSubmit,
+  trackRuntimeOutboundClick,
+} from '@/lib/analytics-runtime';
 import {
   TUWEBAI_EMAIL,
   TUWEBAI_WHATSAPP_DISPLAY,
@@ -7,13 +11,13 @@ import {
 } from '@/shared/constants/contact';
 
 export const trackContactFormSubmit = () =>
-  analytics.trackFormSubmit('contact_form', 'contact_section');
+  trackRuntimeFormSubmit('contact_form', 'contact_section');
 
 export const trackContactFormClick = () =>
-  analytics.trackCtaClick('enviar_consulta', 'contact_section', 'contact_form');
+  trackRuntimeCtaClick('enviar_consulta', 'contact_section', 'contact_form');
 
 export const trackContactPhoneClick = () =>
-  analytics.trackOutboundClick(
+  trackRuntimeOutboundClick(
     `tel:${TUWEBAI_WHATSAPP_TEL}`,
     'contact_section',
     TUWEBAI_WHATSAPP_DISPLAY,
@@ -21,7 +25,7 @@ export const trackContactPhoneClick = () =>
   );
 
 export const trackContactEmailClick = () =>
-  analytics.trackOutboundClick(
+  trackRuntimeOutboundClick(
     `mailto:${TUWEBAI_EMAIL}`,
     'contact_section',
     TUWEBAI_EMAIL,
@@ -29,7 +33,7 @@ export const trackContactEmailClick = () =>
   );
 
 export const trackContactWhatsAppClick = () =>
-  analytics.trackOutboundClick(
+  trackRuntimeOutboundClick(
     TUWEBAI_WHATSAPP_URL,
     'contact_section',
     'Escribinos por WhatsApp',
@@ -37,25 +41,25 @@ export const trackContactWhatsAppClick = () =>
   );
 
 export const trackFreeDiagnosisHeroClick = () =>
-  analytics.trackCtaClick(
+  trackRuntimeCtaClick(
     'quiero_mi_diagnostico_gratuito',
     'diagnostico_hero',
     '#formulario-diagnostico',
   );
 
 export const trackFreeDiagnosisFormSubmit = () =>
-  analytics.trackFormSubmit('diagnostico_gratuito', 'diagnostico_page');
+  trackRuntimeFormSubmit('diagnostico_gratuito', 'diagnostico_page');
 
 export const trackFreeDiagnosisFormClick = () =>
-  analytics.trackCtaClick(
+  trackRuntimeCtaClick(
     'quiero_mi_diagnostico_gratuito',
     'diagnostico_form',
     'diagnostico_gratuito',
   );
 
 export const trackFreeDiagnosisWhatsAppClick = (whatsappHref: string) => {
-  analytics.trackCtaClick('whatsapp_diagnostico', 'diagnostico_direct_cta', whatsappHref);
-  analytics.trackOutboundClick(
+  trackRuntimeCtaClick('whatsapp_diagnostico', 'diagnostico_direct_cta', whatsappHref);
+  trackRuntimeOutboundClick(
     whatsappHref,
     'diagnostico_direct_cta',
     'Escribinos por WhatsApp',
