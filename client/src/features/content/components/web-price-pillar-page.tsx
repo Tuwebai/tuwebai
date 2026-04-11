@@ -59,7 +59,7 @@ export default function WebPricePillarPage() {
         ogImage="/logo-tuwebai.png"
       />
 
-      <main className="min-h-screen bg-[#0a0a0f] px-4 pb-20 pt-28 text-white sm:pt-32">
+      <main className="page-shell-surface min-h-screen px-4 pb-20 pt-28 text-white sm:pt-32">
         <section className="mx-auto max-w-5xl">
           <div className="rounded-[32px] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(59,158,245,0.16),transparent_45%),linear-gradient(180deg,rgba(17,24,39,0.98)_0%,rgba(11,15,30,0.98)_100%)] px-6 py-10 sm:px-10 sm:py-14">
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--signal)]">
