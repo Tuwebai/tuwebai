@@ -434,7 +434,7 @@ export default function ChecklistWebGratisPage() {
         structuredData={[CHECKLIST_HOWTO_SCHEMA_SEO, CHECKLIST_FAQ_SCHEMA, CHECKLIST_BREADCRUMB_SCHEMA_SEO]}
       />
 
-      <main className="relative overflow-hidden bg-[#0a0a0f] text-white">
+      <main className="page-shell-surface relative overflow-hidden text-white">
         <AnimatedShape type={1} className="left-[-180px] top-20" delay={0.2} />
         <AnimatedShape type={2} className="right-[-140px] top-[34rem]" delay={0.45} />
 

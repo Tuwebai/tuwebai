@@ -304,7 +304,7 @@ export default function FAQ() {
         ogType="website"
         ogImage="/logo-tuwebai.png"
       />
-      <main className="bg-[#0a0a0f] text-white min-h-screen">
+      <main className="page-shell-surface min-h-screen text-white">
       {/* Hero Section */}
       <section className="relative bg-gradient-1 pt-24 pb-16">
         <AnimatedShape type={1} className="top-[10%] right-[-150px]" delay={1} />
