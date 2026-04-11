@@ -25,6 +25,9 @@ const CrmInmobiliarioAMedidaPage = lazy(() => import('@/features/content/compone
 const WebParaRestauranteBarArgentinaPage = lazy(() => import('@/features/content/components/web-para-restaurante-bar-argentina-page'));
 const CartaDigitalQrRestaurantePage = lazy(() => import('@/features/content/components/carta-digital-qr-restaurante-page'));
 const ReservasOnlineRestaurantePage = lazy(() => import('@/features/content/components/reservas-online-restaurante-page'));
+const WebEstudioJuridicoArgentinaPage = lazy(() => import('@/features/content/components/web-estudio-juridico-argentina-page'));
+const WebContadorArgentinaPage = lazy(() => import('@/features/content/components/web-contador-argentina-page'));
+const WebArquitectoArgentinaPage = lazy(() => import('@/features/content/components/web-arquitecto-argentina-page'));
 
 const WebDevelopmentPage = lazy(() => import('@/app/router/services/web-development-page'));
 const AboutPage = lazy(() => import('@/app/router/about/about-page'));
@@ -69,6 +72,9 @@ export default function AppRoutes() {
       <Route path="/web-para-restaurante-bar-argentina" element={<LazyRoute><WebParaRestauranteBarArgentinaPage /></LazyRoute>} />
       <Route path="/carta-digital-qr-restaurante" element={<LazyRoute><CartaDigitalQrRestaurantePage /></LazyRoute>} />
       <Route path="/reservas-online-restaurante" element={<LazyRoute><ReservasOnlineRestaurantePage /></LazyRoute>} />
+      <Route path="/web-estudio-juridico-argentina" element={<LazyRoute><WebEstudioJuridicoArgentinaPage /></LazyRoute>} />
+      <Route path="/web-contador-argentina" element={<LazyRoute><WebContadorArgentinaPage /></LazyRoute>} />
+      <Route path="/web-arquitecto-argentina" element={<LazyRoute><WebArquitectoArgentinaPage /></LazyRoute>} />
       <Route path="/calculadora-precio-web" element={<LazyRoute><WebPriceCalculatorPage /></LazyRoute>} />
       <Route path="/nosotros" element={<LazyRoute><AboutPage /></LazyRoute>} />
       <Route path="/proceso" element={<LazyRoute><ProcessPage /></LazyRoute>} />
