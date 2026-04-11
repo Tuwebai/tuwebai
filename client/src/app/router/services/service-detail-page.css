@@ -58,7 +58,7 @@
   position: sticky;
   top: 6rem;
   border-radius: 0.75rem;
-  background: #121217;
+  background: rgb(15 23 42 / 0.42);
   padding: 1.5rem;
 }
 
@@ -70,7 +70,7 @@
 }
 
 .service-detail-sidebar-item:hover {
-  background: #1a1a23;
+  background: rgb(30 41 59 / 0.22);
 }
 
 .service-detail-sidebar-item--active {
@@ -81,7 +81,7 @@
 .service-detail-sidebar-help {
   margin-top: 2rem;
   border-radius: 0.5rem;
-  background: #1a1a23;
+  background: rgb(15 23 42 / 0.3);
   padding: 1rem;
 }
 
@@ -98,13 +98,13 @@
 
 .service-detail-card {
   border-radius: 0.75rem;
-  background: #121217;
+  background: rgb(15 23 42 / 0.4);
   padding: 2rem;
 }
 
 .service-detail-feature-card {
   border-radius: 0.5rem;
-  background: #1a1a23;
+  background: rgb(15 23 42 / 0.26);
   padding: 1.5rem;
 }
 
@@ -132,5 +132,38 @@
   border-radius: 9999px;
   background: linear-gradient(90deg, #00ccff 0%, #9933ff 100%);
   font-weight: 700;
+  color: #ffffff;
+}
+
+.service-detail-panel {
+  border-radius: 0.5rem;
+  background: rgb(15 23 42 / 0.26);
+  padding: 1.5rem;
+}
+
+.service-detail-panel--center {
+  text-align: center;
+}
+
+.service-detail-media-frame {
+  overflow: hidden;
+  border-radius: 0.5rem;
+  background: rgb(15 23 42 / 0.26);
+  position: relative;
+}
+
+.service-detail-media-caption {
+  border-radius: 0.5rem;
+  background: rgb(15 23 42 / 0.72);
+  padding: 1rem;
+  text-align: center;
+}
+
+.service-detail-input {
+  width: 100%;
+  border-radius: 0.5rem;
+  border: 1px solid rgb(55 65 81);
+  background: rgb(15 23 42 / 0.5);
+  padding: 0.75rem 1rem;
   color: #ffffff;
 }

@@ -248,7 +248,7 @@ export default function DesarrolloWeb() {
               )}
               
               {activeTab === 2 && (
-                <div className="bg-[#121217] rounded-xl p-8">
+                <div className="service-detail-card">
                   <h2 className="font-rajdhani font-bold text-3xl mb-6 gradient-text">
                     Landing Pages Optimizadas
                   </h2>
@@ -261,7 +261,7 @@ export default function DesarrolloWeb() {
                   
                   <div className="relative h-64 md:h-96 mb-8 rounded-lg overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-r from-[#00CCFF]/20 to-[#9933FF]/20 flex items-center justify-center">
-                      <div className="bg-[#0a0a0f]/80 p-4 rounded-lg text-center">
+                      <div className="service-detail-media-caption">
                         <p className="text-white font-medium">Imagen de ejemplo de landing page</p>
                       </div>
                     </div>
@@ -270,7 +270,7 @@ export default function DesarrolloWeb() {
                   <h3 className="font-rajdhani font-bold text-2xl mb-4">Elementos Clave</h3>
                   
                   <div className="grid md:grid-cols-2 gap-6 mb-8">
-                    <div className="bg-[#1a1a23] p-6 rounded-lg">
+                    <div className="service-detail-panel">
                       <div className="h-10 w-10 rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] flex items-center justify-center mb-4">
                         <span className="font-bold text-white">1</span>
                       </div>
@@ -281,7 +281,7 @@ export default function DesarrolloWeb() {
                       </p>
                     </div>
                     
-                    <div className="bg-[#1a1a23] p-6 rounded-lg">
+                    <div className="service-detail-panel">
                       <div className="h-10 w-10 rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] flex items-center justify-center mb-4">
                         <span className="font-bold text-white">2</span>
                       </div>
@@ -291,7 +291,7 @@ export default function DesarrolloWeb() {
                       </p>
                     </div>
                     
-                    <div className="bg-[#1a1a23] p-6 rounded-lg">
+                    <div className="service-detail-panel">
                       <div className="h-10 w-10 rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] flex items-center justify-center mb-4">
                         <span className="font-bold text-white">3</span>
                       </div>
@@ -302,7 +302,7 @@ export default function DesarrolloWeb() {
                       </p>
                     </div>
                     
-                    <div className="bg-[#1a1a23] p-6 rounded-lg">
+                    <div className="service-detail-panel">
                       <div className="h-10 w-10 rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] flex items-center justify-center mb-4">
                         <span className="font-bold text-white">4</span>
                       </div>
@@ -438,7 +438,7 @@ export default function DesarrolloWeb() {
               )}
               
               {activeTab === 3 && (
-                <div className="bg-[#121217] rounded-xl p-8">
+                <div className="service-detail-card">
                   <h2 className="font-rajdhani font-bold text-3xl mb-6 gradient-text">
                     Tecnologías y Herramientas
                   </h2>
@@ -449,7 +449,7 @@ export default function DesarrolloWeb() {
                   </p>
                   
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-10">
-                    <div className="bg-[#1a1a23] p-6 rounded-lg text-center">
+                    <div className="service-detail-panel service-detail-panel--center">
                       <div className="h-16 w-16 mx-auto mb-4 flex items-center justify-center">
                         <span className="text-4xl font-bold text-[#00CCFF]">R</span>
                       </div>
@@ -457,7 +457,7 @@ export default function DesarrolloWeb() {
                       <p className="text-gray-400 text-sm mt-2">Frontend interactivo</p>
                     </div>
                     
-                    <div className="bg-[#1a1a23] p-6 rounded-lg text-center">
+                    <div className="service-detail-panel service-detail-panel--center">
                       <div className="h-16 w-16 mx-auto mb-4 flex items-center justify-center">
                         <span className="text-4xl font-bold text-[#9933FF]">N</span>
                       </div>
@@ -465,7 +465,7 @@ export default function DesarrolloWeb() {
                       <p className="text-gray-400 text-sm mt-2">Rendimiento superior</p>
                     </div>
                     
-                    <div className="bg-[#1a1a23] p-6 rounded-lg text-center">
+                    <div className="service-detail-panel service-detail-panel--center">
                       <div className="h-16 w-16 mx-auto mb-4 flex items-center justify-center">
                         <span className="text-4xl font-bold text-[#00CCFF]">W</span>
                       </div>
@@ -473,7 +473,7 @@ export default function DesarrolloWeb() {
                       <p className="text-gray-400 text-sm mt-2">CMS flexible</p>
                     </div>
                     
-                    <div className="bg-[#1a1a23] p-6 rounded-lg text-center">
+                    <div className="service-detail-panel service-detail-panel--center">
                       <div className="h-16 w-16 mx-auto mb-4 flex items-center justify-center">
                         <span className="text-4xl font-bold text-[#9933FF]">S</span>
                       </div>
@@ -485,7 +485,7 @@ export default function DesarrolloWeb() {
                   <h3 className="font-rajdhani font-bold text-2xl mb-4">Ventajas de nuestro stack tecnológico</h3>
                   
                   <div className="space-y-6 mb-8">
-                    <div className="bg-[#1a1a23] p-6 rounded-lg">
+                    <div className="service-detail-panel">
                       <h4 className="font-rajdhani font-bold text-xl mb-3 text-[#00CCFF]">Rendimiento Superior</h4>
                       <p className="text-gray-300">
                         Nuestras tecnologías están optimizadas para ofrecer tiempos de carga ultrarrápidos, 
@@ -494,7 +494,7 @@ export default function DesarrolloWeb() {
                       </p>
                     </div>
                     
-                    <div className="bg-[#1a1a23] p-6 rounded-lg">
+                    <div className="service-detail-panel">
                       <h4 className="font-rajdhani font-bold text-xl mb-3 text-[#9933FF]">Escalabilidad</h4>
                       <p className="text-gray-300">
                         Desarrollamos sitios que pueden crecer con tu negocio, soportando desde pequeñas 
@@ -503,7 +503,7 @@ export default function DesarrolloWeb() {
                       </p>
                     </div>
                     
-                    <div className="bg-[#1a1a23] p-6 rounded-lg">
+                    <div className="service-detail-panel">
                       <h4 className="font-rajdhani font-bold text-xl mb-3 text-[#00CCFF]">Seguridad</h4>
                       <p className="text-gray-300">
                         Implementamos las mejores prácticas de seguridad en todas nuestras soluciones, 
@@ -512,7 +512,7 @@ export default function DesarrolloWeb() {
                       </p>
                     </div>
                     
-                    <div className="bg-[#1a1a23] p-6 rounded-lg">
+                    <div className="service-detail-panel">
                       <h4 className="font-rajdhani font-bold text-xl mb-3 text-[#9933FF]">Mantenibilidad</h4>
                       <p className="text-gray-300">
                         Código limpio, bien documentado y siguiendo patrones de diseño modernos que facilitan 
@@ -540,7 +540,7 @@ export default function DesarrolloWeb() {
               )}
               
               {activeTab === 4 && (
-                <div className="bg-[#121217] rounded-xl p-8">
+                <div className="service-detail-card">
                   <h2 className="font-rajdhani font-bold text-3xl mb-6 gradient-text">
                     Portafolio de Proyectos
                   </h2>
@@ -554,16 +554,16 @@ export default function DesarrolloWeb() {
                   <div className="space-y-12 mb-10">
                     <div className="grid md:grid-cols-2 gap-8">
                       <div>
-                        <div className="h-64 bg-[#1a1a23] rounded-lg mb-4 overflow-hidden relative">
+                        <div className="service-detail-media-frame mb-4 h-64">
                           <div className="absolute inset-0 bg-gradient-to-r from-[#00CCFF]/20 to-[#9933FF]/20 flex items-center justify-center">
-                            <div className="bg-[#0a0a0f]/80 p-4 rounded-lg text-center">
+                            <div className="service-detail-media-caption">
                               <p className="text-white font-medium">Imagen de proyecto corporativo</p>
                             </div>
                           </div>
                         </div>
-                        <div className="h-40 bg-[#1a1a23] rounded-lg overflow-hidden relative">
+                        <div className="service-detail-media-frame h-40">
                           <div className="absolute inset-0 bg-gradient-to-r from-[#00CCFF]/20 to-[#9933FF]/20 flex items-center justify-center">
-                            <div className="bg-[#0a0a0f]/80 p-4 rounded-lg text-center">
+                            <div className="service-detail-media-caption">
                               <p className="text-white font-medium">Versión móvil</p>
                             </div>
                           </div>
@@ -606,16 +606,16 @@ export default function DesarrolloWeb() {
                     
                     <div className="grid md:grid-cols-2 gap-8">
                       <div>
-                        <div className="h-64 bg-[#1a1a23] rounded-lg mb-4 overflow-hidden relative">
+                        <div className="service-detail-media-frame mb-4 h-64">
                           <div className="absolute inset-0 bg-gradient-to-r from-[#9933FF]/20 to-[#00CCFF]/20 flex items-center justify-center">
-                            <div className="bg-[#0a0a0f]/80 p-4 rounded-lg text-center">
+                            <div className="service-detail-media-caption">
                               <p className="text-white font-medium">Imagen de sitio corporativo</p>
                             </div>
                           </div>
                         </div>
-                        <div className="h-40 bg-[#1a1a23] rounded-lg overflow-hidden relative">
+                        <div className="service-detail-media-frame h-40">
                           <div className="absolute inset-0 bg-gradient-to-r from-[#9933FF]/20 to-[#00CCFF]/20 flex items-center justify-center">
-                            <div className="bg-[#0a0a0f]/80 p-4 rounded-lg text-center">
+                            <div className="service-detail-media-caption">
                               <p className="text-white font-medium">Versión móvil</p>
                             </div>
                           </div>
@@ -674,7 +674,7 @@ export default function DesarrolloWeb() {
               )}
               
               {activeTab === 5 && (
-                <div className="bg-[#121217] rounded-xl p-8">
+                <div className="service-detail-card">
                   <h2 className="font-rajdhani font-bold text-3xl mb-6 gradient-text">
                     Preguntas Frecuentes
                   </h2>
@@ -773,7 +773,7 @@ export default function DesarrolloWeb() {
       {/* CTA Section */}
       <section id="contacto" className="py-16 bg-gradient-1">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto bg-[#121217] rounded-xl p-8 border border-gray-800">
+          <div className="service-detail-card mx-auto max-w-4xl border border-gray-800">
             <div className="text-center mb-8">
               <h2 className="font-rajdhani font-bold text-3xl mb-4 gradient-text">
                 ¿Listo para crear tu sitio web profesional?
@@ -794,7 +794,7 @@ export default function DesarrolloWeb() {
                     <input
                       type="text"
                       id="name"
-                      className="w-full px-4 py-3 bg-[#0a0a0f]/70 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00CCFF] focus:border-transparent text-white"
+                      className="service-detail-input focus:outline-none focus:ring-2 focus:ring-[#00CCFF] focus:border-transparent"
                       placeholder="Tu nombre"
                     />
                   </div>
@@ -806,7 +806,7 @@ export default function DesarrolloWeb() {
                     <input
                       type="email"
                       id="email-desarrollo-web"
-                      className="w-full px-4 py-3 bg-[#0a0a0f]/70 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00CCFF] focus:border-transparent text-white"
+                      className="service-detail-input focus:outline-none focus:ring-2 focus:ring-[#00CCFF] focus:border-transparent"
                       placeholder="tu@email.com"
                     />
                   </div>
@@ -817,7 +817,7 @@ export default function DesarrolloWeb() {
                     </label>
                     <select
                       id="project"
-                      className="w-full px-4 py-3 bg-[#0a0a0f]/70 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00CCFF] focus:border-transparent text-white"
+                      className="service-detail-input focus:outline-none focus:ring-2 focus:ring-[#00CCFF] focus:border-transparent"
                     >
                       <option value="">Selecciona una opción</option>
                       <option value="corporate">Sitio Web Corporativo</option>
@@ -834,7 +834,7 @@ export default function DesarrolloWeb() {
                     <textarea
                       id="message"
                       rows={4}
-                      className="w-full px-4 py-3 bg-[#0a0a0f]/70 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00CCFF] focus:border-transparent text-white resize-none"
+                      className="service-detail-input resize-none focus:outline-none focus:ring-2 focus:ring-[#00CCFF] focus:border-transparent"
                       placeholder="Cuéntanos brevemente sobre tu proyecto..."
                     />
                   </div>
@@ -849,7 +849,7 @@ export default function DesarrolloWeb() {
               </div>
               
               <div>
-                <div className="bg-[#1a1a23] p-6 rounded-lg mb-6">
+                <div className="service-detail-panel mb-6">
                   <h3 className="font-rajdhani font-bold text-xl mb-4">Nuestros servicios incluyen</h3>
                   <ul className="space-y-3">
                     <li className="flex items-start">

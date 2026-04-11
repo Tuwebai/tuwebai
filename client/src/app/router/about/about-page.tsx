@@ -230,7 +230,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <section className="bg-[#0f0f1a] py-16 sm:py-20">
+        <section className="bg-slate-900/20 py-16 sm:py-20">
           <div className="container mx-auto px-4">
             <div className="grid gap-8 md:grid-cols-3 md:gap-0">
               {CONTEXT_STATS.map((stat, index) => (
@@ -371,7 +371,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <section className="bg-[#0f0f1a] py-16 sm:py-20">
+        <section className="bg-slate-900/20 py-16 sm:py-20">
           <div className="container mx-auto px-4">
             <div className="mx-auto max-w-6xl">
               <RevealBlock className="text-center">
@@ -399,9 +399,9 @@ export default function AboutPage() {
                           alt={project.title}
                           className="h-full w-full object-cover"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0f]/90 via-transparent to-transparent" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent" />
                         <div className="absolute bottom-4 left-4 flex flex-wrap gap-2">
-                          <span className="rounded-full border border-white/10 bg-[#0a0a0f]/80 px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-gray-200">
+                          <span className="rounded-full border border-white/10 bg-slate-950/75 px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-gray-200">
                             {project.category}
                           </span>
                           {project.badge ? (
