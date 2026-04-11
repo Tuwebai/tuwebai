@@ -464,6 +464,80 @@ const staticRouteHead = {
 };
 
 const staticRoutePrerenderContent = {
+  '/': renderHomePageContent(),
+  '/corporativos': renderMarketingRouteContent({
+    kicker: 'Sitios corporativos',
+    title: 'Sitios Corporativos Premium',
+    description:
+      'Sitios corporativos diseñados para transmitir confianza, ordenar la información clave y sostener una presencia profesional.',
+    ctaLabel: 'Solicitar propuesta',
+    ctaHref: '/consulta',
+    secondaryLabel: 'Ver proceso de trabajo',
+    secondaryHref: '/proceso',
+    points: [
+      'Arquitectura clara para empresas que necesitan credibilidad y consultas reales.',
+      'Base SEO técnica, mobile-first y performance cuidada desde el primer render.',
+      'Contenido jerarquizado para ordenar oferta, diferenciales y próximos pasos.',
+    ],
+  }),
+  '/uxui': renderMarketingRouteContent({
+    kicker: 'Diseño UX/UI',
+    title: 'Diseño UX/UI que convierte mejor',
+    description:
+      'Diseñamos interfaces web centradas en claridad, recorrido de usuario y conversión para negocios que necesitan vender mejor.',
+    ctaLabel: 'Contar mi proyecto',
+    ctaHref: '/consulta',
+    secondaryLabel: 'Ver casos relacionados',
+    secondaryHref: '/ecommerce',
+    points: [
+      'Wireframes, decisiones visuales y jerarquía pensadas para reducir fricción.',
+      'Sistemas visuales consistentes para desktop y mobile sin perder legibilidad.',
+      'Prototipos y criterios de conversión alineados con objetivos comerciales reales.',
+    ],
+  }),
+  '/ecommerce': renderMarketingRouteContent({
+    kicker: 'E-commerce',
+    title: 'E-commerce a medida para vender con claridad',
+    description:
+      'Tiendas online preparadas para una compra simple, carga rápida y una operación ordenada a medida del negocio.',
+    ctaLabel: 'Pedir propuesta',
+    ctaHref: '/consulta',
+    secondaryLabel: 'Ver diagnóstico gratuito',
+    secondaryHref: '/diagnostico-gratuito',
+    points: [
+      'Checkout claro, catálogo bien presentado y confianza visible desde el primer scroll.',
+      'Integración de medios de pago y estructura pensada para escalar sin plugins frágiles.',
+      'Base técnica y visual consistente para vender mejor en mobile y desktop.',
+    ],
+  }),
+  '/servicios/desarrollo-web': renderMarketingRouteContent({
+    kicker: 'Desarrollo web profesional',
+    title: 'Desarrollo Web Profesional',
+    description:
+      'Sitios web, landings y plataformas con foco en rendimiento, claridad comercial y una base seria para crecer.',
+    ctaLabel: 'Solicitar presupuesto',
+    ctaHref: '/consulta',
+    secondaryLabel: 'Volver al inicio',
+    secondaryHref: '/',
+    points: [
+      'Desarrollo a medida para negocios argentinos que necesitan presencia digital confiable.',
+      'Código mantenible, tiempos de carga rápidos y decisiones de producto orientadas a resultados.',
+      'Infraestructura, contenido y UX preparados para sostener evolución real del proyecto.',
+    ],
+  }),
+  '/terminos-condiciones': renderLegalRouteContent({
+    title: 'Términos y Condiciones',
+    description:
+      'Leé las condiciones de uso, contratación, pagos y propiedad intelectual que rigen los servicios de TuWebAI.',
+    updatedAt: '11 de abril de 2026',
+    sections: [
+      ['1. Información general', 'Este documento regula el uso del sitio y la contratación de servicios ofrecidos por TuWebAI.'],
+      ['2. Proceso de contratación', 'Cada contratación se confirma sobre alcance, precio, tiempos estimados y condiciones comerciales acordadas.'],
+      ['3. Pagos y entregables', 'Los pagos, etapas y entregables se detallan en la propuesta comercial aceptada por cada cliente.'],
+      ['4. Propiedad intelectual', 'El código, diseño y materiales entregados siguen las condiciones pactadas para cada proyecto.'],
+      ['5. Contacto', 'Si necesitás una aclaración sobre contratación o uso del sitio, podés escribirnos desde la sección de contacto.'],
+    ],
+  }),
   '/politica-privacidad': `
     <main class="mx-auto min-h-screen max-w-4xl px-6 py-16 text-slate-900">
       <header class="mb-10 border-b border-slate-200 pb-6">
@@ -514,6 +588,19 @@ const staticRoutePrerenderContent = {
       </div>
     </main>
   `.trim(),
+  '/politica-cookies': renderLegalRouteContent({
+    title: 'Política de Cookies',
+    description:
+      'Información técnica sobre las cookies que usa TuWebAI, para qué sirven y cómo podés administrarlas.',
+    updatedAt: '11 de abril de 2026',
+    sections: [
+      ['1. Qué son las cookies', 'Son archivos técnicos que ayudan al funcionamiento, preferencia y medición básica del sitio.'],
+      ['2. Qué usamos', 'Podemos usar cookies funcionales, de preferencia y de analítica según la configuración vigente.'],
+      ['3. Cómo administrarlas', 'Podés configurarlas desde tu navegador o mediante los controles disponibles cuando corresponda.'],
+      ['4. Terceros', 'Algunos servicios externos pueden establecer recursos propios bajo sus políticas y medidas de seguridad.'],
+      ['5. Contacto', 'Si necesitás más detalle sobre cookies o medición, podés escribirnos por los canales de contacto oficiales.'],
+    ],
+  }),
 };
 
 function escapeHtml(value) {
@@ -719,6 +806,84 @@ function renderHomePageContent() {
         </div>
       </section>
     </main>`;
+}
+
+function renderMarketingRouteContent({
+  kicker,
+  title,
+  description,
+  ctaLabel,
+  ctaHref,
+  secondaryLabel,
+  secondaryHref,
+  points,
+}) {
+  const pointItems = points
+    .map(
+      (point) => `
+        <li style="display:flex;align-items:flex-start;gap:12px;">
+          <span style="margin-top:9px;height:8px;width:8px;border-radius:999px;background:#00CCFF;box-shadow:0 0 10px rgba(0,204,255,.55);flex:0 0 auto;"></span>
+          <span>${escapeHtml(point)}</span>
+        </li>`,
+    )
+    .join('\n');
+
+  return `
+    <main style="min-height:100vh;background:
+      radial-gradient(circle at top left, rgba(0, 204, 255, 0.14), transparent 32%),
+      radial-gradient(circle at top right, rgba(153, 51, 255, 0.12), transparent 30%),
+      linear-gradient(135deg, #0f172a 0%, #1e293b 55%, #0f172a 100%);color:#fff;font-family:Inter,sans-serif;">
+      <section style="max-width:1160px;margin:0 auto;padding:120px 24px 96px;">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:28px;align-items:center;">
+          <div>
+            <div style="margin-bottom:18px;color:#9BE7FF;font-size:13px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;">${escapeHtml(kicker)}</div>
+            <h1 style="margin:0;font-family:Rajdhani,sans-serif;font-size:clamp(44px,7vw,74px);line-height:.98;font-weight:700;">${escapeHtml(title)}</h1>
+            <p style="margin:24px 0 0;max-width:760px;color:#d1d5db;font-size:20px;line-height:1.8;">${escapeHtml(description)}</p>
+            <div style="display:flex;flex-wrap:wrap;gap:14px;margin-top:32px;">
+              <a href="${ctaHref}" style="display:inline-flex;align-items:center;justify-content:center;min-width:220px;padding:14px 24px;border-radius:999px;background:linear-gradient(90deg,#00CCFF,#9933FF);color:#fff;font-size:16px;font-weight:600;text-decoration:none;box-shadow:0 10px 30px rgba(0,204,255,.22);">
+                ${escapeHtml(ctaLabel)}
+              </a>
+              <a href="${secondaryHref}" style="display:inline-flex;align-items:center;justify-content:center;min-width:220px;padding:14px 24px;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);color:#e5e7eb;font-size:16px;font-weight:500;text-decoration:none;">
+                ${escapeHtml(secondaryLabel)}
+              </a>
+            </div>
+          </div>
+
+          <aside style="border:1px solid rgba(255,255,255,.08);border-radius:28px;padding:28px;background:linear-gradient(180deg,rgba(18,18,23,.86),rgba(10,10,15,.92));">
+            <p style="margin:0 0 14px;color:#9BE7FF;font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;">Qué resolvemos</p>
+            <ul style="margin:0;padding:0;list-style:none;color:#e5e7eb;font-size:18px;line-height:1.8;">
+              ${pointItems}
+            </ul>
+          </aside>
+        </div>
+      </section>
+    </main>`;
+}
+
+function renderLegalRouteContent({ title, description, updatedAt, sections }) {
+  const sectionMarkup = sections
+    .map(
+      ([heading, body]) => `
+        <section>
+          <h2 style="margin:0 0 12px;font-family:Rajdhani,sans-serif;font-size:30px;line-height:1.1;color:#0f172a;">${escapeHtml(heading)}</h2>
+          <p style="margin:0;color:#334155;">${escapeHtml(body)}</p>
+        </section>`,
+    )
+    .join('\n');
+
+  return `
+    <main class="mx-auto min-h-screen max-w-4xl px-6 py-16 text-slate-900">
+      <header class="mb-10 border-b border-slate-200 pb-6">
+        <p class="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-cyan-700">Documento legal</p>
+        <h1 class="mb-4 text-4xl font-bold text-slate-950">${escapeHtml(title)}</h1>
+        <p class="max-w-3xl text-lg leading-8 text-slate-700">${escapeHtml(description)}</p>
+        <p class="mt-4 text-sm text-slate-500">Última actualización: ${escapeHtml(updatedAt)}</p>
+      </header>
+      <div class="space-y-8 text-base leading-8 text-slate-700">
+        ${sectionMarkup}
+      </div>
+    </main>
+  `.trim();
 }
 
 function renderArticlePageContent(article) {
