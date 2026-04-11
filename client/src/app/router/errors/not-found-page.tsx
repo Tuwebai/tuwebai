@@ -43,7 +43,7 @@ export default function NotFoundPage() {
         robots="noindex,follow"
       />
 
-      <main className="relative min-h-screen overflow-hidden bg-[#0a0a0f] px-4 py-20 text-white sm:px-6 lg:px-8">
+      <main className="page-shell-surface relative min-h-screen overflow-hidden px-4 py-20 text-white sm:px-6 lg:px-8">
         <AnimatedShape type={1} className="left-[-180px] top-16" delay={0.2} />
         <AnimatedShape type={2} className="right-[-140px] top-[28%]" delay={0.35} />
 
