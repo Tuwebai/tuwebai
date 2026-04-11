@@ -77,7 +77,7 @@ export default function PoliticaCookies() {
         ogType="website"
       />
 
-      <div className="bg-[#080810] min-h-screen">
+      <div className="page-shell-surface min-h-screen text-white">
         <PageBanner 
           title="Política de Cookies" 
           subtitle="Información técnica sobre el uso de cookies en nuestra web"
@@ -87,7 +87,7 @@ export default function PoliticaCookies() {
           <div className="flex flex-col lg:flex-row gap-12 lg:gap-20 relative items-start">
             
             {/* Sidebar TOC */}
-            <aside className="w-full lg:w-80 shrink-0 border border-white/10 bg-[#080810]/50 rounded-2xl lg:sticky lg:top-32 lg:max-h-[calc(100vh-160px)] lg:overflow-y-auto z-20 custom-scrollbar shadow-xl backdrop-blur-md">
+            <aside className="w-full lg:w-80 shrink-0 rounded-2xl border border-white/10 bg-slate-950/35 lg:sticky lg:top-32 lg:max-h-[calc(100vh-160px)] lg:overflow-y-auto z-20 custom-scrollbar shadow-xl backdrop-blur-md">
               <div className="p-6">
                 <h3 className="text-white font-semibold mb-6 flex items-center gap-2">
                   Contenido

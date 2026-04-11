@@ -242,7 +242,7 @@ export default function UXUI() {
   
   // Renderizar componentes de navegación móvil
   const renderMobileMenu = () => (
-    <div className="fixed inset-0 z-50 flex flex-col bg-[#0a0a0f] animate-in fade-in slide-in-from-right duration-300">
+    <div className="page-shell-surface fixed inset-0 z-50 flex flex-col animate-in fade-in slide-in-from-right duration-300">
       <div className="flex justify-between items-center p-4 border-b border-gray-800">
         <Link to="/" className="text-2xl font-rajdhani font-bold">
           TuWeb<span className="text-[#00CCFF]">.ai</span>
