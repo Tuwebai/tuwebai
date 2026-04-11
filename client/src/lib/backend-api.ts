@@ -136,7 +136,7 @@ export const backendApi = {
       timeoutMs: 15000,
     }),
 
-  requestChecklistWebGratis: (payload: { name: string; email: string; source?: string }) =>
+  requestChecklistWebGratis: (payload: { name: string; email: string; lastWebsiteRefresh: string; source?: string }) =>
     apiFetch<{ success?: boolean; message?: string }>('/newsletter/resources/checklist-web-gratis', {
       method: 'POST',
       body: payload,

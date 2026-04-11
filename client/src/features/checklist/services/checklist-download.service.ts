@@ -5,6 +5,7 @@ import { invokeSupabaseEdge } from '@/lib/supabase-edge';
 export interface ChecklistWebGratisDownloadInput {
   name: string;
   email: string;
+  lastWebsiteRefresh: string;
   source?: string;
 }
 

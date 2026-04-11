@@ -15,6 +15,7 @@ import { Input } from '@/shared/ui/input';
 import { Label } from '@/shared/ui/label';
 import MetaTags from '@/shared/ui/meta-tags';
 import { Progress } from '@/shared/ui/progress';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui/select';
 import { Separator } from '@/shared/ui/separator';
 import { TUWEBAI_SITE_FULL_URL } from '@/shared/constants/contact';
 
@@ -27,6 +28,7 @@ interface ChecklistCategory {
 interface DownloadFormState {
   name: string;
   email: string;
+  lastWebsiteRefresh: string;
 }
 
 const CHECKLIST_PDF_PATH = '/checklist-web-tuwebai-branded.pdf';
@@ -290,7 +292,16 @@ const CHECKLIST_FAQS = [
 const INITIAL_FORM_STATE: DownloadFormState = {
   name: '',
   email: '',
+  lastWebsiteRefresh: '',
 };
+
+const WEBSITE_REFRESH_OPTIONS = [
+  'Menos de 6 meses',
+  'Entre 6 y 12 meses',
+  'Entre 1 y 2 anos',
+  'Mas de 2 anos',
+  'Nunca o no lo se',
+] as const;
 
 function getResultContent(completedCount: number) {
   if (completedCount <= 12) {
@@ -375,6 +386,11 @@ export default function ChecklistWebGratisPage() {
       return;
     }
 
+    if (!form.lastWebsiteRefresh) {
+      setFeedback('Ingresá cuándo fue la última vez que renovaste tu web.');
+      return;
+    }
+
     setSubmitState('submitting');
     setFeedback(null);
 
@@ -382,6 +398,7 @@ export default function ChecklistWebGratisPage() {
       await requestChecklistWebGratis({
         name: form.name.trim(),
         email: form.email.trim(),
+        lastWebsiteRefresh: form.lastWebsiteRefresh,
         source: 'checklist_web_gratis',
       });
 
@@ -695,6 +712,30 @@ export default function ChecklistWebGratisPage() {
                       autoComplete="email"
                       className="min-h-11 border-white/10 bg-[#12131b] text-white placeholder:text-gray-500"
                     />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="checklist-last-refresh" className="text-gray-200">
+                      ¿Cuándo fue la última vez que renovaste tu web? *
+                    </Label>
+                    <Select
+                      value={form.lastWebsiteRefresh}
+                      onValueChange={(value) => handleFormChange('lastWebsiteRefresh', value)}
+                    >
+                      <SelectTrigger
+                        id="checklist-last-refresh"
+                        className="min-h-11 border-white/10 bg-[#12131b] text-white"
+                      >
+                        <SelectValue placeholder="Elegí una opción" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {WEBSITE_REFRESH_OPTIONS.map((option) => (
+                          <SelectItem key={option} value={option}>
+                            {option}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </div>
 
                   <div className="space-y-3 pt-2 text-center">

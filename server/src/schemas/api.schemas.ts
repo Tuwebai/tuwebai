@@ -63,6 +63,7 @@ export const checklistWebGratisDownloadSchema = z.object({
   body: z.object({
     name: z.string({ required_error: 'El nombre es requerido' }).min(2, 'El nombre debe tener al menos 2 caracteres'),
     email: z.string({ required_error: 'El email es requerido' }).email('Email invalido'),
+    lastWebsiteRefresh: z.string({ required_error: 'La ultima renovacion es requerida' }).min(2, 'La ultima renovacion es requerida').max(80, 'La ultima renovacion es invalida'),
     source: z.string().min(1, 'Source invalido').max(100).optional().default('website'),
   }),
 });

@@ -15,10 +15,11 @@ Deno.serve(async (request) => {
   const body = await request.json().catch(() => null) as Record<string, unknown> | null;
   const name = normalizeString(body?.name);
   const email = normalizeEmail(body?.email);
+  const lastWebsiteRefresh = normalizeString(body?.lastWebsiteRefresh);
   const source = normalizeString(body?.source) ?? 'website';
   const frontendUrl = normalizeString(Deno.env.get('FRONTEND_URL')) ?? 'https://tuweb-ai.com';
 
-  if (!name || !email) {
+  if (!name || !email || !lastWebsiteRefresh) {
     return buildJsonResponse(400, { success: false, message: 'Payload invalido.', requestId });
   }
 
@@ -47,7 +48,7 @@ Deno.serve(async (request) => {
       senderEmail: normalizeEmail(Deno.env.get('SMTP_FROM_EMAIL')) ?? normalizeEmail(Deno.env.get('SMTP_USER')) ?? 'no-reply@tuweb-ai.com',
       senderName: normalizeString(Deno.env.get('SMTP_FROM_NAME')) ?? 'TuWeb.ai',
       subject: 'Nueva solicitud de checklist web gratis',
-      textContent: `Nombre: ${name}\nEmail: ${email}\nSource: ${source}`,
+      textContent: `Nombre: ${name}\nEmail: ${email}\nUltima renovacion web: ${lastWebsiteRefresh}\nSource: ${source}`,
       to: normalizeEmail(Deno.env.get('CONTACT_TO_EMAIL')) ?? normalizeEmail(Deno.env.get('SMTP_USER')) ?? 'hola@tuweb-ai.com',
     });
   } catch {}

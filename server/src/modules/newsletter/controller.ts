@@ -59,9 +59,9 @@ export const handleChecklistWebGratisDownload = async (req: Request, res: Respon
   });
 
   try {
-    const { name, email, source } = req.body;
+    const { name, email, lastWebsiteRefresh, source } = req.body;
     const edgeResult = await relayEdgeFunction<{ message?: string; success?: boolean }>('checklist-intake', {
-      body: { name, email, source: source || 'website' },
+      body: { name, email, lastWebsiteRefresh, source: source || 'website' },
       requestId: res.locals.requestId as string | undefined,
     });
 
