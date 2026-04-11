@@ -1,12 +1,13 @@
 .ecommerce-page {
   min-height: 100vh;
-  background: #0a0a0f;
+  background-color: var(--bg-base);
+  background-image: var(--gradient-page-shell);
   color: #fff;
 }
 
 .ecommerce-header {
   padding: 6rem 1rem 4rem;
-  background: linear-gradient(to bottom, #0f0f19, #0a0a0f);
+  background: linear-gradient(180deg, rgb(15 23 42 / 0.34) 0%, rgb(15 23 42 / 0) 100%);
 }
 
 .ecommerce-header-layout {
@@ -59,11 +60,11 @@
 
 .ecommerce-section {
   padding: 4rem 1rem;
-  background: #0a0a0f;
+  background: transparent;
 }
 
 .ecommerce-section--featured {
-  background: linear-gradient(to bottom, #0a0a0f, #0f0f19);
+  background: linear-gradient(180deg, rgb(15 23 42 / 0.08) 0%, rgb(30 41 59 / 0.22) 100%);
 }
 
 .ecommerce-section--cta {

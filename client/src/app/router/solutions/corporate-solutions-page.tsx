@@ -18,7 +18,7 @@ export default function Corporativos() {
         <WhatsAppButton />
       
       {/* Header */}
-      <header className="bg-gradient-to-b from-[#0f0f19] to-[#0a0a0f] px-4 pb-16 pt-24 animate-in fade-in slide-in-from-top-2 duration-500">
+      <header className="px-4 pb-16 pt-24 animate-in fade-in slide-in-from-top-2 duration-500">
         <div className="container mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="mb-8 md:mb-0 md:mr-8">
@@ -110,7 +110,7 @@ export default function Corporativos() {
       </section>
 
       {/* Casos destacados */}
-      <section className="py-16 px-4 bg-gradient-to-b from-[#0a0a0f] to-[#0f0f19]">
+      <section className="py-16 px-4">
         <div className="container mx-auto">
           <div className="mb-12 text-center animate-in fade-in duration-500">
             <h2 className="text-3xl font-rajdhani font-bold mb-4 text-white">Casos destacados</h2>

@@ -71,7 +71,7 @@
 
 .uxui-hero {
   padding: 8rem 1rem 5rem;
-  background: linear-gradient(to bottom, #0f0f19, #0a0a0f);
+  background: linear-gradient(180deg, rgb(15 23 42 / 0.34) 0%, rgb(15 23 42 / 0) 100%);
 }
 
 .uxui-hero-layout {
@@ -183,15 +183,15 @@
 
 .uxui-section {
   padding: 5rem 1rem;
-  background: #0a0a0f;
+  background: transparent;
 }
 
 .uxui-section--alt {
-  background: #0c0c14;
+  background: rgb(15 23 42 / 0.14);
 }
 
 .uxui-section--cta {
-  background: linear-gradient(to bottom, #0a0a0f, #0f0f19);
+  background: linear-gradient(180deg, rgb(15 23 42 / 0.08) 0%, rgb(30 41 59 / 0.22) 100%);
 }
 
 .uxui-section-heading {

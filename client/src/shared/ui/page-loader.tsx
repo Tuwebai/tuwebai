@@ -2,7 +2,7 @@ import { Skeleton } from '@/shared/ui/skeleton';
 
 export default function PageLoader() {
   return (
-    <div className="min-h-screen bg-[#0a0a0f] px-4 pb-12 pt-24">
+    <div className="page-shell-surface min-h-screen px-4 pb-12 pt-24">
       <div className="mx-auto w-full max-w-6xl space-y-6">
         <Skeleton className="h-10 w-56 rounded-lg bg-white/10" />
         <Skeleton className="h-6 w-80 rounded-lg bg-white/10" />
