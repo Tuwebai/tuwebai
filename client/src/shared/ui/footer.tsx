@@ -2,7 +2,7 @@ import { Suspense, lazy } from 'react';
 import { Link } from 'react-router-dom';
 
 import { useIntersectionObserver } from '@/core/hooks/use-intersection-observer';
-import analytics from '@/lib/analytics';
+import { trackRuntimeOutboundClick } from '@/lib/analytics-runtime';
 import {
   TUWEBAI_CAPTIVA_URL,
   TUWEBAI_EMAIL,
@@ -71,7 +71,7 @@ function FooterNavLink({ link }: { link: FooterLink }) {
         target="_blank"
         rel="noopener noreferrer"
         className={className}
-        onClick={() => analytics.trackOutboundClick(link.href, 'footer', link.label, 'external_link')}
+        onClick={() => trackRuntimeOutboundClick(link.href, 'footer', link.label, 'external_link')}
       >
         {link.label}
       </a>
@@ -139,7 +139,7 @@ export default function Footer() {
                   href={`mailto:${TUWEBAI_EMAIL}`}
                   className="transition-colors hover:text-white"
                   onClick={() =>
-                    analytics.trackOutboundClick(`mailto:${TUWEBAI_EMAIL}`, 'footer', TUWEBAI_EMAIL, 'email')
+                    trackRuntimeOutboundClick(`mailto:${TUWEBAI_EMAIL}`, 'footer', TUWEBAI_EMAIL, 'email')
                   }
                 >
                   {TUWEBAI_EMAIL}
@@ -150,7 +150,7 @@ export default function Footer() {
                   href={`tel:${TUWEBAI_WHATSAPP_TEL}`}
                   className="transition-colors hover:text-white"
                   onClick={() =>
-                    analytics.trackOutboundClick(`tel:${TUWEBAI_WHATSAPP_TEL}`, 'footer', TUWEBAI_WHATSAPP_DISPLAY, 'phone')
+                    trackRuntimeOutboundClick(`tel:${TUWEBAI_WHATSAPP_TEL}`, 'footer', TUWEBAI_WHATSAPP_DISPLAY, 'phone')
                   }
                 >
                   {TUWEBAI_WHATSAPP_DISPLAY}
@@ -193,7 +193,7 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               className="transition-colors hover:text-white"
-              onClick={() => analytics.trackOutboundClick(TUWEBAI_LINKEDIN_URL, 'footer', 'LinkedIn', 'social')}
+              onClick={() => trackRuntimeOutboundClick(TUWEBAI_LINKEDIN_URL, 'footer', 'LinkedIn', 'social')}
             >
               LinkedIn
             </a>
@@ -202,7 +202,7 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               className="transition-colors hover:text-white"
-              onClick={() => analytics.trackOutboundClick(TUWEBAI_INSTAGRAM_URL, 'footer', 'Instagram', 'social')}
+              onClick={() => trackRuntimeOutboundClick(TUWEBAI_INSTAGRAM_URL, 'footer', 'Instagram', 'social')}
             >
               Instagram
             </a>
@@ -211,7 +211,7 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               className="transition-colors hover:text-white"
-              onClick={() => analytics.trackOutboundClick(TUWEBAI_GITHUB_URL, 'footer', 'GitHub', 'social')}
+              onClick={() => trackRuntimeOutboundClick(TUWEBAI_GITHUB_URL, 'footer', 'GitHub', 'social')}
             >
               GitHub
             </a>

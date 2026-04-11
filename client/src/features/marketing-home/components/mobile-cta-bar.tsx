@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import analytics from '@/lib/analytics';
+import { trackRuntimeCtaClick, trackRuntimeOutboundClick } from '@/lib/analytics-runtime';
 import { TUWEBAI_WHATSAPP_URL } from '@/shared/constants/contact';
 
 export default function MobileCtaBar() {
@@ -46,8 +46,8 @@ export default function MobileCtaBar() {
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => {
-            analytics.trackCtaClick('whatsapp_mobile_sticky', 'mobile_cta_bar', whatsappUrl);
-            analytics.trackOutboundClick(
+            trackRuntimeCtaClick('whatsapp_mobile_sticky', 'mobile_cta_bar', whatsappUrl);
+            trackRuntimeOutboundClick(
               whatsappUrl,
               'mobile_cta_bar',
               'WhatsApp sticky mobile',
@@ -61,7 +61,7 @@ export default function MobileCtaBar() {
 
         <Link
           to="/consulta"
-          onClick={() => analytics.trackCtaClick('contar_proyecto_mobile_sticky', 'mobile_cta_bar', '/consulta')}
+          onClick={() => trackRuntimeCtaClick('contar_proyecto_mobile_sticky', 'mobile_cta_bar', '/consulta')}
           className="inline-flex min-h-12 flex-[1.2] items-center justify-center rounded-full bg-[image:var(--gradient-brand)] px-4 py-3 text-sm font-semibold text-white shadow-[var(--glow-signal)]"
         >
           Contar mi proyecto

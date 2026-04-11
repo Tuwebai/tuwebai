@@ -1,5 +1,5 @@
-import analytics from '@/lib/analytics';
 import { API_URL } from '@/lib/api';
+import { trackRuntimeWebVital } from '@/lib/analytics-runtime';
 
 type LayoutShiftEntry = PerformanceEntry & {
   hadRecentInput?: boolean;
@@ -59,7 +59,7 @@ export function detectPerformanceFeatures(): {
 
 export function reportPerformanceMetric(metricName: string, value: number): void {
   if (typeof window === 'undefined') return;
-  analytics.trackWebVital(metricName, value);
+  trackRuntimeWebVital(metricName, value);
 }
 
 const roundMetric = (value: number | undefined): number | undefined => {

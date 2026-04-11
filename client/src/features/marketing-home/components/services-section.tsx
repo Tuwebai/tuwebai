@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 
 import { useTrackSectionView } from '@/core/hooks/use-track-section-view';
-import analytics from '@/lib/analytics';
+import { trackRuntimeCtaClick } from '@/lib/analytics-runtime';
 import RevealBlock from '@/shared/ui/reveal-block';
 
 interface ServiceCardProps {
@@ -162,7 +162,7 @@ export default function ServicesSection({ setRef }: ServicesSectionProps) {
         <RevealBlock className="mt-16 text-center" delayMs={220}>
           <a
             href="/consulta"
-            onClick={() => analytics.trackCtaClick('contar_mi_proyecto', 'services', '/consulta')}
+            onClick={() => trackRuntimeCtaClick('contar_mi_proyecto', 'services', '/consulta')}
             className="inline-flex w-full items-center justify-center rounded-full bg-[image:var(--gradient-brand)] px-6 py-4 text-center font-medium text-white shadow-[var(--glow-signal)] transition-transform duration-300 hover:scale-[1.02] sm:w-auto sm:px-8"
           >
             Contar mi proyecto

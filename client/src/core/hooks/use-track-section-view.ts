@@ -1,6 +1,6 @@
 import { RefObject, useEffect } from 'react';
 
-import analytics from '@/lib/analytics';
+import { trackRuntimeSectionView } from '@/lib/analytics-runtime';
 
 interface UseTrackSectionViewOptions {
   rootMargin?: string;
@@ -22,7 +22,7 @@ export function useTrackSectionView(
     }
 
     if (!('IntersectionObserver' in window)) {
-      analytics.trackSectionView(sectionName);
+      trackRuntimeSectionView(sectionName);
       return;
     }
 
@@ -31,7 +31,7 @@ export function useTrackSectionView(
         const [entry] = entries;
 
         if (entry?.isIntersecting) {
-          analytics.trackSectionView(sectionName);
+          trackRuntimeSectionView(sectionName);
           observer.disconnect();
         }
       },
