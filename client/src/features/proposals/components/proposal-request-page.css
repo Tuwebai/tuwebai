@@ -1,6 +1,7 @@
 .proposal-request-page {
   min-height: 100vh;
-  background: #0a0a0f;
+  background-color: var(--bg-base);
+  background-image: var(--gradient-page-shell);
   color: #ffffff;
 }
 

@@ -511,7 +511,7 @@ export default function UXUI() {
       </section>
       
       {/* Proyectos Section */}
-      <section ref={proyectosRef} id="proyectos" className="py-20 px-4 bg-[#0a0a0f]">
+      <section ref={proyectosRef} id="proyectos" className="px-4 py-20">
         <div className="container mx-auto">
           <div className="mx-auto mb-16 max-w-3xl text-center animate-in fade-in slide-in-from-bottom-2 duration-500">
             <h2 className="text-3xl md:text-4xl font-rajdhani font-bold mb-4">

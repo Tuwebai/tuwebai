@@ -321,7 +321,7 @@ export default function Consulta() {
       </header>
 
       {/* Formulario de consulta */}
-      <section className="py-16 px-4 bg-[#0a0a0f]">
+      <section className="px-4 py-16">
         <div className="container mx-auto">
           <div className="max-w-3xl mx-auto">
             <div className="proposal-request-frame animate-in fade-in slide-in-from-bottom-2 duration-500">
