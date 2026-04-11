@@ -113,7 +113,7 @@ export default function WebPriceCalculatorPage() {
         ogImage="/logo-tuwebai.png"
       />
 
-      <div className="min-h-screen bg-[#0a0a0f] text-white">
+      <div className="page-shell-surface min-h-screen text-white">
         <section className="px-4 pb-16 pt-28 sm:pb-20 sm:pt-32">
           <div className="mx-auto max-w-6xl">
             <div className="mx-auto max-w-4xl text-center">
