@@ -14,7 +14,7 @@ export default function Corporativos() {
         ogType="website"
         ogImage="/logo-tuwebai.png"
       />
-      <div className="min-h-screen bg-[#0a0a0f] text-white">
+      <div className="page-shell-surface min-h-screen text-white">
         <WhatsAppButton />
       
       {/* Header */}
@@ -43,7 +43,7 @@ export default function Corporativos() {
       </header>
 
       {/* Descripción extendida */}
-      <section className="py-16 px-4 bg-[#0a0a0f]">
+      <section className="px-4 py-16">
         <div className="container mx-auto">
           <div className="mx-auto max-w-4xl animate-in fade-in slide-in-from-bottom-2 duration-500">
             <h2 className="text-3xl font-rajdhani font-bold mb-6 text-white">¿Por qué necesitás un sitio corporativo?</h2>
@@ -190,7 +190,7 @@ export default function Corporativos() {
       </section>
 
       {/* Call to action */}
-      <section className="py-20 px-4 bg-[#0a0a0f]">
+      <section className="px-4 py-20">
         <div className="container mx-auto">
           <div className="mx-auto max-w-4xl text-center animate-in fade-in slide-in-from-bottom-2 duration-500">
             <h2 className="text-3xl md:text-4xl font-rajdhani font-bold mb-6 text-white">

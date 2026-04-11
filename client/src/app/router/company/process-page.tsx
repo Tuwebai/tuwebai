@@ -189,7 +189,7 @@ export default function ProcessPage() {
         structuredData={PROCESS_HOWTO_SCHEMA}
       />
 
-      <main className="min-h-screen bg-[#0a0a0f] text-gray-300">
+      <main className="page-shell-surface min-h-screen text-gray-300">
         <section className="relative overflow-hidden bg-gradient-1 pb-20 pt-28 sm:pb-24 sm:pt-32">
           <AnimatedShape type={1} className="right-[-140px] top-[12%]" delay={1} />
           <AnimatedShape type={2} className="bottom-[8%] left-[-120px]" delay={2} />
@@ -237,7 +237,7 @@ export default function ProcessPage() {
           </div>
         </section>
 
-        <section className="bg-[#0a0a0f] py-16 sm:py-20">
+        <section className="py-16 sm:py-20">
           <div className="container mx-auto px-4">
             <div className="mx-auto max-w-6xl">
               <RevealBlock className="text-center">
@@ -360,7 +360,7 @@ export default function ProcessPage() {
           </div>
         </section>
 
-        <section className="bg-[#0a0a0f] py-16 sm:py-20">
+        <section className="py-16 sm:py-20">
           <div className="container mx-auto px-4">
             <div className="mx-auto max-w-4xl">
               <RevealBlock className="text-center">

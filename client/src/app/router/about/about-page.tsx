@@ -166,7 +166,7 @@ export default function AboutPage() {
         structuredData={ABOUT_PERSON_SCHEMA}
       />
 
-      <div className="min-h-screen bg-[#0a0a0f] text-gray-300">
+      <div className="page-shell-surface min-h-screen text-gray-300">
         <section className="relative overflow-hidden bg-gradient-1 pb-20 pt-28 sm:pb-24 sm:pt-32">
           <AnimatedShape type={1} className="right-[-140px] top-[12%]" delay={1} />
           <AnimatedShape type={2} className="bottom-[8%] left-[-120px]" delay={2} />
@@ -200,7 +200,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <section className="bg-[#0a0a0f] py-16 sm:py-20">
+        <section className="py-16 sm:py-20">
           <div className="container mx-auto px-4">
             <div className="mx-auto max-w-3xl text-center">
               <RevealBlock>
@@ -255,7 +255,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <section className="bg-[#0a0a0f] py-16 sm:py-20">
+        <section className="py-16 sm:py-20">
           <div className="container mx-auto px-4">
             <div className="mx-auto max-w-6xl">
               <RevealBlock className="text-center">
@@ -288,7 +288,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <section className="bg-[#0a0a0f] py-16 sm:py-20">
+        <section className="py-16 sm:py-20">
           <div className="container mx-auto px-4">
             <div className="mx-auto max-w-5xl">
               <RevealBlock className="text-center">
@@ -460,7 +460,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <section className="bg-[#0a0a0f] py-16 sm:py-20">
+        <section className="py-16 sm:py-20">
           <div className="container mx-auto px-4">
             <RevealBlock
               hiddenClassName="opacity-0 translate-y-8"
