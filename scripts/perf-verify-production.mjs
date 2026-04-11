@@ -1,6 +1,8 @@
 import fs from 'node:fs/promises';
+import https from 'node:https';
 import path from 'node:path';
 import process from 'node:process';
+import { lookup, resolve4 } from 'node:dns/promises';
 import { performance } from 'node:perf_hooks';
 
 const FRONTEND_BASE_URL = process.env.PERF_BASE_URL || 'https://tuweb-ai.com';
@@ -34,6 +36,61 @@ function normalizeUrl(baseUrl, route) {
 
 function pickHeaders(headers, keys) {
   return Object.fromEntries(keys.map((key) => [key, headers.get(key) || '']));
+}
+
+function timedHttpsRequest(url, forcedIp) {
+  const targetUrl = new URL(url);
+
+  return new Promise((resolve, reject) => {
+    const startedAt = performance.now();
+    let headersAt = null;
+
+    const request = https.request(
+      {
+        protocol: targetUrl.protocol,
+        hostname: forcedIp,
+        port: targetUrl.port || 443,
+        path: `${targetUrl.pathname}${targetUrl.search}`,
+        method: 'GET',
+        servername: targetUrl.hostname,
+        timeout: 15000,
+        headers: {
+          'cache-control': 'no-cache',
+          host: targetUrl.hostname,
+          pragma: 'no-cache',
+        },
+      },
+      (response) => {
+        headersAt = performance.now();
+        const chunks = [];
+
+        response.on('data', (chunk) => {
+          chunks.push(chunk);
+        });
+
+        response.on('end', () => {
+          const completedAt = performance.now();
+          resolve({
+            ip: forcedIp,
+            status: response.statusCode ?? 0,
+            ttfbMs: Number(((headersAt ?? completedAt) - startedAt).toFixed(2)),
+            totalMs: Number((completedAt - startedAt).toFixed(2)),
+            contentLength: chunks.reduce((total, chunk) => total + chunk.length, 0),
+          });
+        });
+      },
+    );
+
+    request.on('timeout', () => {
+      request.destroy(new Error(`timeout after 15000ms via ${forcedIp}`));
+    });
+
+    request.on('error', (error) => {
+      reject(error);
+    });
+
+    request.end();
+  });
 }
 
 async function timedFetch(url, init = {}) {
@@ -95,13 +152,82 @@ async function runScenario(scenario) {
   }
 }
 
-function toMarkdown(results) {
+async function runFrontendDnsAudit() {
+  const hostname = new URL(FRONTEND_BASE_URL).hostname;
+
+  try {
+    let records = [];
+
+    try {
+      records = await resolve4(hostname);
+    } catch {
+      const resolved = await lookup(hostname, { all: true, family: 4 });
+      records = resolved.map((entry) => entry.address);
+    }
+    const edgeChecks = [];
+
+    for (const ip of records) {
+      try {
+        const result = await timedHttpsRequest(FRONTEND_BASE_URL, ip);
+        edgeChecks.push({
+          ...result,
+          passed: result.status === 200 && result.ttfbMs < 5000,
+          error: null,
+        });
+      } catch (error) {
+        edgeChecks.push({
+          ip,
+          status: 'ERROR',
+          ttfbMs: null,
+          totalMs: null,
+          contentLength: 0,
+          passed: false,
+          error: error instanceof Error ? error.message : String(error),
+        });
+      }
+    }
+
+    return {
+      hostname,
+      records,
+      expectedApexIp: '75.2.60.5',
+      edgeChecks,
+      suspiciousRecords: records.filter((ip) => ip !== '75.2.60.5'),
+      passed: edgeChecks.every((check) => check.passed),
+    };
+  } catch (error) {
+    return {
+      hostname,
+      records: [],
+      expectedApexIp: '75.2.60.5',
+      edgeChecks: [],
+      suspiciousRecords: [],
+      passed: false,
+      error: error instanceof Error ? error.message : String(error),
+    };
+  }
+}
+
+function toMarkdown(results, dnsAudit) {
   return [
     '# Production Verification Matrix',
     '',
     `- Generated at: ${new Date().toISOString()}`,
     `- Frontend base: ${FRONTEND_BASE_URL}`,
     `- Backend base: ${BACKEND_BASE_URL}`,
+    '',
+    '## DNS audit',
+    '',
+    `- Hostname: ${dnsAudit.hostname}`,
+    `- A records: ${dnsAudit.records.length > 0 ? dnsAudit.records.join(', ') : 'none'}`,
+    `- Expected apex IP: ${dnsAudit.expectedApexIp}`,
+    `- Suspicious records: ${dnsAudit.suspiciousRecords.length > 0 ? dnsAudit.suspiciousRecords.join(', ') : 'none'}`,
+    '',
+    '| Edge IP | Status | Pass | TTFB ms | Total ms | Error |',
+    '| --- | ---: | --- | ---: | ---: | --- |',
+    ...dnsAudit.edgeChecks.map((check) =>
+      `| ${check.ip} | ${check.status} | ${check.passed ? 'yes' : 'no'} | ${check.ttfbMs ?? '-'} | ${check.totalMs ?? '-'} | ${check.error || '-'} |`,
+    ),
     '',
     '| Scenario | Status | Pass | TTFB ms | Total ms | Redirected | Location | Cache-Control |',
     '| --- | ---: | --- | ---: | ---: | --- | --- | --- |',
@@ -114,6 +240,7 @@ function toMarkdown(results) {
 
 async function main() {
   const results = [];
+  const dnsAudit = await runFrontendDnsAudit();
 
   for (const scenario of SCENARIOS) {
     results.push(await runScenario(scenario));
@@ -121,9 +248,28 @@ async function main() {
 
   await fs.mkdir(OUTPUT_DIR, { recursive: true });
   await fs.writeFile(path.join(OUTPUT_DIR, 'verification-matrix.json'), JSON.stringify(results, null, 2), 'utf8');
-  await fs.writeFile(path.join(OUTPUT_DIR, 'verification-matrix.md'), toMarkdown(results), 'utf8');
+  await fs.writeFile(
+    path.join(OUTPUT_DIR, 'verification-dns-audit.json'),
+    JSON.stringify(dnsAudit, null, 2),
+    'utf8',
+  );
+  await fs.writeFile(path.join(OUTPUT_DIR, 'verification-matrix.md'), toMarkdown(results, dnsAudit), 'utf8');
 
   const failed = results.filter((result) => !result.passed);
+  const dnsFailed = !dnsAudit.passed;
+
+  console.log(
+    `[perf-verify] DNS ${dnsAudit.hostname}: records=${dnsAudit.records.join(', ') || 'none'} suspicious=${dnsAudit.suspiciousRecords.join(', ') || 'none'}`,
+  );
+
+  for (const check of dnsAudit.edgeChecks) {
+    const summary = `${check.ip}: status=${check.status} ttfb=${check.ttfbMs ?? '-'}ms total=${check.totalMs ?? '-'}ms`;
+    if (check.passed) {
+      console.log(`[perf-verify] PASS edge ${summary}`);
+    } else {
+      console.error(`[perf-verify] FAIL edge ${summary}${check.error ? ` error=${check.error}` : ''}`);
+    }
+  }
 
   for (const result of results) {
     const summary = `${result.name}: status=${result.status} ttfb=${result.ttfbMs ?? '-'}ms total=${result.totalMs ?? '-'}ms`;
@@ -134,7 +280,7 @@ async function main() {
     }
   }
 
-  if (failed.length > 0) {
+  if (failed.length > 0 || dnsFailed) {
     process.exitCode = 1;
   }
 }
