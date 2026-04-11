@@ -2,13 +2,11 @@ import { Suspense, lazy, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import GlobalNavbar from '@/app/layout/global-navbar';
-import { ThirdPartyScriptManager } from '@/app/performance';
 import { AppQueryProvider } from '@/app/providers/app-query-provider';
 import HomePage from '@/app/router/home/home-page';
 import { ThemeProvider } from '@/core/theme/ThemeContext';
 import { AuthProvider } from '@/features/auth/context/AuthContext';
 import { LoginModalProvider } from '@/features/auth/hooks/use-login-modal';
-import analytics from '@/lib/analytics';
 import { runWhenIdle } from '@/lib/performance';
 import { SkipLink } from '@/shared/ui/skip-link';
 
@@ -16,9 +14,18 @@ const AuthenticatedAppRoot = lazy(() => import('@/app/authenticated-app-root'));
 const PublicRoutes = lazy(() => import('@/app/router/public-routes'));
 const Footer = lazy(() => import('@/shared/ui/footer'));
 const Toaster = lazy(() => import('@/shared/ui/toaster').then((module) => ({ default: module.Toaster })));
+const ThirdPartyScriptManager = lazy(() =>
+  import('@/app/performance').then((module) => ({ default: module.ThirdPartyScriptManager })),
+);
 
 const shouldUseAuthenticatedShell = (pathname: string) =>
   pathname.startsWith('/panel') || pathname.startsWith('/auth/');
+
+const loadAnalytics = async () => {
+  const module = await import('@/lib/analytics');
+  module.default.setConsent(true);
+  return module.default;
+};
 
 function PublicShellFrame() {
   const location = useLocation();
@@ -29,7 +36,9 @@ function PublicShellFrame() {
 
   return (
     <div data-surface="marketing" className="app-global-surface">
-      <ThirdPartyScriptManager />
+      <Suspense fallback={null}>
+        <ThirdPartyScriptManager />
+      </Suspense>
       <SkipLink />
       <GlobalNavbar />
       {location.pathname === '/' ? (
@@ -53,25 +62,24 @@ function PublicAppRoot() {
   const location = useLocation();
 
   useEffect(() => {
-    analytics.setConsent(true);
-  }, []);
-
-  useEffect(() => {
     let settled = false;
 
-    const initializeAnalytics = () => {
+    const initializeAnalytics = async () => {
       if (settled) {
         return;
       }
 
       settled = true;
+      const analytics = await loadAnalytics();
       analytics.initialize();
     };
 
-    runWhenIdle(initializeAnalytics, 2500);
+    runWhenIdle(() => {
+      void initializeAnalytics();
+    }, 2500);
 
     const onUserIntent = () => {
-      initializeAnalytics();
+      void initializeAnalytics();
       window.removeEventListener('pointerdown', onUserIntent);
       window.removeEventListener('keydown', onUserIntent);
       window.removeEventListener('scroll', onUserIntent);
@@ -90,17 +98,18 @@ function PublicAppRoot() {
   }, [location.pathname]);
 
   useEffect(() => {
-    if (!analytics.isConfigured()) {
-      return;
-    }
-
     const path = location.pathname + location.search;
     const pageTitle = document.title || 'Tuweb.ai';
 
     let settled = false;
 
-    const trackPageView = () => {
+    const trackPageView = async () => {
       if (settled) {
+        return;
+      }
+
+      const analytics = await loadAnalytics();
+      if (!analytics.isConfigured()) {
         return;
       }
 
@@ -108,10 +117,12 @@ function PublicAppRoot() {
       analytics.pageview(path, pageTitle);
     };
 
-    runWhenIdle(trackPageView, 3000);
+    runWhenIdle(() => {
+      void trackPageView();
+    }, 3000);
 
     const onUserIntent = () => {
-      trackPageView();
+      void trackPageView();
       window.removeEventListener('pointerdown', onUserIntent);
       window.removeEventListener('keydown', onUserIntent);
       window.removeEventListener('scroll', onUserIntent);
