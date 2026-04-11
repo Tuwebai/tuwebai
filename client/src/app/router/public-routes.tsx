@@ -23,6 +23,9 @@ const TurnosOnlineMedicosArgentinaPage = lazy(() => import('@/features/content/c
 const WebInmobiliariaArgentinaPage = lazy(() => import('@/features/content/components/web-inmobiliaria-argentina-page'));
 const PortalPropiedadesDesarrolloWebPage = lazy(() => import('@/features/content/components/portal-propiedades-desarrollo-web-page'));
 const CrmInmobiliarioAMedidaPage = lazy(() => import('@/features/content/components/crm-inmobiliario-a-medida-page'));
+const WebParaRestauranteBarArgentinaPage = lazy(() => import('@/features/content/components/web-para-restaurante-bar-argentina-page'));
+const CartaDigitalQrRestaurantePage = lazy(() => import('@/features/content/components/carta-digital-qr-restaurante-page'));
+const ReservasOnlineRestaurantePage = lazy(() => import('@/features/content/components/reservas-online-restaurante-page'));
 
 const WebDevelopmentPage = lazy(() => import('@/app/router/services/web-development-page'));
 const AboutPage = lazy(() => import('@/app/router/about/about-page'));
@@ -64,6 +67,9 @@ export default function PublicRoutes() {
       <Route path="/web-inmobiliaria-argentina" element={<LazyRoute><WebInmobiliariaArgentinaPage /></LazyRoute>} />
       <Route path="/portal-propiedades-desarrollo-web" element={<LazyRoute><PortalPropiedadesDesarrolloWebPage /></LazyRoute>} />
       <Route path="/crm-inmobiliario-a-medida" element={<LazyRoute><CrmInmobiliarioAMedidaPage /></LazyRoute>} />
+      <Route path="/web-para-restaurante-bar-argentina" element={<LazyRoute><WebParaRestauranteBarArgentinaPage /></LazyRoute>} />
+      <Route path="/carta-digital-qr-restaurante" element={<LazyRoute><CartaDigitalQrRestaurantePage /></LazyRoute>} />
+      <Route path="/reservas-online-restaurante" element={<LazyRoute><ReservasOnlineRestaurantePage /></LazyRoute>} />
       <Route path="/calculadora-precio-web" element={<LazyRoute><WebPriceCalculatorPage /></LazyRoute>} />
       <Route path="/comparar-opciones-web" element={<LazyRoute><WebSolutionComparisonPage /></LazyRoute>} />
       <Route path="/nosotros" element={<LazyRoute><AboutPage /></LazyRoute>} />
