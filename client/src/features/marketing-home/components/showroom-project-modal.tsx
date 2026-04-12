@@ -59,7 +59,7 @@ export default function ShowroomProjectModal({
         </button>
 
         <div
-          className="relative w-full max-w-6xl overflow-hidden rounded-[24px] border border-[var(--border-strong)] bg-[var(--bg-overlay)] shadow-[var(--shadow-modal)] animate-in fade-in zoom-in-95 duration-300 sm:rounded-[28px]"
+          className="relative w-full max-w-6xl overflow-hidden rounded-[24px] border border-[var(--border-default)] bg-[var(--bg-overlay)] shadow-[var(--shadow-modal),0_0_0_1px_var(--signal-glow)] animate-in fade-in zoom-in-95 duration-300 sm:rounded-[28px]"
           onClick={(event) => event.stopPropagation()}
         >
           <button
@@ -103,8 +103,8 @@ export default function ShowroomProjectModal({
             </button>
           </div>
 
-          <div className="grid lg:grid-cols-[minmax(0,1.04fr)_minmax(280px,0.96fr)] xl:grid-cols-[minmax(0,1.04fr)_minmax(320px,0.96fr)]">
-            <div className="border-b border-white/10 bg-[var(--bg-elevated)]/70 lg:border-b-0 lg:border-r">
+          <div className="grid lg:grid-cols-[minmax(0,1.04fr)_minmax(0,0.96fr)] xl:grid-cols-[minmax(0,1.04fr)_minmax(0,0.96fr)]">
+            <div className="min-w-0 border-b border-[var(--border-default)] bg-[var(--bg-elevated)]/70 lg:border-b-0 lg:border-r lg:border-r-[var(--border-default)]">
               <div className="aspect-[16/10] overflow-hidden">
                 <img
                   src={project.image}
@@ -113,8 +113,8 @@ export default function ShowroomProjectModal({
                 />
               </div>
 
-              <div className="grid gap-3 border-t border-white/10 p-4 sm:p-5">
-                <div className="rounded-2xl border border-white/8 bg-[var(--bg-elevated)] p-4">
+              <div className="grid gap-3 border-t border-[var(--border-default)] p-4 sm:p-5">
+                <div className="rounded-2xl border border-[var(--border-default)] bg-[var(--bg-elevated)] p-4">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--signal)]">
                     {clientNeedLabel}
                   </p>
@@ -123,7 +123,7 @@ export default function ShowroomProjectModal({
                   </p>
                 </div>
 
-                <div className="rounded-2xl border border-white/8 bg-[var(--bg-elevated)] p-4">
+                <div className="rounded-2xl border border-[var(--border-default)] bg-[var(--bg-elevated)] p-4">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white">
                     {solutionSummaryLabel}
                   </p>
@@ -132,7 +132,7 @@ export default function ShowroomProjectModal({
                   </p>
                 </div>
 
-                <div className="rounded-2xl border border-white/8 bg-[var(--bg-elevated)] p-4">
+                <div className="rounded-2xl border border-[var(--border-default)] bg-[var(--bg-elevated)] p-4">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--signal)]">
                     {valueSummaryLabel}
                   </p>
@@ -143,8 +143,8 @@ export default function ShowroomProjectModal({
               </div>
             </div>
 
-            <div className="flex flex-col p-5 sm:p-6 lg:p-7 xl:p-8">
-              <div className="mb-5 border-b border-white/10 pb-5 pr-10">
+            <div className="min-w-0 flex flex-col p-5 sm:p-6 lg:p-7 xl:p-8">
+              <div className="mb-5 border-b border-[var(--border-default)] pb-5 pr-10 sm:pr-12">
                 <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="rounded-full border border-[var(--signal-border)] bg-[var(--signal-glow)] px-3 py-1 text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--signal)]">
@@ -159,13 +159,13 @@ export default function ShowroomProjectModal({
                 <h3 className="font-rajdhani text-2xl font-bold text-white sm:text-3xl xl:text-4xl">
                   {project.title}
                 </h3>
-                <p className="mt-3 max-w-xl text-sm leading-7 text-gray-300 sm:text-base">
+                <p className="mt-3 max-w-xl break-words text-sm leading-7 text-gray-300 sm:text-base">
                   {project.description}
                 </p>
               </div>
 
               <div className="grid gap-5">
-                <section className="rounded-2xl border border-white/8 bg-[var(--bg-elevated)] p-4 sm:p-5">
+                <section className="min-w-0 rounded-2xl border border-[var(--border-default)] bg-[var(--bg-elevated)] p-4 sm:p-5">
                   <div className="mb-3">
                     <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--signal)]">
                       Lo que incluye
@@ -179,26 +179,28 @@ export default function ShowroomProjectModal({
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
                           </svg>
                         </span>
-                        <span>{feature}</span>
+                        <span className="min-w-0 break-words">{feature}</span>
                       </li>
                     ))}
                   </ul>
                 </section>
 
-                <section className="rounded-2xl border border-white/8 bg-[var(--bg-elevated)] p-4 sm:p-5">
+                <section className="min-w-0 rounded-2xl border border-[var(--border-default)] bg-[var(--bg-elevated)] p-4 sm:p-5">
                   <div className="mb-3">
                     <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white">
                       Impacto
                     </p>
                   </div>
-                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
                     {project.results.map((result) => (
                       <div
                         key={`${project.id}-${result.label}`}
-                        className="rounded-xl border border-white/8 bg-[var(--bg-elevated)]/88 px-4 py-4 text-left"
+                        className="min-w-0 rounded-xl border border-[var(--border-default)] bg-[var(--bg-elevated)]/88 px-4 py-4 text-left"
                       >
-                        <div className="text-2xl font-bold leading-none text-[var(--signal)] sm:text-3xl">{result.value}</div>
-                        <div className="mt-2 text-[11px] uppercase tracking-[0.12em] text-gray-400">
+                        <div className="break-words text-[clamp(1.6rem,3vw,2.25rem)] font-bold leading-tight text-[var(--signal)]">
+                          {result.value}
+                        </div>
+                        <div className="mt-2 break-words text-[11px] uppercase tracking-[0.12em] text-gray-400">
                           {result.label}
                         </div>
                       </div>
@@ -207,8 +209,8 @@ export default function ShowroomProjectModal({
                 </section>
               </div>
 
-              <div className="mt-6 flex flex-col gap-4 border-t border-white/10 pt-5">
-                <p className="max-w-md text-sm leading-6 text-gray-400">
+              <div className="mt-6 flex flex-col gap-4 border-t border-[var(--border-default)] pt-5">
+                <p className="max-w-md break-words text-sm leading-6 text-gray-400">
                   Si buscas una solucion con este nivel de claridad, rendimiento y foco comercial, podemos ayudarte a definir el mejor camino.
                 </p>
 
