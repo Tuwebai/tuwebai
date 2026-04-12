@@ -61,7 +61,7 @@ export default function VisitorPathSelector() {
   return (
     <section className="relative bg-transparent py-8 sm:py-10">
       <div className="container mx-auto px-4">
-        <div className="mx-auto max-w-5xl rounded-[28px] border border-white/10 bg-[var(--bg-surface)]/88 p-6 shadow-[var(--shadow-modal)] sm:p-8">
+        <div className="mx-auto max-w-5xl rounded-[28px] border border-[var(--border-default)] bg-[var(--bg-surface)]/88 p-6 shadow-[var(--shadow-modal)] sm:p-8">
           <div className="mx-auto max-w-3xl text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--signal)]">
               ¿Esto es para vos?
@@ -83,7 +83,7 @@ export default function VisitorPathSelector() {
                 className={`rounded-2xl border px-4 py-5 text-left transition-colors ${
                   activePath === path.id
                     ? 'border-[var(--signal-border)] bg-[var(--signal)]/10 text-white'
-                    : 'border-white/10 bg-white/5 text-gray-300'
+                    : 'border-[var(--border-default)] bg-[var(--bg-elevated)]/72 text-gray-300'
                 }`}
               >
                 <p className="font-medium">{path.title}</p>
@@ -91,7 +91,7 @@ export default function VisitorPathSelector() {
             ))}
           </div>
 
-          <div className="mt-8 grid gap-6 rounded-[28px] border border-white/10 bg-white/[0.03] p-6 lg:grid-cols-[minmax(0,1fr)_260px] lg:items-center">
+          <div className="mt-8 grid gap-6 rounded-[28px] border border-[var(--border-default)] bg-[var(--bg-elevated)]/56 p-6 lg:grid-cols-[minmax(0,1fr)_260px] lg:items-center">
             <div>
               <p className="font-rajdhani text-2xl font-bold text-white">{currentPath.title}</p>
               <p className="mt-4 text-base leading-7 text-gray-300">{currentPath.description}</p>
@@ -109,7 +109,7 @@ export default function VisitorPathSelector() {
               <Link
                 to="/comparar-opciones-web"
                 onClick={() => trackVisitorPathComparisonClick(currentPath.id)}
-                className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-medium text-gray-200"
+                className="inline-flex min-h-12 items-center justify-center rounded-full border border-[var(--border-default)] bg-[var(--bg-surface)]/72 px-6 py-3 text-sm font-medium text-gray-200"
               >
                 Comparar opciones
               </Link>

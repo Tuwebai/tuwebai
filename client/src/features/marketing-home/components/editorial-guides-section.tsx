@@ -35,9 +35,9 @@ const guides = [
 export default function EditorialGuidesSection() {
   return (
     <section className="container mx-auto px-4 py-12 sm:py-14">
-      <div className="rounded-[32px] border border-white/10 bg-[linear-gradient(180deg,rgba(15,23,42,0.94),rgba(15,23,42,0.78))] px-5 py-8 shadow-[0_28px_70px_rgba(2,6,23,0.28)] sm:px-7 lg:px-10">
+      <div className="rounded-[32px] border border-[var(--border-default)] bg-[linear-gradient(180deg,var(--bg-overlay),rgba(15,23,42,0.82))] px-5 py-8 shadow-[var(--shadow-modal)] sm:px-7 lg:px-10">
         <div className="max-w-3xl">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#9BE7FF]">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[var(--signal)]">
             Guías útiles
           </p>
           <h2 className="mt-4 font-rajdhani text-3xl font-bold leading-tight text-white sm:text-4xl">
@@ -49,9 +49,9 @@ export default function EditorialGuidesSection() {
           {guides.map((guide) => (
             <article
               key={guide.href}
-              className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 transition-transform duration-300 hover:-translate-y-1"
+              className="rounded-[24px] border border-[var(--border-default)] bg-[var(--bg-surface)]/72 p-5 transition-transform duration-300 hover:-translate-y-1"
             >
-              <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#7DD3FC]">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[var(--signal)]">
                 {guide.eyebrow}
               </p>
               <h3 className="mt-4 font-rajdhani text-2xl font-bold leading-tight text-white">
@@ -62,7 +62,7 @@ export default function EditorialGuidesSection() {
               </p>
               <Link
                 to={guide.href}
-                className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-[#9BE7FF] transition-colors hover:text-white"
+                className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-[var(--signal)] transition-colors hover:text-white"
               >
                 {guide.cta}
                 <ArrowRight className="h-4 w-4" />

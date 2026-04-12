@@ -40,7 +40,7 @@ export default function MobileCtaBar() {
           : 'pointer-events-none translate-y-full opacity-0'
       }`}
     >
-      <div className="mx-auto flex max-w-md items-center gap-3 rounded-[1.25rem] border border-white/10 bg-[rgba(11,15,30,0.94)] p-3 shadow-[0_-10px_40px_rgba(0,0,0,0.28)] backdrop-blur-md">
+      <div className="mx-auto flex max-w-md items-center gap-3 rounded-[1.25rem] border border-[var(--border-default)] bg-[var(--bg-overlay)]/95 p-3 shadow-[var(--shadow-modal)] backdrop-blur-md">
         <a
           href={whatsappUrl}
           target="_blank"
@@ -54,7 +54,7 @@ export default function MobileCtaBar() {
               'whatsapp',
             );
           }}
-          className="inline-flex min-h-12 flex-1 items-center justify-center rounded-full border border-[#25D366]/30 bg-[#25D366]/15 px-4 py-3 text-sm font-semibold text-[#7df0a5]"
+          className="inline-flex min-h-12 flex-1 items-center justify-center rounded-full border border-[var(--signal-border)] bg-[var(--signal-glow)] px-4 py-3 text-sm font-semibold text-[var(--signal)]"
         >
           WhatsApp
         </a>
