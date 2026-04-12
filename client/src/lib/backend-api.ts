@@ -115,20 +115,6 @@ export const backendApi = {
       body: payload,
     }),
 
-  submitProposal: (payload: {
-    nombre: string;
-    email: string;
-    tipo_proyecto: string;
-    servicios?: string;
-    presupuesto?: string;
-    plazo?: string;
-    detalles: string;
-  }) =>
-    apiFetch<{ success?: boolean; message?: string }>('/api/propuesta', {
-      method: 'POST',
-      body: payload,
-    }),
-
   subscribeNewsletter: (payload: { email: string; source?: string }) =>
     apiFetch<{ success?: boolean; message?: string }>('/newsletter', {
       method: 'POST',

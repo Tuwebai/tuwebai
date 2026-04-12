@@ -19,7 +19,6 @@ Deno.serve(async (request) => {
   const pais = normalizeString(body?.pais);
   const tipoProyecto = normalizeString(body?.tipo_proyecto);
   const comoNosEncontraste = normalizeString(body?.como_nos_encontraste);
-  const servicios = normalizeString(body?.servicios);
   const presupuesto = normalizeString(body?.presupuesto);
   const plazo = normalizeString(body?.plazo);
   const detalles = normalizeString(body?.detalles);
@@ -37,7 +36,6 @@ Deno.serve(async (request) => {
     pais,
     tipo_proyecto: tipoProyecto,
     como_nos_encontraste: comoNosEncontraste,
-    servicios,
     presupuesto,
     plazo,
     detalles,
@@ -69,14 +67,13 @@ Deno.serve(async (request) => {
         'Nueva solicitud de propuesta',
         `Nombre: ${nombre}`,
         `Email: ${email}`,
-        `Pais: ${pais || 'No especificado'}`,
+        `País: ${pais || 'No especificado'}`,
         `Tipo de proyecto: ${tipoProyecto}`,
-        `Como nos encontro: ${comoNosEncontraste || 'No especificado'}`,
-        `Servicios: ${servicios || 'No especificado'}`,
+        `Cómo nos encontró: ${comoNosEncontraste || 'No especificado'}`,
         `Presupuesto: ${presupuesto || 'No especificado'}`,
         `Plazo: ${plazo || 'No especificado'}`,
         '',
-        'Detalles:',
+        'Descripción del proyecto:',
         detalles,
       ].join('\n'),
       to: normalizeEmail(Deno.env.get('CONTACT_TO_EMAIL')) ?? normalizeEmail(Deno.env.get('SMTP_USER')) ?? 'hola@tuweb-ai.com',
