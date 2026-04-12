@@ -67,3 +67,37 @@ export const invokeSupabaseEdge = async <T>(
 
   return data as T;
 };
+
+export const invokeSupabaseEdgePublic = async <T>(
+  functionName: string,
+  options: EdgeInvokeOptions = {},
+): Promise<T> => {
+  const { data, error } = await supabaseBrowserClient.functions.invoke(functionName, {
+    body: options.body,
+    headers: {
+      ...(supabasePublicConfig.anonKey
+        ? {
+            apikey: supabasePublicConfig.anonKey,
+            Authorization: `Bearer ${supabasePublicConfig.anonKey}`,
+          }
+        : {}),
+    },
+  });
+
+  if (error) {
+    throw new SupabaseEdgeInvokeError(error.message, extractInvokeStatus(error));
+  }
+
+  const payload = data as { message?: string; success?: boolean } | null;
+
+  if (payload && payload.success === false) {
+    throw new SupabaseEdgeInvokeError(
+      typeof payload.message === 'string' && payload.message.trim().length > 0
+        ? payload.message
+        : 'Edge function public request failed',
+      undefined,
+    );
+  }
+
+  return data as T;
+};
