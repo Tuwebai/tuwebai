@@ -16,7 +16,9 @@ Deno.serve(async (request) => {
   const body = await request.json().catch(() => null) as Record<string, unknown> | null;
   const nombre = normalizeString(body?.nombre);
   const email = normalizeEmail(body?.email);
+  const pais = normalizeString(body?.pais);
   const tipoProyecto = normalizeString(body?.tipo_proyecto);
+  const comoNosEncontraste = normalizeString(body?.como_nos_encontraste);
   const servicios = normalizeString(body?.servicios);
   const presupuesto = normalizeString(body?.presupuesto);
   const plazo = normalizeString(body?.plazo);
@@ -32,7 +34,9 @@ Deno.serve(async (request) => {
   const payload = {
     nombre,
     email,
+    pais,
     tipo_proyecto: tipoProyecto,
+    como_nos_encontraste: comoNosEncontraste,
     servicios,
     presupuesto,
     plazo,
@@ -65,7 +69,9 @@ Deno.serve(async (request) => {
         'Nueva solicitud de propuesta',
         `Nombre: ${nombre}`,
         `Email: ${email}`,
+        `Pais: ${pais || 'No especificado'}`,
         `Tipo de proyecto: ${tipoProyecto}`,
+        `Como nos encontro: ${comoNosEncontraste || 'No especificado'}`,
         `Servicios: ${servicios || 'No especificado'}`,
         `Presupuesto: ${presupuesto || 'No especificado'}`,
         `Plazo: ${plazo || 'No especificado'}`,
