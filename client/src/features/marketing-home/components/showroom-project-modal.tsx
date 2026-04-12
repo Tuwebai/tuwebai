@@ -191,16 +191,16 @@ export default function ShowroomProjectModal({
                       Impacto
                     </p>
                   </div>
-                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                  <div className="grid grid-cols-1 gap-3 min-[520px]:grid-cols-2">
                     {project.results.map((result) => (
                       <div
                         key={`${project.id}-${result.label}`}
                         className="min-w-0 rounded-xl border border-[var(--border-default)] bg-[var(--bg-elevated)]/88 px-4 py-4 text-left"
                       >
-                        <div className="break-words text-[clamp(1.6rem,3vw,2.25rem)] font-bold leading-tight text-[var(--signal)]">
+                        <div className="break-words text-lg font-bold leading-snug text-[var(--signal)] sm:text-xl">
                           {result.value}
                         </div>
-                        <div className="mt-2 break-words text-[11px] uppercase tracking-[0.12em] text-gray-400">
+                        <div className="mt-2 break-words text-[10px] uppercase tracking-[0.1em] text-gray-400 sm:text-[11px]">
                           {result.label}
                         </div>
                       </div>
