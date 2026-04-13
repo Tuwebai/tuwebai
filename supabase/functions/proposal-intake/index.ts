@@ -78,7 +78,12 @@ Deno.serve(async (request) => {
       ].join('\n'),
       to: normalizeEmail(Deno.env.get('CONTACT_TO_EMAIL')) ?? normalizeEmail(Deno.env.get('SMTP_USER')) ?? 'hola@tuweb-ai.com',
     });
-  } catch {}
+  } catch (error) {
+    console.error('proposal-intake email failed', {
+      error: error instanceof Error ? error.message : 'unknown_error',
+      requestId,
+    });
+  }
 
   return buildJsonResponse(202, {
     success: true,
