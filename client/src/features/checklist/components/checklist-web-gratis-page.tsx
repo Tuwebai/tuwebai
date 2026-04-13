@@ -133,9 +133,9 @@ const CHECKLIST_BENEFITS = [
 const CHECKLIST_HOWTO_SCHEMA_SEO = {
   '@context': 'https://schema.org',
   '@type': 'HowTo',
-  name: 'CÃ³mo auditar tu sitio web en 10 minutos',
+  name: 'Cómo auditar tu sitio web en 10 minutos',
   description:
-    'Checklist de 35 puntos para evaluar velocidad, mobile, conversiÃ³n, SEO y analytics de cualquier sitio web argentino.',
+    'Checklist de 35 puntos para evaluar velocidad, mobile, conversión, SEO y analytics de cualquier sitio web argentino.',
   totalTime: 'PT10M',
   estimatedCost: {
     '@type': 'MonetaryAmount',
@@ -150,7 +150,7 @@ const CHECKLIST_HOWTO_SCHEMA_SEO = {
       url: `${TUWEBAI_SITE_FULL_URL}/checklist-web-gratis#velocidad`,
       itemListElement: [
         { '@type': 'HowToStep', position: 1, text: 'Verificar que la web carga en menos de 3 segundos en mobile' },
-        { '@type': 'HowToStep', position: 2, text: 'Comprimir imÃ¡genes y convertir a formato WebP' },
+        { '@type': 'HowToStep', position: 2, text: 'Comprimir imágenes y convertir a formato WebP' },
         { '@type': 'HowToStep', position: 3, text: 'Eliminar scripts de terceros bloqueantes' },
         { '@type': 'HowToStep', position: 4, text: 'Medir el puntaje de PageSpeed en mobile' },
         { '@type': 'HowToStep', position: 5, text: 'Verificar que las fuentes cargan con display=swap' },
@@ -162,8 +162,8 @@ const CHECKLIST_HOWTO_SCHEMA_SEO = {
       position: 2,
       url: `${TUWEBAI_SITE_FULL_URL}/checklist-web-gratis#mobile`,
       itemListElement: [
-        { '@type': 'HowToStep', position: 1, text: 'Verificar el diseÃ±o en pantallas de 375px de ancho' },
-        { '@type': 'HowToStep', position: 2, text: 'Comprobar que los botones tienen Ã¡rea tÃ¡ctil suficiente' },
+        { '@type': 'HowToStep', position: 1, text: 'Verificar el diseño en pantallas de 375px de ancho' },
+        { '@type': 'HowToStep', position: 2, text: 'Comprobar que los botones tienen área táctil suficiente' },
         { '@type': 'HowToStep', position: 3, text: 'Confirmar que el texto es legible sin zoom' },
         { '@type': 'HowToStep', position: 4, text: 'Probar los formularios desde el teclado del celular' },
         { '@type': 'HowToStep', position: 5, text: 'Verificar que no hay elementos superpuestos en mobile' },
@@ -171,27 +171,27 @@ const CHECKLIST_HOWTO_SCHEMA_SEO = {
     },
     {
       '@type': 'HowToSection',
-      name: 'ConversiÃ³n y CTAs',
+      name: 'Conversión y CTAs',
       position: 3,
       url: `${TUWEBAI_SITE_FULL_URL}/checklist-web-gratis#conversion`,
       itemListElement: [
         { '@type': 'HowToStep', position: 1, text: 'Verificar CTA visible sin scroll en la home' },
-        { '@type': 'HowToStep', position: 2, text: 'Comprobar que el CTA describe quÃ© pasa al hacer clic' },
+        { '@type': 'HowToStep', position: 2, text: 'Comprobar que el CTA describe qué pasa al hacer clic' },
         { '@type': 'HowToStep', position: 3, text: 'Confirmar que el formulario tiene 5 campos o menos' },
         { '@type': 'HowToStep', position: 4, text: 'Verificar que el negocio se entiende en 5 segundos' },
-        { '@type': 'HowToStep', position: 5, text: 'Comprobar que hay un botÃ³n de WhatsApp siempre visible' },
+        { '@type': 'HowToStep', position: 5, text: 'Comprobar que hay un botón de WhatsApp siempre visible' },
       ],
     },
     {
       '@type': 'HowToSection',
-      name: 'SEO bÃ¡sico',
+      name: 'SEO básico',
       position: 4,
       url: `${TUWEBAI_SITE_FULL_URL}/checklist-web-gratis#seo`,
       itemListElement: [
-        { '@type': 'HowToStep', position: 1, text: 'Verificar tÃ­tulos Ãºnicos en cada pÃ¡gina' },
-        { '@type': 'HowToStep', position: 2, text: 'Confirmar meta descriptions Ãºnicas' },
+        { '@type': 'HowToStep', position: 1, text: 'Verificar títulos únicos en cada página' },
+        { '@type': 'HowToStep', position: 2, text: 'Confirmar meta descriptions únicas' },
         { '@type': 'HowToStep', position: 3, text: 'Verificar sitemap.xml enviado a Search Console' },
-        { '@type': 'HowToStep', position: 4, text: 'Confirmar verificaciÃ³n en Google Search Console' },
+        { '@type': 'HowToStep', position: 4, text: 'Confirmar verificación en Google Search Console' },
         { '@type': 'HowToStep', position: 5, text: 'Verificar Google Business Profile completo' },
       ],
     },
@@ -204,15 +204,15 @@ const CHECKLIST_FAQ_SCHEMA = {
   mainEntity: [
     {
       '@type': 'Question',
-      name: 'Â¿El checklist es realmente gratis?',
+      name: '¿El checklist es realmente gratis?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'SÃ­, completamente gratis. PodÃ©s usarlo online sin registro o descargarlo en PDF dejando tu email.',
+        text: 'Sí, completamente gratis. Podés usarlo online sin registro o descargarlo en PDF dejando tu email.',
       },
     },
     {
       '@type': 'Question',
-      name: 'Â¿Para quÃ© tipo de sitio web sirve este checklist?',
+      name: '¿Para qué tipo de sitio web sirve este checklist?',
       acceptedAnswer: {
         '@type': 'Answer',
         text: 'Para cualquier sitio web de negocio: tiendas online, sitios corporativos, profesionales independientes o sistemas web. Los 35 puntos aplican a cualquier web que quiera generar consultas o ventas.',
@@ -220,18 +220,18 @@ const CHECKLIST_FAQ_SCHEMA = {
     },
     {
       '@type': 'Question',
-      name: 'Â¿Necesito conocimientos tÃ©cnicos para usarlo?',
+      name: '¿Necesito conocimientos técnicos para usarlo?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'No. El checklist estÃ¡ escrito en lenguaje simple para que cualquier dueÃ±o de negocio pueda completarlo sin ayuda tÃ©cnica.',
+        text: 'No. El checklist está escrito en lenguaje simple para que cualquier dueño de negocio pueda completarlo sin ayuda técnica.',
       },
     },
     {
       '@type': 'Question',
-      name: 'Â¿QuÃ© hago si encuentro problemas en el checklist?',
+      name: '¿Qué hago si encuentro problemas en el checklist?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'PodÃ©s pedir un diagnÃ³stico gratuito en TuWebAI donde revisamos los problemas identificados y te decimos cÃ³mo resolverlos.',
+        text: 'Podés pedir un diagnóstico gratuito en TuWebAI donde revisamos los problemas identificados y te decimos cómo resolverlos.',
       },
     },
   ],
@@ -265,27 +265,27 @@ const CHECKLIST_BREADCRUMB_SCHEMA_SEO = {
 const CHECKLIST_FAQS = [
   {
     value: 'faq-gratis',
-    question: 'Â¿El checklist es realmente gratis?',
+    question: '¿El checklist es realmente gratis?',
     answer:
-      'SÃ­, completamente gratis. PodÃ©s usar este checklist web online sin registro o descargarlo en PDF dejando tu email.',
+      'Sí, completamente gratis. Podés usar este checklist web online sin registro o descargarlo en PDF dejando tu email.',
   },
   {
     value: 'faq-tipo-sitio',
-    question: 'Â¿Para quÃ© tipo de sitio web sirve este checklist?',
+    question: '¿Para qué tipo de sitio web sirve este checklist?',
     answer:
       'Sirve para cualquier sitio web de negocio en Argentina: tiendas online, sitios corporativos, profesionales independientes o sistemas web que necesiten mejorar conversiones.',
   },
   {
     value: 'faq-tecnico',
-    question: 'Â¿Necesito conocimientos tÃ©cnicos para usarlo?',
+    question: '¿Necesito conocimientos técnicos para usarlo?',
     answer:
-      'No. El checklist estÃ¡ escrito en lenguaje simple para que puedas auditar sitio web, revisar velocidad, mobile y SEO sin ayuda tÃ©cnica.',
+      'No. El checklist está escrito en lenguaje simple para que puedas auditar sitio web, revisar velocidad, mobile y SEO sin ayuda técnica.',
   },
   {
     value: 'faq-problemas',
-    question: 'Â¿QuÃ© hago si encuentro problemas en el checklist?',
+    question: '¿Qué hago si encuentro problemas en el checklist?',
     answer:
-      'PodÃ©s pedir un diagnÃ³stico gratuito en TuWebAI para revisar tu auditorÃ­a web, priorizar cambios y entender quÃ© estÃ¡ frenando la conversiÃ³n de tu sitio.',
+      'Podés pedir un diagnóstico gratuito en TuWebAI para revisar tu auditoría web, priorizar cambios y entender qué está frenando la conversión de tu sitio.',
   },
 ] as const;
 
@@ -456,8 +456,8 @@ export default function ChecklistWebGratisPage() {
             </p>
 
             <p className="mt-4 max-w-3xl text-sm leading-7 text-gray-400 sm:text-base">
-              Este checklist web gratis estÃ¡ pensado para negocios de Argentina que quieren auditar
-              sitio web, revisar velocidad web, mobile, SEO y conversiÃ³n sin depender de una
+              Este checklist web gratis está pensado para negocios de Argentina que quieren auditar
+              sitio web, revisar velocidad web, mobile, SEO y conversión sin depender de una
               agencia en la primera etapa.
             </p>
 
@@ -489,10 +489,7 @@ export default function ChecklistWebGratisPage() {
 
             <div className="grid gap-5 md:grid-cols-3">
               {CHECKLIST_BENEFITS.map((benefit) => (
-                <Card
-                  key={benefit.title}
-                  className="border-white/10 bg-[linear-gradient(180deg,rgba(19,19,28,0.92)_0%,rgba(12,12,18,0.96)_100%)] text-white shadow-[0_20px_50px_rgba(0,0,0,0.24)]"
-                >
+                <Card key={benefit.title} className="editorial-surface-card text-white shadow-[0_20px_50px_rgba(0,0,0,0.24)]">
                   <CardHeader>
                     <CardTitle className="font-rajdhani text-2xl">{benefit.title}</CardTitle>
                   </CardHeader>
@@ -516,14 +513,14 @@ export default function ChecklistWebGratisPage() {
               </p>
               <h2 className="font-rajdhani text-3xl font-bold sm:text-4xl">El checklist completo</h2>
               <p className="mt-4 text-base leading-7 text-gray-300">
-                Us? este checklist web online para revisar conversi?n, velocidad web, SEO y
-                experiencia mobile desde celular o desktop, y med? r?pido d?nde est? perdiendo
+                Usá este checklist web online para revisar conversión, velocidad web, SEO y
+                experiencia mobile desde celular o desktop, y medí rápido dónde está perdiendo
                 rendimiento tu sitio.
               </p>
               <p className="mt-3 text-base leading-7 text-gray-300">
-                Si prefer?s una auditor?a web m?s guiada, complet? este checklist web y despu?s
-                compar? el puntaje con la secci?n de resultados para priorizar cambios de SEO y
-                conversi?n.
+                Si preferís una auditoría web más guiada, completá este checklist web y después
+                compará el puntaje con la sección de resultados para priorizar cambios de SEO y
+                conversión.
               </p>
             </div>
 
@@ -535,7 +532,7 @@ export default function ChecklistWebGratisPage() {
                       key={category.id}
                       id={category.id}
                       value={category.id}
-                      className="overflow-hidden rounded-[24px] border border-white/10 bg-[#10111a]/92 text-white shadow-[0_20px_50px_rgba(0,0,0,0.18)]"
+                      className="editorial-surface-card overflow-hidden rounded-[24px] text-white shadow-[0_20px_50px_rgba(0,0,0,0.18)]"
                     >
                       <AccordionTrigger className="px-6 py-5 text-left hover:no-underline">
                         <span className="flex items-center gap-3 pr-4">
@@ -559,7 +556,7 @@ export default function ChecklistWebGratisPage() {
                                   'flex cursor-pointer items-start gap-3 rounded-2xl border px-4 py-3 transition-colors',
                                   checked
                                     ? 'border-[#00CCFF]/45 bg-[#00CCFF]/10'
-                                    : 'border-white/8 bg-white/[0.02] hover:border-[#00CCFF]/30',
+                                    : 'editorial-surface-card--interactive border-white/8 bg-white/[0.02]',
                                 )}
                               >
                                 <Checkbox
@@ -587,7 +584,7 @@ export default function ChecklistWebGratisPage() {
               </div>
 
               <aside className="space-y-5 lg:sticky lg:top-28 lg:self-start">
-                <Card className="border-white/10 bg-[#10111a]/96 text-white shadow-[0_20px_50px_rgba(0,0,0,0.22)]">
+                <Card className="editorial-surface-card text-white shadow-[0_20px_50px_rgba(0,0,0,0.22)]">
                   <CardHeader>
                     <CardTitle className="font-rajdhani text-2xl">Progreso del checklist</CardTitle>
                   </CardHeader>
@@ -604,7 +601,7 @@ export default function ChecklistWebGratisPage() {
                   </CardContent>
                 </Card>
 
-                <Card className="border-white/10 bg-[#10111a]/96 text-white shadow-[0_20px_50px_rgba(0,0,0,0.22)]">
+                <Card className="editorial-surface-card editorial-surface-card--accent text-white shadow-[0_20px_50px_rgba(0,0,0,0.22)]">
                   <CardHeader>
                     <CardTitle className="font-rajdhani text-2xl">Resultado del checklist</CardTitle>
                   </CardHeader>
@@ -644,7 +641,7 @@ export default function ChecklistWebGratisPage() {
               </p>
             </div>
 
-            <div className="rounded-[28px] border border-white/10 bg-[#10111a]/96 p-6 shadow-[0_20px_60px_rgba(0,0,0,0.24)] sm:p-8">
+            <div className="editorial-surface-panel rounded-[28px] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.24)] sm:p-8">
               {submitState === 'sent' ? (
                 <div className="space-y-5 text-center">
                   <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-500/15 text-emerald-300">
@@ -671,7 +668,7 @@ export default function ChecklistWebGratisPage() {
                       type="button"
                       variant="outline"
                       onClick={() => setSubmitState('idle')}
-                      className="min-h-11 rounded-full border-white/10 bg-white/5 px-6 text-white hover:bg-white/10"
+                      className="editorial-secondary-button min-h-11 rounded-full px-6 text-white hover:bg-white/10"
                     >
                       Enviar a otro email
                     </Button>
@@ -758,7 +755,7 @@ export default function ChecklistWebGratisPage() {
         </section>
 
         <section className="border-t border-white/10 px-4 py-16 sm:py-20">
-          <div className="mx-auto max-w-4xl rounded-[28px] border border-white/10 bg-[linear-gradient(180deg,rgba(19,19,28,0.92)_0%,rgba(11,11,17,0.96)_100%)] p-8 text-center shadow-[0_30px_70px_rgba(0,0,0,0.28)]">
+          <div className="editorial-surface-panel mx-auto max-w-4xl rounded-[28px] p-8 text-center shadow-[0_30px_70px_rgba(0,0,0,0.28)]">
             <p className="mb-3 text-sm uppercase tracking-[0.24em] text-[#9BE7FF]">CTA final</p>
             <h2 className="font-rajdhani text-3xl font-bold sm:text-4xl">
               ¿Encontraste problemas en el checklist?
@@ -788,7 +785,7 @@ export default function ChecklistWebGratisPage() {
               </h2>
             </div>
 
-            <Accordion type="single" collapsible className="rounded-[24px] border border-white/10 bg-[#10111a]/96 px-4 py-2">
+            <Accordion type="single" collapsible className="editorial-surface-panel rounded-[24px] px-4 py-2">
               {CHECKLIST_FAQS.map((faq) => (
                 <AccordionItem key={faq.value} value={faq.value} className="border-white/10">
                   <AccordionTrigger className="text-left font-rajdhani text-xl font-bold text-white hover:no-underline">

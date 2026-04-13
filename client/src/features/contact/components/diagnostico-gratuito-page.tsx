@@ -442,12 +442,9 @@ export default function DiagnosticoGratuitoPage() {
 
             <div className="mt-10 grid gap-5 md:grid-cols-3">
               {DIAGNOSIS_FEATURES.map(({ title, description, icon: Icon }) => (
-                <Card
-                  key={title}
-                  className="border-white/10 bg-[var(--bg-surface)] text-white shadow-[var(--shadow-elevated)]"
-                >
+                <Card key={title} className="editorial-surface-card text-white shadow-[var(--shadow-elevated)]">
                   <CardHeader className="space-y-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--signal-glow)] text-[var(--signal)]">
+                    <div className="editorial-surface-card editorial-surface-card--accent flex h-12 w-12 items-center justify-center rounded-2xl text-[var(--signal)]">
                       <Icon className="h-6 w-6" />
                     </div>
                     <CardTitle className="font-rajdhani text-2xl">{title}</CardTitle>
@@ -475,7 +472,7 @@ export default function DiagnosticoGratuitoPage() {
               </h2>
             </div>
 
-            <div className="rounded-[28px] border border-white/10 bg-[var(--bg-surface)] p-6 shadow-[var(--shadow-modal)] sm:p-8">
+            <div className="editorial-surface-panel rounded-[28px] p-6 shadow-[var(--shadow-modal)] sm:p-8">
               {submitState === 'sent' ? (
                 <div className="space-y-5 text-center">
                   <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-500/15 text-emerald-300">
@@ -581,7 +578,7 @@ export default function DiagnosticoGratuitoPage() {
                         <label
                           key={option}
                           className={cn(
-                            'flex min-h-11 cursor-pointer items-start gap-3 rounded-2xl border border-white/10 bg-[var(--bg-elevated)] px-4 py-3 text-sm text-gray-300 transition-colors hover:border-[var(--signal-border)] hover:bg-[var(--bg-subtle)]',
+                            'editorial-surface-card editorial-surface-card--interactive flex min-h-11 cursor-pointer items-start gap-3 rounded-2xl px-4 py-3 text-sm text-gray-300 transition-colors',
                             form.mainProblem === option && 'border-[var(--signal-border)] bg-[var(--signal-glow)] text-white',
                           )}
                         >
@@ -659,7 +656,7 @@ export default function DiagnosticoGratuitoPage() {
               </h2>
             </div>
 
-            <div className="mt-10 rounded-[28px] border border-white/10 bg-[var(--bg-surface)] p-3 sm:p-4">
+            <div className="editorial-surface-panel mt-10 rounded-[28px] p-3 sm:p-4">
               <Accordion type="single" collapsible className="w-full">
                 {DIAGNOSTICO_FAQS.map((faq) => (
                   <AccordionItem key={faq.value} value={faq.value} className="border-white/10 px-3">
@@ -677,7 +674,7 @@ export default function DiagnosticoGratuitoPage() {
         </section>
 
         <section className="border-t border-white/10 px-4 py-16 sm:py-20">
-          <div className="mx-auto max-w-4xl rounded-[28px] border border-white/10 bg-[var(--bg-surface)] p-8 text-center shadow-[var(--shadow-modal)]">
+          <div className="editorial-surface-panel mx-auto max-w-4xl rounded-[28px] p-8 text-center shadow-[var(--shadow-modal)]">
             <p className="mb-3 text-sm uppercase tracking-[0.24em] text-[var(--signal)]">
               CTA directo
             </p>
@@ -694,7 +691,7 @@ export default function DiagnosticoGratuitoPage() {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => trackFreeDiagnosisWhatsAppClick(whatsappHref)}
-                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-[var(--border-default)] bg-[var(--bg-elevated)] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[var(--bg-subtle)]"
+                className="editorial-secondary-button inline-flex min-h-11 items-center justify-center gap-2 px-6 py-3 text-sm font-semibold"
               >
                 <BarChart3 className="h-4 w-4" />
                 Escribinos por WhatsApp →
