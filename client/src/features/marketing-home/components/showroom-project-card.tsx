@@ -21,16 +21,26 @@ export default function ShowroomProjectCard({
 }: ShowroomProjectCardProps) {
   return (
     <div
-      className={`editorial-surface-card editorial-surface-card--interactive h-full cursor-pointer rounded-xl transition-all duration-500 ${
+      className={`editorial-surface-card editorial-surface-card--interactive editorial-project-card h-full cursor-pointer transition-all duration-500 ${
         hasShownProjects ? 'translate-y-0 opacity-100 hover:-translate-y-1' : 'translate-y-5 opacity-0'
       }`}
       style={{ transitionDelay: hasShownProjects ? '0ms' : `${300 + index * 100}ms` }}
       onClick={() => onOpen(project)}
     >
-      <div className="group relative h-48 overflow-hidden">
-        <img src={project.image} alt={project.title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
-        <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/60 to-transparent p-3">
-          <span className="text-sm font-medium text-white">Vista previa</span>
+      <div className="editorial-project-card__media group h-52">
+        <img
+          src={project.image}
+          alt={project.title}
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#020617]/90 via-[#020617]/20 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-4">
+          <span className="editorial-pill editorial-pill--muted text-[11px] font-medium uppercase tracking-[0.16em] text-white">
+            Vista previa
+          </span>
+          <span className="text-[11px] uppercase tracking-[0.18em] text-white/60">
+            {categoryLabel}
+          </span>
         </div>
         {project.externalUrl ? (
           <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
@@ -44,9 +54,9 @@ export default function ShowroomProjectCard({
         ) : null}
       </div>
 
-      <div className="p-6">
+      <div className="editorial-project-card__content">
         <div className="mb-3 flex items-start justify-between gap-3">
-          <h3 className="font-rajdhani text-xl font-bold text-white">{project.title}</h3>
+          <h3 className="font-rajdhani text-[1.45rem] font-bold leading-none text-white">{project.title}</h3>
         </div>
 
         <div className="mb-3 flex flex-wrap items-center gap-2">
@@ -65,14 +75,14 @@ export default function ShowroomProjectCard({
           ) : null}
         </div>
 
-        <p className="mb-4 line-clamp-3 text-sm text-gray-400">{project.description}</p>
+        <p className="mb-5 line-clamp-3 text-sm leading-6 text-gray-300">{project.description}</p>
 
         <button
           onClick={(event) => {
             event.stopPropagation();
             onOpen(project);
           }}
-          className="flex items-center text-sm font-medium text-[var(--signal)] transition-colors hover:text-white"
+          className="mt-auto flex items-center text-sm font-medium text-[var(--signal)] transition-colors hover:text-white"
         >
           <span>Ver detalles</span>
           <svg xmlns="http://www.w3.org/2000/svg" className="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
