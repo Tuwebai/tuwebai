@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { execFileSync } from 'node:child_process';
 
 const SITE_URL = 'https://tuweb-ai.com';
 const DEFAULT_OG_IMAGE = `${SITE_URL}/logo-tuwebai.png`;
@@ -330,6 +331,38 @@ function buildSeoTitle(title, keywords, seoTitleOverride) {
   return title;
 }
 
+function getGitFileDates(absolutePath) {
+  try {
+    const gitRoot = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
+    const relativePath = path.relative(gitRoot, absolutePath).replace(/\\/g, '/');
+    const logOutput = execFileSync(
+      'git',
+      ['log', '--follow', '--format=%aI', '--', relativePath],
+      {
+        cwd: gitRoot,
+        encoding: 'utf8',
+        stdio: ['ignore', 'pipe', 'ignore'],
+      },
+    ).trim();
+
+    if (!logOutput) {
+      return null;
+    }
+
+    const dates = logOutput.split('\n').map((value) => value.trim()).filter(Boolean);
+    if (dates.length === 0) {
+      return null;
+    }
+
+    return {
+      publishedAt: dates[dates.length - 1],
+      updatedAt: dates[0],
+    };
+  } catch {
+    return null;
+  }
+}
+
 export function buildBlogPosts(docsDir) {
   const entries = fs.readdirSync(docsDir, { withFileTypes: true });
   const markdownFiles = entries.filter((entry) => entry.isFile() && entry.name.endsWith('.md'));
@@ -339,6 +372,7 @@ export function buildBlogPosts(docsDir) {
     const absolutePath = path.join(docsDir, entry.name);
     const rawContent = fs.readFileSync(absolutePath, 'utf8');
     const stats = fs.statSync(absolutePath);
+    const gitDates = getGitFileDates(absolutePath);
     const { data: frontmatter, content } = parseFrontmatter(rawContent.replace(/\r\n/g, '\n'));
     const titleMatch = content.match(/^#\s+(.+)$/m);
 
@@ -351,8 +385,8 @@ export function buildBlogPosts(docsDir) {
     const title = frontmatter.title?.trim() || titleMatch[1].trim();
     const description = frontmatter.description?.trim() || extractDescription(content);
     const excerpt = frontmatter.excerpt?.trim() || extractExcerpt(content);
-    const publishedAt = frontmatter.publishedAt?.trim() || stats.birthtime.toISOString();
-    const updatedAt = frontmatter.updatedAt?.trim() || stats.mtime.toISOString();
+    const publishedAt = frontmatter.publishedAt?.trim() || gitDates?.publishedAt || stats.birthtime.toISOString();
+    const updatedAt = frontmatter.updatedAt?.trim() || gitDates?.updatedAt || stats.mtime.toISOString();
     const canonicalUrl = `${SITE_URL}/blog/${slug}/`;
     const ogImage = frontmatter.ogImage?.trim() || DEFAULT_OG_IMAGE;
     const { html, headings } = parseMarkdown(content);

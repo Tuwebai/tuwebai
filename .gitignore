@@ -59,6 +59,7 @@ jspm_packages/
 .idea/
 *.swp
 *.swo
+.codexignore
 
 # OS generated files
 .DS_Store
@@ -106,3 +107,5 @@ docs/*
 proyecto-template/*
 *.md
 *.sql
+!docs-blogs/
+!docs-blogs/**/*.md
