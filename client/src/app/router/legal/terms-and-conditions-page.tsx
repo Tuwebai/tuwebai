@@ -98,7 +98,7 @@ export default function TerminosCondiciones() {
           <div className="flex flex-col lg:flex-row gap-12 lg:gap-20 relative items-start">
             
             {/* T.O.C (Table of Contents) - Sidebar */}
-            <aside className="w-full lg:w-80 shrink-0 rounded-2xl border border-white/10 bg-slate-950/35 lg:sticky lg:top-32 lg:max-h-[calc(100vh-160px)] lg:overflow-y-auto z-20 custom-scrollbar shadow-xl backdrop-blur-md">
+            <aside className="editorial-surface-panel w-full lg:w-80 shrink-0 rounded-2xl lg:sticky lg:top-32 lg:max-h-[calc(100vh-160px)] lg:overflow-y-auto z-20 custom-scrollbar shadow-xl backdrop-blur-md">
               <div className="p-6">
                 <h3 className="text-white font-semibold mb-6 flex items-center gap-2">
                   Contenido del documento
@@ -132,7 +132,7 @@ export default function TerminosCondiciones() {
 
             {/* Panel de Contenido */}
             <main className="flex-1 w-full relative">
-              <div className="w-full max-w-[820px] mx-auto pb-32 transition-all duration-500 animate-in fade-in slide-in-from-bottom-2">
+              <div className="editorial-surface-panel w-full max-w-[820px] mx-auto pb-32 px-6 py-8 transition-all duration-500 animate-in fade-in slide-in-from-bottom-2 sm:px-8">
                 <div className="text-gray-400 text-sm mb-12 pb-6 border-b border-white/10 border-dashed">
                   Última actualización: {new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}
                 </div>

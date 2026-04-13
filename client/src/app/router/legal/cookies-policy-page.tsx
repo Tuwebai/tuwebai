@@ -87,7 +87,7 @@ export default function PoliticaCookies() {
           <div className="flex flex-col lg:flex-row gap-12 lg:gap-20 relative items-start">
             
             {/* Sidebar TOC */}
-            <aside className="w-full lg:w-80 shrink-0 rounded-2xl border border-white/10 bg-slate-950/35 lg:sticky lg:top-32 lg:max-h-[calc(100vh-160px)] lg:overflow-y-auto z-20 custom-scrollbar shadow-xl backdrop-blur-md">
+            <aside className="editorial-surface-panel w-full lg:w-80 shrink-0 rounded-2xl lg:sticky lg:top-32 lg:max-h-[calc(100vh-160px)] lg:overflow-y-auto z-20 custom-scrollbar shadow-xl backdrop-blur-md">
               <div className="p-6">
                 <h3 className="text-white font-semibold mb-6 flex items-center gap-2">
                   Contenido
@@ -121,7 +121,7 @@ export default function PoliticaCookies() {
 
             {/* Main Content */}
             <main className="flex-1 w-full relative">
-              <div className="w-full max-w-[820px] mx-auto pb-32 transition-all duration-500 animate-in fade-in slide-in-from-bottom-2">
+              <div className="editorial-surface-panel w-full max-w-[820px] mx-auto pb-32 px-6 py-8 transition-all duration-500 animate-in fade-in slide-in-from-bottom-2 sm:px-8">
                 <div className="text-gray-400 text-sm mb-12 pb-6 border-b border-white/10">
                   Última actualización: {new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}
                 </div>
@@ -199,7 +199,7 @@ export default function PoliticaCookies() {
                             href={browser.url} 
                             target="_blank" 
                             rel="noopener noreferrer"
-                            className="flex items-center justify-between p-4 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-colors group"
+                            className="editorial-surface-card editorial-surface-card--interactive flex items-center justify-between p-4 rounded-xl transition-colors group"
                           >
                             <span className="text-gray-300 group-hover:text-white">{browser.name}</span>
                             <ExternalLink className="w-4 h-4 text-[#00CCFF]" />
@@ -211,7 +211,7 @@ export default function PoliticaCookies() {
 
                   <section id="listado" className="scroll-mt-32">
                     <h2 className="text-2xl font-semibold text-white mb-6">5. Cookies utilizadas en nuestra plataforma</h2>
-                    <div className="overflow-x-auto border border-white/10 rounded-2xl">
+                    <div className="editorial-surface-card overflow-x-auto rounded-2xl">
                       <table className="w-full text-left text-sm">
                         <thead className="bg-white/5 border-b border-white/10">
                           <tr>
