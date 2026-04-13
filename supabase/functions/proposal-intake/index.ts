@@ -43,7 +43,7 @@ Deno.serve(async (request) => {
     createdAt: new Date().toISOString(),
   };
 
-  const { error } = await supabase.from('public_submissions').insert({
+  const { data: insertedSubmission, error } = await supabase.from('public_submissions').insert({
     channel: 'propuesta',
     email,
     message: detalles,
@@ -52,7 +52,7 @@ Deno.serve(async (request) => {
     source: 'website',
     status: 'received',
     title: 'Nueva solicitud de propuesta',
-  });
+  }).select('id').single();
 
   if (error) {
     return buildJsonResponse(500, { success: false, message: 'No se pudo procesar la solicitud en este momento.', requestId });
@@ -78,7 +78,26 @@ Deno.serve(async (request) => {
       ].join('\n'),
       to: normalizeEmail(Deno.env.get('CONTACT_TO_EMAIL')) ?? normalizeEmail(Deno.env.get('SMTP_USER')) ?? 'hola@tuweb-ai.com',
     });
+    await supabase
+      .from('public_submissions')
+      .update({
+        payload: {
+          ...payload,
+          email_delivery: 'sent',
+        },
+      })
+      .eq('id', insertedSubmission.id);
   } catch (error) {
+    await supabase
+      .from('public_submissions')
+      .update({
+        payload: {
+          ...payload,
+          email_delivery: 'failed',
+          email_error: error instanceof Error ? error.message : 'unknown_error',
+        },
+      })
+      .eq('id', insertedSubmission.id);
     console.error('proposal-intake email failed', {
       error: error instanceof Error ? error.message : 'unknown_error',
       requestId,
