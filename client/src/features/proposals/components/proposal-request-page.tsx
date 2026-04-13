@@ -1,44 +1,23 @@
 import { useState } from 'react';
-import { FormProvider, useForm, type DefaultValues } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ArrowLeft, ArrowRight, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/shared/ui/button';
 import WhatsAppButton from '@/shared/ui/whatsapp-button';
 import MetaTags from '@/shared/ui/meta-tags';
-import {
-  TUWEBAI_SITE_FULL_URL,
-  TUWEBAI_WHATSAPP_URL,
-} from '@/shared/constants/contact';
+import { TUWEBAI_SITE_FULL_URL, TUWEBAI_WHATSAPP_URL } from '@/shared/constants/contact';
 import { getProposalErrorMessage, submitProposal } from '@/features/proposals/services/proposals.service';
 import {
   trackProposalError,
   trackProposalStepCompleted,
   trackProposalSubmitted,
 } from '@/features/proposals/services/proposal-analytics.service';
-import {
-  formSchema,
-  type FormValues,
-  STEP_FIELDS,
-  TOTAL_STEPS,
-} from './proposal-request-form.config';
-import {
-  AlternativeContactSection,
-  Step1Identidad,
-  Step2Proyecto,
-  Step3Contexto,
-  StepIndicator,
-  SuccessScreen,
-} from './proposal-request-form-sections';
-
-const defaultValues: DefaultValues<FormValues> = {
-  nombre: '',
-  email: '',
-  descripcion: '',
-  presupuesto_rango: undefined,
-  plazo: undefined,
-  como_nos_encontraste: undefined,
-};
+import { SuccessScreen, AlternativeContactSection } from './proposal-request-form-feedback';
+import { defaultValues, formSchema, STEP_FIELDS, TOTAL_STEPS, type FormValues } from './proposal-request-form.config';
+import { StepIndicator } from './proposal-request-form-primitives';
+import { Step1Identidad } from './proposal-request-step-identity';
+import { Step2Proyecto, Step3Contexto } from './proposal-request-step-details';
 
 const getWhatsappHref = (name: string) => {
   const message = name.trim()

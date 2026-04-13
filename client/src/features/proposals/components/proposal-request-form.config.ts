@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import type { DefaultValues } from 'react-hook-form';
 
 export const COUNTRIES = [
   { id: 'AR', label: 'Argentina' },
@@ -88,8 +89,11 @@ export const STEP_FIELDS: Record<number, (keyof FormValues)[]> = {
   3: [],
 };
 
-export const PROJECT_TYPE_LABELS: Record<FormValues['tipo_proyecto'], string> = {
-  'web-corporativa': 'Sitio web corporativo',
-  ecommerce: 'Tienda online',
-  'sistema-web': 'Sistema o plataforma web',
+export const defaultValues: DefaultValues<FormValues> = {
+  nombre: '',
+  email: '',
+  descripcion: '',
+  presupuesto_rango: undefined,
+  plazo: undefined,
+  como_nos_encontraste: undefined,
 };
