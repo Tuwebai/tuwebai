@@ -59,7 +59,7 @@ export default function ShowroomProjectModal({
         </button>
 
         <div
-          className="relative w-full max-w-6xl overflow-hidden rounded-[24px] border border-[var(--border-default)] bg-[var(--bg-overlay)] shadow-[var(--shadow-modal),0_0_0_1px_var(--signal-glow)] animate-in fade-in zoom-in-95 duration-300 sm:rounded-[28px]"
+          className="editorial-surface-panel relative w-full max-w-6xl overflow-hidden shadow-[var(--shadow-modal),0_0_0_1px_var(--signal-glow)] animate-in fade-in zoom-in-95 duration-300 sm:rounded-[28px]"
           onClick={(event) => event.stopPropagation()}
         >
           <button
@@ -114,7 +114,7 @@ export default function ShowroomProjectModal({
               </div>
 
               <div className="grid gap-3 border-t border-[var(--border-default)] p-4 sm:p-5">
-                <div className="rounded-2xl border border-[var(--border-default)] bg-[var(--bg-elevated)] p-4">
+                <div className="editorial-surface-card editorial-surface-card--accent rounded-2xl p-4">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--signal)]">
                     {clientNeedLabel}
                   </p>
@@ -123,7 +123,7 @@ export default function ShowroomProjectModal({
                   </p>
                 </div>
 
-                <div className="rounded-2xl border border-[var(--border-default)] bg-[var(--bg-elevated)] p-4">
+                <div className="editorial-surface-card rounded-2xl p-4">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white">
                     {solutionSummaryLabel}
                   </p>
@@ -132,7 +132,7 @@ export default function ShowroomProjectModal({
                   </p>
                 </div>
 
-                <div className="rounded-2xl border border-[var(--border-default)] bg-[var(--bg-elevated)] p-4">
+                <div className="editorial-surface-card editorial-surface-card--accent rounded-2xl p-4">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--signal)]">
                     {valueSummaryLabel}
                   </p>
@@ -147,7 +147,7 @@ export default function ShowroomProjectModal({
               <div className="mb-5 border-b border-[var(--border-default)] pb-5 pr-10 sm:pr-12">
                 <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="rounded-full border border-[var(--signal-border)] bg-[var(--signal-glow)] px-3 py-1 text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--signal)]">
+                    <span className="editorial-pill editorial-pill--accent px-3 py-1 text-[11px] font-medium uppercase tracking-[0.18em]">
                       {categoryLabel}
                     </span>
                     <span className="hidden text-[11px] uppercase tracking-[0.16em] text-gray-500 xl:inline-block">
@@ -165,7 +165,7 @@ export default function ShowroomProjectModal({
               </div>
 
               <div className="grid gap-5">
-                <section className="min-w-0 rounded-2xl border border-[var(--border-default)] bg-[var(--bg-elevated)] p-4 sm:p-5">
+                <section className="editorial-surface-card min-w-0 rounded-2xl p-4 sm:p-5">
                   <div className="mb-3">
                     <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--signal)]">
                       Lo que incluye
@@ -185,7 +185,7 @@ export default function ShowroomProjectModal({
                   </ul>
                 </section>
 
-                <section className="min-w-0 rounded-2xl border border-[var(--border-default)] bg-[var(--bg-elevated)] p-4 sm:p-5">
+                <section className="editorial-surface-card editorial-surface-card--accent min-w-0 rounded-2xl p-4 sm:p-5">
                   <div className="mb-3">
                     <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white">
                       Impacto
@@ -195,7 +195,7 @@ export default function ShowroomProjectModal({
                     {project.results.map((result) => (
                       <div
                         key={`${project.id}-${result.label}`}
-                        className="min-w-0 rounded-xl border border-[var(--border-default)] bg-[var(--bg-elevated)]/88 px-4 py-4 text-left"
+                        className="editorial-surface-card min-w-0 rounded-xl px-4 py-4 text-left"
                       >
                         <div className="break-words text-lg font-bold leading-snug text-[var(--signal)] sm:text-xl">
                           {result.value}
