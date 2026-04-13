@@ -4,6 +4,11 @@ import { Link as ScrollLink } from 'react-scroll';
 
 import { useIntersectionObserver } from '@/core/hooks/use-intersection-observer';
 import { useTrackSectionView } from '@/core/hooks/use-track-section-view';
+import HeroMetricsGrid from '@/features/marketing-home/components/hero-metrics-grid';
+import {
+  createInitialHeroMetricState,
+  HERO_METRICS,
+} from '@/features/marketing-home/content/hero-metrics';
 import {
   trackHeroConsultClick,
   trackHeroDiagnosticClick,
@@ -17,11 +22,7 @@ interface HeroSectionProps {
 export default function HeroSection({ setRef, children }: HeroSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const [heroOpacity, setHeroOpacity] = useState(1);
-  const [animatedStats, setAnimatedStats] = useState({
-    years: 0,
-    projects: 0,
-    products: 0,
-  });
+  const [animatedStats, setAnimatedStats] = useState(createInitialHeroMetricState);
   useTrackSectionView(sectionRef, 'hero');
   const { ref: statsRef, hasIntersected: hasShownStats } = useIntersectionObserver<HTMLDivElement>({
     threshold: 0.35,
@@ -29,14 +30,6 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
   const heroMessage = useMemo(
     () =>
       'Construimos webs a medida para negocios argentinos y las conectamos con Pulse para que veas resultados, no promesas.',
-    [],
-  );
-  const heroStats = useMemo(
-    () => [
-      { key: 'years', value: 6, label: 'Años construyendo' },
-      { key: 'projects', value: 6, label: 'Proyectos visibles' },
-      { key: 'products', value: 1, label: 'Producto propio' },
-    ],
     [],
   );
 
@@ -86,11 +79,12 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
     const animate = (now: number) => {
       const progress = Math.min((now - start) / durationMs, 1);
 
-      setAnimatedStats({
-        years: Math.round(heroStats[0].value * progress),
-        projects: Math.round(heroStats[1].value * progress),
-        products: Math.round(heroStats[2].value * progress),
-      });
+      setAnimatedStats(
+        HERO_METRICS.reduce((accumulator, metric) => {
+          accumulator[metric.key] = Math.round(metric.value * progress);
+          return accumulator;
+        }, createInitialHeroMetricState()),
+      );
 
       if (progress < 1) {
         window.requestAnimationFrame(animate);
@@ -99,7 +93,7 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
 
     const frame = window.requestAnimationFrame(animate);
     return () => window.cancelAnimationFrame(frame);
-  }, [hasShownStats, heroStats]);
+  }, [hasShownStats]);
 
   return (
     <section
@@ -170,24 +164,7 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
           </div>
         </div>
 
-        <div
-          ref={statsRef}
-          className="mx-auto mb-7 grid max-w-3xl grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4"
-        >
-          {heroStats.map((stat) => (
-            <div
-              key={stat.key}
-              className="rounded-2xl border border-white/10 bg-white/5 px-3 py-4 text-center"
-            >
-              <p className="font-rajdhani text-3xl font-bold text-white sm:text-4xl">
-                {animatedStats[stat.key as keyof typeof animatedStats]}
-              </p>
-              <p className="mt-2 text-[11px] uppercase tracking-[0.18em] text-gray-400 sm:text-xs">
-                {stat.label}
-              </p>
-            </div>
-          ))}
-        </div>
+        <HeroMetricsGrid animatedStats={animatedStats} statsRef={statsRef} />
 
         <div className="flex flex-wrap items-center justify-center gap-2 text-sm text-gray-300 sm:gap-3">
           <span className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs sm:px-4 sm:text-sm">
