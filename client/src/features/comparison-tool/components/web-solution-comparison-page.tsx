@@ -121,7 +121,7 @@ export default function WebSolutionComparisonPage() {
               </p>
             </div>
 
-            <div className="mt-10 rounded-[28px] border border-white/10 bg-[var(--bg-surface)]/90 p-6 shadow-[var(--shadow-modal)] sm:p-8">
+            <div className="editorial-surface-panel mt-10 rounded-[28px] p-6 sm:p-8">
               <div className="hidden overflow-hidden rounded-3xl border border-white/10 lg:block">
                 <div className="grid grid-cols-[180px_repeat(3,minmax(0,1fr))] bg-white/5">
                   <div className="border-r border-white/10 p-6" />
@@ -167,10 +167,7 @@ export default function WebSolutionComparisonPage() {
 
               <div className="grid gap-4 lg:hidden">
                 {COMPARISON_COLUMNS.map((column) => (
-                  <article
-                    key={column.id}
-                    className="rounded-[28px] border border-white/10 bg-white/5 p-6"
-                  >
+                  <article key={column.id} className="editorial-surface-card rounded-[28px] p-6">
                     <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--signal)]">
                       {column.subtitle}
                     </p>
@@ -196,7 +193,7 @@ export default function WebSolutionComparisonPage() {
               </div>
             </div>
 
-            <div className="mx-auto mt-12 max-w-4xl rounded-[32px] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(59,158,245,0.14),transparent_45%),linear-gradient(180deg,rgba(17,24,39,0.98)_0%,rgba(11,15,30,0.98)_100%)] px-6 py-10 text-center sm:px-10 sm:py-14">
+            <div className="editorial-surface-panel mx-auto mt-12 max-w-4xl rounded-[32px] px-6 py-10 text-center sm:px-10 sm:py-14">
               <h2 className="font-rajdhani text-3xl font-bold text-white sm:text-4xl md:text-5xl">
                 ¿Cuál es la correcta para tu negocio?
               </h2>
@@ -218,7 +215,7 @@ export default function WebSolutionComparisonPage() {
                 <Link
                   to="/consulta"
                   onClick={() => trackComparisonCtaClick('contar_proyecto', '/consulta')}
-                  className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-medium text-gray-200"
+                  className="editorial-secondary-button min-h-12 px-6 py-3 text-sm font-medium"
                 >
                   Contar mi proyecto
                 </Link>
@@ -230,7 +227,7 @@ export default function WebSolutionComparisonPage() {
                       '/como-elegir-agencia-web-argentina',
                     )
                   }
-                  className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-medium text-gray-200"
+                  className="editorial-secondary-button min-h-12 px-6 py-3 text-sm font-medium"
                 >
                   Cómo elegir agencia web
                 </Link>

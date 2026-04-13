@@ -139,7 +139,7 @@ export default function WebPriceCalculatorPage() {
             </div>
 
             <div className="mt-10 grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_420px]">
-              <div className="rounded-[32px] border border-white/10 bg-[var(--bg-surface)]/90 p-6 shadow-[var(--shadow-modal)] sm:p-8">
+              <div className="editorial-surface-panel rounded-[32px] p-6 sm:p-8">
                 <div className="space-y-8">
                   <div>
                     <p className="mb-4 text-sm font-semibold uppercase tracking-[0.18em] text-gray-400">
@@ -154,10 +154,10 @@ export default function WebPriceCalculatorPage() {
                             setProjectType(option.value);
                             trackCalculatorProjectTypeSelected(option.value);
                           }}
-                          className={`rounded-2xl border px-4 py-4 text-left transition-colors ${
+                          className={`editorial-surface-card rounded-2xl px-4 py-4 text-left transition-colors ${
                             projectType === option.value
                               ? 'border-[var(--signal-border)] bg-[var(--signal)]/10 text-white'
-                              : 'border-white/10 bg-white/5 text-gray-300'
+                              : 'editorial-surface-card--interactive text-gray-300'
                           }`}
                         >
                           <p className="font-medium">{option.label}</p>
@@ -179,10 +179,10 @@ export default function WebPriceCalculatorPage() {
                             setPageRange(option.value);
                             trackCalculatorPageRangeSelected(option.value);
                           }}
-                          className={`rounded-2xl border px-4 py-4 text-left transition-colors ${
+                          className={`editorial-surface-card rounded-2xl px-4 py-4 text-left transition-colors ${
                             pageRange === option.value
                               ? 'border-[var(--signal-border)] bg-[var(--signal)]/10 text-white'
-                              : 'border-white/10 bg-white/5 text-gray-300'
+                              : 'editorial-surface-card--interactive text-gray-300'
                           }`}
                         >
                           <p className="font-medium">{option.label}</p>
@@ -205,10 +205,10 @@ export default function WebPriceCalculatorPage() {
                             return next;
                           })
                         }
-                        className={`rounded-2xl border px-4 py-4 text-left transition-colors ${
+                        className={`editorial-surface-card rounded-2xl px-4 py-4 text-left transition-colors ${
                           needsEcommerce
                             ? 'border-[var(--signal-border)] bg-[var(--signal)]/10 text-white'
-                            : 'border-white/10 bg-white/5 text-gray-300'
+                            : 'editorial-surface-card--interactive text-gray-300'
                         }`}
                       >
                         Necesito e-commerce
@@ -222,10 +222,10 @@ export default function WebPriceCalculatorPage() {
                             return next;
                           })
                         }
-                        className={`rounded-2xl border px-4 py-4 text-left transition-colors ${
+                        className={`editorial-surface-card rounded-2xl px-4 py-4 text-left transition-colors ${
                           needsReservations
                             ? 'border-[var(--signal-border)] bg-[var(--signal)]/10 text-white'
-                            : 'border-white/10 bg-white/5 text-gray-300'
+                            : 'editorial-surface-card--interactive text-gray-300'
                         }`}
                       >
                         Necesito reservas o turnos
@@ -239,10 +239,10 @@ export default function WebPriceCalculatorPage() {
                             return next;
                           })
                         }
-                        className={`rounded-2xl border px-4 py-4 text-left transition-colors ${
+                        className={`editorial-surface-card rounded-2xl px-4 py-4 text-left transition-colors ${
                           !hasDomainHosting
                             ? 'border-[var(--signal-border)] bg-[var(--signal)]/10 text-white'
-                            : 'border-white/10 bg-white/5 text-gray-300'
+                            : 'editorial-surface-card--interactive text-gray-300'
                         }`}
                       >
                         No tengo dominio ni hosting resueltos
@@ -252,7 +252,7 @@ export default function WebPriceCalculatorPage() {
                 </div>
               </div>
 
-              <aside className="rounded-[32px] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(59,158,245,0.16),transparent_40%),linear-gradient(180deg,rgba(17,24,39,0.98)_0%,rgba(11,15,30,0.98)_100%)] p-6 shadow-[var(--shadow-modal)] sm:p-8">
+              <aside className="editorial-surface-panel rounded-[32px] p-6 sm:p-8">
                 <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--signal)]">
                   Resultado estimado
                 </p>
@@ -265,7 +265,7 @@ export default function WebPriceCalculatorPage() {
                     <p className="mt-4 text-base leading-7 text-gray-300">
                       {estimate.recommendation}
                     </p>
-                    <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-4">
+                    <div className="editorial-surface-card mt-6 rounded-2xl p-4">
                       <p className="text-sm text-gray-300">
                         Esto es una referencia comercial. Para una cotización exacta revisamos
                         alcance, objetivos, integraciones y prioridad de negocio.
@@ -286,7 +286,7 @@ export default function WebPriceCalculatorPage() {
                         onClick={() =>
                           trackCalculatorCtaClick('diagnostico_gratis', '/diagnostico-gratuito')
                         }
-                        className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-medium text-gray-200"
+                        className="editorial-secondary-button min-h-12 px-6 py-3 text-sm font-medium"
                       >
                         Diagnóstico gratis
                       </Link>
@@ -318,7 +318,7 @@ export default function WebPriceCalculatorPage() {
                     >
                       Ver rango estimado
                     </button>
-                    <div className="mt-6 rounded-2xl border border-dashed border-white/10 bg-white/[0.03] p-5">
+                    <div className="editorial-surface-card mt-6 rounded-2xl border-dashed p-5">
                       <p className="font-rajdhani text-3xl font-bold text-white/25">
                         {formatUsd(estimate.low)} a {formatUsd(estimate.high)}
                       </p>
