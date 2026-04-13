@@ -109,7 +109,7 @@ export default function VisitorPathSelector() {
               <Link
                 to="/comparar-opciones-web"
                 onClick={() => trackVisitorPathComparisonClick(currentPath.id)}
-                className="inline-flex min-h-12 items-center justify-center rounded-full border border-[var(--border-default)] bg-[var(--bg-surface)]/72 px-6 py-3 text-sm font-medium text-gray-200"
+                className="editorial-secondary-button min-h-12 px-6 py-3 text-sm font-medium"
               >
                 Comparar opciones
               </Link>

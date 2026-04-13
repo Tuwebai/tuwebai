@@ -148,7 +148,7 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
           <RouterLink
             to="/consulta"
             onClick={trackHeroConsultClick}
-            className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/15 bg-white/5 px-6 py-3 text-center font-medium text-gray-200 transition-colors duration-300 hover:border-[var(--signal-border)] hover:text-white sm:px-7 lg:backdrop-blur-sm"
+            className="editorial-secondary-button min-h-12 px-6 py-3 text-center font-medium sm:px-7 lg:backdrop-blur-sm"
           >
             Contar mi proyecto
           </RouterLink>

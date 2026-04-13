@@ -14,18 +14,16 @@ interface ServiceCardProps {
 function ServiceCard({ title, description, icon, delayMs }: ServiceCardProps) {
   return (
     <RevealBlock className="h-full" delayMs={delayMs}>
-      <div className="h-full rounded-xl bg-[image:var(--gradient-subtle)] p-[1px]">
-        <div className="flex h-full flex-col rounded-xl border border-[var(--border-default)] bg-[var(--bg-surface)]/88 p-5 transition-transform duration-300 hover:scale-[1.01] sm:p-6">
-          <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[image:var(--gradient-brand)]">
-            {icon}
-          </div>
-
-          <h3 className="mb-3 font-rajdhani text-xl font-bold text-white sm:text-[1.35rem]">
-            {title}
-          </h3>
-
-          <div className="flex-grow text-gray-300">{description}</div>
+      <div className="editorial-surface-card editorial-surface-card--interactive flex h-full flex-col rounded-xl p-5 sm:p-6">
+        <div className="editorial-surface-card editorial-surface-card--accent mb-4 flex h-14 w-14 items-center justify-center rounded-full">
+          {icon}
         </div>
+
+        <h3 className="mb-3 font-rajdhani text-xl font-bold text-white sm:text-[1.35rem]">
+          {title}
+        </h3>
+
+        <div className="flex-grow text-gray-300">{description}</div>
       </div>
     </RevealBlock>
   );

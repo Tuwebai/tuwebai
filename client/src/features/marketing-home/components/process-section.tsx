@@ -13,9 +13,9 @@ interface ProcessStepProps {
 function ProcessStep({ number, title, description, delayMs }: ProcessStepProps) {
   return (
     <RevealBlock className="h-full" delayMs={delayMs}>
-      <div className="flex h-full items-start gap-4 rounded-xl border border-[var(--border-default)] bg-[var(--bg-surface)]/78 p-5 sm:gap-5 sm:p-6">
+      <div className="editorial-surface-card editorial-surface-card--interactive flex h-full items-start gap-4 rounded-xl p-5 sm:gap-5 sm:p-6">
         <div className="flex-shrink-0">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[image:var(--gradient-brand)] font-rajdhani text-base font-bold text-white sm:h-11 sm:w-11 sm:text-lg">
+          <div className="editorial-surface-card editorial-surface-card--accent flex h-10 w-10 items-center justify-center rounded-full font-rajdhani text-base font-bold text-white sm:h-11 sm:w-11 sm:text-lg">
             {number}
           </div>
         </div>

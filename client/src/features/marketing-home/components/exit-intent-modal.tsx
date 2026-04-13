@@ -29,7 +29,7 @@ export default function ExitIntentModal({ open, onOpenChange }: ExitIntentModalP
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="border-white/10 bg-[var(--bg-overlay)] p-0 text-white shadow-[var(--shadow-modal)] sm:max-w-[640px]">
-        <div className="rounded-[28px] bg-[radial-gradient(circle_at_top,rgba(59,158,245,0.16),transparent_40%),linear-gradient(180deg,rgba(17,24,39,0.98)_0%,rgba(11,15,30,0.98)_100%)] p-8">
+        <div className="editorial-surface-panel rounded-[28px] p-8">
           <DialogHeader className="space-y-4 text-left">
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--signal)]">
               Antes de irte
@@ -44,15 +44,15 @@ export default function ExitIntentModal({ open, onOpenChange }: ExitIntentModalP
           </DialogHeader>
 
           <div className="mt-6 grid gap-3 sm:grid-cols-3">
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+            <div className="editorial-surface-card rounded-2xl p-4">
               <p className="text-xs uppercase tracking-[0.18em] text-gray-400">Tiempo</p>
               <p className="mt-2 font-rajdhani text-2xl font-bold text-white">48h</p>
             </div>
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+            <div className="editorial-surface-card rounded-2xl p-4">
               <p className="text-xs uppercase tracking-[0.18em] text-gray-400">Formato</p>
               <p className="mt-2 font-rajdhani text-2xl font-bold text-white">Diagnóstico</p>
             </div>
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+            <div className="editorial-surface-card rounded-2xl p-4">
               <p className="text-xs uppercase tracking-[0.18em] text-gray-400">Foco</p>
               <p className="mt-2 font-rajdhani text-2xl font-bold text-white">Conversión</p>
             </div>
@@ -76,7 +76,7 @@ export default function ExitIntentModal({ open, onOpenChange }: ExitIntentModalP
                 trackExitIntentDismissed();
                 onOpenChange(false);
               }}
-              className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-medium text-gray-200"
+              className="editorial-secondary-button min-h-12 px-6 py-3 text-sm font-medium"
             >
               Seguir explorando
             </button>

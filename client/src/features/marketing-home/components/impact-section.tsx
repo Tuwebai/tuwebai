@@ -16,7 +16,7 @@ function TrustCard({ eyebrow, title, description, delay }: TrustCardProps) {
   return (
     <div
       ref={ref}
-      className={`rounded-xl border border-[var(--border-default)] bg-[var(--bg-surface)]/88 p-5 transition-all duration-500 sm:p-6 ${
+      className={`editorial-surface-card editorial-surface-card--interactive rounded-xl p-5 transition-all duration-500 sm:p-6 ${
         hasIntersected ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
       }`}
       style={{ transitionDelay: `${delay * 120}ms` }}
