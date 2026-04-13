@@ -61,7 +61,7 @@ export default function VisitorPathSelector() {
   return (
     <section className="relative bg-transparent py-8 sm:py-10">
       <div className="container mx-auto px-4">
-        <div className="mx-auto max-w-5xl rounded-[28px] border border-[var(--border-default)] bg-[var(--bg-surface)]/88 p-6 shadow-[var(--shadow-modal)] sm:p-8">
+        <div className="editorial-surface-panel mx-auto max-w-5xl p-6 sm:p-8">
           <div className="mx-auto max-w-3xl text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--signal)]">
               ¿Esto es para vos?
@@ -80,10 +80,10 @@ export default function VisitorPathSelector() {
                   setActivePath(path.id);
                   trackVisitorPathSelected(path.id);
                 }}
-                className={`rounded-2xl border px-4 py-5 text-left transition-colors ${
+                className={`editorial-surface-card rounded-2xl px-4 py-5 text-left transition-colors ${
                   activePath === path.id
-                    ? 'border-[var(--signal-border)] bg-[var(--signal)]/10 text-white'
-                    : 'border-[var(--border-default)] bg-[var(--bg-elevated)]/72 text-gray-300'
+                    ? 'editorial-surface-card--accent text-white'
+                    : 'editorial-surface-card--interactive text-gray-300'
                 }`}
               >
                 <p className="font-medium">{path.title}</p>
@@ -91,7 +91,7 @@ export default function VisitorPathSelector() {
             ))}
           </div>
 
-          <div className="mt-8 grid gap-6 rounded-[28px] border border-[var(--border-default)] bg-[var(--bg-elevated)]/56 p-6 lg:grid-cols-[minmax(0,1fr)_260px] lg:items-center">
+          <div className="editorial-surface-card editorial-surface-card--accent mt-8 grid gap-6 rounded-[28px] p-6 lg:grid-cols-[minmax(0,1fr)_260px] lg:items-center">
             <div>
               <p className="font-rajdhani text-2xl font-bold text-white">{currentPath.title}</p>
               <p className="mt-4 text-base leading-7 text-gray-300">{currentPath.description}</p>

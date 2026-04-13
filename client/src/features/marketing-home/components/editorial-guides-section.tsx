@@ -35,7 +35,7 @@ const guides = [
 export default function EditorialGuidesSection() {
   return (
     <section className="container mx-auto px-4 py-12 sm:py-14">
-      <div className="rounded-[32px] border border-[var(--border-default)] bg-[linear-gradient(180deg,var(--bg-overlay),rgba(15,23,42,0.82))] px-5 py-8 shadow-[var(--shadow-modal)] sm:px-7 lg:px-10">
+      <div className="editorial-surface-panel px-5 py-8 sm:px-7 lg:px-10">
         <div className="max-w-3xl">
           <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[var(--signal)]">
             Guías útiles
@@ -49,7 +49,7 @@ export default function EditorialGuidesSection() {
           {guides.map((guide) => (
             <article
               key={guide.href}
-              className="rounded-[24px] border border-[var(--border-default)] bg-[var(--bg-surface)]/72 p-5 transition-transform duration-300 hover:-translate-y-1"
+              className="editorial-surface-card editorial-surface-card--interactive rounded-[24px] p-5"
             >
               <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[var(--signal)]">
                 {guide.eyebrow}
