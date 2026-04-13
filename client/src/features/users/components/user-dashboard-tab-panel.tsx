@@ -71,7 +71,7 @@ export function UserDashboardTabPanel({
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: -20 }}
         transition={{ duration: 0.3 }}
-        className="rounded-2xl border border-white/10 bg-white/5 p-4 sm:p-6 lg:p-8 lg:backdrop-blur-lg"
+        className="editorial-surface-panel rounded-2xl p-4 sm:p-6 lg:p-8"
       >
         {activeTab === 'profile' ? (
           <UserProfileTab

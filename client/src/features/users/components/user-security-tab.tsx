@@ -35,10 +35,10 @@ export function UserSecurityTab({
         Seguridad de la cuenta
       </h2>
 
-      <div className="rounded-xl border border-white/10 bg-white/5 p-6">
+      <div className="editorial-surface-card rounded-xl p-6">
         <h3 className="mb-4 text-lg font-medium text-white">Estado de la cuenta</h3>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div className="flex items-center justify-between rounded-lg bg-white/5 p-3">
+          <div className="editorial-surface-card flex items-center justify-between rounded-lg p-3">
             <span className="text-gray-300">Estado</span>
             <span
               className={`rounded-full px-2 py-1 text-xs font-medium ${
@@ -51,7 +51,7 @@ export function UserSecurityTab({
             </span>
           </div>
 
-          <div className="flex items-center justify-between rounded-lg bg-white/5 p-3">
+          <div className="editorial-surface-card flex items-center justify-between rounded-lg p-3">
             <span className="text-gray-300">Proveedor de acceso</span>
             <span
               className={`rounded-full px-2 py-1 text-xs font-medium ${
@@ -65,7 +65,7 @@ export function UserSecurityTab({
           </div>
 
           {!isGoogleAccount && passwordInfo.changedAt && (
-            <div className="flex items-center justify-between rounded-lg bg-white/5 p-3">
+            <div className="editorial-surface-card flex items-center justify-between rounded-lg p-3">
               <span className="text-gray-300">Último cambio de contraseña</span>
               <span className="text-white">
                 {new Date(passwordInfo.changedAt).toLocaleDateString('es-AR', {
@@ -78,7 +78,7 @@ export function UserSecurityTab({
           )}
 
           {!isGoogleAccount && passwordInfo.daysSinceChange !== null && (
-            <div className="flex items-center justify-between rounded-lg bg-white/5 p-3">
+            <div className="editorial-surface-card flex items-center justify-between rounded-lg p-3">
               <span className="text-gray-300">Días desde el último cambio</span>
               <span
                 className={`rounded-full px-2 py-1 text-xs font-medium ${
@@ -97,7 +97,7 @@ export function UserSecurityTab({
       </div>
 
       {isGoogleAccount ? (
-        <div className="rounded-xl border border-white/10 bg-white/5 p-6">
+        <div className="editorial-surface-card rounded-xl p-6">
           <div className="mb-4 flex items-start justify-between gap-4">
             <div>
               <h3 className="text-lg font-medium text-white">Contraseña gestionada por Google</h3>
@@ -111,14 +111,14 @@ export function UserSecurityTab({
               href={GOOGLE_SECURITY_URL}
               target="_blank"
               rel="noreferrer"
-              className="flex min-h-11 shrink-0 items-center gap-2 rounded-lg bg-sky-500 px-4 py-2 font-medium text-white transition-all hover:bg-sky-600"
+              className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-lg bg-[image:var(--gradient-brand)] px-4 py-2 font-medium text-white shadow-[var(--glow-signal)] transition-all hover:scale-[1.02]"
             >
               <ExternalLink className="h-4 w-4" />
               Ir a Google
             </a>
           </div>
 
-          <div className="rounded-lg border border-sky-500/20 bg-sky-500/10 p-4 text-sm text-sky-100">
+          <div className="editorial-surface-card editorial-surface-card--accent rounded-lg p-4 text-sm text-sky-100">
             <div className="flex items-start gap-3">
               <Mail className="mt-0.5 h-4 w-4 shrink-0 text-sky-300" />
               <div className="space-y-2">
@@ -133,7 +133,7 @@ export function UserSecurityTab({
           </div>
         </div>
       ) : (
-        <div className="rounded-xl border border-white/10 bg-white/5 p-6">
+        <div className="editorial-surface-card rounded-xl p-6">
           <div className="mb-4 flex items-start justify-between gap-4">
             <div>
               <h3 className="text-lg font-medium text-white">Restablecer contraseña</h3>
@@ -149,7 +149,7 @@ export function UserSecurityTab({
                 void onRequestPasswordReset();
               }}
               disabled={isSendingPasswordReset || !email}
-              className="flex min-h-11 shrink-0 items-center gap-2 rounded-lg bg-blue-500 px-4 py-2 font-medium text-white transition-all hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-60"
+              className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-lg bg-[image:var(--gradient-brand)] px-4 py-2 font-medium text-white shadow-[var(--glow-signal)] transition-all hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-60"
             >
               {isSendingPasswordReset ? (
                 <>
@@ -165,7 +165,7 @@ export function UserSecurityTab({
             </button>
           </div>
 
-          <div className="rounded-lg border border-blue-500/20 bg-blue-500/10 p-4 text-sm text-blue-100">
+          <div className="editorial-surface-card editorial-surface-card--accent rounded-lg p-4 text-sm text-blue-100">
             <div className="flex items-start gap-3">
               <Mail className="mt-0.5 h-4 w-4 shrink-0 text-blue-300" />
               <div className="space-y-2">

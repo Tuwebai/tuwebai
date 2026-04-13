@@ -33,7 +33,7 @@ export function UserProfileTab({
         {!isEditing && (
           <button
             onClick={onEdit}
-            className="flex items-center gap-2 rounded-lg bg-blue-500 px-4 py-2 font-medium text-white transition-all hover:bg-blue-600"
+            className="inline-flex items-center gap-2 rounded-lg bg-[image:var(--gradient-brand)] px-4 py-2 font-medium text-white shadow-[var(--glow-signal)] transition-all hover:scale-[1.02]"
             type="button"
           >
             <Edit3 className="h-4 w-4" />
@@ -167,7 +167,7 @@ export function UserProfileTab({
             <button
               type="submit"
               disabled={isSavingProfile}
-              className="flex items-center gap-2 rounded-lg bg-blue-500 px-6 py-3 font-medium text-white transition-all disabled:opacity-60 hover:bg-blue-600"
+              className="inline-flex items-center gap-2 rounded-lg bg-[image:var(--gradient-brand)] px-6 py-3 font-medium text-white shadow-[var(--glow-signal)] transition-all disabled:opacity-60 hover:scale-[1.02]"
             >
               {isSavingProfile ? (
                 <>
@@ -184,7 +184,7 @@ export function UserProfileTab({
             <button
               type="button"
               onClick={onCancel}
-              className="flex items-center gap-2 rounded-lg bg-gray-600 px-6 py-3 font-medium text-white transition-all hover:bg-gray-700"
+              className="editorial-secondary-button flex items-center gap-2 rounded-lg px-6 py-3 font-medium"
             >
               <X className="h-4 w-4" />
               Cancelar

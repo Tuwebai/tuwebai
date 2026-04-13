@@ -62,14 +62,14 @@ export function PrivacyTab({ settings, isLoading, isSaving, onSave }: PrivacyTab
       </div>
 
       <div className="grid gap-5 min-[1440px]:grid-cols-[280px_minmax(0,1fr)]">
-        <aside className="rounded-2xl border border-white/10 bg-slate-950/35 p-3">
-          <div className="mb-3 rounded-xl border border-white/10 bg-white/5 px-4 py-4">
+        <aside className="editorial-surface-panel rounded-2xl p-3">
+          <div className="editorial-surface-card mb-3 rounded-xl px-4 py-4">
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300/80">Centro de privacidad</p>
             <h3 className="mt-2 text-lg font-semibold leading-tight text-white">Configura la visibilidad y los consentimientos de tu cuenta.</h3>
           </div>
 
           <Accordion type="single" collapsible defaultValue="controls" className="space-y-2">
-            <AccordionItem value="controls" className="overflow-hidden rounded-xl border border-white/10 bg-white/5">
+            <AccordionItem value="controls" className="editorial-surface-card overflow-hidden rounded-xl">
               <AccordionTrigger className="px-4 py-3 text-sm font-medium text-white hover:no-underline">
                 <span className="flex items-center gap-3">
                   <Shield className="h-4 w-4 text-cyan-300" />
@@ -83,7 +83,7 @@ export function PrivacyTab({ settings, isLoading, isSaving, onSave }: PrivacyTab
                     onClick={() => setActiveSection('visibility')}
                     className={`flex w-full items-start gap-3 rounded-lg px-3 py-3 text-left transition-colors ${
                       activeSection === 'visibility'
-                        ? 'bg-cyan-500/15 text-white'
+                        ? 'editorial-surface-card editorial-surface-card--accent text-white'
                         : 'text-slate-300 hover:bg-white/5 hover:text-white'
                     }`}
                   >
@@ -112,7 +112,7 @@ export function PrivacyTab({ settings, isLoading, isSaving, onSave }: PrivacyTab
               </AccordionContent>
             </AccordionItem>
 
-            <AccordionItem value="legal" className="overflow-hidden rounded-xl border border-white/10 bg-white/5">
+            <AccordionItem value="legal" className="editorial-surface-card overflow-hidden rounded-xl">
               <AccordionTrigger className="px-4 py-3 text-sm font-medium text-white hover:no-underline">
                 <span className="flex items-center gap-3">
                   <FileText className="h-4 w-4 text-cyan-300" />
@@ -123,7 +123,7 @@ export function PrivacyTab({ settings, isLoading, isSaving, onSave }: PrivacyTab
                 <div className="space-y-2">
                   <a
                     href="/politica-privacidad"
-                    className="flex items-start gap-3 rounded-lg px-3 py-3 text-left text-slate-300 transition-colors hover:bg-white/5 hover:text-white"
+                    className="editorial-surface-card editorial-surface-card--interactive flex items-start gap-3 rounded-lg px-3 py-3 text-left text-slate-300 transition-colors hover:text-white"
                   >
                     <Shield className="mt-0.5 h-4 w-4 shrink-0 text-cyan-300" />
                     <span className="min-w-0">
@@ -133,7 +133,7 @@ export function PrivacyTab({ settings, isLoading, isSaving, onSave }: PrivacyTab
                   </a>
                   <a
                     href="/politica-cookies"
-                    className="flex items-start gap-3 rounded-lg px-3 py-3 text-left text-slate-300 transition-colors hover:bg-white/5 hover:text-white"
+                    className="editorial-surface-card editorial-surface-card--interactive flex items-start gap-3 rounded-lg px-3 py-3 text-left text-slate-300 transition-colors hover:text-white"
                   >
                     <Cookie className="mt-0.5 h-4 w-4 shrink-0 text-cyan-300" />
                     <span className="min-w-0">
@@ -147,7 +147,7 @@ export function PrivacyTab({ settings, isLoading, isSaving, onSave }: PrivacyTab
           </Accordion>
         </aside>
 
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+        <div className="editorial-surface-panel rounded-2xl p-6">
           {activeSection === 'visibility' && (
             <div className="space-y-5">
             <div>
@@ -158,7 +158,7 @@ export function PrivacyTab({ settings, isLoading, isSaving, onSave }: PrivacyTab
             </div>
 
             <div className={`space-y-4 ${isLoading ? 'pointer-events-none opacity-70' : ''}`}>
-              <div className="flex min-h-[72px] items-center justify-between gap-4 rounded-xl border border-white/10 bg-slate-950/30 px-4 py-4">
+              <div className="editorial-surface-card flex min-h-[72px] items-center justify-between gap-4 rounded-xl px-4 py-4">
                 <div className="min-w-0">
                   <div className="flex items-center gap-2 text-sm font-medium text-white">
                     <Mail className="h-4 w-4 text-cyan-300" />
@@ -175,7 +175,7 @@ export function PrivacyTab({ settings, isLoading, isSaving, onSave }: PrivacyTab
                 />
               </div>
 
-              <div className="flex min-h-[72px] items-center justify-between gap-4 rounded-xl border border-white/10 bg-slate-950/30 px-4 py-4">
+              <div className="editorial-surface-card flex min-h-[72px] items-center justify-between gap-4 rounded-xl px-4 py-4">
                 <div className="min-w-0">
                   <div className="flex items-center gap-2 text-sm font-medium text-white">
                     <Shield className="h-4 w-4 text-cyan-300" />
@@ -205,7 +205,7 @@ export function PrivacyTab({ settings, isLoading, isSaving, onSave }: PrivacyTab
             </div>
 
             <div className={`space-y-4 ${isLoading ? 'pointer-events-none opacity-70' : ''}`}>
-              <div className="flex min-h-[72px] items-center justify-between gap-4 rounded-xl border border-white/10 bg-slate-950/30 px-4 py-4">
+              <div className="editorial-surface-card flex min-h-[72px] items-center justify-between gap-4 rounded-xl px-4 py-4">
                 <div className="min-w-0">
                   <div className="flex items-center gap-2 text-sm font-medium text-white">
                     <Mail className="h-4 w-4 text-cyan-300" />
@@ -222,7 +222,7 @@ export function PrivacyTab({ settings, isLoading, isSaving, onSave }: PrivacyTab
                 />
               </div>
 
-              <div className="flex min-h-[72px] items-center justify-between gap-4 rounded-xl border border-white/10 bg-slate-950/30 px-4 py-4">
+              <div className="editorial-surface-card flex min-h-[72px] items-center justify-between gap-4 rounded-xl px-4 py-4">
                 <div className="min-w-0">
                   <div className="flex items-center gap-2 text-sm font-medium text-white">
                     <Info className="h-4 w-4 text-cyan-300" />
@@ -251,7 +251,7 @@ export function PrivacyTab({ settings, isLoading, isSaving, onSave }: PrivacyTab
             type="button"
             onClick={handleSubmit}
             disabled={isLoading || isSaving || !hasChanges}
-            className="min-h-[44px] min-w-[168px] rounded-lg bg-cyan-500 text-slate-950 hover:bg-cyan-400"
+            className="min-h-[44px] min-w-[168px] rounded-lg bg-[image:var(--gradient-brand)] text-white shadow-[var(--glow-signal)] hover:scale-[1.02]"
           >
             {isSaving ? (
               <>

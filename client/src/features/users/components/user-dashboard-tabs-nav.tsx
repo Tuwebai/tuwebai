@@ -14,7 +14,7 @@ const tabs: Array<{ id: UserDashboardTab; label: string; icon: typeof User }> = 
 
 export function UserDashboardTabsNav({ activeTab, onTabChange }: UserDashboardTabsNavProps) {
   return (
-    <div className="mb-6 rounded-xl border border-white/10 bg-white/5 p-2 lg:mb-8 lg:backdrop-blur-lg">
+    <div className="editorial-surface-panel mb-6 rounded-xl p-2 lg:mb-8">
       <div className="flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible sm:pb-0">
         {tabs.map(({ id, label, icon: Icon }) => (
           <button
@@ -23,7 +23,7 @@ export function UserDashboardTabsNav({ activeTab, onTabChange }: UserDashboardTa
             onClick={() => onTabChange(id)}
             className={`flex shrink-0 items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-all sm:px-4 ${
               activeTab === id
-                ? 'bg-blue-500 text-white shadow-lg'
+                ? 'editorial-surface-card editorial-surface-card--accent text-white shadow-lg'
                 : 'text-gray-300 hover:bg-white/10 hover:text-white'
             }`}
           >

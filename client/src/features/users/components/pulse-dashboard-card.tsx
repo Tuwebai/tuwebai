@@ -91,16 +91,16 @@ export function PulseDashboardCard({ email, userUid }: PulseDashboardCardProps) 
 
   return (
     <section className="mb-6 sm:mb-8">
-      <div className="overflow-hidden rounded-3xl border border-cyan-400/20 bg-[radial-gradient(circle_at_top_left,_rgba(34,211,238,0.18),_transparent_40%),linear-gradient(135deg,rgba(15,23,42,0.96),rgba(17,24,39,0.94))] shadow-[0_24px_80px_rgba(15,23,42,0.35)]">
+      <div className="editorial-surface-panel overflow-hidden rounded-3xl shadow-[0_24px_80px_rgba(15,23,42,0.35)]">
         <div className="flex h-full flex-col gap-5 p-5 sm:p-6 lg:flex-row lg:items-center lg:justify-between lg:p-7">
           <div className="flex items-start gap-4">
-            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/5">
+            <div className="editorial-surface-card flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl">
               <PulseLogo />
             </div>
 
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <span className="rounded-full border border-cyan-400/30 bg-cyan-400/10 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.24em] text-cyan-100">
+                <span className="editorial-pill editorial-pill--accent px-3 py-1 text-[11px] font-medium uppercase tracking-[0.24em]">
                   Pulse
                 </span>
                 <span className="text-[11px] uppercase tracking-[0.24em] text-slate-400">by TuWebAI</span>

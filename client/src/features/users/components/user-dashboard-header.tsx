@@ -39,7 +39,7 @@ export function UserDashboardHeader({
   onLogout,
 }: UserDashboardHeaderProps) {
   return (
-    <div className="mb-6 rounded-2xl border border-white/10 bg-white/5 p-5 lg:backdrop-blur-lg sm:mb-8 sm:p-6">
+    <div className="editorial-surface-panel mb-6 rounded-2xl p-5 sm:mb-8 sm:p-6">
       <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:items-center sm:gap-6 sm:text-left">
           <div className="group relative">
@@ -78,12 +78,12 @@ export function UserDashboardHeader({
               <h1 className="text-2xl font-bold text-white">{user?.username || user?.name}</h1>
               {privacySettings.profileStatusVisible &&
                 (user?.isActive ? (
-                  <span className="flex items-center gap-1 rounded-full border border-green-500/30 bg-green-500/20 px-3 py-1 text-xs text-green-400">
+                  <span className="editorial-pill editorial-pill--accent flex items-center gap-1 px-3 py-1 text-xs text-green-200">
                     <Check className="h-3 w-3" />
                     Verificada
                   </span>
                 ) : (
-                  <span className="flex items-center gap-1 rounded-full border border-yellow-500/30 bg-yellow-500/20 px-3 py-1 text-xs text-yellow-400">
+                  <span className="editorial-pill editorial-pill--warm flex items-center gap-1 px-3 py-1 text-xs">
                     <AlertCircle className="h-3 w-3" />
                     Pendiente
                   </span>
@@ -104,7 +104,7 @@ export function UserDashboardHeader({
             onClick={() => {
               void onLogout();
             }}
-            className="w-full rounded-lg border border-white/10 px-4 py-2 text-gray-300 transition-colors hover:border-white/20 hover:text-white sm:w-auto"
+            className="editorial-secondary-button w-full px-4 py-2 sm:w-auto"
           >
             Cerrar sesión
           </button>

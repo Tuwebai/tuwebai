@@ -229,7 +229,7 @@ export default function UserDashboardPage() {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+      <div className="page-shell-surface flex min-h-screen flex-col items-center justify-center">
         <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-t-2 border-blue-500" />
         <p className="mt-4 text-gray-400">Cargando tu panel...</p>
       </div>
@@ -237,7 +237,7 @@ export default function UserDashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+    <div className="page-shell-surface min-h-screen">
       <MetaTags
         title="Panel de usuario"
         description="Gestioná tu cuenta, privacidad y seguridad en TuWeb.ai."
