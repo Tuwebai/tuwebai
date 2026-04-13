@@ -32,6 +32,14 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
       'Construimos webs a medida para negocios argentinos y las conectamos con Pulse para que veas resultados, no promesas.',
     [],
   );
+  const heroTrustPills = useMemo(
+    () => ['Diagnóstico en 48h', 'Pulse para medir resultados', 'Proyectos reales, no humo'],
+    [],
+  );
+  const heroServicePills = useMemo(
+    () => ['Sitios corporativos', 'E-commerce', 'Sistemas web'],
+    [],
+  );
 
   useEffect(() => {
     if (sectionRef.current && !sectionRef.current.hasAttribute('data-ref-set')) {
@@ -105,7 +113,7 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
         className="container mx-auto z-10 px-4 pb-14 text-center sm:pb-16 lg:pb-20"
         style={{ opacity: heroOpacity }}
       >
-        <div className="mb-5 inline-flex max-w-full items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs text-gray-300 sm:px-4 sm:text-sm lg:backdrop-blur-sm">
+        <div className="editorial-pill editorial-pill--muted mb-5 max-w-full gap-2 text-xs sm:px-4 sm:text-sm lg:backdrop-blur-sm">
           <span className="h-2 w-2 rounded-full bg-[var(--signal)] shadow-[var(--glow-signal)]" />
           <span className="font-medium">Web a medida + Pulse para negocios argentinos</span>
         </div>
@@ -152,30 +160,22 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-2 text-sm text-gray-300 sm:gap-3">
-            <span className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs sm:px-4 sm:text-sm">
-              Diagnóstico en 48h
-            </span>
-            <span className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs sm:px-4 sm:text-sm">
-              Pulse para medir resultados
-            </span>
-            <span className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs sm:px-4 sm:text-sm">
-              Proyectos reales, no humo
-            </span>
+            {heroTrustPills.map((pill) => (
+              <span key={pill} className="editorial-pill editorial-pill--muted sm:px-4 sm:text-sm">
+                {pill}
+              </span>
+            ))}
           </div>
         </div>
 
         <HeroMetricsGrid animatedStats={animatedStats} statsRef={statsRef} />
 
         <div className="flex flex-wrap items-center justify-center gap-2 text-sm text-gray-300 sm:gap-3">
-          <span className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs sm:px-4 sm:text-sm">
-            Sitios corporativos
-          </span>
-          <span className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs sm:px-4 sm:text-sm">
-            E-commerce
-          </span>
-          <span className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs sm:px-4 sm:text-sm">
-            Sistemas web
-          </span>
+          {heroServicePills.map((pill) => (
+            <span key={pill} className="editorial-pill editorial-pill--muted sm:px-4 sm:text-sm">
+              {pill}
+            </span>
+          ))}
         </div>
 
         <div className="mt-8 sm:mt-10">

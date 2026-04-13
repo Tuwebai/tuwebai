@@ -228,6 +228,35 @@
       linear-gradient(180deg, rgba(16, 24, 38, 0.98), rgba(10, 16, 28, 0.94));
   }
 
+  .editorial-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    border: 1px solid rgb(255 255 255 / 0.1);
+    padding: 0.5rem 0.875rem;
+    font-size: 0.75rem;
+    line-height: 1;
+    transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .editorial-pill--muted {
+    background: rgb(255 255 255 / 0.05);
+    color: #d1d5db;
+  }
+
+  .editorial-pill--accent {
+    border-color: rgb(0 204 255 / 0.28);
+    background: rgb(0 204 255 / 0.12);
+    color: #9be7ff;
+  }
+
+  .editorial-pill--warm {
+    border-color: rgb(245 158 11 / 0.22);
+    background: rgb(245 158 11 / 0.14);
+    color: #fcd34d;
+  }
+
   .editorial-surface-card__value {
     font-size: clamp(2rem, 4vw, 2.5rem);
     font-weight: 700;

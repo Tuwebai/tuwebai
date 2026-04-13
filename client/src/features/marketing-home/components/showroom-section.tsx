@@ -407,16 +407,16 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
                 </div>
 
                 <div className="mb-3 flex flex-wrap items-center gap-2">
-                  <span className="editorial-surface-card rounded px-2 py-1 text-xs text-gray-400">
+                  <span className="editorial-pill editorial-pill--muted px-2 py-1 text-xs text-gray-400">
                     {categoryNames[project.category] || project.category}
                   </span>
                   {project.id === 1 ? (
-                    <span className="rounded bg-amber-500/15 px-2 py-1 text-xs font-medium text-amber-300">
+                    <span className="editorial-pill editorial-pill--warm px-2 py-1 text-xs font-medium">
                       Cliente
                     </span>
                   ) : null}
                   {project.id === 2 ? (
-                    <span className="rounded bg-white/8 px-2 py-1 text-xs font-medium text-gray-300">
+                    <span className="editorial-pill editorial-pill--accent px-2 py-1 text-xs font-medium">
                       Producto propio
                     </span>
                   ) : null}
