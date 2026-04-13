@@ -377,7 +377,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
                   ? 'translate-y-0 opacity-100 hover:-translate-y-1'
                   : 'translate-y-5 opacity-0'
               }`}
-              style={{ transitionDelay: `${300 + index * 100}ms` }}
+              style={{ transitionDelay: hasShownProjects ? '0ms' : `${300 + index * 100}ms` }}
               onClick={() => handleProjectClick(project)}
             >
               <div className="group relative h-48 overflow-hidden">
