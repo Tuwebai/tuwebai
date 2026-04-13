@@ -75,8 +75,7 @@ export default function PhilosophySection({ setRef }: PhilosophySectionProps) {
             visibleClassName="opacity-100 translate-x-0"
             delayMs={160}
           >
-            <div className="relative rounded-lg bg-[var(--gradient-brand)] p-1">
-              <div className="rounded-lg bg-[var(--bg-surface)]/92 p-5 sm:p-8">
+            <div className="editorial-surface-panel p-5 sm:p-8">
                 <p className="mb-5 font-medium leading-7 text-gray-200">
                   Lo que vemos en el 80% de los sitios que nos llegan:
                 </p>
@@ -86,7 +85,7 @@ export default function PhilosophySection({ setRef }: PhilosophySectionProps) {
                   <li className="text-gray-300">- Carga en más de 4 segundos en celular</li>
                   <li className="text-gray-300">- Sin analítica configurada</li>
                 </ul>
-                <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-4">
+                <div className="editorial-surface-card mt-6 rounded-2xl p-4">
                   <p className="text-sm leading-relaxed text-gray-300">
                     El problema no es que tengas web. Es que tu web no está trabajando para vos.
                   </p>
@@ -95,12 +94,11 @@ export default function PhilosophySection({ setRef }: PhilosophySectionProps) {
                     construir la solución después.
                   </p>
                 </div>
-              </div>
             </div>
           </RevealBlock>
         </div>
 
-        <div className="mt-10 flex flex-col items-start gap-4 border-t border-white/10 pt-8 sm:flex-row sm:items-center sm:justify-between">
+        <div className="editorial-surface-card editorial-surface-card--accent mt-10 flex flex-col items-start gap-4 rounded-[28px] p-6 sm:flex-row sm:items-center sm:justify-between">
           <p className="font-rajdhani text-2xl font-bold text-white sm:text-3xl">
             ¿Tu web tiene estos problemas?
           </p>

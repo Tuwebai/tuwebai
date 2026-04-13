@@ -359,7 +359,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
                 className={`rounded-full px-4 py-2 text-sm ${
                   activeCategory === category
                     ? 'bg-[image:var(--gradient-brand)] text-white'
-                    : 'border border-[var(--border-default)] bg-[var(--bg-surface)]/88 text-gray-400 transition-colors hover:bg-[var(--bg-elevated)]/88 hover:text-white'
+                    : 'editorial-surface-card editorial-surface-card--interactive text-gray-400 hover:text-white'
                 }`}
               >
                 {categoryNames[category] || category}
@@ -372,7 +372,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
           {filteredProjects.map((project, index) => (
             <div
               key={project.id}
-              className={`h-full cursor-pointer overflow-hidden rounded-xl border border-[var(--border-default)] bg-[var(--bg-surface)]/88 transition-all duration-500 ${
+              className={`editorial-surface-card editorial-surface-card--interactive h-full cursor-pointer rounded-xl transition-all duration-500 ${
                 hasShownProjects
                   ? 'translate-y-0 opacity-100 hover:-translate-y-1'
                   : 'translate-y-5 opacity-0'
@@ -407,7 +407,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
                 </div>
 
                 <div className="mb-3 flex flex-wrap items-center gap-2">
-                  <span className="rounded bg-[var(--bg-elevated)]/88 px-2 py-1 text-xs text-gray-400">
+                  <span className="editorial-surface-card rounded px-2 py-1 text-xs text-gray-400">
                     {categoryNames[project.category] || project.category}
                   </span>
                   {project.id === 1 ? (
@@ -481,7 +481,7 @@ export default function ShowroomSection({ setRef }: ShowroomSectionProps) {
           </Suspense>
         )}
 
-        <div className="mt-14 text-center">
+        <div className="editorial-surface-panel mt-14 text-center p-8">
           <p className="font-rajdhani text-2xl font-bold text-white sm:text-3xl">
             ¿Tenés un proyecto en mente?
           </p>
