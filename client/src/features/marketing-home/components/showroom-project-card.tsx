@@ -21,17 +21,20 @@ export default function ShowroomProjectCard({
 }: ShowroomProjectCardProps) {
   return (
     <div
-      className={`editorial-surface-card editorial-surface-card--interactive editorial-project-card h-full cursor-pointer transition-all duration-500 ${
+      className={`editorial-surface-card editorial-surface-card--interactive editorial-project-card h-full cursor-pointer ${
         hasShownProjects ? 'translate-y-0 opacity-100 hover:-translate-y-1' : 'translate-y-5 opacity-0'
       }`}
-      style={{ transitionDelay: hasShownProjects ? '0ms' : `${300 + index * 100}ms` }}
+      style={{
+        transitionDelay: hasShownProjects ? '0ms' : `${300 + index * 100}ms`,
+        transitionDuration: hasShownProjects ? '180ms' : '500ms',
+      }}
       onClick={() => onOpen(project)}
     >
       <div className="editorial-project-card__media group h-52">
         <img
           src={project.image}
           alt={project.title}
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+          className="h-full w-full object-cover transition-transform duration-200 group-hover:scale-110"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#020617]/90 via-[#020617]/20 to-transparent" />
         <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-4">
@@ -43,10 +46,10 @@ export default function ShowroomProjectCard({
           </span>
         </div>
         {project.externalUrl ? (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+          <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity duration-150 group-hover:opacity-100">
             <button
               onClick={(event) => onVisit(project.externalUrl!, event)}
-              className="transform rounded-lg bg-[image:var(--gradient-brand)] px-4 py-2 font-medium text-white transition-all duration-200 hover:scale-105 hover:shadow-[var(--glow-signal)]"
+              className="transform rounded-lg bg-[image:var(--gradient-brand)] px-4 py-2 font-medium text-white transition-all duration-150 hover:scale-105 hover:shadow-[var(--glow-signal)]"
             >
               Visitar página web
             </button>
