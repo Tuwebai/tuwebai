@@ -35,8 +35,8 @@ export default function ShowroomModalNavButton({
       aria-label={ariaLabel}
       className={
         compact
-          ? 'inline-flex items-center gap-2 rounded-full border border-[var(--border-default)] bg-[var(--bg-overlay)] px-3 py-2 text-xs font-medium text-white transition-colors hover:border-[var(--signal-border)] hover:text-[var(--signal)] disabled:cursor-not-allowed disabled:opacity-30'
-          : 'absolute top-1/2 z-20 hidden h-14 w-14 -translate-y-1/2 items-center justify-center rounded-full border border-[var(--border-strong)] bg-[var(--bg-overlay)] text-white shadow-[var(--shadow-elevated)] transition-all hover:border-[var(--signal-border)] hover:text-[var(--signal)] disabled:cursor-not-allowed disabled:opacity-30 xl:flex'
+          ? 'editorial-secondary-button gap-2 px-3 py-2 text-xs font-medium'
+          : 'editorial-icon-button absolute top-1/2 z-20 hidden h-14 w-14 -translate-y-1/2 shadow-[var(--shadow-elevated)] xl:flex'
       }
     >
       {compact && isPrev ? icon : null}
