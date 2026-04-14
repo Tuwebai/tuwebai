@@ -18,7 +18,7 @@ export function AboutHeroSection() {
       <RevealBlock>
         <div className={`${heroSurfaceClassName} px-5 py-10 sm:px-6 md:px-10 md:py-12`}>
           <div className="flex flex-wrap items-center gap-3">
-            <AboutAccentPill>QuiÃ©nes somos</AboutAccentPill>
+            <AboutAccentPill>Quiénes somos</AboutAccentPill>
             <AboutMutedPill>{TUWEBAI_LOCATION}</AboutMutedPill>
           </div>
 
@@ -27,7 +27,7 @@ export function AboutHeroSection() {
           </h1>
 
           <p className="mt-5 max-w-3xl text-base leading-7 text-gray-300 md:text-lg">
-            TuWebAI naci? en {TUWEBAI_LOCATION}, con una convicción simple: la mayoría de los negocios argentinos merece una presencia digital que venda, no que solo exista.
+            TuWebAI nació en {TUWEBAI_LOCATION}, con una convicción simple: la mayoría de los negocios argentinos merece una presencia digital que venda, no que solo exista.
           </p>
         </div>
       </RevealBlock>
@@ -129,7 +129,7 @@ export function AboutTeamSection() {
               Diseño, frontend, backend, bases de datos y deploys. Juan Esteban López lleva TuWebAI de punta a punta: un solo interlocutor desde el primer wireframe hasta el lanzamiento. Sin capas de intermediarios, sin ¿te consulto con el equipo técnico?.
             </p>
             <p>
-              Cuando hablÃ¡s con TuWebAI, hablÃ¡s directamente con Juanchi, la persona que va a construir tu proyecto. AsÃ­ trabajamos desarrollo web Argentina sin vendedores en el medio.
+              Cuando hablás con TuWebAI, hablás directamente con Juanchi, la persona que va a construir tu proyecto. Así trabajamos desarrollo web Argentina sin vendedores en el medio.
             </p>
           </div>
         </RevealBlock>

@@ -14,27 +14,27 @@ type FeaturedProject = {
 };
 
 export const STORY_PARAGRAPHS = [
-  'TuWebAI arranc? en 2020. No con un plan de negocios ni con inversores. Arranc? con una computadora, ganas de construir cosas que funcionen y la certeza de que el desarrollo web en Argentina estaba mal enfocado.',
-  'HabÃ­a demasiadas agencias haciendo webs bonitas que no convertÃ­an nada. Demasiados clientes pagando por sitios que nadie usaba. Demasiado foco en el diseÃ±o y cero en el negocio detrÃ¡s del diseÃ±o.',
-  'Decidimos trabajar distinto: entender primero qué necesita el negocio, construir después. Sin templates, sin atajos, sin promesas que no podemos cumplir. Casi 6 años después, esa sigue siendo la ?nica regla.',
+  'TuWebAI arrancó en 2020. No con un plan de negocios ni con inversores. Arrancó con una computadora, ganas de construir cosas que funcionen y la certeza de que el desarrollo web en Argentina estaba mal enfocado.',
+  'Habí­a demasiadas agencias haciendo webs bonitas que no convertían nada. Demasiados clientes pagando por sitios que nadie usaba. Demasiado foco en el diseño y cero en el negocio detrás del diseño.',
+  'Decidimos trabajar distinto: entender primero qué necesita el negocio, construir después. Sin templates, sin atajos, sin promesas que no podemos cumplir. Casi 6 años después, esa sigue siendo la única regla.',
 ] as const;
 
 export const CONTEXT_STATS = [
-  { value: '2020', label: 'FundaciÃ³n' },
+  { value: '2020', label: 'Fundación' },
   { value: '6', label: 'años construyendo' },
-  { value: '3', label: 'Productos propios en producciÃ³n' },
+  { value: '3', label: 'Productos propios en producción' },
 ] as const;
 
 export const PRINCIPLES = [
   {
     title: 'Honestidad antes que venta',
     description:
-      'Si tu proyecto no encaja con lo que hacemos, te lo decimos antes de arrancar. Preferimos perder un cliente hoy que generarle un problema maÃ±ana.',
+      'Si tu proyecto no encaja con lo que hacemos, te lo decimos antes de arrancar. Preferimos perder un cliente hoy que generarle un problema mañana.',
   },
   {
-    title: 'CÃ³digo, no atajos',
+    title: 'Código, no atajos',
     description:
-      'NingÃºn proyecto de TuWebAI usa page builders, templates comprados ni WordPress mal configurado. Lo que construimos es cÃ³digo real, tuyo y mantenible.',
+      'Ningún proyecto de TuWebAI usa page builders, templates comprados ni WordPress mal configurado. Lo que construimos es código real, tuyo y mantenible.',
   },
   {
     title: 'Resultados medibles',
@@ -50,7 +50,7 @@ export const FEATURED_PROJECTS: FeaturedProject[] = [
     title: 'LH Decants',
     category: 'E-commerce',
     description:
-      'Tienda de decants con catÃ¡logo por mililitro, checkout con MercadoPago y panel de stock propio.',
+      'Tienda de decants con catálogo por mililitro, checkout con MercadoPago y panel de stock propio.',
     stack: ['React', 'Node.js', 'MercadoPago'],
     image: '/lhdecant-card.webp',
     href: 'https://lhdecant.com/',
@@ -69,7 +69,7 @@ export const FEATURED_PROJECTS: FeaturedProject[] = [
     title: 'Captiva',
     category: 'Landing Pages',
     description:
-      'Sistema de demos y landings orientadas a conversiÃ³n para negocios locales con propuesta comercial clara.',
+      'Sistema de demos y landings orientadas a conversión para negocios locales con propuesta comercial clara.',
     stack: ['React', 'Tailwind', 'Vite'],
     image: '/captiva.png',
     href: 'https://captiva.tuweb-ai.com/captiva',
@@ -94,7 +94,7 @@ export const ABOUT_PERSON_SCHEMA = {
   address: {
     '@type': 'PostalAddress',
     addressLocality: 'Río Tercero',
-    addressRegion: 'CÃ³rdoba',
+    addressRegion: 'Córdoba',
     addressCountry: 'AR',
   },
   knowsAbout: [
@@ -104,7 +104,7 @@ export const ABOUT_PERSON_SCHEMA = {
     'Supabase',
     'PostgreSQL',
     'Tailwind CSS',
-    'SEO tÃ©cnico',
+    'SEO técnico',
     'E-commerce Argentina',
     'MercadoPago',
   ],

@@ -110,3 +110,7 @@ proyecto-template/*
 *.sql
 !docs-blogs/
 !docs-blogs/**/*.md
+
+# Col
+
+.col/*

@@ -38,7 +38,7 @@ export const SHOWROOM_PROJECTS: ShowroomProject[] = [
     valueSummary:
       'Pulse baja la fricción del servicio, mejora la visibilidad para el cliente y convierte el seguimiento web en algo claro, ordenado y accionable.',
     features: ['Seguimiento claro de métricas y señales del negocio', 'Estado del proyecto, soporte y notificaciones en un solo espacio', 'Acceso administrado por invitación', 'Contexto real de cada cuenta sin lenguaje técnico innecesario', 'Experiencia privada optimizada para escritorio y mobile'],
-    results: [{ label: 'Vista unificada', value: 'M?tricas + proyecto' }, { label: 'Acceso', value: 'Privado por invitación' }, { label: 'Soporte', value: 'Contexto útil' }],
+    results: [{ label: 'Vista unificada', value: 'Métricas + proyecto' }, { label: 'Acceso', value: 'Privado por invitación' }, { label: 'Soporte', value: 'Contexto útil' }],
     image: '/pulse-by-tuwebai.png',
     detailsUrl: '/showroom',
     externalUrl: 'https://pulse.tuweb-ai.com/',
@@ -53,7 +53,7 @@ export const SHOWROOM_PROJECTS: ShowroomProject[] = [
     solutionSummary:
       'Creamos una plataforma web para reportes geolocalizados, alertas y seguimiento comunitario en tiempo real.',
     valueSummary:
-      'La solución mejora la velocidad de respuesta, ordena la informaci?n crítica y fortalece la colaboración entre usuarios.',
+      'La solución mejora la velocidad de respuesta, ordena la información crítica y fortalece la colaboración entre usuarios.',
     features: ['Reportes de objetos robados geolocalizados', 'Búsqueda por categoría, zona y descripción', 'Alertas y notificaciones en tiempo real', 'Canal comunitario para seguimiento de casos', 'Panel administrable para moderación y soporte'],
     results: [{ label: 'Foco', value: 'Seguridad 24/7' }, { label: 'Cobertura', value: 'Comunidad activa' }, { label: 'Objetivo', value: 'Recuperación rápida' }],
     image: '/safespot.webp',
@@ -66,7 +66,7 @@ export const SHOWROOM_PROJECTS: ShowroomProject[] = [
     category: 'saas',
     description: 'Dashboard de trading para monitoreo de mercado, gestión de operaciones y seguimiento en tiempo real.',
     clientNeed:
-      'Tomar decisiones con datos visibles y seguimiento continuo, sin dashboards confusos ni informaci?n fragmentada.',
+      'Tomar decisiones con datos visibles y seguimiento continuo, sin dashboards confusos ni información fragmentada.',
     solutionSummary:
       'Desarrollamos un panel de trading con monitoreo de mercado, operaciones y rendimiento en una sola interfaz.',
     valueSummary:
@@ -87,9 +87,9 @@ export const SHOWROOM_PROJECTS: ShowroomProject[] = [
     solutionSummary:
       'Desarrollamos una landing page de conversión con propuesta de valor directa, estructura comercial y CTA visibles desde el primer scroll.',
     valueSummary:
-      'La solución ayuda a comunicar mejor la oferta, reducir fricción en la decisi?n y transformar visitas en consultas concretas.',
-    features: ['Hero con propuesta de valor clara', 'CTA visibles en los puntos críticos', 'Secciones pensadas para objeciones y confianza', 'Diseño mobile-first enfocado en conversión', 'Landing lista para campañas y tr?fico pago'],
-    results: [{ label: 'Formato', value: 'Landing' }, { label: 'Objetivo', value: 'M?s leads' }, { label: 'Enfoque', value: 'Conversi?n' }],
+      'La solución ayuda a comunicar mejor la oferta, reducir fricción en la decisión y transformar visitas en consultas concretas.',
+    features: ['Hero con propuesta de valor clara', 'CTA visibles en los puntos críticos', 'Secciones pensadas para objeciones y confianza', 'Diseño mobile-first enfocado en conversión', 'Landing lista para campañas y tráfico pago'],
+    results: [{ label: 'Formato', value: 'Landing' }, { label: 'Objetivo', value: 'Mís leads' }, { label: 'Enfoque', value: 'Conversión' }],
     image: '/captiva.png',
     detailsUrl: '/showroom',
     externalUrl: 'https://captiva.tuweb-ai.com/captiva',
@@ -104,7 +104,7 @@ export const SHOWROOM_PROJECTS: ShowroomProject[] = [
     solutionSummary:
       'Construimos una landing experimental con narrativa breve, foco visual y estructura mínima para testear interés sin sobrecargar la experiencia.',
     valueSummary:
-      'El proyecto permite iterar r?pido, validar mensaje y detectar si la idea genera atenci?n antes de invertir en una plataforma mayor.',
+      'El proyecto permite iterar rápido, validar mensaje y detectar si la idea genera atención antes de invertir en una plataforma mayor.',
     features: ['Enfoque experimental de validación rápida', 'Narrativa breve y visual', 'Estructura simple para medir interés', 'Experiencia optimizada para mobile', 'Base liviana para iterar nuevas versiones'],
     results: [{ label: 'Tipo', value: 'Experimental' }, { label: 'Objetivo', value: 'Validación' }, { label: 'Velocidad', value: 'Iteración rápida' }],
     image: '/instadetox.png',
