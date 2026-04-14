@@ -114,21 +114,30 @@ export default function BlogArticlePage({ slug }: BlogArticlePageProps) {
             Volver al blog
           </Link>
 
-          <div className="mt-6 grid gap-8 lg:grid-cols-[minmax(0,1fr)_300px]">
-            <article className="blog-article-card">
-              <header id="inicio-articulo-blog" className="border-b border-white/10 px-6 py-8 md:px-10">
-                <p className="blog-heading-kicker text-sm">Blog TuWeb.ai</p>
-                <h1 className="mt-4 font-rajdhani text-3xl font-bold leading-tight sm:text-4xl md:text-5xl">{article.title}</h1>
-                <div className="mt-5 flex flex-wrap items-center gap-4 text-sm text-gray-400">
-                  <span>{format(parseISO(article.publishedAt), "d 'de' MMMM 'de' yyyy", { locale: es })}</span>
-                  <span className="inline-flex items-center gap-2">
-                    <Clock3 className="h-4 w-4 text-[#00CCFF]" />
-                    {article.readingTimeMinutes} min de lectura
-                  </span>
-                </div>
-              </header>
+          <section id="inicio-articulo-blog" className="blog-hero-card mt-6 px-5 py-10 sm:px-6 md:px-10 md:py-12">
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="blog-pill blog-pill-accent">Blog TuWeb.ai</span>
+              <span className="blog-pill blog-pill-muted">
+                {format(parseISO(article.publishedAt), "d 'de' MMMM 'de' yyyy", { locale: es })}
+              </span>
+            </div>
+            <h1 className="mt-6 max-w-4xl font-rajdhani text-[2.35rem] font-bold leading-[1.02] text-white sm:text-5xl md:text-6xl">
+              {article.title}
+            </h1>
+            <div className="mt-5 flex flex-wrap items-center gap-4 text-sm text-gray-300">
+              <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2">
+                <Clock3 className="h-4 w-4 text-[#00CCFF]" />
+                {article.readingTimeMinutes} min de lectura
+              </span>
+            </div>
+            <p className="mt-5 max-w-3xl text-base leading-7 text-gray-300 md:text-lg">
+              {article.description}
+            </p>
+          </section>
 
-              <div className="px-6 py-8 md:px-10">
+          <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_300px]">
+            <article className="blog-article-card">
+              <div className="px-6 py-8 md:px-10 md:py-10">
                 <div className="blog-prose" dangerouslySetInnerHTML={{ __html: articleHtml }} />
 
                 <BlogArticleInlineCta articleTitle={article.title} />

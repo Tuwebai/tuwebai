@@ -32,7 +32,10 @@
   overflow: hidden;
   border: 1px solid rgb(255 255 255 / 0.1);
   border-radius: 32px;
-  background: linear-gradient(180deg, rgba(18, 18, 23, 0.98), rgba(10, 10, 15, 0.98));
+  background:
+    radial-gradient(circle at top left, rgba(0, 204, 255, 0.1), transparent 38%),
+    radial-gradient(circle at top right, rgba(153, 51, 255, 0.08), transparent 34%),
+    linear-gradient(180deg, rgba(18, 18, 23, 0.98), rgba(10, 10, 15, 0.98));
   box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.3);
 }
 
@@ -48,13 +51,21 @@
 .blog-side-surface {
   border: 1px solid rgb(255 255 255 / 0.1);
   border-radius: 28px;
-  background: rgb(255 255 255 / 0.03);
+  background:
+    radial-gradient(circle at top left, rgba(0, 204, 255, 0.08), transparent 40%),
+    radial-gradient(circle at top right, rgba(153, 51, 255, 0.06), transparent 34%),
+    linear-gradient(180deg, rgba(20, 26, 42, 0.92), rgba(12, 18, 31, 0.88));
+  box-shadow: 0 25px 50px -18px rgb(0 0 0 / 0.26);
 }
 
 .blog-side-surface-accent {
   border: 1px solid rgb(0 204 255 / 0.2);
   border-radius: 28px;
-  background: #10131b;
+  background:
+    radial-gradient(circle at top left, rgba(0, 204, 255, 0.14), transparent 38%),
+    radial-gradient(circle at top right, rgba(153, 51, 255, 0.1), transparent 34%),
+    linear-gradient(180deg, rgba(16, 19, 27, 0.98), rgba(10, 10, 15, 0.98));
+  box-shadow: 0 25px 50px -18px rgb(0 0 0 / 0.28);
 }
 
 .blog-surface-link {

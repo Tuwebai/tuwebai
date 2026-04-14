@@ -12,7 +12,10 @@ export default function BlogArticleSidebar({ article, relatedArticles }: BlogArt
   return (
     <aside className="space-y-6">
       <div className="blog-side-surface-accent p-6">
-        <p className="blog-heading-kicker text-xs">Diagnóstico gratuito</p>
+        <div className="flex flex-wrap items-center gap-3">
+          <span className="blog-pill blog-pill-accent">Diagnóstico gratuito</span>
+          <span className="blog-pill blog-pill-muted">Bloque clave</span>
+        </div>
         <h2 className="mt-3 font-rajdhani text-2xl font-bold text-white sm:text-3xl">Descubrí qué frena tus consultas.</h2>
         <p className="mt-4 text-sm leading-7 text-gray-300">
           Revisamos estructura, propuesta, CTA y experiencia mobile para decirte qué mejorar primero.
@@ -29,7 +32,8 @@ export default function BlogArticleSidebar({ article, relatedArticles }: BlogArt
       </div>
 
       <div className="blog-side-surface p-6">
-        <h2 className="font-rajdhani text-2xl font-bold text-white">Índice del artículo</h2>
+        <span className="blog-pill blog-pill-accent">Índice</span>
+        <h2 className="mt-4 font-rajdhani text-2xl font-bold text-white">Índice del artículo</h2>
         <nav className="mt-4">
           <ul className="space-y-3 text-sm leading-6 text-gray-300">
             {article.headings
@@ -47,7 +51,11 @@ export default function BlogArticleSidebar({ article, relatedArticles }: BlogArt
 
       {relatedArticles.length > 0 ? (
         <div className="blog-side-surface p-6">
-          <h2 className="font-rajdhani text-2xl font-bold text-white">Seguí leyendo</h2>
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="blog-pill blog-pill-accent">Seguí leyendo</span>
+            <span className="blog-pill blog-pill-muted">{relatedArticles.length} sugeridos</span>
+          </div>
+          <h2 className="mt-4 font-rajdhani text-2xl font-bold text-white">Seguí leyendo</h2>
           <div className="mt-4 space-y-4">
             {relatedArticles.map((relatedArticle) => (
               <Link
