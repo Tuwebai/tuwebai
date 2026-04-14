@@ -16,7 +16,7 @@ export function AboutProjectsSection() {
           Proyectos reales. Problemas reales resueltos.
         </h2>
         <p className="mx-auto mt-5 max-w-3xl text-base leading-7 text-gray-300 sm:text-lg sm:leading-8">
-          Algunos propios, uno de cliente. Todos con c?digo a medida y l?gica de negocio pensada desde cero.
+          Algunos propios, uno de cliente. Todos con cÃ³digo a medida y lÃ³gica de negocio pensada desde cero.
         </p>
       </RevealBlock>
 
@@ -92,7 +92,7 @@ export function AboutCtaSection() {
             Si esto resuena con lo que necesita tu negocio, hablemos.
           </h2>
           <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-gray-300 sm:text-lg sm:leading-8">
-            La primera conversaci?n es siempre sin cargo. Te decimos si podemos ayudarte y c?mo.
+            La primera conversaci?n es siempre sin cargo. Te decimos si podemos ayudarte y cómo.
           </p>
 
           <div className="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
@@ -100,7 +100,7 @@ export function AboutCtaSection() {
               to="/diagnostico-gratuito"
               className="inline-flex min-h-12 items-center justify-center rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-6 py-3 font-semibold text-white shadow-[0_12px_30px_rgba(0,204,255,0.18)] transition-transform duration-200 hover:scale-[1.02]"
             >
-              Ped? tu diagn?stico gratuito ?
+              PedÃ­ tu diagnÃ³stico gratuito â
             </Link>
             <Link
               to="/?section=showroom"

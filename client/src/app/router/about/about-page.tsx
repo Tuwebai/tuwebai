@@ -17,9 +17,9 @@ export default function AboutPage() {
   return (
     <>
       <MetaTags
-        title="Nosotros - Juanchi L?pez, Desarrollador Web C?rdoba"
-        description="Conoc? a Juanchi, fundador de TuWebAI. Desarrollador fullstack de R?o Tercero, C?rdoba. Casi 6 a?os construyendo webs que venden para negocios argentinos."
-        keywords="nosotros tuwebai, juanchi l?pez, juanchiidev, juan esteban l?pez, desarrollador web c?rdoba, desarrollo web argentina"
+        title="Nosotros - Juanchi López, Desarrollador Web Córdoba"
+        description="Conocé a Juanchi, fundador de TuWebAI. Desarrollador fullstack de Río Tercero, Córdoba. Casi 6 años construyendo webs que venden para negocios argentinos."
+        keywords="nosotros tuwebai, juanchi lópez, juanchiidev, juan esteban lópez, desarrollador web Córdoba, desarrollo web argentina"
         ogType="website"
         ogImage="/logo-tuwebai.png"
         url={ABOUT_PAGE_URL}

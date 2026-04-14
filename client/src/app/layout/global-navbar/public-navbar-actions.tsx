@@ -39,7 +39,7 @@ export function PublicNavbarActions({
           onClick={() => { void handleAuthIntent('login'); }}
           className="flex-1 rounded-lg border border-[var(--border-default)] py-3 text-center font-medium text-gray-300"
         >
-          Iniciar sesi?n
+          Iniciar sesión
         </button>
         <button
           onClick={() => { void handleAuthIntent('register'); }}
@@ -57,7 +57,7 @@ export function PublicNavbarActions({
         onClick={() => { void handleAuthIntent('login'); }}
         className="rounded-md border border-[var(--border-default)] px-3 py-1.5 text-sm font-medium text-gray-300 transition-colors hover:border-[var(--border-strong)] hover:text-white xl:px-4"
       >
-        Iniciar sesi?n
+        Iniciar sesión
       </button>
       <button
         onClick={() => { void handleAuthIntent('register'); }}

@@ -99,7 +99,7 @@ export function AuthenticatedNavbarActions({
           }}
           className="block w-full rounded-md px-4 py-2 text-left text-gray-300 transition-colors hover:bg-[var(--bg-elevated)]"
         >
-          Cerrar sesi?n
+          Cerrar sesión
         </button>
       </div>
     );
@@ -185,7 +185,7 @@ export function AuthenticatedNavbarActions({
               }}
               className="block w-full rounded-lg px-4 py-2 text-left text-sm text-gray-300 transition-colors hover:bg-[var(--bg-elevated)] hover:text-white"
             >
-              Cerrar sesi?n
+              Cerrar sesión
             </button>
           </div>
         </div>

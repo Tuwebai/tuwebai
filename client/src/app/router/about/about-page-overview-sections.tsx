@@ -18,16 +18,16 @@ export function AboutHeroSection() {
       <RevealBlock>
         <div className={`${heroSurfaceClassName} px-5 py-10 sm:px-6 md:px-10 md:py-12`}>
           <div className="flex flex-wrap items-center gap-3">
-            <AboutAccentPill>Qui?nes somos</AboutAccentPill>
+            <AboutAccentPill>QuiÃ©nes somos</AboutAccentPill>
             <AboutMutedPill>{TUWEBAI_LOCATION}</AboutMutedPill>
           </div>
 
           <h1 className="mt-6 max-w-4xl font-rajdhani text-[2.35rem] font-bold leading-[1.02] text-white sm:text-5xl md:text-6xl">
-            No somos una agencia m?s. Construimos webs que trabajan de verdad.
+            No somos una agencia más. Construimos webs que trabajan de verdad.
           </h1>
 
           <p className="mt-5 max-w-3xl text-base leading-7 text-gray-300 md:text-lg">
-            TuWebAI naci? en {TUWEBAI_LOCATION}, con una convicci?n simple: la mayor?a de los negocios argentinos merece una presencia digital que venda, no que solo exista.
+            TuWebAI naci? en {TUWEBAI_LOCATION}, con una convicción simple: la mayoría de los negocios argentinos merece una presencia digital que venda, no que solo exista.
           </p>
         </div>
       </RevealBlock>
@@ -58,7 +58,7 @@ export function AboutStorySection() {
       <RevealBlock>
         <div className={`${surfaceClassName} px-6 py-10 sm:px-8 md:px-10`}>
           <div className="flex flex-wrap items-center gap-3">
-            <AboutAccentPill>C?mo empezamos</AboutAccentPill>
+            <AboutAccentPill>Cómo empezamos</AboutAccentPill>
           </div>
 
           <div className="mt-6 space-y-6 text-base leading-8 text-gray-300 sm:text-lg">
@@ -79,7 +79,7 @@ export function AboutPrinciplesSection() {
     <section className="mx-auto mt-10 max-w-6xl">
       <RevealBlock className="text-center">
         <div className="flex justify-center">
-          <AboutAccentPill>C?mo pensamos</AboutAccentPill>
+          <AboutAccentPill>Cómo pensamos</AboutAccentPill>
         </div>
         <h2 className="mt-4 font-rajdhani text-3xl font-bold text-white sm:text-4xl md:text-5xl">
           Tres principios que no negociamos.
@@ -123,13 +123,13 @@ export function AboutTeamSection() {
         <RevealBlock delayMs={80}>
           <div className={`${surfaceClassName} space-y-6 px-6 py-8 text-base leading-8 text-gray-300 sm:text-lg`}>
             <p>
-              TuWebAI es Juan Esteban L?pez, Juanchi para los que nos conocen. Desarrollador fullstack y desarrollador web C?rdoba desde R?o Tercero, C?rdoba.
+              TuWebAI es Juan Esteban López, Juanchi para los que nos conocen. Desarrollador fullstack y desarrollador web Córdoba desde Río Tercero, Córdoba.
             </p>
             <p>
-              Dise?o, frontend, backend, bases de datos y deploys. Juan Esteban L?pez lleva TuWebAI de punta a punta: un solo interlocutor desde el primer wireframe hasta el lanzamiento. Sin capas de intermediarios, sin ?te consulto con el equipo t?cnico?.
+              Diseño, frontend, backend, bases de datos y deploys. Juan Esteban López lleva TuWebAI de punta a punta: un solo interlocutor desde el primer wireframe hasta el lanzamiento. Sin capas de intermediarios, sin ¿te consulto con el equipo técnico?.
             </p>
             <p>
-              Cuando habl?s con TuWebAI, habl?s directamente con Juanchi, la persona que va a construir tu proyecto. As? trabajamos desarrollo web Argentina sin vendedores en el medio.
+              Cuando hablÃ¡s con TuWebAI, hablÃ¡s directamente con Juanchi, la persona que va a construir tu proyecto. AsÃ­ trabajamos desarrollo web Argentina sin vendedores en el medio.
             </p>
           </div>
         </RevealBlock>
@@ -140,12 +140,12 @@ export function AboutTeamSection() {
               <div className="h-20 w-20 overflow-hidden rounded-full border border-white/10 bg-white/5">
                 <img
                   src="/image_perfil.webp"
-                  alt="Foto de perfil de Juan Esteban L?pez"
+                  alt="Foto de perfil de Juan Esteban López"
                   className="h-full w-full object-cover"
                 />
               </div>
               <div>
-                <p className="font-rajdhani text-2xl font-bold text-white">Juan Esteban L?pez</p>
+                <p className="font-rajdhani text-2xl font-bold text-white">Juan Esteban López</p>
                 <p className="mt-1 text-sm uppercase tracking-[0.18em] text-gray-400">
                   Fundador &amp; Desarrollador Fullstack
                 </p>

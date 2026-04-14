@@ -19,7 +19,7 @@ export function NavbarMetaLinks({ onClick }: { onClick?: () => void }) {
         className="transition-colors hover:text-[var(--signal)]"
         onClick={onClick}
       >
-        Pol?tica de Privacidad
+        Política de Privacidad
       </Link>
       <span className="text-gray-600">&bull;</span>
       <Link
@@ -27,7 +27,7 @@ export function NavbarMetaLinks({ onClick }: { onClick?: () => void }) {
         className="transition-colors hover:text-white"
         onClick={onClick}
       >
-        T?rminos y Condiciones
+        Términos y Condiciones
       </Link>
     </>
   );

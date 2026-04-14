@@ -15,31 +15,31 @@ type FeaturedProject = {
 
 export const STORY_PARAGRAPHS = [
   'TuWebAI arranc? en 2020. No con un plan de negocios ni con inversores. Arranc? con una computadora, ganas de construir cosas que funcionen y la certeza de que el desarrollo web en Argentina estaba mal enfocado.',
-  'Hab?a demasiadas agencias haciendo webs bonitas que no convert?an nada. Demasiados clientes pagando por sitios que nadie usaba. Demasiado foco en el dise?o y cero en el negocio detr?s del dise?o.',
-  'Decidimos trabajar distinto: entender primero qu? necesita el negocio, construir despu?s. Sin templates, sin atajos, sin promesas que no podemos cumplir. Casi 6 a?os despu?s, esa sigue siendo la ?nica regla.',
+  'HabÃ­a demasiadas agencias haciendo webs bonitas que no convertÃ­an nada. Demasiados clientes pagando por sitios que nadie usaba. Demasiado foco en el diseÃ±o y cero en el negocio detrÃ¡s del diseÃ±o.',
+  'Decidimos trabajar distinto: entender primero qué necesita el negocio, construir después. Sin templates, sin atajos, sin promesas que no podemos cumplir. Casi 6 años después, esa sigue siendo la ?nica regla.',
 ] as const;
 
 export const CONTEXT_STATS = [
-  { value: '2020', label: 'Fundaci?n' },
-  { value: '6', label: 'A?os construyendo' },
-  { value: '3', label: 'Productos propios en producci?n' },
+  { value: '2020', label: 'FundaciÃ³n' },
+  { value: '6', label: 'años construyendo' },
+  { value: '3', label: 'Productos propios en producciÃ³n' },
 ] as const;
 
 export const PRINCIPLES = [
   {
     title: 'Honestidad antes que venta',
     description:
-      'Si tu proyecto no encaja con lo que hacemos, te lo decimos antes de arrancar. Preferimos perder un cliente hoy que generarle un problema ma?ana.',
+      'Si tu proyecto no encaja con lo que hacemos, te lo decimos antes de arrancar. Preferimos perder un cliente hoy que generarle un problema maÃ±ana.',
   },
   {
-    title: 'C?digo, no atajos',
+    title: 'CÃ³digo, no atajos',
     description:
-      'Ning?n proyecto de TuWebAI usa page builders, templates comprados ni WordPress mal configurado. Lo que construimos es c?digo real, tuyo y mantenible.',
+      'NingÃºn proyecto de TuWebAI usa page builders, templates comprados ni WordPress mal configurado. Lo que construimos es cÃ³digo real, tuyo y mantenible.',
   },
   {
     title: 'Resultados medibles',
     description:
-      'Una web que no genera consultas no es una inversi?n, es un costo. Por eso cada proyecto arranca definiendo qu? tiene que lograr y c?mo vamos a medirlo.',
+      'Una web que no genera consultas no es una inversión, es un costo. Por eso cada proyecto arranca definiendo qué tiene que lograr y cómo vamos a medirlo.',
   },
 ] as const;
 
@@ -50,7 +50,7 @@ export const FEATURED_PROJECTS: FeaturedProject[] = [
     title: 'LH Decants',
     category: 'E-commerce',
     description:
-      'Tienda de decants con cat?logo por mililitro, checkout con MercadoPago y panel de stock propio.',
+      'Tienda de decants con catÃ¡logo por mililitro, checkout con MercadoPago y panel de stock propio.',
     stack: ['React', 'Node.js', 'MercadoPago'],
     image: '/lhdecant-card.webp',
     href: 'https://lhdecant.com/',
@@ -69,7 +69,7 @@ export const FEATURED_PROJECTS: FeaturedProject[] = [
     title: 'Captiva',
     category: 'Landing Pages',
     description:
-      'Sistema de demos y landings orientadas a conversi?n para negocios locales con propuesta comercial clara.',
+      'Sistema de demos y landings orientadas a conversiÃ³n para negocios locales con propuesta comercial clara.',
     stack: ['React', 'Tailwind', 'Vite'],
     image: '/captiva.png',
     href: 'https://captiva.tuweb-ai.com/captiva',
@@ -81,8 +81,8 @@ export const ABOUT_PAGE_URL = `${TUWEBAI_SITE_FULL_URL}/nosotros`;
 export const ABOUT_PERSON_SCHEMA = {
   '@context': 'https://schema.org',
   '@type': 'Person',
-  name: 'Juan Esteban L?pez Pachao',
-  alternateName: ['Juanchi', 'Juanchi L?pez', 'Juanchi Dev', 'juanchiidev'],
+  name: 'Juan Esteban López Pachao',
+  alternateName: ['Juanchi', 'Juanchi López', 'Juanchi Dev', 'juanchiidev'],
   jobTitle: 'Fundador y Desarrollador Fullstack',
   worksFor: {
     '@type': 'Organization',
@@ -93,8 +93,8 @@ export const ABOUT_PERSON_SCHEMA = {
   sameAs: [TUWEBAI_LINKEDIN_URL],
   address: {
     '@type': 'PostalAddress',
-    addressLocality: 'R?o Tercero',
-    addressRegion: 'C?rdoba',
+    addressLocality: 'Río Tercero',
+    addressRegion: 'CÃ³rdoba',
     addressCountry: 'AR',
   },
   knowsAbout: [
@@ -104,7 +104,7 @@ export const ABOUT_PERSON_SCHEMA = {
     'Supabase',
     'PostgreSQL',
     'Tailwind CSS',
-    'SEO t?cnico',
+    'SEO tÃ©cnico',
     'E-commerce Argentina',
     'MercadoPago',
   ],

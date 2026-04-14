@@ -19,7 +19,7 @@ export const webEstudioJuridicoArgentinaConfig: ClusterPageConfig = {
   ],
   asideTitle: 'Tu sitio hoy acompana consultas?',
   asideBody: 'Podemos revisar si la web de tu estudio transmite seriedad y convierte interes en conversaciones reales.',
-  asidePrimaryCta: 'Pedir diagn?stico para estudio jur?dico',
+  asidePrimaryCta: 'Pedir diagnóstico para estudio jurídico',
   issuesTitle: 'Lo que suele fallar',
   issuesItems: [
     'Textos demasiado genericos o llenos de jerga legal.',
@@ -51,15 +51,15 @@ export const webContadorArgentinaConfig: ClusterPageConfig = {
   primaryItems: [
     { title: 'Servicios bien agrupados', description: 'Separar personas, pymes y tramites segun la logica comercial del estudio.' },
     { title: 'Propuesta entendible', description: 'Explicar que resuelven los servicios y para quien son, sin lenguaje interno.' },
-    { title: 'Canal de contacto claro', description: 'Llevar al usuario a consulta, WhatsApp o diagn?stico seg?n el tipo de necesidad.' },
+    { title: 'Canal de contacto claro', description: 'Llevar al usuario a consulta, WhatsApp o diagnóstico según el tipo de necesidad.' },
   ],
   asideTitle: 'Tu web ordena o confunde?',
   asideBody: 'Podemos revisar si hoy tu sitio ayuda a captar mejores consultas o si obliga a explicar todo desde cero.',
-  asidePrimaryCta: 'Pedir diagn?stico para contador',
+  asidePrimaryCta: 'Pedir diagnóstico para contador',
   issuesTitle: 'Errores frecuentes',
   issuesItems: [
     'Servicios mezclados sin segmentacion por tipo de cliente.',
-    'Promesa demasiado t?cnica o poco aterrizada a problemas reales.',
+    'Promesa demasiado técnica o poco aterrizada a problemas reales.',
     'No mostrar una accion principal clara desde mobile.',
   ],
   nextStepsTitle: 'Que conviene ajustar',
@@ -91,7 +91,7 @@ export const webArquitectoArgentinaConfig: ClusterPageConfig = {
   ],
   asideTitle: 'Tu portfolio hoy convierte?',
   asideBody: 'Podemos revisar si tu sitio muestra bien el valor de tu estudio o si se queda corto para generar consultas.',
-  asidePrimaryCta: 'Pedir diagn?stico para arquitectura',
+  asidePrimaryCta: 'Pedir diagnóstico para arquitectura',
   issuesTitle: 'Lo que mas suele trabar',
   issuesItems: [
     'Portfolio sin contexto de proyecto, escala o tipo de cliente.',
