@@ -4,6 +4,7 @@ import { execFileSync } from 'node:child_process';
 
 const SITE_URL = 'https://tuweb-ai.com';
 const DEFAULT_OG_IMAGE = `${SITE_URL}/logo-tuwebai.png`;
+const shouldReadGitDates = process.env.NETLIFY !== 'true' && process.env.CI !== 'true';
 
 function escapeHtml(value) {
   return value
@@ -372,7 +373,7 @@ export function buildBlogPosts(docsDir) {
     const absolutePath = path.join(docsDir, entry.name);
     const rawContent = fs.readFileSync(absolutePath, 'utf8');
     const stats = fs.statSync(absolutePath);
-    const gitDates = getGitFileDates(absolutePath);
+    const gitDates = shouldReadGitDates ? getGitFileDates(absolutePath) : null;
     const { data: frontmatter, content } = parseFrontmatter(rawContent.replace(/\r\n/g, '\n'));
     const titleMatch = content.match(/^#\s+(.+)$/m);
 
