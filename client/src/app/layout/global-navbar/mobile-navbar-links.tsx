@@ -2,6 +2,12 @@ import { Link } from 'react-router-dom';
 
 import { MAIN_NAVIGATION, prefetchNavigationPath } from './navigation';
 
+const COMPANY_LINKS = [
+  { label: 'Nosotros', href: '/nosotros' },
+  { label: 'Proceso', href: '/proceso' },
+  { label: 'Casos de éxito', href: '/?section=showroom' },
+] as const;
+
 interface MobileNavbarLinksProps {
   activePage: string;
   onCloseMenu: () => void;
@@ -49,6 +55,25 @@ export function MobileNavbarLinks({
           ) : null}
         </div>
       ))}
+
+      <div className="border-b border-[var(--border-subtle)] pb-3">
+        <p className="py-3 text-lg font-medium text-gray-200">Empresa</p>
+        <div className="mt-2 space-y-1 pl-3 sm:pl-4">
+          {COMPANY_LINKS.map((item) => (
+            <Link
+              key={item.href}
+              to={item.href}
+              onMouseEnter={() => prefetchNavigationPath(item.href)}
+              onFocus={() => prefetchNavigationPath(item.href)}
+              onTouchStart={() => prefetchNavigationPath(item.href)}
+              className="block rounded-lg px-2 py-2 text-sm text-gray-400 hover:bg-white/[0.03] hover:text-white"
+              onClick={onCloseMenu}
+            >
+              {item.label}
+            </Link>
+          ))}
+        </div>
+      </div>
     </>
   );
 }
