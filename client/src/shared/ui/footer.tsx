@@ -38,7 +38,7 @@ const footerColumns: Array<{ title: string; links: FooterLink[] }> = [
     links: [
       { label: 'Nosotros', href: '/nosotros' },
       { label: 'Proceso', href: '/proceso' },
-      { label: 'Stack tecnológico', href: '/servicios/desarrollo-web' },
+      { label: 'Consulta estratégica', href: '/consulta' },
       { label: 'Casos de éxito', href: '/?section=showroom' },
     ],
   },

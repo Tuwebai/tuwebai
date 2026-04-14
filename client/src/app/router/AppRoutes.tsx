@@ -29,7 +29,6 @@ const WebEstudioJuridicoArgentinaPage = lazy(() => import('@/features/content/co
 const WebContadorArgentinaPage = lazy(() => import('@/features/content/components/web-contador-argentina-page'));
 const WebArquitectoArgentinaPage = lazy(() => import('@/features/content/components/web-arquitecto-argentina-page'));
 
-const WebDevelopmentPage = lazy(() => import('@/app/router/services/web-development-page'));
 const AboutPage = lazy(() => import('@/app/router/about/about-page'));
 const ProcessPage = lazy(() => import('@/app/router/company/process-page'));
 
@@ -79,7 +78,6 @@ export default function AppRoutes() {
       <Route path="/nosotros" element={<LazyRoute><AboutPage /></LazyRoute>} />
       <Route path="/proceso" element={<LazyRoute><ProcessPage /></LazyRoute>} />
 
-      <Route path="/servicios/desarrollo-web" element={<LazyRoute><WebDevelopmentPage /></LazyRoute>} />
       <Route path="/servicios/estrategia-digital" element={<Navigate to="/consulta" replace />} />
       <Route path="/servicios/consultoria-estrategica" element={<Navigate to="/consulta" replace />} />
       <Route path="/servicios/posicionamiento-marketing" element={<Navigate to="/consulta" replace />} />
