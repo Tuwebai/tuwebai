@@ -41,8 +41,6 @@ const NewsletterConfirmationLandingPage = lazy(() => import('@/features/newslett
 const NewsletterUnsubscribePage = lazy(() => import('@/features/newsletter/components/newsletter-unsubscribe-page'));
 const UserDashboardPage = lazy(() => import('@/features/users/components/user-dashboard-page'));
 
-const SupportContactPage = lazy(() => import('@/features/contact/components/support-contact-page'));
-
 const TermsAndConditionsPage = lazy(() => import('@/app/router/legal/terms-and-conditions-page'));
 const PrivacyPolicyPage = lazy(() => import('@/app/router/legal/privacy-policy-page'));
 const CookiesPolicyPage = lazy(() => import('@/app/router/legal/cookies-policy-page'));
@@ -133,8 +131,6 @@ export default function AppRoutes() {
           </LazyRoute>
         }
       />
-      <Route path="/contacto" element={<LazyRoute><SupportContactPage /></LazyRoute>} />
-
       <Route path="/terminos-condiciones" element={<LazyRoute><TermsAndConditionsPage /></LazyRoute>} />
       <Route path="/politica-privacidad" element={<LazyRoute><PrivacyPolicyPage /></LazyRoute>} />
       <Route path="/politica-cookies" element={<LazyRoute><CookiesPolicyPage /></LazyRoute>} />

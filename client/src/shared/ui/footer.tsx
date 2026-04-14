@@ -29,7 +29,7 @@ const footerColumns: Array<{ title: string; links: FooterLink[] }> = [
       { label: 'Webs corporativas', href: '/corporativos' },
       { label: 'Sistemas a medida', href: '/consulta' },
       { label: 'Captiva', href: TUWEBAI_CAPTIVA_URL, external: true },
-      { label: 'Contacto', href: '/contacto' },
+      { label: 'Consulta', href: '/consulta' },
     ],
   },
   {

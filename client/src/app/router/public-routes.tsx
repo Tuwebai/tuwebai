@@ -40,7 +40,6 @@ const NewsletterConfirmPage = lazy(() => import('@/features/newsletter/component
 const NewsletterConfirmationLandingPage = lazy(() => import('@/features/newsletter/components/newsletter-confirmation-landing-page'));
 const NewsletterUnsubscribePage = lazy(() => import('@/features/newsletter/components/newsletter-unsubscribe-page'));
 
-const SupportContactPage = lazy(() => import('@/features/contact/components/support-contact-page'));
 const DiagnosticoGratuitoPage = lazy(() => import('@/features/contact/components/diagnostico-gratuito-page'));
 const ChecklistWebGratisPage = lazy(() => import('@/features/checklist/components/checklist-web-gratis-page'));
 
@@ -133,8 +132,6 @@ export default function PublicRoutes() {
           </LazyRoute>
         }
       />
-      <Route path="/contacto" element={<LazyRoute><SupportContactPage /></LazyRoute>} />
-
       <Route path="/terminos-condiciones" element={<LazyRoute><TermsAndConditionsPage /></LazyRoute>} />
       <Route path="/politica-privacidad" element={<LazyRoute><PrivacyPolicyPage /></LazyRoute>} />
       <Route path="/politica-cookies" element={<LazyRoute><CookiesPolicyPage /></LazyRoute>} />

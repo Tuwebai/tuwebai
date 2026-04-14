@@ -319,7 +319,7 @@ function getResultContent(completedCount: number) {
       title: 'Tu web tiene una base sólida pero hay oportunidades claras de mejora.',
       description:
         'Con los cambios correctos podés aumentar significativamente tus consultas sin rehacer todo desde cero.',
-      href: '/contacto',
+      href: '/consulta',
       cta: 'Hablemos de cómo mejorarlo →',
     };
   }
@@ -328,7 +328,7 @@ function getResultContent(completedCount: number) {
     title: 'Tu web está bien optimizada.',
     description:
       'Si aun así no recibís las consultas que esperás, el problema puede estar en el tráfico o en el mensaje.',
-    href: '/contacto',
+    href: '/consulta',
     cta: 'Hablemos →',
   };
 }
