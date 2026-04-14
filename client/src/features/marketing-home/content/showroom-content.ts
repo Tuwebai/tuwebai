@@ -32,12 +32,12 @@ export const SHOWROOM_PROJECTS: ShowroomProject[] = [
       valueSummary: 'Que valor recibe el cliente',
     },
     clientNeed:
-      'Dar a cada cliente un espacio privado para entender que esta pasando con su web, que avances siguen en curso y que decisiones siguen en agenda sin perderse en lenguaje tecnico.',
+      'Dar a cada cliente un espacio privado para entender qu? est? pasando con su web, qu? avances siguen en curso y qu? decisiones siguen en agenda sin perderse en lenguaje t?cnico.',
     solutionSummary:
       'Construimos Pulse como un dashboard privado con metricas claras, seguimiento del proyecto, pagos, soporte y contexto util en una misma experiencia.',
     valueSummary:
       'Pulse baja la friccion del servicio, mejora la visibilidad para el cliente y convierte el seguimiento web en algo claro, ordenado y accionable.',
-    features: ['Seguimiento claro de metricas y señales del negocio', 'Estado del proyecto, soporte y notificaciones en un solo espacio', 'Acceso administrado por invitacion', 'Contexto real de cada cuenta sin lenguaje tecnico innecesario', 'Experiencia privada optimizada para escritorio y mobile'],
+    features: ['Seguimiento claro de metricas y señales del negocio', 'Estado del proyecto, soporte y notificaciones en un solo espacio', 'Acceso administrado por invitaci?n', 'Contexto real de cada cuenta sin lenguaje t?cnico innecesario', 'Experiencia privada optimizada para escritorio y mobile'],
     results: [{ label: 'Vista unificada', value: 'Metricas + proyecto' }, { label: 'Acceso', value: 'Privado por invitacion' }, { label: 'Soporte', value: 'Contexto util' }],
     image: '/pulse-by-tuwebai.png',
     detailsUrl: '/showroom',

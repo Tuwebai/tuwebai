@@ -19,7 +19,7 @@ export const webParaRestauranteBarArgentinaConfig: ClusterPageConfig = {
   ],
   asideTitle: 'Tu sitio acompana reservas?',
   asideBody: 'Podemos revisar si tu web hoy ayuda a llenar mesas o si solo funciona como una tarjeta digital.',
-  asidePrimaryCta: 'Pedir diagnostico para gastronomia',
+  asidePrimaryCta: 'Pedir diagn?stico para gastronom?a',
   issuesTitle: 'Lo que mas suele fallar',
   issuesItems: [
     'Menu, horarios o direccion poco visibles desde mobile.',
@@ -55,7 +55,7 @@ export const cartaDigitalQrRestauranteConfig: ClusterPageConfig = {
   ],
   asideTitle: 'Tu carta QR ayuda o estorba?',
   asideBody: 'Podemos revisar si hoy tu menu digital acompana la experiencia del salon o genera abandono.',
-  asidePrimaryCta: 'Pedir diagnostico de carta digital',
+  asidePrimaryCta: 'Pedir diagn?stico de carta digital',
   issuesTitle: 'Problemas frecuentes',
   issuesItems: [
     'PDF pesados o ilegibles desde el celular.',
@@ -91,7 +91,7 @@ export const reservasOnlineRestauranteConfig: ClusterPageConfig = {
   ],
   asideTitle: 'Conviene en tu caso?',
   asideBody: 'Podemos revisar si hoy reservas online te ayudarian a ordenar demanda o si primero hay que ajustar otra parte del proceso.',
-  asidePrimaryCta: 'Pedir diagnostico de reservas',
+  asidePrimaryCta: 'Pedir diagn?stico de reservas',
   issuesTitle: 'Donde suele romperse',
   issuesItems: [
     'Reservas que no respetan capacidad ni tiempos reales del salon.',

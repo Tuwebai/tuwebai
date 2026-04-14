@@ -87,7 +87,7 @@ export default function WhatsAppButton({
             onClick={() => setIsPopupVisible(false)}
             className="flex-1 rounded-md bg-gray-100 px-3 py-1.5 text-xs text-gray-600 transition-colors hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
           >
-            Mas tarde
+            M?s tarde
           </button>
           <a
             href={whatsappUrl}

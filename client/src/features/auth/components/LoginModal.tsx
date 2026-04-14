@@ -102,16 +102,16 @@ export default function LoginModal({
       }
 
       if (!formState.password) {
-        newErrors.password = 'La contrasena es requerida';
+        newErrors.password = 'La contrase?a es requerida';
       } else if (formState.password.length < 8) {
-        newErrors.password = 'La contrasena debe tener al menos 8 caracteres';
+        newErrors.password = 'La contrase?a debe tener al menos 8 caracteres';
       }
 
       if (formState.password !== formState.confirmPassword) {
-        newErrors.confirmPassword = 'Las contrasenas no coinciden';
+        newErrors.confirmPassword = 'Las contrase?as no coinciden';
       }
     } else if (!formState.password) {
-      newErrors.password = 'La contrasena es requerida';
+      newErrors.password = 'La contrase?a es requerida';
     }
 
     setErrors(newErrors);
@@ -195,8 +195,8 @@ export default function LoginModal({
           <div className="mb-5 flex items-start justify-between gap-4 sm:mb-6 sm:items-center">
             <h2 className="text-xl font-bold text-gray-800 dark:text-white sm:text-2xl">
               {showForgotPassword
-                ? 'Recuperar contrasena'
-                : (isRegistering ? 'Crear una cuenta' : 'Iniciar Sesion')}
+                ? 'Recuperar contrase?a'
+                : (isRegistering ? 'Crear una cuenta' : 'Iniciar sesi?n')}
             </h2>
             <button
               onClick={onClose}
@@ -216,14 +216,14 @@ export default function LoginModal({
                 onClick={handleGoogleLogin}
                 disabled={isGoogleLoading}
                 className="w-full flex items-center justify-center gap-3 py-2 px-4 mb-4 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors shadow-sm font-medium text-gray-700 dark:text-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                aria-label="Iniciar sesion con Google"
+                aria-label="Iniciar sesi?n con Google"
               >
                 {isGoogleLoading ? (
                   <div className="w-5 h-5 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin"></div>
                 ) : (
                   <svg className="w-5 h-5" viewBox="0 0 48 48"><g><path fill="#4285F4" d="M24 9.5c3.54 0 6.7 1.22 9.19 3.23l6.85-6.85C36.68 2.7 30.77 0 24 0 14.82 0 6.73 5.4 2.69 13.32l7.98 6.2C12.13 13.13 17.62 9.5 24 9.5z"/><path fill="#34A853" d="M46.1 24.55c0-1.64-.15-3.22-.42-4.74H24v9.01h12.42c-.54 2.9-2.18 5.36-4.65 7.02l7.18 5.59C43.99 37.13 46.1 31.3 46.1 24.55z"/><path fill="#FBBC05" d="M10.67 28.13a14.5 14.5 0 0 1 0-8.26l-7.98-6.2A23.94 23.94 0 0 0 0 24c0 3.77.9 7.34 2.69 10.53l7.98-6.2z"/><path fill="#EA4335" d="M24 48c6.48 0 11.92-2.15 15.89-5.85l-7.18-5.59c-2.01 1.35-4.59 2.15-8.71 2.15-6.38 0-11.87-3.63-14.33-8.87l7.98 6.2C6.73 42.6 14.82 48 24 48z"/><path fill="none" d="M0 0h48v48H0z"/></g></svg>
                 )}
-                <span>{isGoogleLoading ? 'Conectando...' : 'Iniciar sesion con Google'}</span>
+                <span>{isGoogleLoading ? 'Conectando...' : 'Iniciar sesi?n con Google'}</span>
               </button>
 
               <div className="relative mb-4">
@@ -296,7 +296,7 @@ export default function LoginModal({
             {!showForgotPassword && (
               <div>
                 <label htmlFor="password" className="block text-gray-700 dark:text-gray-300 text-sm font-medium mb-1">
-                  Contrasena
+                  Contrase?a
                 </label>
                 <input
                   type="password"
@@ -316,7 +316,7 @@ export default function LoginModal({
             {isRegistering && !showForgotPassword && (
               <div>
                 <label htmlFor="confirmPassword" className="block text-gray-700 dark:text-gray-300 text-sm font-medium mb-1">
-                  Confirmar contrasena
+                  Confirmar contrase?a
                 </label>
                 <input
                   type="password"
@@ -342,7 +342,7 @@ export default function LoginModal({
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Terminos y Condiciones
+                    T?rminos y Condiciones
                   </Link>
                   {' '}y nuestra{' '}
                   <Link
@@ -351,7 +351,7 @@ export default function LoginModal({
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Politica de Privacidad
+                    Pol?tica de Privacidad
                   </Link>
                   .
                 </p>
@@ -380,7 +380,7 @@ export default function LoginModal({
                     className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
                     disabled={isSubmitting}
                   >
-                    Olvidaste tu contrasena?
+                    ?Olvidaste tu contrase?a?
                   </button>
                 </div>
               </div>
@@ -402,7 +402,7 @@ export default function LoginModal({
               ) : (
                 showForgotPassword
                   ? 'Enviar instrucciones'
-                  : (isRegistering ? 'Crear cuenta' : 'Iniciar sesion')
+                  : (isRegistering ? 'Crear cuenta' : 'Iniciar sesi?n')
               )}
             </button>
             {authError && <p className="text-red-500 text-xs mt-2">{authError}</p>}
@@ -411,13 +411,13 @@ export default function LoginModal({
           {!showForgotPassword && (
             <div className="mt-6 text-center text-sm">
               <p className="text-gray-600 dark:text-gray-400">
-                {isRegistering ? 'Ya tienes una cuenta?' : 'No tienes una cuenta?'}{' '}
+                {isRegistering ? '?Ya tienes una cuenta?' : '?No tienes una cuenta?'}{' '}
                 <button
                   onClick={() => setIsRegistering(!isRegistering)}
                   className="text-blue-600 font-medium hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
                   disabled={isSubmitting}
                 >
-                  {isRegistering ? 'Iniciar sesion' : 'Registrarse'}
+                  {isRegistering ? 'Iniciar sesi?n' : 'Registrarse'}
                 </button>
               </p>
             </div>
@@ -430,7 +430,7 @@ export default function LoginModal({
                 className="text-blue-600 font-medium hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
                 disabled={isSubmitting}
               >
-                Volver al inicio de sesion
+                Volver al inicio de sesi?n
               </button>
             </div>
           )}
