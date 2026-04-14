@@ -11,8 +11,8 @@ export const MAIN_NAVIGATION: NavigationLink[] = [
     name: 'Inicio',
     href: '/',
     sections: [
-      { id: 'intro', label: 'Introducci?n' },
-      { id: 'philosophy', label: 'Filosof?a' },
+      { id: 'intro', label: 'Introducción' },
+      { id: 'philosophy', label: 'Filosofía' },
       { id: 'services', label: 'Servicios' },
       { id: 'process', label: 'Proceso' },
       { id: 'showroom', label: 'Proyectos' },
@@ -25,7 +25,7 @@ export const MAIN_NAVIGATION: NavigationLink[] = [
     href: '/uxui',
     sections: [
       { id: 'servicios', label: 'Servicios UX/UI' },
-      { id: 'procesos', label: 'Proceso de dise?o' },
+      { id: 'procesos', label: 'Proceso de diseño' },
       { id: 'proyectos', label: 'Proyectos destacados' },
       { id: 'contacto', label: 'Contacto' },
     ],
