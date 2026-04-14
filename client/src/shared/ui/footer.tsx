@@ -27,7 +27,6 @@ const footerColumns: Array<{ title: string; links: FooterLink[] }> = [
     title: 'Servicios',
     links: [
       { label: 'Webs corporativas', href: '/corporativos' },
-      { label: 'E-commerce', href: '/ecommerce' },
       { label: 'Sistemas a medida', href: '/consulta' },
       { label: 'Captiva', href: TUWEBAI_CAPTIVA_URL, external: true },
       { label: 'Contacto', href: '/contacto' },
@@ -38,7 +37,6 @@ const footerColumns: Array<{ title: string; links: FooterLink[] }> = [
     links: [
       { label: 'Nosotros', href: '/nosotros' },
       { label: 'Proceso', href: '/proceso' },
-      { label: 'Consulta estratégica', href: '/consulta' },
       { label: 'Casos de éxito', href: '/?section=showroom' },
     ],
   },

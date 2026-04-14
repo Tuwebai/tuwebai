@@ -8,7 +8,6 @@ import PaymentReturnView from '@/features/payments/components/payment-return-vie
 
 const CorporateSolutionsPage = lazy(() => import('@/app/router/solutions/corporate-solutions-page'));
 const UxUiPage = lazy(() => import('@/app/router/solutions/uxui-page'));
-const EcommerceSolutionsPage = lazy(() => import('@/app/router/solutions/ecommerce-solutions-page'));
 const ProposalRequestPage = lazy(() => import('@/features/proposals/components/proposal-request-page'));
 const WebPriceCalculatorPage = lazy(() => import('@/features/calculator/components/web-price-calculator-page'));
 const WebPricePillarPage = lazy(() => import('@/features/content/components/web-price-pillar-page'));
@@ -55,7 +54,6 @@ export default function AppRoutes() {
 
       <Route path="/corporativos" element={<LazyRoute><CorporateSolutionsPage /></LazyRoute>} />
       <Route path="/uxui" element={<LazyRoute><UxUiPage /></LazyRoute>} />
-      <Route path="/ecommerce" element={<LazyRoute><EcommerceSolutionsPage /></LazyRoute>} />
       <Route path="/consulta" element={<LazyRoute><ProposalRequestPage /></LazyRoute>} />
       <Route path="/cuanto-cuesta-una-web" element={<LazyRoute><WebPricePillarPage /></LazyRoute>} />
       <Route path="/como-elegir-agencia-web-argentina" element={<LazyRoute><HowToChooseWebAgencyPage /></LazyRoute>} />

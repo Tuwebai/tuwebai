@@ -31,7 +31,7 @@ export const MAIN_NAVIGATION: NavigationLink[] = [
       { id: 'contacto', label: 'Contacto' },
     ],
   },
-  { name: 'E-commerce', href: '/ecommerce' },
+  { name: 'Consulta', href: '/consulta' },
   { name: 'Blog', href: '/blog/' },
   { name: 'FAQ', href: '/faq' },
 ];
