@@ -124,90 +124,100 @@ export default function ProposalRequestPage() {
         <WhatsAppButton />
 
         <header className="px-4 pb-10 pt-24 sm:pb-14">
-          <div className="mx-auto max-w-3xl text-center">
-            <Link className="inline-block bg-[image:var(--gradient-brand)] bg-clip-text text-3xl font-bold text-transparent" to="/">
-              TuWebAI
+          <div className="mx-auto max-w-6xl">
+            <Link className="inline-flex items-center gap-2 text-sm text-gray-400 transition-colors hover:text-white" to="/">
+              <ArrowLeft className="h-4 w-4" />
+              Volver al inicio
             </Link>
-            <h1 className="mt-6 text-4xl font-semibold tracking-tight text-[var(--text-primary)] sm:text-5xl">
-              Contanos tu proyecto
-            </h1>
-            <p className="mt-4 text-sm leading-6 text-[var(--text-secondary)] sm:text-base">
-              Completá estos tres pasos y te respondemos con una propuesta clara, simple y alineada a tu negocio.
-            </p>
+
+            <div className="mt-6 overflow-hidden rounded-[28px] border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(0,204,255,0.18),transparent_38%),radial-gradient(circle_at_top_right,rgba(153,51,255,0.14),transparent_32%),linear-gradient(180deg,rgba(18,18,23,0.98),rgba(10,10,15,0.98))] px-5 py-10 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.3)] sm:px-6 md:rounded-[32px] md:px-10 md:py-12">
+              <div className="flex flex-wrap items-center gap-3">
+                <span className="inline-flex rounded-full border border-[#00CCFF]/30 bg-[#00CCFF]/10 px-4 py-1 text-[0.75rem] font-semibold uppercase tracking-[0.26em] text-[#9BE7FF]">
+                  Consulta TuWebAI
+                </span>
+                <span className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-1 text-[0.75rem] font-medium uppercase tracking-[0.18em] text-gray-300">
+                  Propuesta inicial sin cargo
+                </span>
+              </div>
+              <h1 className="mt-6 max-w-4xl font-rajdhani text-[2.35rem] font-bold leading-[1.02] text-white sm:text-5xl md:text-6xl">
+                Contanos tu proyecto y te respondemos con un plan claro.
+              </h1>
+              <p className="mt-5 max-w-3xl text-base leading-7 text-gray-300 md:text-lg">
+                Completá estos tres pasos y te devolvemos una propuesta simple, priorizada y alineada a tu negocio.
+              </p>
+            </div>
           </div>
         </header>
 
         <section className="px-4 pb-16">
           <div className="mx-auto max-w-4xl">
-            <div className="rounded-[var(--radius-2xl)] border border-[var(--signal-border)] bg-[var(--gradient-subtle)] p-[1px] shadow-[var(--shadow-elevated)]">
-              <div className="rounded-[calc(var(--radius-2xl)-1px)] bg-[var(--bg-surface)] p-5 sm:p-8">
-                {submitted ? (
-                  <SuccessScreen whatsappHref={whatsappHref} />
-                ) : (
-                  <FormProvider {...form}>
-                    <StepIndicator currentStep={currentStep} />
+            <div className="overflow-hidden rounded-[28px] border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(0,204,255,0.1),transparent_38%),radial-gradient(circle_at_top_right,rgba(153,51,255,0.08),transparent_34%),linear-gradient(180deg,rgba(18,18,23,0.98),rgba(10,10,15,0.98))] p-5 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.3)] sm:p-8 md:rounded-[32px]">
+              {submitted ? (
+                <SuccessScreen whatsappHref={whatsappHref} />
+              ) : (
+                <FormProvider {...form}>
+                  <StepIndicator currentStep={currentStep} />
 
-                    {submitError ? (
-                      <div className="mb-6 rounded-[var(--radius-lg)] border border-[var(--danger)] bg-[var(--danger-dim)] px-4 py-3 text-sm text-[var(--text-primary)]">
-                        {submitError}
-                      </div>
-                    ) : null}
+                  {submitError ? (
+                    <div className="mb-6 rounded-[var(--radius-lg)] border border-[var(--danger)] bg-[var(--danger-dim)] px-4 py-3 text-sm text-[var(--text-primary)]">
+                      {submitError}
+                    </div>
+                  ) : null}
 
-                    <form className="space-y-8" onSubmit={onSubmit}>
-                      {renderStep(currentStep)}
+                  <form className="space-y-8" onSubmit={onSubmit}>
+                    {renderStep(currentStep)}
 
-                      <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:justify-between">
-                        {currentStep > 1 ? (
-                          <Button
-                            className="w-full rounded-full border border-[var(--border-default)] bg-transparent px-6 text-[var(--text-primary)] hover:bg-[var(--bg-elevated)] sm:w-auto"
-                            disabled={isSubmitting}
-                            onClick={handlePreviousStep}
-                            type="button"
-                            variant="ghost"
-                          >
-                            <ArrowLeft className="mr-2 h-4 w-4" strokeWidth={1.5} />
-                            Anterior
-                          </Button>
-                        ) : (
-                          <div />
-                        )}
+                    <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:justify-between">
+                      {currentStep > 1 ? (
+                        <Button
+                          className="w-full rounded-full border border-white/10 bg-white/5 px-6 text-[var(--text-primary)] hover:bg-white/10 sm:w-auto"
+                          disabled={isSubmitting}
+                          onClick={handlePreviousStep}
+                          type="button"
+                          variant="ghost"
+                        >
+                          <ArrowLeft className="mr-2 h-4 w-4" strokeWidth={1.5} />
+                          Anterior
+                        </Button>
+                      ) : (
+                        <div />
+                      )}
 
-                        {currentStep < TOTAL_STEPS ? (
-                          <Button
-                            className="w-full rounded-full bg-[image:var(--gradient-brand)] px-6 font-semibold text-white hover:opacity-95 sm:w-auto"
-                            disabled={isSubmitting}
-                            onClick={handleNextStep}
-                            type="button"
-                          >
-                            Siguiente
-                            <ArrowRight className="ml-2 h-4 w-4" strokeWidth={1.5} />
-                          </Button>
-                        ) : (
-                          <Button
-                            className="w-full rounded-full bg-[image:var(--gradient-brand)] px-6 font-semibold text-white hover:opacity-95 sm:w-auto"
-                            disabled={isSubmitting}
-                            type="submit"
-                          >
-                            {isSubmitting ? (
-                              <>
-                                <Loader2 className="mr-2 h-4 w-4 animate-spin" strokeWidth={1.5} />
-                                Enviando...
-                              </>
-                            ) : (
-                              <>
-                                Enviar propuesta
-                                <ArrowRight className="ml-2 h-4 w-4" strokeWidth={1.5} />
-                              </>
-                            )}
-                          </Button>
-                        )}
-                      </div>
-                    </form>
-                  </FormProvider>
-                )}
+                      {currentStep < TOTAL_STEPS ? (
+                        <Button
+                          className="w-full rounded-full bg-[image:var(--gradient-brand)] px-6 font-semibold text-white hover:opacity-95 sm:w-auto"
+                          disabled={isSubmitting}
+                          onClick={handleNextStep}
+                          type="button"
+                        >
+                          Siguiente
+                          <ArrowRight className="ml-2 h-4 w-4" strokeWidth={1.5} />
+                        </Button>
+                      ) : (
+                        <Button
+                          className="w-full rounded-full bg-[image:var(--gradient-brand)] px-6 font-semibold text-white hover:opacity-95 sm:w-auto"
+                          disabled={isSubmitting}
+                          type="submit"
+                        >
+                          {isSubmitting ? (
+                            <>
+                              <Loader2 className="mr-2 h-4 w-4 animate-spin" strokeWidth={1.5} />
+                              Enviando...
+                            </>
+                          ) : (
+                            <>
+                              Enviar propuesta
+                              <ArrowRight className="ml-2 h-4 w-4" strokeWidth={1.5} />
+                            </>
+                          )}
+                        </Button>
+                      )}
+                    </div>
+                  </form>
+                </FormProvider>
+              )}
 
-                <AlternativeContactSection />
-              </div>
+              <AlternativeContactSection />
             </div>
           </div>
         </section>
