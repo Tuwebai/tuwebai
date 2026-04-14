@@ -26,10 +26,7 @@ const footerColumns: Array<{ title: string; links: FooterLink[] }> = [
   {
     title: 'Servicios',
     links: [
-      { label: 'Webs corporativas', href: '/corporativos' },
-      { label: 'Sistemas a medida', href: '/consulta' },
       { label: 'Captiva', href: TUWEBAI_CAPTIVA_URL, external: true },
-      { label: 'Consulta', href: '/consulta' },
     ],
   },
   {

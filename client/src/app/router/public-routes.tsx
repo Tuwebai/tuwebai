@@ -5,7 +5,6 @@ import { LazyRoute } from '@/app/router/lazy-route';
 import NotFoundPage from '@/app/router/errors/not-found-page';
 import PaymentReturnView from '@/features/payments/components/payment-return-view';
 
-const CorporateSolutionsPage = lazy(() => import('@/app/router/solutions/corporate-solutions-page'));
 const UxUiPage = lazy(() => import('@/app/router/solutions/uxui-page'));
 const ProposalRequestPage = lazy(() => import('@/features/proposals/components/proposal-request-page'));
 const WebSolutionComparisonPage = lazy(() => import('@/features/comparison-tool/components/web-solution-comparison-page'));
@@ -50,7 +49,6 @@ const CookiesPolicyPage = lazy(() => import('@/app/router/legal/cookies-policy-p
 export default function PublicRoutes() {
   return (
     <Routes>
-      <Route path="/corporativos" element={<LazyRoute><CorporateSolutionsPage /></LazyRoute>} />
       <Route path="/uxui" element={<LazyRoute><UxUiPage /></LazyRoute>} />
       <Route path="/consulta" element={<LazyRoute><ProposalRequestPage /></LazyRoute>} />
       <Route path="/cuanto-cuesta-una-web" element={<LazyRoute><WebPricePillarPage /></LazyRoute>} />
