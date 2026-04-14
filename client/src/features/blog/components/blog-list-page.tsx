@@ -75,28 +75,36 @@ export default function BlogListPage() {
         <section className="mx-auto mt-10 max-w-6xl">
           <div className="grid gap-6">
             {posts.map((post) => (
-              <article key={post.slug} className="blog-surface-link group rounded-[28px] p-6">
-                <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-                  <div className="max-w-3xl">
-                    <p className="text-sm text-gray-400">
-                      {format(parseISO(post.publishedAt), "d 'de' MMMM 'de' yyyy", { locale: es })}
-                    </p>
-                    <h2 className="mt-3 font-rajdhani text-2xl font-bold text-white sm:text-3xl">
-                      <Link to={`/blog/${post.slug}/`} className="blog-link-accent">
-                        {post.title}
-                      </Link>
-                    </h2>
-                    <p className="mt-4 max-w-2xl text-base leading-7 text-gray-300">
-                      {post.excerpt}
-                    </p>
+              <article key={post.slug} className="blog-post-card group flex h-full flex-col p-6 sm:p-7">
+                <div className="flex h-full flex-col gap-5 md:flex-row md:items-start md:justify-between">
+                  <div className="flex-1">
+                    <div className="blog-post-card-meta">
+                      <span className="blog-pill blog-pill-accent">
+                        {format(parseISO(post.publishedAt), "d 'de' MMMM 'de' yyyy", { locale: es })}
+                      </span>
+                    </div>
+
+                    <div className="mt-4 max-w-3xl md:pr-6">
+                      <h2 className="font-rajdhani text-2xl font-bold leading-tight text-white sm:text-3xl">
+                        <Link to={`/blog/${post.slug}/`} className="blog-link-accent">
+                          {post.title}
+                        </Link>
+                      </h2>
+                      <p className="mt-4 max-w-2xl text-base leading-7 text-gray-300">
+                        {post.excerpt}
+                      </p>
+                    </div>
                   </div>
 
-                  <div className="flex items-center gap-4 text-sm text-gray-400 md:flex-col md:items-end">
+                  <div className="flex items-center justify-between gap-4 border-t border-white/10 pt-4 text-sm text-gray-300 md:min-w-[136px] md:flex-col md:items-end md:justify-start md:border-t-0 md:pt-0">
                     <span className="inline-flex items-center gap-2">
                       <Clock3 className="h-4 w-4 text-[#00CCFF]" />
                       {post.readingTimeMinutes} min
                     </span>
-                    <Link to={`/blog/${post.slug}/`} className="blog-secondary-button px-4 py-2 text-sm">
+                    <Link
+                      to={`/blog/${post.slug}/`}
+                      className="blog-link-accent inline-flex items-center gap-2 font-medium text-[#9BE7FF]"
+                    >
                       Leer artículo
                       <ArrowRight className="h-4 w-4" />
                     </Link>

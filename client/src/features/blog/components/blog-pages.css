@@ -69,6 +69,40 @@
   transform: translateY(-0.25rem);
 }
 
+.blog-post-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 0.1);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at top left, rgba(0, 204, 255, 0.14), transparent 42%),
+    radial-gradient(circle at top right, rgba(153, 51, 255, 0.1), transparent 34%),
+    linear-gradient(180deg, rgba(20, 26, 42, 0.98), rgba(12, 18, 31, 0.92));
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.28);
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.3s ease;
+}
+
+.blog-post-card:hover {
+  border-color: rgb(0 204 255 / 0.35);
+  background:
+    radial-gradient(circle at top left, rgba(0, 204, 255, 0.18), transparent 40%),
+    radial-gradient(circle at top right, rgba(153, 51, 255, 0.14), transparent 34%),
+    linear-gradient(180deg, rgba(22, 30, 47, 0.98), rgba(12, 18, 31, 0.94));
+  box-shadow: 0 28px 60px -16px rgb(0 0 0 / 0.34);
+  transform: translateY(-0.25rem);
+}
+
+.blog-post-card-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
 .blog-pill {
   display: inline-flex;
   border-radius: 9999px;
