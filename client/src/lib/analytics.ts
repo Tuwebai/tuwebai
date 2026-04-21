@@ -45,10 +45,11 @@ const sanitizeEventParams = (params: AnalyticsEventParams): Record<string, strin
     string | number | boolean
   >;
 
-const loadAnalyticsScript = (measurementId: string) => {
+const loadGtagScript = (measurementId: string) => {
   if (typeof document === 'undefined') return;
   if (document.getElementById(GTAG_SCRIPT_ID)) return;
 
+  ensureGtagQueue();
   const script = document.createElement('script');
   script.id = GTAG_SCRIPT_ID;
   script.async = true;
@@ -88,7 +89,7 @@ export const initializeAnalytics = (measurementId?: string): void => {
 
   if (typeof window === 'undefined' || !analyticsConsentGranted) return;
   ensureGtagQueue();
-  loadAnalyticsScript(resolvedMeasurementId);
+  loadGtagScript(resolvedMeasurementId);
 
   if (!configuredMeasurementIds.has(resolvedMeasurementId)) {
     window.gtag?.('js', new Date());
