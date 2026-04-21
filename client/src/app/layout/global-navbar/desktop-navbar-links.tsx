@@ -21,20 +21,25 @@ export function DesktopNavbarLinks({
             onFocus={() => prefetchNavigationPath(item.href)}
             onTouchStart={() => prefetchNavigationPath(item.href)}
             className={`whitespace-nowrap text-sm font-medium transition-colors ${
-              activePage === item.name ? 'text-[var(--signal)]' : 'text-gray-300 hover:text-white'
+              activePage === item.name ? 'text-white' : 'text-gray-300 hover:text-white'
             }`}
           >
             {item.name}
           </Link>
+          <span
+            className={`absolute -bottom-1 left-0 h-px bg-[var(--signal)] transition-all duration-300 ${
+              activePage === item.name ? 'w-full' : 'w-0 group-hover:w-full'
+            }`}
+          />
 
           {item.sections?.length ? (
-            <div className="absolute left-0 z-50 mt-2 invisible w-56 rounded-md border border-[var(--border-strong)] bg-[var(--bg-overlay)] opacity-0 shadow-[var(--shadow-elevated)] transition-all duration-200 group-hover:visible group-hover:opacity-100">
+            <div className="invisible absolute left-0 z-50 mt-3 w-56 rounded-2xl border border-white/10 bg-[var(--bg-overlay)]/95 opacity-0 shadow-[var(--shadow-elevated)] backdrop-blur-xl transition-all duration-200 group-hover:visible group-hover:opacity-100">
               <div className="py-1">
                 {item.sections.map((section) => (
                   <button
                     key={section.id}
                     onClick={() => onSectionSelect(section.id)}
-                    className="block w-full px-4 py-2 text-left text-sm text-gray-300 transition-colors hover:bg-[var(--bg-elevated)] hover:text-white"
+                    className="block w-full px-4 py-2 text-left text-sm text-gray-300 transition-colors hover:bg-white/5 hover:text-white"
                   >
                     {section.label}
                   </button>

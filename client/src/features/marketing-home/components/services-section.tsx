@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { Globe, LayoutDashboard, ShoppingBag } from 'lucide-react';
 
 import { useTrackSectionView } from '@/core/hooks/use-track-section-view';
 import { trackRuntimeCtaClick } from '@/lib/analytics-runtime';
@@ -14,14 +15,12 @@ interface ServiceCardProps {
 function ServiceCard({ title, description, icon, delayMs }: ServiceCardProps) {
   return (
     <RevealBlock className="h-full" delayMs={delayMs}>
-      <div className="editorial-surface-card editorial-surface-card--interactive flex h-full flex-col rounded-xl p-5 sm:p-6">
-        <div className="editorial-surface-card editorial-surface-card--accent mb-4 flex h-14 w-14 items-center justify-center rounded-full">
+      <div className="card-hover flex h-full flex-col rounded-[28px] border border-white/5 bg-[var(--bg-base)] p-6">
+        <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl border border-[var(--signal-border)] bg-[var(--signal-glow)]">
           {icon}
         </div>
 
-        <h3 className="mb-3 font-rajdhani text-xl font-bold text-white sm:text-[1.35rem]">
-          {title}
-        </h3>
+        <h3 className="mb-3 text-xl font-black text-white sm:text-[1.35rem]">{title}</h3>
 
         <div className="flex-grow text-gray-300">{description}</div>
       </div>
@@ -50,7 +49,10 @@ export default function ServicesSection({ setRef }: ServicesSectionProps) {
     >
       <div className="container z-10 mx-auto px-3 py-14 sm:px-4 sm:py-16">
         <RevealBlock className="mb-16 text-center">
-          <h2 className="mb-6 font-rajdhani text-3xl font-bold leading-tight sm:text-4xl md:text-5xl">
+          <div className="mb-5 inline-flex rounded-full border border-[var(--signal-border)] bg-[var(--signal-glow)] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-[#A78BFA]">
+            Servicios
+          </div>
+          <h2 className="mb-6 text-3xl font-black leading-tight text-white sm:text-4xl md:text-5xl">
             <span className="gradient-text gradient-border mx-auto block max-w-4xl pb-2">
               Tres servicios. Un solo objetivo:
               <br />
@@ -59,7 +61,7 @@ export default function ServicesSection({ setRef }: ServicesSectionProps) {
           </h2>
         </RevealBlock>
 
-        <div className="mx-auto grid max-w-6xl gap-8 md:grid-cols-2 xl:grid-cols-3">
+        <div className="mx-auto grid max-w-6xl gap-5 sm:grid-cols-2 lg:grid-cols-3">
           <ServiceCard
             title="Sitios corporativos"
             description={
@@ -68,28 +70,18 @@ export default function ServicesSection({ setRef }: ServicesSectionProps) {
                   Para el negocio que necesita transmitir seriedad y generar consultas desde
                   Google.
                 </p>
-                <p className="mt-4 text-sm font-medium text-gray-200">
-                  Diseño a medida · SEO técnico · Entrega en 2 semanas
-                </p>
+                <ul className="mt-4 space-y-2 text-sm font-medium text-gray-200">
+                  {['Diseño a medida', 'SEO técnico', 'Entrega en 2 semanas'].map((item) => (
+                    <li key={item} className="flex items-center gap-2">
+                      <span className="h-1.5 w-1.5 rounded-full bg-[var(--signal)]" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
               </>
             }
             delayMs={80}
-            icon={
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-7 w-7 text-white"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                />
-              </svg>
-            }
+            icon={<Globe className="h-6 w-6 text-white" />}
           />
 
           <ServiceCard
@@ -100,28 +92,18 @@ export default function ServicesSection({ setRef }: ServicesSectionProps) {
                   Para el negocio que quiere vender online con MercadoPago integrado y sin
                   depender de Mercado Libre.
                 </p>
-                <p className="mt-4 text-sm font-medium text-gray-200">
-                  Carrito · Pagos · Panel de stock · Mobile-first
-                </p>
+                <ul className="mt-4 space-y-2 text-sm font-medium text-gray-200">
+                  {['Carrito', 'Pagos', 'Panel de stock', 'Mobile-first'].map((item) => (
+                    <li key={item} className="flex items-center gap-2">
+                      <span className="h-1.5 w-1.5 rounded-full bg-[var(--signal)]" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
               </>
             }
             delayMs={180}
-            icon={
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-7 w-7 text-white"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                />
-              </svg>
-            }
+            icon={<ShoppingBag className="h-6 w-6 text-white" />}
           />
 
           <ServiceCard
@@ -132,28 +114,18 @@ export default function ServicesSection({ setRef }: ServicesSectionProps) {
                   Para el negocio que necesita algo que no existe: paneles, flujos,
                   integraciones propias.
                 </p>
-                <p className="mt-4 text-sm font-medium text-gray-200">
-                  Diagnóstico gratuito incluido antes de arrancar
-                </p>
+                <ul className="mt-4 space-y-2 text-sm font-medium text-gray-200">
+                  {['Paneles personalizados', 'Integraciones propias', 'Diagnóstico gratuito incluido'].map((item) => (
+                    <li key={item} className="flex items-center gap-2">
+                      <span className="h-1.5 w-1.5 rounded-full bg-[var(--signal)]" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
               </>
             }
             delayMs={280}
-            icon={
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-7 w-7 text-white"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                />
-              </svg>
-            }
+            icon={<LayoutDashboard className="h-6 w-6 text-white" />}
           />
         </div>
 

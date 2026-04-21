@@ -100,12 +100,12 @@ function PricingCard({ plan, delay, isProcessing, onCheckout, onProposal }: Pric
   const { ref, hasIntersected } = useIntersectionObserver<HTMLDivElement>();
 
   const wrapperClasses = plan.highlight
-    ? 'editorial-surface-card editorial-surface-card--accent relative flex h-full flex-col rounded-[30px] px-5 py-6 shadow-[0_0_0_1px_rgba(0,204,255,0.16),0_28px_80px_rgba(0,204,255,0.16)] sm:px-6 sm:py-7 lg:-translate-y-6 lg:scale-[1.04]'
-    : 'editorial-surface-card editorial-surface-card--interactive relative flex h-full flex-col rounded-[30px] px-5 py-5 sm:px-6 sm:py-6';
+    ? 'relative flex h-full flex-col overflow-hidden rounded-[30px] border border-[var(--signal-border)] bg-[var(--bg-surface)] px-5 py-6 shadow-[0_0_0_1px_rgba(124,58,237,0.16),0_28px_80px_rgba(124,58,237,0.18)] sm:px-6 sm:py-7 lg:-translate-y-6 lg:scale-[1.04]'
+    : 'card-hover relative flex h-full flex-col overflow-hidden rounded-[30px] border border-white/6 bg-[var(--bg-surface)] px-5 py-5 sm:px-6 sm:py-6';
 
   const actionClasses = plan.highlight
-    ? 'inline-flex w-full items-center justify-center rounded-xl bg-[image:var(--gradient-brand)] px-6 py-4 text-base font-semibold text-white shadow-[var(--glow-signal)] transition-transform hover:scale-[1.02] disabled:cursor-wait disabled:opacity-70'
-    : 'editorial-secondary-button w-full rounded-xl px-6 py-3.5 text-sm font-semibold disabled:cursor-wait disabled:opacity-70';
+    ? 'glow-violet inline-flex w-full items-center justify-center rounded-full bg-[image:var(--gradient-brand)] px-6 py-4 text-base font-semibold text-white transition-transform hover:scale-[1.02] disabled:cursor-wait disabled:opacity-70'
+    : 'inline-flex w-full items-center justify-center rounded-full border border-white/15 px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:border-[var(--signal-border)] hover:bg-white/5 disabled:cursor-wait disabled:opacity-70';
 
   return (
     <article
@@ -117,18 +117,24 @@ function PricingCard({ plan, delay, isProcessing, onCheckout, onProposal }: Pric
     >
       {plan.highlight && (
         <div className="absolute inset-x-6 -top-3 flex justify-center">
-          <div className="editorial-pill editorial-pill--accent px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-cyan-200">
+          <div className="rounded-full border border-[var(--signal-border)] bg-[var(--signal-glow)] px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#DDD6FE]">
             {plan.badge}
           </div>
         </div>
       )}
+      {plan.highlight ? (
+        <>
+          <span className="absolute left-4 top-4 h-8 w-8 rounded-tl-2xl border-l border-t border-[var(--signal-border)]" />
+          <span className="absolute bottom-4 right-4 h-8 w-8 rounded-br-2xl border-b border-r border-[var(--signal-border)]" />
+        </>
+      ) : null}
 
       <div className="flex min-h-[180px] flex-col">
-        <h3 className="font-rajdhani text-[1.65rem] font-bold leading-tight text-white sm:text-[1.9rem]">
+        <h3 className="text-[1.65rem] font-black leading-tight text-white sm:text-[1.9rem]">
           {plan.title}
         </h3>
         <p className="mt-3 text-sm leading-6 text-gray-300">{plan.intro}</p>
-        <p className="mt-5 font-rajdhani text-[1.9rem] font-bold text-white sm:text-[2.15rem]">
+        <p className="mt-5 text-[1.9rem] font-black text-white sm:text-[2.15rem]">
           {plan.price}
         </p>
       </div>
@@ -137,7 +143,7 @@ function PricingCard({ plan, delay, isProcessing, onCheckout, onProposal }: Pric
         <ul className="space-y-3 text-sm text-gray-300">
           {plan.includes.map((item) => (
             <li key={item} className="flex items-start gap-3">
-              <span className="mt-1 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-cyan-300" />
+              <span className="mt-1 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-[var(--signal)]" />
               <span className="leading-6">{item}</span>
             </li>
           ))}
@@ -145,8 +151,8 @@ function PricingCard({ plan, delay, isProcessing, onCheckout, onProposal }: Pric
       </div>
 
       {plan.delivery && (
-        <div className="editorial-surface-card mt-5 rounded-2xl px-4 py-3">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300">
+        <div className="mt-5 rounded-2xl border border-white/5 bg-black/10 px-4 py-3">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#C4B5FD]">
             Entrega estimada
           </p>
           <p className="mt-2 text-sm text-white">{plan.delivery}</p>
@@ -163,7 +169,7 @@ function PricingCard({ plan, delay, isProcessing, onCheckout, onProposal }: Pric
           {isProcessing ? 'Preparando checkout...' : plan.cta}
         </button>
         <div className="mt-3 text-xs uppercase tracking-[0.18em] text-gray-400">
-          <p>PAGO CON MERCADOPAGO</p>
+          <p className="text-[#C4B5FD]">PAGO CON MERCADOPAGO</p>
           <p>TARJETA O TRANSFERENCIA</p>
         </div>
       </div>
@@ -247,7 +253,10 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
             titleVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
           }`}
         >
-          <h2 className="font-rajdhani text-3xl font-bold sm:text-4xl md:text-5xl">
+          <div className="mb-5 inline-flex rounded-full border border-[var(--signal-border)] bg-[var(--signal-glow)] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-[#A78BFA]">
+            Pricing real
+          </div>
+          <h2 className="text-3xl font-black sm:text-4xl md:text-5xl">
             <span className="gradient-text gradient-border inline-block pb-2">
               Tres planes. Precios claros.
               <br />
@@ -268,6 +277,10 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
             <br />
             La consulta inicial siempre es sin cargo.
           </p>
+          <div className="mt-6 inline-flex rounded-full border border-white/10 bg-white/5 p-1 text-sm">
+            <span className="rounded-full bg-[image:var(--gradient-brand)] px-4 py-2 font-medium text-white">Pago único</span>
+            <span className="px-4 py-2 text-gray-400">Consulta mensual</span>
+          </div>
         </div>
 
         <div className="mx-auto grid max-w-6xl auto-rows-fr grid-cols-1 gap-6 lg:grid-cols-3">
@@ -292,7 +305,7 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
       >
         {checkoutSummary && (
           <div className="space-y-5">
-            <div className="editorial-surface-card rounded-2xl p-4 text-sm text-gray-300">
+            <div className="rounded-2xl border border-white/5 bg-[var(--bg-surface)] p-4 text-sm text-gray-300">
               <p>
                 Plan: <span className="font-semibold text-white">{checkoutSummary.plan}</span>
               </p>
@@ -308,13 +321,13 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
             </div>
 
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#C4B5FD]">
                 Incluye
               </p>
               <ul className="mt-3 space-y-2 text-sm text-gray-300">
                 {checkoutSummary.includes.map((item) => (
                   <li key={item} className="flex items-start gap-3">
-                    <span className="mt-1 h-1.5 w-1.5 rounded-full bg-cyan-300" />
+                    <span className="mt-1 h-1.5 w-1.5 rounded-full bg-[var(--signal)]" />
                     <span>{item}</span>
                   </li>
                 ))}

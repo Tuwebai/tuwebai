@@ -21,8 +21,8 @@ export default function ShowroomProjectCard({
 }: ShowroomProjectCardProps) {
   return (
     <div
-      className={`editorial-surface-card editorial-surface-card--interactive editorial-project-card h-full cursor-pointer ${
-        hasShownProjects ? 'translate-y-0 opacity-100 hover:-translate-y-1' : 'translate-y-5 opacity-0'
+      className={`card-hover relative h-full cursor-pointer overflow-hidden rounded-[28px] border border-white/5 bg-[var(--bg-surface)] ${
+        hasShownProjects ? 'translate-y-0 opacity-100 hover:border-[var(--signal-border)]' : 'translate-y-5 opacity-0'
       }`}
       style={{
         transitionDelay: hasShownProjects ? '0ms' : `${300 + index * 100}ms`,
@@ -30,7 +30,7 @@ export default function ShowroomProjectCard({
       }}
       onClick={() => onOpen(project)}
     >
-      <div className="editorial-project-card__media group h-52">
+      <div className="group relative h-52 overflow-hidden">
         <img
           src={project.image}
           alt={project.title}
@@ -38,7 +38,7 @@ export default function ShowroomProjectCard({
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#020617]/90 via-[#020617]/20 to-transparent" />
         <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-4">
-          <span className="editorial-pill editorial-pill--muted text-[11px] font-medium uppercase tracking-[0.16em] text-white">
+          <span className="rounded-full border border-white/10 bg-black/30 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.16em] text-white backdrop-blur">
             Vista previa
           </span>
           <span className="text-[11px] uppercase tracking-[0.18em] text-white/60">
@@ -57,28 +57,41 @@ export default function ShowroomProjectCard({
         ) : null}
       </div>
 
-      <div className="editorial-project-card__content">
+      <div className="flex h-[calc(100%-13rem)] flex-col p-5">
         <div className="mb-3 flex items-start justify-between gap-3">
-          <h3 className="font-rajdhani text-[1.45rem] font-bold leading-none text-white">{project.title}</h3>
+          <h3 className="text-[1.45rem] font-black leading-none text-white">{project.title}</h3>
         </div>
 
         <div className="mb-3 flex flex-wrap items-center gap-2">
-          <span className="editorial-pill editorial-pill--muted px-2 py-1 text-xs text-gray-400">
+          <span className="rounded-full border border-white/10 bg-white/5 px-2 py-1 text-xs text-gray-300">
             {categoryLabel}
           </span>
           {project.id === 1 ? (
-            <span className="editorial-pill editorial-pill--warm px-2 py-1 text-xs font-medium">
+            <span className="rounded-full border border-amber-400/20 bg-amber-400/10 px-2 py-1 text-xs font-medium text-amber-200">
               Cliente
             </span>
           ) : null}
           {project.id === 2 ? (
-            <span className="editorial-pill editorial-pill--accent px-2 py-1 text-xs font-medium">
+            <span className="rounded-full border border-[var(--signal-border)] bg-[var(--signal-glow)] px-2 py-1 text-xs font-medium text-[#DDD6FE]">
               Producto propio
             </span>
           ) : null}
         </div>
 
         <p className="mb-5 line-clamp-3 text-sm leading-6 text-gray-300">{project.description}</p>
+
+        <div className="mb-5 rounded-2xl border border-white/5 bg-black/10 p-4">
+          <div className="mb-3 flex items-end gap-2">
+            {[32, 48, 60, 44].map((height) => (
+              <div
+                key={height}
+                className="w-full rounded-t-xl bg-gradient-to-t from-[var(--signal)] to-[#C084FC]"
+                style={{ height: `${height}px` }}
+              />
+            ))}
+          </div>
+          <p className="text-xs uppercase tracking-[0.18em] text-gray-500">Resultado visible</p>
+        </div>
 
         <button
           onClick={(event) => {

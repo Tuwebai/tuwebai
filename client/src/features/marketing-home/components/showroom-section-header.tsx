@@ -21,7 +21,10 @@ export default function ShowroomSectionHeader({
           hasShownTitle ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
         }`}
       >
-        <h2 className="mb-4 font-rajdhani text-3xl font-bold md:text-5xl">
+        <div className="mb-5 inline-flex rounded-full border border-[var(--signal-border)] bg-[var(--signal-glow)] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-[#A78BFA]">
+          Proyectos reales
+        </div>
+        <h2 className="mb-4 text-3xl font-black md:text-5xl">
           <span className="gradient-text gradient-border inline-block pb-2">
             Lo que construimos
           </span>
@@ -35,7 +38,7 @@ export default function ShowroomSectionHeader({
         }`}
         style={{ transitionDelay: '200ms' }}
       >
-        <p className="mx-auto max-w-3xl text-xl text-gray-300">
+        <p className="mx-auto max-w-3xl text-base leading-7 text-gray-300 sm:text-xl">
           Proyectos propios y de clientes desarrollados a medida. Sin templates. Con código real.
         </p>
       </div>

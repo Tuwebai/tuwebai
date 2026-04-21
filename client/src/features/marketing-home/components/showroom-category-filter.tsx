@@ -18,10 +18,10 @@ export default function ShowroomCategoryFilter({
           <button
             key={category}
             onClick={() => onSelect(category)}
-            className={`rounded-full px-4 py-2 text-sm ${
+            className={`rounded-full border px-4 py-2 text-sm transition-colors ${
               activeCategory === category
-                ? 'bg-[image:var(--gradient-brand)] text-white'
-                : 'editorial-surface-card editorial-surface-card--interactive text-gray-400 hover:text-white'
+                ? 'border-[var(--signal-border)] bg-[image:var(--gradient-brand)] text-white'
+                : 'border-white/8 bg-white/5 text-gray-400 hover:border-[var(--signal-border)] hover:text-white'
             }`}
           >
             {categoryNames[category] || category}

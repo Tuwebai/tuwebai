@@ -1,4 +1,5 @@
 import { Suspense, lazy } from 'react';
+import { Github, Instagram, Linkedin } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 import { useIntersectionObserver } from '@/core/hooks/use-intersection-observer';
@@ -88,9 +89,9 @@ function DeferredFooterNewsletter() {
   return (
     <div
       ref={ref}
-      className="w-full max-w-[420px] justify-self-start rounded-3xl border border-[var(--border-default)] bg-[var(--bg-surface)]/80 p-5 shadow-[0_18px_40px_rgba(2,6,23,0.24)] backdrop-blur lg:justify-self-end"
+      className="w-full max-w-[420px] justify-self-start rounded-[28px] border border-white/8 bg-white/5 p-5 shadow-[0_18px_40px_rgba(2,6,23,0.24)] backdrop-blur lg:justify-self-end"
     >
-      <p className="mb-2 text-[11px] uppercase tracking-[0.22em] text-[#9BE7FF]">Newsletter</p>
+      <p className="mb-2 text-[11px] uppercase tracking-[0.22em] text-[#C4B5FD]">Newsletter</p>
       <p className="mb-4 text-sm leading-6 text-gray-400">
         Recibí publicaciones, análisis y recursos concretos sobre conversión web para negocios en Argentina.
       </p>
@@ -118,16 +119,20 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="page-shell-surface relative z-10 animate-fadeIn border-t border-[var(--border-subtle)] pb-8 pt-10 text-sm text-[var(--text-secondary)] sm:pt-12">
+    <footer className="relative z-10 animate-fadeIn border-t border-white/5 bg-[var(--bg-overlay)] pb-8 pt-10 text-sm text-[var(--text-secondary)] sm:pt-12">
       <div className="container mx-auto px-3 sm:px-4">
-        <div className="mb-10 grid gap-8 border-b border-[var(--border-subtle)] pb-10 lg:grid-cols-[minmax(0,1.2fr)_minmax(320px,420px)] lg:items-start">
+        <div className="mb-10 grid gap-8 border-b border-white/5 pb-10 lg:grid-cols-[minmax(0,1.2fr)_minmax(320px,420px)] lg:items-start">
           <div className="max-w-2xl">
-            <h3 className="mb-4 font-rajdhani text-2xl font-bold text-white">TuWeb.ai</h3>
-            <p className="max-w-xl text-base leading-7 text-[var(--text-primary)]">
+            <h3 className="mb-4 inline-flex items-center gap-2 text-2xl font-black tracking-tight text-white">
+              <span>TuWeb</span>
+              <span className="text-[var(--signal)]">.ai</span>
+              <span className="animate-pulse-glow h-2.5 w-2.5 rounded-full bg-[var(--signal)]" />
+            </h3>
+            <p className="max-w-xl text-base leading-7 text-gray-500">
               Desarrollo web profesional para negocios argentinos que quieren vender online.
             </p>
 
-            <div className="mt-6 space-y-3 text-sm text-[var(--text-primary)]">
+            <div className="mt-6 space-y-3 text-sm text-gray-300">
               <p>{TUWEBAI_LOCATION}</p>
               <p>
                 <a
@@ -157,10 +162,10 @@ export default function Footer() {
           <DeferredFooterNewsletter />
         </div>
 
-        <div className="grid gap-8 border-b border-[var(--border-subtle)] py-10 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid gap-8 border-b border-white/5 py-10 sm:grid-cols-2 xl:grid-cols-4">
           {footerColumns.map((column) => (
             <div key={column.title}>
-              <h4 className="mb-4 font-rajdhani text-lg font-bold uppercase tracking-[0.12em] text-white">
+              <h4 className="mb-4 text-lg font-semibold uppercase tracking-[0.12em] text-white">
                 {column.title}
               </h4>
               <ul className="space-y-3">
@@ -174,41 +179,44 @@ export default function Footer() {
           ))}
         </div>
 
-        <div className="flex flex-col gap-5 pt-8 md:flex-row md:items-end md:justify-between">
+        <div className="flex flex-col gap-5 border-t border-transparent pt-8 md:flex-row md:items-end md:justify-between">
           <div className="space-y-2">
-            <p className="text-sm text-[var(--text-primary)]">
+            <p className="text-xs text-gray-500">
               © {currentYear} TuWebAI · Desarrollo web profesional
             </p>
-            <p className="text-sm text-[var(--text-secondary)]">Hecho en Córdoba, Argentina</p>
+            <p className="text-xs text-gray-600">Hecho en Córdoba, Argentina</p>
           </div>
 
-          <div className="flex flex-wrap gap-5 text-sm text-[var(--text-primary)]">
+          <div className="flex flex-wrap gap-3 text-sm text-[var(--text-primary)]">
             <a
               href={TUWEBAI_LINKEDIN_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="transition-colors hover:text-white"
+              className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/8 bg-white/5 transition-colors hover:border-[var(--signal-border)] hover:bg-[var(--signal-glow)] hover:text-white"
               onClick={() => trackRuntimeOutboundClick(TUWEBAI_LINKEDIN_URL, 'footer', 'LinkedIn', 'social')}
+              aria-label="LinkedIn"
             >
-              LinkedIn
+              <Linkedin className="h-4 w-4" />
             </a>
             <a
               href={TUWEBAI_INSTAGRAM_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="transition-colors hover:text-white"
+              className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/8 bg-white/5 transition-colors hover:border-[var(--signal-border)] hover:bg-[var(--signal-glow)] hover:text-white"
               onClick={() => trackRuntimeOutboundClick(TUWEBAI_INSTAGRAM_URL, 'footer', 'Instagram', 'social')}
+              aria-label="Instagram"
             >
-              Instagram
+              <Instagram className="h-4 w-4" />
             </a>
             <a
               href={TUWEBAI_GITHUB_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="transition-colors hover:text-white"
+              className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/8 bg-white/5 transition-colors hover:border-[var(--signal-border)] hover:bg-[var(--signal-glow)] hover:text-white"
               onClick={() => trackRuntimeOutboundClick(TUWEBAI_GITHUB_URL, 'footer', 'GitHub', 'social')}
+              aria-label="GitHub"
             >
-              GitHub
+              <Github className="h-4 w-4" />
             </a>
           </div>
         </div>

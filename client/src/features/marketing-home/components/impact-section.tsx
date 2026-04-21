@@ -16,15 +16,27 @@ function TrustCard({ eyebrow, title, description, delay }: TrustCardProps) {
   return (
     <div
       ref={ref}
-      className={`editorial-surface-card editorial-surface-card--interactive rounded-xl p-5 transition-all duration-500 sm:p-6 ${
+      className={`card-hover rounded-[28px] border border-white/5 bg-[var(--bg-surface)] p-5 transition-all duration-500 sm:p-6 ${
         hasIntersected ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
       }`}
       style={{ transitionDelay: `${delay * 120}ms` }}
     >
+      <div className="mb-5 flex items-center justify-between">
+        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[image:var(--gradient-brand)] text-lg font-black text-white">
+          “
+        </div>
+        <div className="flex gap-1 text-[#C4B5FD]">
+          <span>★</span>
+          <span>★</span>
+          <span>★</span>
+          <span>★</span>
+          <span>★</span>
+        </div>
+      </div>
       <p className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-[var(--signal)]">
         {eyebrow}
       </p>
-      <h3 className="mb-3 font-rajdhani text-xl font-bold text-white sm:text-2xl">{title}</h3>
+      <h3 className="mb-3 text-xl font-black text-white sm:text-2xl">{title}</h3>
       <p className="text-sm leading-7 text-gray-300">{description}</p>
     </div>
   );
@@ -90,7 +102,10 @@ export default function ImpactSection({ setRef }: ImpactSectionProps) {
             titleVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
           }`}
         >
-          <h2 className="mb-6 font-rajdhani text-3xl font-bold sm:text-4xl md:text-5xl">
+          <div className="mb-5 inline-flex rounded-full border border-[var(--signal-border)] bg-[var(--signal-glow)] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-[#A78BFA]">
+            Confianza real
+          </div>
+          <h2 className="mb-6 text-3xl font-black sm:text-4xl md:text-5xl">
             <span className="gradient-text gradient-border inline-block pb-2">
               Lo que nos diferencia.
               <br />
@@ -131,7 +146,7 @@ export default function ImpactSection({ setRef }: ImpactSectionProps) {
           <div className="mt-8 transition-transform duration-200 hover:scale-[1.03]">
             <Link
               to="/consulta"
-              className="inline-flex items-center justify-center rounded-full bg-[image:var(--gradient-brand)] px-8 py-4 font-medium text-white shadow-[var(--glow-signal)]"
+              className="glow-violet inline-flex items-center justify-center rounded-full bg-[image:var(--gradient-brand)] px-8 py-4 font-medium text-white"
             >
               Consultá sin cargo →
             </Link>

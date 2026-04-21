@@ -13,16 +13,18 @@ interface ProcessStepProps {
 function ProcessStep({ number, title, description, delayMs }: ProcessStepProps) {
   return (
     <RevealBlock className="h-full" delayMs={delayMs}>
-      <div className="editorial-surface-card editorial-surface-card--interactive flex h-full items-start gap-4 rounded-xl p-5 sm:gap-5 sm:p-6">
-        <div className="flex-shrink-0">
-          <div className="editorial-surface-card editorial-surface-card--accent flex h-10 w-10 items-center justify-center rounded-full font-rajdhani text-base font-bold text-white sm:h-11 sm:w-11 sm:text-lg">
-            {number}
+      <div className="relative flex h-full flex-col rounded-[28px] border border-white/5 bg-[var(--bg-surface)] p-6">
+        <span className="absolute right-5 top-4 text-5xl font-black text-white/[0.04]">{number}</span>
+        <div className="mb-5 flex items-center gap-4">
+          <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-[var(--signal-border)] bg-[var(--bg-surface)]">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--signal)] text-base font-black text-white">
+              {number}
+            </div>
           </div>
+          <h3 className="text-lg font-black text-white sm:text-xl">{title}</h3>
         </div>
-
-        <div>
-          <h3 className="mb-2 font-rajdhani text-lg font-bold text-white sm:text-xl">{title}</h3>
-          <div className="leading-7 text-gray-300">{description}</div>
+        <div className="leading-7 text-gray-300">
+          {description}
         </div>
       </div>
     </RevealBlock>
@@ -97,7 +99,7 @@ export default function ProcessSection({ setRef }: ProcessSectionProps) {
     >
       <div className="container z-10 mx-auto px-3 py-14 sm:px-4 sm:py-16">
         <RevealBlock className="mx-auto mb-14 max-w-4xl text-center">
-          <h2 className="mb-6 font-rajdhani text-3xl font-bold sm:text-4xl md:text-5xl">
+          <h2 className="mb-6 text-3xl font-black sm:text-4xl md:text-5xl">
             <span className="gradient-text gradient-border inline-block pb-2">
               Cómo trabajamos cada proyecto
             </span>
@@ -109,7 +111,9 @@ export default function ProcessSection({ setRef }: ProcessSectionProps) {
           </p>
         </RevealBlock>
 
-        <div className="mx-auto grid max-w-5xl grid-cols-1 gap-5 md:grid-cols-2">
+        <div className="relative mx-auto max-w-6xl">
+          <div className="absolute left-[calc(12.5%+2rem)] right-[calc(12.5%+2rem)] top-14 hidden h-px bg-gradient-to-r from-transparent via-[var(--signal)]/40 to-transparent lg:block" />
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
           {processSteps.map((step) => (
             <ProcessStep
               key={step.number}
@@ -119,6 +123,7 @@ export default function ProcessSection({ setRef }: ProcessSectionProps) {
               delayMs={step.delayMs}
             />
           ))}
+          </div>
         </div>
       </div>
     </section>

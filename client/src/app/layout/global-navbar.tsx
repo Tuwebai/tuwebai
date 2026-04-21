@@ -125,13 +125,17 @@ export default function GlobalNavbar({ authMode = 'auto' }: GlobalNavbarProps) {
     <>
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled ? 'border-b border-[var(--border-subtle)] bg-[var(--bg-base)]/96 shadow-[var(--shadow-card)] lg:backdrop-blur-md' : 'bg-transparent'
+          isScrolled
+            ? 'border-b border-white/5 bg-[var(--bg-base)]/90 shadow-[var(--shadow-card)] backdrop-blur-xl'
+            : 'bg-transparent'
         }`}
       >
         <div className="container mx-auto px-3 sm:px-4">
           <div className="flex items-center justify-between gap-3 py-3 sm:py-4">
-            <Link to="/" className="shrink-0 text-xl font-rajdhani font-bold sm:text-2xl">
-              TuWeb<span className="text-[var(--signal)]">.ai</span>
+            <Link to="/" className="inline-flex shrink-0 items-center gap-2 text-xl font-black tracking-tight text-white sm:text-2xl">
+              <span>TuWeb</span>
+              <span className="text-[var(--signal)]">.ai</span>
+              <span className="animate-pulse-glow h-2.5 w-2.5 rounded-full bg-[var(--signal)]" />
             </Link>
 
             <div className="hidden items-center space-x-4 text-xs text-gray-400 xl:flex">
@@ -152,16 +156,16 @@ export default function GlobalNavbar({ authMode = 'auto' }: GlobalNavbarProps) {
                   onMouseEnter={() => prefetchNavigationPath('/consulta')}
                   onFocus={() => prefetchNavigationPath('/consulta')}
                   onTouchStart={() => prefetchNavigationPath('/consulta')}
-                  className="rounded-full bg-[image:var(--gradient-brand)] px-4 py-2 text-sm font-medium text-white shadow-[var(--glow-signal)] transition-all whitespace-nowrap xl:px-5"
+                  className="glow-violet whitespace-nowrap rounded-full bg-[image:var(--gradient-brand)] px-4 py-2 text-sm font-medium text-white transition-all hover:opacity-90 xl:px-5"
                 >
-                  Consultanos
+                  Empezar proyecto
                 </Link>
               </div>
             </nav>
 
             <button
               onClick={() => setIsMenuOpen(true)}
-              className="rounded-md p-2 text-gray-200 transition-colors hover:bg-[var(--bg-elevated)]/70 lg:hidden"
+              className="rounded-xl border border-white/10 bg-white/5 p-2 text-gray-200 transition-colors hover:border-[var(--signal-border)] hover:bg-[var(--bg-elevated)]/70 lg:hidden"
               aria-label="Abrir menu de navegacion"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
