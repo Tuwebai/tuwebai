@@ -4,12 +4,12 @@ import { TUWEBAI_EMAIL, TUWEBAI_WHATSAPP_URL } from '@/shared/constants/contact'
 
 export const SuccessScreen = ({ whatsappHref }: { whatsappHref: string }) => (
   <div className="space-y-6 py-10 text-center">
-    <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border border-[#00CCFF]/20 bg-[#00CCFF]/10 shadow-[0_0_40px_rgba(0,204,255,0.12)]">
+    <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border border-[var(--signal-border)] bg-[var(--signal-glow)] shadow-[0_0_40px_rgba(124,58,237,0.12)]">
       <CheckCircle2 className="h-9 w-9 text-[var(--signal)]" strokeWidth={1.5} />
     </div>
     <div className="space-y-3">
       <div className="flex justify-center">
-        <span className="inline-flex rounded-full border border-[#00CCFF]/30 bg-[#00CCFF]/10 px-4 py-1 text-[0.72rem] font-semibold uppercase tracking-[0.26em] text-[#9BE7FF]">
+        <span className="inline-flex rounded-full border border-[var(--signal-border)] bg-[var(--signal-glow)] px-4 py-1 text-[0.72rem] font-semibold uppercase tracking-[0.26em] text-[#c4b5fd]">
           Consulta enviada
         </span>
       </div>

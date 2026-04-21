@@ -221,13 +221,13 @@ export default function ProcessPage() {
                     href={PROCESS_WHATSAPP_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#00CCFF] to-[#7C3AED] px-6 py-3 text-sm font-semibold text-white shadow-[0_18px_45px_rgba(0,204,255,0.22)] transition-transform duration-200 hover:-translate-y-0.5"
+                    className="inline-flex items-center justify-center rounded-full bg-[image:var(--gradient-brand)] px-6 py-3 text-sm font-semibold text-white shadow-[0_18px_45px_rgba(124,58,237,0.22)] transition-transform duration-200 hover:-translate-y-0.5"
                   >
                     Contar mi proyecto
                   </a>
                   <Link
                     to="/?section=showroom"
-                    className="inline-flex items-center justify-center rounded-full border border-white/12 px-6 py-3 text-sm font-semibold text-[#DCE7FF] transition-colors duration-200 hover:border-[#00CCFF]/45 hover:text-white"
+                    className="inline-flex items-center justify-center rounded-full border border-white/12 px-6 py-3 text-sm font-semibold text-[#DCE7FF] transition-colors duration-200 hover:border-[var(--signal-border)] hover:text-white"
                   >
                     Ver proyectos reales
                   </Link>
@@ -409,13 +409,13 @@ export default function ProcessPage() {
               <div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row">
                 <Link
                   to="/diagnostico-gratuito"
-                  className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#00CCFF] to-[#7C3AED] px-6 py-3 text-sm font-semibold text-white shadow-[0_18px_45px_rgba(0,204,255,0.22)] transition-transform duration-200 hover:-translate-y-0.5"
+                  className="inline-flex items-center justify-center rounded-full bg-[image:var(--gradient-brand)] px-6 py-3 text-sm font-semibold text-white shadow-[0_18px_45px_rgba(124,58,237,0.22)] transition-transform duration-200 hover:-translate-y-0.5"
                 >
                   Pedí tu diagnóstico gratuito →
                 </Link>
                 <Link
                   to="/?section=showroom"
-                  className="inline-flex items-center justify-center rounded-full border border-white/12 px-6 py-3 text-sm font-semibold text-[#DCE7FF] transition-colors duration-200 hover:border-[#00CCFF]/45 hover:text-white"
+                  className="inline-flex items-center justify-center rounded-full border border-white/12 px-6 py-3 text-sm font-semibold text-[#DCE7FF] transition-colors duration-200 hover:border-[var(--signal-border)] hover:text-white"
                 >
                   Ver proyectos reales
                 </Link>

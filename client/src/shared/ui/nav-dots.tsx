@@ -65,9 +65,9 @@ export default function NavDots({ sections }: NavDotsProps) {
             }}
           >
             <span
-              className={`h-2 w-2 rounded-full transition-all duration-300 hover:bg-[#9933FF] cursor-pointer ${
+              className={`h-2 w-2 cursor-pointer rounded-full transition-all duration-300 hover:bg-[#a855f7] ${
                 activeSection === section.id
-                  ? 'bg-[#00CCFF] shadow-[0_0_8px_rgba(0,204,255,0.8)] scale-[1.3]'
+                  ? 'scale-[1.3] bg-[var(--signal)] shadow-[0_0_8px_rgba(124,58,237,0.8)]'
                   : 'bg-gray-500'
               }`}
               aria-hidden="true"

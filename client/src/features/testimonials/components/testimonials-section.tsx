@@ -24,21 +24,21 @@ function TestimonialCard({ name, company, testimonial, delay, isNew }: Testimoni
 
   return (
     <RevealBlock
-      className={`mx-2 rounded-xl border border-gray-800 bg-glass p-6 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_25px_-5px_rgba(0,204,255,0.2),0_10px_10px_-5px_rgba(153,51,255,0.2)] ${
-        isNew ? 'ring-2 ring-[#00CCFF]' : ''
+      className={`mx-2 rounded-xl border border-gray-800 bg-glass p-6 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_25px_-5px_rgba(124,58,237,0.2),0_10px_10px_-5px_rgba(168,85,247,0.2)] ${
+        isNew ? 'ring-2 ring-[var(--signal)]' : ''
       }`}
       delayMs={delay * 120}
       durationMs={600}
     >
       <div ref={ref as React.RefObject<HTMLDivElement>} className="relative">
         {isNew ? (
-          <div className="absolute -right-3 -top-3 rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-2 py-1 text-xs text-white">
+          <div className="absolute -right-3 -top-3 rounded-full bg-[image:var(--gradient-brand)] px-2 py-1 text-xs text-white">
             Nuevo
           </div>
         ) : null}
 
         <div className="absolute -top-4 left-6 flex h-10 w-10 items-center justify-center text-3xl">
-          <div className="rounded-full bg-gradient-to-br from-[#00CCFF] to-[#9933FF] p-2 shadow-lg shadow-[#00CCFF]/10">
+          <div className="rounded-full bg-[image:var(--gradient-brand)] p-2 shadow-lg shadow-[rgba(124,58,237,0.1)]">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -62,7 +62,7 @@ function TestimonialCard({ name, company, testimonial, delay, isNew }: Testimoni
 
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <div className="mr-3 w-10 h-10 rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] p-[2px]">
+              <div className="mr-3 h-10 w-10 rounded-full bg-[image:var(--gradient-brand)] p-[2px]">
                 <div className="flex h-full w-full items-center justify-center rounded-full bg-gray-800 font-medium text-white">
                   {name.charAt(0)}
                 </div>
@@ -73,7 +73,7 @@ function TestimonialCard({ name, company, testimonial, delay, isNew }: Testimoni
               </div>
             </div>
 
-            <div className="h-1 w-12 rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF]"></div>
+            <div className="h-1 w-12 rounded-full bg-[image:var(--gradient-brand)]"></div>
           </div>
         </div>
       </div>
@@ -137,7 +137,7 @@ export default function TestimonialsSection({ setRef }: TestimonialsSectionProps
       </div>
     ),
     customPaging: () => (
-      <div className="mx-1 h-3 w-3 rounded-full bg-gray-700 transition-colors hover:bg-[#00CCFF]" />
+      <div className="mx-1 h-3 w-3 rounded-full bg-gray-700 transition-colors hover:bg-[var(--signal)]" />
     ),
   };
 
@@ -164,7 +164,7 @@ export default function TestimonialsSection({ setRef }: TestimonialsSectionProps
         <div className="w-full px-2 lg:hidden">
           {loading ? (
             <div className="flex h-64 items-center justify-center">
-              <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-[#00CCFF]"></div>
+              <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-[var(--signal)]"></div>
             </div>
           ) : testimonials.length === 0 ? (
             <div className="py-12 text-center">
@@ -201,7 +201,7 @@ export default function TestimonialsSection({ setRef }: TestimonialsSectionProps
           <div className="mt-8 flex justify-center gap-4">
             <button
               onClick={() => sliderRef.current?.slickPrev()}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-700 text-gray-400 transition-all duration-200 hover:scale-105 hover:border-[#00CCFF] hover:text-white active:scale-95"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-700 text-gray-400 transition-all duration-200 hover:scale-105 hover:border-[var(--signal)] hover:text-white active:scale-95"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -210,7 +210,7 @@ export default function TestimonialsSection({ setRef }: TestimonialsSectionProps
 
             <button
               onClick={() => sliderRef.current?.slickNext()}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-700 text-gray-400 transition-all duration-200 hover:scale-105 hover:border-[#9933FF] hover:text-white active:scale-95"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-700 text-gray-400 transition-all duration-200 hover:scale-105 hover:border-[#a855f7] hover:text-white active:scale-95"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -223,7 +223,7 @@ export default function TestimonialsSection({ setRef }: TestimonialsSectionProps
         <div className="mx-auto hidden max-w-6xl gap-8 lg:grid lg:grid-cols-3">
           {loading ? (
             <div className="col-span-3 flex h-64 items-center justify-center">
-              <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-[#00CCFF]"></div>
+              <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-[var(--signal)]"></div>
             </div>
           ) : testimonials.length === 0 ? (
             <div className="col-span-3 py-12 text-center">

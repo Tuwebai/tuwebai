@@ -6,7 +6,7 @@ interface ScrollProgressProps {
 }
 
 export default function ScrollProgress({
-  color = '#00CCFF',
+  color = '#7C3AED',
   height = 3
 }: ScrollProgressProps) {
   const [isVisible, setIsVisible] = useState(false);

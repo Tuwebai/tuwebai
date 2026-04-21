@@ -47,9 +47,9 @@ export default function NotFoundPage() {
           </Link>
 
           <div className="mt-6 grid gap-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(320px,420px)] lg:items-start">
-            <section className="overflow-hidden rounded-[28px] border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(0,204,255,0.18),transparent_38%),radial-gradient(circle_at_top_right,rgba(153,51,255,0.14),transparent_32%),linear-gradient(180deg,rgba(18,18,23,0.98),rgba(10,10,15,0.98))] px-5 py-10 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.3)] sm:px-6 md:rounded-[32px] md:px-10 md:py-12">
+            <section className="overflow-hidden rounded-[28px] border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(124,58,237,0.18),transparent_38%),radial-gradient(circle_at_top_right,rgba(168,85,247,0.14),transparent_32%),linear-gradient(180deg,rgba(18,18,23,0.98),rgba(10,10,15,0.98))] px-5 py-10 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.3)] sm:px-6 md:rounded-[32px] md:px-10 md:py-12">
               <div className="flex flex-wrap items-center gap-3">
-                <span className="inline-flex rounded-full border border-[#00CCFF]/30 bg-[#00CCFF]/10 px-4 py-1 text-[0.75rem] font-semibold uppercase tracking-[0.26em] text-[#9BE7FF]">
+                <span className="inline-flex rounded-full border border-[var(--signal-border)] bg-[var(--signal-glow)] px-4 py-1 text-[0.75rem] font-semibold uppercase tracking-[0.26em] text-[#c4b5fd]">
                   Error 404
                 </span>
                 <span className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-1 text-[0.75rem] font-medium uppercase tracking-[0.18em] text-gray-300">
@@ -59,7 +59,7 @@ export default function NotFoundPage() {
 
               <div className="mt-8 flex items-center gap-4">
                 <span className="font-rajdhani text-7xl font-bold leading-none text-white/15 sm:text-8xl">404</span>
-                <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-[#00CCFF]/20 bg-[#00CCFF]/10 text-[#9BE7FF] shadow-[0_0_40px_rgba(0,204,255,0.12)]">
+                <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-[var(--signal-border)] bg-[var(--signal-glow)] text-[#c4b5fd] shadow-[0_0_40px_rgba(124,58,237,0.12)]">
                   <AlertTriangle className="h-8 w-8" />
                 </div>
               </div>
@@ -76,7 +76,7 @@ export default function NotFoundPage() {
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Link
                   to="/"
-                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#00CCFF] to-[#9933FF] px-7 text-sm font-semibold text-white shadow-[0_18px_48px_rgba(0,204,255,0.2)] transition hover:opacity-95"
+                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[image:var(--gradient-brand)] px-7 text-sm font-semibold text-white shadow-[0_18px_48px_rgba(124,58,237,0.2)] transition hover:opacity-95"
                 >
                   <Home className="h-4 w-4" />
                   Volver al inicio
@@ -101,9 +101,9 @@ export default function NotFoundPage() {
               </button>
             </section>
 
-            <aside className="overflow-hidden rounded-[28px] border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(0,204,255,0.1),transparent_42%),radial-gradient(circle_at_top_right,rgba(153,51,255,0.08),transparent_34%),linear-gradient(180deg,rgba(20,26,42,0.98),rgba(12,18,31,0.92))] p-6 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.28)] sm:p-8 md:rounded-[32px]">
+            <aside className="overflow-hidden rounded-[28px] border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(124,58,237,0.1),transparent_42%),radial-gradient(circle_at_top_right,rgba(168,85,247,0.08),transparent_34%),linear-gradient(180deg,rgba(20,26,42,0.98),rgba(12,18,31,0.92))] p-6 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.28)] sm:p-8 md:rounded-[32px]">
               <div className="flex flex-wrap items-center gap-3">
-                <span className="inline-flex rounded-full border border-[#00CCFF]/30 bg-[#00CCFF]/10 px-4 py-1 text-[0.72rem] font-semibold uppercase tracking-[0.26em] text-[#9BE7FF]">
+                <span className="inline-flex rounded-full border border-[var(--signal-border)] bg-[var(--signal-glow)] px-4 py-1 text-[0.72rem] font-semibold uppercase tracking-[0.26em] text-[#c4b5fd]">
                   Rutas recomendadas
                 </span>
                 <span className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-1 text-[0.72rem] font-medium uppercase tracking-[0.18em] text-gray-300">
@@ -118,10 +118,10 @@ export default function NotFoundPage() {
                   <Link
                     key={href}
                     to={href}
-                    className="group block rounded-[24px] border border-white/10 bg-white/5 p-4 transition hover:border-[#00CCFF]/35 hover:bg-white/8"
+                    className="group block rounded-[24px] border border-white/10 bg-white/5 p-4 transition hover:border-[var(--signal-border)] hover:bg-white/8"
                   >
                     <div className="flex items-start gap-4">
-                      <div className="mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#00CCFF]/10 text-[#9BE7FF]">
+                      <div className="mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[var(--signal-glow)] text-[#c4b5fd]">
                         <Icon className="h-5 w-5" />
                       </div>
                       <div>

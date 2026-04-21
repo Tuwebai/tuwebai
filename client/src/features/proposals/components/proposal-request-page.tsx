@@ -130,9 +130,9 @@ export default function ProposalRequestPage() {
               Volver al inicio
             </Link>
 
-            <div className="mt-6 overflow-hidden rounded-[28px] border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(0,204,255,0.18),transparent_38%),radial-gradient(circle_at_top_right,rgba(153,51,255,0.14),transparent_32%),linear-gradient(180deg,rgba(18,18,23,0.98),rgba(10,10,15,0.98))] px-5 py-10 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.3)] sm:px-6 md:rounded-[32px] md:px-10 md:py-12">
+            <div className="mt-6 overflow-hidden rounded-[28px] border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(124,58,237,0.18),transparent_38%),radial-gradient(circle_at_top_right,rgba(168,85,247,0.14),transparent_32%),linear-gradient(180deg,rgba(18,18,23,0.98),rgba(10,10,15,0.98))] px-5 py-10 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.3)] sm:px-6 md:rounded-[32px] md:px-10 md:py-12">
               <div className="flex flex-wrap items-center gap-3">
-                <span className="inline-flex rounded-full border border-[#00CCFF]/30 bg-[#00CCFF]/10 px-4 py-1 text-[0.75rem] font-semibold uppercase tracking-[0.26em] text-[#9BE7FF]">
+                <span className="inline-flex rounded-full border border-[var(--signal-border)] bg-[var(--signal-glow)] px-4 py-1 text-[0.75rem] font-semibold uppercase tracking-[0.26em] text-[#c4b5fd]">
                   Consulta TuWebAI
                 </span>
                 <span className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-1 text-[0.75rem] font-medium uppercase tracking-[0.18em] text-gray-300">
