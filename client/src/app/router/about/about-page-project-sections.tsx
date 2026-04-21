@@ -25,7 +25,15 @@ export function AboutProjectsSection() {
           <RevealBlock key={project.title} delayMs={index * 90}>
             <article className={`${surfaceClassName} overflow-hidden`}>
               <div className="relative h-52 overflow-hidden">
-                <img src={project.image} alt={project.title} className="h-full w-full object-cover" />
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  width={640}
+                  height={360}
+                  loading="lazy"
+                  decoding="async"
+                  className="h-full w-full object-cover"
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent" />
                 <div className="absolute bottom-4 left-4 flex flex-wrap gap-2">
                   <span className="rounded-full border border-white/10 bg-slate-950/75 px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-gray-200">

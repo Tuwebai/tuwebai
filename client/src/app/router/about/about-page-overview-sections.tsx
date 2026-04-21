@@ -141,6 +141,10 @@ export function AboutTeamSection() {
                 <img
                   src="/image_perfil.webp"
                   alt="Foto de perfil de Juan Esteban López"
+                  width={320}
+                  height={320}
+                  loading="lazy"
+                  decoding="async"
                   className="h-full w-full object-cover"
                 />
               </div>

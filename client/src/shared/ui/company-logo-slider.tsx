@@ -48,6 +48,10 @@ export default function CompanyLogoSlider({ className = '' }: CompanyLogoSliderP
               <img
                 src={project.logo}
                 alt={project.alt}
+                width={148}
+                height={48}
+                loading="lazy"
+                decoding="async"
                 className="h-full w-auto max-w-[140px] object-contain sm:max-w-[170px]"
               />
             </div>
