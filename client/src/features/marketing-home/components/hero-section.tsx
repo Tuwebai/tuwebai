@@ -60,7 +60,7 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
         const sectionHeight = Math.max(section.offsetHeight, 1);
         const progress = Math.min(Math.max((-rect.top) / sectionHeight, 0), 1);
         const nextOpacity = Math.max(0, 1 - progress * 2);
-        setHeroOpacity((prev) => (Math.abs(prev - nextOpacity) < 0.001 ? prev : nextOpacity));
+        setHeroOpacity((prev) => (Math.abs(prev - nextOpacity) < 0.005 ? prev : nextOpacity));
         ticking = false;
       });
     };
