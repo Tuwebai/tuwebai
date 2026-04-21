@@ -34,6 +34,10 @@ export default function ShowroomProjectCard({
         <img
           src={project.image}
           alt={project.title}
+          width={600}
+          height={208}
+          loading="lazy"
+          decoding="async"
           className="h-full w-full object-cover transition-transform duration-200 group-hover:scale-110"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#020617]/90 via-[#020617]/20 to-transparent" />
