@@ -1,4 +1,4 @@
-import type { MouseEvent } from 'react';
+import type { KeyboardEvent, MouseEvent } from 'react';
 
 import type { ShowroomProject } from '@/features/marketing-home/components/showroom-types';
 
@@ -19,8 +19,16 @@ export default function ShowroomProjectCard({
   onVisit,
   project,
 }: ShowroomProjectCardProps) {
+  const handleOpen = () => onOpen(project);
+  const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      handleOpen();
+    }
+  };
+
   return (
-    <div
+    <article
       className={`card-hover relative h-full cursor-pointer overflow-hidden rounded-[28px] border border-white/5 bg-[var(--bg-surface)] ${
         hasShownProjects ? 'translate-y-0 opacity-100 hover:border-[var(--signal-border)]' : 'translate-y-5 opacity-0'
       }`}
@@ -28,7 +36,11 @@ export default function ShowroomProjectCard({
         transitionDelay: hasShownProjects ? '0ms' : `${300 + index * 100}ms`,
         transitionDuration: hasShownProjects ? '180ms' : '500ms',
       }}
-      onClick={() => onOpen(project)}
+      onClick={handleOpen}
+      onKeyDown={handleKeyDown}
+      role="button"
+      tabIndex={0}
+      aria-label={`Ver detalle del proyecto ${project.title}`}
     >
       <div className="group relative h-52 overflow-hidden">
         <img
@@ -53,6 +65,7 @@ export default function ShowroomProjectCard({
           <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity duration-150 group-hover:opacity-100">
             <button
               onClick={(event) => onVisit(project.externalUrl!, event)}
+              aria-label={`Visitar la página web de ${project.title}`}
               className="transform rounded-lg bg-[image:var(--gradient-brand)] px-4 py-2 font-medium text-white transition-all duration-150 hover:scale-105 hover:shadow-[var(--glow-signal)]"
             >
               Visitar página web
@@ -87,7 +100,7 @@ export default function ShowroomProjectCard({
         <button
           onClick={(event) => {
             event.stopPropagation();
-            onOpen(project);
+            handleOpen();
           }}
           className="mt-auto flex items-center text-sm font-medium text-[var(--signal)] transition-colors hover:text-white"
         >
@@ -97,6 +110,6 @@ export default function ShowroomProjectCard({
           </svg>
         </button>
       </div>
-    </div>
+    </article>
   );
 }

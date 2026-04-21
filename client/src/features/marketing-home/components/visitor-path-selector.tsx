@@ -85,6 +85,7 @@ export default function VisitorPathSelector() {
                     ? 'editorial-surface-card--accent text-white'
                     : 'editorial-surface-card--interactive text-gray-300'
                 }`}
+                aria-label={`Seleccionar la opción ${path.title}`}
               >
                 <p className="font-medium">{path.title}</p>
               </button>
