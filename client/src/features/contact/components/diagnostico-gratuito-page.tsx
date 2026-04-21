@@ -375,7 +375,7 @@ export default function DiagnosticoGratuitoPage() {
         twitterTitle="Diagnóstico Web Gratuito | TuWebAI"
         twitterDescription="Descubrí qué está frenando las consultas de tu web."
         ogSiteName="TuWebAI"
-        ogImage="/logo-tuwebai.png"
+        ogImage="/logo-tuwebai.webp"
         structuredData={DIAGNOSTICO_STRUCTURED_DATA}
       />
 

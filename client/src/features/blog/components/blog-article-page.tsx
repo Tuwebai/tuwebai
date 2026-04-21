@@ -89,7 +89,7 @@ export default function BlogArticlePage({ slug }: BlogArticlePageProps) {
     publisher: {
       '@type': 'Organization',
       name: 'TuWeb.ai',
-      logo: { '@type': 'ImageObject', url: `${TUWEBAI_SITE_FULL_URL}/logo-tuwebai.png` },
+      logo: { '@type': 'ImageObject', url: `${TUWEBAI_SITE_FULL_URL}/logo-tuwebai.webp` },
     },
   };
 

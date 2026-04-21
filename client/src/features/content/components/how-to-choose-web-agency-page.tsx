@@ -38,7 +38,7 @@ export default function HowToChooseWebAgencyPage() {
         keywords="como elegir agencia web argentina, agencia desarrollo web argentina, contratar agencia web, comparar agencias web"
         url={PAGE_URL}
         ogType="article"
-        ogImage="/logo-tuwebai.png"
+        ogImage="/logo-tuwebai.webp"
       />
 
       <main className="page-shell-surface min-h-screen px-4 pb-20 pt-28 text-white sm:pt-32">

@@ -55,7 +55,7 @@ export default function EcommerceArgentinaPillarPage() {
         keywords="crear tienda online argentina, cómo vender online en argentina, ecommerce pyme argentina, tienda online argentina"
         url={PAGE_URL}
         ogType="article"
-        ogImage="/logo-tuwebai.png"
+        ogImage="/logo-tuwebai.webp"
       />
 
       <main className="page-shell-surface min-h-screen px-4 pb-20 pt-28 text-white sm:pt-32">

@@ -55,7 +55,7 @@ export default function SeoLocalArgentinaPillarPage() {
         keywords="seo local argentina, como aparecer en google maps argentina, google maps negocio argentina, posicionamiento local argentina"
         url={PAGE_URL}
         ogType="article"
-        ogImage="/logo-tuwebai.png"
+        ogImage="/logo-tuwebai.webp"
       />
 
       <main className="page-shell-surface min-h-screen px-4 pb-20 pt-28 text-white sm:pt-32">

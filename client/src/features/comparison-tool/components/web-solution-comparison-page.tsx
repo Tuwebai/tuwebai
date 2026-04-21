@@ -92,7 +92,7 @@ export default function WebSolutionComparisonPage() {
         keywords="comparar wix wordpress tiendanube, opciones para hacer una web, web a medida argentina, comparar plataformas web"
         url={PAGE_URL}
         ogType="website"
-        ogImage="/logo-tuwebai.png"
+        ogImage="/logo-tuwebai.webp"
       />
 
       <div className="page-shell-surface min-h-screen text-white">

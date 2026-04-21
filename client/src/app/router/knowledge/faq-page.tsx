@@ -302,7 +302,7 @@ export default function FAQ() {
         keywords="preguntas frecuentes TuWebAI, tiempos de entrega, precios desarrollo web, planes web, soporte"
         url="https://tuweb-ai.com/faq"
         ogType="website"
-        ogImage="/logo-tuwebai.png"
+        ogImage="/logo-tuwebai.webp"
       />
       <main className="page-shell-surface min-h-screen text-white">
       {/* Hero Section */}

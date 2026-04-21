@@ -12,7 +12,7 @@ const featuredProjects = [
   },
   {
     name: 'Pulse by TuWebAI',
-    logo: '/pulse-by-tuwebai.png',
+    logo: '/pulse-by-tuwebai.webp',
     alt: 'Vista de Pulse by TuWebAI',
   },
   {

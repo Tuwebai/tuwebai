@@ -430,7 +430,7 @@ export default function ChecklistWebGratisPage() {
         twitterTitle="Checklist Web Gratis | TuWebAI"
         twitterDescription="35 puntos para auditar tu sitio y detectar qué está frenando tus consultas."
         ogSiteName="TuWebAI"
-        ogImage="/logo-tuwebai.png"
+        ogImage="/logo-tuwebai.webp"
         structuredData={[CHECKLIST_HOWTO_SCHEMA_SEO, CHECKLIST_FAQ_SCHEMA, CHECKLIST_BREADCRUMB_SCHEMA_SEO]}
       />
 

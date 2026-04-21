@@ -21,7 +21,7 @@ export default function AboutPage() {
         description="Conocé a Juanchi, fundador de TuWebAI. Desarrollador fullstack de Río Tercero, Córdoba. Casi 6 años construyendo webs que venden para negocios argentinos."
         keywords="nosotros tuwebai, juanchi lópez, juanchiidev, juan esteban lópez, desarrollador web Córdoba, desarrollo web argentina"
         ogType="website"
-        ogImage="/logo-tuwebai.png"
+        ogImage="/logo-tuwebai.webp"
         url={ABOUT_PAGE_URL}
         structuredData={ABOUT_PERSON_SCHEMA}
       />

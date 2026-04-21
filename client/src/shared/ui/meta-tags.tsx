@@ -38,7 +38,7 @@ const MetaTags: React.FC<MetaTagsProps> = ({
   title,
   description,
   keywords,
-  image = '/logo-tuwebai.png',
+  image = '/logo-tuwebai.webp',
   url = typeof window !== 'undefined' ? window.location.href : TUWEBAI_SITE_FULL_URL,
   type = 'website',
   twitterCard = 'summary_large_image',
@@ -97,7 +97,7 @@ const MetaTags: React.FC<MetaTagsProps> = ({
           name: 'TuWebAI',
           alternateName: ['TuWeb.ai', 'Tuweb AI'],
           url: TUWEBAI_SITE_FULL_URL,
-          logo: `${TUWEBAI_SITE_FULL_URL}/logo-tuwebai.png`,
+          logo: `${TUWEBAI_SITE_FULL_URL}/logo-tuwebai.webp`,
           description:
             'Agencia de desarrollo web profesional en Río Tercero, Córdoba. Webs comerciales, e-commerce y sistemas a medida para negocios argentinos.',
           founder: {

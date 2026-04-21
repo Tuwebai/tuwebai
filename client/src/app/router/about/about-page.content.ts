@@ -71,7 +71,7 @@ export const FEATURED_PROJECTS: FeaturedProject[] = [
     description:
       'Sistema de demos y landings orientadas a conversión para negocios locales con propuesta comercial clara.',
     stack: ['React', 'Tailwind', 'Vite'],
-    image: '/captiva.png',
+    image: '/captiva.webp',
     href: 'https://captiva.tuweb-ai.com/captiva',
   },
 ] as const;

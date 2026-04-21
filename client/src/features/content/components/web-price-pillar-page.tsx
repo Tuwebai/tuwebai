@@ -56,7 +56,7 @@ export default function WebPricePillarPage() {
         keywords="cuánto cuesta una web argentina, precio página web argentina, costo sitio web pyme, desarrollo web precio"
         url={PAGE_URL}
         ogType="article"
-        ogImage="/logo-tuwebai.png"
+        ogImage="/logo-tuwebai.webp"
       />
 
       <main className="page-shell-surface min-h-screen px-4 pb-20 pt-28 text-white sm:pt-32">

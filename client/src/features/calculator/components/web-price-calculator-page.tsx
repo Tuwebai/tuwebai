@@ -110,7 +110,7 @@ export default function WebPriceCalculatorPage() {
         keywords="calculadora precio web, cuanto cuesta una web, cotizador web argentina, precio sitio web"
         url={PAGE_URL}
         ogType="website"
-        ogImage="/logo-tuwebai.png"
+        ogImage="/logo-tuwebai.webp"
       />
 
       <div className="page-shell-surface min-h-screen text-white">

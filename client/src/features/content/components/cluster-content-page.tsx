@@ -19,7 +19,7 @@ export default function ClusterContentPage({ config }: ClusterContentPageProps) 
         keywords={config.keywords}
         url={pageUrl}
         ogType="article"
-        ogImage="/logo-tuwebai.png"
+        ogImage="/logo-tuwebai.webp"
       />
 
       <main className="page-shell-surface min-h-screen px-4 pb-20 pt-28 text-white sm:pt-32">

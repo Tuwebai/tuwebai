@@ -61,7 +61,7 @@ const projects = [
     title: 'Captiva',
     category: 'Landing pages',
     description: 'Sistema visual y estructura editorial para demos que necesitan explicar, convencer y convertir.',
-    image: '/captiva.png',
+    image: '/captiva.webp',
   },
   {
     title: 'SafeSpot',
@@ -87,7 +87,7 @@ export default function UxUiPage() {
         keywords="diseño UX UI web, interfaces que convierten, wireframes, prototipos, diseño visual, TuWebAI"
         url="https://tuweb-ai.com/uxui"
         ogType="website"
-        ogImage="/logo-tuwebai.png"
+        ogImage="/logo-tuwebai.webp"
       />
 
       <main className="min-h-screen bg-[var(--bg-base)] bg-[image:var(--gradient-page-shell)] px-4 pb-20 pt-28 text-white">
