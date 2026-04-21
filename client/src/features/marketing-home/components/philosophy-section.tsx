@@ -26,7 +26,7 @@ export default function PhilosophySection({ setRef }: PhilosophySectionProps) {
 
       <div className="container z-10 mx-auto px-3 py-14 sm:px-4 sm:py-16">
         <div className="mb-10 max-w-4xl">
-          <h2 className="mb-5 font-rajdhani text-3xl font-bold sm:text-4xl md:text-5xl">
+          <h2 className="mb-5 text-3xl font-black sm:text-4xl md:text-5xl">
             <span className="gradient-text gradient-border inline-block pb-2">
               Tu web debería traerte clientes.
               <br />
@@ -57,7 +57,7 @@ export default function PhilosophySection({ setRef }: PhilosophySectionProps) {
 
             <div className="mb-2 inline-flex items-center space-x-3">
               <div className="h-1 w-12 bg-[var(--signal)]" />
-              <span className="font-rajdhani text-sm uppercase tracking-wider text-gray-400">
+              <span className="text-sm font-black uppercase tracking-wider text-gray-400">
                 Cómo trabajamos
               </span>
             </div>
@@ -99,7 +99,7 @@ export default function PhilosophySection({ setRef }: PhilosophySectionProps) {
         </div>
 
         <div className="editorial-surface-card editorial-surface-card--accent mt-10 flex flex-col items-start gap-4 rounded-[28px] p-6 sm:flex-row sm:items-center sm:justify-between">
-          <p className="font-rajdhani text-2xl font-bold text-white sm:text-3xl">
+          <p className="text-2xl font-black text-white sm:text-3xl">
             ¿Tu web tiene estos problemas?
           </p>
           <Link

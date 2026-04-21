@@ -40,7 +40,7 @@ export default function EditorialGuidesSection() {
           <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[var(--signal)]">
             Guías útiles
           </p>
-          <h2 className="mt-4 font-rajdhani text-3xl font-bold leading-tight text-white sm:text-4xl">
+          <h2 className="mt-4 text-3xl font-black leading-tight text-white sm:text-4xl">
             Cuatro guías para decidir mejor tu web.
           </h2>
         </div>
@@ -54,7 +54,7 @@ export default function EditorialGuidesSection() {
               <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[var(--signal)]">
                 {guide.eyebrow}
               </p>
-              <h3 className="mt-4 font-rajdhani text-2xl font-bold leading-tight text-white">
+              <h3 className="mt-4 text-2xl font-black leading-tight text-white">
                 {guide.title}
               </h3>
               <p className="mt-3 text-sm leading-7 text-slate-300">

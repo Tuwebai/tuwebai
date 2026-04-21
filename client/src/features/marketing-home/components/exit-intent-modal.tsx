@@ -34,7 +34,7 @@ export default function ExitIntentModal({ open, onOpenChange }: ExitIntentModalP
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--signal)]">
               Antes de irte
             </p>
-            <DialogTitle className="font-rajdhani text-4xl font-bold leading-[0.95] text-white">
+            <DialogTitle className="text-4xl font-black leading-[0.95] text-white">
               Tu web puede estar perdiendo clientes sin que lo veas.
             </DialogTitle>
             <DialogDescription className="max-w-2xl text-base leading-7 text-gray-300">
@@ -46,15 +46,15 @@ export default function ExitIntentModal({ open, onOpenChange }: ExitIntentModalP
           <div className="mt-6 grid gap-3 sm:grid-cols-3">
             <div className="editorial-surface-card rounded-2xl p-4">
               <p className="text-xs uppercase tracking-[0.18em] text-gray-400">Tiempo</p>
-              <p className="mt-2 font-rajdhani text-2xl font-bold text-white">48h</p>
+              <p className="mt-2 text-2xl font-black text-white">48h</p>
             </div>
             <div className="editorial-surface-card rounded-2xl p-4">
               <p className="text-xs uppercase tracking-[0.18em] text-gray-400">Formato</p>
-              <p className="mt-2 font-rajdhani text-2xl font-bold text-white">Diagnóstico</p>
+              <p className="mt-2 text-2xl font-black text-white">Diagnóstico</p>
             </div>
             <div className="editorial-surface-card rounded-2xl p-4">
               <p className="text-xs uppercase tracking-[0.18em] text-gray-400">Foco</p>
-              <p className="mt-2 font-rajdhani text-2xl font-bold text-white">Conversión</p>
+              <p className="mt-2 text-2xl font-black text-white">Conversión</p>
             </div>
           </div>
 

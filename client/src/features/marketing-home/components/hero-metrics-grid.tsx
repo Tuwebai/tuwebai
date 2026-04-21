@@ -24,7 +24,7 @@ export default function HeroMetricsGrid({
           key={stat.key}
           className="editorial-surface-card editorial-surface-card--compact px-3 py-4 text-center"
         >
-          <p className="editorial-surface-card__value font-rajdhani">
+          <p className="editorial-surface-card__value font-black">
             {animatedStats[stat.key]}
           </p>
           <p className="editorial-surface-card__label mt-2">

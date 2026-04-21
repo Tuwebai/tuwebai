@@ -66,7 +66,7 @@ export default function VisitorPathSelector() {
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--signal)]">
               ¿Esto es para vos?
             </p>
-            <h2 className="mt-4 font-rajdhani text-3xl font-bold text-white sm:text-4xl">
+            <h2 className="mt-4 text-3xl font-black text-white sm:text-4xl">
               Elegí tu situación y te mostramos por dónde conviene empezar.
             </h2>
           </div>
@@ -94,7 +94,7 @@ export default function VisitorPathSelector() {
 
           <div className="editorial-surface-card editorial-surface-card--accent mt-8 grid gap-6 rounded-[28px] p-6 lg:grid-cols-[minmax(0,1fr)_260px] lg:items-center">
             <div>
-              <p className="font-rajdhani text-2xl font-bold text-white">{currentPath.title}</p>
+              <p className="text-2xl font-black text-white">{currentPath.title}</p>
               <p className="mt-4 text-base leading-7 text-gray-300">{currentPath.description}</p>
               <p className="mt-4 text-base leading-7 text-gray-300">{currentPath.outcome}</p>
             </div>
