@@ -20,6 +20,19 @@ export default function ClusterContentPage({ config }: ClusterContentPageProps) 
         url={pageUrl}
         ogType="article"
         ogImage="/logo-tuwebai.webp"
+        structuredData={{
+          '@context': 'https://schema.org',
+          '@type': 'Service',
+          name: config.title,
+          description: config.description,
+          url: pageUrl,
+          provider: {
+            '@type': 'LocalBusiness',
+            name: 'TuWebAI',
+            url: TUWEBAI_SITE_FULL_URL,
+          },
+          areaServed: 'Argentina',
+        }}
       />
 
       <main className="page-shell-surface min-h-screen px-4 pb-20 pt-28 text-white sm:pt-32">

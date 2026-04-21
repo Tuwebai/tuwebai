@@ -57,6 +57,20 @@ export default function WebPricePillarPage() {
         url={PAGE_URL}
         ogType="article"
         ogImage="/logo-tuwebai.webp"
+        structuredData={{
+          '@context': 'https://schema.org',
+          '@type': 'Service',
+          name: 'Consultoría sobre costo de desarrollo web en Argentina',
+          description:
+            'Guía de TuWebAI para entender cuánto cuesta una web en Argentina según alcance, funcionalidades y tipo de proyecto.',
+          url: PAGE_URL,
+          provider: {
+            '@type': 'LocalBusiness',
+            name: 'TuWebAI',
+            url: TUWEBAI_SITE_FULL_URL,
+          },
+          areaServed: 'Argentina',
+        }}
       />
 
       <main className="page-shell-surface min-h-screen px-4 pb-20 pt-28 text-white sm:pt-32">

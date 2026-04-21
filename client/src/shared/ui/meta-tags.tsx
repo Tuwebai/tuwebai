@@ -58,6 +58,11 @@ const MetaTags: React.FC<MetaTagsProps> = ({
   structuredData,
 }) => {
   const fullTitle = disableTitleSuffix ? title : `${title} | Tuweb.ai`;
+  const canonicalUrl =
+    url ||
+    (typeof window !== 'undefined'
+      ? new URL(window.location.pathname, TUWEBAI_SITE_FULL_URL).toString()
+      : TUWEBAI_SITE_FULL_URL);
 
   return (
     <Helmet>
@@ -71,7 +76,7 @@ const MetaTags: React.FC<MetaTagsProps> = ({
       <meta name="geo.placename" content={geoPlacename} />
 
       <meta property="og:type" content={ogType || type} />
-      <meta property="og:url" content={url} />
+      <meta property="og:url" content={canonicalUrl} />
       <meta property="og:title" content={ogTitle || fullTitle} />
       <meta property="og:description" content={ogDescription || description} />
       <meta property="og:image" content={ogImage || image} />
@@ -84,7 +89,7 @@ const MetaTags: React.FC<MetaTagsProps> = ({
       <meta name="twitter:image" content={ogImage || image} />
       <meta name="twitter:site" content="@tuwebai" />
 
-      <link rel="canonical" href={url} />
+      <link rel="canonical" href={canonicalUrl} />
 
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <meta name="theme-color" content="#00CCFF" />

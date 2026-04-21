@@ -56,6 +56,20 @@ export default function SeoLocalArgentinaPillarPage() {
         url={PAGE_URL}
         ogType="article"
         ogImage="/logo-tuwebai.webp"
+        structuredData={{
+          '@context': 'https://schema.org',
+          '@type': 'Service',
+          name: 'SEO local en Argentina',
+          description:
+            'Servicio y guía de TuWebAI para mejorar visibilidad local en Google Maps y convertir búsquedas en consultas reales.',
+          url: PAGE_URL,
+          provider: {
+            '@type': 'LocalBusiness',
+            name: 'TuWebAI',
+            url: TUWEBAI_SITE_FULL_URL,
+          },
+          areaServed: 'Argentina',
+        }}
       />
 
       <main className="page-shell-surface min-h-screen px-4 pb-20 pt-28 text-white sm:pt-32">

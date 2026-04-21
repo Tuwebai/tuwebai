@@ -56,6 +56,20 @@ export default function EcommerceArgentinaPillarPage() {
         url={PAGE_URL}
         ogType="article"
         ogImage="/logo-tuwebai.webp"
+        structuredData={{
+          '@context': 'https://schema.org',
+          '@type': 'Service',
+          name: 'Desarrollo de tienda online en Argentina',
+          description:
+            'Guía y servicio de TuWebAI para crear tiendas online en Argentina con foco en operación, conversión y crecimiento.',
+          url: PAGE_URL,
+          provider: {
+            '@type': 'LocalBusiness',
+            name: 'TuWebAI',
+            url: TUWEBAI_SITE_FULL_URL,
+          },
+          areaServed: 'Argentina',
+        }}
       />
 
       <main className="page-shell-surface min-h-screen px-4 pb-20 pt-28 text-white sm:pt-32">
