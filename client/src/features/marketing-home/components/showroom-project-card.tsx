@@ -80,19 +80,6 @@ export default function ShowroomProjectCard({
 
         <p className="mb-5 line-clamp-3 text-sm leading-6 text-gray-300">{project.description}</p>
 
-        <div className="mb-5 rounded-2xl border border-white/5 bg-black/10 p-4">
-          <div className="mb-3 flex items-end gap-2">
-            {[32, 48, 60, 44].map((height) => (
-              <div
-                key={height}
-                className="w-full rounded-t-xl bg-gradient-to-t from-[var(--signal)] to-[#C084FC]"
-                style={{ height: `${height}px` }}
-              />
-            ))}
-          </div>
-          <p className="text-xs uppercase tracking-[0.18em] text-gray-500">Resultado visible</p>
-        </div>
-
         <button
           onClick={(event) => {
             event.stopPropagation();

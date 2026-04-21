@@ -1,4 +1,5 @@
-import { useRef } from 'react';
+import { type ReactNode, useRef } from 'react';
+import { Code2, MessageSquare, Rocket, Waypoints } from 'lucide-react';
 
 import { useTrackSectionView } from '@/core/hooks/use-track-section-view';
 import RevealBlock from '@/shared/ui/reveal-block';
@@ -6,27 +7,37 @@ import RevealBlock from '@/shared/ui/reveal-block';
 interface ProcessStepProps {
   number: number;
   title: string;
-  description: React.ReactNode;
+  description: ReactNode;
+  icon: ReactNode;
   delayMs: number;
 }
 
-function ProcessStep({ number, title, description, delayMs }: ProcessStepProps) {
+function ProcessStep({ number, title, description, icon, delayMs }: ProcessStepProps) {
   return (
     <RevealBlock className="h-full" delayMs={delayMs}>
-      <div className="relative flex h-full flex-col rounded-[28px] border border-white/5 bg-[var(--bg-surface)] p-6">
-        <span className="absolute right-5 top-4 text-5xl font-black text-white/[0.04]">{number}</span>
-        <div className="mb-5 flex items-center gap-4">
-          <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-[var(--signal-border)] bg-[var(--bg-surface)]">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--signal)] text-base font-black text-white">
-              {number}
+      <article className="relative text-center lg:text-left">
+        <div className="mb-5 flex flex-col items-center lg:items-start">
+          <div className="relative">
+            <div className="mb-3 flex h-16 w-16 items-center justify-center rounded-2xl border border-[var(--signal-border)] bg-[var(--bg-surface)] transition-all duration-300 hover:border-[var(--signal)] hover:bg-[var(--signal-glow)]">
+              <span className="text-[var(--signal)]">{icon}</span>
             </div>
+            <span className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-[var(--signal)] text-[10px] font-black text-white">
+              {number}
+            </span>
           </div>
-          <h3 className="text-lg font-black text-white sm:text-xl">{title}</h3>
+
+          <span className="pointer-events-none -mt-1 text-5xl font-black leading-none text-white/[0.04]">
+            {String(number).padStart(2, '0')}
+          </span>
         </div>
-        <div className="leading-7 text-gray-300">
-          {description}
+
+        <div className="relative z-10">
+          <h3 className="mb-3 text-xl font-black text-white">{title}</h3>
+          <div className="max-w-[17rem] space-y-2 text-sm leading-relaxed text-gray-400">
+            {description}
+          </div>
         </div>
-      </div>
+      </article>
     </RevealBlock>
   );
 }
@@ -54,6 +65,7 @@ export default function ProcessSection({ setRef }: ProcessSectionProps) {
           <p>Entendemos qué vendés, quién te compra y qué tiene que resolver la web.</p>
         </>
       ),
+      icon: <MessageSquare size={24} />,
       delayMs: 80,
     },
     {
@@ -65,6 +77,7 @@ export default function ProcessSection({ setRef }: ProcessSectionProps) {
           <p>Por escrito. Sin sorpresas.</p>
         </>
       ),
+      icon: <Waypoints size={24} />,
       delayMs: 160,
     },
     {
@@ -76,6 +89,7 @@ export default function ProcessSection({ setRef }: ProcessSectionProps) {
           <p>Con foco en conversión, velocidad y que se vea bien en cualquier celular.</p>
         </>
       ),
+      icon: <Code2 size={24} />,
       delayMs: 240,
     },
     {
@@ -87,6 +101,7 @@ export default function ProcessSection({ setRef }: ProcessSectionProps) {
           <p>No dependés de nosotros para nada después del lanzamiento.</p>
         </>
       ),
+      icon: <Rocket size={24} />,
       delayMs: 320,
     },
   ];
@@ -95,36 +110,54 @@ export default function ProcessSection({ setRef }: ProcessSectionProps) {
     <section
       id="process"
       ref={sectionRef}
-      className="landing-anchor-section relative flex items-center justify-center bg-transparent"
+      className="landing-anchor-section relative flex items-center justify-center overflow-hidden bg-transparent"
     >
-      <div className="container z-10 mx-auto px-3 py-14 sm:px-4 sm:py-16">
-        <RevealBlock className="mx-auto mb-14 max-w-4xl text-center">
-          <h2 className="mb-6 text-3xl font-black sm:text-4xl md:text-5xl">
-            <span className="gradient-text gradient-border inline-block pb-2">
-              Cómo trabajamos cada proyecto
-            </span>
+      <div className="container z-10 mx-auto px-3 py-14 sm:px-4 sm:py-16 lg:py-20">
+        <RevealBlock className="mx-auto mb-16 max-w-3xl text-center">
+          <div className="mb-5 inline-flex rounded-full border border-[var(--signal-border)] bg-[var(--signal-glow)] px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#A78BFA]">
+            Proceso
+          </div>
+          <h2 className="mb-5 text-4xl font-black tracking-tight text-white sm:text-5xl">
+            Cómo trabajamos
           </h2>
 
-          <p className="mx-auto max-w-3xl text-base leading-7 text-gray-300 sm:text-xl sm:leading-8">
+          <p className="mx-auto max-w-2xl text-base leading-8 text-gray-300 sm:text-lg">
             Sin reuniones infinitas. Sin sorpresas al final. Un proceso claro de 4 pasos desde
             el día 1.
           </p>
         </RevealBlock>
 
         <div className="relative mx-auto max-w-6xl">
-          <div className="absolute left-[calc(12.5%+2rem)] right-[calc(12.5%+2rem)] top-14 hidden h-px bg-gradient-to-r from-transparent via-[var(--signal)]/40 to-transparent lg:block" />
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
-          {processSteps.map((step) => (
-            <ProcessStep
-              key={step.number}
-              number={step.number}
-              title={step.title}
-              description={step.description}
-              delayMs={step.delayMs}
-            />
-          ))}
+          <div className="absolute left-[calc(12.5%+2rem)] right-[calc(12.5%+2rem)] top-14 hidden h-px lg:block">
+            <div className="h-full w-full bg-gradient-to-r from-transparent via-[var(--signal)]/40 to-transparent" />
+          </div>
+
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+            {processSteps.map((step) => (
+              <ProcessStep
+                key={step.number}
+                number={step.number}
+                title={step.title}
+                description={step.description}
+                icon={step.icon}
+                delayMs={step.delayMs}
+              />
+            ))}
           </div>
         </div>
+
+        <RevealBlock className="mt-14 text-center" delayMs={380}>
+          <p className="text-sm text-gray-400">
+            Tiempo promedio de entrega: <span className="font-semibold text-white">7 a 21 días hábiles</span>{' '}
+            según el proyecto
+          </p>
+          <a
+            href="/consulta"
+            className="mt-5 inline-flex items-center justify-center rounded-full border border-white/15 px-7 py-3 text-sm font-semibold text-white transition-colors hover:border-[var(--signal-border)] hover:bg-white/5"
+          >
+            Empezar ahora
+          </a>
+        </RevealBlock>
       </div>
     </section>
   );

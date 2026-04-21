@@ -114,3 +114,4 @@ proyecto-template/*
 # Col
 
 .col/*
+col.config.json

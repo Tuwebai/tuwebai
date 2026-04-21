@@ -31,19 +31,23 @@ const pricingPlans: PricingPlan[] = [
       'Para el negocio que necesita presencia profesional en Google y empezar a recibir consultas.',
     price: '$420.000 ARS',
     includes: [
-      'Sitio institucional a medida',
-      'Diseño responsive (mobile + desktop)',
-      'Formulario de contacto + WhatsApp',
-      'SEO base para aparecer en Google',
-      'Analytics configurado desde el día 1',
+      'Sitio institucional hasta 5 páginas',
+      'Diseño personalizado',
+      'Adaptado a mobile',
+      'Formulario de contacto',
+      'SEO básico',
+      'Dominio y hosting primer año',
+      'Soporte por 30 días',
+      'Pulse para seguimiento de resultados'
     ],
     delivery: '2 a 3 semanas',
     cta: 'Quiero esta web →',
     plan: 'esencial',
     checkoutIncludes: [
-      'Sitio institucional a medida',
-      'Diseño responsive (mobile + desktop)',
-      'Formulario de contacto + WhatsApp',
+      'Sitio institucional hasta 5 páginas',
+      'Diseño personalizado',
+      'Adaptado a mobile',
+      'Formulario de contacto',
     ],
   },
   {
@@ -53,11 +57,15 @@ const pricingPlans: PricingPlan[] = [
       'Para el negocio que quiere que su web genere consultas de forma consistente.',
     price: '$780.000 ARS',
     includes: [
-      'Arquitectura pensada para convertir',
-      'Formularios + automatizaciones',
-      'SEO técnico + estructura optimizada',
-      'Analytics + seguimiento de conversiones',
-      'Hosting + dominio profesional por 1 año',
+      'Todo lo del plan Básico',
+      'E-commerce completo',
+      'Hasta 500 productos',
+      'Pagos online (MP, Visa, etc.)',
+      'SEO avanzado',
+      'Google Analytics + Tag Manager',
+      'Blog integrado',
+      'Soporte prioritario 60 días',
+      'Pulse para seguimiento de resultados'
     ],
     delivery: '3 a 4 semanas',
     cta: 'Lanzar mi web comercial →',
@@ -65,9 +73,10 @@ const pricingPlans: PricingPlan[] = [
     highlight: true,
     plan: 'avanzado',
     checkoutIncludes: [
-      'Arquitectura pensada para convertir',
-      'Formularios + automatizaciones',
-      'Hosting + dominio profesional por 1 año',
+      'Todo lo del plan Básico',
+      'E-commerce completo',
+      'Hasta 500 productos',
+      'Pagos online (MP, Visa, etc.)',
     ],
   },
   {
@@ -77,11 +86,14 @@ const pricingPlans: PricingPlan[] = [
       'Para el negocio que necesita algo que no existe todavía: paneles, flujos, integraciones propias.',
     price: 'Desde $1.400.000',
     includes: [
-      'Paneles o módulos personalizados',
-      'Integraciones con sistemas externos',
-      'Arquitectura escalable',
-      'Desarrollo orientado al crecimiento',
-      'Diagnóstico técnico incluido antes de arrancar',
+      'Todo lo del plan Pro',
+      'Sistema web a medida',
+      'Integraciones API ilimitadas',
+      'Panel de administración custom',
+      'CRM / ERP / Intranet',
+      'Automatizaciones de negocio',
+      'Equipo dedicado',
+      'Soporte 12 meses',
     ],
     delivery: 'Según alcance definido en la consulta inicial',
     cta: 'Solicitar propuesta →',
@@ -277,10 +289,6 @@ export default function PricingSection({ setRef }: PricingSectionProps) {
             <br />
             La consulta inicial siempre es sin cargo.
           </p>
-          <div className="mt-6 inline-flex rounded-full border border-white/10 bg-white/5 p-1 text-sm">
-            <span className="rounded-full bg-[image:var(--gradient-brand)] px-4 py-2 font-medium text-white">Pago único</span>
-            <span className="px-4 py-2 text-gray-400">Consulta mensual</span>
-          </div>
         </div>
 
         <div className="mx-auto grid max-w-6xl auto-rows-fr grid-cols-1 gap-6 lg:grid-cols-3">
