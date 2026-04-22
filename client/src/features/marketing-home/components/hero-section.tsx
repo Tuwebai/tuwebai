@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Check, TrendingUp, Zap } from 'lucide-react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Link as ScrollLink } from 'react-scroll';
 
 import { useIntersectionObserver } from '@/core/hooks/use-intersection-observer';
 import { useTrackSectionView } from '@/core/hooks/use-track-section-view';
@@ -32,7 +31,6 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
       'Construimos webs a medida para negocios argentinos y las conectamos con Pulse para que veas resultados, no promesas.',
     [],
   );
-  const heroTrustPills = useMemo(() => ['Código a medida', 'Pulse conectado', 'Resultados visibles'], []);
   const heroServicePills = useMemo(() => ['Sitios corporativos', 'E-commerce', 'Sistemas web'], []);
 
   useEffect(() => {
@@ -169,17 +167,6 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
               <span aria-hidden="true">→</span>
             </RouterLink>
 
-            <div className="mt-7 flex flex-wrap gap-2">
-              {heroTrustPills.map((pill) => (
-                <span
-                  key={pill}
-                  className="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-gray-200 backdrop-blur"
-                >
-                  {pill}
-                </span>
-              ))}
-            </div>
-
             <div
               ref={statsRef}
               className="mt-8 flex flex-col gap-4 border-y border-white/10 py-5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-6"
@@ -208,33 +195,6 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
                   {pill}
                 </span>
               ))}
-            </div>
-
-            <div className="mt-8">
-              <ScrollLink
-                to="philosophy"
-                spy={true}
-                smooth={true}
-                offset={-70}
-                duration={1000}
-                className="inline-flex cursor-pointer items-center gap-2 text-sm text-gray-300 transition-colors hover:text-white"
-              >
-                <span>Conocer cómo trabajamos</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 animate-bounce text-[var(--signal)]"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 14l-7 7m0 0l-7-7m7 7V3"
-                  />
-                </svg>
-              </ScrollLink>
             </div>
           </div>
 
@@ -330,3 +290,4 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
     </section>
   );
 }
+import { Link as ScrollLink } from 'react-scroll';

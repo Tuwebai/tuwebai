@@ -8,8 +8,8 @@ export interface HeroMetric {
 
 export const HERO_METRICS: HeroMetric[] = [
   { key: 'years', value: 6, label: 'Años construyendo' },
-  { key: 'projects', value: 6, label: 'Proyectos visibles' },
-  { key: 'products', value: 3, label: 'Producto propio' },
+  { key: 'projects', value: 30, label: 'Días máx. de entrega' },
+  { key: 'products', value: 100, label: '% código a medida' },
 ];
 
 export function createInitialHeroMetricState(): Record<HeroMetricKey, number> {
