@@ -38,6 +38,9 @@ export default function CompanyLogoSlider({ className = '' }: CompanyLogoSliderP
         hasIntersected ? 'translate-y-0 opacity-100' : 'translate-y-5 opacity-0'
       } ${className}`}
     >
+      <p className="mb-6 text-center text-xs font-semibold uppercase tracking-[0.28em] text-gray-500">
+        Proyectos lanzados
+      </p>
       <div className="trustbar-marquee-shell mx-auto max-w-6xl overflow-hidden px-4">
         <div className="trustbar-marquee-track flex w-max items-center gap-10 sm:gap-14">
           {marqueeProjects.map((project, index) => (
