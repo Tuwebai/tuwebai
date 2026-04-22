@@ -28,7 +28,7 @@ export default function HeroSection({ setRef, children }: HeroSectionProps) {
   });
   const heroMessage = useMemo(
     () =>
-      'Construimos webs a medida para negocios argentinos y las conectamos con Pulse para que veas resultados, no promesas.',
+      'Código a medida para negocios que quieren clientes reales, no solo una web bonita. Con métricas incluidas para saber si está funcionando.',
     [],
   );
   const heroServicePills = useMemo(() => ['Sitios corporativos', 'E-commerce', 'Sistemas web'], []);
