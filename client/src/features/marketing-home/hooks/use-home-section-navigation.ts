@@ -8,13 +8,13 @@ export interface HomeSectionItem {
 }
 
 export const HOME_SECTIONS: HomeSectionItem[] = [
-  { id: 'intro', label: 'Introducción' },
-  { id: 'philosophy', label: 'Filosofía' },
+  { id: 'intro', label: 'Inicio' },
+  { id: 'philosophy', label: 'El problema' },
   { id: 'services', label: 'Servicios' },
   { id: 'process', label: 'Proceso' },
   { id: 'showroom', label: 'Proyectos' },
+  { id: 'impact', label: 'Por qué nosotros' },
   { id: 'pricing', label: 'Planes' },
-  { id: 'impact', label: 'Diferenciales' },
   { id: 'contact', label: 'Contacto' },
 ];
 
