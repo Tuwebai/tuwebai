@@ -2,8 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TuWebAI Instagram Post</title>
+  <meta name="viewport" content="width=1080, initial-scale=1, maximum-scale=1">  <title>TuWebAI Instagram Post</title>
   <style>
     :root {
       --bg-base: #06090f;
@@ -33,11 +32,14 @@
 
     * { box-sizing: border-box; }
 
+    html, body {
+      width: 100%;
+      min-height: 100%;
+    }
+
     body {
       margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
+      padding: 24px;
       background:
         radial-gradient(circle at top right, rgba(34, 211, 238, 0.08), transparent 28%),
         linear-gradient(180deg, #06090f 0%, #08101b 100%);
@@ -46,14 +48,14 @@
     }
 
     .post {
-      width: 3840px;
-      height: 3840px;
+      width: 1080px;
+      height: 1080px;
       position: relative;
       overflow: hidden;
       background:
         linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0)),
         linear-gradient(180deg, var(--bg-base) 0%, var(--bg-surface) 100%);
-      padding: 240px;
+      padding: 56px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -65,7 +67,7 @@
       background-image:
         linear-gradient(rgba(148, 163, 184, 0.035) 1px, transparent 1px),
         linear-gradient(90deg, rgba(148, 163, 184, 0.035) 1px, transparent 1px);
-      background-size: 120px 120px;
+      background-size: 34px 34px;
       mask-image: linear-gradient(180deg, rgba(0,0,0,0.32), rgba(0,0,0,0.08));
       pointer-events: none;
     }
@@ -81,28 +83,28 @@
     .brand {
       display: inline-flex;
       align-items: center;
-      gap: 28px;
-      font-size: 58px;
+      gap: 8px;
+      font-size: 16px;
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--text-secondary);
     }
 
     .brand-mark {
-      width: 22px;
-      height: 22px;
+      width: 6px;
+      height: 6px;
       border-radius: 999px;
       background: var(--signal);
-      box-shadow: 0 0 0 18px var(--signal-muted);
+      box-shadow: 0 0 0 5px var(--signal-muted);
     }
 
     .meta {
-      padding: 20px 28px;
+      padding: 6px 8px;
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
       background: rgba(11, 18, 32, 0.58);
       color: var(--text-secondary);
-      font-size: 40px;
+      font-size: 11px;
       letter-spacing: 0.08em;
       text-transform: uppercase;
     }
@@ -111,16 +113,16 @@
       position: relative;
       z-index: 1;
       display: grid;
-      gap: 84px;
-      max-width: 2800px;
+      gap: 18px;
+      max-width: 860px;
     }
 
     .eyebrow {
       display: inline-flex;
       align-items: center;
-      gap: 18px;
+      gap: 5px;
       color: var(--signal);
-      font-size: 46px;
+      font-size: 13px;
       font-weight: 700;
       letter-spacing: 0.18em;
       text-transform: uppercase;
@@ -128,18 +130,18 @@
 
     .eyebrow::before {
       content: "";
-      width: 88px;
+      width: 25px;
       height: 2px;
       background: var(--signal);
     }
 
     h1 {
       margin: 0;
-      font-size: 300px;
+      font-size: 104px;
       line-height: 0.92;
       letter-spacing: -0.06em;
       font-weight: 800;
-      max-width: 3000px;
+      max-width: 860px;
     }
 
     .signal-line {
@@ -148,9 +150,9 @@
     }
 
     .description {
-      max-width: 2100px;
+      max-width: 640px;
       margin: 0;
-      font-size: 82px;
+      font-size: 18px;
       line-height: 1.26;
       color: var(--text-secondary);
     }
@@ -158,12 +160,12 @@
     .stats {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 36px;
-      max-width: 2200px;
+      gap: 10px;
+      max-width: 619px;
     }
 
     .stat {
-      padding: 44px 48px;
+      padding: 12px 14px;
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-lg);
       background: rgba(16, 26, 45, 0.58);
@@ -172,25 +174,25 @@
 
     .stat strong {
       display: block;
-      margin-bottom: 16px;
-      font-size: 42px;
+      margin-bottom: 5px;
+      font-size: 12px;
       color: var(--text-muted);
       text-transform: uppercase;
       letter-spacing: 0.12em;
     }
 
     .stat span {
-      font-size: 86px;
+      font-size: 24px;
       font-weight: 700;
       letter-spacing: -0.04em;
     }
 
     .footer {
-      gap: 48px;
+      gap: 14px;
     }
 
     .handle {
-      font-size: 56px;
+      font-size: 16px;
       color: var(--text-muted);
       letter-spacing: 0.08em;
       text-transform: uppercase;
@@ -200,12 +202,12 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 156px;
-      padding: 0 78px;
+      min-height: 44px;
+      padding: 0 22px;
       border-radius: var(--radius-lg);
       background: var(--signal);
       color: #031017;
-      font-size: 60px;
+      font-size: 17px;
       font-weight: 800;
       letter-spacing: 0.04em;
       text-transform: uppercase;
@@ -214,9 +216,9 @@
 
     .frame {
       position: absolute;
-      inset: 64px;
+      inset: 18px;
       border: 1px solid rgba(148, 163, 184, 0.12);
-      border-radius: 28px;
+      border-radius: 8px;
       pointer-events: none;
     }
   </style>
