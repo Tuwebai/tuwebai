@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TuWebAI · Instagram Post</title>
+    <style>
+      :root {
+        --bg-base: #0f0d0b;
+        --bg-surface: #181411;
+        --bg-elevated: rgba(24, 20, 17, 0.82);
+        --bg-subtle: rgba(200, 71, 43, 0.08);
+        --bg-overlay: rgba(15, 13, 11, 0.78);
+        --signal: #c8472b;
+        --signal-dim: #ad3d24;
+        --signal-muted: rgba(200, 71, 43, 0.12);
+        --text-primary: #f5efe7;
+        --text-secondary: rgba(245, 239, 231, 0.78);
+        --text-muted: rgba(245, 239, 231, 0.58);
+        --border: rgba(245, 239, 231, 0.12);
+        --border-focus: rgba(200, 71, 43, 0.56);
+        --radius-sm: 6px;
+        --radius-md: 10px;
+        --shadow-sm: 0 18px 48px rgba(0, 0, 0, 0.18);
+        --canvas-size: min(100vw, 100vh);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        width: 100%;
+        min-height: 100%;
+        background: linear-gradient(180deg, #17120e 0%, var(--bg-base) 100%);
+        color: var(--text-primary);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+      }
+
+      body {
+        display: grid;
+        place-items: center;
+        padding: 0;
+      }
+
+      .post {
+        position: relative;
+        width: var(--canvas-size);
+        height: var(--canvas-size);
+        max-width: 4096px;
+        max-height: 4096px;
+        overflow: hidden;
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 22%),
+          linear-gradient(180deg, #15110e 0%, var(--bg-base) 100%);
+      }
+
+      .post::before {
+        content: "";
+        position: absolute;
+        inset: 4.2%;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+      }
+
+      .post::after {
+        content: "VENDE";
+        position: absolute;
+        right: -4%;
+        top: 11%;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 20vw;
+        font-style: italic;
+        font-weight: 700;
+        line-height: 0.9;
+        letter-spacing: -0.08em;
+        color: transparent;
+        -webkit-text-stroke: 1px rgba(200, 71, 43, 0.36);
+        opacity: 0.9;
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+      }
+
+      .grid {
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(245, 239, 231, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(245, 239, 231, 0.03) 1px, transparent 1px);
+        background-size: 6.25% 6.25%;
+        mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.82), transparent 88%);
+      }
+
+      .band {
+        position: absolute;
+        left: 4.2%;
+        right: 4.2%;
+        bottom: 18.5%;
+        height: 1px;
+        background: linear-gradient(90deg, rgba(200, 71, 43, 0), rgba(200, 71, 43, 0.54), rgba(200, 71, 43, 0));
+      }
+
+      .content {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+        padding: 4.8%;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 1.2vw;
+        font-size: 1.45vw;
+        font-weight: 700;
+        letter-spacing: -0.04em;
+      }
+
+      .brand-mark {
+        width: 0.82vw;
+        height: 0.82vw;
+        border-radius: 999px;
+        background: var(--signal);
+        box-shadow: 0 0 0 0.46vw var(--signal-muted);
+      }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        min-height: 2.5vw;
+        padding: 0 1vw;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.03);
+        color: var(--text-secondary);
+        font-size: 0.95vw;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+      }
+
+      .hero {
+        max-width: 74%;
+        margin-top: 8%;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.65vw;
+        color: var(--signal);
+        font-size: 1vw;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .eyebrow::before {
+        content: "";
+        width: 2.3vw;
+        height: 2px;
+        background: rgba(200, 71, 43, 0.7);
+      }
+
+      h1 {
+        margin: 2.1vw 0 0;
+        max-width: 100%;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 8vw;
+        line-height: 0.88;
+        letter-spacing: -0.08em;
+        font-weight: 700;
+      }
+
+      h1 span {
+        display: block;
+      }
+
+      .accent {
+        color: var(--signal);
+        font-style: italic;
+      }
+
+      .lede {
+        margin: 3.2vw 0 0;
+        max-width: 74%;
+        color: var(--text-secondary);
+        font-size: 2.08vw;
+        line-height: 1.22;
+        letter-spacing: -0.03em;
+      }
+
+      .bottom {
+        display: grid;
+        grid-template-columns: 1.28fr 0.92fr;
+        gap: 1.8vw;
+        align-items: end;
+      }
+
+      .panel {
+        padding: 1.7vw;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        background: var(--bg-elevated);
+        box-shadow: var(--shadow-sm);
+        backdrop-filter: blur(10px);
+      }
+
+      .stats {
+        display: flex;
+        gap: 1vw;
+      }
+
+      .stat {
+        flex: 1;
+      }
+
+      .stat-label {
+        color: var(--text-muted);
+        font-size: 0.82vw;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .stat-value {
+        margin-top: 0.55vw;
+        font-size: 2.35vw;
+        line-height: 0.95;
+        letter-spacing: -0.06em;
+        font-weight: 800;
+      }
+
+      .cta-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 1.1vw;
+      }
+
+      .cta-copy {
+        color: var(--text-secondary);
+        font-size: 1.32vw;
+        line-height: 1.25;
+        letter-spacing: -0.03em;
+      }
+
+      .cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 3.2vw;
+        padding: 0 1.35vw;
+        border-radius: 999px;
+        background: var(--signal);
+        color: var(--text-primary);
+        text-decoration: none;
+        font-size: 1.2vw;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        width: fit-content;
+      }
+
+      .footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 1.2vw;
+        color: var(--text-muted);
+        font-size: 0.9vw;
+        letter-spacing: 0.02em;
+      }
+
+      .post[data-export="true"] {
+        --canvas-size: 4096px;
+      }
+
+      .cta:focus-visible,
+      .cta:hover {
+        background: var(--signal-dim);
+        outline: 2px solid var(--border-focus);
+        outline-offset: 2px;
+      }
+
+      @media (max-width: 900px) {
+        .brand {
+          font-size: 2.7vw;
+        }
+
+        .brand-mark {
+          width: 1.6vw;
+          height: 1.6vw;
+          box-shadow: 0 0 0 0.8vw var(--signal-muted);
+        }
+
+        .tag,
+        .eyebrow,
+        .footer {
+          font-size: 1.7vw;
+        }
+
+        .hero,
+        .lede {
+          max-width: 82%;
+        }
+
+        h1 {
+          font-size: 9.8vw;
+        }
+
+        .lede {
+          font-size: 2.7vw;
+        }
+
+        .bottom {
+          grid-template-columns: 1fr;
+        }
+
+        .stat-label {
+          font-size: 1.5vw;
+        }
+
+        .stat-value {
+          font-size: 4.1vw;
+        }
+
+        .cta-copy {
+          font-size: 2.3vw;
+        }
+
+        .cta {
+          min-height: 5.4vw;
+          font-size: 2vw;
+          padding: 0 2.4vw;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="post">
+      <div class="grid"></div>
+      <div class="band"></div>
+
+      <section class="content">
+        <header class="topbar">
+          <div class="brand">
+            <span class="brand-mark" aria-hidden="true"></span>
+            <span>TuWebAI</span>
+          </div>
+          <div class="tag">Desarrollo web que vende</div>
+        </header>
+
+        <section class="hero">
+          <div class="eyebrow">Post para Instagram</div>
+          <h1>
+            <span>Tu web no</span>
+            <span class="accent">está para verse.</span>
+            <span>Está para vender.</span>
+          </h1>
+          <p class="lede">
+            TuWebAI construye sitios a medida para negocios que necesitan consultas reales, una
+            propuesta clara y una experiencia que convierta desde la primera visita.
+          </p>
+        </section>
+
+        <section>
+          <div class="bottom">
+            <div class="panel stats">
+              <article class="stat">
+                <div class="stat-label">Hecho a medida</div>
+                <div class="stat-value">100%</div>
+              </article>
+              <article class="stat">
+                <div class="stat-label">Objetivo</div>
+                <div class="stat-value">Más consultas</div>
+              </article>
+              <article class="stat">
+                <div class="stat-label">Enfoque</div>
+                <div class="stat-value">Conversión</div>
+              </article>
+            </div>
+
+            <aside class="panel cta-panel">
+              <div class="cta-copy">
+                Si tu sitio hoy informa pero no empuja a consultar, hay margen directo para
+                mejorarlo.
+              </div>
+              <a class="cta" href="https://tuweb-ai.com/diagnostico-gratuito">Pedí diagnóstico</a>
+            </aside>
+          </div>
+
+          <footer class="footer">
+            <span>tuweb-ai.com</span>
+            <span>@tuwebai</span>
+          </footer>
+        </section>
+      </section>
+    </main>
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("export") === "1") {
+        document.querySelector(".post")?.setAttribute("data-export", "true");
+      }
+    </script>
+  </body>
+</html>
