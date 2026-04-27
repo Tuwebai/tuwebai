@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080, initial-scale=1, maximum-scale=1">
+  <title>TuWebAI — Post Instagram</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #121a30;
+      --panel-2: #0f172a;
+      --text: #f3f7ff;
+      --muted: #9aa8c7;
+      --line: rgba(255, 255, 255, 0.08);
+      --signal: #56c2ff;
+      --signal-soft: rgba(86, 194, 255, 0.16);
+      --success: #7dd3a7;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      width: 1080px;
+      height: 1350px;
+      overflow: hidden;
+      background: var(--bg);
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+      color: var(--text);
+    }
+
+    .post {
+      position: relative;
+      width: 1080px;
+      height: 1350px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at top left, rgba(86, 194, 255, 0.14), transparent 34%),
+        linear-gradient(180deg, #0e1529 0%, #0b1020 100%);
+      padding: 88px 84px;
+    }
+
+    .frame {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 64px;
+      background: linear-gradient(180deg, rgba(18, 26, 48, 0.94) 0%, rgba(11, 16, 32, 0.98) 100%);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      height: 44px;
+      padding: 0 18px;
+      border: 1px solid rgba(86, 194, 255, 0.24);
+      border-radius: 999px;
+      background: var(--signal-soft);
+      color: #cfeeff;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--signal);
+      box-shadow: 0 0 18px rgba(86, 194, 255, 0.7);
+    }
+
+    h1 {
+      margin: 34px 0 22px;
+      max-width: 700px;
+      font-size: 88px;
+      line-height: 0.98;
+      letter-spacing: -0.05em;
+      font-weight: 800;
+    }
+
+    .lead {
+      max-width: 700px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 30px;
+      line-height: 1.42;
+      font-weight: 500;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 54px;
+    }
+
+    .metric {
+      min-height: 164px;
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 50px;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .metric span {
+      display: block;
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 22px;
+      line-height: 1.35;
+    }
+
+    .dashboard {
+      position: absolute;
+      right: 64px;
+      bottom: 236px;
+      width: 372px;
+      padding: 26px;
+      border: 1px solid rgba(86, 194, 255, 0.18);
+      border-radius: 12px;
+      background: linear-gradient(180deg, rgba(16, 24, 43, 0.96) 0%, rgba(11, 16, 32, 0.98) 100%);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
+    }
+
+    .dashboard-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .dashboard-top .label {
+      color: var(--muted);
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+    }
+
+    .dashboard-top .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      height: 32px;
+      padding: 0 12px;
+      border-radius: 999px;
+      background: rgba(125, 211, 167, 0.14);
+      color: var(--success);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .bars {
+      display: grid;
+      gap: 14px;
+    }
+
+    .bar-row {
+      display: grid;
+      gap: 8px;
+    }
+
+    .bar-row em {
+      color: var(--muted);
+      font-style: normal;
+      font-size: 16px;
+    }
+
+    .track {
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.07);
+      overflow: hidden;
+    }
+
+    .fill {
+      height: 12px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #56c2ff 0%, #88d7ff 100%);
+    }
+
+    .cta-row {
+      position: absolute;
+      left: 64px;
+      right: 64px;
+      bottom: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      min-height: 110px;
+      padding: 26px 30px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .cta-copy {
+      max-width: 620px;
+    }
+
+    .cta-copy strong {
+      display: block;
+      font-size: 28px;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+    }
+
+    .cta-copy span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 20px;
+      line-height: 1.35;
+    }
+
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 272px;
+      height: 56px;
+      padding: 0 26px;
+      border-radius: 12px;
+      background: var(--signal);
+      color: #05111b;
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      text-decoration: none;
+    }
+
+    .brand {
+      position: absolute;
+      top: 66px;
+      right: 64px;
+      color: rgba(243, 247, 255, 0.84);
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+  </style>
+</head>
+<body>
+  <main class="post">
+    <section class="frame">
+      <div class="brand">TuWebAI</div>
+      <div class="eyebrow">Automatización comercial</div>
+      <h1>Vendé más sin sumar más carga operativa.</h1>
+      <p class="lead">
+        Centralizá consultas, respuestas y seguimiento en una experiencia asistida por IA que trabaja 24/7,
+        ordena conversaciones y acelera conversiones con criterio profesional.
+      </p>
+
+      <section class="metrics" aria-label="Indicadores clave">
+        <article class="metric">
+          <strong>24/7</strong>
+          <span>Atención continua para leads, soporte inicial y recuperación de oportunidades.</span>
+        </article>
+        <article class="metric">
+          <strong>-42%</strong>
+          <span>Menos tiempo operativo dedicado a respuestas repetitivas y derivaciones manuales.</span>
+        </article>
+        <article class="metric">
+          <strong>3x</strong>
+          <span>Más velocidad para calificar conversaciones y llevarlas al siguiente paso comercial.</span>
+        </article>
+      </section>
+
+      <aside class="dashboard" aria-label="Resumen visual">
+        <div class="dashboard-top">
+          <div class="label">Pipeline asistido</div>
+          <div class="status">● Activo</div>
+        </div>
+        <div class="bars">
+          <div class="bar-row">
+            <em>Captura de leads</em>
+            <div class="track"><div class="fill" style="width: 88%;"></div></div>
+          </div>
+          <div class="bar-row">
+            <em>Respuesta automática</em>
+            <div class="track"><div class="fill" style="width: 94%;"></div></div>
+          </div>
+          <div class="bar-row">
+            <em>Derivación comercial</em>
+            <div class="track"><div class="fill" style="width: 73%;"></div></div>
+          </div>
+        </div>
+      </aside>
+
+      <section class="cta-row">
+        <div class="cta-copy">
+          <strong>Tu atención digital puede escalar sin perder claridad ni control.</strong>
+          <span>Escribinos y te mostramos cómo llevarlo a tu operación.</span>
+        </div>
+        <a class="cta" href="#" aria-label="Solicitar demo">Solicitar demo</a>
+      </section>
+    </section>
+  </main>
+</body>
+</html>
