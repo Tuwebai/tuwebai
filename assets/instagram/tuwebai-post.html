@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TuWebAI Instagram Post</title>
+  <style>
+    :root {
+      --bg-base: #06090f;
+      --bg-surface: #0b1220;
+      --bg-elevated: #101a2d;
+      --bg-subtle: #15233a;
+      --bg-overlay: rgba(6, 9, 15, 0.82);
+      --signal: #22d3ee;
+      --signal-dim: #0ea5c2;
+      --signal-muted: rgba(34, 211, 238, 0.12);
+      --text-primary: #f4f8fb;
+      --text-secondary: rgba(244, 248, 251, 0.72);
+      --text-muted: rgba(244, 248, 251, 0.42);
+      --text-disabled: rgba(244, 248, 251, 0.18);
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --border: rgba(148, 163, 184, 0.22);
+      --border-focus: rgba(34, 211, 238, 0.5);
+      --border-subtle: rgba(148, 163, 184, 0.12);
+      --radius-sm: 4px;
+      --radius-md: 6px;
+      --radius-lg: 12px;
+      --shadow-sm: 0 16px 40px rgba(0, 0, 0, 0.18);
+      --shadow-md: 0 32px 80px rgba(0, 0, 0, 0.28);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at top right, rgba(34, 211, 238, 0.08), transparent 28%),
+        linear-gradient(180deg, #06090f 0%, #08101b 100%);
+      color: var(--text-primary);
+      font-family: Inter, "Segoe UI", sans-serif;
+    }
+
+    .post {
+      width: 3840px;
+      height: 3840px;
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0)),
+        linear-gradient(180deg, var(--bg-base) 0%, var(--bg-surface) 100%);
+      padding: 240px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(148, 163, 184, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148, 163, 184, 0.035) 1px, transparent 1px);
+      background-size: 120px 120px;
+      mask-image: linear-gradient(180deg, rgba(0,0,0,0.32), rgba(0,0,0,0.08));
+      pointer-events: none;
+    }
+
+    .topbar, .footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 1;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 28px;
+      font-size: 58px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    .brand-mark {
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      background: var(--signal);
+      box-shadow: 0 0 0 18px var(--signal-muted);
+    }
+
+    .meta {
+      padding: 20px 28px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: rgba(11, 18, 32, 0.58);
+      color: var(--text-secondary);
+      font-size: 40px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .hero {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 84px;
+      max-width: 2800px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 18px;
+      color: var(--signal);
+      font-size: 46px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 88px;
+      height: 2px;
+      background: var(--signal);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 300px;
+      line-height: 0.92;
+      letter-spacing: -0.06em;
+      font-weight: 800;
+      max-width: 3000px;
+    }
+
+    .signal-line {
+      display: block;
+      color: var(--signal);
+    }
+
+    .description {
+      max-width: 2100px;
+      margin: 0;
+      font-size: 82px;
+      line-height: 1.26;
+      color: var(--text-secondary);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 36px;
+      max-width: 2200px;
+    }
+
+    .stat {
+      padding: 44px 48px;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      background: rgba(16, 26, 45, 0.58);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .stat strong {
+      display: block;
+      margin-bottom: 16px;
+      font-size: 42px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .stat span {
+      font-size: 86px;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+    }
+
+    .footer {
+      gap: 48px;
+    }
+
+    .handle {
+      font-size: 56px;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 156px;
+      padding: 0 78px;
+      border-radius: var(--radius-lg);
+      background: var(--signal);
+      color: #031017;
+      font-size: 60px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      box-shadow: var(--shadow-md);
+    }
+
+    .frame {
+      position: absolute;
+      inset: 64px;
+      border: 1px solid rgba(148, 163, 184, 0.12);
+      border-radius: 28px;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <article class="post">
+    <div class="grid"></div>
+    <div class="frame"></div>
+
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark"></span>
+        <span>TuWebAI</span>
+      </div>
+      <div class="meta">Automatización web con IA</div>
+    </header>
+
+    <main class="hero">
+      <div class="eyebrow">Nueva generación digital</div>
+
+      <h1>
+        Tu sitio responde,
+        <span class="signal-line">vende y escala</span>
+        sin sumar fricción.
+      </h1>
+
+      <p class="description">
+        Convertí visitas en conversaciones reales con una experiencia web clara, profesional y asistida por inteligencia artificial desde el primer clic.
+      </p>
+
+      <section class="stats">
+        <div class="stat">
+          <strong>Atención</strong>
+          <span>24/7</span>
+        </div>
+        <div class="stat">
+          <strong>Respuesta</strong>
+          <span>&lt; 10 s</span>
+        </div>
+        <div class="stat">
+          <strong>Implementación</strong>
+          <span>1 flujo</span>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="handle">@tuwebai</div>
+      <div class="cta">Pedí tu demo</div>
+    </footer>
+  </article>
+</body>
+</html>
